@@ -1,0 +1,158 @@
+name: ValhallaMMO
+version: ${project.version}
+main: me.athlaeos.valhallammo.ValhallaMMO
+author: Athlaeos
+api-version: "1.16"
+load: POSTWORLD
+softdepend:
+- Vault
+- WorldEdit
+- WorldGuard
+- PlaceholderAPI
+commands:
+  valhalla:
+    description: "Main command for all things ValhallaMMO-related"
+    aliases: [val]
+  skills:
+    description: "Shorter command to access the plugin's skill trees"
+    aliases: [s]
+  partychat:
+    description: "Allows a user to toggle party chat, or to send a single message in party chat"
+    aliases: [pc]
+  party:
+    description: "Main command for users to manage their party"
+    aliases: [p]
+  parties:
+    description: "Admin command to manage others' parties"
+  partyspy:
+    description: "Admin command allowing admins to spy on other people's party chats"
+  mining:
+    description: "Shorter command for /val profile mining, allowing players to view their mining stats"
+  farming:
+    description: ""
+  landscaping:
+    description: ""
+  lightweapons:
+    description: ""
+  heavyweapons:
+    description: ""
+  lightarmor:
+    description: ""
+  heavyarmor:
+    description: ""
+  archery:
+    description: ""
+  smithing:
+    description: ""
+  enchanting:
+    description: ""
+  alchemy:
+    description: ""
+  power:
+    description: ""
+
+
+permissions:
+  valhalla.items:
+    default: op
+    description: "Access to the /valhalla items command, which allows the user to add items to a custom item registry and then use said items in specific recipe modifiers or give them out using a command"
+  valhalla.give:
+    default: op
+    description: "Access to the /valhalla give command, which allows users to give themselves or a player a custom item registered in the item registry"
+  valhalla.resourcepack:
+    default: op
+    description: "Allows the user to download the ValhallaMMO resource pack for the server, and to disable or enable certain config settings to be overridden to show the custom textures"
+  valhalla.manageparties:
+    default: op
+    description: "Allows the user to target other people's parties and to manage things like ownership and stats"
+  valhalla.createparty:
+    default: true
+    description: "Allows the user to create their own party"
+  valhalla.allrecipes:
+    default: op
+    description: "All Valhalla custom crafting recipes will be available to the player with this permission"
+  valhalla.skills:
+    default: true
+    description: "Access to the /valhalla skills command, which accesses your skill trees."
+  valhalla.help:
+    default: op
+    description: "Access to the /valhalla help command, which gives descriptions and details on all available commands."
+  valhalla.recipes:
+    default: op
+    description: "Access to the /valhalla recipes command, which gives the user full control over all custom recipes on the server."
+  valhalla.loottables:
+    default: op
+    description: "Access to the /valhalla loot command, which gives the user full control over all loot tables within the plugin."
+  valhalla.modify:
+    default: op
+    description: "Access to the /valhalla modify command, which allows the user to freely modify held items given the right key and strength."
+  valhalla.reward:
+    default: op
+    description: "Access to the /valhalla reward command, which allows the user to reward a player with a given perk reward."
+  valhalla.profile:
+    default: true
+    description: "Access to the /valhalla profile command, which allows the user to view their own ValhallaMMO stats."
+  valhalla.profile.other:
+    default: op
+    description: "Access to the /valhalla profile command, which allows the user to view anyone's ValhallaMMO stats."
+  valhalla.reset.other:
+    default: op
+    description: "Access to the /valhalla reset command, which soft/hard resets someone's ValhallaMMO progress."
+  valhalla.reset:
+    default: op
+    description: "Access to the /valhalla reset command, which allows the user to only hard reset their own progress"
+  valhalla.ignorediminishingreturns:
+    default: false
+    description: "Allows the user to bypass diminishing returns on EXP gain."
+  valhalla.ignorecooldowns:
+    default: false
+    description: "Allows the user the use abilities freely, cooldown is not applied."
+  valhalla.globalbuffs:
+    default: op
+    description: "Access to the /valhalla globalbuff command, which allows the user to apply global status effects"
+  valhalla.reload:
+    default: op
+    description: "Reloads the plugin's configs into memory, be careful as this also saves changes made to recipes and loot tables before reloading which can cause a lag spike"
+  valhalla.exp:
+    default: op
+    description: "Access to the /valhalla exp command, which allows the user to freely give exp to anyone"
+  valhalla.exp.general.#:
+    default: false
+    description: "Adds (or subtracts) from the player's experience multiplier. valhalla.exp.general.100 gives the player +100% more experience in everything."
+  valhalla.exp.smithing.#:
+    default: false
+    description: "Adds (or subtracts) from the player's smithing experience multiplier. valhalla.exp.smithing.100 gives the player +100% more experience in smithing."
+  valhalla.exp.alchemy.#:
+    default: false
+    description: "Adds (or subtracts) from the player's alchemy experience multiplier. valhalla.exp.alchemy.100 gives the player +100% more experience in alchemy."
+  valhalla.exp.enchanting.#:
+    default: false
+    description: "Adds (or subtracts) from the player's enchanting experience multiplier. valhalla.exp.enchanting.100 gives the player +100% more experience in enchanting."
+  valhalla.exp.farming.#:
+    default: false
+    description: "Adds (or subtracts) from the player's farming experience multiplier. valhalla.exp.farming.100 gives the player +100% more experience in farming."
+  valhalla.exp.mining.#:
+    default: false
+    description: "Adds (or subtracts) from the player's mining experience multiplier. valhalla.exp.mining.100 gives the player +100% more experience in mining."
+  valhalla.exp.woodcutting.#:
+    default: false
+    description: "Adds (or subtracts) from the player's woodcutting experience multiplier. valhalla.exp.woodcutting.100 gives the player +100% more experience in woodcutting."
+  valhalla.exp.archery.#:
+    default: false
+    description: "Adds (or subtracts) from the player's archery experience multiplier. valhalla.exp.archery.100 gives the player +100% more experience in archery."
+  valhalla.exp.weapons_light.#:
+    default: false
+    description: "Adds (or subtracts) from the player's light weapons experience multiplier. valhalla.exp.weapons_light.100 gives the player +100% more experience in light weapons."
+  valhalla.exp.weapons_heavy.#:
+    default: false
+    description: "Adds (or subtracts) from the player's heavy weapons experience multiplier. valhalla.exp.weapons_heavy.100 gives the player +100% more experience in heavy weapons."
+  valhalla.exp.armor_light.#:
+    default: false
+    description: "Adds (or subtracts) from the player's light armor experience multiplier. valhalla.exp.armor_light.100 gives the player +100% more experience in light armor."
+  valhalla.exp.armor_heavy.#:
+    default: false
+    description: "Adds (or subtracts) from the player's heavy armor experience multiplier. valhalla.exp.armor_heavy.100 gives the player +100% more experience in heavy armor."
+  valhalla.exp.unarmed.#:
+    default: false
+    description: "Adds (or subtracts) from the player's unarmed experience multiplier. valhalla.exp.unarmed.100 gives the player +100% more experience in unarmed."
+
