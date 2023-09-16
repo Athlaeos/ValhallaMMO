@@ -1,9 +1,9 @@
 # PERSISTENCY
 # Database credentials for profile storage
-# If the database credentials are wrong or absent, the plugin will use PersistentDataContainer to store profiles.
-# This means profiles can't be viewed as a whole, only individually, and also can't be edited without using
-# plugin-provided commands. The plugin will also have to use work-arounds to make leaderboards work by temporarily
-# storing certain datapoints in another file (leaderboards.yml).
+# If the database credentials are wrong or absent, the plugin will use a sqlite implementation to store profiles instead.
+# If the sqlite implementation failed, the plugin will use PersistentDataContainer instead. This is hard to manage and
+# disables some stat-related features such as leaderboards. If you notice this occurring in your console, it's recommended you
+# try and fix or add the database implementation or sqlite implementation.
 db_host: 'host'
 db_database: 'database'
 db_username: 'username'
@@ -12,10 +12,14 @@ db_port: 3306
 db_ping_delay: 24000 # delay (in game ticks) where the database is pinged to keep the connection alive
 db_persist_delay: 6000 # delay (in game ticks) where all profiles currently in memory are persisted.
 # Should a crash happen, it will not roll back too much progress. Resets immediately persist someone's profile
+profile_caching: 10000 # duration (in milliseconds) where profiles are cached in memory. Changes to profiles should
+# immediately reset the cache, so it shouldn't really matter how high this is set to.
 
 # GENERAL
 
-resource_pack_config_override: false # If true, certain config options are overridden by hard-coded values that work with the ValhallaMMO resource pack
+admin_gui_filler_removal: true # If true, admin-visible menus like recipe editor menus will have their filler material removed. Normally this filler material is here
+# to better indicate and distinguish clickable buttons and slots from non-functional slots, but if a custom GUI for example is used then this filler material is not required
+resource_pack_config_override: true # If true, certain config options are overridden by hard-coded values that work with the ValhallaMMO resource pack
 # This option can be toggled in-game with /val resourcepack <enable/disable>
 
 forgettable_perks: false # If true, if a player were to be leveled down and lose the ability to own a perk, they will.
@@ -25,20 +29,9 @@ forgettable_perks_refund_money: false # If true, (if Vault and an economy plugin
 forgettable_perks_refund_exp: false # If true, enchanting experience is refunded when a perk is forgotten
 
 metrics: true # Allow the plugin to register bStats metrics.
-is_spigot: true # Spigot works slightly differently from its forks, and these differences sometimes break things that would
-# work on for example PaperMC or Purpur. If you are running on spigot, keep this true. If you are using a fork off spigot,
-# it's recommended to set this to false as it may improve other plugin compatibility
 language: 'en-us' # The language file used. Language files can be found in ValhallaMMO/languages
-profile-version: 0 # Old profile version. Incrementing this will only SOFT RESET players if they still have profiles using the old version.
-# If you just started using this plugin, this option won't do anything.
-profile_main_version: 0
-profile_sub_version: 0 # The version of profiles used to define player's stats with. The number before the dot is the main version, and
-# number after the dot the subversion. If the main version is incremented, all players joining will receive a hard reset the first time,
-# meaning they're completely reset and lose all progress. If the subversion is incremented, all players will instead receive a minor reset,
-# meaning they're completely reset, but their exp is refunded so they don't lose progress.
-# Example: if a player's profile is on version 0.0 (main and subversion 0), setting this value to 0.1 (main version 0 and subversion 1)
-# would give them a soft reset whereas 1.0 (main version 1 and subversion 0) would give them a hard reset.
-world_blacklist: # If a world name is in this list, ValhallaMMO has absolutely no influence here.
+
+world_blacklist: # If a world name is in this list, ValhallaMMO has no influence here except for custom recipe mechanics.
   - exampleworldlol
 
 # The way boss bars are presented for active global buffs
@@ -58,16 +51,12 @@ skilltree_arrow_data_sw: 3511007
 skilltree_arrow_data_w: 3511008
 skilltree_arrow_data_nw: 3511001
 
-# If enabled, the player will receive a book (detailed in tutorial_book.yml) on first join. This book will attempt to
-# teach the player some of the plugin's more obscure mechanics, such as the custom crafting mechanics
-book_on_join: false
-
 # Disabled skills are not registered and thus not visible in the skill trees, you can also not gain EXP for them.
+# Power is the only skill that cannot be disabled
 enabled_skills:
-  player: true # The only exception to typical skills in that this skill handles your player levels instead of individual skills
-  smithing: true
+  smithing: true # Disabling will remove the existence of smithing skill. Recipes must be changed to accommodate this so items don't suck
   enchanting: true
-  alchemy: true
+  alchemy: true # Disabling will remove the existence of alchemy skill. Recipes must be changed to accommodate this so potions don't suck
   farming: true
   mining: true
   landscaping: true
@@ -80,58 +69,21 @@ enabled_skills:
   acrobatics: true
   archery: true
 
-# Disabling listeners will remove some functionality of the plugin. Only do so if you know what you're
-# doing and if they're known to cause issues with other plugins.
-enabled_listeners:
-  interact: true # Responsible for ValhallaMMO's custom crafting mechanics.
-                 # Disable if you want the entire custom crafting system gone.
-  join: true # Solely responsible for checking if a player's profiles should be reset or not if profile version does not
-             # match config version. There's little point in disabling this.
-  item_damage: true # Responsible for ValhallaMMO's custom durability mechanic, the item damage part specifically.
-                    # Disabling will render custom durability useless.
-  item_mend: true # Responsible for ValhallaMMO's custom durability mechanic, restoring durability with mending specifically.
-                  # Disabling will make items stop restoring custom durability if they have mending.
-  shaped_craft: true # Responsible for ValhallaMMO's custom shaped crafting recipes.
-                     # Disabling will remove the ability to use custom shaped crafting recipes.
-  custom_craft: true # Responsible for ValhallaMMO's custom crafting.
-                     # Disabling this will remove custom crafting recipes specifically, not tinker or class-tinker.
-  custom_tinker: true # Responsible for ValhallaMMO's custom tinkering.
-                      # Disabling this will remove custom tinker and class-tinker recipes specifically, not crafting.
-  villager_interact: false # Responsible for villager dialogue initiation and custom trading
-                          # Disabling will remove villager dialogue.
-  projectile_shoot: true # Responsible for accelerating arrows shot, potions thrown, and ammo save chances.
-                         # Disabling will set shooting arrow and potion throwing mechanics to vanilla.
-  entity_damaged: true # Responsible for custom damage mitigation attributes and custom weapon damage outputs.
-                       # Disabling will remove the plugin's ability to alter damage numbers
-  potion_inventory: true # Responsible for handling ValhallaMMO's custom brewing mechanics
-                         # Disabling will prevent the player from inserting many items into the stand and custom brewing in general
-  potion_brew: true # Responsible for cancelling vanilla potion brewing.
-                    # Disabling will re-enable vanilla potion brewing, but this might clash with the custom brewing system.
-  item_consume: true # Responsible for handling custom food, potions, and potion save chance mechanics.
-                     # Disabling will make food custom foods act like as if they weren't custom at all, and custom potion
-                     # effects will not apply when drank.
-  potion_splash: true # Responsible for handling custom potion effects from splash potions and lingering potions
-                      # Disabling will prevent custom splash/lingering potions from applying their effects
-  player_enchant: true # Responsible for handling enchantment table interactions such as lapis save chance, exp refund chance,
-                       # and level amplification/reduction based on skill. Disabling will remove most functionality from the
-                       # enchanting skill.
-  player_experience: true # Responsible for experience absorption mechanics like vanilla exp multipliers. Disabling will remove
-                          # vanilla exp multiplication
-  player_movement: true # Responsible for movement based mechanics like movement speed modifiers
-  player_chat: true # Responsible for party chat
-  healing: true # Responsible for custom healing mechanics
-  blocks: true # Responsible for block breaking, placing, and block drop mechanics. Disabling will remove most of the harvesting
-               # skills' functionalities (farming, mining, landscaping).
-  fishing: true # Responsible for the farming skill's fishing mechanics
-  breeding: true # Responsible for the farming skill's breeding mechanics
-  targeting: true # Responsible for the farming skill's bee aggro immunity mechanics
-  smithing: true # Responsible for custom smithing recipes
-  cauldron: true # Responsible for custom cauldron crafting
-
 movement_update_delay: 2000 # Movement-based stats are updated with a delay to improve performance, low values may
 # make the plugin lag more. Delay is in milliseconds
 
 # GAMEPLAY
+
+# Adds an additional effect to the luck stat. Chance-based effects will now roll once extra for each point of luck the player has.
+# As example: If a player has 20% crit chance and 1 luck, if a player hits something and doesn't crit this effect is re-rolled for a favourable outcome.
+# So 20% crit becomes roughly 36% crit.
+# The opposite is also true, where negative luck instead rolls for an unfavourable outcome. With -1 luck, 20% crit would become 4% crit
+# Comparable to the "advantage" mechanic in Dungeons and Dragons, or the 57-leaf clover from Risk of Rain 2
+custom_luck: true
+
+validation_surrounding_quantity: 20 # Certain validations require an amount of blocks to surround the block used for crafting. This determines that amount
+validation_vacinity_radius: 5 # Certain validations require a block to be within the radius of the block used for crafting. This determines that radius
+validation_vacinity_height: 2 # The radius doesn't have to be a cube. This determines how much higher/lower that block is allowed to be from the crafting block
 
 # Items may be given a property that prevents/punishes players for using equipment that is too far above their own skill
 # level. Example: if a level 0 light weapons player uses a 250 quality netherite sword before level x its effect will be
@@ -166,6 +118,11 @@ overleveled_warning_delay: 600000 # Players are warned of their equipment being 
 # For reference, walking velocity is about 0.23, running speed is 0.3, sprint jumping is 0.37
 velocity_damage_constant: 0.33
 
+# The inaccuracy constant determines the random spread of shot arrows. The higher this value, the more severe the spread.
+inaccuracy_constant: 0.015
+# The default "inaccuracy" of dispensers
+dispenser_inaccuracy: 7
+
 # Various skills have abilities that may "stun" targets, which are just a collection of potion effects
 # These potion effects are defined as...
 stun_effects:
@@ -173,8 +130,8 @@ stun_effects:
   SLOW_DIGGING: 5
   BLINDNESS: 5
   WEAKNESS: 5
-# After a target is stunned, they may not be stunned again for this amount of time (in milliseconds)
-stun_immunity_frame: 5000
+# After a target is stunned, they may not be stunned again for this amount of time (in ticks)
+stun_immunity_duration: 100
 # Non-player enemies might be able to stun as well, but they don't have a profile to base the stun duration off of
 # How long should enemies be able to stun others for? (in ticks)
 default_stun_duration: 20
@@ -301,8 +258,8 @@ trident_damage_ranged_loyalty: 1.0 # Damage multiplier of tridents when thrown, 
 
 # CRAFTING
 
-old_menu: false # If true, the old ValhallaMMO crafting menu will be used instead. The old menu does not show both crafting and tinkering menus in the same menu,
-# and does not show all the tinkering recipes a block has to offer. This will be less beginner-friendly
+disable_vanilla_menu: [] # Any block material in the list will have its vanilla menu functionality disabled e.g. CRAFTING_TABLE
+immersive_on_regular_click: [] # Any block material in the list will only need to be regularly clicked (not shift-clicked) to open an immersive crafting gui (if present)
 
 cauldron_max_capacity: 3 # The max amount of items a cauldron is allowed to hold (and therefore the max amount of ingredients recipes can possess)
 # High numbers will allow players to stealthily store many items which may not be desirable
@@ -313,92 +270,9 @@ model_data_prevpage: 3511008
 model_data_craft_view: 3511001
 model_data_tinker_view: 3511002
 
-tool_display_default: '<lang.tool_display_default>'
-tool_displays: # In the new crafting menu recipes requiring a specific tool will have the following line added at the start of its description
-  -1: '<lang.tool_display_generic>'
-
 # If true, items crafted with a custom crafting method will be dropped on top of the crafting block. If false, they will
 # be added to the player's inventory.
 craft_item_drop: true
-
-# Enabling this option allows you to see what an item will look like before really crafting it, however, it will take much longer
-# to load the crafting menu. Disabling will preview the vanilla unmodified item only, but the crafting result will be different
-# than shown.
-# If true, opening the recipes menu will take about 0.5-1 seconds to generate all the items. It might also impact performance more.
-# If false, this will be nearly instant (~50 milliseconds)
-advanced_crafting_preview: true
-
-# Any block materials in this list will have its controls "Inverted", meaning regular right click will open the custom
-# crafting menu and shift right click will open its vanilla menu (if any)
-# By default it's just a block that you can't target to begin with, as example/template to go off of
-swap_crafting_table_functionality:
-  - LIGHT
-
-# Disabled crafting recipes
-# An entry in this list is valid if the name equates to a recipe's namespaced key, which in most cases is just
-# the item ID in lowercase
-disabled:
-  - arrow
-  - flint_and_steel
-  - fishing_rod
-  - shears
-  - shield
-  - bow
-  - crossbow
-  - leather_helmet
-  - leather_chestplate
-  - leather_leggings
-  - leather_boots
-  - wooden_pickaxe
-  - wooden_axe
-  - wooden_shovel
-  - wooden_hoe
-  - wooden_sword
-  - chainmail_helmet
-  - chainmail_chestplate
-  - chainmail_leggings
-  - chainmail_boots
-  - stone_pickaxe
-  - stone_axe
-  - stone_shovel
-  - stone_hoe
-  - stone_sword
-  - golden_helmet
-  - golden_chestplate
-  - golden_leggings
-  - golden_boots
-  - golden_pickaxe
-  - golden_axe
-  - golden_shovel
-  - golden_hoe
-  - golden_sword
-  - iron_helmet
-  - iron_chestplate
-  - iron_leggings
-  - iron_boots
-  - iron_pickaxe
-  - iron_axe
-  - iron_shovel
-  - iron_hoe
-  - iron_sword
-  - diamond_helmet
-  - diamond_chestplate
-  - diamond_leggings
-  - diamond_boots
-  - diamond_pickaxe
-  - diamond_axe
-  - diamond_shovel
-  - diamond_hoe
-  - diamond_sword
-  - netherite_helmet
-  - netherite_chestplate
-  - netherite_leggings
-  - netherite_boots
-  - netherite_pickaxe
-  - netherite_axe
-  - netherite_shovel
-  - netherite_hoe
-  - netherite_sword
 
 # PARTIES
 

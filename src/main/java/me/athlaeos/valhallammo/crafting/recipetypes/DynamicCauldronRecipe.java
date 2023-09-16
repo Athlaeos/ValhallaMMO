@@ -1,56 +1,65 @@
 package me.athlaeos.valhallammo.crafting.recipetypes;
 
+import me.athlaeos.valhallammo.crafting.MetaRequirement;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.crafting.recipetypes.ingredientconfiguration.IngredientChoice;
-import me.athlaeos.valhallammo.crafting.recipetypes.ingredientconfiguration.MaterialChoice;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class DynamicCauldronRecipe {
+public class DynamicCauldronRecipe implements ValhallaRecipe {
     private final String name;
+    private String displayName = null;
+    private String description = null;
 
-    private List<ItemStack> ingredients = new ArrayList<>();
-    private ItemStack catalyst = new ItemBuilder(Material.IRON_SWORD).name("&r&fReplace me!").lore("&7I'm just a placeholder catalyst item!").get();
-    private IngredientChoice catalystChoice = new MaterialChoice();
-    private ItemStack output = new ItemBuilder(Material.IRON_SWORD).name("&r&fReplace me!").lore("&7I'm just a placeholder result item!").get();
-    private List<DynamicItemModifier> itemModifiers = new ArrayList<>();
+    private Map<ItemStack, Integer> ingredients = new HashMap<>();
+    private SlotEntry catalyst = new SlotEntry(
+            new ItemBuilder(Material.MAGMA_BLOCK).name("&r&fReplace me!").lore("&7I'm just a placeholder catalyst!").get(),
+            new MaterialChoice());
+    private ItemStack result = new ItemBuilder(Material.STONE).name("&r&fReplace me!").lore("&7I'm just a placeholder result item!").get();
+    private List<DynamicItemModifier> modifiers = new ArrayList<>();
     private boolean requiresValhallaTools = false;
     private boolean tinkerCatalyst = false;
-    private boolean requiresBoilingWater = false;
-    private boolean consumesWaterLevel = false;
+    private int cookTime = 600;
+    private boolean timedRecipe = false; // timed recipes do not trigger when a catalyst is thrown in, and instead trigger when cookTime has passed with the required ingredients. No item can be tinkered with such a recipe
     private boolean unlockedForEveryone = false;
-    private String validationKey = null;
+    private MetaRequirement metaRequirement = MetaRequirement.MATERIAL;
+    private Collection<String> validations = new HashSet<>();
 
     public DynamicCauldronRecipe(String name){this.name = name;}
 
     public String getName() {return name;}
-    public List<ItemStack> getIngredients() {return ingredients;}
-    public ItemStack getCatalyst() {return catalyst;}
-    public IngredientChoice getCatalystChoice() {return catalystChoice;}
-    public ItemStack getOutput() {return output;}
-    public List<DynamicItemModifier> getItemModifiers() {return itemModifiers;}
-    public boolean isRequiresValhallaTools() {return requiresValhallaTools;}
-    public boolean isTinkerCatalyst() {return tinkerCatalyst;}
-    public boolean isRequiresBoilingWater() {return requiresBoilingWater;}
-    public boolean isConsumesWaterLevel() {return consumesWaterLevel;}
+    public Map<ItemStack, Integer> getIngredients() {return ingredients;}
+    public SlotEntry getCatalyst() {return catalyst;}
+    @Override public ItemStack getResult() {return result;}
+    public List<DynamicItemModifier> getModifiers() {return modifiers;}
+    public boolean requiresValhallaTools() {return requiresValhallaTools;}
+    public boolean tinkerCatalyst() {return tinkerCatalyst;}
+    public boolean isTimedRecipe() { return timedRecipe; }
+    public int getCookTime() { return cookTime; }
     public boolean isUnlockedForEveryone() {return unlockedForEveryone;}
-    public String getValidationKey() {return validationKey;}
+    public MetaRequirement getMetaRequirement() { return metaRequirement; }
+    public Collection<String> getValidations() {return validations;}
+    public String getDescription() { return description; }
+    public String getDisplayName() { return displayName; }
 
-    public void setIngredients(List<ItemStack> ingredients) {this.ingredients = ingredients;}
-    public void setCatalyst(ItemStack catalyst) {this.catalyst = catalyst;}
-    public void setCatalystChoice(IngredientChoice catalystChoice) {this.catalystChoice = catalystChoice;}
-    public void setOutput(ItemStack output) {this.output = output;}
-    public void setItemModifiers(List<DynamicItemModifier> itemModifiers) {this.itemModifiers = itemModifiers;}
+    public void setDisplayName(String displayName) { this.displayName = displayName; }
+    public void setDescription(String description) { this.description = description; }
+    public void setIngredients(Map<ItemStack, Integer> ingredients) {this.ingredients = ingredients;}
+    public void setCatalyst(SlotEntry catalyst) {this.catalyst = catalyst;}
+    public void setResult(ItemStack result) {this.result = result;}
+    public void setModifiers(List<DynamicItemModifier> modifiers) {
+        this.modifiers = modifiers;
+        DynamicItemModifier.sortModifiers(this.modifiers);
+    }
     public void setRequiresValhallaTools(boolean requiresValhallaTools) {this.requiresValhallaTools = requiresValhallaTools;}
     public void setTinkerCatalyst(boolean tinkerCatalyst) {this.tinkerCatalyst = tinkerCatalyst;}
-    public void setRequiresBoilingWater(boolean requiresBoilingWater) {this.requiresBoilingWater = requiresBoilingWater;}
-    public void setConsumesWaterLevel(boolean consumesWaterLevel) {this.consumesWaterLevel = consumesWaterLevel;}
+    public void setCookTime(int cookTime) { this.cookTime = cookTime; }
+    public void setTimedRecipe(boolean timedRecipe) { this.timedRecipe = timedRecipe; }
     public void setUnlockedForEveryone(boolean unlockedForEveryone) {this.unlockedForEveryone = unlockedForEveryone;}
-    public void setValidationKey(String validationKey) {this.validationKey = validationKey;}
+    public void setValidations(Collection<String> validations) {this.validations = validations;}
+    public void setMetaRequirement(MetaRequirement metaRequirement) { this.metaRequirement = metaRequirement; }
 }

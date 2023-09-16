@@ -1,0 +1,66 @@
+# Disabled crafting recipes
+# An entry in this list is valid if the name equates to a recipe's namespaced key, which in most cases is just
+# the item ID in lowercase
+# Recipes can also be enabled/disabled through /val recipes
+disabled:
+  - arrow
+  - flint_and_steel
+  - fishing_rod
+  - shears
+  - shield
+  - bow
+  - crossbow
+  - leather_helmet
+  - leather_chestplate
+  - leather_leggings
+  - leather_boots
+  - wooden_pickaxe
+  - wooden_axe
+  - wooden_shovel
+  - wooden_hoe
+  - wooden_sword
+  - chainmail_helmet
+  - chainmail_chestplate
+  - chainmail_leggings
+  - chainmail_boots
+  - stone_pickaxe
+  - stone_axe
+  - stone_shovel
+  - stone_hoe
+  - stone_sword
+  - golden_helmet
+  - golden_chestplate
+  - golden_leggings
+  - golden_boots
+  - golden_pickaxe
+  - golden_axe
+  - golden_shovel
+  - golden_hoe
+  - golden_sword
+  - iron_helmet
+  - iron_chestplate
+  - iron_leggings
+  - iron_boots
+  - iron_pickaxe
+  - iron_axe
+  - iron_shovel
+  - iron_hoe
+  - iron_sword
+  - diamond_helmet
+  - diamond_chestplate
+  - diamond_leggings
+  - diamond_boots
+  - diamond_pickaxe
+  - diamond_axe
+  - diamond_shovel
+  - diamond_hoe
+  - diamond_sword
+  - netherite_helmet
+  - netherite_chestplate
+  - netherite_leggings
+  - netherite_boots
+  - netherite_pickaxe
+  - netherite_axe
+  - netherite_shovel
+  - netherite_hoe
+  - netherite_sword

@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <spigotVersion>1.19.4</spigotVersion>
+        <spigotVersion>1.17</spigotVersion>
         <javaVersion>17</javaVersion>
         <testServerPath>C:\Users\Job\Desktop\paper 1.19\plugins</testServerPath>
         <shadedPackage>me.athlaeos.valhallammo.shaded</shadedPackage>
@@ -205,5 +205,4 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
 </project>

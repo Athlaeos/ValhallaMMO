@@ -56,15 +56,19 @@ public class StringUtils {
         String hrs = "" + hours;
         ticks %= (base * 3600);
         int minutes = (int) Math.floor(ticks / (60D * base));
-        String mins = (minutes > 9 ? "" : " ") + minutes;
+        String mins = (minutes > 9 ? "" : "0") + minutes;
         ticks %= (base * 60);
         int seconds = (int) Math.floor(ticks / (double) base);
-        String secs = (seconds > 9 ? "" : " ") + seconds;
+        String secs = (seconds > 9 ? "" : "0") + seconds;
 
         return hours > 0 ? String.format("%s:%s:%s", hrs, mins, secs) : String.format("%s:%s", mins, secs);
     }
 
     public static String toTimeStamp2(long ticks, long base){
+        return toTimeStamp2(ticks, base, true);
+    }
+
+    public static String toTimeStamp2(long ticks, long base, boolean decimal){
         if (ticks < 0) return "∞";
         int days = (int) Math.floor(ticks / (3600D * 24 * base));
         ticks %= (base * (3600 * 24));
@@ -72,7 +76,7 @@ public class StringUtils {
         ticks %= (base * 3600);
         int minutes = (int) Math.floor(ticks / (60D * base));
         ticks %= (base * 60);
-        int seconds = (int) Math.floor(ticks / (double) base);
+        double seconds = decimal ? ticks / (double)base : (int) Math.floor(ticks / (double) base);
 
         String format = days > 0 ? TranslationManager.getTranslation("timeformat_days") : hours > 0 ?
                 TranslationManager.getTranslation("timeformat_hours") : minutes > 0 ?
@@ -81,7 +85,7 @@ public class StringUtils {
         return format.replace("%days%", "" + days)
                 .replace("%hours%", "" + hours)
                 .replace("%minutes%", "" + minutes)
-                .replace("%seconds%", "" + seconds);
+                .replace("%seconds%", String.format("%." + (decimal ? 1 : 0) + "f", seconds));
     }
 
     public static List<String> separateStringIntoLines(String string, int maxLength){
@@ -90,8 +94,8 @@ public class StringUtils {
         if (words.length == 0) return lines;
         StringBuilder sentence = new StringBuilder(words[0]);
         for (String w : Arrays.copyOfRange(words, 1, words.length)){
-            if (sentence.length() + w.length() > maxLength || w.contains("-n")){
-                w = w.replace("-n", "");
+            if (sentence.length() + w.length() > maxLength || w.contains("/n")){
+                w = w.replace("/n", "");
                 lines.add(sentence.toString());
                 String previousSentence = sentence.toString();
                 sentence = new StringBuilder();

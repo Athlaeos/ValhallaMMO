@@ -2,12 +2,12 @@ package me.athlaeos.valhallammo.commands.valhallasubcommands;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.commands.Command;
+import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
-import me.athlaeos.valhallammo.progression.skills.Skill;
-import me.athlaeos.valhallammo.progression.skills.SkillRegistry;
-import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

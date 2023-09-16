@@ -7,7 +7,7 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.StatProperties;
-import me.athlaeos.valhallammo.progression.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.Skill;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
@@ -42,10 +42,10 @@ public abstract class Profile {
     }
 
     {
-        intStat("level", false, new PropertyBuilder().format(StatFormat.INT).min(0).create());
-        doubleStat("exp", false, new PropertyBuilder().format(StatFormat.FLOAT_P2).create());
-        doubleStat("exp_total", false, new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).create());
-        intStat("newGamePlus", true); // amount of times the player has entered a new skill loop
+        intStat("level", new PropertyBuilder().format(StatFormat.INT).min(0).create());
+        doubleStat("exp", new PropertyBuilder().format(StatFormat.FLOAT_P2).create());
+        doubleStat("exp_total", new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).create());
+        intStat("newGamePlus"); // amount of times the player has entered a new skill loop
     }
 
     public int getLevel(){
@@ -176,46 +176,43 @@ public abstract class Profile {
     /**
      * Registers an integer stat with the default format {@link StatFormat#INT} and generates a perk reward.
      * @param name the name of the stat
-     * @param update whether the database should be updated to add this column, in case it doesn't exist
      */
-    protected void intStat(String name, boolean update){ intStat(name, update, 0, new PropertyBuilder().format(StatFormat.INT).perkReward().create()); }
-    protected void intStat(String name, boolean update, StatProperties properties){ intStat(name, update, 0, properties); }
-    protected void intStat(String name, boolean update, int def, StatProperties properties){
+    protected void intStat(String name){ intStat(name, 0, new PropertyBuilder().format(StatFormat.INT).perkReward().create()); }
+    protected void intStat(String name, StatProperties properties){ intStat(name, 0, properties); }
+    protected void intStat(String name, int def, StatProperties properties){
         if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
         allStatNames.add(name);
         ints.put(name, new NumberHolder<>(def, def, properties));
         if (properties != null) this.numberStatProperties.put(name, properties);
-        if (update) tablesToUpdate.add(name);
+        tablesToUpdate.add(name);
     }
 
     /**
      * Registers a float stat with the default format {@link StatFormat#FLOAT_P2} and generates a perk reward.
      * @param name the name of the stat
-     * @param update whether the database should be updated to add this column, in case it doesn't exist
      */
-    protected void floatStat(String name, boolean update){ floatStat(name, update, 0, new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create()); }
-    protected void floatStat(String name, boolean update, StatProperties properties){ floatStat(name, update, 0, properties); }
-    protected void floatStat(String name, boolean update, float def, StatProperties properties){
+    protected void floatStat(String name){ floatStat(name, 0, new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create()); }
+    protected void floatStat(String name, StatProperties properties){ floatStat(name, 0, properties); }
+    protected void floatStat(String name, float def, StatProperties properties){
         if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
         allStatNames.add(name);
         floats.put(name, new NumberHolder<>(def, def, properties));
         if (properties != null) this.numberStatProperties.put(name, properties);
-        if (update) tablesToUpdate.add(name);
+        tablesToUpdate.add(name);
     }
 
     /**
      * Registers a double stat with the default format {@link StatFormat#FLOAT_P2} and generates a perk reward.
      * @param name the name of the stat
-     * @param update whether the database should be updated to add this column, in case it doesn't exist
      */
-    protected void doubleStat(String name, boolean update){ doubleStat(name, update, 0, new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create()); }
-    protected void doubleStat(String name, boolean update, StatProperties properties){ doubleStat(name, update, 0, properties); }
-    protected void doubleStat(String name, boolean update, double def, StatProperties properties){
+    protected void doubleStat(String name){ doubleStat(name, 0, new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create()); }
+    protected void doubleStat(String name, StatProperties properties){ doubleStat(name, 0, properties); }
+    protected void doubleStat(String name, double def, StatProperties properties){
         if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
         allStatNames.add(name);
         doubles.put(name, new NumberHolder<>(def, def, properties));
         if (properties != null) this.numberStatProperties.put(name, properties);
-        if (update) tablesToUpdate.add(name);
+        tablesToUpdate.add(name);
     }
 
     protected void stringSetStat(String name, boolean update){
@@ -225,13 +222,13 @@ public abstract class Profile {
         if (update) tablesToUpdate.add(name);
     }
 
-    protected void booleanStat(String name, boolean update){ booleanStat(name, update, false, new BooleanProperties(true, true)); }
-    protected void booleanStat(String name, boolean update, BooleanProperties properties){ booleanStat(name, update, false, properties); }
-    protected void booleanStat(String name, boolean update, boolean def, BooleanProperties properties){
+    protected void booleanStat(String name){ booleanStat(name, false, new BooleanProperties(true, true)); }
+    protected void booleanStat(String name, BooleanProperties properties){ booleanStat(name, false, properties); }
+    protected void booleanStat(String name, boolean def, BooleanProperties properties){
         if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
         allStatNames.add(name);
         booleans.put(name, new BooleanHolder(def, def, properties));
-        if (update) tablesToUpdate.add(name);
+        tablesToUpdate.add(name);
     }
 
     private final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "PDC_persistence_" + getClass().getSimpleName().toLowerCase());
@@ -266,7 +263,7 @@ public abstract class Profile {
         conn.getConnection().prepareStatement(query.toString()).execute();
 
         // edit table with new columns
-        for (String s : tablesToUpdate){
+        for (String s : allStatNames){
             String lower = s.toLowerCase();
             if (ints.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "INTEGER default " + ints.get(s).def);
             if (doubles.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "DOUBLE default " + doubles.get(s).def);

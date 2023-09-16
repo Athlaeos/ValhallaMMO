@@ -6,20 +6,20 @@ import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
-import me.athlaeos.valhallammo.progression.Perk;
-import me.athlaeos.valhallammo.progression.PerkConnectionIcon;
-import me.athlaeos.valhallammo.progression.perk_rewards.PerkReward;
-import me.athlaeos.valhallammo.progression.perkresourcecost.ResourceExpense;
+import me.athlaeos.valhallammo.skills.skills.Perk;
+import me.athlaeos.valhallammo.skills.skills.PerkConnectionIcon;
+import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
+import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
-import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
-import me.athlaeos.valhallammo.progression.perkresourcecost.ResourceExpenseRegistry;
-import me.athlaeos.valhallammo.progression.perkunlockconditions.UnlockCondition;
-import me.athlaeos.valhallammo.progression.perkunlockconditions.UnlockConditionRegistry;
-import me.athlaeos.valhallammo.progression.skills.PerkRegistry;
-import me.athlaeos.valhallammo.progression.skills.Skill;
-import me.athlaeos.valhallammo.progression.skills.SkillRegistry;
-import me.athlaeos.valhallammo.progression.skills.implementations.PowerSkill;
+import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpenseRegistry;
+import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockCondition;
+import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockConditionRegistry;
+import me.athlaeos.valhallammo.skills.skills.PerkRegistry;
+import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
+import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerSkill;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -45,20 +45,15 @@ public class SkillTreeMenu extends Menu {
     private int x;
     private int y;
 
-    private static final ItemStack directionN = new ItemBuilder(Material.ARROW).data(configInt("skilltree_arrow_data_n")).name("").get();
-    private static final ItemStack directionNE = new ItemBuilder(Material.ARROW).data(configInt("skilltree_arrow_data_ne")).name("").get();
-    private static final ItemStack directionE = new ItemBuilder(Material.ARROW).data(configInt("skilltree_arrow_data_e")).name("").get();
-    private static final ItemStack directionSE = new ItemBuilder(Material.ARROW).data(configInt("skilltree_arrow_data_se")).name("").get();
-    private static final ItemStack directionS = new ItemBuilder(Material.ARROW).data(configInt("skilltree_arrow_data_s")).name("").get();
-    private static final ItemStack directionSW = new ItemBuilder(Material.ARROW).data(configInt("skilltree_arrow_data_sw")).name("").get();
-    private static final ItemStack directionW = new ItemBuilder(Material.ARROW).data(configInt("skilltree_arrow_data_w")).name("").get();
-    private static final ItemStack directionNW = new ItemBuilder(Material.ARROW).data(configInt("skilltree_arrow_data_nw")).name("").get();
-    private final String requirementOne = TranslationManager.getTranslation("perk_format_requirement_one");
-    private final String requirementAll = TranslationManager.getTranslation("perk_format_requirement_all");
-    private final String requirement = TranslationManager.getTranslation("perk_format_requirement");
-    private final String separator = TranslationManager.getTranslation("perk_format_separator");
+    private static final ItemStack directionN = new ItemBuilder(getButtonData("skilltree_direction_n", Material.ARROW)).name(TranslationManager.getTranslation("skilltree_arrow_name_n")).get();
+    private static final ItemStack directionNE = new ItemBuilder(getButtonData("skilltree_direction_ne", Material.ARROW)).name(TranslationManager.getTranslation("skilltree_arrow_name_ne")).get();
+    private static final ItemStack directionE = new ItemBuilder(getButtonData("skilltree_direction_e", Material.ARROW)).name(TranslationManager.getTranslation("skilltree_arrow_name_e")).get();
+    private static final ItemStack directionSE = new ItemBuilder(getButtonData("skilltree_direction_se", Material.ARROW)).name(TranslationManager.getTranslation("skilltree_arrow_name_se")).get();
+    private static final ItemStack directionS = new ItemBuilder(getButtonData("skilltree_direction_s", Material.ARROW)).name(TranslationManager.getTranslation("skilltree_arrow_name_s")).get();
+    private static final ItemStack directionSW = new ItemBuilder(getButtonData("skilltree_direction_sw", Material.ARROW)).name(TranslationManager.getTranslation("skilltree_arrow_name_sw")).get();
+    private static final ItemStack directionW = new ItemBuilder(getButtonData("skilltree_direction_w", Material.ARROW)).name(TranslationManager.getTranslation("skilltree_arrow_name_w")).get();
+    private static final ItemStack directionNW = new ItemBuilder(getButtonData("skilltree_direction_nw", Material.ARROW)).name(TranslationManager.getTranslation("skilltree_arrow_name_nw")).get();
     private final String perk_requirement_warning_levels = TranslationManager.getTranslation("perk_requirement_warning_levels");
-    private final String perk_requirement_warning_perks = TranslationManager.getTranslation("perk_requirement_warning_perks");
     private final String perk_requirement_status_unlockable = TranslationManager.getTranslation("perk_requirement_status_unlockable");
     private final String perk_requirement_status_unlocked = TranslationManager.getTranslation("perk_requirement_status_unlocked");
     private final String perk_requirement_status_permanently_locked = TranslationManager.getTranslation("perk_requirement_status_permanently_locked");
@@ -104,7 +99,12 @@ public class SkillTreeMenu extends Menu {
     public void handleMenu(InventoryClickEvent e) {
         e.setCancelled(true);
         ItemStack i = e.getCurrentItem();
-        if (!ItemUtils.isEmpty(i) && i.getItemMeta() != null){
+        if (!ItemUtils.isEmpty(i)){
+            ItemMeta meta = ItemUtils.getItemMeta(i);
+            if (meta == null) {
+                setMenuItems();
+                return;
+            }
             int x2 = x; // only purpose is to compare before and after, to see if the menu should be updated
             int y2 = y;
 
@@ -119,8 +119,8 @@ public class SkillTreeMenu extends Menu {
                 return;
             }
 
-            if (i.getItemMeta().getPersistentDataContainer().has(buttonKey, PersistentDataType.STRING)){
-                String id = i.getItemMeta().getPersistentDataContainer().get(buttonKey, PersistentDataType.STRING);
+            if (meta.getPersistentDataContainer().has(buttonKey, PersistentDataType.STRING)){
+                String id = meta.getPersistentDataContainer().get(buttonKey, PersistentDataType.STRING);
 
                 if (s >= 45) {
                     Skill selectedSkill = SkillRegistry.getSkill(id);
@@ -215,15 +215,15 @@ public class SkillTreeMenu extends Menu {
         int iconsSize = icons.size();
         for (ItemStack i : skillIcons){
             if (ItemUtils.isEmpty(i)) continue;
-            String storedType = getItemStoredSkillType(i);
+            ItemMeta meta = ItemUtils.getItemMeta(i);
+            if (meta == null) continue;
+            String storedType = getItemStoredSkillType(meta);
             if (storedType != null){
                 Skill s = SkillRegistry.getSkill(storedType);
                 if (s != null) {
                     PowerProfile acc = ProfileManager.getMergedProfile(target, PowerProfile.class);
 
                     Profile p = ProfileManager.getPersistentProfile(target, s.getProfileType());
-                    ItemMeta meta = i.getItemMeta();
-                    if (meta == null) continue;
                     double expRequired = s.expForLevel(p.getLevel() + 1);
                     List<String> lore = new ArrayList<>();
                     for (String line : TranslationManager.getListTranslation("skilltree_icon_format")){
@@ -235,7 +235,7 @@ public class SkillTreeMenu extends Menu {
                                 .replace("%skillpoints%", "" + (acc.getSpendableSkillPoints() - acc.getSpentSkillPoints()))));
                     }
                     meta.setLore(lore);
-                    i.setItemMeta(meta);
+                    ItemUtils.setItemMeta(i, meta);
                 }
             }
         }
@@ -248,8 +248,9 @@ public class SkillTreeMenu extends Menu {
                 }
                 ItemStack centerItem = inventory.getItem(49);
                 if (centerItem != null){
-                    assert centerItem.getItemMeta() != null;
-                    String stored = getItemStoredSkillType(centerItem);
+                    ItemMeta meta = ItemUtils.getItemMeta(centerItem);
+                    if (meta == null) continue;
+                    String stored = getItemStoredSkillType(meta);
                     if (stored != null){
                         if (stored.equals(this.selectedSkill.getType())){
                             break;
@@ -261,9 +262,8 @@ public class SkillTreeMenu extends Menu {
         }
     }
 
-    private String getItemStoredSkillType(ItemStack i){
-        if (i.getItemMeta() == null) return null;
-        return i.getItemMeta().getPersistentDataContainer().get(buttonKey, PersistentDataType.STRING);
+    private String getItemStoredSkillType(ItemMeta meta){
+        return meta.getPersistentDataContainer().get(buttonKey, PersistentDataType.STRING);
     }
 
     // If everything goes right, this should return a 2D array of itemstacks with a size of at least 9x5
@@ -316,7 +316,7 @@ public class SkillTreeMenu extends Menu {
                         .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS)
                         .get();
 
-                ItemMeta perkMeta = perkIcon.getItemMeta();
+                ItemMeta perkMeta = ItemUtils.getItemMeta(perkIcon);
                 if (perkMeta == null) continue;
                 List<String> iconLore = new ArrayList<>();
 
@@ -406,7 +406,7 @@ public class SkillTreeMenu extends Menu {
 
                 perkMeta.getPersistentDataContainer().set(buttonKey, PersistentDataType.STRING, p.getName());
                 perkMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE);
-                perkIcon.setItemMeta(perkMeta);
+                ItemUtils.setItemMeta(perkIcon, perkMeta);
                 skillTree[p.getY() + 2 + yOff][p.getX() + 4 + xOff] = perkIcon;
 
                 for (PerkConnectionIcon i : p.getConnectionLine()) {

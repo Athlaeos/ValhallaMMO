@@ -6,7 +6,7 @@ import me.athlaeos.valhallammo.utility.Utils;
 public class DifferenceTimeMillisecondsFormat extends StatFormat {
     String precision;
     public DifferenceTimeMillisecondsFormat(int precision){
-        this.precision = "%,." + precision + "fs";
+        this.precision = "%," + precision + "ds";
     }
 
     @Override

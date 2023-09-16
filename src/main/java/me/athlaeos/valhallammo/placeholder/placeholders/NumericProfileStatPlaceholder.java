@@ -28,7 +28,7 @@ public class NumericProfileStatPlaceholder extends Placeholder {
 
     @Override
     public String parse(String s, Player p) {
-        Profile profile = ProfileCache.getOrCache(p, 10000, type);
+        Profile profile = ProfileCache.getOrCache(p, type);
         if (profile.intStatNames().contains(stat)) return s.replace(placeholder, format.format(profile.getInt(stat)));
         if (profile.floatStatNames().contains(stat)) return s.replace(placeholder, format.format(profile.getFloat(stat)));
         if (profile.doubleStatNames().contains(stat)) return s.replace(placeholder, format.format(profile.getDouble(stat)));

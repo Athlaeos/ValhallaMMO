@@ -71,6 +71,15 @@ permissions:
   valhalla.allrecipes:
     default: op
     description: "All Valhalla custom crafting recipes will be available to the player with this permission"
+  valhalla.attribute:
+    default: op
+    description: "Access to the /valhalla attribute command, which allows the user to apply new attributes to held items"
+  valhalla.potioneffect:
+    default: op
+    description: "Access to the /valhalla potioneffect command, which allows the user to give players custom potion effects"
+  valhalla.potionattribute:
+    default: op
+    description: "Access to the /valhalla potionattribute command, which allows the user to apply custom potion effects to held items"
   valhalla.skills:
     default: true
     description: "Access to the /valhalla skills command, which accesses your skill trees."

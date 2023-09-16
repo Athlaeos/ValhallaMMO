@@ -6,98 +6,186 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.ToolRequirement;
 import me.athlaeos.valhallammo.crafting.ToolRequirementType;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.crafting.recipetypes.ingredientconfiguration.SlotEntry;
-import me.athlaeos.valhallammo.crafting.recipetypes.ingredientconfiguration.IngredientChoice;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class DynamicGridRecipe {
-    private final NamespacedKey key;
+/**
+ * This recipe type registers two recipes, one shaped and one not. <br>
+ * If the recipe is a shapeless, the shaped recipe that will be registered will have the purpose of displaying the
+ * ingredients properly within the recipe book. Shapeless recipes cannot do this. <br>
+ * The shapeless recipe that is registered (only if the recipe is actually shapeless) will not be displayed in the
+ * recipe book and has the purpose to actually allow the recipe to be crafted in a shapeless manner
+ */
+public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
+    private final NamespacedKey shapedKey;
+    private final NamespacedKey shapelessKey;
     private final String name;
+    private String displayName = null;
+    private String description = null;
+
     private Map<Integer, SlotEntry> items = new HashMap<>();
     private ItemStack result = new ItemBuilder(Material.WOODEN_SWORD).name("&r&fReplace me!").lore("&7I'm just a placeholder item!").get();
     private boolean requireValhallaTools = false;
     private boolean tinker = false;
     private int tinkerGridIndex = -1;
+    private int toolIndex = -1;
     private boolean shapeless = false;
     private List<DynamicItemModifier> modifiers = new ArrayList<>();
     private boolean unlockedForEveryone = false;
     private ToolRequirement toolRequirement = new ToolRequirement(ToolRequirementType.NOT_REQUIRED, -1);
+    private Collection<String> validations = new HashSet<>();
 
     public DynamicGridRecipe(String name){
         this.name = name;
-        this.key = new NamespacedKey(ValhallaMMO.getInstance(), "gridrecipe_" + name);
+        this.shapedKey = new NamespacedKey(ValhallaMMO.getInstance(), "gridrecipe_" + name + "_shaped");
+        this.shapelessKey = new NamespacedKey(ValhallaMMO.getInstance(), "gridrecipe_" + name + "_shapeless");
     }
 
     public String getName() { return name; }
-    public NamespacedKey getKey() { return key; }
+    public @NotNull NamespacedKey getKey() { return shapedKey; }
+    public NamespacedKey getKey2() { return shapelessKey; }
+
+    @Override
+    public void registerRecipe() {
+        ShapedRecipe shaped = getShapedRecipe();
+        ShapelessRecipe shapeless = getShapelessRecipe();
+        if (ValhallaMMO.getInstance().getServer().getRecipe(shapedKey) != null) ValhallaMMO.getInstance().getServer().removeRecipe(shapedKey);
+        if (ValhallaMMO.getInstance().getServer().getRecipe(shapelessKey) != null) ValhallaMMO.getInstance().getServer().removeRecipe(shapelessKey);
+        if (shaped != null) ValhallaMMO.getInstance().getServer().addRecipe(shaped);
+        else ValhallaMMO.logWarning("Could not generate recipe for " + getName() + ", it has no ingredients!");
+        if (shapeless != null) {
+            ValhallaMMO.getInstance().getServer().addRecipe(shapeless);
+        }
+    }
+
+    @Override
+    public void unregisterRecipe() {
+        if (ValhallaMMO.getInstance().getServer().getRecipe(shapedKey) != null) ValhallaMMO.getInstance().getServer().removeRecipe(shapedKey);
+        if (ValhallaMMO.getInstance().getServer().getRecipe(shapelessKey) != null) ValhallaMMO.getInstance().getServer().removeRecipe(shapelessKey);
+    }
+
     public ToolRequirement getToolRequirement() { return toolRequirement; }
     public ItemStack getResult() { return result; }
     public List<DynamicItemModifier> getModifiers() { return modifiers; }
     public Map<Integer, SlotEntry> getItems() { return items; }
     public int getTinkerGridIndex() { return tinkerGridIndex; }
-    public boolean isRequireValhallaTools() { return requireValhallaTools; }
+    public int getToolIndex() { return toolIndex; }
+    public boolean requireValhallaTools() { return requireValhallaTools; }
     public boolean isShapeless() { return shapeless; }
     public boolean isUnlockedForEveryone() { return unlockedForEveryone; }
-    public boolean isTinker() { return tinker; }
+    public boolean tinker() { return tinker; }
+    public Collection<String> getValidations() {return validations;}
+    public String getDescription() { return description; }
+    public String getDisplayName() { return displayName; }
+
+    public void setDisplayName(String displayName) { this.displayName = displayName; }
+    public void setDescription(String description) { this.description = description; }
     public void setToolRequirement(ToolRequirement toolRequirement) { this.toolRequirement = toolRequirement; }
     public void setUnlockedForEveryone(boolean unlockedForEveryone) { this.unlockedForEveryone = unlockedForEveryone; }
     public void setItems(Map<Integer, SlotEntry> items) { this.items = items; }
     public void setTinkerGridIndex(int tinkerGridIndex) { this.tinkerGridIndex = tinkerGridIndex; }
-    public void setModifiers(List<DynamicItemModifier> modifiers) { this.modifiers = modifiers; }
+    public void setModifiers(List<DynamicItemModifier> modifiers) {
+        this.modifiers = modifiers;
+        DynamicItemModifier.sortModifiers(this.modifiers);
+    }
     public void setRequireValhallaTools(boolean requireValhallaTools) { this.requireValhallaTools = requireValhallaTools; }
     public void setResult(ItemStack result) { this.result = result; }
     public void setShapeless(boolean shapeless) { this.shapeless = shapeless; }
     public void setTinker(boolean tinker) { this.tinker = tinker; }
+    public void setToolIndex(int toolIndex) { this.toolIndex = toolIndex; }
+    public void setValidations(Collection<String> validations) {this.validations = validations;}
 
-    public Recipe generateRecipe() {
-        if (this.items.isEmpty()) return null;
-        if (shapeless){
-            ShapelessRecipe recipe = new ShapelessRecipe(key, tinker ? getGridTinkerEquipment() : result);
-            for (Integer i : items.keySet()){
-                SlotEntry entry = items.get(i);
-                ItemStack item = entry.getItem().clone();
-                IngredientChoice ingredient = entry.getOption();
-                RecipeChoice choice = ingredient.getChoice(item, true); // if the ingredient or its choice are null, default to RecipeChoice.MaterialChoice
-                if (choice == null) choice = new RecipeChoice.MaterialChoice(item.getType());
+    public ShapelessRecipe getShapelessRecipe(){
+        if (!shapeless || this.items.isEmpty()) return null;
+        ShapelessRecipe recipe = new ShapelessRecipe(shapelessKey, tinker ? getGridTinkerEquipment().getItem() : recipeBookIcon(result));
+        for (Integer i : items.keySet()){
+            SlotEntry entry = items.get(i);
+            ItemStack item = entry.getItem().clone();
+            RecipeChoice choice = entry.getOption() == null ? null : entry.getOption().getChoice(item); // if the ingredient or its choice are null, default to RecipeChoice.MaterialChoice
+            if (choice == null) choice = new RecipeChoice.MaterialChoice(item.getType());
+            if (i == toolIndex) choice = new RecipeChoice.MaterialChoice(ItemUtils.getNonAirMaterialsArray());
 
-                recipe.addIngredient(choice);
-            }
-            return recipe;
-        } else {
-            ShapedRecipe recipe = new ShapedRecipe(key, tinker ? getGridTinkerEquipment() : result);
-            ShapeDetails details = getRecipeShapeStrings();
-            recipe.shape(details.shape);
-            for (char ci : details.items.keySet()){
-                SlotEntry entry = details.items.get(ci);
-                ItemStack i = entry.getItem();
-                if (ItemUtils.isEmpty(i)) continue;
-                RecipeChoice choice = entry.getOption().getChoice(i, false);
-                if (choice == null) choice = new RecipeChoice.MaterialChoice(i.getType());
-                recipe.setIngredient(ci, choice);
-            }
-            return recipe;
+            recipe.addIngredient(choice);
         }
+        return recipe;
     }
 
-    public ItemStack getGridTinkerEquipment(){
+    public ShapedRecipe getShapedRecipe(){
+        if (this.items.isEmpty()) return null;
+        ShapedRecipe recipe = new ShapedRecipe(shapedKey, tinker ? getGridTinkerEquipment().getItem() : recipeBookIcon(result));
+        ShapeDetails details = getRecipeShapeStrings();
+        recipe.shape(details.shape);
+        for (char ci : details.items.keySet()){
+            SlotEntry entry = details.items.get(ci);
+            ItemStack i = entry.getItem();
+            if (ItemUtils.isEmpty(i)) continue;
+            RecipeChoice choice = entry.getOption() == null ? null : entry.getOption().getChoice(i);
+            if (choice == null) choice = new RecipeChoice.MaterialChoice(i.getType());
+            if (items.get(toolIndex) != null && items.get(toolIndex).equals(entry)) choice = new RecipeChoice.MaterialChoice(ItemUtils.getNonAirMaterialsArray());
+            recipe.setIngredient(ci, choice);
+        }
+        return recipe;
+    }
+
+    private ItemStack recipeBookIcon(ItemStack i){
+        List<String> gridDetails = new ArrayList<>();
+        if (shapeless){
+            String shapelessFormat = TranslationManager.getTranslation("ingredient_format_shapeless");
+            Map<SlotEntry, Integer> contents = ItemUtils.getItemTotals(items.values());
+            for (SlotEntry entry : contents.keySet()){
+                int amount = contents.get(entry);
+                gridDetails.add(shapelessFormat.replace("%amount%", String.valueOf(amount)).replace("%ingredient%", SlotEntry.toString(entry)));
+            }
+        } else {
+            String shapeFormat = TranslationManager.getTranslation("ingredient_format_grid_shape");
+            String charFormat = TranslationManager.getTranslation("ingredient_format_grid_ingredient");
+            ShapeDetails details = getRecipeShapeStrings();
+            for (String shapeLine : details.getShape()){
+                gridDetails.add(shapeFormat.replace("%characters%", shapeLine));
+            }
+            for (Character c : details.getItems().keySet()){
+                if (details.getItems().get(c) == null) continue;
+                gridDetails.add(charFormat.replace("%character%", String.valueOf(c)).replace("%ingredient%", SlotEntry.toString(details.getItems().get(c))));
+            }
+        }
+        ItemBuilder result = new ItemBuilder(this.result);
+        List<String> def = TranslationManager.getListTranslation("default_recipe_description_grid");
+        String tinkerFormat = TranslationManager.getTranslation("tinker_result_format");
+        return new ItemBuilder(i).lore(ItemUtils.setListPlaceholder(
+                Arrays.asList(this.description == null ?
+                        def.toArray(new String[0]) :
+                        this.description
+                                .replace("%result%", tinker ? tinkerFormat.replace("%item%", SlotEntry.toString(getGridTinkerEquipment())) : ItemUtils.getItemName(result.getMeta()))
+                                .replace("%tinker%", tinker ? SlotEntry.toString(getGridTinkerEquipment()) : ItemUtils.getItemName(result.getMeta()))
+                                .split("/n")
+                ),
+                "%ingredients%", gridDetails
+        )).name(displayName == null ?
+                (tinker ? tinkerFormat.replace("%item%", SlotEntry.toString(getGridTinkerEquipment())) : ItemUtils.getItemName(result.getMeta())) :
+                displayName).translate().get();
+    }
+
+    public SlotEntry getGridTinkerEquipment(){
         if (tinkerGridIndex >= 0 && items.containsKey(tinkerGridIndex) && !ItemUtils.isEmpty(items.get(tinkerGridIndex).getItem()))
-            return items.get(tinkerGridIndex).getItem();
+            return items.get(tinkerGridIndex);
         for (int i = 0; i < 9; i++){
             SlotEntry entry = items.get(i);
             if (entry == null) continue;
             ItemStack matrixItem = entry.getItem();
             if (ItemUtils.isEmpty(matrixItem)) continue;
 
-            if (EquipmentClass.getMatchingClass(matrixItem) != null) return matrixItem.clone();
+            if (EquipmentClass.getMatchingClass(ItemUtils.getItemMeta(matrixItem)) != null) return entry;
         }
         return null;
     }
@@ -111,10 +199,14 @@ public class DynamicGridRecipe {
             StringBuilder row = new StringBuilder();
             for (int c = 0; c < 3; c++){
                 SlotEntry entry = items.get(i);
-                ItemStack item = entry.getItem();
                 i++;
-                Character itemChar = ingredientMap.inverse().get(entry);
-                if (itemChar == null) itemChar = getItemChar(item, usedChars.toString());
+                if (entry == null) {
+                    row.append(' ');
+                    continue;
+                }
+                SlotEntry entry2 = ingredientMap.values().stream().filter(entry::isSimilar).findAny().orElse(null);
+                Character itemChar = entry2 == null ? null : ingredientMap.inverse().get(entry2);
+                if (itemChar == null) itemChar = getItemChar(entry, usedChars.toString());
                 row.append(itemChar);
                 if (!ingredientMap.containsValue(entry)) {
                     usedChars.append(itemChar);
@@ -139,12 +231,13 @@ public class DynamicGridRecipe {
         return new ShapeDetails(shape.toArray(new String[0]), ingredientMap);
     }
 
-    private char getItemChar(ItemStack i, String usedChars){
-        if (ItemUtils.isEmpty(i)) return ' ';
-        String itemName = ChatColor.stripColor(ItemUtils.getItemName(i));
-        char possibleCharacter = (itemName == null || itemName.isEmpty() ? i.getType().toString() : itemName).toUpperCase().charAt(0);
+    private char getItemChar(SlotEntry i, String usedChars){
+        if (i == null) return ' ';
+        if (ItemUtils.isEmpty(i.getItem())) return ' ';
+        String itemName = ChatColor.stripColor(SlotEntry.toString(i));
+        char possibleCharacter = (itemName == null || itemName.isEmpty() ? i.getItem().getType().toString() : itemName).toUpperCase().charAt(0);
         if (usedChars.contains(String.valueOf(possibleCharacter))){
-            possibleCharacter = i.getType().toString().toUpperCase().charAt(0);
+            possibleCharacter = i.getItem().getType().toString().toUpperCase().charAt(0);
             if (usedChars.contains(String.valueOf(possibleCharacter))) {
                 for (Character c : Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I')) {
                     if (!usedChars.contains(String.valueOf(c))) {
@@ -155,7 +248,6 @@ public class DynamicGridRecipe {
         }
         return possibleCharacter;
     }
-
 
     public static class ShapeDetails{
         String[] shape;

@@ -1,10 +1,11 @@
 package me.athlaeos.valhallammo.event;
 
-import me.athlaeos.valhallammo.progression.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.Skill;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerSkillExperienceGainEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
@@ -47,6 +48,7 @@ public class PlayerSkillExperienceGainEvent extends PlayerEvent implements Cance
     }
 
     @Override
+    @NotNull
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }

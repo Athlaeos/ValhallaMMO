@@ -6,7 +6,7 @@ import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
-import me.athlaeos.valhallammo.progression.skills.SkillRegistry;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -31,7 +31,8 @@ public class SQLite extends ProfilePersistence implements Database {
         File dataFolder = new File(ValhallaMMO.getInstance().getDataFolder(), "player_data.db");
         if (!dataFolder.exists()){
             try {
-                dataFolder.createNewFile();
+                if (dataFolder.createNewFile()) ValhallaMMO.logInfo("New player_data.db file created!");
+                else ValhallaMMO.logInfo("Existing player_data.db file used!");
             } catch (IOException e) {
                 ValhallaMMO.logSevere("Could not create SQLite database file player_data.db");
             }

@@ -6,8 +6,10 @@ import me.athlaeos.valhallammo.persistence.*;
 import me.athlaeos.valhallammo.persistence.implementations.PDC;
 import me.athlaeos.valhallammo.persistence.implementations.SQL;
 import me.athlaeos.valhallammo.persistence.implementations.SQLite;
-import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
-import me.athlaeos.valhallammo.progression.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.implementations.alchemy.AlchemyProfile;
+import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.implementations.smithing.SmithingProfile;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
@@ -22,6 +24,8 @@ public class ProfileManager {
 
     static {
         registerProfileType(new PowerProfile(null));
+        registerProfileType(new AlchemyProfile(null));
+        registerProfileType(new SmithingProfile(null));
     }
 
     /**

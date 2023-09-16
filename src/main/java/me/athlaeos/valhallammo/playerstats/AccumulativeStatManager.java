@@ -2,7 +2,7 @@ package me.athlaeos.valhallammo.playerstats;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
 import me.athlaeos.valhallammo.playerstats.statsources.GlobalBuffSource;
 import me.athlaeos.valhallammo.playerstats.statsources.ProfileStatSource;
 import org.bukkit.entity.Entity;

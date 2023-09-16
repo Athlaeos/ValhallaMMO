@@ -5,8 +5,8 @@ import me.athlaeos.valhallammo.placeholder.Placeholder;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.progression.skills.Skill;
-import me.athlaeos.valhallammo.progression.skills.SkillRegistry;
+import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.entity.Player;
 
 public class ProfileNextLevelEXPPlaceholder extends Placeholder {
@@ -29,7 +29,7 @@ public class ProfileNextLevelEXPPlaceholder extends Placeholder {
 
     @Override
     public String parse(String s, Player p) {
-        Profile profile = ProfileCache.getOrCache(p, 10000, type);
+        Profile profile = ProfileCache.getOrCache(p, type);
         Skill skill = SkillRegistry.getSkill(profile.getSkillType());
         if (profile.getLevel() >= skill.getMaxLevel()) return s.replace(placeholder, TranslationManager.getTranslation("max_level"));
         return s.replace(placeholder, format.format(skill.expForLevel(profile.getLevel() + 1)));

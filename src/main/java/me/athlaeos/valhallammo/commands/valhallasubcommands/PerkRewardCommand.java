@@ -2,9 +2,9 @@ package me.athlaeos.valhallammo.commands.valhallasubcommands;
 
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.localization.TranslationManager;
-import me.athlaeos.valhallammo.progression.perk_rewards.PerkReward;
-import me.athlaeos.valhallammo.progression.perk_rewards.PerkRewardArgumentType;
-import me.athlaeos.valhallammo.progression.perk_rewards.PerkRewardRegistry;
+import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
+import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
+import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

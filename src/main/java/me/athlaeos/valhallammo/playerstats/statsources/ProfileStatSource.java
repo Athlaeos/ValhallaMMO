@@ -43,7 +43,7 @@ public class ProfileStatSource implements AccumulativeStatSource {
     @Override
     public double fetch(Entity p, boolean use) {
         if (p instanceof Player){
-            Profile profile = ProfileCache.getOrCache((Player) p, 10000, type);
+            Profile profile = ProfileCache.getOrCache((Player) p, type);
             if (numberType.equals(Integer.class)) return profile.getInt(stat);
             if (numberType.equals(Float.class)) return profile.getFloat(stat);
             return profile.getDouble(stat);

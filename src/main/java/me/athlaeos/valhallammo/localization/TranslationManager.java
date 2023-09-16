@@ -7,22 +7,32 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class TranslationManager {
-    private static final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+    private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
     private static PluginTranslationDTO pluginTranslations;
+    private static PluginTranslationDTO defaultTranslations;
     private static MaterialTranslationsDTO materialTranslations;
     private static String language;
 
     public static String getTranslation(String key){
+        if (!pluginTranslations.getStringTranslations().containsKey(key)) ValhallaMMO.logWarning("No translated value mapped for " + key);
         return pluginTranslations.getStringTranslations().getOrDefault(key, key);
+    }
+
+    public static PluginTranslationDTO getDefaultTranslations() {
+        return defaultTranslations;
     }
 
     public static List<String> getListTranslation(String key) {
@@ -79,35 +89,59 @@ public class TranslationManager {
     }
 
     public static void load(String l){
-        try {
-            language = l;
-            BufferedReader langReader = new BufferedReader(
-                    new FileReader(
-                            new File(ValhallaMMO.getInstance().getDataFolder(), "/languages/" + l + ".json")
-                    )
-            );
-            BufferedReader matReader = new BufferedReader(
-                    new FileReader(
-                            new File(ValhallaMMO.getInstance().getDataFolder(), "/languages/materials/" + l + ".json")
-                    )
-            );
+        language = l;
+        ValhallaMMO.logInfo("Loading ValhallaMMO config with language " + l + " selected");
+        try (BufferedReader langReader = new BufferedReader(new FileReader(new File(ValhallaMMO.getInstance().getDataFolder(), "/languages/" + l + ".json"), StandardCharsets.UTF_8))) {
             pluginTranslations = gson.fromJson(langReader, PluginTranslationDTO.class);
-            materialTranslations = gson.fromJson(matReader, MaterialTranslationsDTO.class);
-            ValhallaMMO.logInfo("Loading ValhallaMMO config with language " + l + " selected");
         } catch (IOException exception){
             ValhallaMMO.logSevere(exception.getMessage());
+            exception.printStackTrace();
+        }
+        try (BufferedReader matReader = new BufferedReader(new FileReader(new File(ValhallaMMO.getInstance().getDataFolder(), "/languages/materials/" + l + ".json"), StandardCharsets.UTF_8))){
+            materialTranslations = gson.fromJson(matReader, MaterialTranslationsDTO.class);
+        } catch (IOException exception){
+            ValhallaMMO.logSevere(exception.getMessage());
+            exception.printStackTrace();
+        }
+        InputStream defaultStream = ValhallaMMO.getInstance().getClass().getResourceAsStream("/languages/en-us.json");
+        if (defaultStream != null){
+            try (InputStreamReader defaultReader = new InputStreamReader(defaultStream, StandardCharsets.UTF_8)){
+                defaultTranslations = gson.fromJson(defaultReader, PluginTranslationDTO.class);
+
+                int entriesAdded = 0;
+                for (String key : defaultTranslations.getStringTranslations().keySet()){
+                    if (!pluginTranslations.getStringTranslations().containsKey(key)){
+                        pluginTranslations.getStringTranslations().put(key, defaultTranslations.getStringTranslations().get(key));
+                        if (entriesAdded == 0 && !l.equalsIgnoreCase("en-us")) ValhallaMMO.logWarning("Language file was outdated! New english entries added to /languages/" + l + ".json. Sorry for the spam, but if you don't use the default (en-us) be sure to keep track of and translate the following entries to your locale");
+                        if (!l.equalsIgnoreCase("en-us")) ValhallaMMO.logWarning("string > " + key);
+                        entriesAdded++;
+                    }
+                }
+                for (String key : defaultTranslations.getStringListTranslations().keySet()){
+                    if (!pluginTranslations.getStringListTranslations().containsKey(key)){
+                        pluginTranslations.getStringListTranslations().put(key, defaultTranslations.getStringListTranslations().get(key));
+                        if (entriesAdded == 0 && !l.equalsIgnoreCase("en-us")) ValhallaMMO.logWarning("Language file was outdated! New english entries added to /languages/" + l + ".json. Sorry for the spam, but if you don't use the default (en-us) be sure to keep track of and translate the following entries to your locale");
+                        if (!l.equalsIgnoreCase("en-us")) ValhallaMMO.logWarning("list > " + key);
+                        entriesAdded++;
+                    }
+                }
+                if (entriesAdded > 0) {
+                    gson.toJson(pluginTranslations, new FileWriter(new File(ValhallaMMO.getInstance().getDataFolder(), "languages/" + l + ".json")));
+                }
+            } catch (IOException exception){
+                ValhallaMMO.logSevere(exception.getMessage());
+                exception.printStackTrace();
+            }
         }
     }
 
     /**
      * Replaces any language placeholders in the display name and lore to their translated versions
-     * @param i the item to translate
+     * @param iMeta the item to translate
      */
-    public ItemStack translateItemStack(ItemStack i){
-        if (ItemUtils.isEmpty(i)) return null;
+    public static void translateItemMeta(ItemMeta iMeta){
         boolean translated = false;
-        ItemMeta iMeta = i.getItemMeta();
-        if (iMeta == null) return null;
+        if (iMeta == null) return;
         if (iMeta.hasDisplayName()){
             if (iMeta.getDisplayName().contains("<lang.")){
                 iMeta.setDisplayName(Utils.chat(translatePlaceholders(iMeta.getDisplayName())));
@@ -125,11 +159,8 @@ public class TranslationManager {
 
             iMeta.setLore(newLore);
         }
-        if (!translated) return i;
-        i.setItemMeta(iMeta);
-        i = ItemUtils.reSetItemText(i);
-
-        return i;
+        if (!translated) return;
+        ItemUtils.reSetItemText(iMeta);
     }
 
     public static String getLanguage() {

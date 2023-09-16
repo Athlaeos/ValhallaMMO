@@ -1,8 +1,8 @@
 package me.athlaeos.valhallammo.crafting;
 
 public class ToolRequirement {
-    private ToolRequirementType toolRequirementType = ToolRequirementType.NOT_REQUIRED;
-    private int requiredToolID = -1;
+    private ToolRequirementType toolRequirementType;
+    private int requiredToolID;
 
     public ToolRequirement(ToolRequirementType toolRequirementType, int requiredToolID){
         this.toolRequirementType = toolRequirementType;

@@ -1,26 +1,29 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
 
-    private static Random random = null;
+    private static final Random random = new Random();
 
     public static Random getRandom(){
-        if (random == null) random = new Random();
         return random;
     }
 
@@ -28,6 +31,67 @@ public class Utils {
         return Math.abs(l1.getX() - l2.getX()) <= range &&
                 Math.abs(l1.getY() - l2.getY()) <= range &&
                 Math.abs(l1.getZ() - l2.getZ()) <= range;
+    }
+
+    public static Color hexToRgb(String colorStr) {
+        return Color.fromRGB(Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
+                Integer.valueOf( colorStr.substring( 3, 5 ), 16 ),
+                Integer.valueOf( colorStr.substring( 5, 7 ), 16 ));
+    }
+
+    public static String rgbToHex(int r, int g, int b){
+        return String.format("#%02x%02x%02x", r, g, b);
+    }
+
+    /**
+     * Returns an integer based on the chance given, but always between this chance rounded down and the chance rounded
+     * up. Example:
+     * a chance of 3.4 will always return at least 3, with a 40% chance to return 4 instead.
+     * a chance of 0.9 will have a 90% chance to return 1
+     * a chance of 7.5 will always return at least 7, with a 50% chance to return 8 instead.
+     * @param chance the average to calculate from
+     * @return an integer returning at least the average rounded down, with the remaining chance to return 1 extra
+     */
+    public static int randomAverage(double chance){
+        boolean negative = chance < 0;
+        int atLeast = (negative) ? (int) Math.ceil(chance) : (int) Math.floor(chance);
+        double remainingChance = chance - atLeast;
+        if (getRandom().nextDouble() <= Math.abs(remainingChance)) atLeast += negative ? -1 : 1;
+        return atLeast;
+    }
+
+    /**
+     * Randomly spits out true or false based on chance. <br>
+     * If custom_luck is enabled in config.yml, the following rules apply:<br>
+     * Positive luck rolls the chance again for a favourable outcome (a 50% chance is converted to 75%, 10% to 19%, etc.)<br>
+     * Negative luck rolls the chance again for an unfavourable outcome (a 50% chance is converted to 25%, 10% to 1%, etc.)<br>
+     * <br>
+     * If ignoreConfig is enabled, the luck mechanic will always come into play.
+     * @param chance the chance for a "proc"
+     * @param luck the amount of luck to affect the proc chance
+     * @param ignoreConfig true if you want to calculate WITH luck, false if you want the config.yml value to decide that
+     * @return true if procced, false if not
+     */
+    public static boolean proc(double chance, double luck, boolean ignoreConfig){
+        if (luck == 0 || (!ignoreConfig && !ValhallaMMO.getPluginConfig().getBoolean("custom_luck", true))) return random.nextDouble() <= chance;
+        if (chance >= 1) return true;
+        if (chance <= 0) return false;
+        if (luck > 0)
+            return random.nextDouble() <= 1 - Math.pow(1 - chance, luck + 1);
+        else
+            return random.nextDouble() <= Math.pow(chance, -luck + 1);
+    }
+
+    /**
+     * Does what {@link Utils#proc(double, double, boolean)} does, except it fetches the luck stat from said entity.
+     * @param e the entity to gather their luck stat from
+     * @param chance the chance for a "proc"
+     * @param ignoreConfig true if you want to calculate WITH luck, false if you want the config.yml value to decide that
+     * @return true if procced, false if not
+     */
+    public static boolean proc(LivingEntity e, double chance, boolean ignoreConfig){
+        double luck = AccumulativeStatManager.getCachedStats("LUCK", e, 10000, true);
+        return proc(chance, luck, ignoreConfig);
     }
 
     /**
@@ -201,5 +265,9 @@ public class Utils {
      */
     public static void sendMessage(CommandSender whomst, String message){
         if (!StringUtils.isEmpty(message)) whomst.sendMessage(chat(message));
+    }
+
+    public static void sendActionBar(Player whomst, String message){
+        if (!StringUtils.isEmpty(message)) whomst.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(chat(message)));
     }
 }

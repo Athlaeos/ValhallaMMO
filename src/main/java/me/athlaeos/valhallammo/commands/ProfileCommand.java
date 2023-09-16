@@ -39,7 +39,7 @@ public class ProfileCommand implements CommandExecutor {
     }
 
     public static void displayProfile(CommandSender displayTo, Player of, Class<? extends Profile> type) {
-        Profile profile = ProfileCache.getOrCache(of, 10000, type);
+        Profile profile = ProfileCache.getOrCache(of, type);
         for (String i : profile.intStatNames()){
             StatFormat format = profile.getNumberStatProperties().get(i).getFormat();
             displayTo.sendMessage(Utils.chat(String.format("&f> %s: %s", format == null ? profile.getInt(i) : format.format(profile.getInt(i)), i)));

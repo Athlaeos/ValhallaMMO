@@ -1,13 +1,13 @@
 package me.athlaeos.valhallammo.persistence;
 
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
-import me.athlaeos.valhallammo.progression.Perk;
+import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
-import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
-import me.athlaeos.valhallammo.progression.skills.Skill;
-import me.athlaeos.valhallammo.progression.skills.SkillRegistry;
+import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;

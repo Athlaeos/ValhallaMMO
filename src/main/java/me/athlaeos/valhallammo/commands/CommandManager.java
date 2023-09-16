@@ -20,12 +20,15 @@ public class CommandManager implements TabExecutor {
 	public CommandManager() {
 		commands.put("help", new HelpCommand());
 		commands.put("exp", new EXPCommand());
-//		commands.put("recipes", new ManageRecipesCommand());
+		commands.put("recipes", new ManageRecipesCommand());
 		commands.put("profile", new ProfileStatsCommand());
 		commands.put("reset", new ResetProfilesCommand());
 		commands.put("skills", new ViewSkillTreeCommand());
-//		commands.put("modify", new ItemModifierCommand());
+  		commands.put("modify", new ModifyCommand());
 		commands.put("reward", new PerkRewardCommand());
+		commands.put("attribute", new AttributeCommand());
+		commands.put("potionattribute", new PotionAttributeCommand());
+		commands.put("effect", new PotionEffectCommand());
 //		commands.put("loot", new ManageLootTablesCommand());
 //		commands.put("globalbuff", new GlobalEffectCommand());
 //		commands.put("reload", new ReloadCommand());
