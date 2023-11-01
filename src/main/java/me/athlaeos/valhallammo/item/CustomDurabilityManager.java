@@ -2,9 +2,8 @@ package me.athlaeos.valhallammo.item;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Scaling;
-import me.athlaeos.valhallammo.item.attributes.AttributeWrapper;
+import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.localization.TranslationManager;
-import me.athlaeos.valhallammo.skills.skills.implementations.smithing.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.EntityEffect;
 import org.bukkit.NamespacedKey;

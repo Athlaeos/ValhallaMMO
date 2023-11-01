@@ -7,17 +7,18 @@ import me.athlaeos.valhallammo.event.PlayerSkillLevelUpEvent;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.skills.perk_rewards.MultipliableReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpenseRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockCondition;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockConditionRegistry;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerSkill;
+import me.athlaeos.valhallammo.skills.skills.implementations.PowerSkill;
 import me.athlaeos.valhallammo.utility.BossBarUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -375,7 +376,7 @@ public abstract class Skill {
      * @param p the player to level up depending on if the conditions are met.
      */
     public void updateLevelUpConditions(Player p, boolean silent){
-        Profile profile = ProfileManager.getPersistentProfile(p, getProfileType());
+        Profile profile = ProfileRegistry.getPersistentProfile(p, getProfileType());
         if (profile != null){
             int currentLevel = profile.getLevel();
             double EXP = profile.getEXP();
@@ -417,13 +418,12 @@ public abstract class Skill {
             if (profile.getLevel() <= 0 && profile.getEXP() < 0) profile.setEXP(0);
             if (profile.getLevel() <= 0 && profile.getTotalEXP() < 0) profile.setTotalEXP(0);
 
-            ProfileManager.setPersistentProfile(p, profile, getProfileType());
+            ProfileRegistry.setPersistentProfile(p, profile, getProfileType());
             changePlayerLevel(p, currentLevel, nextLevel, silent);
 
-
-            // if (HideBossBarsCommand.showBossBars(p)){ // TODO hide boss bars
-            showBossBar(p, profile, 0);
-            // }
+            if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()){
+                showBossBar(p, profile, 0);
+            }
         }
     }
 
@@ -451,14 +451,14 @@ public abstract class Skill {
         // creative mode players should not gain skill-acquired exp
         if (p.getGameMode() == GameMode.CREATIVE && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
         // only experience-scaling skills should scale with exp multipliers. By default, this only excludes PowerSkill
-        if (isExperienceScaling()) amount *= AccumulativeStatManager.getStats("GLOBAL_EXP_GAIN", p, true) / 100D;
+        if (isExperienceScaling()) amount *= (1 + AccumulativeStatManager.getStats("GLOBAL_EXP_GAIN", p, true));
 
         PlayerSkillExperienceGainEvent event = new PlayerSkillExperienceGainEvent(p, amount, this, reason);
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
         if (!event.isCancelled()){
             if (event.getAmount() == 0) return;
 
-            Profile profile = ProfileManager.getPersistentProfile(p, event.getLeveledSkill().getProfileType());
+            Profile profile = ProfileRegistry.getPersistentProfile(p, event.getLeveledSkill().getProfileType());
             profile.setEXP(profile.getEXP() + event.getAmount());
             profile.setTotalEXP(profile.getTotalEXP() + event.getAmount());
 
@@ -469,18 +469,38 @@ public abstract class Skill {
                             .replace("%skill%", event.getLeveledSkill().displayName)
                             .replace("%exp%", ((statusAmount >= 0) ? "+" : "") + String.format("%,.2f", statusAmount)))));
                 }
-                // if (HideBossBarsCommand.showBossBars(p)){ // TODO hide boss bars
-                showBossBar(p, profile, statusAmount);
-                // }
+                if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()){
+                    showBossBar(p, profile, statusAmount);
+                }
             }
 
-            ProfileManager.setPersistentProfile(p, profile, profile.getClass());
+            ProfileRegistry.setPersistentProfile(p, profile, profile.getClass());
             // level conditions don't need to be checked if the player's current exp isn't enough to level up, or low enough to level down
             if (profile.getEXP() >= expForLevel(profile.getLevel() + 1) || profile.getEXP() < 0){
                 updateLevelUpConditions(p, silent);
             }
         }
         AccumulativeStatManager.updateStats(p);
+    }
+
+    public void addLevels(Player player, int levels, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason){
+        if (levels == 0) return;
+        Profile p = ProfileRegistry.getPersistentProfile(player, getProfileType());
+        double expToGive = -p.getEXP();
+        if (levels < 0) {
+            for (int level = p.getLevel() - 1; level >= p.getLevel() + levels; level--) {
+                expToGive -= expForLevel(level);
+            }
+        } else {
+            for (int level = p.getLevel() + 1; level <= p.getLevel() + levels; level++){
+                expToGive += expForLevel(level);
+            }
+        }
+        addEXP(player, expToGive, silent, reason);
+        // make sure the player ends up at 0 exp for the level
+        if (p.getLevel() < levels) addEXP(player, expForLevel(p.getLevel() + 1) - p.getEXP(), silent, reason);
+        else if (p.getLevel() == levels) addEXP(player, -p.getEXP(), silent, reason);
+        else addEXP(player, expForLevel(p.getLevel()) + p.getEXP(), silent, reason);
     }
 
     private final Map<UUID, EXPStatusStruct> expTracker = new HashMap<>();
@@ -681,10 +701,10 @@ public abstract class Skill {
     }
 
     public void updateSkillStats(Player p, boolean runPersistentStartingPerks){
-        Profile skillProfile = ProfileManager.getBlankProfile(p, getProfileType());
-        Profile persistentProfile = ProfileManager.getPersistentProfile(p, getProfileType());
-        PowerProfile powerProfile = ProfileManager.getPersistentProfile(p, PowerProfile.class);
-        ProfileManager.setSkillProfile(p, skillProfile, skillProfile.getClass());
+        Profile skillProfile = ProfileRegistry.getBlankProfile(p, getProfileType());
+        Profile persistentProfile = ProfileRegistry.getPersistentProfile(p, getProfileType());
+        PowerProfile powerProfile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
+        ProfileRegistry.setSkillProfile(p, skillProfile, skillProfile.getClass());
         int level = getLevelFromEXP(persistentProfile.getTotalEXP());
         for (PerkReward r : startingPerks) {
             if (!runPersistentStartingPerks && r.isPersistent()) continue;

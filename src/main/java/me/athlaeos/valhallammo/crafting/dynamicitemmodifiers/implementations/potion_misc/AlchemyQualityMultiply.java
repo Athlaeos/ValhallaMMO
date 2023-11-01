@@ -7,7 +7,7 @@ import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
-import me.athlaeos.valhallammo.skills.skills.implementations.alchemy.AlchemyItemPropertyManager;
+import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;

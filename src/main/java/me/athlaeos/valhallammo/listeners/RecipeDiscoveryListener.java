@@ -4,8 +4,8 @@ import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicSmithingRecipe;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,7 +27,7 @@ public class RecipeDiscoveryListener implements Listener {
         for (NamespacedKey key : CustomRecipeRegistry.getDisabledRecipes()){
             e.getPlayer().undiscoverRecipe(key);
         }
-        PowerProfile profile = ProfileManager.getMergedProfile(e.getPlayer(), PowerProfile.class);
+        PowerProfile profile = ProfileRegistry.getMergedProfile(e.getPlayer(), PowerProfile.class);
         for (DynamicGridRecipe recipe : CustomRecipeRegistry.getGridRecipes().values()){
             if (profile.getUnlockedRecipes().contains(recipe.getName()))e.getPlayer().discoverRecipe(recipe.getKey()); // all recipes have a shaped variant because these display properly in the recipe book
             else e.getPlayer().undiscoverRecipe(recipe.getKey());

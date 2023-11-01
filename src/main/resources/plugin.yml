@@ -29,30 +29,39 @@ commands:
   mining:
     description: "Shorter command for /val profile mining, allowing players to view their mining stats"
   farming:
-    description: ""
+    description: "Shorter command for /val profile farming, allowing players to view their mining stats"
   landscaping:
-    description: ""
+    description: "Shorter command for /val profile landscaping, allowing players to view their mining stats"
   lightweapons:
-    description: ""
+    description: "Shorter command for /val profile light_weapons, allowing players to view their mining stats"
   heavyweapons:
-    description: ""
+    description: "Shorter command for /val profile heavy_weapons, allowing players to view their mining stats"
   lightarmor:
-    description: ""
+    description: "Shorter command for /val profile light_armor, allowing players to view their mining stats"
   heavyarmor:
-    description: ""
+    description: "Shorter command for /val profile heavy_armor, allowing players to view their mining stats"
   archery:
-    description: ""
+    description: "Shorter command for /val profile archery, allowing players to view their mining stats"
   smithing:
-    description: ""
+    description: "Shorter command for /val profile smithing, allowing players to view their mining stats"
   enchanting:
-    description: ""
+    description: "Shorter command for /val profile enchanting, allowing players to view their mining stats"
   alchemy:
-    description: ""
+    description: "Shorter command for /val profile alchemy, allowing players to view their mining stats"
   power:
-    description: ""
+    description: "Shorter command for /val profile power, allowing players to view their mining stats"
+  redeem:
+    description: "Exchanges level/exp tokens to any skill level/exp (except power)"
+    usage: "/redeem <levels/exp> <skill> <amount>"
 
 
 permissions:
+  valhalla.redeemlevels:
+    default: true
+    description: "Access to the /redeem levels command, which allows the user to exchange level tokens to any skill level (except power)"
+  valhalla.redeemexp:
+    default: true
+    description: "Access to the /redeem exp command, which allows the user to exchange exp tokens to any skill exp (except power)"
   valhalla.items:
     default: op
     description: "Access to the /valhalla items command, which allows the user to add items to a custom item registry and then use said items in specific recipe modifiers or give them out using a command"
@@ -92,6 +101,9 @@ permissions:
   valhalla.loottables:
     default: op
     description: "Access to the /valhalla loot command, which gives the user full control over all loot tables within the plugin."
+  valhalla.tool:
+    default: op
+    description: "Access to the /valhalla tool command, which gives the user access to specialized tools with specific usages. Not intended for players."
   valhalla.modify:
     default: op
     description: "Access to the /valhalla modify command, which allows the user to freely modify held items given the right key and strength."

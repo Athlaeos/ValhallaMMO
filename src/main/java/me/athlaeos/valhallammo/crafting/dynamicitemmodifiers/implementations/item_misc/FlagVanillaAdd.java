@@ -39,14 +39,16 @@ public class FlagVanillaAdd extends DynamicItemModifier {
 
     @Override
     public ItemStack getModifierIcon() {
-        return new ItemBuilder(switch (flag){
-            case HIDE_DYE -> Material.RED_DYE;
-            case HIDE_DESTROYS -> Material.GOLDEN_PICKAXE;
-            case HIDE_ENCHANTS -> Material.ENCHANTED_BOOK;
-            case HIDE_PLACED_ON -> Material.BRICKS;
-            case HIDE_ATTRIBUTES -> Material.PAPER;
-            case HIDE_UNBREAKABLE -> Material.DIAMOND_PICKAXE;
-            case HIDE_POTION_EFFECTS -> Material.POTION;
+        return new ItemBuilder(switch (flag.toString()){
+            case "HIDE_DYE" -> Material.RED_DYE;
+            case "HIDE_DESTROYS" -> Material.GOLDEN_PICKAXE;
+            case "HIDE_ENCHANTS" -> Material.ENCHANTED_BOOK;
+            case "HIDE_PLACED_ON" -> Material.BRICKS;
+            case "HIDE_ATTRIBUTES" -> Material.PAPER;
+            case "HIDE_UNBREAKABLE" -> Material.DIAMOND_PICKAXE;
+            case "HIDE_POTION_EFFECTS" -> Material.POTION;
+            case "HIDE_ARMOR_TRIM" -> Material.BRICK;
+            default -> Material.BARRIER;
         }).flag(ItemFlag.HIDE_POTION_EFFECTS).get();
     }
 

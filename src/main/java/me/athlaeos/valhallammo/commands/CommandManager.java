@@ -29,7 +29,9 @@ public class CommandManager implements TabExecutor {
 		commands.put("attribute", new AttributeCommand());
 		commands.put("potionattribute", new PotionAttributeCommand());
 		commands.put("effect", new PotionEffectCommand());
-//		commands.put("loot", new ManageLootTablesCommand());
+		commands.put("test", new TestCommand());
+		commands.put("loot", new ManageLootTablesCommand());
+		commands.put("tool", new SpecializedToolCommand());
 //		commands.put("globalbuff", new GlobalEffectCommand());
 //		commands.put("reload", new ReloadCommand());
 //		commands.put("import", new ImportCommand());

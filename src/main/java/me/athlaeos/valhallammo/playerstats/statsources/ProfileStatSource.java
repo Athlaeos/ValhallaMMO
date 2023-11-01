@@ -4,7 +4,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatSource;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -18,7 +18,7 @@ public class ProfileStatSource implements AccumulativeStatSource {
     public ProfileStatSource(Class<? extends Profile> type, String stat){
         this.type = type;
         this.stat = stat;
-        baseProfile = ProfileManager.getBlankProfile(null, type);
+        baseProfile = ProfileRegistry.getBlankProfile(null, type);
 
         if (baseProfile.intStatNames().contains(stat)) {
             def = baseProfile.getDefaultInt(stat);

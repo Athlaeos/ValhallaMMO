@@ -1,6 +1,10 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.dom.Weighted;
+import me.athlaeos.valhallammo.loot.LootEntry;
+import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
@@ -9,6 +13,9 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -31,6 +38,12 @@ public class Utils {
         return Math.abs(l1.getX() - l2.getX()) <= range &&
                 Math.abs(l1.getY() - l2.getY()) <= range &&
                 Math.abs(l1.getZ() - l2.getZ()) <= range;
+    }
+
+    public static int getManhattanDistance(Location l1, Location l2){
+        return (int) Math.abs((l1.getX() - l2.getX()) +
+                (l1.getY() - l2.getY()) +
+                (l1.getZ() - l2.getZ()));
     }
 
     public static Color hexToRgb(String colorStr) {
@@ -62,6 +75,7 @@ public class Utils {
 
     /**
      * Randomly spits out true or false based on chance. <br>
+     * This method assumes a <i>true</i> outcome has a positive effect.<br>
      * If custom_luck is enabled in config.yml, the following rules apply:<br>
      * Positive luck rolls the chance again for a favourable outcome (a 50% chance is converted to 75%, 10% to 19%, etc.)<br>
      * Negative luck rolls the chance again for an unfavourable outcome (a 50% chance is converted to 25%, 10% to 1%, etc.)<br>
@@ -77,9 +91,27 @@ public class Utils {
         if (chance >= 1) return true;
         if (chance <= 0) return false;
         if (luck > 0)
-            return random.nextDouble() <= 1 - Math.pow(1 - chance, luck + 1);
+            return random.nextDouble() <= 1 - MathUtils.pow(1 - chance, luck + 1);
         else
-            return random.nextDouble() <= Math.pow(chance, -luck + 1);
+            return random.nextDouble() <= MathUtils.pow(chance, -luck + 1);
+    }
+
+
+    /**
+     * Randomly spits out true or false based on chance. <br>
+     * This method assumes a <i>true</i> outcome has a negative effect.<br>
+     * If custom_luck is enabled in config.yml, the following rules apply:<br>
+     * Positive luck rolls the chance again for a favourable outcome (a 50% chance is converted to 75%, 10% to 19%, etc.)<br>
+     * Negative luck rolls the chance again for an unfavourable outcome (a 50% chance is converted to 25%, 10% to 1%, etc.)<br>
+     * <br>
+     * If ignoreConfig is enabled, the luck mechanic will always come into play.
+     * @param chance the chance for a "proc"
+     * @param luck the amount of luck to affect the proc chance
+     * @param ignoreConfig true if you want to calculate WITH luck, false if you want the config.yml value to decide that
+     * @return true if procced, false if not
+     */
+    public static boolean badProc(double chance, double luck, boolean ignoreConfig){
+        return proc(chance, -luck, ignoreConfig);
     }
 
     /**
@@ -90,8 +122,20 @@ public class Utils {
      * @return true if procced, false if not
      */
     public static boolean proc(LivingEntity e, double chance, boolean ignoreConfig){
-        double luck = AccumulativeStatManager.getCachedStats("LUCK", e, 10000, true);
-        return proc(chance, luck, ignoreConfig);
+        AttributeInstance luckInstance = e.getAttribute(Attribute.GENERIC_LUCK);
+        return proc(chance, luckInstance == null ? 0 : luckInstance.getValue(), ignoreConfig);
+    }
+
+    /**
+     * Does what {@link Utils#badProc(double, double, boolean)} does, except it fetches the luck stat from said entity.
+     * @param e the entity to gather their luck stat from
+     * @param chance the chance for a "proc"
+     * @param ignoreConfig true if you want to calculate WITH luck, false if you want the config.yml value to decide that
+     * @return true if procced, false if not
+     */
+    public static boolean badProc(LivingEntity e, double chance, boolean ignoreConfig){
+        AttributeInstance luckInstance = e.getAttribute(Attribute.GENERIC_LUCK);
+        return badProc(chance, luckInstance == null ? 0 : luckInstance.getValue(), ignoreConfig);
     }
 
     /**
@@ -195,10 +239,10 @@ public class Utils {
                     String func = str.substring(startPos, this.pos);
                     x = parseFactor();
                     x = switch (func) {
-                        case "sqrt" -> Math.sqrt(x);
-                        case "sin" -> Math.sin(Math.toRadians(x));
-                        case "cos" -> Math.cos(Math.toRadians(x));
-                        case "tan" -> Math.tan(Math.toRadians(x));
+                        case "sqrt" -> MathUtils.sqrt(x);
+                        case "sin" -> MathUtils.sin(MathUtils.toRadians(x));
+                        case "cos" -> MathUtils.cos(MathUtils.toRadians(x));
+                        case "tan" -> MathUtils.tan(MathUtils.toRadians(x));
                         default ->
                                 throw new RuntimeException("Unknown function: " + func + " while trying to parse formula " + expression);
                     };
@@ -206,7 +250,7 @@ public class Utils {
                     throw new RuntimeException("Unexpected: " + (char)ch + " while trying to parse formula " + expression);
                 }
 
-                if (eat('^')) x = Math.pow(x, parseFactor()); // exponentiation
+                if (eat('^')) x = MathUtils.pow(x, parseFactor()); // exponentiation
 
                 return x;
             }
@@ -269,5 +313,24 @@ public class Utils {
 
     public static void sendActionBar(Player whomst, String message){
         if (!StringUtils.isEmpty(message)) whomst.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(chat(message)));
+    }
+
+    public static <T extends Weighted> List<T> weightedSelection(Collection<T> entries, int rolls, double luck){
+        // weighted selection
+        double totalWeight = 0;
+        List<T> selectedEntries = new ArrayList<>();
+        List<Pair<T, Double>> totalEntries = new ArrayList<>();
+        for (T entry : entries){
+            totalWeight += entry.getWeight(luck);
+            totalEntries.add(new Pair<>(entry, totalWeight));
+        }
+
+        for (int i = 0; i < rolls; i++){
+            double random = Utils.getRandom().nextDouble() * totalWeight;
+            for (Pair<T, Double> pair : totalEntries){
+                if (pair.getTwo() >= random) selectedEntries.add(pair.getOne());
+            }
+        }
+        return selectedEntries;
     }
 }

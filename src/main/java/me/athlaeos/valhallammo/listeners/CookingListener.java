@@ -6,21 +6,23 @@ import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
-import me.athlaeos.valhallammo.skills.skills.implementations.smithing.SmithingItemPropertyManager;
-import me.athlaeos.valhallammo.utility.BlockUtils;
-import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.version.FurnaceStartSmeltListener;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.Campfire;
 import org.bukkit.block.Furnace;
@@ -45,6 +47,11 @@ public class CookingListener implements Listener {
     private final Map<Block, Map<Integer, DynamicCookingRecipe>> campfireRecipes = new HashMap<>();
 
     private static final Collection<InventoryType> furnaces = Set.of(InventoryType.FURNACE, InventoryType.BLAST_FURNACE, InventoryType.SMOKER);
+
+    public CookingListener(){
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_18))
+            ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new FurnaceStartSmeltListener(), ValhallaMMO.getInstance());
+    }
 
     // owner is set to furnace on inventory click
     @EventHandler
@@ -191,25 +198,6 @@ public class CookingListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onFurnaceStart(FurnaceStartSmeltEvent e){
-        if (e.getBlock().getState() instanceof Furnace){
-            DynamicCookingRecipe recipe = CustomRecipeRegistry.getCookingRecipesByKey().get(e.getRecipe().getKey());
-            if (recipe == null) {
-                if (CustomRecipeRegistry.getDisabledRecipes().contains(e.getRecipe().getKey())) {
-                    e.setTotalCookTime(Integer.MAX_VALUE);
-                    return;
-                }
-            } else {
-                Recipe r = ValhallaMMO.getInstance().getServer().getRecipe(recipe.getKey());
-                if (!(r instanceof CookingRecipe<?>)) throw new IllegalStateException("Recipe linked to dynamic cooking recipe key is not a cooking recipe");
-            }
-            Player owner = BlockUtils.getOwner(e.getBlock());
-            double cookTimeMultiplier = owner == null ? 1 : 2; // TODO AccumulativeStatManager.getCachedStats("COOKING_SPEED", owner, 10000, true);
-            e.setTotalCookTime((int) (cookTimeMultiplier <= 0 ? Integer.MAX_VALUE : e.getRecipe().getCookingTime() / cookTimeMultiplier));
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
     public void onCook(BlockCookEvent e){
         if (e.isCancelled()) return;
         Block b = e.getBlock();
@@ -233,7 +221,6 @@ public class CookingListener implements Listener {
                             }
                             return false;
                         }))){
-                    // TODO eject items off of campfire, this should never occur though
                     c.getWorld().playEffect(c.getLocation(), Effect.EXTINGUISH, 0);
                     e.setCancelled(true);
                     return;
@@ -242,7 +229,7 @@ public class CookingListener implements Listener {
                 DynamicItemModifier.modify(result, owner, recipe.getModifiers(), false, true, true);
                 TranslationManager.translateItemMeta(result.getMeta());
                 if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
-                    // TODO eject items off campfire
+                    ejectCampfire(c);
                     c.getWorld().playEffect(c.getLocation(), Effect.EXTINGUISH, 0);
                     e.setCancelled(true);
                     return;
@@ -265,7 +252,7 @@ public class CookingListener implements Listener {
                 this.campfireRecipes.put(b, campfireRecipes);
             } else {
                 e.setCancelled(true);
-                // TODO eject items off of campfire
+                ejectCampfire(c);
             }
         } else if (e.getBlock().getState() instanceof Furnace f){
             Pair<CookingRecipe<?>, DynamicCookingRecipe> recipes = getFurnaceRecipe(f.getInventory().getSmelting());
@@ -295,7 +282,7 @@ public class CookingListener implements Listener {
                         }
                         return false;
                     }))){
-                // TODO eject items out of furnace, this should never occur though
+                for (Location l : MathUtils.getRandomPointsInArea(f.getLocation().add(0.5, 0.5, 0.5), 1, 10)) f.getWorld().spawnParticle(Particle.ASH, l, 0);
                 f.getWorld().playEffect(f.getLocation(), Effect.EXTINGUISH, 0);
                 e.setCancelled(true);
                 return;
@@ -304,7 +291,7 @@ public class CookingListener implements Listener {
             DynamicItemModifier.modify(result, owner, recipe.getModifiers(), false, true, true);
             TranslationManager.translateItemMeta(result.getMeta());
             if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
-                // TODO eject items out of furnace
+                for (Location l : MathUtils.getRandomPointsInArea(f.getLocation().add(0.5, 0.5, 0.5), 1, 10)) f.getWorld().spawnParticle(Particle.ASH, l, 0);
                 f.getWorld().playEffect(f.getLocation(), Effect.EXTINGUISH, 0);
                 e.setCancelled(true);
             } else {
@@ -314,6 +301,15 @@ public class CookingListener implements Listener {
                     if (validation != null) validation.execute(f.getBlock());
                 });
             }
+        }
+    }
+
+    private void ejectCampfire(Campfire c){
+        for (int i = 0; i < 4; i++){
+            ItemStack item = c.getItem(i);
+            if (ItemUtils.isEmpty(item)) continue;
+            c.getWorld().dropItemNaturally(c.getLocation(), item);
+            c.setItem(i, null);
         }
     }
 

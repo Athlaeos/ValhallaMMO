@@ -65,7 +65,7 @@ public class PotionAttributeCommand implements Command {
 			if (actualValue != null){
 				PotionEffectRegistry.setStoredEffect(result.getMeta(), effect.toUpperCase(), actualValue, actualDuration, charges, false);
 			}
-			PotionEffectRegistry.updateItemName(result.getMeta(), false);
+			PotionEffectRegistry.updateItemName(result.getMeta(), false, false);
 			target.getInventory().setItemInMainHand(result.get());
 			return true;
 		}

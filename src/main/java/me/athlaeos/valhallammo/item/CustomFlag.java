@@ -20,7 +20,9 @@ public enum CustomFlag {
     HIDE_DURABILITY,
     ATTRIBUTE_FOR_BOTH_HANDS,
     INFINITY_EXPLOITABLE,
-    UNCRAFTABLE;
+    UNCRAFTABLE,
+    TEMPORARY_POTION_DISPLAY,
+    UNENCHANTABLE;
 
     private static final NamespacedKey FLAG = new NamespacedKey(ValhallaMMO.getInstance(), "item_flags");
 

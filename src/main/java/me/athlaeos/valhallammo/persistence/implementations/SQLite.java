@@ -5,7 +5,7 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
@@ -32,7 +32,6 @@ public class SQLite extends ProfilePersistence implements Database {
         if (!dataFolder.exists()){
             try {
                 if (dataFolder.createNewFile()) ValhallaMMO.logInfo("New player_data.db file created!");
-                else ValhallaMMO.logInfo("Existing player_data.db file used!");
             } catch (IOException e) {
                 ValhallaMMO.logSevere("Could not create SQLite database file player_data.db");
             }
@@ -108,11 +107,11 @@ public class SQLite extends ProfilePersistence implements Database {
             public void run() {
                 Map<Class<? extends Profile>, Profile> profs = persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>());
                 boolean runPersistentStartingPerks = false;
-                for (Profile pr : ProfileManager.getRegisteredProfiles().values()){
+                for (Profile pr : ProfileRegistry.getRegisteredProfiles().values()){
                     try {
                         Profile profile = pr.fetchProfile(p, database);
                         if (profile == null) {
-                            profile = ProfileManager.getBlankProfile(p, pr.getClass());
+                            profile = ProfileRegistry.getBlankProfile(p, pr.getClass());
                             runPersistentStartingPerks = true;
                         }
                         profs.put(profile.getClass(), profile);

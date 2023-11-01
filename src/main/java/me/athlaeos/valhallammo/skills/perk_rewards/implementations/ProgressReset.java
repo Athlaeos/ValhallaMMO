@@ -1,6 +1,6 @@
 package me.athlaeos.valhallammo.skills.perk_rewards.implementations;
 
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
@@ -15,7 +15,7 @@ public class ProgressReset extends PerkReward {
 
     @Override
     public void apply(Player player) {
-        ProfileManager.reset(player, type);
+        ProfileRegistry.reset(player, type);
     }
 
     @Override

@@ -3,7 +3,7 @@ package me.athlaeos.valhallammo.skills.perkunlockconditions.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockCondition;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
@@ -52,7 +52,7 @@ public class OtherSkillLevelRequirement implements UnlockCondition {
         for (String s : moreLevelRequirements.keySet()){
             Skill skill = SkillRegistry.getSkill(s);
             if (skill == null) continue;
-            Profile profile = ProfileManager.getPersistentProfile(p, skill.getProfileType());
+            Profile profile = ProfileRegistry.getPersistentProfile(p, skill.getProfileType());
             if (moreLevelRequirements.get(s) > profile.getLevel()) return false;
         }
         return true;

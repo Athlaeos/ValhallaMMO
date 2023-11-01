@@ -4,15 +4,22 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.EntityClassification;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
-import me.athlaeos.valhallammo.item.attributes.AttributeWrapper;
+import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
+import me.athlaeos.valhallammo.particle.ParticleWrapper;
+import me.athlaeos.valhallammo.particle.implementations.RedstoneParticle;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
-import me.athlaeos.valhallammo.skills.skills.implementations.archery.ArrowBehaviorRegistry;
+import me.athlaeos.valhallammo.item.arrow_attributes.ArrowBehaviorRegistry;
+import me.athlaeos.valhallammo.utility.AnimationUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Directional;
 import org.bukkit.enchantments.Enchantment;
@@ -24,9 +31,12 @@ import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.BlockProjectileSource;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -35,55 +45,85 @@ public class ProjectileListener implements Listener {
     private final Map<Block, ItemStack> dispensedItems = new HashMap<>();
     private final double inaccuracyConstant = ValhallaMMO.getPluginConfig().getDouble("inaccuracy_constant", 0.015);
 
+    private static final Map<UUID, ItemBuilder> projectileShotByMap = new HashMap<>();
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onLaunch(ProjectileLaunchEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
-        ItemStack projectile;
+        ItemBuilder projectile;
         if (e.getEntity() instanceof ThrowableProjectile t) {
-            projectile = t.getItem().clone();
-            ItemUtils.storeItem(e.getEntity(), projectile);
+            projectile = new ItemBuilder(t.getItem().clone());
+            ItemUtils.storeItem(e.getEntity(), projectile.getItem());
         } else if (e.getEntity().getShooter() instanceof BlockProjectileSource b){
-            projectile = dispensedItems.get(b.getBlock());
-            ItemUtils.storeItem(e.getEntity(), projectile);
+            projectile = new ItemBuilder(dispensedItems.get(b.getBlock()));
+            ItemUtils.storeItem(e.getEntity(), projectile.getItem());
         } else projectile = ItemUtils.getStoredItem(e.getEntity());
 
-        if (ItemUtils.isEmpty(projectile)) return;
-        ItemMeta meta = ItemUtils.getItemMeta(projectile);
+        if (projectile == null) return;
+        ItemMeta meta = projectile.getMeta();
 
         if (e.getEntity() instanceof AbstractArrow a && !(a instanceof Trident)) {
             // inaccuracy mechanics only applied to arrows
             Vector direction;
             double inaccuracy = 0;
-            if (e.getEntity().getShooter() instanceof BlockProjectileSource b && b.getBlock().getBlockData() instanceof Directional d){
+            if (a.getShooter() instanceof BlockProjectileSource b && b.getBlock().getBlockData() instanceof Directional d){
                 inaccuracy = ValhallaMMO.getPluginConfig().getDouble("dispenser_inaccuracy", 7);
                 direction = d.getFacing().getDirection();
-            } else if (e.getEntity() instanceof LivingEntity l) {
-                inaccuracy = AccumulativeStatManager.getCachedStats("ARCHERY_INACCURACY", l, 10000, true);
+            } else if (a.getShooter() instanceof LivingEntity l) {
+                inaccuracy = AccumulativeStatManager.getCachedStats("RANGED_INACCURACY", l, 10000, true);
                 direction = l.getEyeLocation().getDirection();
-            } else direction = e.getEntity().getVelocity();
+            } else direction = a.getVelocity();
 
-            AttributeWrapper accuracy = ItemAttributesRegistry.getAttribute(meta, "ARROW_ACCURACY", false);
-            if (accuracy != null) inaccuracy = Math.max(0, inaccuracy - accuracy.getValue());
+            if (!isShotFromMultishot(a)){
+                AttributeWrapper accuracy = ItemAttributesRegistry.getAttribute(meta, "ARROW_ACCURACY", false);
+                if (accuracy != null) inaccuracy = Math.max(0, inaccuracy - accuracy.getValue());
 
-            Vector aV = e.getEntity().getVelocity().clone();
-            double strength = aV.length(); // record initial speed of the arrow
-            aV = aV.normalize(); // reduce vector lengths to 1
-            direction = direction.normalize();
-            aV.setX(direction.getX()); // set direction of arrow equal to direction of shooter
-            aV.setY(direction.getY());
-            aV.setZ(direction.getZ());
-            aV.multiply(strength); // restore the initial speed to the arrow
+                Vector aV = a.getVelocity().clone();
+                double strength = aV.length(); // record initial speed of the arrow
+                aV = aV.normalize(); // reduce vector lengths to 1
+                direction = direction.normalize();
+                aV.setX(direction.getX()); // set direction of arrow equal to direction of shooter
+                aV.setY(direction.getY());
+                aV.setZ(direction.getZ());
+                aV.multiply(strength); // restore the initial speed to the arrow
 
-            inaccuracy = Math.max(0, inaccuracy);
-            aV.setX(aV.getX() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
-            aV.setY(aV.getY() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
-            aV.setZ(aV.getZ() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
+                inaccuracy = Math.max(0, inaccuracy);
+                aV.setX(aV.getX() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
+                aV.setY(aV.getY() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
+                aV.setZ(aV.getZ() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
 
-            e.getEntity().setVelocity(aV);
+                e.getEntity().setVelocity(aV);
+            }
 
             setProjectileProperties(e.getEntity(), meta);
         }
         ArrowBehaviorRegistry.execute(e, ArrowBehaviorRegistry.getBehaviors(meta).values());
+
+
+        if (e.getEntity().getShooter() instanceof LivingEntity l){
+            // thrown object speed mechanic
+            if (!(e.getEntity() instanceof AbstractArrow)){
+                double speedMultiplier = 1 + AccumulativeStatManager.getCachedStats("THROW_VELOCITY_BONUS", l, 10000, true);
+                e.getEntity().setVelocity(e.getEntity().getVelocity().multiply(speedMultiplier));
+            }
+
+            // potion saving mechanic
+            if (e.getEntity() instanceof ThrownPotion t){
+                if (l instanceof Player p && p.getGameMode() != GameMode.CREATIVE){
+                    if (Utils.proc(p, AccumulativeStatManager.getCachedStats("POTION_SAVE_CHANCE", p, 10000, true), false)){
+                        p.getInventory().addItem(t.getItem());
+                    }
+                }
+            }
+        }
+    }
+
+    public static boolean isShotFromMultishot(AbstractArrow a){
+        return !a.getMetadata("duplicate_multishot").isEmpty();
+    }
+
+    public static void setMultishotArrow(AbstractArrow a){
+        a.setMetadata("duplicate_multishot", new FixedMetadataValue(ValhallaMMO.getInstance(), true));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -102,29 +142,54 @@ public class ProjectileListener implements Listener {
         ArrowBehaviorRegistry.execute(e, ArrowBehaviorRegistry.getBehaviors(ItemUtils.getItemMeta(e.getConsumable())).values());
     }
 
+    public static ItemBuilder getBow(AbstractArrow arrow){
+        return projectileShotByMap.get(arrow.getUniqueId());
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onShoot(EntityShootBowEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        ItemStack bow = e.getBow();
+        if (e.getProjectile() instanceof AbstractArrow a && a.isShotFromCrossbow() && a.getPickupStatus() != AbstractArrow.PickupStatus.ALLOWED && !ItemUtils.isEmpty(bow) && bow.containsEnchantment(Enchantment.MULTISHOT)){
+            setMultishotArrow(a); // it's safe to assume these are secondary multishot arrows
+        }
+
         Entity projectile = e.getProjectile();
         LivingEntity shooter = e.getEntity();
-        double speedMultiplier = 1;// + AccumulativeStatManager.getCachedStats("BOW_SHOT_VELOCITY", shooter, 10000, true);
+        double speedMultiplier = Math.max(0, 1);// + AccumulativeStatManager.getCachedStats("BOW_SHOT_VELOCITY", shooter, 10000, true);
 
         ItemStack consumable = e.getConsumable();
-        ItemStack bow = e.getBow();
         if (!ItemUtils.isEmpty(consumable) && !ItemUtils.isEmpty(bow)){
+            ItemBuilder builderBow = new ItemBuilder(bow);
+            projectileShotByMap.put(e.getProjectile().getUniqueId(), builderBow);
+
             ItemMeta consumableMeta = ItemUtils.getItemMeta(consumable);
-            AttributeWrapper speedWrapper = ItemAttributesRegistry.getAttribute(consumableMeta, "ARROW_SPEED", false);
-            if (speedWrapper != null) speedMultiplier += speedWrapper.getValue();
-            speedMultiplier = Math.max(0, speedMultiplier);
             e.getProjectile().setVelocity(e.getProjectile().getVelocity().multiply(speedMultiplier));
 
             boolean infinityExploitable = CustomFlag.hasFlag(consumableMeta, CustomFlag.INFINITY_EXPLOITABLE);
             boolean hasInfinity = bow.containsEnchantment(Enchantment.ARROW_INFINITE);
-            // arrows may be preserved with infinity if they resemble a vanilla arrow, or if they have the infinityExploitable flag
             boolean shouldSave = hasInfinity && (consumable.isSimilar(new ItemStack(Material.ARROW)) || infinityExploitable);
-            e.setConsumeItem(!shouldSave);
-            if (e.getProjectile() instanceof AbstractArrow a && !(a instanceof Trident)){
-                a.setPickupStatus(AbstractArrow.PickupStatus.ALLOWED);
+
+            if (shooter instanceof Player p && (e.getProjectile() instanceof AbstractArrow || e.getProjectile() instanceof Firework)){
+                double ammoSaveChance = AccumulativeStatManager.getCachedStats("AMMO_SAVE_CHANCE", shooter, 10000, true);
+                if (Utils.proc(shooter, ammoSaveChance, false)){
+                    if (bow.getType() == Material.CROSSBOW){
+                        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                            boolean mainHand = !ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) && p.getInventory().getItemInMainHand().getType() == Material.CROSSBOW;
+                            ItemStack crossbow = mainHand ? p.getInventory().getItemInMainHand() : p.getInventory().getItemInOffHand();
+                            if (ItemUtils.isEmpty(crossbow) || !(crossbow.getItemMeta() instanceof CrossbowMeta crossbowMeta)) return;
+                            crossbowMeta.addChargedProjectile(consumable);
+                            crossbow.setItemMeta(crossbowMeta);
+                        }, 1L);
+                        if (e.getProjectile() instanceof AbstractArrow a) a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+                        return;
+                    } else if (e.getProjectile() instanceof AbstractArrow a && !(a instanceof Trident)){
+                        // arrows may be preserved with infinity if they resemble a vanilla arrow, or if they have the infinityExploitable flag
+                        e.setConsumeItem(!shouldSave);
+                        if (e.shouldConsumeItem()) a.setPickupStatus(AbstractArrow.PickupStatus.ALLOWED);
+                        else a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+                    }
+                }
             }
 
             ItemStack storedItem = consumable.clone();
@@ -141,7 +206,7 @@ public class ProjectileListener implements Listener {
             AttributeWrapper piercing = ItemAttributesRegistry.getAttribute(i, "ARROW_PIERCING", false);
             if (piercing != null) a.setPierceLevel(Math.max(0, a.getPierceLevel() + ((int) piercing.getValue())));
         }
-        AttributeWrapper speedWrapper = ItemAttributesRegistry.getAttribute(i, "ARROW_SPEED", false);
+        AttributeWrapper speedWrapper = ItemAttributesRegistry.getAttribute(i, "ARROW_VELOCITY", false);
         if (speedWrapper != null) p.setVelocity(p.getVelocity().multiply(1 + speedWrapper.getValue()));
     }
 
@@ -149,20 +214,30 @@ public class ProjectileListener implements Listener {
     public void onHit(ProjectileHitEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
 
-        ItemStack stored = ItemUtils.getStoredItem(e.getEntity());
-        if (ItemUtils.isEmpty(stored)) return;
-        ArrowBehaviorRegistry.execute(e, ArrowBehaviorRegistry.getBehaviors(ItemUtils.getItemMeta(stored)).values());
+        if (e.getHitEntity() instanceof LivingEntity l && e.getEntity() instanceof AbstractArrow a && isShotFromMultishot(a) && ValhallaMMO.getPluginConfig().getBoolean("multishot_all_hit")) {
+            int originalDamageTicks = l.getNoDamageTicks();
+            a.setDamage(a.getDamage() * ValhallaMMO.getPluginConfig().getDouble("multishot_damage_reduction", 0.5));
+            l.setNoDamageTicks(0);
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> l.setNoDamageTicks(originalDamageTicks), 1L);
+        }
+
+        projectileShotByMap.remove(e.getEntity().getUniqueId()); // if an arrow hits anything, the bow it was shot from is forgotten
+
+        ItemBuilder stored = ItemUtils.getStoredItem(e.getEntity());
+        if (stored == null) return;
+        ArrowBehaviorRegistry.execute(e, ArrowBehaviorRegistry.getBehaviors(stored.getMeta()).values());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPickup(PlayerPickupArrowEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
         if (!(e.getArrow() instanceof Trident)){
+            projectileShotByMap.remove(e.getArrow().getUniqueId());
             Item i = e.getItem();
-            ItemStack stored = ItemUtils.getStoredItem(e.getArrow());
+            ItemBuilder stored = ItemUtils.getStoredItem(e.getArrow());
             if (stored == null) return;
-            ArrowBehaviorRegistry.execute(e, ArrowBehaviorRegistry.getBehaviors(ItemUtils.getItemMeta(stored)).values());
-            i.setItemStack(stored);
+            ArrowBehaviorRegistry.execute(e, ArrowBehaviorRegistry.getBehaviors(stored.getMeta()).values());
+            i.setItemStack(stored.getItem());
         }
     }
 
@@ -170,9 +245,10 @@ public class ProjectileListener implements Listener {
     public void onDamage(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         if (e.getDamager() instanceof Projectile p && e.getEntity() instanceof LivingEntity l && !EntityClassification.matchesClassification(e.getEntity().getType(), EntityClassification.UNALIVE)){
-            ItemStack stored = ItemUtils.getStoredItem(p);
-            if (ItemUtils.isEmpty(stored)) return;
-            ItemMeta storedMeta = ItemUtils.getItemMeta(stored);
+            ItemBuilder stored = ItemUtils.getStoredItem(p);
+            if (stored == null) return;
+            ItemMeta storedMeta = stored.getMeta();
+            LivingEntity trueDamager = p.getShooter() instanceof LivingEntity d ? d : null;
 
             // apply potion effects
             if (p instanceof AbstractArrow && !(p instanceof Trident)){
@@ -181,7 +257,7 @@ public class ProjectileListener implements Listener {
                     int duration = (int) Math.floor(wrapper.getDuration() / 8D); // the duration displayed on the item will not
                     // match the actual effect applied with vanilla potion effects. Arrows have their duration reduced to 1/8th
                     if (wrapper.isVanilla()) l.addPotionEffect(new PotionEffect(wrapper.getVanillaEffect(), duration, (int) wrapper.getAmplifier(), false));
-                    else PotionEffectRegistry.addEffect(l, new CustomPotionEffect(wrapper, duration, wrapper.getAmplifier()), false, EntityPotionEffectEvent.Cause.ARROW);
+                    else PotionEffectRegistry.addEffect(l, trueDamager, new CustomPotionEffect(wrapper, duration, wrapper.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ARROW);
                 }
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
                         cancelNextArrowEffects.remove(e.getEntity().getUniqueId()), 1L

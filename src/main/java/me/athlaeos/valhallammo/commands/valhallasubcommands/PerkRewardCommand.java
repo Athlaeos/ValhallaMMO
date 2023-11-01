@@ -37,14 +37,15 @@ public class PerkRewardCommand implements Command {
 			PerkRewardArgumentType expectedType = baseReward.getRequiredType();
 			Object arg;
 			try {
-				switch (expectedType){
-					case DOUBLE -> arg = Double.parseDouble(args[2]);
-					case INTEGER -> arg = Integer.parseInt(args[2]);
-					case STRING -> arg = args[2];
-					case STRING_LIST -> arg = List.of(args[2].split(";"));
-					case BOOLEAN -> arg = Boolean.parseBoolean(args[2]);
-					default -> arg = null;
-				}
+				arg = switch (expectedType){
+					case DOUBLE ->  Double.parseDouble(args[2]);
+					case FLOAT -> Float.parseFloat(args[2]);
+					case INTEGER -> Integer.parseInt(args[2]);
+					case STRING -> args[2];
+					case STRING_LIST -> List.of(args[2].split(";"));
+					case BOOLEAN -> Boolean.parseBoolean(args[2]);
+					case NONE -> null;
+				};
 			} catch (IllegalArgumentException ignored){
 				sender.sendMessage(Utils.chat(TranslationManager.getTranslation("error_command_invalid_argument_type")
 						.replace("%type%", expectedType.toString())

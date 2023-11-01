@@ -1,7 +1,6 @@
 package me.athlaeos.valhallammo.playerstats;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.dom.EntityProperties;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -37,6 +36,10 @@ public class EntityCache {
     public static void resetPotionEffects(LivingEntity entity){
         cachedProperties.put(entity.getUniqueId(), EntityUtils.updateProperties(cachedProperties.getOrDefault(entity.getUniqueId(), getAndCacheProperties(entity)),
                 entity, false, false, true));
+    }
+
+    public static void removeProperties(LivingEntity entity){
+        cachedProperties.remove(entity.getUniqueId());
     }
 
     public static void attemptCacheCleanup(){

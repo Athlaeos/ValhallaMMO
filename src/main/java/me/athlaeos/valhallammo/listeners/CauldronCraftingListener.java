@@ -5,8 +5,8 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
-import me.athlaeos.valhallammo.crafting.craftanimations.AnimationRegistry;
-import me.athlaeos.valhallammo.crafting.craftanimations.CraftAnimation;
+import me.athlaeos.valhallammo.animations.AnimationRegistry;
+import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCauldronRecipe;
 import me.athlaeos.valhallammo.dom.Pair;
@@ -15,7 +15,7 @@ import me.athlaeos.valhallammo.event.CauldronCompleteRecipeEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.skills.skills.implementations.smithing.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.*;
@@ -400,8 +400,8 @@ public class CauldronCraftingListener implements Listener {
         @Override
         public void run() {
             if (duration > 0){
-                CraftAnimation animation = AnimationRegistry.getAnimation(AnimationRegistry.CAULDRON_BOIL_PROCESS.id());
-                if (animation != null) animation.animate(cooker, cauldron, duration);
+                Animation animation = AnimationRegistry.getAnimation(AnimationRegistry.BLOCK_BUBBLES.id());
+                if (animation != null) animation.animate(cooker, cauldron.getLocation(), cooker.getEyeLocation().getDirection(), duration);
             } else {
                 ItemBuilder result = new ItemBuilder(recipe.getResult());
                 List<ItemStack> contents = getCauldronContents(cauldron);
@@ -420,8 +420,8 @@ public class CauldronCraftingListener implements Listener {
                     ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(completionEvent);
                     for (int i = 0; i < quantity; i++)
                         cauldron.getWorld().dropItem(cauldron.getLocation().add(0.5, 0.5, 0.5), completionEvent.getResult());
-                    CraftAnimation animation = AnimationRegistry.getAnimation(AnimationRegistry.CAULDRON_BOIL_FINISH.id());
-                    animation.animate(cooker, cauldron, duration);
+                    Animation animation = AnimationRegistry.getAnimation(AnimationRegistry.BLOCK_SPARKS_EXTINGUISH.id());
+                    animation.animate(cooker, cauldron.getLocation(), cooker.getEyeLocation().getDirection(), duration);
 
                     recipe.getValidations().forEach(v -> {
                         Validation validation = ValidationRegistry.getValidation(v);

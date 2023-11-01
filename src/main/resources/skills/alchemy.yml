@@ -14,6 +14,15 @@ transmutation_sound: BLOCK_ENCHANTMENT_TABLE_USE
 # If true, players are able to instantly empty potions when clicking them on a cauldron
 quick_empty_potions: true
 
+# The item types which can be combined to merge potion effects. Should generally only be potions, but heck, if you wanna make
+# food items applicable you can do that too. In any case, the two items combined must be of the same type.
+valid_combining_items:
+  - POTION
+  - SPLASH_POTION
+  - LINGERING_POTION
+
+combined_potion_display_name: '<lang.combined_potion_name>'
+
 # Treatments
 quality_lore: # Cosmetic quality placed on the item as lore once its quality rating exceeds one of these.
   # If left empty, they won't appear.

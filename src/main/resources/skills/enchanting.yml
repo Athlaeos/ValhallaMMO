@@ -1,0 +1,174 @@
+display_name: '<lang.skill-enchanting-displayname>'
+icon: ENCHANTING_TABLE
+icon_data: 3510001
+description: '<lang.skill-enchanting-description>'
+
+levelbar_title: '<lang.skill-enchanting-level-bar>'
+levelbar_color: BLUE # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
+levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID
+
+anvil_downgrading: false # If true, when combining an item with another its enchantments can be downgraded if the player doesn't have sufficient skill
+
+# Here you can fill in the formulas used for calculating the amplifiers of vanilla and custom enchantments
+# The output will be applied on the item's default enchantment amplifiers
+# "rating" refers to the player's skill points. Which will be general skill points + specific skill points.
+# Example: A wooden tool has a max durability of 60, if the outcome of the wood formula is 0.5 its custom durability
+#          will be 30. The x-axis of the resulting graph represents the player's smithing skill, the y-axis the
+#          durability multiplier.
+
+# For vanilla enchantments the "default" amplifier is considered the amplifiers of the enchantments the item has
+# directly after enchanting with the vanilla system. If a bow got power IV for example, it could be amplified to
+# power VI if the player has 300 "skill" with enchanting
+# For custom enchantments the "default" amplifier is whatever the amplifier was decided to be in the enchanting recipe
+scaling_amplifier:
+  power:
+    scaling: '(4/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT' # The scaling mode, MULTIPLIER multiplies the item's base enchantment amplifier by the outcome of the scaling.
+    # ADD_ON_DEFAULT instead adds the outcome of the scaling to the attribute's base value.
+    lower_bound: none # The outcome of the scaling can't go below this value. If not a number, there is no lower bound.
+    upper_bound: none # The outcome of the scaling can't go above this value. If not a number, there is no upper bound.
+  punch:
+    scaling: '(2/300) * %rating% - 1' # This default formula results in an amplifier amplification of -1 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  sharpness:
+    scaling: '(5/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +3 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  bane_of_arthropods:
+    scaling: '(4/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  smite:
+    scaling: '(4/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  depth_strider:
+    scaling: '(3/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  efficiency:
+    scaling: '(5/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +3 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  unbreaking:
+    scaling: '(3/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  fire_aspect:
+    scaling: '(2/300) * %rating% - 1' # This default formula results in an amplifier amplification of -1 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  frost_walker:
+    scaling: '(2/300) * %rating% - 1' # This default formula results in an amplifier amplification of -1 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  impaling:
+    scaling: '(4/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  knockback:
+    scaling: '(2/300) * %rating% - 1' # This default formula results in an amplifier amplification of -1 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  fortune:
+    scaling: '(3/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  looting:
+    scaling: '(3/300) * %rating% - 1' # This default formula results in an amplifier amplification of -1 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  loyalty:
+    scaling: '(2/300) * %rating% - 1' # This default formula results in an amplifier amplification of -1 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  luck:
+    scaling: '(3/300) * %rating% - 1' # This default formula results in an amplifier amplification of -1 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  lure:
+    scaling: '(2/300) * %rating% - 1' # This default formula results in an amplifier amplification of -1 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  respiration:
+    scaling: '(3/300) * %rating% - 1' # This default formula results in an amplifier amplification of -1 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  piercing:
+    scaling: '(4/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  protection:
+    scaling: '(4/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  projectile_protection:
+    scaling: '(4/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  blast_protection:
+    scaling: '(4/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  fire_protection:
+    scaling: '(4/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  feather_falling:
+    scaling: '(3/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  quick_charge:
+    scaling: '(3/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  riptide:
+    scaling: '(4/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  soul_speed:
+    scaling: '(3/300) * %rating% - 1' # This default formula results in an amplifier amplification of -1 to +2 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  sweeping_edge:
+    scaling: '(3/300) * %rating% - 2' # This default formula results in an amplifier amplification of -2 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  thorns:
+    scaling: '(2/300) * %rating% - 1' # This default formula results in an amplifier amplification of -1 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none
+  swift_sneak:
+    scaling: '(2/300) * %rating% - 1' # This default formula results in an amplifier amplification of -1 to +1 from 0-300 points.
+    mode: 'ADD_ON_DEFAULT'
+    lower_bound: none
+    upper_bound: none

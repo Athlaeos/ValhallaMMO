@@ -5,7 +5,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import org.bukkit.entity.Player;
 
 public class ProfileBooleanSet extends PerkReward {
@@ -20,28 +20,26 @@ public class ProfileBooleanSet extends PerkReward {
 
     @Override
     public void apply(Player player) {
-        if (isPersistent()) {
-            Profile profile = ProfileManager.getPersistentProfile(player, type);
-            profile.setBoolean(stat, value);
-            ProfileManager.setPersistentProfile(player, profile, type);
-        } else {
-            Profile profile = ProfileManager.getSkillProfile(player, type);
-            profile.setBoolean(stat, value);
-            ProfileManager.setSkillProfile(player, profile, type);
-        }
+        Profile profile = isPersistent() ? ProfileRegistry.getPersistentProfile(player, type) : ProfileRegistry.getSkillProfile(player, type);
+
+        profile.setBoolean(stat, value);
+
+        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
+        else ProfileRegistry.setSkillProfile(player, profile, type);
+
         AccumulativeStatManager.updateStats(player);
     }
 
     @Override
     public void remove(Player player) {
         if (isPersistent()) {
-            Profile profile = ProfileManager.getPersistentProfile(player, type);
+            Profile profile = ProfileRegistry.getPersistentProfile(player, type);
             profile.setBoolean(stat, !value);
-            ProfileManager.setPersistentProfile(player, profile, type);
+            ProfileRegistry.setPersistentProfile(player, profile, type);
         } else {
-            Profile profile = ProfileManager.getSkillProfile(player, type);
+            Profile profile = ProfileRegistry.getSkillProfile(player, type);
             profile.setBoolean(stat, !value);
-            ProfileManager.setSkillProfile(player, profile, type);
+            ProfileRegistry.setSkillProfile(player, profile, type);
         }
         AccumulativeStatManager.updateStats(player);
     }

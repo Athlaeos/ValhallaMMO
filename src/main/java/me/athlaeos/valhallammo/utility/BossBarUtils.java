@@ -9,11 +9,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class BossBarUtils {
-    private final static Map<Player, Map<String, TemporaryBossBar>> activeBossBars = new HashMap<>();
+    private final static Map<UUID, Map<String, TemporaryBossBar>> activeBossBars = new HashMap<>();
 
-    public static Map<Player, Map<String, TemporaryBossBar>> getActiveBossBars() {
+    public static Map<UUID, Map<String, TemporaryBossBar>> getActiveBossBars() {
         return activeBossBars;
     }
 
@@ -27,18 +28,18 @@ public class BossBarUtils {
         TemporaryBossBar bossBar = null;
         if (progress < 0) progress = 0D;
         if (progress > 1) progress = 1D;
-        if (activeBossBars.containsKey(player)){
-            if (activeBossBars.get(player).containsKey(skillType)){
-                bossBar = activeBossBars.get(player).get(skillType);
+        if (activeBossBars.containsKey(player.getUniqueId())){
+            if (activeBossBars.get(player.getUniqueId()).containsKey(skillType)){
+                bossBar = activeBossBars.get(player.getUniqueId()).get(skillType);
             }
         }
         if (bossBar == null){
             bossBar = new TemporaryBossBar(time, progress, title, player, skillType, color, style);
-            Map<String, TemporaryBossBar> existingBossBars = activeBossBars.get(player);
+            Map<String, TemporaryBossBar> existingBossBars = activeBossBars.get(player.getUniqueId());
             if (existingBossBars == null) existingBossBars = new HashMap<>();
             existingBossBars.put(skillType, bossBar);
             bossBar.runTaskTimer(ValhallaMMO.getInstance(), 0L, 2L);
-            activeBossBars.put(player, existingBossBars);
+            activeBossBars.put(player.getUniqueId(), existingBossBars);
         }
 
         bossBar.setTimer(time);
@@ -67,10 +68,10 @@ public class BossBarUtils {
         public void run() {
             if (timer <= 0){
                 bossBar.removeAll();
-                Map<String, TemporaryBossBar> existingBossBars = activeBossBars.get(p);
+                Map<String, TemporaryBossBar> existingBossBars = activeBossBars.get(p.getUniqueId());
                 if (existingBossBars == null) existingBossBars = new HashMap<>();
                 existingBossBars.remove(skillType);
-                activeBossBars.put(p, existingBossBars);
+                activeBossBars.put(p.getUniqueId(), existingBossBars);
                 cancel();
             } else {
                 bossBar.setTitle(text);

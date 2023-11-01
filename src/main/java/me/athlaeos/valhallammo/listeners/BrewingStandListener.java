@@ -8,8 +8,9 @@ import me.athlaeos.valhallammo.event.PlayerCustomBrewEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -132,7 +133,7 @@ public class BrewingStandListener implements Listener {
                 brewingStand.setBrewingTime(400);
                 double baseDuration = recipes.values().stream().map(DynamicBrewingRecipe::getBrewTime).mapToDouble(a -> a).average().orElse(400);
 
-                double speedMultiplier = p == null ? 1 : 1; // AccumulativeStatManager.getCachedStats("ALCHEMY_BREW_SPEED", p, 10000, true) TODO asm
+                double speedMultiplier = 1 + (p == null ? 0 : AccumulativeStatManager.getCachedStats("BREWING_SPEED_BONUS", p, 10000, true));
                 int duration = (int) (speedMultiplier <= 0 ? -1 : baseDuration / speedMultiplier); // negative speed = no brewing
                 ActiveBrewingStand newStand = new ActiveBrewingStand(p, inventory, recipes, duration);
                 newStand.runTaskTimer(ValhallaMMO.getInstance(), 0, 1);
@@ -207,7 +208,7 @@ public class BrewingStandListener implements Listener {
                 boolean saveIngredient = false;
                 if (p != null){
                     AttributeInstance luckAttribute = p.getAttribute(Attribute.GENERIC_LUCK);
-                    saveIngredient = Utils.proc(0, luckAttribute != null ? luckAttribute.getValue() : 0, false); // TODO AccumulativeStatManager.getCachedStats("ALCHEMY_INGREDIENT_SAVE", p, 10000, true)
+                    saveIngredient = Utils.proc(AccumulativeStatManager.getCachedStats("BREWING_INGREDIENT_SAVE_CHANCE", p, 10000, true), luckAttribute != null ? luckAttribute.getValue() : 0, false);
                 }
 
                 if (saveIngredient){

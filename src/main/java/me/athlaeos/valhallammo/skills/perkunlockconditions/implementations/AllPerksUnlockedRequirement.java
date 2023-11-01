@@ -1,8 +1,8 @@
 package me.athlaeos.valhallammo.skills.perkunlockconditions.implementations;
 
 import me.athlaeos.valhallammo.localization.TranslationManager;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockCondition;
 import me.athlaeos.valhallammo.skills.skills.PerkRegistry;
@@ -30,7 +30,7 @@ public class AllPerksUnlockedRequirement implements UnlockCondition {
 
     @Override
     public boolean canUnlock(Player p, boolean forceTrue) {
-        PowerProfile profile = ProfileManager.getPersistentProfile(p, PowerProfile.class);
+        PowerProfile profile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
         return perks == null || perks.isEmpty() ||
                 profile.getUnlockedPerks().containsAll(perks);
     }

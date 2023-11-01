@@ -5,7 +5,7 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.StatProperties;
 import org.bukkit.entity.Player;
 
@@ -21,15 +21,13 @@ public class ProfileDoubleSet extends PerkReward {
 
     @Override
     public void apply(Player player) {
-        if (isPersistent()) {
-            Profile profile = ProfileManager.getPersistentProfile(player, type);
-            profile.setDouble(stat, value);
-            ProfileManager.setPersistentProfile(player, profile, type);
-        } else {
-            Profile profile = ProfileManager.getSkillProfile(player, type);
-            profile.setDouble(stat, value);
-            ProfileManager.setSkillProfile(player, profile, type);
-        }
+        Profile profile = isPersistent() ? ProfileRegistry.getPersistentProfile(player, type) : ProfileRegistry.getSkillProfile(player, type);
+
+        profile.setDouble(stat, value);
+
+        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
+        else ProfileRegistry.setSkillProfile(player, profile, type);
+
         AccumulativeStatManager.updateStats(player);
     }
 
@@ -43,7 +41,7 @@ public class ProfileDoubleSet extends PerkReward {
 
     @Override
     public String rewardPlacholder() {
-        StatProperties properties = ProfileManager.getRegisteredProfiles().get(type).getNumberStatProperties().get(stat);
+        StatProperties properties = ProfileRegistry.getRegisteredProfiles().get(type).getNumberStatProperties().get(stat);
         if (properties == null) return StatFormat.FLOAT_P2.format(value);
         return properties.getFormat().format(value);
     }

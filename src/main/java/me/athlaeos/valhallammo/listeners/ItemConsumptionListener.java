@@ -1,13 +1,14 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.dom.FoodClass;
+import me.athlaeos.valhallammo.item.FoodClass;
 import me.athlaeos.valhallammo.item.FoodPropertyManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,7 +34,7 @@ public class ItemConsumptionListener implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() || ItemUtils.isEmpty(item)) return;
         Player p = e.getPlayer();
         for (PotionEffectWrapper wrapper : PotionEffectRegistry.getStoredEffects(ItemUtils.getItemMeta(item), false).values()){
-            if (!wrapper.isVanilla()) PotionEffectRegistry.addEffect(p, new CustomPotionEffect(wrapper, wrapper.getDuration(), wrapper.getAmplifier()), false, EntityPotionEffectEvent.Cause.POTION_DRINK);
+            if (!wrapper.isVanilla()) PotionEffectRegistry.addEffect(p, null, new CustomPotionEffect(wrapper, (int) wrapper.getDuration(), wrapper.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.POTION_DRINK);
             else p.addPotionEffect(new PotionEffect(wrapper.getVanillaEffect(), (int) wrapper.getDuration(), (int) wrapper.getAmplifier()));
         }
 
@@ -47,7 +48,7 @@ public class ItemConsumptionListener implements Listener {
             float saturationToReplenish = FoodPropertyManager.getSaturationValue(item, meta);
 
             FoodClass type = FoodPropertyManager.getFoodClass(item, meta);
-            double multiplier = 1;// + ((type == null ? 0 : AccumulativeStatManager.getCachedStats("FOOD_BONUS_" + type, e.getPlayer(), 10000, true)));
+            double multiplier = 1 + ((type == null ? 0 : AccumulativeStatManager.getCachedStats("FOOD_BONUS_" + type, e.getPlayer(), 10000, true)));
             foodToReplenish = (int) Math.round(multiplier * foodToReplenish);
             saturationToReplenish *= multiplier;
 
@@ -70,8 +71,25 @@ public class ItemConsumptionListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onHungerChange(FoodLevelChangeEvent e){
+    public void cancelHunger(FoodLevelChangeEvent e){
         if (cancelNextFoodEvent.contains(e.getEntity().getUniqueId())) e.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onHungerChange(FoodLevelChangeEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (e.getFoodLevel() < e.getEntity().getFoodLevel()){
+            // entity lost hunger
+            double chance = AccumulativeStatManager.getCachedStats("HUNGER_SAVE_CHANCE", e.getEntity(), 10000, true);
+            if (chance >= 0){
+                if (Utils.proc(e.getEntity(), chance, false)) e.setCancelled(true);
+            } else {
+                int foodLost = e.getEntity().getFoodLevel() - e.getFoodLevel();
+                // food lost is a positive integer
+                foodLost = Utils.randomAverage((double) foodLost * -(1-chance));
+                e.setFoodLevel(e.getEntity().getFoodLevel() - foodLost);
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

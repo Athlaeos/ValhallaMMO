@@ -2,6 +2,6 @@ package me.athlaeos.valhallammo.dom;
 
 public enum CombatType{
     RANGED,
-    MELEE,
-    UNARMED
+    MELEE_ARMED,
+    MELEE_UNARMED
 }

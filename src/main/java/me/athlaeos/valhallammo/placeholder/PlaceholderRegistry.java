@@ -4,7 +4,7 @@ import me.athlaeos.valhallammo.placeholder.placeholders.*;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public class PlaceholderRegistry {
 
     {
         // auto-registering profile stat placeholders
-        for (Profile profile : ProfileManager.getRegisteredProfiles().values()){
+        for (Profile profile : ProfileRegistry.getRegisteredProfiles().values()){
             for (String intStat : profile.intStatNames()) {
                 StatFormat format = profile.getNumberStatProperties().get(intStat).getFormat();
                 if (format == null) continue;
@@ -30,10 +30,6 @@ public class PlaceholderRegistry {
         }
 
         registerPlaceholder(new SpendableSkillPointsPlaceholder("%skillpoints%"));
-        registerPlaceholder(new TotalArmorPlaceholder("%armor_total%", false, false, false));
-        registerPlaceholder(new TotalArmorPlaceholder("%light_armor_total%", false, true, true));
-        registerPlaceholder(new TotalArmorPlaceholder("%heavy_armor_total%", true, false, true));
-        registerPlaceholder(new TotalArmorPlaceholder("%weightless_armor_total%", true, true, false));
     }
 
     public void registerPlaceholder(Placeholder p) {

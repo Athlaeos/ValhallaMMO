@@ -1,0 +1,15 @@
+display_name: '<lang.skill-light-armor-displayname>'
+icon: LEATHER_CHESTPLATE
+icon_data: 3510001
+description: '<lang.skill-light-armor-description>'
+
+levelbar_title: '<lang.skill-light-armor-level-bar>'
+levelbar_color: YELLOW # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
+levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID
+
+adrenaline_effects: # is to be formatted by EFFECT;AMPLIFIER;DURATION;AMPLIFIERPERLEVEL;DURATIONPERLEVEL
+  # amplifiers are rounded down, so SPEED 0.5 would not give any speed effect
+  - SPEED;1;200;0.5;50 # gives SPEED I for 10s where the amplifier increases by 0.5 and duration by 2.5s per extra level
+  - JUMP;1;200;0.5;50
+  - REGENERATION;0.5;200;0.5;50
+  - DAMAGE_RESISTANCE;0;200;0.25;50

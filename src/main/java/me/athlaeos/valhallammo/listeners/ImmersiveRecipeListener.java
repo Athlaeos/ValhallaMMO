@@ -5,8 +5,8 @@ import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.ToolRequirementType;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
-import me.athlaeos.valhallammo.crafting.craftanimations.AnimationRegistry;
-import me.athlaeos.valhallammo.crafting.craftanimations.CraftAnimation;
+import me.athlaeos.valhallammo.animations.AnimationRegistry;
+import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.recipetypes.ImmersiveCraftingRecipe;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -17,8 +17,8 @@ import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
-import me.athlaeos.valhallammo.skills.skills.implementations.smithing.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import net.md_5.bungee.api.ChatMessageType;
@@ -131,8 +131,8 @@ public class ImmersiveRecipeListener implements Listener {
                                 Utils.sendMessage(p, ItemUtils.getPDCString(DynamicItemModifier.ERROR_MESSAGE, heldItem, ""));
                                 selectedImmersiveRecipe.remove(p.getUniqueId());
                             } else {
-                                CraftAnimation animation = AnimationRegistry.getAnimation(AnimationRegistry.IMMERSIVE_CRAFT_FINISH.id());
-                                if (animation != null) animation.animate(p, clicked, 0);
+                                Animation animation = AnimationRegistry.getAnimation(AnimationRegistry.BLOCK_SPARKS_CRAFTSOUND.id());
+                                if (animation != null) animation.animate(p, clicked.getLocation(), p.getEyeLocation().getDirection(), 0);
                                 incrementPlayerCraftFrequency(e.getPlayer(), recipe);
                                 if (recipe.tinker())
                                     p.getInventory().setItemInMainHand(result.get());
@@ -161,8 +161,8 @@ public class ImmersiveRecipeListener implements Listener {
             } else {
                 // inbetween clicks, just for aesthetic effects
                 if (Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "sound_craft")){
-                    CraftAnimation animation = AnimationRegistry.getAnimation(AnimationRegistry.IMMERSIVE_CRAFT_PROCESS.id());
-                    if (animation != null) animation.animate(p, clicked, 0);
+                    Animation animation = AnimationRegistry.getAnimation(AnimationRegistry.BLOCK_PARTICLE_PUFF.id());
+                    if (animation != null) animation.animate(p, clicked.getLocation(), p.getEyeLocation().getDirection(), 0);
                     Timer.setCooldown(e.getPlayer().getUniqueId(), 200, "sound_craft");
                 }
             }

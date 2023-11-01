@@ -1,7 +1,7 @@
 package me.athlaeos.valhallammo.playerstats.statsources;
 
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatSource;
-import me.athlaeos.valhallammo.tools.GlobalEffect;
+import me.athlaeos.valhallammo.utility.GlobalEffect;
 import org.bukkit.entity.Entity;
 
 public class GlobalBuffSource implements AccumulativeStatSource {
@@ -12,7 +12,7 @@ public class GlobalBuffSource implements AccumulativeStatSource {
     }
 
     @Override
-    public double fetch(Entity statPossessor, boolean displayOnly) {
+    public double fetch(Entity statPossessor, boolean use) {
         if (GlobalEffect.isActive(buff)) return GlobalEffect.getAmplifier(buff);
         return 0;
     }

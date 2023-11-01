@@ -14,8 +14,9 @@ import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.listeners.ImmersiveRecipeListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -231,7 +232,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
     private void buildMenuItems(final ItemBuilderCallback callback){
         List<String> defaultFormat = TranslationManager.getListTranslation("immersive_recipe_button_format");
         String ingredientFormat = TranslationManager.getTranslation("recipe_ingredient_format");
-        double craftingTimeReduction = 0; // TODO AccumulativeStatManager.getCachedStats("CRAFTING_TIME_REDUCTION", playerMenuUtility.getOwner(), 10000, true);
+        double craftingTimeReduction = AccumulativeStatManager.getCachedStats("CRAFTING_TIME_REDUCTION", playerMenuUtility.getOwner(), 10000, true);
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             List<ItemStack> icons = new ArrayList<>();
             for (ImmersiveCraftingRecipe recipe : recipes){
@@ -284,7 +285,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                                 .filter(Objects::nonNull)
                                 .collect(Collectors.toList())
                 );
-                String time = String.format("%.1f", ((recipe.getTimeToCraft() * (1 - Math.min(1, craftingTimeReduction)))/20D));
+                String time = String.format("%.1f", (Math.max(0, recipe.getTimeToCraft() * (1 - craftingTimeReduction))/20D));
                 lore = lore.stream().map(l -> l.replace("%crafting_time%", time)).collect(Collectors.toList());
 
                 String displayName = recipe.getDisplayName() == null ? ItemUtils.getItemName(ItemUtils.getItemMeta(button)) : recipe.getDisplayName();

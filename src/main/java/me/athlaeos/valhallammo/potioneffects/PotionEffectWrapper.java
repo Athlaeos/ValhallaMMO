@@ -43,7 +43,7 @@ public abstract class PotionEffectWrapper {
     }
 
     public abstract void onApply(ItemMeta potion);
-    public abstract void onInflict(LivingEntity entity);
+    public abstract void onInflict(LivingEntity entity, LivingEntity causedBy, double amplifier, int duration, double intensity);
 
     public abstract void onRemove(ItemMeta potion);
     public abstract void onExpire(LivingEntity entity);
@@ -73,7 +73,7 @@ public abstract class PotionEffectWrapper {
         return TranslationManager.getTranslation("effect_name_" + effect.toLowerCase());
     }
     public String getEffectIcon(){
-        return TranslationManager.getTranslation("effect_icon_" + effect.toLowerCase());
+        return TranslationManager.getTranslation("stat_icon_" + effect.toLowerCase());
     }
     public abstract boolean isSingleUse();
 
@@ -82,4 +82,8 @@ public abstract class PotionEffectWrapper {
     public PotionEffectWrapper setCharges(int charges) { this.charges = charges; return this; }
 
     public abstract PotionEffectWrapper copy();
+
+    public static String prefix(boolean positive){
+        return TranslationManager.getTranslation("stat_potion_" + (positive ? "positive" : "negative") + "_prefix");
+    }
 }

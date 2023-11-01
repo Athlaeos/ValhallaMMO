@@ -71,6 +71,7 @@ public class PlayerSkillExperienceGainEvent extends PlayerEvent implements Cance
         COMMAND,
         PLUGIN,
         RESET,
+        REDEEM,
         OTHER
     }
 }

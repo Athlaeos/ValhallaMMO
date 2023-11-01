@@ -365,7 +365,7 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
             if (e.getRawSlot() == resultIndex){
                 if (!tinker && !ItemUtils.isEmpty(cursor)) result = cursor.clone();
             } else {
-                // clicked non-result slot // TODO other input slots
+                // clicked non-result slot
                 if (!ItemUtils.isEmpty(cursor)){
                     String option = ItemUtils.getPDCString(KEY_OPTION_ID, cursor, null);
                     if (option == null){

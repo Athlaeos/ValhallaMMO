@@ -11,8 +11,7 @@ public class MenuListener implements Listener {
 
     @EventHandler
     public void onMenuClick(InventoryClickEvent e){
-        if (e.getView().getTopInventory().getHolder() != null &&
-                e.getView().getTopInventory().getHolder() instanceof Menu m &&
+        if (e.getView().getTopInventory().getHolder() instanceof Menu m &&
                 e.getView().getBottomInventory() instanceof PlayerInventory){
             m.handleMenu(e);
         }
@@ -20,8 +19,7 @@ public class MenuListener implements Listener {
 
     @EventHandler
     public void onMenuDrag(InventoryDragEvent e){
-        if (e.getView().getTopInventory().getHolder() != null &&
-                e.getView().getTopInventory().getHolder() instanceof Menu m &&
+        if (e.getView().getTopInventory().getHolder() instanceof Menu m &&
                 e.getView().getBottomInventory() instanceof PlayerInventory){
             if (!ItemUtils.isEmpty(e.getCursor())){
                 m.handleMenu(e);

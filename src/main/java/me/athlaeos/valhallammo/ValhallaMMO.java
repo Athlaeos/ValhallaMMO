@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo;
 
 import me.athlaeos.valhallammo.commands.CommandManager;
 import me.athlaeos.valhallammo.commands.ProfileCommand;
+import me.athlaeos.valhallammo.commands.RedeemCommand;
 import me.athlaeos.valhallammo.commands.SkillsCommand;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.configuration.ConfigUpdater;
@@ -14,18 +15,21 @@ import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.listeners.*;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.nms.NMS;
+import me.athlaeos.valhallammo.nms.NetworkHandlerImpl;
+import me.athlaeos.valhallammo.nms.PacketListener;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpenseRegistry;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
-import me.athlaeos.valhallammo.skills.skills.implementations.alchemy.AlchemyItemPropertyManager;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockConditionRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
-import me.athlaeos.valhallammo.skills.skills.implementations.smithing.SmithingItemPropertyManager;
-import me.athlaeos.valhallammo.tools.Bleeder;
+import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.tools.BlockHardnessStick;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -41,7 +45,8 @@ import java.util.*;
 
 public class ValhallaMMO extends JavaPlugin {
 
-    private NMS nms = null;
+    private static NMS nms = null;
+    private static PacketListener packetListener = null;
     private static ValhallaMMO instance;
     private static boolean resourcePackConfigForced = false;
     private static final Map<Class<? extends PluginHook>, PluginHook> pluginHooks = new HashMap<>();
@@ -91,16 +96,26 @@ public class ValhallaMMO extends JavaPlugin {
         saveConfig("skills/power.yml");
         saveConfig("skills/smithing.yml");
         saveConfig("skills/alchemy.yml");
+        saveConfig("skills/archery.yml");
+        saveConfig("skills/enchanting.yml");
+        saveConfig("skills/light_armor.yml");
+        saveConfig("skills/heavy_armor.yml");
+        saveConfig("skills/light_weapons.yml"); // TODO config saving
+        saveConfig("skills/heavy_weapons.yml");
+        saveConfig("skills/mining.yml");
         saveAndUpdateConfig("gui_details.yml");
 
         if (setupNMS()){
+            packetListener = new PacketListener(new NetworkHandlerImpl());
+            packetListener.addAll();
+            registerListener(packetListener);
+            registerListener(new CustomBreakSpeedListener(), "custom_mining_speeds");
             logInfo("NMS version " + nms.getClass().getSimpleName() + " registered!");
         } else {
             logWarning("No NMS version found for your server version");
             logWarning("This version may not be compatible with ValhallaMMO (1.17+) yet and may not work properly, and the following features are disabled:");
             logWarning("    > Custom block breaking speeds");
             logWarning("    > Advanced book editing");
-            logWarning("    > Multi-jumping");
         }
 
         ItemAttributesRegistry.loadDefaults();
@@ -108,51 +123,76 @@ public class ValhallaMMO extends JavaPlugin {
         SmithingItemPropertyManager.loadConfig();
         AlchemyItemPropertyManager.loadConfig();
         SkillRegistry.registerSkills();
-        Bleeder.startBleedTask();
 
-        ProfileManager.setupDatabase();
-        ProfilePersistence connection = ProfileManager.getPersistence();
+        ProfileRegistry.setupDatabase();
+        ProfilePersistence connection = ProfileRegistry.getPersistence();
 
         if (ConfigManager.getConfig("config.yml").get().getBoolean("metrics", true)){
             new Metrics(this, 14942).addCustomChart(new Metrics.SimplePie("using_database_for_player_data", () -> connection instanceof Database db && db.getConnection() != null ? "Yes" : "No"));
         }
 
-        registerListener(new JoinLeaveListener());
-        registerListener(new MenuListener());
-        registerListener(new RecipeDiscoveryListener());
-        registerListener(new CraftingTableListener());
-        registerListener(new ItemDamageListener());
-        registerListener(new ChatListener());
-        registerListener(new CookingListener());
-        registerListener(new HandSwitchListener());
-        registerListener(new SmithingTableListener());
+        registerListener(new ArmorSwitchListener());
+        registerListener(new BlockListener());
         registerListener(new BrewingStandListener());
         registerListener(new CauldronCraftingListener());
+        registerListener(new ChatListener());
+        registerListener(new CookingListener());
+        registerListener(new CraftingTableListener());
+        registerListener(new DeathListener());
+        registerListener(new EnchantmentListener());
+        registerListener(new EntityAttackListener());
+        registerListener(new EntityDamagedListener());
+        registerListener(new EntitySpawnListener());
+        registerListener(new HandSwitchListener());
+        registerListener(new HealthRegenerationListener());
         registerListener(new ImmersiveRecipeListener());
-        registerListener(new ProjectileListener());
-        registerListener(new PotionEffectListener());
+        registerListener(new InteractListener());
         registerListener(new ItemConsumptionListener());
+        registerListener(new ItemDamageListener());
+        registerListener(new JoinLeaveListener());
+        registerListener(new LootListener());
+        registerListener(new MenuListener());
+        registerListener(new MovementListener());
+        registerListener(new PotionEffectListener());
+        registerListener(new ProjectileListener());
+        registerListener(new ReachAttackListener());
+        registerListener(new RecipeDiscoveryListener());
+        registerListener(new SmithingTableListener());
+
+        registerListener(new BlockHardnessStick());
 
         registerCommand(new CommandManager(), "valhalla");
         registerCommand(new SkillsCommand(), "skills");
+        registerCommand(new RedeemCommand(), "redeem");
         registerCommand(new ProfileCommand(PowerProfile.class), "power");
+        registerCommand(new ProfileCommand(SmithingProfile.class), "smithing");
+        registerCommand(new ProfileCommand(AlchemyProfile.class), "alchemy");
+        registerCommand(new ProfileCommand(EnchantingProfile.class), "enchanting");
+        registerCommand(new ProfileCommand(LightWeaponsProfile.class), "lightweapons");
+        registerCommand(new ProfileCommand(HeavyWeaponsProfile.class), "heavyweapons");
+        registerCommand(new ProfileCommand(ArcheryProfile.class), "archery");
+        registerCommand(new ProfileCommand(LightArmorProfile.class), "lightarmor");
+        registerCommand(new ProfileCommand(HeavyArmorProfile.class), "heavyarmor");
+        registerCommand(new ProfileCommand(MiningProfile.class), "mining");
         // TODO new profile command per profile
 
         CustomRecipeRegistry.loadFiles();
+        LootTableRegistry.loadFiles();
 
         // During reloads profiles are persisted. This makes sure profiles of players who are already online are ensured
         // to be loaded, otherwise their progress is reset
         for (Player p : getServer().getOnlinePlayers()){
-            ProfileManager.getPersistence().loadProfile(p);
+            ProfileRegistry.getPersistence().loadProfile(p);
         }
 
         worldBlacklist.addAll(pluginConfig.getStringList("world_blacklist"));
+        if (PotionEffectRegistry.getCustomEffectDisplay() != null) PotionEffectRegistry.getCustomEffectDisplay().start();
     }
 
     @Override
     public void onDisable() {
-        ProfileManager.getPersistence().saveAllProfiles();
-        if (ProfileManager.getPersistence() instanceof Database database) {
+        ProfileRegistry.getPersistence().saveAllProfiles();
+        if (ProfileRegistry.getPersistence() instanceof Database database) {
             try {
                 database.getConnection().close();
             } catch (SQLException ignored){
@@ -161,6 +201,8 @@ public class ValhallaMMO extends JavaPlugin {
         }
 
         CustomRecipeRegistry.saveRecipes(false);
+        LootTableRegistry.saveLootTables();
+        if (packetListener != null) packetListener.closeAll();
     }
 
     private boolean setupNMS() {
@@ -176,6 +218,10 @@ public class ValhallaMMO extends JavaPlugin {
         } catch (Exception ignored) {
             return false;
         }
+    }
+
+    public static NMS getNms() {
+        return nms;
     }
 
     private void registerListener(Listener listener){
@@ -196,6 +242,7 @@ public class ValhallaMMO extends JavaPlugin {
         save(name);
         return ConfigManager.saveConfig(name).get();
     }
+
     public void save(String name){
         File file = new File(this.getDataFolder(), name);
         if (!file.exists()){

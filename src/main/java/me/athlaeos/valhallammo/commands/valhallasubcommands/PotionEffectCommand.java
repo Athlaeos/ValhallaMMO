@@ -33,7 +33,7 @@ public class PotionEffectCommand implements Command {
 		}
 
 		if (args.length >= 4){
-			String effect = args[1];
+			String effect = args[1].toUpperCase();
 			double amplifier;
 			int duration;
 			try {
@@ -47,7 +47,7 @@ public class PotionEffectCommand implements Command {
 				targets = Utils.selectPlayers(sender, args[4]);
 			}
 
-			if (!PotionEffectRegistry.getRegisteredEffects().containsKey(effect.toUpperCase())){
+			if (!PotionEffectRegistry.getRegisteredEffects().containsKey(effect)){
 				Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_effect")));
 				return true;
 			}
@@ -56,23 +56,18 @@ public class PotionEffectCommand implements Command {
 				Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_vanilla_effects_illegal"));
 				return true;
 			}
+			wrapper.setDuration(duration);
+			wrapper.setAmplifier(amplifier);
 			if (duration == -1)
-				targets.forEach(p -> PotionEffectRegistry.addEffect(p, new CustomPotionEffect(wrapper, -1L, amplifier), true, EntityPotionEffectEvent.Cause.COMMAND));
+				targets.forEach(p -> PotionEffectRegistry.addEffect(p, null, new CustomPotionEffect(wrapper, -1L, amplifier), true, 1, EntityPotionEffectEvent.Cause.COMMAND));
 			else
-				targets.forEach(p -> PotionEffectRegistry.addEffect(p, new CustomPotionEffect(wrapper, duration, amplifier), true, EntityPotionEffectEvent.Cause.COMMAND));
+				targets.forEach(p -> PotionEffectRegistry.addEffect(p, null, new CustomPotionEffect(wrapper, duration, amplifier), true, 1, EntityPotionEffectEvent.Cause.COMMAND));
 
-			if (wrapper.isInstant()){
-				Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_durable_effect_applied")
-						.replace("%effect%", wrapper.getEffectName())
-						.replace("%amplifier%", wrapper.getFormat().format(amplifier)));
-			}
-			else{
-				Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_instant_effect_applied")
-						.replace("%duration%", StringUtils.toTimeStamp(duration, 20))
-						.replace("%effect%", wrapper.getEffectName())
-						.replace("%amplifier%", wrapper.getFormat().format(amplifier)));
-			}
-			targets.forEach(EntityCache::resetPotionEffects);
+			Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_durable_effect_applied".replace("%effect%", wrapper.getEffectName()
+					.replace("%icon%", wrapper.getEffectIcon())
+					.replace("%value%", wrapper.getFormat().format(wrapper.getAmplifier()))
+					.replace("%duration%", String.format("(%s)", StringUtils.toTimeStamp(wrapper.getDuration(), 20)))
+					.trim())));
 
 			return true;
 		}
@@ -108,7 +103,7 @@ public class PotionEffectCommand implements Command {
 	public List<String> getSubcommandArgs(CommandSender sender, String[] args) {
 		if (args.length == 2) return new ArrayList<>(PotionEffectRegistry.getRegisteredEffects().values().stream().filter(e -> !e.isVanilla()).map(e -> e.getEffect().toLowerCase()).sorted().toList());
 		if (args.length == 3) return List.of("<amplifier>");
-		if (args.length == 5) return List.of("<duration>");
+		if (args.length == 4) return List.of("<duration>");
 		return Command.noSubcommandArgs();
 	}
 }

@@ -14,12 +14,12 @@ import org.jetbrains.annotations.NotNull;
 public class SkillsCommand implements CommandExecutor {
 
 	@Override
-	public boolean onCommand(CommandSender sender, org.bukkit.command.@NotNull Command cmd, @NotNull String name, String[] args) {
+	public boolean onCommand(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command cmd, @NotNull String name, String[] args) {
 		if (!(sender instanceof Player p)) {
 			Utils.sendMessage(sender, Utils.chat("&cOnly players can perform this command."));
 			return true;
 		}
-		if (!sender.hasPermission("valhalla.skills") && sender.hasPermission("valhalla.skills.other")) {
+		if (!sender.hasPermission("valhalla.skills") && !sender.hasPermission("valhalla.skills.other")) {
 			Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_no_permission")));
 			return true;
 		}

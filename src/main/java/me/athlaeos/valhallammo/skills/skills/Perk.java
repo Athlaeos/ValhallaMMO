@@ -5,8 +5,8 @@ import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockCondition;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
@@ -101,7 +101,7 @@ public class Perk {
     }
 
     public boolean canUnlock(Player p){
-        PowerProfile profile = ProfileManager.getPersistentProfile(p, PowerProfile.class);
+        PowerProfile profile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
         if (profile.getUnlockedPerks().contains(this.name) ||
                 profile.getPermanentlyLockedPerks().contains(this.name) ||
                 profile.getFakeUnlockedPerks().contains(this.name)) return false;
@@ -111,7 +111,7 @@ public class Perk {
     }
 
     public boolean shouldLock(Player p){
-        PowerProfile profile = ProfileManager.getPersistentProfile(p, PowerProfile.class);
+        PowerProfile profile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
         if (!profile.getUnlockedPerks().contains(this.name)) return false;
         return !metLevelRequirement(p) || !metConditionRequirements(p, false);
     }
@@ -125,7 +125,7 @@ public class Perk {
     }
 
     public boolean shouldBeVisible(Player p){
-        PowerProfile profile = ProfileManager.getPersistentProfile(p, PowerProfile.class);
+        PowerProfile profile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
         if (profile.getUnlockedPerks().contains(this.name)) return false;
         if (profile.getPermanentlyLockedPerks().contains(this.name)) return false;
         if (profile.getFakeUnlockedPerks().contains(this.name)) return false;
@@ -166,7 +166,7 @@ public class Perk {
     }
 
     public boolean hasUnlocked(Player p){
-        PowerProfile profile = ProfileManager.getPersistentProfile(p, PowerProfile.class);
+        PowerProfile profile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
         return profile.getUnlockedPerks().contains(this.name);
     }
 
@@ -181,7 +181,7 @@ public class Perk {
     }
 
     public boolean metLevelRequirement(Player p){
-        Profile profile = ProfileManager.getPersistentProfile(p, skill.getProfileType());
+        Profile profile = ProfileRegistry.getPersistentProfile(p, skill.getProfileType());
         return profile.getLevel() >= levelRequirement;
     }
 

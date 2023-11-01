@@ -215,11 +215,11 @@ public abstract class Profile {
         tablesToUpdate.add(name);
     }
 
-    protected void stringSetStat(String name, boolean update){
+    protected void stringSetStat(String name){
         if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
         allStatNames.add(name);
         stringSets.put(name, new HashSet<>());
-        if (update) tablesToUpdate.add(name);
+        tablesToUpdate.add(name);
     }
 
     protected void booleanStat(String name){ booleanStat(name, false, new BooleanProperties(true, true)); }
@@ -269,7 +269,7 @@ public abstract class Profile {
             if (doubles.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "DOUBLE default " + doubles.get(s).def);
             if (floats.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "FLOAT default " + floats.get(s).def);
             if (stringSets.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "TEXT");
-            if (booleans.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "BOOLEAN default " + booleans.get(s));
+            if (booleans.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "BOOLEAN default " + booleans.get(s).def);
         }
     }
 

@@ -5,9 +5,14 @@ import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicSmithingRecipe;
+import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.utility.GlobalEffect;
+import me.athlaeos.valhallammo.utility.EntityUtils;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -18,24 +23,26 @@ public class JoinLeaveListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (!e.getPlayer().isOnline()) return;
-            ProfileManager.getPersistence().loadProfile(e.getPlayer());
+            ProfileRegistry.getPersistence().loadProfile(e.getPlayer());
+            EntityCache.getAndCacheProperties(e.getPlayer());
+            PotionEffectRegistry.updatePlayerAffectedStatus(e.getPlayer());
+            GlobalEffect.temporarilyRevealBossBar(e.getPlayer());
 
-            // TODO world blacklisting
             // TODO tutorial book giving
-            // TODO global effect boss bar revealing
             PowerProfile p = ProfileCache.getOrCache(e.getPlayer(), PowerProfile.class);
+            boolean allPermission = e.getPlayer().hasPermission("valhalla.allrecipes");
             for (DynamicGridRecipe recipe : CustomRecipeRegistry.getGridRecipes().values()){
-                if (recipe.isUnlockedForEveryone() || p.getUnlockedRecipes().contains(recipe.getName()) || e.getPlayer().hasPermission("valhalla.allrecipes"))
+                if (recipe.isUnlockedForEveryone() || p.getUnlockedRecipes().contains(recipe.getName()) || allPermission)
                     e.getPlayer().discoverRecipe(recipe.getKey());
                 else e.getPlayer().undiscoverRecipe(recipe.getKey());
             }
             for (DynamicCookingRecipe recipe : CustomRecipeRegistry.getCookingRecipes().values()){
-                if (recipe.isUnlockedForEveryone() || p.getUnlockedRecipes().contains(recipe.getName()) || e.getPlayer().hasPermission("valhalla.allrecipes"))
+                if (recipe.isUnlockedForEveryone() || p.getUnlockedRecipes().contains(recipe.getName()) || allPermission)
                     e.getPlayer().discoverRecipe(recipe.getKey());
                 else e.getPlayer().undiscoverRecipe(recipe.getKey());
             }
             for (DynamicSmithingRecipe recipe : CustomRecipeRegistry.getSmithingRecipes().values()){
-                if (recipe.isUnlockedForEveryone() || p.getUnlockedRecipes().contains(recipe.getName()) || e.getPlayer().hasPermission("valhalla.allrecipes"))
+                if (recipe.isUnlockedForEveryone() || p.getUnlockedRecipes().contains(recipe.getName()) || allPermission)
                     e.getPlayer().discoverRecipe(recipe.getKey());
                 else e.getPlayer().undiscoverRecipe(recipe.getKey());
             }
@@ -44,8 +51,18 @@ public class JoinLeaveListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e){
-        // TODO remove unique attributes
+        // the following code is to remove valhallammo's attribute modifiers off players when they log off
+        // this is to prevent, in the case valhallammo is being uninstalled, no unintended attributes remain
+        // stuck on the player.
+        EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
 
-        ProfileManager.getPersistence().saveProfile(e.getPlayer());
+        for (MovementListener.AttributeDataHolder holder : MovementListener.getAttributesToUpdate().values()){
+            EntityUtils.removeUniqueAttribute(e.getPlayer(), holder.name(), holder.type());
+        }
+
+        EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_nullifier", Attribute.GENERIC_ARMOR);
+        EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_display", Attribute.GENERIC_ARMOR);
+
+        ProfileRegistry.getPersistence().saveProfile(e.getPlayer());
     }
 }

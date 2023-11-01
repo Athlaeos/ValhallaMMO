@@ -7,7 +7,7 @@ import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.command.CommandSender;
-import me.athlaeos.valhallammo.item.attributes.AttributeWrapper;
+import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.attribute.AttributeModifier;
@@ -39,7 +39,7 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
         attribute.setValue(value);
         attribute.setOperation(operation);
-        ItemAttributesRegistry.addDefaultStat(outputItem.getItem(), outputItem.getMeta(), attribute);
+        ItemAttributesRegistry.addDefaultStat(outputItem.getMeta(), attribute);
     }
 
     @Override

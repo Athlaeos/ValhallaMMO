@@ -16,10 +16,10 @@ import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
-import me.athlaeos.valhallammo.skills.skills.implementations.smithing.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.EntityEffect;
@@ -301,9 +301,8 @@ public class CraftingTableListener implements Listener {
                     Map<String, PotionEffectWrapper> actualEffects = PotionEffectRegistry.getStoredEffects(potionMeta, false);
                     if (defaultEffects.isEmpty()) return; // potion is vanilla
                     PotionEffectRegistry.setDefaultStoredEffects(arrowMeta, defaultEffects);
-                    // TODO check if it works without changing duration
                     PotionEffectRegistry.setActualStoredEffects(arrowMeta, actualEffects);
-                    PotionEffectRegistry.updateItemName(arrowMeta, true);
+                    PotionEffectRegistry.updateItemName(arrowMeta, true, false);
 
                     if (arrowMeta != null && potionMeta != null){
                         arrowMeta.setColor(potionMeta.getColor());

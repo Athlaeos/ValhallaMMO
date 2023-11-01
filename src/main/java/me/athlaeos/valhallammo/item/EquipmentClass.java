@@ -90,4 +90,16 @@ public enum EquipmentClass {
         if (equipmentClass == LEGGINGS) return true;
         return equipmentClass == BOOTS;
     }
+
+    public static boolean isHandHeld(ItemMeta meta) {
+        EquipmentClass equipmentClass = getMatchingClass(meta);
+        return equipmentClass != null && !isArmor(equipmentClass);
+    }
+
+    public static boolean isArmor(EquipmentClass equipmentClass) {
+        if (equipmentClass == HELMET) return true;
+        if (equipmentClass == CHESTPLATE) return true;
+        if (equipmentClass == LEGGINGS) return true;
+        return equipmentClass == BOOTS;
+    }
 }

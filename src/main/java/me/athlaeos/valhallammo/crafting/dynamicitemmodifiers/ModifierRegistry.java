@@ -21,11 +21,9 @@ import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
-import org.bukkit.potion.PotionType;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ModifierRegistry {
@@ -42,6 +40,12 @@ public class ModifierRegistry {
         register(new ArrowBehaviorLightning("arrow_behavior_lightning"));
         register(new ArrowBehaviorSmallFireball("arrow_behavior_smallfireball"));
         register(new ArrowBehaviorTeleporting("arrow_behavior_teleportation"));
+
+        register(new MiningExceptionsAdd("mining_exception_add"));
+        register(new MiningSpeedSet("mining_speed"));
+        register(new MiningHardnessTranslationsAdd("mining_hardness_translation_add"));
+
+        register(new LootTableSet("loot_table"));
 
         // All the attribute modifiers are registered in the attribute registry
 
@@ -133,6 +137,7 @@ public class ModifierRegistry {
         register(new TransformItemMaterial("transform_gold", Material.GOLDEN_CHESTPLATE, "GOLDEN"));
         register(new TransformItemMaterial("transform_chainmail", Material.CHAINMAIL_CHESTPLATE, "CHAINMAIL"));
         register(new TransformItemMaterial("transform_leather", Material.LEATHER_CHESTPLATE, "LEATHER"));
+        SkillRegistry.getAllSkills().values().forEach(s -> register(new SkillRequirementAdd("requirement_add_" + s.getType().toLowerCase(), s.getType())));
 
         register(new AlchemyTagsAdd("alchemy_tags_add"));
         register(new AlchemyTagsCancelIfAbsent("alchemy_tags_require"));

@@ -6,7 +6,7 @@ import me.athlaeos.valhallammo.skills.perk_rewards.MultipliableReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.StatProperties;
 import org.bukkit.entity.Player;
 
@@ -32,29 +32,25 @@ public class ProfileIntAdd extends PerkReward implements MultipliableReward {
 
     @Override
     public void apply(Player player, int multiplyBy) {
-        if (isPersistent()) {
-            Profile profile = ProfileManager.getPersistentProfile(player, type);
-            profile.setInt(stat, profile.getInt(stat) + (value * multiplyBy));
-            ProfileManager.setPersistentProfile(player, profile, type);
-        } else {
-            Profile profile = ProfileManager.getSkillProfile(player, type);
-            profile.setInt(stat, profile.getInt(stat) + (value * multiplyBy));
-            ProfileManager.setSkillProfile(player, profile, type);
-        }
+        Profile profile = isPersistent() ? ProfileRegistry.getPersistentProfile(player, type) : ProfileRegistry.getSkillProfile(player, type);
+
+        profile.setInt(stat, profile.getInt(stat) + (value * multiplyBy));
+
+        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
+        else ProfileRegistry.setSkillProfile(player, profile, type);
+
         AccumulativeStatManager.updateStats(player);
     }
 
     @Override
     public void remove(Player player, int multiplyBy) {
-        if (isPersistent()) {
-            Profile profile = ProfileManager.getPersistentProfile(player, type);
-            profile.setInt(stat, profile.getInt(stat) - (value * multiplyBy));
-            ProfileManager.setPersistentProfile(player, profile, type);
-        } else {
-            Profile profile = ProfileManager.getSkillProfile(player, type);
-            profile.setInt(stat, profile.getInt(stat) - (value * multiplyBy));
-            ProfileManager.setSkillProfile(player, profile, type);
-        }
+        Profile profile = isPersistent() ? ProfileRegistry.getPersistentProfile(player, type) : ProfileRegistry.getSkillProfile(player, type);
+
+        profile.setInt(stat, profile.getInt(stat) - (value * multiplyBy));
+
+        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
+        else ProfileRegistry.setSkillProfile(player, profile, type);
+
         AccumulativeStatManager.updateStats(player);
     }
 
@@ -65,7 +61,7 @@ public class ProfileIntAdd extends PerkReward implements MultipliableReward {
 
     @Override
     public String rewardPlacholder() {
-        StatProperties properties = ProfileManager.getRegisteredProfiles().get(type).getNumberStatProperties().get(stat);
+        StatProperties properties = ProfileRegistry.getRegisteredProfiles().get(type).getNumberStatProperties().get(stat);
         if (properties == null) return StatFormat.INT.format(value);
         return properties.getFormat().format(value);
     }

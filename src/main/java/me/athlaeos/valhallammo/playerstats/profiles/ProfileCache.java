@@ -36,7 +36,7 @@ public class ProfileCache {
         Map<Class<? extends Profile>, CacheEntry> profiles = cache.getOrDefault(player.getUniqueId(), new HashMap<>());
         CacheEntry entry = profiles.get(type);
         if (entry == null || entry.getCacheUntil() < System.currentTimeMillis()) {
-            entry = new CacheEntry(ProfileManager.getMergedProfile(player, type), cacheDuration);
+            entry = new CacheEntry(ProfileRegistry.getMergedProfile(player, type), cacheDuration);
             profiles.put(type, entry);
             cache.put(player.getUniqueId(), profiles);
         }

@@ -4,6 +4,7 @@ public class CustomPotionEffect {
     private final PotionEffectWrapper effect;
     private long effectiveUntil;
     private double amplifier;
+    private int originalDuration;
 
     /**
      * Use this constructor when adding a plain regular potion effect with a normal duration.
@@ -14,6 +15,7 @@ public class CustomPotionEffect {
      */
     public CustomPotionEffect(PotionEffectWrapper effect, int duration, double amplifier){
         this.effect = effect;
+        this.originalDuration = duration;
         this.effectiveUntil = System.currentTimeMillis() + (duration * 50L);
         this.amplifier = amplifier;
     }
@@ -26,6 +28,7 @@ public class CustomPotionEffect {
      */
     public CustomPotionEffect(PotionEffectWrapper effect, long effectiveUntil, double amplifier){
         this.effect = effect;
+        this.originalDuration = (int) Math.floor(Math.max(0, effectiveUntil - System.currentTimeMillis()) / 50D);
         this.effectiveUntil = effectiveUntil;
         this.amplifier = amplifier;
     }
@@ -36,6 +39,7 @@ public class CustomPotionEffect {
     public long getRemainingDuration() {
         return Math.max(0, effectiveUntil - System.currentTimeMillis());
     }
+    public int getOriginalDuration() { return originalDuration; }
 
     public void setAmplifier(double amplifier) { this.amplifier = amplifier; }
     public void setEffectiveUntil(long effectiveUntil) { this.effectiveUntil = effectiveUntil; }

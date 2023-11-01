@@ -1,5 +1,6 @@
 # This config purely defines the various buttons used in ValhallaMMO menus
 # Buttons are defined with MATERIAL:CUSTOMMODELDATA
+# Realistically, you will probably never need to change these values unless you're looking to modify some GUI content more indepth
 skilltree_direction_n: ARROW:3511002
 skilltree_direction_ne: ARROW:3511003
 skilltree_direction_e: ARROW:3511004
@@ -102,3 +103,22 @@ editor_backtomenu: BOOK:1829130
 editor_save: STRUCTURE_VOID:1829130
 editor_delete: BARRIER:1829131
 editor_deleteconfirm: BARRIER:1829132
+
+editor_loottable_preservationmode: COMPARATOR:-1
+editor_loottable_newpool: LIME_STAINED_GLASS_PANE:1829130
+editor_loottable_newentry: LIME_STAINED_GLASS_PANE:1829130
+editor_loottable_predicatemode: COMPARATOR:-1
+editor_loottable_toggleweighted: IRON_BLOCK:-1
+editor_loottable_weightedbaserolls: COMPASS:-1
+editor_loottable_weightedbonusrolls: LAPIS_LAZULI:-1
+editor_loottable_setweight: IRON_BLOCK:-1
+editor_loottable_setchance: LAPIS_LAZULI:-1
+editor_loottable_basequantity: CHEST:-1
+editor_loottable_luckquantity: SHULKER_BOX:-1
+editor_loottable_guaranteeddroptoggle: GOLD_BLOCK:-1
+editor_loottable_setluckweight: LAPIS_LAZULI:-1
+editor_loottable_setluckchance: LAPIS_LAZULI:-1
+editor_loottable_entry_modifiers: WRITABLE_BOOK:1829130
+editor_loottable_pool_predicates: HOPPER:-1
+editor_loottable_entry_predicates: HOPPER:-1
+editor_loottable_descriptionlabel: PAPER:-1

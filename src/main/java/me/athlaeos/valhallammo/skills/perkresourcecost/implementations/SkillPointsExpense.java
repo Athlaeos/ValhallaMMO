@@ -3,8 +3,8 @@ package me.athlaeos.valhallammo.skills.perkresourcecost.implementations;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import org.bukkit.entity.Player;
 
 public class SkillPointsExpense implements ResourceExpense {
@@ -16,27 +16,27 @@ public class SkillPointsExpense implements ResourceExpense {
 
     @Override
     public boolean canPurchase(Player p) {
-        PowerProfile profile = ProfileManager.getMergedProfile(p, PowerProfile.class);
+        PowerProfile profile = ProfileRegistry.getMergedProfile(p, PowerProfile.class);
         return profile.getSpendableSkillPoints() - profile.getSpentSkillPoints() >= cost;
     }
 
     @Override
     public void purchase(Player p, boolean initialPurchase) {
-        PowerProfile profile = ProfileManager.getSkillProfile(p, PowerProfile.class);
+        PowerProfile profile = ProfileRegistry.getSkillProfile(p, PowerProfile.class);
         // this may look odd first, since the skill profile will not be persisted, but it's actually intended for the
         // skill profile points to be able to go into the negatives
 
         // since the spent skill points are increased regardless if it's the initial purchase or not, the player's spent skill
         // points are increased when the skill stats are being calculated also.
         profile.setSpentSkillPoints(profile.getSpentSkillPoints() + cost);
-        ProfileManager.setSkillProfile(p, profile, PowerProfile.class);
+        ProfileRegistry.setSkillProfile(p, profile, PowerProfile.class);
     }
 
     @Override
     public void refund(Player p) {
-        PowerProfile profile = ProfileManager.getSkillProfile(p, PowerProfile.class);
+        PowerProfile profile = ProfileRegistry.getSkillProfile(p, PowerProfile.class);
         profile.setSpentSkillPoints(profile.getSpentSkillPoints() - cost);
-        ProfileManager.setSkillProfile(p, profile, PowerProfile.class);
+        ProfileRegistry.setSkillProfile(p, profile, PowerProfile.class);
     }
 
     private final boolean refundable = ConfigManager.getConfig("config.yml").get().getBoolean("forgettable_perks_refund_skillpoints", true);

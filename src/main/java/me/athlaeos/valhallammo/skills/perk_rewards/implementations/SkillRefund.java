@@ -1,8 +1,8 @@
 package me.athlaeos.valhallammo.skills.perk_rewards.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
@@ -22,7 +22,7 @@ public class SkillRefund extends PerkReward {
     @Override
     public void apply(Player player) {
         Skill s = SkillRegistry.getSkill(skill);
-        PowerProfile power = ProfileManager.getPersistentProfile(player, PowerProfile.class);
+        PowerProfile power = ProfileRegistry.getPersistentProfile(player, PowerProfile.class);
         if (s != null) {
             for (Perk perk : s.getPerks()){
                 if (!power.getUnlockedPerks().contains(perk.getName())) continue;

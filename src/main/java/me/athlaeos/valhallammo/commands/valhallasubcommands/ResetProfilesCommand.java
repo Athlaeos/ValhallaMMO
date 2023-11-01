@@ -4,7 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.localization.TranslationManager;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
@@ -70,10 +70,10 @@ public class ResetProfilesCommand implements Command {
 						Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_invalid_skill"));
 						return true;
 					}
-					ProfileManager.reset(target, skillToReset.getClass());
+					ProfileRegistry.reset(target, skillToReset.getClass());
 					Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_hard_reset_success"));
 				} else {
-					ProfileManager.reset(target, type);
+					ProfileRegistry.reset(target, type);
 					Utils.sendMessage(sender, type.shouldAskForConfirmation() ? TranslationManager.getTranslation("status_command_hard_reset_success") : TranslationManager.getTranslation("status_command_soft_reset_success"));
 				}
 			} else {

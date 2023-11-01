@@ -3,9 +3,7 @@ package me.athlaeos.valhallammo.skills.skills;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
 import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
-import me.athlaeos.valhallammo.skills.skills.implementations.alchemy.AlchemySkill;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerSkill;
-import me.athlaeos.valhallammo.skills.skills.implementations.smithing.SmithingSkill;
+import me.athlaeos.valhallammo.skills.skills.implementations.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -20,15 +18,15 @@ public class SkillRegistry {
         registerSkill(new PowerSkill("POWER"));
          registerIfConfigEnabled("alchemy", new AlchemySkill("ALCHEMY"));
          registerIfConfigEnabled("smithing", new SmithingSkill("SMITHING"));
-        // registerIfConfigEnabled("enchanting", new AlchemySkill("ENCHANTING"));
+         registerIfConfigEnabled("enchanting", new EnchantingSkill("ENCHANTING"));
         // registerIfConfigEnabled("farming", new AlchemySkill("FARMING"));
-        // registerIfConfigEnabled("mining", new AlchemySkill("MINING"));
+         registerIfConfigEnabled("mining", new MiningSkill("MINING"));
         // registerIfConfigEnabled("landscaping", new AlchemySkill("LANDSCAPING"));
-        // registerIfConfigEnabled("archery", new AlchemySkill("ARCHERY"));
-        // registerIfConfigEnabled("armor_light", new AlchemySkill("LIGHT_ARMOR"));
-        // registerIfConfigEnabled("armor_heavy", new AlchemySkill("HEAVY_ARMOR"));
-        // registerIfConfigEnabled("weapons_light", new AlchemySkill("LIGHT_WEAPONS"));
-        // registerIfConfigEnabled("weapons_heavy", new AlchemySkill("HEAVY_WEAPONS"));
+         registerIfConfigEnabled("archery", new ArcherySkill("ARCHERY"));
+         registerIfConfigEnabled("armor_light", new LightArmorSkill("LIGHT_ARMOR"));
+         registerIfConfigEnabled("armor_heavy", new HeavyArmorSkill("HEAVY_ARMOR"));
+         registerIfConfigEnabled("weapons_light", new LightWeaponsSkill("LIGHT_WEAPONS"));
+         registerIfConfigEnabled("weapons_heavy", new HeavyWeaponsSkill("HEAVY_WEAPONS"));
     }
 
     private static void registerIfConfigEnabled(String key, Skill skill){
@@ -55,10 +53,14 @@ public class SkillRegistry {
         allSkills = Collections.unmodifiableMap(skills);
 
         skill.perks.forEach(PerkRegistry::registerPerk);
-        PerkRewardRegistry.register(new SkillReset("reset_skill")); // TODO test
-        PerkRewardRegistry.register(new SkillRefund("refund_skill"));
+        PerkRewardRegistry.register(new SkillReset("reset_skill_" + skill.getType().toLowerCase())); // TODO test
+        PerkRewardRegistry.register(new SkillRefund("refund_skill_" + skill.getType().toLowerCase()));
         PerkRewardRegistry.register(new SkillLevelsAdd("skill_levels_add_" + skill.getType().toLowerCase(), skill));
         PerkRewardRegistry.register(new SkillEXPAdd("skill_exp_add_" + skill.getType().toLowerCase(), skill));
+    }
+
+    public static boolean isRegistered(Class<? extends Skill> skill){
+        return allSkills.containsKey(skill);
     }
 
     public static void reload() {

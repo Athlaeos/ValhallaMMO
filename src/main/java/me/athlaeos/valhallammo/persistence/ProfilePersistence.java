@@ -3,9 +3,9 @@ package me.athlaeos.valhallammo.persistence;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.entity.Player;
@@ -28,8 +28,8 @@ public abstract class ProfilePersistence {
         switch (resetType){
             case STATS_ONLY -> {
                 // Only resets persistent stat profile, keeping skill progress
-                for (Profile profileType : ProfileManager.getRegisteredProfiles().values()) {
-                    Profile persistentProfile = ProfileManager.getPersistentProfile(p, profileType.getClass());
+                for (Profile profileType : ProfileRegistry.getRegisteredProfiles().values()) {
+                    Profile persistentProfile = ProfileRegistry.getPersistentProfile(p, profileType.getClass());
                     double totalEXP = persistentProfile.getTotalEXP();
                     double EXP = persistentProfile.getEXP();
                     int level = persistentProfile.getLevel();
@@ -43,8 +43,8 @@ public abstract class ProfilePersistence {
             }
             case SKILLS_ONLY -> {
                 // Only resets skill progress, keeping persistent stats
-                PowerProfile powerProfile = ProfileManager.getPersistentProfile(p, PowerProfile.class);
-                for (Profile profileType : ProfileManager.getRegisteredProfiles().values()) {
+                PowerProfile powerProfile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
+                for (Profile profileType : ProfileRegistry.getRegisteredProfiles().values()) {
                     // setting persistent properties to 0, removing perks from unlocked perks and permalocked perks
                     Profile profile = getPersistentProfile(p, profileType.getClass());
                     profile.setEXP(0);
@@ -64,7 +64,7 @@ public abstract class ProfilePersistence {
             }
             case SKILLS_AND_STATS -> {
                 // set both persistent and skill stats to 0
-                for (Profile profileType : ProfileManager.getRegisteredProfiles().values()) {
+                for (Profile profileType : ProfileRegistry.getRegisteredProfiles().values()) {
                     setPersistentProfile(p, profileType.getBlankProfile(p), profileType.getClass());
                     setSkillProfile(p, profileType.getBlankProfile(p), profileType.getClass());
                 }
@@ -72,7 +72,7 @@ public abstract class ProfilePersistence {
             }
             case SKILLS_REFUND_EXP -> {
                 // resets both skill and persistent progress, but refunds exp
-                for (Profile profileType : ProfileManager.getRegisteredProfiles().values()) {
+                for (Profile profileType : ProfileRegistry.getRegisteredProfiles().values()) {
                     Profile profile = getPersistentProfile(p, profileType.getClass());
                     double totalEXP = profile.getTotalEXP();
 
@@ -88,7 +88,7 @@ public abstract class ProfilePersistence {
     }
 
     public void resetSkillProgress(Player p, Class<? extends Skill> resetSkill) {
-        PowerProfile powerProfile = ProfileManager.getPersistentProfile(p, PowerProfile.class);
+        PowerProfile powerProfile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
         Skill associatedSkill = SkillRegistry.getSkill(resetSkill);
 
         Profile profile = getPersistentProfile(p, associatedSkill.getProfileType());
@@ -118,7 +118,9 @@ public abstract class ProfilePersistence {
     }
 
     public static Collection<String> deserializeStringSet(String serializedStringSet) {
-        return new HashSet<>(Arrays.asList(serializedStringSet.split("<>")));
+        Collection<String> set = new HashSet<>(Arrays.asList(serializedStringSet.split("<>")));
+        set.removeIf(String::isEmpty);
+        return set;
     }
 }
 

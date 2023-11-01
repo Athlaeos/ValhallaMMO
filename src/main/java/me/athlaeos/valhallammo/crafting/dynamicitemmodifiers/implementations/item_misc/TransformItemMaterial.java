@@ -7,7 +7,7 @@ import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import org.bukkit.command.CommandSender;
-import me.athlaeos.valhallammo.item.attributes.AttributeWrapper;
+import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
@@ -51,7 +51,7 @@ public class TransformItemMaterial extends DynamicItemModifier {
         outputItem.type(transformTo);
         for (AttributeWrapper wrapper : ItemAttributesRegistry.getVanillaStats(outputItem.getItem().getType()).values()){
             // The item's vanilla stats are updated to their vanilla values, any added custom attributes are left alone
-            ItemAttributesRegistry.setStat(outputItem.getItem(), outputItem.getMeta(), wrapper.getAttribute(), wrapper.getValue(), true);
+            ItemAttributesRegistry.setStat(outputItem.getMeta(), wrapper.getAttribute(), wrapper.getValue(), true);
         }
         PotionEffectRegistry.updateEffectLore(outputItem.getMeta());
     }

@@ -4,7 +4,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -22,37 +22,29 @@ public class ProfileStringListRemove extends PerkReward {
 
     @Override
     public void apply(Player player) {
-        if (isPersistent()) {
-            Profile profile = ProfileManager.getPersistentProfile(player, type);
-            Collection<String> existing = profile.getStringSet(stat);
-            existing.removeAll(value);
-            profile.setStringSet(stat, existing);
-            ProfileManager.setPersistentProfile(player, profile, type);
-        } else {
-            Profile profile = ProfileManager.getSkillProfile(player, type);
-            Collection<String> existing = profile.getStringSet(stat);
-            existing.removeAll(value);
-            profile.setStringSet(stat, existing);
-            ProfileManager.setSkillProfile(player, profile, type);
-        }
+        Profile profile = isPersistent() ? ProfileRegistry.getPersistentProfile(player, type) : ProfileRegistry.getSkillProfile(player, type);
+
+        Collection<String> existing = profile.getStringSet(stat);
+        existing.removeAll(value);
+        profile.setStringSet(stat, existing);
+
+        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
+        else ProfileRegistry.setSkillProfile(player, profile, type);
+
         AccumulativeStatManager.updateStats(player);
     }
 
     @Override
     public void remove(Player player) {
-        if (isPersistent()) {
-            Profile profile = ProfileManager.getPersistentProfile(player, type);
-            Collection<String> existing = profile.getStringSet(stat);
-            existing.removeAll(value);
-            profile.setStringSet(stat, existing);
-            ProfileManager.setPersistentProfile(player, profile, type);
-        } else {
-            Profile profile = ProfileManager.getSkillProfile(player, type);
-            Collection<String> existing = profile.getStringSet(stat);
-            existing.removeAll(value);
-            profile.setStringSet(stat, existing);
-            ProfileManager.setSkillProfile(player, profile, type);
-        }
+        Profile profile = isPersistent() ? ProfileRegistry.getPersistentProfile(player, type) : ProfileRegistry.getSkillProfile(player, type);
+
+        Collection<String> existing = profile.getStringSet(stat);
+        existing.removeAll(value);
+        profile.setStringSet(stat, existing);
+
+        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
+        else ProfileRegistry.setSkillProfile(player, profile, type);
+
         AccumulativeStatManager.updateStats(player);
     }
 

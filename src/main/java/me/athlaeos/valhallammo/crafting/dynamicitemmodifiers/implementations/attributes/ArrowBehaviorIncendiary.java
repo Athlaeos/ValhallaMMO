@@ -6,7 +6,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.command.CommandSender;
-import me.athlaeos.valhallammo.skills.skills.implementations.archery.ArrowBehaviorRegistry;
+import me.athlaeos.valhallammo.item.arrow_attributes.ArrowBehaviorRegistry;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

@@ -5,10 +5,13 @@ import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.item.CustomDurabilityManager;
 import me.athlaeos.valhallammo.item.EquipmentClass;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.MaterialClass;
+import me.athlaeos.valhallammo.listeners.LootListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
@@ -39,11 +42,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 public class ItemUtils {
+    private static final Map<UUID, ItemBuilder> storedProjectileCache = new HashMap<>();
+    private static final Map<UUID, Long> storedProjectileCachedAt = new HashMap<>();
 
     private static final Collection<Tag<Material>> materialTags = new HashSet<>(Arrays.asList(Tag.PLANKS, Tag.LOGS, Tag.ITEMS_STONE_TOOL_MATERIALS, Tag.ANVIL, Tag.CAULDRONS,
-    Tag.WOOL, Tag.BEDS, Tag.SAPLINGS, Tag.ITEMS_BANNERS, Tag.CANDLES, Tag.CARPETS, Tag.COAL_ORES, Tag.GOLD_ORES, Tag.IRON_ORES, Tag.LAPIS_ORES, Tag.COPPER_ORES, Tag.DIAMOND_ORES,
+    Tag.WOOL, Tag.BEDS, Tag.SAPLINGS, Tag.ITEMS_BANNERS, Tag.CANDLES, Tag.COAL_ORES, Tag.WOOL_CARPETS, Tag.GOLD_ORES, Tag.IRON_ORES, Tag.LAPIS_ORES, Tag.COPPER_ORES, Tag.DIAMOND_ORES,
     Tag.EMERALD_ORES, Tag.REDSTONE_ORES, Tag.DOORS, Tag.FENCES, Tag.FENCE_GATES, Tag.SMALL_FLOWERS, Tag.ITEMS_BOATS, Tag.ITEMS_FISHES, Tag.ITEMS_MUSIC_DISCS, Tag.LEAVES,
     Tag.PRESSURE_PLATES, Tag.SAND, Tag.SIGNS, Tag.TALL_FLOWERS, Tag.TRAPDOORS, Tag.WALLS));
     
@@ -54,6 +60,22 @@ public class ItemUtils {
 
     private static final Collection<Material> nonAirMaterials = new HashSet<>();
     private static final Material[] nonAirMaterialsArray;
+
+    // Contains some of the items that may be used in the off hand. If the main hand does not have such an item and the
+    // off hand does, it can be assumed the off hand is used in combat or events or whatever
+    private static final Collection<Material> offhandUsableItems = new HashSet<>(getMaterialList("BOW",
+            "CROSSBOW", "SNOWBALL", "EGG", "ENDER_PEARL", "ENDER_EYE", "EXPERIENCE_BOTTLE", "FISHING_ROD",
+            "FLINT_AND_STEEL", "FIREWORK_ROCKET", "SPLASH_POTION", "LINGERING_POTION", "TRIDENT"));
+
+    public static Collection<Material> getOffhandUsableItems() {
+        return offhandUsableItems;
+    }
+
+    public static boolean usedMainHand(ItemBuilder mainHand, ItemBuilder offHand){
+        if (offHand == null && mainHand != null) return true;
+        if (mainHand != null && offhandUsableItems.contains(mainHand.getItem().getType())) return true;
+        return offHand == null || !offhandUsableItems.contains(offHand.getItem().getType());
+    }
 
     static {
         Tag<Material> buckets = of("buckets", Material.BUCKET, Material.MILK_BUCKET, Material.POWDER_SNOW_BUCKET, Material.LAVA_BUCKET, Material.WATER_BUCKET, Material.AXOLOTL_BUCKET, Material.COD_BUCKET, Material.PUFFERFISH_BUCKET, Material.SALMON_BUCKET, Material.TROPICAL_FISH_BUCKET);
@@ -79,7 +101,7 @@ public class ItemUtils {
         registerSimilarItem(Material.WHITE_BED, Tag.BEDS, "ingredient_any_bed");
         registerSimilarItem(Material.WHITE_BANNER, Tag.BANNERS, "ingredient_any_banner");
         registerSimilarItem(Material.WHITE_CANDLE, Tag.CANDLES, "ingredient_any_candle");
-        registerSimilarItem(Material.WHITE_CARPET, Tag.CARPETS, "ingredient_any_carpet");
+        registerSimilarItem(Material.WHITE_CARPET, Tag.WOOL_CARPETS, "ingredient_any_carpet");
         registerSimilarItem(Material.COAL_ORE, Tag.COAL_ORES, "ingredient_any_coal_ore");
         registerSimilarItem(Material.DIAMOND_ORE, Tag.DIAMOND_ORES, "ingredient_any_diamond_ore");
         registerSimilarItem(Material.GOLD_ORE, Tag.GOLD_ORES, "ingredient_any_gold_ore");
@@ -139,6 +161,16 @@ public class ItemUtils {
 
         Arrays.stream(Material.values()).filter(m -> !m.isAir()).forEach(nonAirMaterials::add);
         nonAirMaterialsArray = nonAirMaterials.toArray(new Material[0]);
+
+        // cleans up the stored projectile cache every 10 seconds, removing items if they've been in there for 10 seconds or longer
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+            for (UUID uuid : new HashMap<>(storedProjectileCache).keySet()){
+                if (storedProjectileCachedAt.get(uuid) + 10000 > System.currentTimeMillis()) {
+                    storedProjectileCachedAt.remove(uuid);
+                    storedProjectileCache.remove(uuid);
+                }
+            }
+        }, 200L, 200L);
     }
 
     private static void registerSimilarItem(Material base, Tag<Material> subTypes, String translation){
@@ -307,7 +339,7 @@ public class ItemUtils {
     }
 
     public static boolean isEmpty(ItemStack i){
-        return i == null || i.getType().isAir();
+        return i == null || i.getType().isAir() || i.getAmount() <= 0;
     }
 
     private static final NamespacedKey TYPE_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "temporary_type_storage");
@@ -500,6 +532,7 @@ public class ItemUtils {
     }
 
     public static Material stringToMaterial(String material, Material def){
+        if (material == null || material.isEmpty()) return def;
         try {
             return Material.valueOf(material);
         } catch (IllegalArgumentException ignored){
@@ -569,7 +602,7 @@ public class ItemUtils {
                         who.playEffect(breakEffect);
                         return true;
                     } else {
-                        setItemMeta(item, (ItemMeta) damageable);
+                        setItemMeta(item, damageable);
                     }
                 } else {
                     if (CustomDurabilityManager.getDurability(item, meta, false) <= 0){
@@ -850,12 +883,18 @@ public class ItemUtils {
         return m.isEdible() || consumables.contains(m);
     }
 
-    public static ItemStack getStoredItem(Entity entity){
+    public static ItemBuilder getStoredItem(Entity entity){
+        if (storedProjectileCache.containsKey(entity.getUniqueId())) return storedProjectileCache.get(entity.getUniqueId());
         if (entity.hasMetadata("entity_stored_item_data")){
             List<MetadataValue> metaData = entity.getMetadata("entity_stored_item_data");
             if (!metaData.isEmpty()){
                 try {
-                    return ItemUtils.deserialize(metaData.get(0).asString());
+                    ItemStack item = deserialize(metaData.get(0).asString());
+                    if (isEmpty(item)) return null;
+                    ItemBuilder builder = new ItemBuilder(item);
+                    storedProjectileCache.put(entity.getUniqueId(), builder);
+                    storedProjectileCachedAt.put(entity.getUniqueId(), System.currentTimeMillis());
+                    return builder;
                 } catch (Exception ignored){
                     ValhallaMMO.logSevere("Another plugin is using metadata key 'entity_stored_item_data' and not using the proper data type");
                 }
@@ -865,6 +904,84 @@ public class ItemUtils {
     }
 
     public static void storeItem(Entity entity, ItemStack item){
-        entity.setMetadata("entity_stored_item_data", new FixedMetadataValue(ValhallaMMO.getInstance(), ItemUtils.serialize(item)));
+        entity.setMetadata("entity_stored_item_data", new FixedMetadataValue(ValhallaMMO.getInstance(), serialize(item)));
+    }
+
+    /**
+     * Multiplies the given item quantities by a multiplier. It is assumed the given items come from a BlockDropItemEvent in which
+     * case adding items is illegal. If extra itemstacks are required to be added to the list, they will be included in the returned list.
+     * @param items the items the block dropped, and multiplied
+     * @param multiplier the multiplier for the item quantities, uses {@link Utils#randomAverage(double)} to calculate new amount
+     * @param forgiving if true, the quantity can never go below 1.
+     * @param filter if an item does not pass the predicate, it is ignored
+     * @return the list of items that could not be added to the drops list and so should be scheduled in for dropping after the fact
+     */
+    public static List<ItemStack> multiplyDrops(List<Item> items, double multiplier, boolean forgiving, Predicate<Item> filter){
+        Iterator<Item> iterator = items.iterator();
+        List<ItemStack> extraItems = new ArrayList<>();
+        while (iterator.hasNext()){
+            Item i = iterator.next();
+
+            if (filter != null && !filter.test(i)) continue;
+            ItemStack item = i.getItemStack();
+            int newAmount = Math.max(forgiving ? 1 : 0, Utils.randomAverage(multiplier * item.getAmount()));
+            if (newAmount <= 0) items.remove(i);
+            else {
+                if (newAmount > item.getMaxStackSize()){
+                    while(newAmount > item.getMaxStackSize()){
+                        ItemStack newDrop = item.clone();
+                        newDrop.setAmount(item.getMaxStackSize());
+                        newAmount -= item.getMaxStackSize();
+                        extraItems.add(newDrop);
+                    }
+                }
+                item.setAmount(newAmount);
+                i.setItemStack(item);
+            }
+        }
+        return extraItems;
+    }
+
+    /**
+     * Multiplies the given item quantities by a multiplier. Unlike {@link ItemUtils#multiplyDrops(List, double, boolean, Predicate)} where
+     * the items themselves are changed as a result of this method call, this method returns a list of all the drops after multiplying without altering
+     * the given list of items.
+     * @param items the items the block dropped, and multiplied
+     * @param multiplier the multiplier for the item quantities, uses {@link Utils#randomAverage(double)} to calculate new amount
+     * @param forgiving if true, the quantity can never go below 1.
+     * @param filter if an item does not pass the predicate, it is ignored and added to the output list unaltered
+     * @return the list of items after multiplying
+     */
+    public static List<ItemStack> multiplyItems(List<ItemStack> items, double multiplier, boolean forgiving, Predicate<ItemStack> filter){
+        List<ItemStack> newItems = new ArrayList<>();
+        for (ItemStack item : items) {
+            if (filter != null && !filter.test(item)) {
+                newItems.add(item);
+                continue;
+            }
+            int newAmount = Math.max(forgiving ? 1 : 0, Utils.randomAverage(multiplier * item.getAmount()));
+            if (newAmount <= 0) items.remove(item);
+            else {
+                if (newAmount > item.getMaxStackSize()) {
+                    while (newAmount > item.getMaxStackSize()) {
+                        ItemStack newDrop = item.clone();
+                        newDrop.setAmount(item.getMaxStackSize());
+                        newAmount -= item.getMaxStackSize();
+                        newItems.add(newDrop);
+                    }
+                }
+                item.setAmount(newAmount);
+                newItems.add(item);
+            }
+        }
+        return newItems;
+    }
+
+    /**
+     * ItemUtils caches items stored in projectiles as well, so that this may be used to avoid having to repeatedly get items from entities and getting their properties
+     * @return the map of cached projectiles with their item
+     */
+    public static Map<UUID, ItemBuilder> getStoredProjectileCache() {
+        return storedProjectileCache;
     }
 }

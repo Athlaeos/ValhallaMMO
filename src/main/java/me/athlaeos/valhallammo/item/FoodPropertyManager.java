@@ -1,7 +1,6 @@
 package me.athlaeos.valhallammo.item;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.dom.FoodClass;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -66,6 +65,7 @@ public class FoodPropertyManager {
         setDefaultProperties(Material.SWEET_BERRIES, FoodClass.FRUIT, 2, 0.4F);
 
         setDefaultProperties(Material.MILK_BUCKET, FoodClass.DAIRY, 0, 0F);
+
         setDefaultProperties(Material.POTION, FoodClass.BEVERAGE, 0, 0F);
     }
 
@@ -77,24 +77,61 @@ public class FoodPropertyManager {
     private static final NamespacedKey FOOD_VALUE = new NamespacedKey(ValhallaMMO.getInstance(), "food_value");
     private static final NamespacedKey SATURATION_VALUE = new NamespacedKey(ValhallaMMO.getInstance(), "saturation_value");
     private static final NamespacedKey CANCEL_POTION_EFFECTS = new NamespacedKey(ValhallaMMO.getInstance(), "cancel_potion_effects");
+    private static final NamespacedKey CANCEL_DIMINISHING_RETURNS = new NamespacedKey(ValhallaMMO.getInstance(), "cancel_diminishing_returns");
 
     public static boolean isCustomFood(ItemMeta meta){
         PersistentDataContainer c = meta.getPersistentDataContainer();
         return c.has(FOOD_CLASS, PersistentDataType.STRING) || c.has(FOOD_VALUE, PersistentDataType.INTEGER) ||
-                c.has(SATURATION_VALUE, PersistentDataType.DOUBLE) || c.has(CANCEL_POTION_EFFECTS, PersistentDataType.SHORT);
+                c.has(SATURATION_VALUE, PersistentDataType.DOUBLE) || c.has(CANCEL_POTION_EFFECTS, PersistentDataType.SHORT) ||
+                c.has(CANCEL_DIMINISHING_RETURNS, PersistentDataType.SHORT);
     }
 
+    /**
+     * @param meta the food item
+     * @return true if the food item doesn't contribute to diminishing returns, false if it does
+     */
+    public static boolean shouldCancelDiminishingReturns(ItemMeta meta){
+        if (meta == null) return false;
+        return meta.getPersistentDataContainer().has(CANCEL_DIMINISHING_RETURNS, PersistentDataType.SHORT);
+    }
+
+    /**
+     * Sets whether the food item should not contribute to diminishing returns
+     * @param meta the food item
+     * @param cancel true if the food item shouldn't contribute to diminishing returns
+     */
+    public static void setCancelDiminishingReturns(ItemMeta meta, boolean cancel){
+        if (meta == null) return;
+        if (!cancel) meta.getPersistentDataContainer().remove(CANCEL_DIMINISHING_RETURNS);
+        else meta.getPersistentDataContainer().set(CANCEL_DIMINISHING_RETURNS, PersistentDataType.SHORT, (short) 1);
+    }
+
+    /**
+     * @param meta the food item
+     * @return true if the food item shouldn't grant the potion effects it has by default, if any (does not include customly added potion effects). An example of such an item is a golden apple
+     */
     public static boolean shouldCancelDefaultPotionEffects(ItemMeta meta){
         if (meta == null) return false;
         return meta.getPersistentDataContainer().has(CANCEL_POTION_EFFECTS, PersistentDataType.SHORT);
     }
 
+    /**
+     * Sets whether the food item should grant its potion effects or not (for example, golden apples)
+     * @param meta the food item
+     * @param cancel true if the food item shouldn't grants any potion effects it has by default (golden apple, rotten flesh, pufferfish, etc.)
+     */
     public static void setCancelPotionEffects(ItemMeta meta, boolean cancel){
         if (meta == null) return;
         if (!cancel) meta.getPersistentDataContainer().remove(CANCEL_POTION_EFFECTS);
         else meta.getPersistentDataContainer().set(CANCEL_POTION_EFFECTS, PersistentDataType.SHORT, (short) 1);
     }
 
+    /**
+     * The saturation value of the food item
+     * @param i the base food item, only used for its material to determine default its value
+     * @param meta the meta of the food item
+     * @return the saturation value the food item will grant. If no custom saturation value is present, the default is used
+     */
     public static float getSaturationValue(ItemStack i, ItemMeta meta){
         if (meta == null) return 0;
         FoodProperties properties = defaultProperties.get(i.getType());
@@ -102,6 +139,11 @@ public class FoodPropertyManager {
         return meta.getPersistentDataContainer().getOrDefault(SATURATION_VALUE, PersistentDataType.FLOAT, defaultSaturation);
     }
 
+    /**
+     * Sets the custom saturation of the food item
+     * @param meta the food item meta
+     * @param foodValue the new saturation value. If null, custom saturation value is removed
+     */
     public static void setSaturationValue(ItemMeta meta, Float foodValue){
         if (meta == null) return;
         if (foodValue == null) meta.getPersistentDataContainer().remove(FOOD_VALUE);

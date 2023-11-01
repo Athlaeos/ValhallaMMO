@@ -2,9 +2,8 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.fo
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
-import me.athlaeos.valhallammo.dom.FoodClass;
+import me.athlaeos.valhallammo.item.FoodClass;
 import me.athlaeos.valhallammo.dom.Pair;
-import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.FoodPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.Utils;

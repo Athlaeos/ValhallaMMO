@@ -11,15 +11,15 @@ import me.athlaeos.valhallammo.skills.skills.PerkConnectionIcon;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileManager;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpenseRegistry;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockCondition;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockConditionRegistry;
 import me.athlaeos.valhallammo.skills.skills.PerkRegistry;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
-import me.athlaeos.valhallammo.skills.skills.implementations.power.PowerSkill;
+import me.athlaeos.valhallammo.skills.skills.implementations.PowerSkill;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -138,13 +138,13 @@ public class SkillTreeMenu extends Menu {
                     if (p != null){
                         if (p.canUnlock(target)){
                             // persist perk as unlocked
-                            PowerProfile account = ProfileManager.getPersistentProfile(target, PowerProfile.class);
+                            PowerProfile account = ProfileRegistry.getPersistentProfile(target, PowerProfile.class);
 
                             Collection<String> perks = account.getUnlockedPerks();
                             perks.add(p.getName());
                             account.setUnlockedPerks(perks);
 
-                            ProfileManager.setPersistentProfile(target, account, PowerProfile.class);
+                            ProfileRegistry.setPersistentProfile(target, account, PowerProfile.class);
 
                             // execute perk's rewards
                             p.execute(target);
@@ -221,9 +221,9 @@ public class SkillTreeMenu extends Menu {
             if (storedType != null){
                 Skill s = SkillRegistry.getSkill(storedType);
                 if (s != null) {
-                    PowerProfile acc = ProfileManager.getMergedProfile(target, PowerProfile.class);
+                    PowerProfile acc = ProfileRegistry.getMergedProfile(target, PowerProfile.class);
 
-                    Profile p = ProfileManager.getPersistentProfile(target, s.getProfileType());
+                    Profile p = ProfileRegistry.getPersistentProfile(target, s.getProfileType());
                     double expRequired = s.expForLevel(p.getLevel() + 1);
                     List<String> lore = new ArrayList<>();
                     for (String line : TranslationManager.getListTranslation("skilltree_icon_format")){

@@ -27,8 +27,8 @@ public class TranslationManager {
     private static String language;
 
     public static String getTranslation(String key){
-        if (!pluginTranslations.getStringTranslations().containsKey(key)) ValhallaMMO.logWarning("No translated value mapped for " + key);
-        return pluginTranslations.getStringTranslations().getOrDefault(key, key);
+        if (!key.contains("<lang.") && !pluginTranslations.getStringTranslations().containsKey(key)) ValhallaMMO.logWarning("No translated value mapped for " + key);
+        return translatePlaceholders(pluginTranslations.getStringTranslations().getOrDefault(key, key));
     }
 
     public static PluginTranslationDTO getDefaultTranslations() {
@@ -103,12 +103,12 @@ public class TranslationManager {
             ValhallaMMO.logSevere(exception.getMessage());
             exception.printStackTrace();
         }
+        int entriesAdded = 0;
         InputStream defaultStream = ValhallaMMO.getInstance().getClass().getResourceAsStream("/languages/en-us.json");
         if (defaultStream != null){
             try (InputStreamReader defaultReader = new InputStreamReader(defaultStream, StandardCharsets.UTF_8)){
                 defaultTranslations = gson.fromJson(defaultReader, PluginTranslationDTO.class);
 
-                int entriesAdded = 0;
                 for (String key : defaultTranslations.getStringTranslations().keySet()){
                     if (!pluginTranslations.getStringTranslations().containsKey(key)){
                         pluginTranslations.getStringTranslations().put(key, defaultTranslations.getStringTranslations().get(key));
@@ -125,12 +125,18 @@ public class TranslationManager {
                         entriesAdded++;
                     }
                 }
-                if (entriesAdded > 0) {
-                    gson.toJson(pluginTranslations, new FileWriter(new File(ValhallaMMO.getInstance().getDataFolder(), "languages/" + l + ".json")));
-                }
             } catch (IOException exception){
                 ValhallaMMO.logSevere(exception.getMessage());
                 exception.printStackTrace();
+            }
+
+            if (entriesAdded > 0) {
+                try (FileWriter writer = new FileWriter(new File(ValhallaMMO.getInstance().getDataFolder(), "languages/" + l + ".json"))){
+                    gson.toJson(pluginTranslations, writer);
+                } catch (IOException exception){
+                    ValhallaMMO.logSevere(exception.getMessage());
+                    exception.printStackTrace();
+                }
             }
         }
     }

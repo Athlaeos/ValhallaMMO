@@ -6,7 +6,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.command.CommandSender;
-import me.athlaeos.valhallammo.item.attributes.AttributeWrapper;
+import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -27,7 +27,7 @@ public class DefaultAttributeRemove extends DynamicItemModifier {
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        ItemAttributesRegistry.removeStat(outputItem.getItem(), outputItem.getMeta(), attribute);
+        ItemAttributesRegistry.removeStat(outputItem.getMeta(), attribute);
     }
 
     @Override

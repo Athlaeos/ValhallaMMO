@@ -53,6 +53,16 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder floatTag(NamespacedKey key, float tag){
+        meta.getPersistentDataContainer().set(key, PersistentDataType.FLOAT, tag);
+        return this;
+    }
+
+    public ItemBuilder doubleTag(NamespacedKey key, double tag){
+        meta.getPersistentDataContainer().set(key, PersistentDataType.DOUBLE, tag);
+        return this;
+    }
+
     public ItemBuilder stringTag(NamespacedKey key, String tag){
         meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, tag);
         return this;
@@ -80,6 +90,10 @@ public class ItemBuilder {
         l.addAll(Utils.chat(lore));
         meta.setLore(l);
         return this;
+    }
+
+    public ItemBuilder placeholderLore(String placeholder, List<String> replaceWith){
+        return lore(ItemUtils.setListPlaceholder(meta.hasLore() && meta.getLore() != null ? meta.getLore() : new ArrayList<>(), placeholder, replaceWith));
     }
 
     public ItemBuilder appendLore(String... lore){
@@ -111,11 +125,21 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder disEnchant(){
+        if (meta instanceof EnchantmentStorageMeta m) m.getStoredEnchants().keySet().forEach(m::removeStoredEnchant);
+        else item.getEnchantments().keySet().forEach(item::removeEnchantment);
+        return this;
+    }
+
+    public ItemBuilder disEnchant(Enchantment e){
+        if (meta instanceof EnchantmentStorageMeta m) m.removeStoredEnchant(e);
+        else item.removeEnchantment(e);
+        return this;
+    }
+
     public ItemBuilder enchant(Enchantment e, int level){
-        if (meta instanceof EnchantmentStorageMeta m)
-            m.addStoredEnchant(e, level, true);
-        else
-            item.addUnsafeEnchantment(e, level);
+        if (meta instanceof EnchantmentStorageMeta m) m.addStoredEnchant(e, level, true);
+        else item.addUnsafeEnchantment(e, level);
         return this;
     }
 

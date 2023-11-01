@@ -10,8 +10,8 @@ public interface EvEAccumulativeStatSource {
      * depends on the armor the victim is wearing.
      * @param victim the entity being attacked
      * @param attackedBy the attacker entity
-     * @param displayOnly whether the stat is only meant for display purposes or actual physical execution
+     * @param use whether the stat is only meant for display purposes or actual physical execution
      * @return the stat to return
      */
-    double fetch(Entity victim, Entity attackedBy, boolean displayOnly);
+    double fetch(Entity victim, Entity attackedBy, boolean use);
 }

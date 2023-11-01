@@ -21,7 +21,7 @@ public enum EntityClassification {
             "LLAMA_SPIT", "MARKER", "MINECART", "MINECART_CHEST", "MINECART_COMMAND", "MINECART_FURNACE",
             "MINECART_HOPPER", "MINECART_MOB_SPAWNER", "MINECART_TNT", "PAINTING", "PRIMED_TNT", "SHULKER_BULLET",
             "SMALL_FIREBALL", "SNOWBALL", "SPECTRAL_ARROW", "SPLASH_POTION", "THROWN_EXP_BOTTLE", "TRIDENT",
-            "WITHER_SKULL"), // entities that were never alive (e.g. POTION_EFFECT_CLOUD)
+            "WITHER_SKULL", "UNKNOWN"), // entities that were never alive (e.g. POTION_EFFECT_CLOUD)
     UNDEAD("DROWNED", "GIANT", "HUSK", "PHANTOM", "SKELETON", "SKELETON_HORSE", "STRAY", "WITHER",
             "WITHER_SKELETON", "ZOGLIN", "ZOMBIE", "ZOMBIE_HORSE", "ZOMBIE_VILLAGER", "ZOMBIFIED_PIGLIN"), // undead entities
     SCULK("WARDEN"), // sculk entities

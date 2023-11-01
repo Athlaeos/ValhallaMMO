@@ -47,6 +47,8 @@ public class FlagCustomAdd extends DynamicItemModifier {
             case DISPLAY_ATTRIBUTES -> Material.NAME_TAG;
             case ATTRIBUTE_FOR_BOTH_HANDS -> Material.GOLDEN_SWORD;
             case INFINITY_EXPLOITABLE -> Material.ARROW;
+            case UNENCHANTABLE -> Material.ENCHANTING_TABLE;
+            case TEMPORARY_POTION_DISPLAY -> Material.GLASS_BOTTLE;
         }).get();
     }
 

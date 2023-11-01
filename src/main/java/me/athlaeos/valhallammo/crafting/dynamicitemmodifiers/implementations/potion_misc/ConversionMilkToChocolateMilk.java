@@ -33,7 +33,7 @@ public class ConversionMilkToChocolateMilk extends DynamicItemModifier {
 
         PotionEffectRegistry.setDefaultStoredEffects(outputItem.getMeta(), defaultPotionEffects);
         PotionEffectRegistry.setActualStoredEffects(outputItem.getMeta(), currentPotionEffects);
-        PotionEffectRegistry.updateItemName(outputItem.getMeta(), true);
+        PotionEffectRegistry.updateItemName(outputItem.getMeta(), true, false);
     }
 
     @Override

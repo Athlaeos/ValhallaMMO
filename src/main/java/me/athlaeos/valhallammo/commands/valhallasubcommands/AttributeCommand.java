@@ -3,8 +3,7 @@ package me.athlaeos.valhallammo.commands.valhallasubcommands;
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.item.CustomFlag;
-import me.athlaeos.valhallammo.item.attributes.AttributeWrapper;
+import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -56,10 +55,10 @@ public class AttributeCommand implements Command {
 			ItemBuilder result = new ItemBuilder(target.getInventory().getItemInMainHand());
 			if (defaultValue != null){
 				AttributeWrapper defaultWrapper = ItemAttributesRegistry.getCopy(attribute.toUpperCase()).setValue(defaultValue);
-				ItemAttributesRegistry.addDefaultStat(result.getItem(), result.getMeta(), defaultWrapper);
+				ItemAttributesRegistry.addDefaultStat(result.getMeta(), defaultWrapper);
 			}
 			if (actualValue != null){
-				ItemAttributesRegistry.setStat(result.getItem(), result.getMeta(), attribute.toUpperCase(), actualValue, false);
+				ItemAttributesRegistry.setStat(result.getMeta(), attribute.toUpperCase(), actualValue, false);
 			}
 			target.getInventory().setItemInMainHand(result.get());
 			return true;

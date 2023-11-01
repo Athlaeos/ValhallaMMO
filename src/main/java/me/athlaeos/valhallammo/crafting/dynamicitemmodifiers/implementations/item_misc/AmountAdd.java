@@ -35,7 +35,7 @@ public class AmountAdd extends DynamicItemModifier {
 
     @Override
     public Map<Integer, ItemStack> getButtons() {
-        return new Pair<>(11,
+        return new Pair<>(12,
                 new ItemBuilder(Material.PAPER)
                         .name("&fWhich amount?")
                         .lore("&f" + amount + " added to amount",

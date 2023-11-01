@@ -82,6 +82,15 @@ public enum MaterialClass {
         return null;
     }
 
+    public static MaterialClass getMatchingClass(Material base){
+        if (base != null){
+            for (MaterialClass type : values()){
+                if (type.getMatchingMaterials().contains(base)) return type;
+            }
+        }
+        return null;
+    }
+
     public static void setMaterialType(ItemMeta meta, MaterialClass type){
         if (type == null) meta.getPersistentDataContainer().remove(materialTypeKey);
         else meta.getPersistentDataContainer().set(materialTypeKey, PersistentDataType.STRING, type.toString());
