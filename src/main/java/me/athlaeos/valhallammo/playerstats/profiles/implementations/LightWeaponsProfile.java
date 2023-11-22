@@ -36,7 +36,7 @@ public class LightWeaponsProfile extends Profile {
         floatStat("stunChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("coatingDurationMultiplier", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
         floatStat("coatingAmplifierMultiplier", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
-        floatStat("dropsMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create()); // TODO impl
+        floatStat("dropsMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("rareDropsMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
 
         intStat("bleedDuration", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
@@ -180,7 +180,7 @@ public class LightWeaponsProfile extends Profile {
     }
 
     @Override
-    protected String getTableName() {
+    public String getTableName() {
         return "profiles_light_weapons";
     }
 

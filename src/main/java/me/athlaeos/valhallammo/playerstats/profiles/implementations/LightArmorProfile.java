@@ -173,7 +173,7 @@ public class LightArmorProfile extends Profile {
     }
 
     @Override
-    protected String getTableName() {
+    public String getTableName() {
         return "profiles_light_armor";
     }
 

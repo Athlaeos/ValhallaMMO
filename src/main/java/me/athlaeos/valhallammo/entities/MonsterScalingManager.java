@@ -1,0 +1,182 @@
+package me.athlaeos.valhallammo.entities;
+
+import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.utility.Utils;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.*;
+import org.bukkit.persistence.PersistentDataType;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+public class MonsterScalingManager {
+    private static final NamespacedKey ENTITY_LEVEL = new NamespacedKey(ValhallaMMO.getInstance(), "entity_level");
+
+    private static boolean enabled = false;
+    private static boolean monstersOnly = true;
+    private static String regionalPlayerLevel = null;
+    private static final Map<String, String> defaultStatScaling = new HashMap<>();
+    private static String defaultLevelScaling = null;
+    private static final Map<EntityType, Map<String, String>> entityStatScaling = new HashMap<>();
+    private static final Map<EntityType, String> entityLevelScaling = new HashMap<>();
+
+    public static void loadMonsterScalings(){
+        YamlConfiguration config = ConfigManager.getConfig("mob_stats.yml").get();
+
+        enabled = config.getBoolean("enabled");
+        if (!enabled) return;
+        monstersOnly = config.getBoolean("monsters_only", true);
+        regionalPlayerLevel = config.getString("regional_player_level");
+
+        ConfigurationSection defaultStats = config.getConfigurationSection("default");
+        if (defaultStats != null){
+            for (String stat : defaultStats.getKeys(false)){
+                if (stat.equals("level")) defaultLevelScaling = config.getString("default.level");
+                else {
+                    if (!AccumulativeStatManager.getSources().containsKey(stat)){
+                        ValhallaMMO.logWarning("Invalid default stat " + stat + " referenced in mob_stats.yml");
+                    } else defaultStatScaling.put(stat, config.getString("default." + stat));
+                }
+            }
+        }
+
+        ConfigurationSection entityStats = config.getConfigurationSection("entity");
+        if (entityStats != null){
+            for (String entity : entityStats.getKeys(false)){
+                EntityType e = Catch.catchOrElse(() -> EntityType.valueOf(entity), null);
+                if (e == null) continue;
+
+                ConfigurationSection stats = config.getConfigurationSection("entity." + entity);
+                if (stats != null){
+                    for (String stat : stats.getKeys(false)){
+                        if (stat.equals("level")) entityLevelScaling.put(e, config.getString("entity." + entity + ".level"));
+                        else {
+                            if (!AccumulativeStatManager.getSources().containsKey(stat)){
+                                ValhallaMMO.logWarning("Invalid " + entity + " stat " + stat + " referenced in mob_stats.yml");
+                            } else {
+                                Map<String, String> existingStats = entityStatScaling.getOrDefault(e, new HashMap<>());
+                                existingStats.put(stat, config.getString("entity." + entity + "." + stat));
+                                entityStatScaling.put(e, existingStats);
+                            }
+                        }
+                    }
+
+                    // going through the default stats to add them to the entity stats, but only if the entity stats don't contain the default stat yet
+                    for (String stat : defaultStatScaling.keySet()){
+                        if (entityStatScaling.containsKey(e) && !entityStatScaling.get(e).containsKey(stat)) {
+                            Map<String, String> existingStats = entityStatScaling.getOrDefault(e, new HashMap<>());
+                            existingStats.put(stat, defaultStatScaling.get(stat));
+                            entityStatScaling.put(e, existingStats);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the entity's stats for the given stat value. If the entity has no level, or is a player, they are treated as an unaffected entity and get no stat adjustments.
+     * @param entity the entity to get their stats from
+     * @param stat the stat to get from the entity
+     * @return the entity's stat, or 0 if the entity is a player, or is not a monster when only monsters are allowed.
+     */
+    public static double getStatValue(LivingEntity entity, String stat){
+        if (!enabled || (monstersOnly && !(entity instanceof Monster)) || entity instanceof Player) return 0;
+        int level = getLevel(entity);
+        if (level < 0) return 0;
+        if (entityStatScaling.containsKey(entity.getType())){
+            Map<String, String> entityStats = entityStatScaling.getOrDefault(entity.getType(), new HashMap<>());
+            if (!entityStats.containsKey(stat)) return 0;
+            return Utils.eval(parseRand(entityStatScaling.get(entity.getType()).get(stat).replace("%level%", String.valueOf(level))));
+        } else if (defaultStatScaling.containsKey(stat)) return (int) Utils.eval(parseRand(defaultStatScaling.get(stat).replace("%level%", String.valueOf(level))));
+        return 0;
+    }
+
+    /**
+     * Retrieves the entity level if present, returns -1 if the entity has no level.
+     * @param entity the entity to get their level from
+     * @return their level, -1 if none found.
+     */
+    public static int getLevel(LivingEntity entity){
+        return enabled ? entity.getPersistentDataContainer().getOrDefault(ENTITY_LEVEL, PersistentDataType.INTEGER, -1) : 0;
+    }
+
+    /**
+     * Sets the entity level to the entity. Removed if given level is negative. Players cannot be given a level
+     * @param entity the entity to set their level
+     * @param level the level to set
+     */
+    public static void setLevel(LivingEntity entity, int level){
+        if (entity instanceof Player) return;
+        if (level >= 0) entity.getPersistentDataContainer().set(ENTITY_LEVEL, PersistentDataType.INTEGER, level);
+        else entity.getPersistentDataContainer().remove(ENTITY_LEVEL);
+        EntityAttributeStats.updateStats(entity);
+    }
+
+    /**
+     * Given an entity, returns what level they should be given the surrounding players and scalings they have.
+     * @param entity the entity
+     * @return the level the plugin calculated they should be. Will return -1 if the entity is not a monster or no level scaling is available for them.
+     */
+    public static int getNewLevel(LivingEntity entity){
+        if (!enabled || (monstersOnly && !(entity instanceof Monster)) || entity instanceof Player) return -1;
+        int powerLevel = (int) Math.round(getAreaDifficultyLevel(entity.getLocation()));
+        if (entityLevelScaling.containsKey(entity.getType())){
+            return Math.max(0, (int) Utils.eval(parseRand(entityLevelScaling.get(entity.getType()).replace("%level%", String.valueOf(powerLevel)))));
+        } else if (defaultLevelScaling != null) return Math.max(0, (int) Utils.eval(parseRand(defaultLevelScaling.replace("%level%", String.valueOf(powerLevel)))));
+        else return -1;
+    }
+
+    /**
+     * Returns the average power level of surrounding players given a location.
+     * @param l the location to check the average power level of. Takes the average of all players in a 128 block radius.
+     * @return The average power level of surrounding players.
+     */
+    public static double getAreaDifficultyLevel(Location l){
+        if (!enabled || l.getWorld() == null) return 0;
+        Collection<Entity> players = l.getWorld().getNearbyEntities(l, 128, 128, 128, (entity) -> entity instanceof Player p && p.getGameMode() != GameMode.CREATIVE);
+        int combinedLevel = 0;
+        int lowest = -1;
+        int highest = -1;
+        for (Entity e : players){
+            if (!(e instanceof Player p)) continue;
+            PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
+            combinedLevel += profile.getLevel();
+            if (lowest < 0 || lowest > profile.getLevel()) lowest = profile.getLevel();
+            if (highest < 0 || highest < profile.getLevel()) highest = profile.getLevel();
+        }
+        return regionalPlayerLevel == null ?
+                (double) combinedLevel / players.size() :
+                Utils.eval(regionalPlayerLevel.replace("%combined_player_level%", String.valueOf(combinedLevel))
+                        .replace("%nearby_player_count%", String.valueOf(players.size()))
+                        .replace("%min_player_level%", String.valueOf(lowest))
+                        .replace("%max_player_level%", String.valueOf(highest)));
+    }
+
+    private static String parseRand(String expression){
+        String[] rands = StringUtils.substringsBetween(expression, "rand(", ")");
+        if (rands == null || rands.length == 0) return expression;
+        for (String rand : rands){
+            String[] args = rand.split(",");
+            if (args.length == 1) expression = expression.replaceFirst(Pattern.quote("rand(" + rand + ")"), String.valueOf(Utils.getRandom().nextInt(Integer.parseInt(args[0]))));
+            else if (args.length == 2){
+                int lower = Integer.parseInt(args[0].trim());
+                int upper = Integer.parseInt(args[1].trim());
+                expression = expression.replaceFirst(Pattern.quote("rand(" + rand + ")"), String.valueOf(Utils.getRandom().nextInt((upper - lower) + 1) + lower));
+            }
+        }
+        return expression;
+    }
+}

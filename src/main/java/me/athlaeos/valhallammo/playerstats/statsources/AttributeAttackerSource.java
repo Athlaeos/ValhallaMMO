@@ -1,9 +1,6 @@
 package me.athlaeos.valhallammo.playerstats.statsources;
 
-import me.athlaeos.valhallammo.item.WeightClass;
-import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
-import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.item.ItemSkillRequirements;
+import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatSource;
 import me.athlaeos.valhallammo.playerstats.EvEAccumulativeStatSource;
@@ -13,6 +10,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+
+import java.util.Collection;
 
 public class AttributeAttackerSource implements AccumulativeStatSource, EvEAccumulativeStatSource {
     private final String attribute;
@@ -68,6 +67,11 @@ public class AttributeAttackerSource implements AccumulativeStatSource, EvEAccum
             double multiplier = 1;
             if (attribute != null && trueAttacker instanceof Player player) multiplier += ItemSkillRequirements.getPenalty(player, item.getMeta(), attribute);
             value += wrapper.getValue() * multiplier;
+        }
+
+        Collection<ArmorSet> activeSets = ArmorSetRegistry.getActiveArmorSets(trueAttacker);
+        for (ArmorSet set : activeSets){
+            value += (negative ? -1 : 1) * set.getSetBonus().getOrDefault(attribute, 0D);
         }
         return value;
     }

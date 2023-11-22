@@ -26,6 +26,7 @@ public class DynamicCookingRecipe implements ValhallaRecipe, ValhallaKeyedRecipe
     private ItemStack result = new ItemBuilder(Material.IRON_INGOT).name("&r&fReplace me!").lore("&7I'm just a placeholder &eresult&7 item!").get();
     private boolean tinker = false;
     private int cookTime = 200;
+    private boolean hiddenFromBook = false;
     private boolean requireValhallaTools = false;
     private List<DynamicItemModifier> modifiers = new ArrayList<>();
     private int experience = 1;
@@ -66,6 +67,7 @@ public class DynamicCookingRecipe implements ValhallaRecipe, ValhallaKeyedRecipe
     public CookingRecipeType getType() { return type; }
     public String getDescription() { return description; }
     public String getDisplayName() { return displayName; }
+    public boolean isHiddenFromBook() { return hiddenFromBook; }
 
     public void setDisplayName(String displayName) { this.displayName = displayName; }
     public void setDescription(String description) { this.description = description; }
@@ -81,6 +83,7 @@ public class DynamicCookingRecipe implements ValhallaRecipe, ValhallaKeyedRecipe
     public void setExperience(int experience) { this.experience = experience; }
     public void setValidations(Collection<String> validations) {this.validations = validations;}
     public void setUnlockedForEveryone(boolean unlockedForEveryone) { this.unlockedForEveryone = unlockedForEveryone; }
+    public void setHiddenFromBook(boolean hiddenFromBook) { this.hiddenFromBook = hiddenFromBook; }
 
     public CookingRecipe<?> generateRecipe() {
         if (input == null || ItemUtils.isEmpty(input.getItem()) ||

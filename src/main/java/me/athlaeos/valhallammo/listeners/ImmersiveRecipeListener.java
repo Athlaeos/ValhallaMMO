@@ -39,7 +39,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ImmersiveRecipeListener implements Listener {
-    private final Collection<Material> immersiveBlocks = ItemUtils.getMaterialList(ValhallaMMO.getPluginConfig().getStringList("immersive_on_regular_click"));
+    private final Collection<Material> immersiveBlocks = ItemUtils.getMaterialSet(ValhallaMMO.getPluginConfig().getStringList("immersive_on_regular_click"));
     private static final Map<UUID, ImmersiveCraftingRecipe> selectedImmersiveRecipe = new HashMap<>();
     public static Map<UUID, ImmersiveCraftingRecipe> getSelectedImmersiveRecipe() { return selectedImmersiveRecipe; }
 
@@ -47,7 +47,7 @@ public class ImmersiveRecipeListener implements Listener {
     public void onBlockInteract(PlayerInteractEvent e){
         Block clicked = e.getClickedBlock();
         if (clicked == null) return;
-        boolean disableVanillaMenu = ItemUtils.getMaterialList(ValhallaMMO.getPluginConfig().getStringList("disable_vanilla_menu")).contains(clicked.getType());
+        boolean disableVanillaMenu = ItemUtils.getMaterialSet(ValhallaMMO.getPluginConfig().getStringList("disable_vanilla_menu")).contains(clicked.getType());
         // cancel block gui opening if disabled, or if the player still has an active cooldown on such interactions
         if (clicked.getType().isInteractable() && (disableVanillaMenu || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cancel_block_interactions"))) e.setCancelled(true);
         Player p = e.getPlayer();

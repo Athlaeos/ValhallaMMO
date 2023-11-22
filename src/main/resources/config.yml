@@ -15,18 +15,26 @@ db_persist_delay: 6000 # delay (in game ticks) where all profiles currently in m
 profile_caching: 10000 # duration (in milliseconds) where profiles are cached in memory. Changes to profiles should
 # immediately reset the cache, so it shouldn't really matter how high this is set to.
 
-# GENERAL
-
+# RESOURCE PACK
+resourcepack_port: 30005
+server_ip: localhost
+resourcepack_version: 1.0
 admin_gui_filler_removal: true # If true, admin-visible menus like recipe editor menus will have their filler material removed. Normally this filler material is here
 # to better indicate and distinguish clickable buttons and slots from non-functional slots, but if a custom GUI for example is used then this filler material is not required
 resource_pack_config_override: true # If true, certain config options are overridden by hard-coded values that work with the ValhallaMMO resource pack
 # This option can be toggled in-game with /val resourcepack <enable/disable>
+
+# GENERAL
+
+selectable_loot_modifiers: false # If true, the loot drops within selectable loot will be modified according to the player opening said loot.
+# If not, the loot displayed will be equal to the raw item drop in the loot table
 
 forgettable_perks: false # If true, if a player were to be leveled down and lose the ability to own a perk, they will.
 # Forgetting a perk may refund resources invested into it and will display a message that they've forgotten the perk
 forgettable_perks_refund_skillpoints: true # If true, skillpoints are refunded when a perk is forgotten
 forgettable_perks_refund_money: false # If true, (if Vault and an economy plugin are hooked) money is refunded when a perk is forgotten
 forgettable_perks_refund_exp: false # If true, enchanting experience is refunded when a perk is forgotten
+forgettable_perks_refund_prestigepoints: false # If true, prestige points are refunded when a perk is forgotten
 
 metrics: true # Allow the plugin to register bStats metrics.
 language: 'en-us' # The language file used. Language files can be found in ValhallaMMO/languages
@@ -59,20 +67,21 @@ skilltree_arrow_data_nw: 3511001
 
 # Disabled skills are not registered and thus not visible in the skill trees, you can also not gain EXP for them.
 # Power is the only skill that cannot be disabled
+# Disabling a skill is fine, but the plugin is balanced assuming these skills are enabled. Smithing and alchemy especially.
+# It's up to you to balance the plugin should you disable any of them.
 enabled_skills:
-  smithing: true # Disabling will remove the existence of smithing skill. Recipes must be changed to accommodate this so items don't suck
+  smithing: true
   enchanting: true
-  alchemy: true # Disabling will remove the existence of alchemy skill. Recipes must be changed to accommodate this so potions don't suck
+  alchemy: true
   farming: true
+  fishing: true
   mining: true
-  landscaping: true
-  trading: true
+  woodcutting: true
+  digging: true
   weapons_light: true
   weapons_heavy: true
-  unarmed: true
   armor_light: true
   armor_heavy: true
-  acrobatics: true
   archery: true
 
 # The plugin features customizable mining speeds, which requires packet listening and sending to work. If you have other
@@ -127,6 +136,24 @@ item_skill_requirement_warning: 'CHAT' # valid choices are ACTION_BAR, CHAT, or 
 item_skill_requirement_warning_delay: 600000 # Players are warned of their equipment being overleveled every 10 minutes
 
 # COMBAT & DAMAGE
+
+damage_indicator_format: "&c%icon%%dps%%crit%"
+damage_indicator_crit: " &4CRIT!" #
+dummies_only: true # If true, damage indicators will only appear over armor stands marked by the plugin as dummies. If you want no damage indicators at all, empty the format.
+
+damage_indicator_fire: "&c🔥"
+damage_indicator_magic: "&d🎆"
+damage_indicator_projectile: "&c🏹"
+damage_indicator_explosion: "&6💥"
+damage_indicator_poison: "&2☠"
+damage_indicator_falling: "&c👞"
+damage_indicator_melee: "&c⚔"
+damage_indicator_bleeding: "&4💧"
+damage_indicator_freezing: "&b❄"
+damage_indicator_lightning: "&e⚡"
+damage_indicator_bludgeoning: "&c🔨"
+damage_indicator_radiant: "&f✝"
+damage_indicator_necrotic: "&7💀"
 
 # This affects the "velocity damage multiplier" mechanics specifically
 # The given number is what the entity's velocity is being divided by to determine bonus damage

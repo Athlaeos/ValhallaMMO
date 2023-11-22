@@ -29,10 +29,10 @@ public class DrillingActive extends Animation {
     static {
         YamlConfiguration config = ConfigManager.getConfig("skills/mining.yml").get();
 
-        particle = Catch.catchOrElse(() -> Particle.valueOf(config.getString("drilling_effect_particle")), null, "Invalid drilling particle given in skills/mining.yml drilling_effect_particle");
+        particle = Catch.catchOrElse(() -> Particle.valueOf(config.getString("drilling_effect_particle")), null);
         options = new Particle.DustOptions(Utils.hexToRgb(config.getString("drilling_effect_color", "#ffffff")), 0.5f);
         drillingOff = TranslationManager.translatePlaceholders(config.getString("drilling_toggle_off"));
-        drillingActiveSound = Catch.catchOrElse(() -> Sound.valueOf(config.getString("drilling_active_sound")), null, "Invalid drilling active sound given in skills/mining.yml drilling_active_sound");
+        drillingActiveSound = Catch.catchOrElse(() -> Sound.valueOf(config.getString("drilling_active_sound")), null);
     }
 
     public DrillingActive(String id) {
@@ -42,19 +42,17 @@ public class DrillingActive extends Animation {
     @Override
     public void animate(LivingEntity entity, Location location, Vector direction, int tick) {
         AccumulativeStatManager.updateStats(entity);
-        if (entity instanceof Player p) new DrillingAnimation(p).runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
+        if (entity instanceof Player p && particle != null) new DrillingAnimation(p).runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
     }
 
     private static class DrillingAnimation extends BukkitRunnable{
         private final Player p;
-        private int tick = -1;
         public DrillingAnimation(Player p){
             this.p = p;
         }
 
         @Override
         public void run() {
-            tick++;
             if (!p.isValid() || !p.isOnline() || Timer.isCooldownPassed(p.getUniqueId(), "mining_drilling_duration")
             || ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) || !p.getInventory().getItemInMainHand().getType().toString().endsWith("_PICKAXE")) {
                 cancel();

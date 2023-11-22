@@ -3,179 +3,249 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.po
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierScalingPresets;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
+import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ScaleAmplifier extends DynamicItemModifier {
+    private String presetScaling = null;
+    private String commandScaling = null;
+    private Scaling.ScalingMode mode = Scaling.ScalingMode.MULTIPLIER;
+    private Double lowerBound = null;
+    private Double upperBound = null;
+    private double amplifier = 2;
+    private double skillRange = 300;
+    private double rangeOffset = 0;
+    private double minimum = 1;
+    private String skillToScaleWith = "ALCHEMY";
+
     private double skillEfficiency = 0.5;
     private double minimumValue = 0;
-
-    private boolean usePredefined = false;
-    private String selectedScaling = null;
-
-    // The scaling defined by these three parameters is defined by ((amplifyBy - startAt)/skillRange) * %quality% + startAt;
-    private double amplifyBy = 3;
-    private double skillRange = 300;
-    private double startAt = 0.5;
-    private boolean multiplier = true;
 
     public ScaleAmplifier(String name) {
         super(name);
     }
 
+    private String buildScaling(){
+        return String.format("(%.2f/%.2f) * (%%rating%% - %.2f) + %.2f", amplifier, skillRange, rangeOffset, minimum);
+    }
+
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        int quality = AlchemyItemPropertyManager.getQuality(outputItem.getMeta());
-        int finalQuality = (int) Math.round(skillEfficiency * quality);
         Scaling scaling;
-        if (usePredefined){
-            AlchemyItemPropertyManager.ScalingPreset preset = AlchemyItemPropertyManager.getCustomScaling(selectedScaling);
-            if (preset == null) {
-                failedRecipe(outputItem, "&cINVALID SCALING (notify admin)");
-                return;
+        if (presetScaling != null) scaling = ModifierScalingPresets.getScalings().get(presetScaling);
+        else if (commandScaling != null) scaling = new Scaling(commandScaling, mode, lowerBound, upperBound);
+        else scaling = new Scaling(buildScaling(), mode, lowerBound, upperBound);
+        if (scaling == null) {
+            failedRecipe(outputItem, "&cRecipe scaling wrongly configured, contact admin");
+            return;
+        }
+        int skill;
+        switch (skillToScaleWith) {
+            case "SMITHING" -> skill = SmithingItemPropertyManager.getQuality(outputItem.getMeta());
+            case "ALCHEMY" -> skill = AlchemyItemPropertyManager.getQuality(outputItem.getMeta());
+            case "ENCHANTING" -> {
+                skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", crafter, 10000, true);
+                skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", crafter, 10000, true)));
             }
-            scaling = preset.scaling();
-        } else {
-            String preparedScaling = String.format("(%.2f/%.2f) * %%rating%% + %.2f", amplifyBy - startAt, skillRange, startAt);
-            scaling = new Scaling(preparedScaling, multiplier ? Scaling.ScalingMode.MULTIPLIER : Scaling.ScalingMode.ADD_ON_DEFAULT, minimumValue, null);
+            default -> {
+                Skill s = SkillRegistry.getSkill(skillToScaleWith);
+                Profile profile = ProfileCache.getOrCache(crafter, s.getProfileType());
+                skill = profile.getLevel();
+            }
         }
 
-        AlchemyItemPropertyManager.applyAttributeScaling(outputItem.getMeta(), finalQuality, scaling, false, minimumValue, 0);
+        int finalQuality = (int) Math.round(skillEfficiency * skill);
+        AlchemyItemPropertyManager.applyAttributeScaling(outputItem.getMeta(), scaling, finalQuality, false, minimumValue, 0);
     }
 
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
-        if (button == 6) skillEfficiency = Math.max(0, skillEfficiency + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.1 : 0.01)));
-        else if (button == 8) minimumValue = Math.max(0, minimumValue + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.1 : 0.01)));
-        else if (button == 12) usePredefined = !usePredefined;
-        else if (button == 16){
-            if (usePredefined){
-                List<String> scalings = new ArrayList<>(AlchemyItemPropertyManager.getCustomScalings().keySet());
-                int currentType = Math.max(0, scalings.indexOf(selectedScaling));
+        switch (button){
+            case 0 -> {
+                List<String> scalings = new ArrayList<>(ModifierScalingPresets.getScalings().keySet());
+                int currentScaling = presetScaling == null ? -1 : scalings.indexOf(presetScaling);
                 if (e.isLeftClick()) {
-                    if (currentType + 1 >= scalings.size()) currentType = 0;
-                    else currentType++;
+                    if (currentScaling + 1 >= scalings.size()) currentScaling = 0;
+                    else currentScaling++;
                 } else {
-                    if (currentType - 1 < 0) currentType = scalings.size() - 1;
-                    else currentType--;
+                    if (currentScaling - 1 < 0) currentScaling = scalings.size() - 1;
+                    else currentScaling--;
                 }
-                selectedScaling = scalings.get(currentType);
-            } else {
-                amplifyBy = amplifyBy + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? (multiplier ? 0.1 : 0.25) : 0.01));
+                presetScaling = scalings.get(currentScaling);
             }
-        } else if (button == 17 && !usePredefined) skillRange = Math.max(0, skillRange + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 25 : 1)));
-        else if (button == 18 && !usePredefined) startAt = startAt + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.1 : 0.01));
-        else if (button == 22 && !usePredefined) multiplier = !multiplier;
+            case 2 -> mode = (mode == Scaling.ScalingMode.MULTIPLIER ? Scaling.ScalingMode.ADD_ON_DEFAULT : Scaling.ScalingMode.MULTIPLIER);
+            case 9 -> {
+                if (e.getClick() == ClickType.MIDDLE) upperBound = null;
+                else if (lowerBound != null) upperBound = Math.max(lowerBound, (upperBound == null ? 0 : upperBound) + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 0.25 : 0.01)));
+                else upperBound = (upperBound == null ? 0 : upperBound) + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 0.25 : 0.01));
+            }
+            case 10 -> amplifier = amplifier + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 0.25 : 0.01));
+            case 11 -> skillRange = skillRange + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 25 : 1));
+            case 12 -> rangeOffset = rangeOffset + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 10 : 1));
+            case 13 -> minimum = minimum + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 0.25 : 0.01));
+            case 14 -> {
+                List<String> skills = new ArrayList<>(SkillRegistry.getAllSkillsByType().keySet());
+                skills.sort(Comparator.comparingInt(s -> SkillRegistry.getSkill(s).getSkillTreeMenuOrderPriority()));
+                int currentSkill = skills.indexOf(skillToScaleWith);
+                if (e.isLeftClick()) {
+                    if (currentSkill + 1 >= skills.size()) currentSkill = 0;
+                    else currentSkill++;
+                } else {
+                    if (currentSkill - 1 < 0) currentSkill = skills.size() - 1;
+                    else currentSkill--;
+                }
+                skillToScaleWith = skills.get(currentSkill);
+            }
+            case 19 -> {
+                if (e.getClick() == ClickType.MIDDLE) lowerBound = null;
+                else if (upperBound != null) lowerBound = Math.min(upperBound, (lowerBound == null ? 0 : lowerBound) + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 0.25 : 0.01)));
+                else lowerBound = (lowerBound == null ? 0 : lowerBound) + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 0.25 : 0.01));
+            }
+            case 21 -> skillEfficiency = Math.max(0, skillEfficiency + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.1 : 0.01)));
+            case 23 -> minimumValue = Math.max(0, minimumValue + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.1 : 0.01)));
+        }
+        if (button != 0 && button != 21 && button != 23 && getButtons().containsKey(button)) presetScaling = null;
     }
 
     @Override
     public Map<Integer, ItemStack> getButtons() {
-        Set<Pair<Integer, ItemStack>> buttons = new HashSet<>(Set.of(
-                new Pair<>(8,
-                        new ItemBuilder(Material.PAPER)
-                                .name("&fMinimum fraction")
-                                .lore(String.format("&fSkill efficiency: %.0f%%", skillEfficiency * 100),
-                                        String.format("&fMinimum fraction of stat: &e%.2fx", minimumValue),
-                                        "&fThe resulting amplifier will always be at",
-                                        "&fleast the given fraction of its default",
-                                        "&fvalue, rounded up",
-                                        "&6Click to add/subtract 0.01",
-                                        "&6Shift-Click to add/subtract 0.1")
-                                .get()
-                ),
-                new Pair<>(12,
-                        new ItemBuilder(Material.PAPER)
-                                .name("&fUse predefined scaling?")
-                                .lore(usePredefined ? "&eYes" : "&eNo",
-                                        "&fPredefined scalings are defined in",
-                                        "&fskills/alchemy.yml. If off, a more",
-                                        "&fspecific scaling can be defined.",
-                                        "&6Click to toggle")
-                                .get()
-                )
-        ));
-        if (!usePredefined){
-            buttons.add(new Pair<>(16,
-                    new ItemBuilder(Material.PAPER)
-                            .name("&fDefine Scaling: &e" + (multiplier ? "Multiplier" : "Adder"))
-                            .lore(String.format("&e%.2f-%.2f from 0-%.0f quality", startAt, amplifyBy - startAt, skillRange),
-                                    String.format("&f(%.2f/%.0f) * skill %s %.2f", amplifyBy - startAt, skillRange, startAt < 0 ? "-" : "+", Math.abs(startAt)),
-                                    "&fThe " + (multiplier ? "multiplier" : "adder") + " defines up to how",
-                                    "&fmuch the amplifier is " + (multiplier ? "multiplied" : "increased"),
-                                    "&fover the course of the defined",
-                                    "&fquality",
-                                    "&6Click to add/subtract 0.01",
-                                    "&6Shift-Click to add/subtract " + (multiplier ? "0.1" : "0.25"))
-                            .get()
-            ));
-            buttons.add(new Pair<>(17,
-                    new ItemBuilder(Material.PAPER)
-                            .name("&fDefine Scaling: &eSkill Range")
-                            .lore(String.format("&e%.2f-%.2f from 0-%.0f quality", startAt, amplifyBy - startAt, skillRange),
-                                    String.format("&f(%.2f/%.0f) * skill %s %.2f", amplifyBy - startAt, skillRange, startAt < 0 ? "-" : "+", Math.abs(startAt)),
-                                    "&fThe skill range defines how much",
-                                    "&fskill is required to increase the",
-                                    String.format("&fbase stat from %s%.2f to %s%.2f", multiplier ? "x" : startAt > 0 ? "+" : "", startAt, multiplier ? "x" : (amplifyBy - startAt) > 0 ? "+" : "", amplifyBy - startAt),
-                                    "&6Click to add/subtract 1",
-                                    "&6Shift-Click to add/subtract 25")
-                            .get()
-            ));
-            buttons.add(new Pair<>(18,
-                    new ItemBuilder(Material.PAPER)
-                            .name("&fDefine Scaling: &eStarting Value")
-                            .lore(String.format("&e%.2f-%.2f from 0-%.0f quality", startAt, amplifyBy - startAt, skillRange),
-                                    String.format("&f(%.2f/%.0f) * skill %s %.2f", amplifyBy - startAt, skillRange, startAt < 0 ? "-" : "+", Math.abs(startAt)),
-                                    "&fDefines the minimum value the ",
-                                    "&fformula will produce at 0 quality",
-                                    "&6Click to add/subtract 0.01",
-                                    "&6Shift-Click to add/subtract 0.1")
-                            .get()
-            ));
-            buttons.add(new Pair<>(22,
-                    new ItemBuilder(Material.PAPER)
-                            .name("&fDefine Scaling: &eMultiply/Add")
-                            .lore(String.format("&e%.2f-%.2f from 0-%.0f quality", startAt, amplifyBy - startAt, skillRange),
-                                    String.format("&f(%.2f/%.0f) * skill %s %.2f", amplifyBy - startAt, skillRange, startAt < 0 ? "-" : "+", Math.abs(startAt)),
-                                    "&e" + (multiplier ? "Multiply base value" : "Add to base value"),
-                                    "&fDefines whether the formula should",
-                                    "&fproduce a multiplier applied on the",
-                                    "&fpotion's amplifier, or a number added",
-                                    "&fto it.",
-                                    "&6Click to toggle")
-                            .get()
-            ));
-        } else {
-            AlchemyItemPropertyManager.ScalingPreset scaling = AlchemyItemPropertyManager.getCustomScaling(selectedScaling);
-            buttons.add(new Pair<>(16,
-                    new ItemBuilder(Material.PAPER)
-                            .name("&fSelect Scaling: &e" + (scaling == null ? "&cNone Selected" : selectedScaling))
-                            .lore("&f" + (scaling == null ? "&cNo scaling" : scaling.scaling().getExpression()))
-                            .appendLore((scaling == null ? new ArrayList<>() : StringUtils.separateStringIntoLines(scaling.description(), 40)))
-                            .appendLore("&6Click to cycle")
-                            .get()
-            ));
-        }
-        return new Pair<>(6,
+        return new Pair<>(21,
                 new ItemBuilder(Material.NETHER_STAR)
                         .name("&fSkill Efficiency")
-                        .lore(String.format("&fSkill efficiency: %.0f%%", skillEfficiency * 100),
-                                String.format("&fMinimum fraction of stat: &e%.2fx", minimumValue),
+                        .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
+                                String.format("&fSkill efficiency: %.0f%%", skillEfficiency * 100),
+                                String.format("&fMinimum fraction of amplifier: &e%.2fx", minimumValue),
                                 "&fSkill efficiency determines how much",
-                                "&fof the player's skill is used in the",
-                                "&fformula.",
+                                String.format("&fof the player's &e%s&f skill is used ", StringUtils.toPascalCase(skillToScaleWith)),
+                                "&fin the formula.",
                                 "&6Click to add/subtract 1%",
                                 "&6Shift-Click to add/subtract 10%")
-                        .get()).map(buttons);
+                        .get()).map(
+                Set.of(
+                        new Pair<>(23, new ItemBuilder(Material.PAPER)
+                                .name("&fMinimum fraction")
+                                .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
+                                        String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
+                                        "&fThe resulting amplifier will always be at",
+                                        String.format("&fleast &e%.2fx&f of its default", minimumValue),
+                                        "&fvalue.",
+                                        "&6Click to add/subtract 0.01",
+                                        "&6Shift-Click to add/subtract 0.1").get()),
+                        new Pair<>(0, new ItemBuilder(Material.BOOK)
+                                .name("&fPreset Scalings")
+                                .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
+                                        String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
+                                        "&fSets the amplifier to scale with a",
+                                        "&fpreconfigured scaling formula.",
+                                        "&fClicking another button removes",
+                                        "&fthis scaling in favor of the custom",
+                                        "&fone",
+                                        "&6Click to cycle").get()),
+                        new Pair<>(2, new ItemBuilder(Material.REDSTONE_TORCH)
+                                .name("&fScaling Mode")
+                                .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
+                                        String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
+                                        "&fSets the scaling behavior.",
+                                        "&fADD_ON_DEFAULT adds the result of",
+                                        "&fthe formula to the default amplifier.",
+                                        "&fMULTIPLIER multiplies the default amplifier",
+                                        "&fwith the result of the formula.",
+                                        "&6Click to cycle").get()),
+                        new Pair<>(9, new ItemBuilder(Material.LIME_DYE)
+                                .name("&fUpper Bound")
+                                .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
+                                        String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
+                                        String.format("&fSet to: %s", upperBound == null ? "none" : String.format("%.2f", upperBound)),
+                                        "&fSets the maximum value that can",
+                                        "&fbe produced with the formula.",
+                                        "&6Click to add/subtract 0.01",
+                                        "&6Shift-Click to add/subtract 0.25",
+                                        "&cMiddle-Click to remove").get()),
+                        new Pair<>(10, new ItemBuilder(Material.GLOWSTONE_DUST)
+                                .name("&fAmplifier")
+                                .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
+                                        String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
+                                        String.format("&fSet to: %.2f", amplifier),
+                                        "&fSets how much the formula will",
+                                        "&fscale up over the course of",
+                                        String.format("&e%.0f &f%s skill", skillRange, StringUtils.toPascalCase(skillToScaleWith)),
+                                        "&6Click to add/subtract 0.01",
+                                        "&6Shift-Click to add/subtract 0.25").get()),
+                        new Pair<>(11, new ItemBuilder(Material.REDSTONE)
+                                .name("&fSkill Range")
+                                .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
+                                        String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
+                                        String.format("&fSet to: %.0f", skillRange),
+                                        "&fSets the range of skill required ",
+                                        String.format("&ffor the formula to go up by %.2f", amplifier),
+                                        "&6Click to add/subtract 1",
+                                        "&6Shift-Click to add/subtract 25").get()),
+                        new Pair<>(12, new ItemBuilder(Material.PISTON)
+                                .name("&fOffset")
+                                .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
+                                        String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
+                                        String.format("&fSet to: %.0f", rangeOffset),
+                                        "&fMoves the pivot point to a",
+                                        "&fdifferent skill point.",
+                                        "&aKeep in mind negative values equate",
+                                        "&ato higher skill requirements.",
+                                        "&fFor example, for -50 that means",
+                                        String.format("&f50 skill is required to reach %.2f", minimum),
+                                        "&6Click to add/subtract 1",
+                                        "&6Shift-Click to add/subtract 10").get()),
+                        new Pair<>(13, new ItemBuilder(Material.BOOK)
+                                .name("&fMinimum (Pivot Point)")
+                                .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
+                                        String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
+                                        String.format("&fSet to: %.0f", minimum),
+                                        "&fSets the baseline value the",
+                                        "&fformula will produce. ",
+                                        String.format("&f%.0f skill is required to reach %.2f", -rangeOffset, minimum),
+                                        "&6Click to add/subtract 0.01",
+                                        "&6Shift-Click to add/subtract 0.25").get()),
+                        new Pair<>(14, new ItemBuilder(Material.BOOK)
+                                .name("&fSkill to use")
+                                .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
+                                        String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
+                                        String.format("&fSet to: %s", StringUtils.toPascalCase(skillToScaleWith)),
+                                        "&fSets which skill should be used",
+                                        "&fto define the scaling's strength",
+                                        "&eSmithing and Alchemy are exceptions",
+                                        "&fwhere they base %rating% off of the",
+                                        "&fitem's quality instead of player skill",
+                                        "&6Click to cycle").get()),
+                        new Pair<>(19, new ItemBuilder(Material.LIME_DYE)
+                                .name("&fLower Bound")
+                                .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
+                                        String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
+                                        String.format("&fSet to: %s", lowerBound == null ? "none" : String.format("%.2f", lowerBound)),
+                                        "&fSets the minimum value that can",
+                                        "&fbe produced with the formula.",
+                                        "&6Click to add/subtract 0.01",
+                                        "&6Shift-Click to add/subtract 0.25",
+                                        "&cMiddle-Click to remove").get())
+                )
+        );
     }
 
     @Override
@@ -185,17 +255,20 @@ public class ScaleAmplifier extends DynamicItemModifier {
 
     @Override
     public String getDisplayName() {
-        return "&eScale Amplifier";
+        return "&eScale Potion Amplifier";
     }
 
     @Override
     public String getDescription() {
-        return "&fScales the amplifiers of the potion's effects based on player skill";
+        return "&fScales the potion's amplifier according to a defined formula";
     }
 
     @Override
     public String getActiveDescription() {
-        return String.format("&fScales the potion's amplifiers based on &e%.0f%%&f the player's alchemy skill, to at least &e%.2fx&f the stat's default amount", skillEfficiency * 100, minimumValue);
+        return String.format("&fScales the item's amplifier according to the formula %s, using the mode %s. %s%s",
+                buildScaling(), mode,
+                lowerBound == null ? "" : "&fResult cannot go below " + lowerBound + ". ",
+                upperBound == null ? "" : "&fResult cannot go above " + upperBound + ".");
     }
 
     @Override
@@ -210,18 +283,16 @@ public class ScaleAmplifier extends DynamicItemModifier {
 
     @Override
     public String parseCommand(CommandSender executor, String[] args) {
-        if (args.length != 6) return "Six arguments are expected: five doubles and a yes/no answer";
-
+        if (args.length != 6) return "Six arguments are expected: two doubles, a formula, a mode, and a lower- and upper bound";
         try {
             skillEfficiency = Double.parseDouble(args[0]);
             minimumValue = Double.parseDouble(args[1]);
-
-            startAt = Double.parseDouble(args[2]);
-            amplifyBy = Double.parseDouble(args[3]);
-            skillRange = Double.parseDouble(args[4]);
-            multiplier = args[5].equalsIgnoreCase("yes");
-        } catch (NumberFormatException ignored){
-            return "Six arguments are expected: five doubles and a yes/no answer. At least one was not a number";
+            commandScaling = args[2];
+            mode = Scaling.ScalingMode.valueOf(args[3]);
+            lowerBound = Catch.catchOrElse(() -> Double.parseDouble(args[4]), null);
+            upperBound = Catch.catchOrElse(() -> Double.parseDouble(args[5]), null);
+        } catch (IllegalArgumentException ignored){
+            return "Six arguments are expected: two doubles, a formula, a mode, and a lower- and upper bound. At least one was not a number, or the mode could be incorrect";
         }
         return null;
     }
@@ -230,10 +301,10 @@ public class ScaleAmplifier extends DynamicItemModifier {
     public List<String> commandSuggestions(CommandSender executor, int currentArg) {
         if (currentArg == 0) return List.of("<skill_efficiency>");
         if (currentArg == 1) return List.of("<minimum_fraction>");
-        if (currentArg == 2) return List.of("<minimum_result>");
-        if (currentArg == 3) return List.of("<lategame_result>");
-        if (currentArg == 4) return List.of("<lategame_skill>");
-        if (currentArg == 5) return List.of("<multiply>", "yes", "no");
+        if (currentArg == 2) return List.of("<expression>");
+        if (currentArg == 3) return Arrays.stream(Scaling.ScalingMode.values()).map(Scaling.ScalingMode::toString).collect(Collectors.toList());
+        if (currentArg == 4) return List.of("<lower_bound_or_none>");
+        if (currentArg == 5) return List.of("<upper_bound_or_none>");
         return Command.noSubcommandArgs();
     }
 

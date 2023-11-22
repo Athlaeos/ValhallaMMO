@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.skills.skills.implementations;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -12,8 +13,11 @@ import org.bukkit.entity.Player;
 public class SmithingSkill extends Skill {
     public SmithingSkill(String type) {
         super(type);
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/smithing.yml").get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/smithing_progression.yml").get();
+        ValhallaMMO.getInstance().save("skills/smithing_progression.yml");
+        ValhallaMMO.getInstance().save("skills/smithing.yml");
+
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/smithing.yml").reload().get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/smithing_progression.yml").reload().get();
 
         loadCommonConfig(skillConfig, progressionConfig);
     }

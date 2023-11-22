@@ -23,12 +23,12 @@ import java.util.stream.Collectors;
 
 public class LootPredicateMenu extends Menu {
     private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
-    private static final NamespacedKey KEY_PREDICATE_ID = new NamespacedKey(ValhallaMMO.getInstance(), "key_modifier_id");
-    private static final NamespacedKey KEY_PREDICATE_BUTTON = new NamespacedKey(ValhallaMMO.getInstance(), "key_modifier_button");
+    private static final NamespacedKey KEY_PREDICATE_ID = new NamespacedKey(ValhallaMMO.getInstance(), "key_predicate_id");
+    private static final NamespacedKey KEY_PREDICATE_BUTTON = new NamespacedKey(ValhallaMMO.getInstance(), "key_predicate_button");
 
     private static final List<Integer> predicateButtonIndexes = Arrays.asList(2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42);
     private static final ItemStack confirmButton = new ItemBuilder(Material.STRUCTURE_VOID).stringTag(KEY_ACTION, "confirmButton").name("&b&lSave").get();
-    private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_STAINED_GLASS_PANE))
+    private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_DYE))
             .name("&b&lAdd Condition")
             .stringTag(KEY_ACTION, "createNewButton")
             .flag(ItemFlag.HIDE_ATTRIBUTES).get();
@@ -136,13 +136,13 @@ public class LootPredicateMenu extends Menu {
     public void setMenuItems() {
         inventory.clear();
         switch (view) {
-            case VIEW_PREDICATES -> setViewModifiersView();
-            case PICK_PREDICATES -> setPickModifiersView();
-            case NEW_PREDICATE -> setNewModifierView();
+            case VIEW_PREDICATES -> setViewPredicatesView();
+            case PICK_PREDICATES -> setPickPredicatesView();
+            case NEW_PREDICATE -> setNewPredicateView();
         }
     }
 
-    private void setNewModifierView(){
+    private void setNewPredicateView(){
         if (currentPredicate != null){
             if (currentPredicate.getButtons() != null){
                 for (Integer b : currentPredicate.getButtons().keySet()){
@@ -161,7 +161,7 @@ public class LootPredicateMenu extends Menu {
         inventory.setItem(45, cancelButton);
     }
 
-    private void setPickModifiersView(){
+    private void setPickPredicatesView(){
         for (int i = 0; i < 45; i++){
             inventory.setItem(i, null);
         }
@@ -197,7 +197,7 @@ public class LootPredicateMenu extends Menu {
         inventory.setItem(40, confirmButton);
     }
 
-    private void setViewModifiersView(){
+    private void setViewPredicatesView(){
         for (int i = 0; i < 45; i++){
             inventory.setItem(i, null);
         }

@@ -18,6 +18,7 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 
 public class Parryer {
     private static final Collection<PotionEffectWrapper> parryEnemyDebuffs = new HashSet<>();
@@ -43,6 +44,16 @@ public class Parryer {
                 parrySelfDebuffs.add(PotionEffectRegistry.getEffect(effect).setAmplifier(c.getDouble("parry_failed_debuffs." + effect)));
             }
         }
+    }
+
+    /**
+     * Checks if the entity is parried or not. An entity is considered parried if they have all of the "parry" effects
+     * @param entity the entity
+     * @return true if they're considered parried, false otherwise
+     */
+    public static boolean isParried(LivingEntity entity){
+        Map<String, CustomPotionEffect> activeEffects = PotionEffectRegistry.getActiveEffects(entity);
+        return parryEnemyDebuffs.stream().map(PotionEffectWrapper::getEffect).allMatch(activeEffects::containsKey);
     }
 
     /**

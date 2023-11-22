@@ -51,8 +51,11 @@ public class LightArmorSkill extends Skill implements Listener {
 
     public LightArmorSkill(String type) {
         super(type);
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/light_armor.yml").get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/light_armor_progression.yml").get();
+        ValhallaMMO.getInstance().save("skills/light_armor_progression.yml");
+        ValhallaMMO.getInstance().save("skills/light_armor.yml");
+
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/light_armor.yml").reload().get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/light_armor_progression.yml").reload().get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -159,7 +162,7 @@ public class LightArmorSkill extends Skill implements Listener {
 
     @Override
     public int getSkillTreeMenuOrderPriority() {
-        return 55;
+        return 60;
     }
 
     @Override

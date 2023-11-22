@@ -129,6 +129,7 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
         }
     }
 
+    @Override
     public String getLoreDisplay(){
         String format = this.format == null ? switch (operation){
             case ADD_SCALAR -> add_scalar.format(value);
@@ -164,6 +165,15 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
 
     private String prefix(boolean positive){
         return TranslationManager.getTranslation("stat_attribute_" + (positive ? "positive" : "negative") + "_prefix");
+    }
+
+    @Override
+    public StatFormat getFormat() {
+        return this.format == null ? switch (operation){
+            case ADD_SCALAR -> add_scalar;
+            case ADD_NUMBER -> add_number;
+            case MULTIPLY_SCALAR_1 -> multiply_scalar_1;
+        } : this.format;
     }
 
     @Override

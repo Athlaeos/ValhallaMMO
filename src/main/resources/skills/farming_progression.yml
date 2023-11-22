@@ -1,0 +1,125 @@
+starting_perks: []
+
+experience:
+  max_level: 100
+  exp_level_curve: '0.25 * (%level% + 300 * 2^(%level%/7.6)) + 300'
+  block_interact:
+    BEEHIVE: 200
+    BEE_NEST: 200
+    SWEET_BERRY_BUSH: 20
+    SWEET_BERRIES: 5
+    CAVE_VINES_PLANT: 24
+    CAVE_VINES: 40
+    GLOW_BERRIES: 10
+    HONEY_BOTTLE: 200
+  block_drops: # for functionality sake, the blocks dropping the items themselves *must* also be included in the list.
+    TORCHFLOWER_CROP: 50
+    TORCHFLOWER: 50
+    PITCHER_CROP: 50
+    PITCHER_PLANT: 50
+    WHEAT: 24
+    POTATOES: 20
+    POTATO: 5
+    CARROTS: 20
+    CARROT: 5
+    BEETROOTS: 28
+    BEETROOT: 14
+    COCOA: 40
+    COCOA_BEANS: 4
+    MELON: 40
+    MELON_SLICE: 4
+    PUMPKIN: 40
+    NETHER_WART: 10
+    BROWN_MUSHROOM: 40
+    RED_MUSHROOM: 40
+    SUGAR_CANE: 16
+    WARPED_FUNGUS: 48
+    CRIMSON_FUNGUS: 48
+    SWEET_BERRY_BUSH: 30
+    SWEET_BERRIES: 5
+    CAVE_VINES: 40
+    GLOW_BERRIES: 10
+    DANDELION: 20
+    POPPY: 20
+    BLUE_ORCHID: 20
+    ALLIUM: 20
+    AZURE_BLUET: 20
+    RED_TULIP: 20
+    ORANGE_TULIP: 20
+    WHITE_TULIP: 20
+    PINK_TULIP: 20
+    OXEYE_DAISY: 20
+    CORNFLOWER: 20
+    LILY_OF_THE_VALLEY: 20
+    SPORE_BLOSSOM: 60
+    CRIMSON_ROOTS: 10
+    WARPED_ROOTS: 10
+    NETHER_SPROUTS: 10
+    WEEPING_VINES: 10
+    TWISTING_VINES: 10
+    KELP: 2
+    HANGING_ROOTS: 20
+    BIG_DRIPLEAF: 40
+    SMALL_DRIPLEAF: 40
+    BAMBOO: 4
+    AZALEA: 40
+    FLOWERING_AZALEA: 40
+    MANGROVE_PROPAGULE: 60
+    LILY_PAD: 20
+    VINE: 10
+    SCULK_VEIN: 4
+    SCULK: 4
+    SCULK_CATALYST: 50
+    SCULK_SHRIEKER: 50
+    LILAC: 20
+    ROSE_BUSH: 20
+    PEONY: 20
+    TALL_GRASS: 10
+    LARGE_FERN: 10
+    SUNFLOWER: 30
+  entity_breed:
+    FROG: 80
+    MUSHROOM_COW: 70
+    HOGLIN: 100
+    OCELOT: 90
+    TURTLE: 90
+    CAT: 80
+    AXOLOTL: 80
+    STRIDER: 80
+    FOX: 80
+    WOLF: 80
+    DONKEY: 70
+    GOAT: 70
+    HORSE: 70
+    LLAMA: 70
+    MULE: 70
+    TRADER_LLAMA: 70
+    PANDA: 70
+    COW: 60
+    SHEEP: 60
+    RABBIT: 60
+    PIG: 50
+    BEE: 50
+    CHICKEN: 30
+  entity_drops:
+    BEEF: 50
+    PORKCHOP: 50
+    CHICKEN: 40
+    RABBIT: 80
+    MUTTON: 50
+    LEATHER: 30
+    FEATHER: 10
+    WOOL: 20
+
+special_perks: []
+
+commands: []
+
+messages:
+  - '<lang.skill-level-up-farming>'
+
+leveling_perks: []
+
+starting_coordinates: '4,9'
+
+perks: []

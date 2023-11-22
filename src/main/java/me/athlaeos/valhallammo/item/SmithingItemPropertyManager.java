@@ -42,26 +42,6 @@ public class SmithingItemPropertyManager {
         String config = "skills/smithing.yml";
         YamlConfiguration yaml = ConfigManager.getConfig(config).get();
 
-        for (MaterialClass materialClass : MaterialClass.values()){
-            register("CUSTOM_MAX_DURABILITY", materialClass, Scaling.fromConfig(config, "scaling_durability." + materialClass.toString().toLowerCase()));
-            register("GENERIC_ATTACK_DAMAGE", materialClass, Scaling.fromConfig(config, "scaling_damage." + materialClass.toString().toLowerCase()));
-            register("GENERIC_ATTACK_SPEED", materialClass, Scaling.fromConfig(config, "scaling_speed." + materialClass.toString().toLowerCase()));
-            register("GENERIC_ARMOR", materialClass, Scaling.fromConfig(config, "scaling_armor." + materialClass.toString().toLowerCase()));
-            register("GENERIC_ARMOR_TOUGHNESS", materialClass, Scaling.fromConfig(config, "scaling_armor_toughness." + materialClass.toString().toLowerCase()));
-            register("GENERIC_KNOCKBACK_RESISTANCE", materialClass, Scaling.fromConfig(config, "scaling_armor_knockbackresist." + materialClass.toString().toLowerCase()));
-            register("GENERIC_MAX_HEALTH", materialClass, Scaling.fromConfig(config, "scaling_health." + materialClass.toString().toLowerCase()));
-            register("GENERIC_MOVEMENT_SPEED", materialClass, Scaling.fromConfig(config, "scaling_movement_speed." + materialClass.toString().toLowerCase()));
-            register("CUSTOM_KNOCKBACK", materialClass, Scaling.fromConfig(config, "scaling_knockback." + materialClass.toString().toLowerCase()));
-            register("CUSTOM_DAMAGE_RESISTANCE", materialClass, Scaling.fromConfig(config, "scaling_damage_resistance." + materialClass.toString().toLowerCase()));
-            register("CUSTOM_EXPLOSION_RESISTANCE", materialClass, Scaling.fromConfig(config, "scaling_explosion_resistance." + materialClass.toString().toLowerCase()));
-            register("CUSTOM_FIRE_RESISTANCE", materialClass, Scaling.fromConfig(config, "scaling_fire_resistance." + materialClass.toString().toLowerCase()));
-            register("CUSTOM_POISON_RESISTANCE", materialClass, Scaling.fromConfig(config, "scaling_poison_resistance." + materialClass.toString().toLowerCase()));
-            register("CUSTOM_MAGIC_RESISTANCE", materialClass, Scaling.fromConfig(config, "scaling_magic_resistance." + materialClass.toString().toLowerCase()));
-            register("CUSTOM_PROJECTILE_RESISTANCE", materialClass, Scaling.fromConfig(config, "scaling_projectile_resistance." + materialClass.toString().toLowerCase()));
-        }
-        register("CUSTOM_DRAW_STRENGTH", MaterialClass.BOW, Scaling.fromConfig(config,"scaling_shot_power.bow"));
-        register("CUSTOM_DRAW_STRENGTH", MaterialClass.CROSSBOW, Scaling.fromConfig(config,"scaling_shot_power.crossbow"));
-
         ConfigurationSection qualitySection = yaml.getConfigurationSection("quality_lore");
         if (qualitySection != null){
             for (String r : qualitySection.getKeys(false)){
@@ -287,9 +267,7 @@ public class SmithingItemPropertyManager {
     }
 
 
-    public static void applyAttributeScaling(ItemStack i, ItemMeta meta, int quality, String attribute, double minimumFraction){
-        if (ItemUtils.isEmpty(i)) return;
-        Scaling scaling = getScaling(i, meta, attribute);
+    public static void applyAttributeScaling(ItemMeta meta, Scaling scaling, int quality, String attribute, double minimumFraction){
         if (scaling == null) return;
         if (ItemAttributesRegistry.getStats(meta, false).isEmpty()) ItemAttributesRegistry.applyVanillaStats(meta);
         AttributeWrapper defaultAttribute = ItemAttributesRegistry.getAttribute(meta, attribute, true);

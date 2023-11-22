@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.skills.perk_rewards;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.block.BlockInteractConversions;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
@@ -8,9 +9,13 @@ import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.StatProperties;
+import me.athlaeos.valhallammo.skills.skills.implementations.AlchemySkill;
+import org.bukkit.Material;
+import org.bukkit.Tag;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PerkRewardRegistry {
     private static final Map<String, PerkReward> registry = new HashMap<>();
@@ -43,14 +48,14 @@ public class PerkRewardRegistry {
             register(new ProgressReset("reset_" + type.toString().toLowerCase(), type));
         }
 
-        register(new ProfileStringListAdd("fake_unlock_perks", "fakeUnlockedPerks", PowerProfile.class));
-        register(new ProfileStringListClear("fake_unlock_perks_clear", "fakeUnlockedPerks", PowerProfile.class));
-        register(new ProfileStringListAdd("permanently_lock_perks", "permanentlyLockedPerks", PowerProfile.class));
-        register(new ProfileStringListClear("permanently_locked_perks_clear", "permanentlyLockedPerks", PowerProfile.class));
-        register(new ProfileStringListAdd("unlock_recipes", "unlockedRecipes", PowerProfile.class));
-        register(new ProfileStringListRemove("lock_recipes", "unlockedRecipes", PowerProfile.class));
-        register(new ProfileStringListFill("unlock_all_recipes", "unlockedRecipes", PowerProfile.class, CustomRecipeRegistry::getAllRecipes));
-        register(new ProfileStringListClear("lock_all_recipes", "unlockedRecipes", PowerProfile.class));
+        register(new ProfileStringListAdd("perks_fake_unlock", "fakeUnlockedPerks", PowerProfile.class));
+        register(new ProfileStringListClear("perks_fake_unlock_clear", "fakeUnlockedPerks", PowerProfile.class));
+        register(new ProfileStringListAdd("perks_locked_add", "permanentlyLockedPerks", PowerProfile.class));
+        register(new ProfileStringListClear("perks_locked_clear", "permanentlyLockedPerks", PowerProfile.class));
+        register(new ProfileStringListAdd("recipes_unlock", "unlockedRecipes", PowerProfile.class));
+        register(new ProfileStringListRemove("recipes_lock", "unlockedRecipes", PowerProfile.class));
+        register(new ProfileStringListFill("recipes_unlock_all", "unlockedRecipes", PowerProfile.class, CustomRecipeRegistry::getAllRecipes));
+        register(new ProfileStringListClear("recipes_lock_all", "unlockedRecipes", PowerProfile.class));
         register(new ProfileStringListAdd("enchanting_add_elemental_type", "elementalDamageTypes", EnchantingProfile.class));
         register(new ProfileStringListRemove("enchanting_remove_elemental_type", "elementalDamageTypes", EnchantingProfile.class));
         register(new ProfileStringListClear("enchanting_clear_elemental_type", "elementalDamageTypes", EnchantingProfile.class));
@@ -66,6 +71,21 @@ public class PerkRewardRegistry {
         register(new ProfileStringListAdd("mining_unbreakableblocks_add", "unbreakableBlocks", MiningProfile.class));
         register(new ProfileStringListRemove("mining_unbreakableblocks_remove", "unbreakableBlocks", MiningProfile.class));
         register(new ProfileStringListClear("mining_unbreakableblocks_clear", "unbreakableBlocks", MiningProfile.class));
+        register(new ProfileStringSetSingle("mining_emptyhandtooltype_set", "emptyHandToolMaterial", MiningProfile.class));
+        register(new ProfileStringListClear("mining_emptyhandtooltype_remove", "emptyHandToolMaterial", MiningProfile.class));
+        register(new ProfileStringListAdd("woodcutting_treecapitatorblocks_add", "treeCapitatorValidBlocks", WoodcuttingProfile.class));
+        register(new ProfileStringListFill("woodcutting_treecapitatorblocks_add_all", "treeCapitatorValidBlocks", WoodcuttingProfile.class, () -> Tag.LOGS.getValues().stream().map(Material::toString).collect(Collectors.toSet())));
+        register(new ProfileStringListRemove("woodcutting_treecapitatorblocks_remove", "treeCapitatorValidBlocks", WoodcuttingProfile.class));
+        register(new ProfileStringListClear("woodcutting_treecapitatorblocks_remove", "treeCapitatorValidBlocks", WoodcuttingProfile.class));
+        register(new ProfileStringListClear("woodcutting_treecapitatorblocks_clear", "treeCapitatorValidBlocks", WoodcuttingProfile.class));
+        register(new ProfileStringListAdd("alchemy_transmutations_unlock", "unlockedTransmutations", AlchemyProfile.class));
+        register(new ProfileStringListFill("alchemy_transmutations_unlock_all", "unlockedTransmutations", AlchemyProfile.class, () -> AlchemySkill.getTransmutations().keySet()));
+        register(new ProfileStringListRemove("alchemy_transmutations_lock", "unlockedTransmutations", AlchemyProfile.class));
+        register(new ProfileStringListClear("alchemy_transmutations_lock_all", "unlockedTransmutations", AlchemyProfile.class));
+        register(new ProfileStringListAdd("block_conversions_unlock", "unlockedBlockConversions", PowerProfile.class));
+        register(new ProfileStringListFill("block_conversions_unlock_all", "unlockedBlockConversions", PowerProfile.class, () -> BlockInteractConversions.getConversions().keySet()));
+        register(new ProfileStringListRemove("block_conversions_lock", "unlockedBlockConversions", PowerProfile.class));
+        register(new ProfileStringListClear("block_conversions_lock_all", "unlockedBlockConversions", PowerProfile.class));
     }
 
     public static void register(PerkReward reward){

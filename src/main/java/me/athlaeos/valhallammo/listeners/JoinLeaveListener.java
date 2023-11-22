@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicSmithingRecipe;
+import me.athlaeos.valhallammo.entities.EntityAttributeStats;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
@@ -28,7 +29,6 @@ public class JoinLeaveListener implements Listener {
             PotionEffectRegistry.updatePlayerAffectedStatus(e.getPlayer());
             GlobalEffect.temporarilyRevealBossBar(e.getPlayer());
 
-            // TODO tutorial book giving
             PowerProfile p = ProfileCache.getOrCache(e.getPlayer(), PowerProfile.class);
             boolean allPermission = e.getPlayer().hasPermission("valhalla.allrecipes");
             for (DynamicGridRecipe recipe : CustomRecipeRegistry.getGridRecipes().values()){
@@ -56,7 +56,7 @@ public class JoinLeaveListener implements Listener {
         // stuck on the player.
         EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
 
-        for (MovementListener.AttributeDataHolder holder : MovementListener.getAttributesToUpdate().values()){
+        for (EntityAttributeStats.AttributeDataHolder holder : EntityAttributeStats.getAttributesToUpdate().values()){
             EntityUtils.removeUniqueAttribute(e.getPlayer(), holder.name(), holder.type());
         }
 

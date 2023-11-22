@@ -8,12 +8,11 @@ import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 public class SkillReset extends PerkReward {
-    private String skill;
-    public SkillReset(String name) {
+    private final String skill;
+    public SkillReset(String name, String skill) {
         super(name);
+        this.skill = skill;
     }
 
     @Override
@@ -30,7 +29,6 @@ public class SkillReset extends PerkReward {
 
     @Override
     public void parseArgument(Object argument) {
-        skill = parseString(argument);
     }
 
     @Override
@@ -42,11 +40,6 @@ public class SkillReset extends PerkReward {
 
     @Override
     public PerkRewardArgumentType getRequiredType() {
-        return PerkRewardArgumentType.STRING;
-    }
-
-    @Override
-    public List<String> getTabAutoComplete(String currentArg) {
-        return SkillRegistry.getAllSkills().values().stream().map(Skill::getType).toList();
+        return PerkRewardArgumentType.NONE;
     }
 }

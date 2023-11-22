@@ -43,7 +43,7 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
     private static final int baseIndex = 21;
     private static final int additionIndex = 22;
     private static final int resultIndex = 24;
-    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("").get();
+    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
 
     private final DynamicSmithingRecipe recipe;
 

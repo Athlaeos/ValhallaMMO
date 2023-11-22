@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.item;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Scaling;
-import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
@@ -44,20 +43,8 @@ public class AlchemyItemPropertyManager {
         return tagForbiddenErrors;
     }
 
-    // alchemy uses more generic scalings, as many potion types use the same scaling
-    // therefore potion effects are scaled according to an in-recipe configurable mode
-    private static final Map<String, ScalingPreset> customScalings = new HashMap<>();
-
     public static void loadConfig(){
         YamlConfiguration config = ConfigManager.getConfig("skills/alchemy.yml").get();
-        ConfigurationSection customSection = config.getConfigurationSection("custom_scalings");
-        if (customSection == null) return;
-        for (String key : customSection.getKeys(false)){
-            Scaling s = Scaling.fromString(config.getString("custom_scalings." + key + ".scaling"), null);
-            String description = config.getString("custom_scalings." + key + ".description");
-            if (s == null) continue;
-            customScalings.put(key, new ScalingPreset(key, s, description));
-        }
 
         ConfigurationSection qualitySection = config.getConfigurationSection("quality_lore");
         if (qualitySection != null){
@@ -213,7 +200,7 @@ public class AlchemyItemPropertyManager {
         setQualityLore(meta);
     }
 
-    public static void applyAttributeScaling(ItemMeta i, int quality, Scaling scaling, boolean duration, double minimumAmplifierFraction, double minimumDurationFraction){
+    public static void applyAttributeScaling(ItemMeta i, Scaling scaling, int quality, boolean duration, double minimumAmplifierFraction, double minimumDurationFraction){
         Map<String, PotionEffectWrapper> defaultWrappers = PotionEffectRegistry.getStoredEffects(i, true);
         Map<String, PotionEffectWrapper> newWrappers = new HashMap<>();
         for (PotionEffectWrapper wrapper : defaultWrappers.values()){
@@ -234,15 +221,4 @@ public class AlchemyItemPropertyManager {
         }
         PotionEffectRegistry.setActualStoredEffects(i, newWrappers);
     }
-
-    public static ScalingPreset getCustomScaling(String scaling){
-        return customScalings.get(scaling);
-    }
-
-    public static Map<String, ScalingPreset> getCustomScalings() {
-        return customScalings;
-    }
-
-    // A PotionScaling's description is purely for the configurator's convenience, to describe what the mode does
-    public static record ScalingPreset(String name, Scaling scaling, String description){}
 }

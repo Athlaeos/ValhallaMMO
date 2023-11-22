@@ -31,7 +31,7 @@ public class ValidationSelectionMenu extends Menu {
 
     private Collection<String> currentValidations = new HashSet<>();
 
-    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("").get();
+    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
     private static final ItemStack nextPageButton = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
             .name("&7&lNext page")
             .stringTag(KEY_ACTION, "nextPageButton")

@@ -11,4 +11,6 @@ public abstract class PluginHook {
     public boolean isPresent(){
         return isPresent;
     }
+
+    public abstract void whenPresent();
 }

@@ -6,7 +6,10 @@ import me.athlaeos.valhallammo.item.MiningSpeed;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfile;
 import me.athlaeos.valhallammo.utility.BlockUtils;
+import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.MathUtils;
 import org.bukkit.Location;
@@ -67,6 +70,11 @@ public class DigPacketInfo {
         Block b = block();
         if (digger == null || b == null) return -1;
         ItemBuilder tool = ItemUtils.isEmpty(digger.getInventory().getItemInMainHand()) ? null : new ItemBuilder(digger.getInventory().getItemInMainHand());
+        if (tool == null) {
+            MiningProfile profile = ProfileCache.getOrCache(digger, MiningProfile.class);
+            // replace empty hand tool only if tool power of that item would be > 1 (valid tool for block)
+            if (profile.getEmptyHandTool() != null && ValhallaMMO.getNms().toolPower(profile.getEmptyHandTool().getItem(), b) > 1) tool = profile.getEmptyHandTool();
+        }
         float hardness = tool == null ? BlockUtils.getHardness(b) : MiningSpeed.getHardness(tool.getMeta(), b);
         if (hardness < 0 || hardness > 100000) return Integer.MAX_VALUE;
         EntityProperties properties = EntityCache.getAndCacheProperties(digger);
@@ -94,7 +102,7 @@ public class DigPacketInfo {
         if (fatigue != null && fatigue.getAmplifier() != -1) multiplier *= MathUtils.pow(0.3, Math.min(fatigue.getAmplifier() + 1, 4));
 
         if (isInWater(digger) && properties.getCombinedEnchantments().getOrDefault(Enchantment.WATER_WORKER, 0) > 0) multiplier /= 5;
-        if (!digger.getLocation().add(0, -0.1, 0).getBlock().getType().isSolid()) multiplier /= 5;
+        if (!EntityUtils.isOnGround(digger)) multiplier /= 5;
 
         double damage = multiplier / hardness;
 

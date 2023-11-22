@@ -32,6 +32,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -54,10 +55,15 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
     
     public HeavyWeaponsSkill(String type) {
         super(type);
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/heavy_weapons.yml").get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/heavy_weapons_progression.yml").get();
+        ValhallaMMO.getInstance().save("skills/heavy_weapons_progression.yml");
+        ValhallaMMO.getInstance().save("skills/heavy_weapons.yml");
 
-        validCoatingItems.addAll(ItemUtils.getMaterialList(skillConfig.getStringList("valid_coating_items")));
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/heavy_weapons.yml").reload().get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/heavy_weapons_progression.yml").reload().get();
+
+        loadCommonConfig(skillConfig, progressionConfig);
+
+        validCoatingItems.addAll(ItemUtils.getMaterialSet(skillConfig.getStringList("valid_coating_items")));
 
         ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.entity_exp_multipliers");
         if (entitySection != null){
@@ -70,8 +76,6 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
         }
         expPerDamage = progressionConfig.getDouble("experience.exp_per_damage");
         spawnerMultiplier = progressionConfig.getDouble("experience.spawner_spawned_multiplier");
-
-        loadCommonConfig(skillConfig, progressionConfig);
 
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
@@ -130,7 +134,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onExpAttack(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
-        if (e.getDamager() instanceof Player p && e.getEntity() instanceof LivingEntity l){
+        if (e.getDamager() instanceof Player p && e.getEntity() instanceof Monster l){
             ItemBuilder weapon = EntityCache.getAndCacheProperties(p).getMainHand();
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.HEAVY) return;
 
@@ -171,7 +175,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
 
     @Override
     public int getSkillTreeMenuOrderPriority() {
-        return 40;
+        return 45;
     }
 
     @Override

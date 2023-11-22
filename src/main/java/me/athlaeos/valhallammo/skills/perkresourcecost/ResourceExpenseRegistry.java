@@ -1,9 +1,6 @@
 package me.athlaeos.valhallammo.skills.perkresourcecost;
 
-import me.athlaeos.valhallammo.skills.perkresourcecost.implementations.EconomyExpense;
-import me.athlaeos.valhallammo.skills.perkresourcecost.implementations.ExperienceExpense;
-import me.athlaeos.valhallammo.skills.perkresourcecost.implementations.ExperienceLevelsExpense;
-import me.athlaeos.valhallammo.skills.perkresourcecost.implementations.SkillPointsExpense;
+import me.athlaeos.valhallammo.skills.perkresourcecost.implementations.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,6 +15,7 @@ public class ResourceExpenseRegistry {
         register("cost_experience", new ExperienceExpense());
         register("cost_levels", new ExperienceLevelsExpense());
         register("cost", new SkillPointsExpense());
+        register("cost_prestige", new PrestigePointsExpense());
     }
 
     public static void register(String key, ResourceExpense expense){

@@ -13,19 +13,19 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("unused")
 public class SmithingProfile extends Profile {
     {
-        intStat("genericCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("bowCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("crossbowCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("woodCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("leatherCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("stoneCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("chainCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("goldCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("ironCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("diamondCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("netheriteCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("prismarineCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("endericCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("genericCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("bowCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("crossbowCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("woodCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("leatherCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("stoneCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("chainCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("goldCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("ironCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("diamondCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("netheriteCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("prismarineCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("endericCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
 
         floatStat("genericCraftingSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("bowCraftingSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
@@ -56,41 +56,41 @@ public class SmithingProfile extends Profile {
         doubleStat("endericEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
     }
 
-    public int getCraftingSkill(MaterialClass material){
-        if (material == null) return getInt("genericCraftingSkill");
+    public float getCraftingSkill(MaterialClass material){
+        if (material == null) return getFloat("genericCraftingSkill");
         return switch (material){
-            case BOW -> getInt("bowCraftingSkill");
-            case CROSSBOW -> getInt("crossbowCraftingSkill");
-            case WOOD -> getInt("woodCraftingSkill");
-            case LEATHER -> getInt("leatherCraftingSkill");
-            case STONE -> getInt("stoneCraftingSkill");
-            case CHAINMAIL -> getInt("chainCraftingSkill");
-            case GOLD ->getInt("goldCraftingSkill");
-            case IRON -> getInt("ironCraftingSkill");
-            case DIAMOND -> getInt("diamondCraftingSkill");
-            case NETHERITE -> getInt("netheriteCraftingSkill");
-            case PRISMARINE -> getInt("prismarineCraftingSkill");
-            case ENDERIC -> getInt("endericCraftingSkill");
-            case OTHER -> getInt("genericCraftingSkill");
+            case BOW -> getFloat("bowCraftingSkill");
+            case CROSSBOW -> getFloat("crossbowCraftingSkill");
+            case WOOD -> getFloat("woodCraftingSkill");
+            case LEATHER -> getFloat("leatherCraftingSkill");
+            case STONE -> getFloat("stoneCraftingSkill");
+            case CHAINMAIL -> getFloat("chainCraftingSkill");
+            case GOLD ->getFloat("goldCraftingSkill");
+            case IRON -> getFloat("ironCraftingSkill");
+            case DIAMOND -> getFloat("diamondCraftingSkill");
+            case NETHERITE -> getFloat("netheriteCraftingSkill");
+            case PRISMARINE -> getFloat("prismarineCraftingSkill");
+            case ENDERIC -> getFloat("endericCraftingSkill");
+            case OTHER -> getFloat("genericCraftingSkill");
         };
     }
-    public void setCraftingSkill(MaterialClass material, int value){
-        if (material == null) setInt("genericCraftingSkill", value);
+    public void setCraftingSkill(MaterialClass material, float value){
+        if (material == null) setFloat("genericCraftingSkill", value);
         else
             switch (material) {
-                case BOW -> setInt("bowCraftingSkill", value);
-                case CROSSBOW -> setInt("crossbowCraftingSkill", value);
-                case WOOD -> setInt("woodCraftingSkill", value);
-                case LEATHER -> setInt("leatherCraftingSkill", value);
-                case STONE -> setInt("stoneCraftingSkill", value);
-                case CHAINMAIL -> setInt("chainCraftingSkill", value);
-                case GOLD -> setInt("goldCraftingSkill", value);
-                case IRON -> setInt("ironCraftingSkill", value);
-                case DIAMOND -> setInt("diamondCraftingSkill", value);
-                case NETHERITE -> setInt("netheriteCraftingSkill", value);
-                case PRISMARINE -> setInt("prismarineCraftingSkill", value);
-                case ENDERIC -> setInt("endericCraftingSkill", value);
-                case OTHER -> setInt("genericCraftingSkill", value);
+                case BOW -> setFloat("bowCraftingSkill", value);
+                case CROSSBOW -> setFloat("crossbowCraftingSkill", value);
+                case WOOD -> setFloat("woodCraftingSkill", value);
+                case LEATHER -> setFloat("leatherCraftingSkill", value);
+                case STONE -> setFloat("stoneCraftingSkill", value);
+                case CHAINMAIL -> setFloat("chainCraftingSkill", value);
+                case GOLD -> setFloat("goldCraftingSkill", value);
+                case IRON -> setFloat("ironCraftingSkill", value);
+                case DIAMOND -> setFloat("diamondCraftingSkill", value);
+                case NETHERITE -> setFloat("netheriteCraftingSkill", value);
+                case PRISMARINE -> setFloat("prismarineCraftingSkill", value);
+                case ENDERIC -> setFloat("endericCraftingSkill", value);
+                case OTHER -> setFloat("genericCraftingSkill", value);
             }
     }
 
@@ -175,7 +175,7 @@ public class SmithingProfile extends Profile {
     }
 
     @Override
-    protected String getTableName() {
+    public String getTableName() {
         return "profiles_smithing";
     }
 

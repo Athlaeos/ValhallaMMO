@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.playerstats.profiles.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.item.FoodClass;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
@@ -16,6 +17,8 @@ public class PowerProfile extends Profile {
     {
         intStat("spendableSkillPoints", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
         intStat("spentSkillPoints", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
+        intStat("spendablePrestigePoints", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
+        intStat("spentPrestigePoints", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
         intStat("redeemableLevelTokens", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create()); // generic level tokens that can be used to acquire more levels in any skill (except Power)
         doubleStat("redeemableExperience", new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).perkReward().create()); // generic experience points that can be invested into any skill (except Power)
         intStat("itemCounterLimit", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
@@ -107,11 +110,26 @@ public class PowerProfile extends Profile {
         floatStat("parryCooldownSuccessReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("parryDamageReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
         floatStat("dismountChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusVegetable", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusSeasoning", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusAlcoholic", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusBeverage", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusSpoiled", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusSeafood", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusMagical", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusSweet", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusGrain", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusFruit", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusNuts", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusDairy", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusMeat", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("foodBonusFats", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
 
         stringSetStat("unlockedPerks");
         stringSetStat("fakeUnlockedPerks"); // if a perk is "fake unlocked" it will be excluded from stat calculation, as if the player hasn't unlocked it at all
         stringSetStat("permanentlyLockedPerks"); // permanently locked perks will be considered unlocked regardless if it's actually in unlockedPerks, essentially permanently preventing it from unlocking
         stringSetStat("unlockedRecipes");
+        stringSetStat("unlockedBlockConversions");
 
         booleanStat("hidePotionEffectBar");
         booleanStat("hideCraftingEffects");
@@ -119,6 +137,43 @@ public class PowerProfile extends Profile {
         booleanStat("hideGlobalBuffs");
         floatStat("craftingEffectVolume", 1F, new PropertyBuilder().min(0).max(10).create());
     } // TODO an annotation to automate getters and setters for all these properties?
+
+    public float getFoodBonus(FoodClass foodClass){
+        return getFloat(switch (foodClass){
+            case VEGETABLE -> "foodBonusVegetable";
+            case SEASONING -> "foodBonusSeasoning";
+            case ALCOHOLIC -> "foodBonusAlcoholic";
+            case BEVERAGE -> "foodBonusBeverage";
+            case SPOILED -> "foodBonusSpoiled";
+            case SEAFOOD -> "foodBonusSeafood";
+            case MAGICAL -> "foodBonusMagical";
+            case SWEET -> "foodBonusSweet";
+            case GRAIN -> "foodBonusGrain";
+            case FRUIT -> "foodBonusFruit";
+            case DAIRY -> "foodBonusNuts";
+            case NUTS -> "foodBonusDairy";
+            case MEAT -> "foodBonusMeat";
+            case FATS -> "foodBonusFats";
+        });
+    }
+    public void setFoodBonus(FoodClass foodClass, float value){
+        setFloat(switch (foodClass){
+            case VEGETABLE -> "foodBonusVegetable";
+            case SEASONING -> "foodBonusSeasoning";
+            case ALCOHOLIC -> "foodBonusAlcoholic";
+            case BEVERAGE -> "foodBonusBeverage";
+            case SPOILED -> "foodBonusSpoiled";
+            case SEAFOOD -> "foodBonusSeafood";
+            case MAGICAL -> "foodBonusMagical";
+            case SWEET -> "foodBonusSweet";
+            case GRAIN -> "foodBonusGrain";
+            case FRUIT -> "foodBonusFruit";
+            case DAIRY -> "foodBonusNuts";
+            case NUTS -> "foodBonusDairy";
+            case MEAT -> "foodBonusMeat";
+            case FATS -> "foodBonusFats";
+        }, value);
+    }
 
     public boolean hidePotionEffectBar() { return getBoolean("hidePotionEffectBar"); }
     public void togglePotionEffectBar() { setBoolean("hidePotionEffectBar", !hidePotionEffectBar()); }
@@ -141,6 +196,12 @@ public class PowerProfile extends Profile {
 
     public int getSpentSkillPoints(){ return getInt("spentSkillPoints"); }
     public void setSpentSkillPoints(int points){ setInt("spentSkillPoints", points); }
+
+    public int getSpendablePrestigePoints(){ return getInt("spendablePrestigePoints");}
+    public void setSpendablePrestigePoints(int value){ setInt("spendablePrestigePoints", value);}
+
+    public int getSpentPrestigePoints(){ return getInt("spentPrestigePoints"); }
+    public void setSpentPrestigePoints(int points){ setInt("spentPrestigePoints", points); }
 
     public int getRedeemableLevelTokens(){ return getInt("redeemableLevelTokens");}
     public void setRedeemableLevelTokens(int value){ setInt("redeemableLevelTokens", value);}
@@ -406,12 +467,15 @@ public class PowerProfile extends Profile {
     public Collection<String> getPermanentlyLockedPerks(){ return getStringSet("permanentlyLockedPerks");}
     public void setPermanentlyLockedPerks(Collection<String> value){ setStringSet("permanentlyLockedPerks", value);}
 
+    public Collection<String> getUnlockedBlockConversions(){ return getStringSet("unlockedBlockConversions");}
+    public void setUnlockedBlockConversions(Collection<String> value){ setStringSet("unlockedBlockConversions", value);}
+
     public PowerProfile(Player owner) {
         super(owner);
     }
 
     @Override
-    protected String getTableName() {
+    public String getTableName() {
         return "profiles_power";
     }
 

@@ -1,6 +1,6 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers;
 
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.attributes.*;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.crafting_conditionals.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.EnchantmentRandomize;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.EnchantmentsClear;
@@ -11,6 +11,8 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.foo
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.food.SaturationValueSet;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.*;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_misc.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.Item;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.Money;
@@ -46,6 +48,7 @@ public class ModifierRegistry {
         register(new MiningHardnessTranslationsAdd("mining_hardness_translation_add"));
 
         register(new LootTableSet("loot_table"));
+        register(new ItemDummyHelmet("dummy_helmet"));
 
         // All the attribute modifiers are registered in the attribute registry
 
@@ -147,6 +150,9 @@ public class ModifierRegistry {
         PotionTypeForbidden.legalTypes.forEach(t -> register(new PotionTypeForbidden("potion_type_forbid_" + t.toString().toLowerCase(), t)));
         PotionTypeRequired.legalTypes.forEach(t -> register(new PotionTypeRequired("potion_type_require_" + t.toString().toLowerCase(), t)));
         register(new PotionTypeSet("potion_type_set"));
+        register(new ConversionTransmutationPotion("transmutation_potion"));
+        register(new ScaleAmplifier("potion_amplifier_scale"));
+        register(new ScaleDuration("potion_duration_scale"));
 
         register(new AlchemyQualityAdd("alchemy_quality_add"));
         register(new AlchemyQualityMultiply("alchemy_quality_multiply"));
@@ -167,6 +173,10 @@ public class ModifierRegistry {
         register(new FoodClassSet("food_type"));
         register(new FoodValueSet("food_value"));
         register(new SaturationValueSet("food_saturation"));
+
+        register(new BaitValueSet("bait_power"));
+
+        register(new ArmorSetSet("armor_set"));
     }
 
     public static void register(DynamicItemModifier m) {

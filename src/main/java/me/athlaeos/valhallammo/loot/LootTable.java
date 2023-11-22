@@ -46,7 +46,8 @@ public class LootTable {
         CONTAINER,
         FISH,
         KILL,
-        PIGLIN_BARTER
+        PIGLIN_BARTER,
+        ARCHAEOLOGY
     }
 
     public enum VanillaLootPreservationType{

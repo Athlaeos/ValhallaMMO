@@ -19,7 +19,6 @@ public class ItemUnbreakable extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!use) return;
         outputItem.getMeta().setUnbreakable(true);
     }
 

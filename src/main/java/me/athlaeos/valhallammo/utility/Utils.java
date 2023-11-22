@@ -3,9 +3,6 @@ package me.athlaeos.valhallammo.utility;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Weighted;
-import me.athlaeos.valhallammo.loot.LootEntry;
-import me.athlaeos.valhallammo.loot.LootTable;
-import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -13,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.CommandSender;
@@ -44,6 +41,24 @@ public class Utils {
         return (int) Math.abs((l1.getX() - l2.getX()) +
                 (l1.getY() - l2.getY()) +
                 (l1.getZ() - l2.getZ()));
+    }
+
+    public static Map<String, OfflinePlayer> getPlayersFromUUIDs(Collection<UUID> uuids){
+        Map<String, OfflinePlayer> players = new HashMap<>();
+        for (UUID uuid : uuids){
+            OfflinePlayer player = ValhallaMMO.getInstance().getServer().getOfflinePlayer(uuid);
+            players.put(player.getName(), player);
+        }
+        return players;
+    }
+
+    public static Map<String, Player> getOnlinePlayersFromUUIDs(Collection<UUID> uuids){
+        Map<String, Player> players = new HashMap<>();
+        for (UUID uuid : uuids){
+            Player player = ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+            if (player != null) players.put(player.getName(), player);
+        }
+        return players;
     }
 
     public static Color hexToRgb(String colorStr) {
@@ -262,6 +277,7 @@ public class Utils {
     static final Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
 
     public static List<String> chat(List<String> messages){
+        if (messages == null) return new ArrayList<>();
         return messages.stream().map(Utils::chat).toList();
     }
 

@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.entities.EntityAttributeStats;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.Timer;
@@ -20,24 +21,11 @@ import java.util.Map;
 import java.util.UUID;
 
 public class MovementListener implements Listener {
-    private static final Map<String, AttributeDataHolder> attributesToUpdate = new HashMap<>();
     private static final Map<UUID, Vector> lastMovementVectors = new HashMap<>();
-
-    static{
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_movement_modifier", "MOVEMENT_SPEED_BONUS", Attribute.GENERIC_MOVEMENT_SPEED, AttributeModifier.Operation.ADD_SCALAR));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_health_modifier", "HEALTH_BONUS", Attribute.GENERIC_MAX_HEALTH, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_health_multiplier_modifier", "HEALTH_MULTIPLIER_BONUS", Attribute.GENERIC_MAX_HEALTH, AttributeModifier.Operation.ADD_SCALAR));
-        // TODO armor display registerAttributeToUpdate(new AttributeDataHolder("valhalla_armor_modifier", "ARMOR_BONUS", Attribute.GENERIC_ARMOR, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_toughness_modifier", "TOUGHNESS_BONUS", Attribute.GENERIC_ARMOR_TOUGHNESS, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_luck_modifier", "LUCK_BONUS", Attribute.GENERIC_LUCK, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_attack_damage_modifier", "ATTACK_DAMAGE_BONUS", Attribute.GENERIC_ATTACK_DAMAGE, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_attack_speed_modifier", "ATTACK_SPEED_BONUS", Attribute.GENERIC_ATTACK_SPEED, AttributeModifier.Operation.ADD_SCALAR));
-    }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
-        if (e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
         if (e.getTo() == null) {
             lastMovementVectors.remove(e.getPlayer().getUniqueId());
             return;
@@ -48,11 +36,7 @@ public class MovementListener implements Listener {
             Timer.setCooldown(e.getPlayer().getUniqueId(), 500, "delay_combat_update");
         }
         if (Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_movement_update")){
-            for (AttributeDataHolder holder : attributesToUpdate.values()){
-                double value = AccumulativeStatManager.getCachedStats(holder.statSource, e.getPlayer(), 10000, true);
-
-                EntityUtils.addUniqueAttribute(e.getPlayer(), holder.name, holder.type, value, holder.operation);
-            }
+            EntityAttributeStats.updateStats(e.getPlayer());
 
             AttributeInstance armorInstance = e.getPlayer().getAttribute(Attribute.GENERIC_ARMOR);
             EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_nullifier", Attribute.GENERIC_ARMOR);
@@ -75,28 +59,24 @@ public class MovementListener implements Listener {
 
     @EventHandler
     public void onPlayerToggleSneak(PlayerToggleSneakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
-        if (!e.isCancelled()){
-            if (e.isSneaking()){
-                double sneakSpeedBonus = AccumulativeStatManager.getCachedStats("SNEAK_MOVEMENT_SPEED_BONUS", e.getPlayer(), 10000, true);
-                EntityUtils.addUniqueAttribute(e.getPlayer(), "valhalla_sneak_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED, sneakSpeedBonus, AttributeModifier.Operation.ADD_SCALAR);
-            } else {
-                EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_sneak_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
-            }
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
+        if (e.isSneaking()){
+            double sneakSpeedBonus = AccumulativeStatManager.getCachedStats("SNEAK_MOVEMENT_SPEED_BONUS", e.getPlayer(), 10000, true);
+            EntityUtils.addUniqueAttribute(e.getPlayer(), "valhalla_sneak_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED, sneakSpeedBonus, AttributeModifier.Operation.ADD_SCALAR);
+        } else {
+            EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_sneak_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
         }
     }
 
     @EventHandler
     public void onPlayerToggleSprint(PlayerToggleSprintEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
-        if (!e.isCancelled()){
-            if (e.isSprinting()){
-                double sneakSpeedBonus = AccumulativeStatManager.getCachedStats("SPRINT_MOVEMENT_SPEED_BONUS", e.getPlayer(), 10000, true);
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
+        if (e.isSprinting()){
+            double sneakSpeedBonus = AccumulativeStatManager.getCachedStats("SPRINT_MOVEMENT_SPEED_BONUS", e.getPlayer(), 10000, true);
 
-                EntityUtils.addUniqueAttribute(e.getPlayer(), "valhalla_sprint_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED, sneakSpeedBonus, AttributeModifier.Operation.ADD_SCALAR);
-            } else {
-                EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_sprint_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
-            }
+            EntityUtils.addUniqueAttribute(e.getPlayer(), "valhalla_sprint_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED, sneakSpeedBonus, AttributeModifier.Operation.ADD_SCALAR);
+        } else {
+            EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_sprint_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
         }
     }
 
@@ -109,18 +89,4 @@ public class MovementListener implements Listener {
     public static Map<UUID, Vector> getLastMovementVectors() {
         return lastMovementVectors;
     }
-
-    private static void registerAttributeToUpdate(AttributeDataHolder holder){
-        attributesToUpdate.put(holder.name, holder);
-    }
-
-    public static void registerAttributeToUpdate(String name, String statSource, Attribute type, AttributeModifier.Operation operation){
-        registerAttributeToUpdate(new AttributeDataHolder(name, statSource, type, operation));
-    }
-
-    public static Map<String, AttributeDataHolder> getAttributesToUpdate() {
-        return attributesToUpdate;
-    }
-
-    public record AttributeDataHolder(String name, String statSource, Attribute type, AttributeModifier.Operation operation) { }
 }

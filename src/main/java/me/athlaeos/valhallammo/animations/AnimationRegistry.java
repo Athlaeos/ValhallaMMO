@@ -25,6 +25,9 @@ public class AnimationRegistry {
     public static Animation CHARGED_SHOT_FIRE = new ChargedShotFire("charged_shot_fire");
     public static Animation CHARGED_SHOT_SONIC_BOOM = new ChargedShotSonicBoom("charged_shot_sonic_boom");
     public static Animation DRILLING_ACTIVE = new DrillingActive("drilling_active");
+    public static Animation MULTI_JUMP = new MultiJump("multi_jump");
+    public static Animation ELEMENTAL_BLADE_ACTIVATION = new ElementalBladeActivation("elemental_blade_activation");
+    public static Animation ELEMENTAL_BLADE_EXPIRATION = new ElementalBladeExpiration("elemental_blade_expiration");
 
     private static final Map<String, Animation> animationRegistry = new HashMap<>();
     static{
@@ -47,6 +50,9 @@ public class AnimationRegistry {
         register(CHARGED_SHOT_FIRE);
         register(CHARGED_SHOT_SONIC_BOOM);
         register(DRILLING_ACTIVE);
+        register(MULTI_JUMP);
+        register(ELEMENTAL_BLADE_ACTIVATION);
+        register(ELEMENTAL_BLADE_EXPIRATION);
     }
 
     public static void register(Animation animation){

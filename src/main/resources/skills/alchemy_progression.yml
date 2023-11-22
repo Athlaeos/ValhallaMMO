@@ -1,0 +1,18 @@
+starting_perks: []
+
+experience:
+  max_level: 100
+  exp_level_curve: '0.25 * (%level% + 300 * 2^(%level%/7.6)) + 300'
+
+special_perks: []
+
+commands: []
+
+messages:
+  - '<lang.skill-level-up-alchemy>'
+
+leveling_perks: []
+
+starting_coordinates: '3,8'
+
+perks: []

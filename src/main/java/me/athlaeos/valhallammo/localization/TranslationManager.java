@@ -26,9 +26,20 @@ public class TranslationManager {
     private static MaterialTranslationsDTO materialTranslations;
     private static String language;
 
+    /**
+     * Returns the value mapped to the given key. Sends console a warning if no value is mapped and defaults to the key.
+     */
     public static String getTranslation(String key){
         if (!key.contains("<lang.") && !pluginTranslations.getStringTranslations().containsKey(key)) ValhallaMMO.logWarning("No translated value mapped for " + key);
         return translatePlaceholders(pluginTranslations.getStringTranslations().getOrDefault(key, key));
+    }
+
+    /**
+     * Returns the raw value mapped to the given key. Can be null if no value is mapped
+     */
+    public static String getRawTranslation(String key){
+        if (!pluginTranslations.getStringTranslations().containsKey(key)) return null;
+        return translatePlaceholders(pluginTranslations.getStringTranslations().get(key));
     }
 
     public static PluginTranslationDTO getDefaultTranslations() {
@@ -58,6 +69,7 @@ public class TranslationManager {
     }
 
     public static String translatePlaceholders(String originalString){
+        if (originalString == null) return null;
         String[] matches = StringUtils.substringsBetween(originalString, "<lang.", ">");
         if (matches == null) return originalString;
         for (String s : matches)
@@ -73,15 +85,15 @@ public class TranslationManager {
             String subString = StringUtils.substringBetween(l, "<lang.", ">");
             if (subString == null) {
                 // list does not contain placeholder match, string is added normally
-                newList.add(Utils.chat(l));
+                newList.add(l);
             } else {
                 // list has a line matching the placeholder format, placeholder is replaced with associated value
                 List<String> placeholderList = getListTranslation(subString);
                 if (placeholderList.isEmpty()){
-                    newList.add(translatePlaceholders(Utils.chat(l)));
+                    newList.add(translatePlaceholders(l));
                 } else {
                     // each line in the associated list is once again passed through the translation method
-                    placeholderList.forEach(s -> newList.add(translatePlaceholders(Utils.chat(s))));
+                    placeholderList.forEach(s -> newList.add(translatePlaceholders(s)));
                 }
             }
         }
@@ -131,7 +143,7 @@ public class TranslationManager {
             }
 
             if (entriesAdded > 0) {
-                try (FileWriter writer = new FileWriter(new File(ValhallaMMO.getInstance().getDataFolder(), "languages/" + l + ".json"))){
+                try (FileWriter writer = new FileWriter(new File(ValhallaMMO.getInstance().getDataFolder(), "languages/" + l + ".json"), StandardCharsets.UTF_8)){
                     gson.toJson(pluginTranslations, writer);
                 } catch (IOException exception){
                     ValhallaMMO.logSevere(exception.getMessage());

@@ -54,12 +54,6 @@ public class ProfileStatsCommand implements Command {
 
         ProfileCommand.displayProfile(sender, target, skill.getProfileType());
 
-//        if (profileFormats.containsKey(skill)){ TODO proper profile formats
-//            for (String s : profileFormats.get(skill)){
-//                sender.sendMessage(Utils.chat(PlaceholderRegistry.parse(s, target)));
-//            }
-//        }
-
         return true;
     }
 

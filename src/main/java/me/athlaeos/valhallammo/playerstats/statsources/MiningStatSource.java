@@ -40,7 +40,7 @@ public class MiningStatSource implements AccumulativeStatSource {
         }
 
         if (numberType == null) {
-            throw new IllegalArgumentException("ProfileStatSource:" + MiningProfile.class.getSimpleName() + " with stat " + stat +
+            throw new IllegalArgumentException("MiningStatSource:" + MiningProfile.class.getSimpleName() + " with stat " + stat +
                     " was initialized, but this profile type does not have such a stat");
         }
     }

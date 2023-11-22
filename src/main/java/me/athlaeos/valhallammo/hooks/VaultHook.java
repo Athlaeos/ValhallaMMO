@@ -24,4 +24,9 @@ public class VaultHook extends PluginHook{
     public Economy getEcon() {
         return econ;
     }
+
+    @Override
+    public void whenPresent() {
+        if (!setupEconomy()) ValhallaMMO.logWarning("Could not initialize Vault economy");
+    }
 }

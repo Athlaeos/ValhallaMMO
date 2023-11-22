@@ -34,11 +34,15 @@ public abstract class Profile {
     protected Map<String, Collection<String>> stringSets = new HashMap<>();
     protected Map<String, BooleanHolder> booleans = new HashMap<>();
 
-    protected abstract String getTableName();
+    public abstract String getTableName();
 
     public Profile(Player owner){
         if (owner == null) return;
         this.owner = owner.getUniqueId();
+    }
+
+    public void onCacheRefresh() {
+        // do nothing by default
     }
 
     {

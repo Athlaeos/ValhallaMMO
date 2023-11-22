@@ -17,9 +17,10 @@ public class RecipeDiscoveryListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onRecipeDiscover(PlayerRecipeDiscoverEvent e){
-        if (CustomRecipeRegistry.getDisabledRecipes().contains(e.getRecipe())){
+        if (CustomRecipeRegistry.getDisabledRecipes().contains(e.getRecipe()))
             e.setCancelled(true);
-        }
+        if (CustomRecipeRegistry.getAllKeyedRecipes().containsKey(e.getRecipe()) && CustomRecipeRegistry.getAllKeyedRecipes().get(e.getRecipe()).isHiddenFromBook())
+            e.setCancelled(true);
     }
 
     @EventHandler
@@ -29,17 +30,17 @@ public class RecipeDiscoveryListener implements Listener {
         }
         PowerProfile profile = ProfileRegistry.getMergedProfile(e.getPlayer(), PowerProfile.class);
         for (DynamicGridRecipe recipe : CustomRecipeRegistry.getGridRecipes().values()){
-            if (profile.getUnlockedRecipes().contains(recipe.getName()))e.getPlayer().discoverRecipe(recipe.getKey()); // all recipes have a shaped variant because these display properly in the recipe book
+            if (!recipe.isHiddenFromBook() && profile.getUnlockedRecipes().contains(recipe.getName()))e.getPlayer().discoverRecipe(recipe.getKey()); // all recipes have a shaped variant because these display properly in the recipe book
             else e.getPlayer().undiscoverRecipe(recipe.getKey());
 
             e.getPlayer().undiscoverRecipe(recipe.getKey2()); // shapeless recipes cant contain custom metadata options and so will always display wrongly in the recipe book, forget those
         }
         for (DynamicSmithingRecipe recipe : CustomRecipeRegistry.getSmithingRecipes().values()){
-            if (profile.getUnlockedRecipes().contains(recipe.getName())) e.getPlayer().discoverRecipe(recipe.getKey());
+            if (!recipe.isHiddenFromBook() && profile.getUnlockedRecipes().contains(recipe.getName())) e.getPlayer().discoverRecipe(recipe.getKey());
             else e.getPlayer().undiscoverRecipe(recipe.getKey());
         }
         for (DynamicCookingRecipe recipe : CustomRecipeRegistry.getCookingRecipes().values()){
-            if (profile.getUnlockedRecipes().contains(recipe.getName())) e.getPlayer().discoverRecipe(recipe.getKey());
+            if (!recipe.isHiddenFromBook() && profile.getUnlockedRecipes().contains(recipe.getName())) e.getPlayer().discoverRecipe(recipe.getKey());
             else e.getPlayer().undiscoverRecipe(recipe.getKey());
         }
     }

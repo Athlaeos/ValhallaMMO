@@ -4,10 +4,13 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.ActiveBlockDig;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfile;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,7 +39,7 @@ public class CustomBreakSpeedListener implements Listener {
     }
 
     public static void onStart(DigPacketInfo info){
-        if (info == null || disabled) return;
+        if (info == null || disabled || ItemUtils.breaksInstantly(info.block().getType())) return;
         if (info.getType() == DigPacketInfo.Type.START){
             Block b = info.block();
 
@@ -49,6 +52,13 @@ public class CustomBreakSpeedListener implements Listener {
             } else {
                 instantBlockBreaks.add(b.getLocation());
                 ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+                    ItemBuilder tool = null;
+                    if (ItemUtils.isEmpty(info.getDigger().getInventory().getItemInMainHand())) {
+                        MiningProfile profile = ProfileCache.getOrCache(info.getDigger(), MiningProfile.class);
+                        if (profile.getEmptyHandTool() != null) tool = profile.getEmptyHandTool();
+                    }
+                    // only prepare custom drops if tool is a valid item for the block
+                    if (tool != null && b.getDrops(new ItemStack(Material.STICK), info.getDigger()).isEmpty() && ValhallaMMO.getNms().toolPower(tool.getItem(), b) > 1) LootListener.prepareBlockDrops(b, new ArrayList<>(b.getDrops(tool.get())));
                     ValhallaMMO.getNms().breakBlock(info.getDigger(), b);
                     BlockUtils.removeCustomHardness(b);
                 });
@@ -70,7 +80,7 @@ public class CustomBreakSpeedListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBreak(BlockBreakEvent e){
-        if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+        if (e.getPlayer().getGameMode() == GameMode.CREATIVE || ItemUtils.breaksInstantly(e.getBlock().getType())) return;
         ActiveBlockDig activeBlock = activeBreakingProcesses.get(e.getPlayer().getUniqueId());
         if (activeBlock != null){
             activeBreakingProcesses.remove(e.getPlayer().getUniqueId());
@@ -78,6 +88,11 @@ public class CustomBreakSpeedListener implements Listener {
         }
         if (instantBlockBreaks.remove(e.getBlock().getLocation())) return;
         e.setCancelled(true);
+    }
+
+    public static void markInstantBreak(Block b){
+        if (disabled) return;
+        instantBlockBreaks.add(b.getLocation());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

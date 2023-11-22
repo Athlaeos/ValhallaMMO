@@ -35,6 +35,7 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
     private boolean requireValhallaTools = false;
     private boolean tinkerBase = false;
     private boolean consumeAddition = true;
+    private boolean hiddenFromBook = false;
     private List<DynamicItemModifier> resultModifiers = new ArrayList<>();
     private List<DynamicItemModifier> additionModifiers = new ArrayList<>();
     private boolean unlockedForEveryone = false;
@@ -91,6 +92,7 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
     public boolean consumeAddition() { return consumeAddition; }
     public String getDescription() { return description; }
     public String getDisplayName() { return displayName; }
+    public boolean isHiddenFromBook() { return hiddenFromBook; }
 
     public void setDisplayName(String displayName) { this.displayName = displayName; }
     public void setDescription(String description) { this.description = description; }
@@ -111,6 +113,7 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
     public void setUnlockedForEveryone(boolean unlockedForEveryone) {this.unlockedForEveryone = unlockedForEveryone;}
     public void setValidations(Collection<String> validations) {this.validations = validations;}
     public void setConsumeAddition(boolean consumeAddition) { this.consumeAddition = consumeAddition; }
+    public void setHiddenFromBook(boolean hiddenFromBook) { this.hiddenFromBook = hiddenFromBook; }
 
     public SmithingRecipe generateRecipe() {
         RecipeChoice t = null;

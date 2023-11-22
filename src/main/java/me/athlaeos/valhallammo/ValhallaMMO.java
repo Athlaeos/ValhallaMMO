@@ -1,35 +1,36 @@
 package me.athlaeos.valhallammo;
 
-import me.athlaeos.valhallammo.commands.CommandManager;
-import me.athlaeos.valhallammo.commands.ProfileCommand;
-import me.athlaeos.valhallammo.commands.RedeemCommand;
-import me.athlaeos.valhallammo.commands.SkillsCommand;
+import me.athlaeos.valhallammo.block.BlockInteractConversions;
+import me.athlaeos.valhallammo.commands.*;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.configuration.ConfigUpdater;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierScalingPresets;
+import me.athlaeos.valhallammo.entities.MonsterScalingManager;
+import me.athlaeos.valhallammo.event.PlayerJumpEvent;
 import me.athlaeos.valhallammo.gui.MenuListener;
-import me.athlaeos.valhallammo.hooks.PAPIHook;
-import me.athlaeos.valhallammo.hooks.PluginHook;
-import me.athlaeos.valhallammo.hooks.VaultHook;
-import me.athlaeos.valhallammo.hooks.WorldGuardHook;
-import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
+import me.athlaeos.valhallammo.hooks.*;
+import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.listeners.*;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.nms.NMS;
 import me.athlaeos.valhallammo.nms.NetworkHandlerImpl;
 import me.athlaeos.valhallammo.nms.PacketListener;
+import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
+import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import me.athlaeos.valhallammo.resourcepack.Host;
+import me.athlaeos.valhallammo.resourcepack.ResourcePack;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpenseRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
-import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockConditionRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
-import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.tools.BlockHardnessStick;
+import me.athlaeos.valhallammo.utility.GlobalEffect;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -49,7 +50,7 @@ public class ValhallaMMO extends JavaPlugin {
     private static PacketListener packetListener = null;
     private static ValhallaMMO instance;
     private static boolean resourcePackConfigForced = false;
-    private static final Map<Class<? extends PluginHook>, PluginHook> pluginHooks = new HashMap<>();
+    private static final Map<Class<? extends PluginHook>, PluginHook> activeHooks = new HashMap<>();
     private static YamlConfiguration pluginConfig;
     private final static Collection<String> worldBlacklist = new HashSet<>();
 
@@ -63,11 +64,6 @@ public class ValhallaMMO extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        // initialize all resources required for the various managers to use.
-        registerHook(new VaultHook());
-        registerHook(new PAPIHook());
-        registerHook(new WorldGuardHook());
-
         // save and update configs
         pluginConfig = saveAndUpdateConfig("config.yml");
 
@@ -82,27 +78,26 @@ public class ValhallaMMO extends JavaPlugin {
         save("recipes/cauldron_recipes.json");
         save("recipes/smithing_recipes.json");
         saveConfig("recipes/disabled_recipes.yml");
+        saveConfig("leaderboards.yml");
+        saveConfig("mob_stats.yml");
+        saveConfig("parties.yml");
+        saveConfig("block_conversions.yml");
+        saveConfig("scaling_presets.yml");
         TranslationManager.load(lang);
         // initialize modifiers and perk rewards
         ResourceExpenseRegistry.registerDefaultExpenses();
         UnlockConditionRegistry.registerDefaultConditions();
 
+        // initialize all resources required for the various managers to use.
+        registerHook(new VaultHook());
+        registerHook(new PAPIHook());
+        registerHook(new WorldGuardHook());
+        registerHook(new DamageIndicator());
     }
 
     @Override
     public void onEnable() {
         resourcePackConfigForced = pluginConfig.getBoolean("resource_pack_config_override");
-        saveConfig("skills/power_progression.yml");
-        saveConfig("skills/power.yml");
-        saveConfig("skills/smithing.yml");
-        saveConfig("skills/alchemy.yml");
-        saveConfig("skills/archery.yml");
-        saveConfig("skills/enchanting.yml");
-        saveConfig("skills/light_armor.yml");
-        saveConfig("skills/heavy_armor.yml");
-        saveConfig("skills/light_weapons.yml"); // TODO config saving
-        saveConfig("skills/heavy_weapons.yml");
-        saveConfig("skills/mining.yml");
         saveAndUpdateConfig("gui_details.yml");
 
         if (setupNMS()){
@@ -115,22 +110,31 @@ public class ValhallaMMO extends JavaPlugin {
             logWarning("No NMS version found for your server version");
             logWarning("This version may not be compatible with ValhallaMMO (1.17+) yet and may not work properly, and the following features are disabled:");
             logWarning("    > Custom block breaking speeds");
-            logWarning("    > Advanced book editing");
         }
 
-        ItemAttributesRegistry.loadDefaults();
-        PotionEffectRegistry.loadDefaults();
+        ResourcePack.tryStart();
+
+        ItemAttributesRegistry.registerAttributes();
+        PotionEffectRegistry.registerEffects();
         SmithingItemPropertyManager.loadConfig();
         AlchemyItemPropertyManager.loadConfig();
+        GlobalEffect.loadActiveGlobalEffects();
+        MonsterScalingManager.loadMonsterScalings();
         SkillRegistry.registerSkills();
+        PartyManager.loadParties();
+        BlockInteractConversions.loadConversions();
+        ModifierScalingPresets.loadScalings();
 
         ProfileRegistry.setupDatabase();
         ProfilePersistence connection = ProfileRegistry.getPersistence();
+
+        for (PluginHook hook : activeHooks.values()) hook.whenPresent();
 
         if (ConfigManager.getConfig("config.yml").get().getBoolean("metrics", true)){
             new Metrics(this, 14942).addCustomChart(new Metrics.SimplePie("using_database_for_player_data", () -> connection instanceof Database db && db.getConnection() != null ? "Yes" : "No"));
         }
 
+        PlayerJumpEvent.register(this);
         registerListener(new ArmorSwitchListener());
         registerListener(new BlockListener());
         registerListener(new BrewingStandListener());
@@ -150,6 +154,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerListener(new ItemConsumptionListener());
         registerListener(new ItemDamageListener());
         registerListener(new JoinLeaveListener());
+        registerListener(new JumpListener());
         registerListener(new LootListener());
         registerListener(new MenuListener());
         registerListener(new MovementListener());
@@ -164,6 +169,11 @@ public class ValhallaMMO extends JavaPlugin {
         registerCommand(new CommandManager(), "valhalla");
         registerCommand(new SkillsCommand(), "skills");
         registerCommand(new RedeemCommand(), "redeem");
+        registerCommand(new LeaderboardCommand(), "valtop");
+        registerCommand(new PartyCommand(), "party");
+        registerCommand(new PartyManagementCommand(), "parties");
+        registerCommand(new PartyChatCommand(), "partychat");
+        registerCommand(new PartySpyCommand(), "partyspy");
         registerCommand(new ProfileCommand(PowerProfile.class), "power");
         registerCommand(new ProfileCommand(SmithingProfile.class), "smithing");
         registerCommand(new ProfileCommand(AlchemyProfile.class), "alchemy");
@@ -174,10 +184,16 @@ public class ValhallaMMO extends JavaPlugin {
         registerCommand(new ProfileCommand(LightArmorProfile.class), "lightarmor");
         registerCommand(new ProfileCommand(HeavyArmorProfile.class), "heavyarmor");
         registerCommand(new ProfileCommand(MiningProfile.class), "mining");
-        // TODO new profile command per profile
+        registerCommand(new ProfileCommand(FarmingProfile.class), "farming");
+        registerCommand(new ProfileCommand(WoodcuttingProfile.class), "woodcutting");
+        registerCommand(new ProfileCommand(DiggingProfile.class), "digging");
+        registerCommand(new ProfileCommand(FishingProfile.class), "fishing");
 
         CustomRecipeRegistry.loadFiles();
         LootTableRegistry.loadFiles();
+        ArmorSetRegistry.loadFile();
+        CustomItemRegistry.loadFile();
+        LeaderboardManager.loadFile();
 
         // During reloads profiles are persisted. This makes sure profiles of players who are already online are ensured
         // to be loaded, otherwise their progress is reset
@@ -202,7 +218,13 @@ public class ValhallaMMO extends JavaPlugin {
 
         CustomRecipeRegistry.saveRecipes(false);
         LootTableRegistry.saveLootTables();
+        ArmorSetRegistry.saveArmorSets();
+        CustomItemRegistry.saveItems();
+        GlobalEffect.saveActiveGlobalEffects();
+        PartyManager.saveParties();
+        JumpListener.onServerStop();
         if (packetListener != null) packetListener.closeAll();
+        Host.stop();
     }
 
     private boolean setupNMS() {
@@ -301,16 +323,16 @@ public class ValhallaMMO extends JavaPlugin {
     }
 
     private static void registerHook(PluginHook hook){
-        if (hook.isPresent()) pluginHooks.put(hook.getClass(), hook);
+        if (hook.isPresent()) activeHooks.put(hook.getClass(), hook);
     }
 
     public static boolean isHookFunctional(Class<? extends PluginHook> hook){
-        return pluginHooks.containsKey(hook);
+        return activeHooks.containsKey(hook);
     }
 
     @SuppressWarnings("unchecked")
     public static <T extends PluginHook> T getHook(Class<T> hook){
-        return (T) pluginHooks.get(hook);
+        return (T) activeHooks.get(hook);
     }
 
     public static boolean isResourcePackConfigForced() {

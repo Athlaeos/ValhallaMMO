@@ -42,7 +42,7 @@ public class ProfileStatAttackerWeightSource implements AccumulativeStatSource, 
         }
 
         if (numberType == null) {
-            throw new IllegalArgumentException("ProfileStatSource:" + type.getSimpleName() + " with stat " + stat +
+            throw new IllegalArgumentException("ProfileStatAttackerWeightSource:" + type.getSimpleName() + " with stat " + stat +
                     " was initialized, but this profile type does not have such a stat");
         }
     }

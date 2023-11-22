@@ -1,5 +1,7 @@
 package me.athlaeos.valhallammo.placeholder;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.hooks.PAPIHook;
 import me.athlaeos.valhallammo.placeholder.placeholders.*;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -30,6 +32,9 @@ public class PlaceholderRegistry {
         }
 
         registerPlaceholder(new SpendableSkillPointsPlaceholder("%skillpoints%"));
+        registerPlaceholder(new SpendablePrestigePointsPlaceholder("%prestigepoints%"));
+        registerPlaceholder(new RegionalDifficultyLevelPlaceholder("%difficulty_regional%"));
+        registerPlaceholder(new RegionalDifficultyLevelRoundedPlaceholder("%difficulty_regional_rounded%"));
     }
 
     public void registerPlaceholder(Placeholder p) {
@@ -41,11 +46,12 @@ public class PlaceholderRegistry {
     }
 
     public static String parse(String stringToParse, Player p) {
-        for (Placeholder s : PlaceholderRegistry.getPlaceholders().values()) {
+        for (Placeholder s : placeholders.values()) {
             if (stringToParse.contains(s.getPlaceholder())) {
                 stringToParse = s.parse(stringToParse, p);
             }
         }
+        if (ValhallaMMO.isHookFunctional(PAPIHook.class)) stringToParse = PAPIHook.parse(p, stringToParse);
         return stringToParse;
     }
 }

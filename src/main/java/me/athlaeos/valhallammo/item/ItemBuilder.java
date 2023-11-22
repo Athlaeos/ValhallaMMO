@@ -92,6 +92,15 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder prependLore(List<String> lore){
+        if (lore == null) return this;
+        List<String> l = meta.getLore() == null ? new ArrayList<>() : meta.getLore();
+        lore = new ArrayList<>(Utils.chat(lore));
+        lore.addAll(l);
+        meta.setLore(lore);
+        return this;
+    }
+
     public ItemBuilder placeholderLore(String placeholder, List<String> replaceWith){
         return lore(ItemUtils.setListPlaceholder(meta.hasLore() && meta.getLore() != null ? meta.getLore() : new ArrayList<>(), placeholder, replaceWith));
     }
@@ -99,6 +108,11 @@ public class ItemBuilder {
     public ItemBuilder appendLore(String... lore){
         if (lore == null) return this;
         return appendLore(Arrays.asList(lore));
+    }
+
+    public ItemBuilder prependLore(String... lore){
+        if (lore == null) return this;
+        return prependLore(new ArrayList<>(List.of(lore)));
     }
 
     public ItemBuilder amount(int amount){
@@ -151,6 +165,6 @@ public class ItemBuilder {
 
     public ItemStack getItem() { return item; }
     public ItemMeta getMeta() { return meta; }
-    public void setItem(ItemStack item) { this.item = item; }
-    public void setMeta(ItemMeta meta) { this.meta = meta; }
+    public ItemBuilder setItem(ItemStack item) { this.item = item; return this; }
+    public ItemBuilder setMeta(ItemMeta meta) { this.meta = meta; return this; }
 }

@@ -34,7 +34,7 @@ public class DynamicModifierMenu extends Menu {
     private static final List<Integer> scrollBarIndexes = Arrays.asList(45, 46, 47, 48, 49, 50, 51, 52, 53);
     private static final ItemStack modifierPriorityButton = new ItemBuilder(Material.CLOCK).stringTag(KEY_ACTION, "modifierPriorityButton").name("&6&lPriority").get();
     private static final ItemStack confirmButton = new ItemBuilder(Material.STRUCTURE_VOID).stringTag(KEY_ACTION, "confirmButton").name("&b&lSave").get();
-    private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_STAINED_GLASS_PANE))
+    private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_DYE))
             .name("&b&lNew")
             .stringTag(KEY_ACTION, "createNewButton")
             .flag(ItemFlag.HIDE_ATTRIBUTES).get();

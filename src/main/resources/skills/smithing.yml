@@ -84,7 +84,7 @@ repair_scaling: '(0.7/300) * %rating% + 0.1,MULTIPLIER,none,none'
 # (I want wood to reach vanilla strength at 30 quality)
 # For ADD_ON_DEFAULT-type scalings you should intersect with y = 0
 scaling_durability:
-  wood: '(9.2/296.444) * (%rating% - 3.556) + 0.8,MULTIPLIER,0,none' # vanilla at 10 quality
+  wood: '(9.2/300) * (%rating% - 3.556) + 0.8,MULTIPLIER,0,none' # vanilla at 10 quality
   bow: '(2/333.3) * (%rating% + 33.3) + 0.5,MULTIPLIER,0,none' # vanilla at 50 quality
   crossbow: '(2.5/312.5) * (%rating% + 12.5) + 0.5,MULTIPLIER,0,none' # vanilla at 50 quality
   leather: '(5.2/301.6) * (%rating% + 1.6) + 0.8,MULTIPLIER,0,none' # vanilla at 10 quality

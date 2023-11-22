@@ -15,6 +15,7 @@ public class Config {
 
     public Config(String name) {
         this.name = name;
+        save();
     }
 
     public Config save() {

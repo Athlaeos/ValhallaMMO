@@ -2,8 +2,11 @@ package me.athlaeos.valhallammo.skills.skills.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
@@ -11,42 +14,77 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.AlchemyProfi
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Sound;
+import me.athlaeos.valhallammo.utility.Utils;
+import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AlchemySkill extends Skill implements Listener {
     private final boolean quickEmptyPotions;
     private final Collection<Material> validCombiningItems = new HashSet<>();
     private final NamespacedKey COMBINATIONS_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "alchemy_combinations");
 
+    private static final Map<String, Transmutation> transmutations = new HashMap<>();
+    private final Map<Material, Transmutation> transmutationsByMaterial = new HashMap<>();
+    private final boolean transmutationFlash;
+    private final Sound transmutationSound;
+    private static List<String> transmutationPotionLore = new ArrayList<>();
+    private static String transmutationPotionName = null;
+
     public AlchemySkill(String type) {
         super(type);
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/alchemy.yml").get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/alchemy_progression.yml").get();
+        ValhallaMMO.getInstance().save("skills/alchemy_transmutations.yml");
+        ValhallaMMO.getInstance().save("skills/alchemy_progression.yml");
+        ValhallaMMO.getInstance().save("skills/alchemy.yml");
+
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/alchemy.yml").reload().get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/alchemy_progression.yml").reload().get();
+        YamlConfiguration transmutationConfig = ConfigManager.getConfig("skills/alchemy_transmutations.yml").reload().get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
         quickEmptyPotions = skillConfig.getBoolean("quick_empty_potions");
+        transmutationFlash = skillConfig.getBoolean("transmutation_liquid_flash");
+        transmutationSound = Catch.catchOrElse(() -> Sound.valueOf(skillConfig.getString("transmutation_sound")), null, "Invalid transmutation sound given in skills/alchemy.yml");
 
-        validCombiningItems.addAll(ItemUtils.getMaterialList(skillConfig.getStringList("valid_combining_items")));
+        validCombiningItems.addAll(ItemUtils.getMaterialSet(skillConfig.getStringList("valid_combining_items")));
+        transmutationPotionLore = Utils.chat(TranslationManager.translateListPlaceholders(skillConfig.getStringList("transmutation_lore")));
+        transmutationPotionName = Utils.chat(TranslationManager.translatePlaceholders(skillConfig.getString("transmutation_name")));
+
+        ConfigurationSection section = transmutationConfig.getConfigurationSection("transmutations");
+        if (section != null){
+            for (String name : section.getKeys(false)){
+                Material from = Catch.catchOrElse(() -> Material.valueOf(transmutationConfig.getString("transmutations." + name + ".from")), null);
+                Material to = Catch.catchOrElse(() -> Material.valueOf(transmutationConfig.getString("transmutations." + name + ".to")), null);
+                if (from == null || to == null) continue;
+                Transmutation transmutation = new Transmutation(name, from, to);
+                transmutations.put(name, transmutation);
+                transmutationsByMaterial.put(transmutation.from, transmutation);
+            }
+        }
 
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
@@ -153,4 +191,45 @@ public class AlchemySkill extends Skill implements Listener {
             e.setCancelled(true);
         }
     }
+
+    @EventHandler(priority=EventPriority.MONITOR)
+    public void onProjectileHitBlock(ProjectileHitEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getHitBlock() == null || !(e.getEntity() instanceof ThrownPotion t) || !(t.getShooter() instanceof Player p)) return;
+        ItemMeta potionMeta = ItemUtils.getItemMeta(t.getItem());
+        if (!isTransmutationPotion(potionMeta)) return;
+
+        AlchemyProfile profile = ProfileCache.getOrCache(p, AlchemyProfile.class);
+        if (profile.getUnlockedTransmutations().isEmpty() || profile.getTransmutationRadius() <= 0) return;
+        Collection<Block> affectedBlocks = BlockUtils.getBlocksTouching(e.getHitBlock(), profile.getTransmutationRadius(), 1, profile.getTransmutationRadius(), Material::isAir);
+
+        for (Block b : affectedBlocks){
+            if (transmutationsByMaterial.containsKey(b.getType())){
+                if (ValhallaMMO.isHookFunctional(WorldGuardHook.class) && !WorldGuardHook.canPlaceBlocks(b.getLocation(), p)) return;
+                b.setType(transmutationsByMaterial.get(b.getType()).to);
+            }
+        }
+        if (transmutationFlash) e.getHitBlock().getWorld().spawnParticle(Particle.FLASH, e.getEntity().getLocation(), 0);
+        if (transmutationSound != null) e.getHitBlock().getWorld().playSound(e.getHitBlock().getLocation(), transmutationSound, 1F, 1F);
+    }
+
+    private static final NamespacedKey TRANSMUTATION_POTION = new NamespacedKey(ValhallaMMO.getInstance(), "transmutation_potion");
+
+    public static void setTransmutationPotion(ItemMeta meta, boolean set){
+        if (set) {
+            meta.getPersistentDataContainer().set(TRANSMUTATION_POTION, PersistentDataType.BYTE, (byte) 1);
+            meta.setLore(transmutationPotionLore);
+            if (transmutationPotionName != null) meta.setDisplayName(transmutationPotionName);
+        } else meta.getPersistentDataContainer().remove(TRANSMUTATION_POTION);
+    }
+
+    public static boolean isTransmutationPotion(ItemMeta meta){
+        if (meta == null) return false;
+        return meta.getPersistentDataContainer().has(TRANSMUTATION_POTION, PersistentDataType.BYTE);
+    }
+
+    public static Map<String, Transmutation> getTransmutations() {
+        return transmutations;
+    }
+
+    private record Transmutation(String key, Material from, Material to){}
 }

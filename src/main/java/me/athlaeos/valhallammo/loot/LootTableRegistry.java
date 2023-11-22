@@ -13,9 +13,11 @@ import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
@@ -44,12 +46,17 @@ public class LootTableRegistry {
             .enableComplexMapKeySerialization()
             .create();
     private static final NamespacedKey STORED_LOOT_TABLE = new NamespacedKey(ValhallaMMO.getInstance(), "loot_table");
+    private static final NamespacedKey FREE_SELECTION_TABLE = new NamespacedKey(ValhallaMMO.getInstance(), "free_selection_loot_table");
+    private static final NamespacedKey FREE_SELECTION_ALLOW_DUPLICATES = new NamespacedKey(ValhallaMMO.getInstance(), "free_selection_allow_duplicates");
+    private static final NamespacedKey LOOT_ITEM_SOUND = new NamespacedKey(ValhallaMMO.getInstance(), "loot_item_sound");
 
     private static final Map<String, LootTable> lootTables = new HashMap<>();
     private static final Map<Material, String> blockLootTables = new HashMap<>();
     private static final Map<EntityType, String> entityLootTables = new HashMap<>();
     private static final Map<NamespacedKey, String> lootTableAdditions = new HashMap<>();
-    private static String fishingLootTable;
+    private static String fishingLootTableFish;
+    private static String fishingLootTableTreasure;
+    private static String fishingLootTableJunk;
 
     @SuppressWarnings("all")
     public static void loadFiles(){
@@ -63,7 +70,9 @@ public class LootTableRegistry {
             blockLootTables.putAll(configuration.getBlockLootTables());
             entityLootTables.putAll(configuration.getEntityLootTables());
             lootTableAdditions.putAll(configuration.getLootTableAdditions());
-            fishingLootTable = configuration.getFishingLootTable();
+            fishingLootTableFish = configuration.getFishingLootTableFish();
+            fishingLootTableJunk = configuration.getFishingLootTableJunk();
+            fishingLootTableTreasure = configuration.getFishingLootTableTreasure();
         } catch (IOException exception){
             ValhallaMMO.logSevere(exception.getMessage());
             exception.printStackTrace();
@@ -158,7 +167,9 @@ public class LootTableRegistry {
         configuration.getBlockLootTables().putAll(blockLootTables);
         configuration.getLootTableAdditions().putAll(lootTableAdditions);
         configuration.getEntityLootTables().putAll(entityLootTables);
-        configuration.setFishingLootTable(fishingLootTable);
+        configuration.setFishingLootTableFish(fishingLootTableFish);
+        configuration.setFishingLootTableJunk(fishingLootTableJunk);
+        configuration.setFishingLootTableTreasure(fishingLootTableTreasure);
         File f = new File(ValhallaMMO.getInstance().getDataFolder(), "/loot_table_config.json");
         try {
             f.createNewFile();
@@ -197,9 +208,19 @@ public class LootTableRegistry {
         return lootTables.get(table);
     }
 
-    public static LootTable getFishingLootTable(){
-        if (fishingLootTable == null) return null;
-        return lootTables.get(fishingLootTable);
+    public static LootTable getFishingFishLootTable(){
+        if (fishingLootTableFish == null) return null;
+        return lootTables.get(fishingLootTableFish);
+    }
+
+    public static LootTable getFishingTreasureLootTable(){
+        if (fishingLootTableTreasure == null) return null;
+        return lootTables.get(fishingLootTableTreasure);
+    }
+
+    public static LootTable getFishingJunkLootTable(){
+        if (fishingLootTableJunk == null) return null;
+        return lootTables.get(fishingLootTableJunk);
     }
 
     public static Map<Material, String> getBlockLootTables() {
@@ -215,11 +236,27 @@ public class LootTableRegistry {
     }
 
     public static String getFishingTableName() {
-        return fishingLootTable;
+        return fishingLootTableFish;
     }
 
-    public static void setFishingLootTable(String fishingLootTable) {
-        LootTableRegistry.fishingLootTable = fishingLootTable;
+    public static String getFishingLootTableJunk() {
+        return fishingLootTableJunk;
+    }
+
+    public static String getFishingLootTableTreasure() {
+        return fishingLootTableTreasure;
+    }
+
+    public static void setFishingLootTableFish(String fishingLootTableFish) {
+        LootTableRegistry.fishingLootTableFish = fishingLootTableFish;
+    }
+
+    public static void setFishingLootTableTreasure(String fishingLootTableTreasure) {
+        LootTableRegistry.fishingLootTableTreasure = fishingLootTableTreasure;
+    }
+
+    public static void setFishingLootTableJunk(String fishingLootTableJunk) {
+        LootTableRegistry.fishingLootTableJunk = fishingLootTableJunk;
     }
 
     public static Map<String, LootTable> getLootTables() {
@@ -253,5 +290,43 @@ public class LootTableRegistry {
         PersistentDataContainer customBlockData = new CustomBlockData(b, ValhallaMMO.getInstance());
         if (table == null) customBlockData.remove(STORED_LOOT_TABLE);
         else customBlockData.set(STORED_LOOT_TABLE, PersistentDataType.STRING, table.getKey());
+    }
+
+    public static void setFreeSelectionTable(ItemMeta meta, boolean freeSelection, boolean allowRepeats){
+        if (freeSelection) meta.getPersistentDataContainer().set(FREE_SELECTION_TABLE, PersistentDataType.BYTE, (byte) 1);
+        else meta.getPersistentDataContainer().remove(FREE_SELECTION_TABLE);
+        if (allowRepeats) meta.getPersistentDataContainer().set(FREE_SELECTION_ALLOW_DUPLICATES, PersistentDataType.BYTE, (byte) 1);
+        else meta.getPersistentDataContainer().remove(FREE_SELECTION_ALLOW_DUPLICATES);
+    }
+
+    /**
+     * If true, the item on which the loot table is present instead opens a GUI showing the items that the player will get (guaranteed entries)
+     * as well as the entries that they can choose from. They may choose entries equal to the amount of rolls determined by the <b>first loot pool found</b>.
+     * If allowRepeatedFreeSelection() is also true, they may choose the same entry several times. If all "rolls" are spent, they may claim the reward.
+     * @return true if the item should open a gui when interacted with, if it has a loot table
+     */
+    public static boolean isFreeSelectionTable(ItemMeta meta){
+        return meta.getPersistentDataContainer().has(FREE_SELECTION_TABLE, PersistentDataType.BYTE);
+    }
+
+    /**
+     * Repeated selection means that the player is allowed to select a drop several times, in case they want it more than once.
+     * @return true if the player can select the same entry several times
+     */
+    public static boolean allowRepeatedFreeSelection(ItemMeta meta){
+        return meta.getPersistentDataContainer().has(FREE_SELECTION_ALLOW_DUPLICATES, PersistentDataType.BYTE);
+    }
+
+    public static void setLootSound(ItemMeta meta, Sound sound){
+        if (sound == null) meta.getPersistentDataContainer().remove(LOOT_ITEM_SOUND);
+        else meta.getPersistentDataContainer().set(LOOT_ITEM_SOUND, PersistentDataType.STRING, sound.toString());
+    }
+
+    public static Sound getLootSound(ItemMeta meta){
+        try {
+            return Sound.valueOf(meta.getPersistentDataContainer().getOrDefault(LOOT_ITEM_SOUND, PersistentDataType.STRING, ""));
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
     }
 }

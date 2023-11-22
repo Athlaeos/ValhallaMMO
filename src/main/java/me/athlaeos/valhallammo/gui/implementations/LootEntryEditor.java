@@ -45,7 +45,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
     private static final int deleteIndex = 45;
     private static final int backToMenuIndex = 53;
 
-    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("").get();
+    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
 
     private final LootTable table;
     private final LootPool pool;
@@ -379,9 +379,9 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                         String.format("(+%.1f/fortune", entry.getQuantityMinFortuneBase())) : "")
         ));
         if (!entry.getPredicates().isEmpty()) {
-            dropIcon.appendLore("&6" + (entry.getPredicateSelection() == LootTable.PredicateSelection.ANY ? "Any" : "All") + "&e of the following");
-            dropIcon.appendLore("&econditions must pass:");
-            entry.getPredicates().forEach(pr -> dropIcon.appendLore("&f> " + StringUtils.separateStringIntoLines(pr.getActiveDescription(), 40)));
+            dropIcon.appendLore("&6" + (entry.getPredicateSelection() == LootTable.PredicateSelection.ANY ? "Any" : "All") + "&e of the following conditions");
+            dropIcon.appendLore("&emust pass:");
+            entry.getPredicates().forEach(pr -> dropIcon.appendLore(StringUtils.separateStringIntoLines("&f> " + pr.getActiveDescription(), 40)));
         }
         if (entry.isGuaranteedPresent()){
             dropIcon.appendLore("&aGuaranteed to drop if", "&aconditions succeed");
@@ -439,8 +439,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
 
     @Override
     public void setPredicates(Collection<LootPredicate> predicates) {
-        entry.getPredicates().clear();
-        entry.getPredicates().addAll(predicates);
+
     }
 
     @Override

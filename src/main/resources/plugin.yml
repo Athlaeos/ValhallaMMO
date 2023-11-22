@@ -9,6 +9,7 @@ softdepend:
 - WorldEdit
 - WorldGuard
 - PlaceholderAPI
+- DecentHolograms
 commands:
   valhalla:
     description: "Main command for all things ValhallaMMO-related"
@@ -29,31 +30,37 @@ commands:
   mining:
     description: "Shorter command for /val profile mining, allowing players to view their mining stats"
   farming:
-    description: "Shorter command for /val profile farming, allowing players to view their mining stats"
-  landscaping:
-    description: "Shorter command for /val profile landscaping, allowing players to view their mining stats"
+    description: "Shorter command for /val profile farming, allowing players to view their farming stats"
+  fishing:
+    description: "Shorter command for /val profile fishing, allowing players to view their fishing stats"
+  woodcutting:
+    description: "Shorter command for /val profile woodcutting, allowing players to view their woodcutting stats"
+  digging:
+    description: "Shorter command for /val profile digging, allowing players to view their digging stats"
   lightweapons:
-    description: "Shorter command for /val profile light_weapons, allowing players to view their mining stats"
+    description: "Shorter command for /val profile light_weapons, allowing players to view their light weapon stats"
   heavyweapons:
-    description: "Shorter command for /val profile heavy_weapons, allowing players to view their mining stats"
+    description: "Shorter command for /val profile heavy_weapons, allowing players to view their heavy weapon stats"
   lightarmor:
-    description: "Shorter command for /val profile light_armor, allowing players to view their mining stats"
+    description: "Shorter command for /val profile light_armor, allowing players to view their light armor stats"
   heavyarmor:
-    description: "Shorter command for /val profile heavy_armor, allowing players to view their mining stats"
+    description: "Shorter command for /val profile heavy_armor, allowing players to view their heavy armor stats"
   archery:
-    description: "Shorter command for /val profile archery, allowing players to view their mining stats"
+    description: "Shorter command for /val profile archery, allowing players to view their archery stats"
   smithing:
-    description: "Shorter command for /val profile smithing, allowing players to view their mining stats"
+    description: "Shorter command for /val profile smithing, allowing players to view their smithing stats"
   enchanting:
-    description: "Shorter command for /val profile enchanting, allowing players to view their mining stats"
+    description: "Shorter command for /val profile enchanting, allowing players to view their enchanting stats"
   alchemy:
-    description: "Shorter command for /val profile alchemy, allowing players to view their mining stats"
+    description: "Shorter command for /val profile alchemy, allowing players to view their alchemy stats"
   power:
-    description: "Shorter command for /val profile power, allowing players to view their mining stats"
+    description: "Shorter command for /val profile power, allowing players to view their power stats"
   redeem:
     description: "Exchanges level/exp tokens to any skill level/exp (except power)"
     usage: "/redeem <levels/exp> <skill> <amount>"
-
+  valtop:
+    description: "The ValhallaMMO stat leaderboards"
+    usage: "/valtop <leaderboard> <player/page>"
 
 permissions:
   valhalla.redeemlevels:
@@ -65,6 +72,9 @@ permissions:
   valhalla.items:
     default: op
     description: "Access to the /valhalla items command, which allows the user to add items to a custom item registry and then use said items in specific recipe modifiers or give them out using a command"
+  valhalla.armorsets:
+    default: op
+    description: "Access to the /valhalla armorsets command, which allows the user to add or edit armor sets which can then be applied to items through modifiers"
   valhalla.give:
     default: op
     description: "Access to the /valhalla give command, which allows users to give themselves or a player a custom item registered in the item registry"
@@ -74,6 +84,9 @@ permissions:
   valhalla.manageparties:
     default: op
     description: "Allows the user to target other people's parties and to manage things like ownership and stats"
+  valhalla.partyspy:
+    default: op
+    description: "Allows the user to use the /partyspy command, allowing them to read along with what the various parties on the server are saying"
   valhalla.createparty:
     default: true
     description: "Allows the user to create their own party"

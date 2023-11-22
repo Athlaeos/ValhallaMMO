@@ -25,7 +25,7 @@ public class ItemAttributesRegistry {
     private static final Map<Material, Map<String, AttributeWrapper>> vanillaAttributes = new HashMap<>();
     private static final Map<String, AttributeWrapper> registeredAttributes = new HashMap<>();
 
-    public static void loadDefaults() {
+    public static void registerAttributes() {
         register(new AttributeHiddenWrapper("CUSTOM_MAX_DURABILITY", StatFormat.INT).addModifier(Material.DIAMOND, 1, 25)); // custom durability is already displayed elsewhere, so this one is hidden
         register(new AttributeDisplayWrapper("BOW_STRENGTH", StatFormat.PERCENTILE_BASE_1_P1, "\uEE00", (i) -> i >= 0, Material.BOW, Material.CROSSBOW).offset(1).addModifier(Material.BOW));
         register(new AttributeDisplayWrapper("ARROW_DAMAGE", StatFormat.DIFFERENCE_FLOAT_P1, "\uEE01", (i) -> i >= 0).addModifier(Material.ARROW, 0.1, 1));
@@ -57,7 +57,6 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("DAMAGE_ALL", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE1B", (i) -> i >= 0).addModifier(Material.BLAZE_ROD));
         register(new AttributeDisplayWrapper("ATTACK_REACH", StatFormat.DIFFERENCE_FLOAT_P2, "\uEE1C", (i) -> i >= 0).addModifier(Material.ENDER_PEARL, 0.1, 1));
         register(new AttributeDisplayWrapper("VELOCITY_DAMAGE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE1D", (i) -> i >= 0).addModifier(Material.DIAMOND_HORSE_ARMOR));
-        // TODO velo damage
         register(new AttributeDisplayWrapper("DISMOUNT_CHANCE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE1E", (i) -> i >= 0).addModifier(Material.SADDLE));
         register(new AttributeDisplayWrapper("DAMAGE_RESISTANCE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE1F", (i) -> i >= 0).addModifier(Material.IRON_INGOT));
         register(new AttributeDisplayWrapper("EXPLOSION_RESISTANCE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE20", (i) -> i >= 0).addModifier(Material.TNT));
@@ -237,7 +236,7 @@ public class ItemAttributesRegistry {
 
     public static void reload(){
         registeredAttributes.clear();
-        loadDefaults();
+        registerAttributes();
     }
 
     /**

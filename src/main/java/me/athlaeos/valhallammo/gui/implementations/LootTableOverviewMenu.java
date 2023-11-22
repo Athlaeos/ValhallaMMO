@@ -40,7 +40,7 @@ public class LootTableOverviewMenu extends Menu {
     public static void registerCategory(LootTableCategory category){ categories.put(category.getId(), category); }
     public static Map<String, LootTableCategory> getCategories() { return new HashMap<>(categories); }
 
-    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("").get();
+    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
     private static final ItemStack nextPageButton = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
             .name("&7&lNext page")
             .stringTag(KEY_ACTION, "nextPageButton")
@@ -52,6 +52,10 @@ public class LootTableOverviewMenu extends Menu {
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .name("&fBack to Menu")
             .stringTag(KEY_ACTION, "backToMenuButton")
+            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+    private static final ItemStack editLootTablesButton = new ItemBuilder(getButtonData("editor_loottable_edit", Material.BOOK))
+            .name("&fEdit Loot Tables")
+            .stringTag(KEY_ACTION, "editLootTablesButton")
             .flag(ItemFlag.HIDE_ATTRIBUTES).get();
 
     private int currentPage = 0;
@@ -90,6 +94,10 @@ public class LootTableOverviewMenu extends Menu {
             switch (action){
                 case "backToMenuButton" -> {
                     new LootTableOverviewMenu(playerMenuUtility).open();
+                    return;
+                }
+                case "editLootTablesButton" -> {
+                    new LootTableSelectionMenu(playerMenuUtility, this, null).open();
                     return;
                 }
                 case "nextPageButton" -> currentPage++;
@@ -150,5 +158,6 @@ public class LootTableOverviewMenu extends Menu {
         for (LootTableCategory category : categories.values()){
             inventory.setItem(category.getPosition(), new ItemBuilder(category.getIcon()).stringTag(KEY_TABLE_CATEGORY, category.getId()).get());
         }
+        inventory.setItem(49, editLootTablesButton);
     }
 }

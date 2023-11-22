@@ -33,11 +33,11 @@ public class LootTableSelectionMenu extends Menu {
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .stringTag(KEY_ACTION, "backToMenuButton")
             .name("&7Cancel Selection").get();
-    private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_STAINED_GLASS_PANE))
+    private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_DYE))
             .name("&b&lNew")
             .stringTag(KEY_ACTION, "createNewButton")
             .flag(ItemFlag.HIDE_ATTRIBUTES).get();
-    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("").get();
+    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
     private static final ItemStack nextPageButton = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
             .name("&7&lNext page")
             .stringTag(KEY_ACTION, "nextPageButton")
@@ -114,7 +114,7 @@ public class LootTableSelectionMenu extends Menu {
         if (StringUtils.isEmpty(storedValue)) return;
         LootTable table = LootTableRegistry.getLootTables().get(storedValue);
         if (table == null) return;
-        if (e.isShiftClick())
+        if (tableAction == null || e.isShiftClick())
             new LootTableEditor(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), table).open();
         else tableAction.act(table);
 
@@ -147,7 +147,8 @@ public class LootTableSelectionMenu extends Menu {
             if (table.getPools().isEmpty()) icon.appendLore("&cNo loot pools set, drops nothing");
             else icon.appendLore("&aSelecting loot from " + table.getPools().size() + " pools");
 
-            icon.appendLore("&6Click to select, ", "&6Shift-Click to edit");
+            if (tableAction != null) icon.appendLore("&6Click to select, ", "&6Shift-Click to edit");
+            else icon.appendLore("&6Click to edit");
             buttons.add(icon.get());
         }
         buttons.add(createNewButton);

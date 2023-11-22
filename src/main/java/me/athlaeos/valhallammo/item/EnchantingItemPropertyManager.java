@@ -14,36 +14,36 @@ public class EnchantingItemPropertyManager {
 
     static {
         String config = "skills/enchanting.yml";
-        registerScaling("power", Scaling.fromConfig(config, "scaling_amplifier.power"));
-        registerScaling("punch", Scaling.fromConfig(config, "scaling_amplifier.punch"));
-        registerScaling("sharpness", Scaling.fromConfig(config, "scaling_amplifier.sharpness"));
-        registerScaling("bane_of_arthropods", Scaling.fromConfig(config, "scaling_amplifier.bane_of_arthropods"));
-        registerScaling("smite", Scaling.fromConfig(config, "scaling_amplifier.smite"));
-        registerScaling("depth_strider", Scaling.fromConfig(config, "scaling_amplifier.depth_strider"));
-        registerScaling("efficiency", Scaling.fromConfig(config, "scaling_amplifier.efficiency"));
-        registerScaling("unbreaking", Scaling.fromConfig(config, "scaling_amplifier.unbreaking"));
-        registerScaling("fire_aspect", Scaling.fromConfig(config, "scaling_amplifier.fire_aspect"));
-        registerScaling("frost_walker", Scaling.fromConfig(config, "scaling_amplifier.frost_walker"));
-        registerScaling("impaling", Scaling.fromConfig(config, "scaling_amplifier.impaling"));
-        registerScaling("knockback", Scaling.fromConfig(config, "scaling_amplifier.knockback"));
-        registerScaling("fortune", Scaling.fromConfig(config, "scaling_amplifier.fortune"));
-        registerScaling("looting", Scaling.fromConfig(config, "scaling_amplifier.looting"));
-        registerScaling("loyalty", Scaling.fromConfig(config, "scaling_amplifier.loyalty"));
-        registerScaling("luck_of_the_sea", Scaling.fromConfig(config, "scaling_amplifier.luck"));
-        registerScaling("lure", Scaling.fromConfig(config, "scaling_amplifier.lure"));
-        registerScaling("respiration", Scaling.fromConfig(config, "scaling_amplifier.respiration"));
-        registerScaling("piercing", Scaling.fromConfig(config, "scaling_amplifier.piercing"));
-        registerScaling("protection", Scaling.fromConfig(config, "scaling_amplifier.protection"));
-        registerScaling("projectile_protection", Scaling.fromConfig(config, "scaling_amplifier.projectile_protection"));
-        registerScaling("blast_protection", Scaling.fromConfig(config, "scaling_amplifier.blast_protection"));
-        registerScaling("fire_protection", Scaling.fromConfig(config, "scaling_amplifier.fire_protection"));
-        registerScaling("feather_falling", Scaling.fromConfig(config, "scaling_amplifier.feather_falling"));
-        registerScaling("quick_charge", Scaling.fromConfig(config, "scaling_amplifier.quick_charge"));
-        registerScaling("riptide", Scaling.fromConfig(config, "scaling_amplifier.riptide"));
-        registerScaling("soul_speed", Scaling.fromConfig(config, "scaling_amplifier.soul_speed"));
-        registerScaling("sweeping_edge", Scaling.fromConfig(config, "scaling_amplifier.sweeping_edge"));
-        registerScaling("thorns", Scaling.fromConfig(config, "scaling_amplifier.thorns"));
-        registerScaling("swift_sneak", Scaling.fromConfig(config, "scaling_amplifier.swift_sneak"));
+        registerScaling("power", Scaling.fromConfig(config, " scalings.power"));
+        registerScaling("punch", Scaling.fromConfig(config, " scalings.punch"));
+        registerScaling("sharpness", Scaling.fromConfig(config, " scalings.sharpness"));
+        registerScaling("bane_of_arthropods", Scaling.fromConfig(config, " scalings.bane_of_arthropods"));
+        registerScaling("smite", Scaling.fromConfig(config, " scalings.smite"));
+        registerScaling("depth_strider", Scaling.fromConfig(config, " scalings.depth_strider"));
+        registerScaling("efficiency", Scaling.fromConfig(config, " scalings.efficiency"));
+        registerScaling("unbreaking", Scaling.fromConfig(config, " scalings.unbreaking"));
+        registerScaling("fire_aspect", Scaling.fromConfig(config, " scalings.fire_aspect"));
+        registerScaling("frost_walker", Scaling.fromConfig(config, " scalings.frost_walker"));
+        registerScaling("impaling", Scaling.fromConfig(config, " scalings.impaling"));
+        registerScaling("knockback", Scaling.fromConfig(config, " scalings.knockback"));
+        registerScaling("fortune", Scaling.fromConfig(config, " scalings.fortune"));
+        registerScaling("looting", Scaling.fromConfig(config, " scalings.looting"));
+        registerScaling("loyalty", Scaling.fromConfig(config, " scalings.loyalty"));
+        registerScaling("luck_of_the_sea", Scaling.fromConfig(config, " scalings.luck"));
+        registerScaling("lure", Scaling.fromConfig(config, " scalings.lure"));
+        registerScaling("respiration", Scaling.fromConfig(config, " scalings.respiration"));
+        registerScaling("piercing", Scaling.fromConfig(config, " scalings.piercing"));
+        registerScaling("protection", Scaling.fromConfig(config, " scalings.protection"));
+        registerScaling("projectile_protection", Scaling.fromConfig(config, " scalings.projectile_protection"));
+        registerScaling("blast_protection", Scaling.fromConfig(config, " scalings.blast_protection"));
+        registerScaling("fire_protection", Scaling.fromConfig(config, " scalings.fire_protection"));
+        registerScaling("feather_falling", Scaling.fromConfig(config, " scalings.feather_falling"));
+        registerScaling("quick_charge", Scaling.fromConfig(config, " scalings.quick_charge"));
+        registerScaling("riptide", Scaling.fromConfig(config, " scalings.riptide"));
+        registerScaling("soul_speed", Scaling.fromConfig(config, " scalings.soul_speed"));
+        registerScaling("sweeping_edge", Scaling.fromConfig(config, " scalings.sweeping_edge"));
+        registerScaling("thorns", Scaling.fromConfig(config, " scalings.thorns"));
+        registerScaling("swift_sneak", Scaling.fromConfig(config, " scalings.swift_sneak"));
     }
 
     /**

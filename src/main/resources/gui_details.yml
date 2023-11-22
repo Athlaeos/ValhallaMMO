@@ -16,6 +16,10 @@ recipeselection_immersive_favourites: NETHER_STAR:1829130
 recipeselection_immersive_tinkeronly: ANVIL:-1
 recipeselection_immersive_craftonly: CRAFTING_TABLE:-1
 
+lootselection_unpicked: RED_DYE:1829131
+lootselection_picked: LIME_DYE:1829131
+lootselection_confirm: STRUCTURE_VOID:1829131
+
 editor_recipe_grid_valhallatoolrequirement: DIAMOND_PICKAXE:1829130
 editor_recipe_grid_toggletinker: ANVIL:1829130
 editor_recipe_grid_selecttinkeritem: ANVIL:1829131
@@ -28,6 +32,7 @@ editor_recipe_grid_unlockedforeveryone: PAPER:1829130
 editor_recipe_grid_settoolrequirement: PAPER:1829131
 editor_recipe_grid_setdisplayname: NAME_TAG:-1
 editor_recipe_grid_setdescription: WRITABLE_BOOK:-1
+editor_recipe_grid_togglehidden: REDSTONE_LAMP:-1
 
 editor_recipe_cooking_valhallatoolrequirement: DIAMOND_PICKAXE:1829130
 editor_recipe_cooking_toggletinker: ANVIL:1829130
@@ -39,6 +44,7 @@ editor_recipe_cooking_recipeoptions: WRITABLE_BOOK:1829131
 editor_recipe_cooking_unlockedforeveryone: PAPER:1829130
 editor_recipe_cooking_setdisplayname: NAME_TAG:-1
 editor_recipe_cooking_setdescription: WRITABLE_BOOK:-1
+editor_recipe_cooking_togglehidden: REDSTONE_LAMP:-1
 
 editor_recipe_smithing_valhallatoolrequirement: DIAMOND_PICKAXE:1829130
 editor_recipe_smithing_toggletinker: ANVIL:1829130
@@ -96,7 +102,7 @@ editor_ingredient_selection_return: BOOK:1829130
 editor_validation_selection_save: STRUCTURE_VOID:1829130
 editor_validation_selection_return: BOOK:1829130
 
-editor_newrecipe: LIME_STAINED_GLASS_PANE:1829130
+editor_newrecipe: LIME_DYE:1829130
 editor_nextpage: ARROW:1829130
 editor_prevpage: ARROW:1829131
 editor_backtomenu: BOOK:1829130
@@ -104,9 +110,17 @@ editor_save: STRUCTURE_VOID:1829130
 editor_delete: BARRIER:1829131
 editor_deleteconfirm: BARRIER:1829132
 
+editor_loottable_edit: WRITABLE_BOOK:-1
+
+editor_armorset_newentry: LIME_DYE:1829130
+editor_armorset_setname: NAME_TAG:-1
+editor_armorset_setstats: PAPER:-1
+editor_armorset_setlore: WRITABLE_BOOK:-1
+editor_armorset_setrequired: DIAMOND_CHESTPLATE:-1
+
 editor_loottable_preservationmode: COMPARATOR:-1
-editor_loottable_newpool: LIME_STAINED_GLASS_PANE:1829130
-editor_loottable_newentry: LIME_STAINED_GLASS_PANE:1829130
+editor_loottable_newpool: LIME_DYE:1829130
+editor_loottable_newentry: LIME_DYE:1829130
 editor_loottable_predicatemode: COMPARATOR:-1
 editor_loottable_toggleweighted: IRON_BLOCK:-1
 editor_loottable_weightedbaserolls: COMPASS:-1

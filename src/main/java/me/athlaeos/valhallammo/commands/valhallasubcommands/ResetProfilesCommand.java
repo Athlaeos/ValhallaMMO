@@ -53,14 +53,18 @@ public class ResetProfilesCommand implements Command {
 				}
 
 				if (!overwriteConfirmation && type != null) {
-					if (sender instanceof Player && type.shouldAskForConfirmation() && Timer.isCooldownPassed(((Player) sender).getUniqueId(), "reset_command_attempt")){
-						Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("warning_profile_reset")));
-						Timer.setCooldown(((Player) sender).getUniqueId(), 10000, "reset_command_attempt");
-						return true;
-					} else if (type.shouldAskForConfirmation() && timeConsoleAttemptedReset <= System.currentTimeMillis()){
-						Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("warning_profile_reset")));
-						timeConsoleAttemptedReset = System.currentTimeMillis() + 10000;
-						return true;
+					if (sender instanceof Player){
+						if (type.shouldAskForConfirmation() && Timer.isCooldownPassed(((Player) sender).getUniqueId(), "reset_command_attempt")){
+							Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("warning_profile_reset")));
+							Timer.setCooldown(((Player) sender).getUniqueId(), 10000, "reset_command_attempt");
+							return true;
+						}
+					} else {
+						if (type.shouldAskForConfirmation() && timeConsoleAttemptedReset <= System.currentTimeMillis()){
+							Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("warning_profile_reset")));
+							timeConsoleAttemptedReset = System.currentTimeMillis() + 10000;
+							return true;
+						}
 					}
 				}
 

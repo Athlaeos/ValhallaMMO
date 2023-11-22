@@ -54,7 +54,7 @@ public class LootTableEditor extends Menu {
             37, 38, 39, 40, 41, 42, 43
     };
 
-    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("").get();
+    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
 
     private final LootTable table;
 
@@ -106,7 +106,7 @@ public class LootTableEditor extends Menu {
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .stringTag(BUTTON_ACTION_KEY, "backToMenuButton")
             .name("&fBack to Menu").get();
-    private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_loottable_newpool", Material.LIME_STAINED_GLASS_PANE))
+    private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_loottable_newpool", Material.LIME_DYE))
             .name("&b&lNew Pool")
             .stringTag(BUTTON_ACTION_KEY, "createNewButton")
             .flag(ItemFlag.HIDE_ATTRIBUTES).get();
@@ -248,9 +248,9 @@ public class LootTableEditor extends Menu {
                     .name("&6" + p.getKey())
                     .stringTag(BUTTON_DATA, p.getKey());
             if (!p.getPredicates().isEmpty()) {
-                builder.appendLore("&6" + (p.getPredicateSelection() == LootTable.PredicateSelection.ANY ? "Any" : "All") + "&e of the following");
-                builder.appendLore("&econditions must pass:");
-                p.getPredicates().forEach(pr -> builder.appendLore("&f> " + StringUtils.separateStringIntoLines(pr.getActiveDescription(), 40)));
+                builder.appendLore("&6" + (p.getPredicateSelection() == LootTable.PredicateSelection.ANY ? "Any" : "All") + "&e of the following conditions");
+                builder.appendLore("&emust pass:");
+                p.getPredicates().forEach(pr -> builder.appendLore(StringUtils.separateStringIntoLines("&f> " + pr.getActiveDescription(), 40)));
             }
             if (p.getEntries().isEmpty()) builder.appendLore("&cPool has no drops");
             else if (p.isWeighted()) builder.appendLore(

@@ -38,6 +38,7 @@ public class ProfileCache {
         if (entry == null || entry.getCacheUntil() < System.currentTimeMillis()) {
             entry = new CacheEntry(ProfileRegistry.getMergedProfile(player, type), cacheDuration);
             profiles.put(type, entry);
+            entry.getCachedProfile().onCacheRefresh();
             cache.put(player.getUniqueId(), profiles);
         }
         return (T) entry.getCachedProfile();

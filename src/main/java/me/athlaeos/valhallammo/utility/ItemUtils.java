@@ -7,14 +7,11 @@ import me.athlaeos.valhallammo.item.CustomDurabilityManager;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.MaterialClass;
-import me.athlaeos.valhallammo.listeners.LootListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -34,7 +31,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.ByteArrayInputStream;
@@ -63,7 +59,7 @@ public class ItemUtils {
 
     // Contains some of the items that may be used in the off hand. If the main hand does not have such an item and the
     // off hand does, it can be assumed the off hand is used in combat or events or whatever
-    private static final Collection<Material> offhandUsableItems = new HashSet<>(getMaterialList("BOW",
+    private static final Collection<Material> offhandUsableItems = new HashSet<>(getMaterialSet("BOW",
             "CROSSBOW", "SNOWBALL", "EGG", "ENDER_PEARL", "ENDER_EYE", "EXPERIENCE_BOTTLE", "FISHING_ROD",
             "FLINT_AND_STEEL", "FIREWORK_ROCKET", "SPLASH_POTION", "LINGERING_POTION", "TRIDENT"));
 
@@ -213,7 +209,7 @@ public class ItemUtils {
         return similarItemsMap;
     }
 
-    public static Collection<Material> getMaterialList(Collection<String> materials){
+    public static Collection<Material> getMaterialSet(Collection<String> materials){
         Collection<Material> m = new HashSet<>();
         if (materials == null) return m;
         for (String s : materials){
@@ -236,8 +232,8 @@ public class ItemUtils {
         }
     }
 
-    public static Collection<Material> getMaterialList(String... materials){
-        return getMaterialList(Arrays.asList(materials));
+    public static Collection<Material> getMaterialSet(String... materials){
+        return getMaterialSet(Arrays.asList(materials));
     }
 
     public static Collection<Material> getSimilarMaterials(Material m){
@@ -365,6 +361,7 @@ public class ItemUtils {
      * @param meta the item meta to put on the item
      */
     public static void setItemMeta(ItemStack i, ItemMeta meta){
+        meta = meta.clone();
         meta.getPersistentDataContainer().remove(TYPE_KEY);
         i.setItemMeta(meta);
     }
@@ -404,12 +401,13 @@ public class ItemUtils {
         if (rawIcon instanceof ItemStack){
             return (ItemStack) rawIcon;
         } else {
+            String value = config.getString(path, "");
             try {
-                def.setType(Material.valueOf(config.getString(path, "")));
+                def.setType(Material.valueOf(value));
                 return def;
             } catch (IllegalArgumentException ignored){
                 ValhallaMMO.logWarning(
-                        "ItemStack in config " + file + ":" + path + " did not lead to an item stack or proper material type. Defaulted to " + getItemName(getItemMeta(def))
+                        "ItemStack/Material " + value + " in config " + file + ":" + path + " did not lead to an item stack or proper material type. Defaulted to " + getItemName(getItemMeta(def))
                 );
             }
         }
@@ -438,8 +436,8 @@ public class ItemUtils {
     public static boolean isSimilar(ItemStack i1, ItemStack i2){
         if (i1.isSimilar(i2)) return true; // skip all the other logic if minecraft already thinks these two items are similar
         // but should they not be similar, do the following to still check if they're similar
-        ItemMeta i1Meta = reSetItemText(i1.getItemMeta());
-        ItemMeta i2Meta = reSetItemText(i2.getItemMeta());
+        ItemMeta i1Meta = reSetItemText(getItemMeta(i1));
+        ItemMeta i2Meta = reSetItemText(getItemMeta(i2));
         if (i1Meta == null && i2Meta == null) return true;
         if (i1Meta == null || i2Meta == null) return false;
         ItemStack i1Clone = i1.clone();
@@ -473,28 +471,41 @@ public class ItemUtils {
         return lore;
     }
 
+    public static List<String> setListPlaceholder(List<String> original, String placeholder, String replaceWith){
+        List<String> lore = new ArrayList<>();
+        for (String s : original){
+            lore.add(s.replace(placeholder, replaceWith));
+        }
+        return lore;
+    }
+
     public static List<String> getLore(ItemStack i){
         ItemMeta meta = getItemMeta(i);
         if (meta != null && meta.hasLore() && meta.getLore() != null) return meta.getLore();
         return new ArrayList<>();
     }
 
+    public static List<String> getLore(ItemMeta meta){
+        if (meta != null && meta.hasLore() && meta.getLore() != null) return meta.getLore();
+        return new ArrayList<>();
+    }
+
     public static int getPDCInt(NamespacedKey key, ItemStack i, int def){
-        ItemMeta meta = i.getItemMeta();
+        ItemMeta meta = getItemMeta(i);
         if (isEmpty(i) || meta == null) return def;
         return meta.getPersistentDataContainer().getOrDefault(key, PersistentDataType.INTEGER, def);
     }
 
     public static String getPDCString(NamespacedKey key, ItemStack i, String def){
         if (isEmpty(i)) return def;
-        ItemMeta meta = i.getItemMeta();
+        ItemMeta meta = getItemMeta(i);
         if (meta == null) return def;
         String value = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING);
         return value == null ? def : value;
     }
 
     public static double getPDCDouble(NamespacedKey key, ItemStack i, double def){
-        ItemMeta meta = i.getItemMeta();
+        ItemMeta meta = getItemMeta(i);
         if (isEmpty(i) || meta == null) return def;
         return meta.getPersistentDataContainer().getOrDefault(key, PersistentDataType.DOUBLE, def);
     }
@@ -619,8 +630,8 @@ public class ItemUtils {
         items = items.stream().filter(i -> !isEmpty(i)).toList();
         if (items.size() <= 1) return true;
         BiPredicate<ItemStack, ItemStack> predicate = (itemStack, itemStack2) -> {
-            ItemMeta m1 = itemStack.getItemMeta();
-            ItemMeta m2 = itemStack2.getItemMeta();
+            ItemMeta m1 = getItemMeta(itemStack);
+            ItemMeta m2 = getItemMeta(itemStack2);
             if (m1 == null || m2 == null) return false;
             if (itemStack.getType() != itemStack2.getType()) return false;
             if (m1.hasCustomModelData() != m2.hasCustomModelData()) return false;
@@ -943,22 +954,15 @@ public class ItemUtils {
     }
 
     /**
-     * Multiplies the given item quantities by a multiplier. Unlike {@link ItemUtils#multiplyDrops(List, double, boolean, Predicate)} where
-     * the items themselves are changed as a result of this method call, this method returns a list of all the drops after multiplying without altering
-     * the given list of items.
+     * Multiplies the given item quantities by a multiplier.
      * @param items the items the block dropped, and multiplied
      * @param multiplier the multiplier for the item quantities, uses {@link Utils#randomAverage(double)} to calculate new amount
      * @param forgiving if true, the quantity can never go below 1.
      * @param filter if an item does not pass the predicate, it is ignored and added to the output list unaltered
-     * @return the list of items after multiplying
      */
-    public static List<ItemStack> multiplyItems(List<ItemStack> items, double multiplier, boolean forgiving, Predicate<ItemStack> filter){
-        List<ItemStack> newItems = new ArrayList<>();
-        for (ItemStack item : items) {
-            if (filter != null && !filter.test(item)) {
-                newItems.add(item);
-                continue;
-            }
+    public static void multiplyItems(List<ItemStack> items, double multiplier, boolean forgiving, Predicate<ItemStack> filter){
+        for (ItemStack item : new ArrayList<>(items)) {
+            if (filter != null && !filter.test(item)) continue;
             int newAmount = Math.max(forgiving ? 1 : 0, Utils.randomAverage(multiplier * item.getAmount()));
             if (newAmount <= 0) items.remove(item);
             else {
@@ -967,14 +971,12 @@ public class ItemUtils {
                         ItemStack newDrop = item.clone();
                         newDrop.setAmount(item.getMaxStackSize());
                         newAmount -= item.getMaxStackSize();
-                        newItems.add(newDrop);
+                        items.add(newDrop);
                     }
                 }
                 item.setAmount(newAmount);
-                newItems.add(item);
             }
         }
-        return newItems;
     }
 
     /**
@@ -983,5 +985,29 @@ public class ItemUtils {
      */
     public static Map<UUID, ItemBuilder> getStoredProjectileCache() {
         return storedProjectileCache;
+    }
+
+    private static final Collection<Material> instantlyBreakingItems = getMaterialSet(
+            "AIR", "GRASS", "TALL_GRASS", "END_ROD", "BARRIER", "BRAIN_CORAL",
+            "BRAIN_CORAL_FAN", "BUBBLE_CORAL", "BUBBLE_CORAL_FAN", "FIRE_CORAL", "FIRE_CORAL_FAN", "HORN_CORAL",
+            "HORN_CORAL_FAN", "TUBE_CORAL", "TUBE_CORAL_FAN", "DEAD_BRAIN_CORAL", "DEAD_BRAIN_CORAL_FAN",
+            "DEAD_BUBBLE_CORAL", "DEAD_BUBBLE_CORAL_FAN", "DEAD_FIRE_CORAL", "DEAD_FIRE_CORAL_FAN", "DEAD_HORN_CORAL",
+            "DEAD_HORN_CORAL_FAN", "DEAD_TUBE_CORAL", "DEAD_TUBE_CORAL_FAN", "TORCH", "REDSTONE_TORCH",
+            "WALL_TORCH", "REDSTONE_WALL_TORCH", "FERN", "LARGE_FERN", "BEETROOTS", "WHEAT", "POTATOES",
+            "CARROTS", "OAK_SAPLING", "DARK_OAK_SAPLING", "SPRUCE_SAPLING", "ACACIA_SAPLING", "BIRCH_SAPLING",
+            "JUNGLE_SAPLING", "FLOWER_POT", "POPPY", "DANDELION", "ALLIUM", "BLUE_ORCHID", "AZURE_BLUET",
+            "RED_TULIP", "ORANGE_TULIP", "WHITE_TULIP", "PINK_TULIP", "OXEYE_DAISY", "CORNFLOWER",
+            "LILY_OF_THE_VALLEY", "WITHER_ROSE", "SUNFLOWER", "LILAC", "ROSE_BUSH", "PEONY", "LILY_PAD",
+            "FIRE", "DEAD_BUSH", "MELON_STEM", "PUMPKIN_STEM", "BROWN_MUSHROOM", "RED_MUSHROOM",
+            "NETHER_WART", "REDSTONE_WIRE", "COMPARATOR", "REPEATER", "SLIME_BLOCK", "STRUCTURE_VOID",
+            "SUGAR_CANE", "TNT", "TRIPWIRE", "TRIPWIRE_HOOK", "WARPED_FUNGUS", "CRIMSON_FUNGUS",
+            "HONEY_BLOCK", "NETHER_SPROUTS", "CRIMSON_ROOTS", "WARPED_ROOTS", "TWISTING_VINES_PLANT",
+            "WEEPING_VINES_PLANT", "SMALL_DRIPLEAF", "CAVE_VINES_PLANT", "CAVE_VINES", "SPORE_BLOSSOM",
+            "AZALEA", "FLOWERING_AZALEA", "DECORATED_POT", "FROGSPAWN", "PINK_PETALS", "PITCHER_CROP",
+            "PITCHER_PLANT", "TORCHFLOWER", "TORCHFLOWER_CROP"
+    );
+
+    public static boolean breaksInstantly(Material m){
+        return instantlyBreakingItems.contains(m);
     }
 }

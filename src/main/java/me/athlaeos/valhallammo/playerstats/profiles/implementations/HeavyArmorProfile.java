@@ -174,7 +174,7 @@ public class HeavyArmorProfile extends Profile {
     }
 
     @Override
-    protected String getTableName() {
+    public String getTableName() {
         return "profiles_heavy_armor";
     }
 

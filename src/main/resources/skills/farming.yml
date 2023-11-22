@@ -1,0 +1,16 @@
+display_name: '<lang.skill-farming-displayname>'
+icon: IRON_HOE
+icon_data: 3510001
+description: '<lang.skill-farming-description>'
+
+levelbar_title: '<lang.skill-farming-level-bar>'
+levelbar_color: GREEN # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
+levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID
+
+field_harvest_instant: false # If true, field harvesting breaks blocks instantly (as opposed to few blocks at a time)
+field_harvest_limit: 256 # Maximum amount of blocks the Field Harvesting special ability is allowed to break
+
+forgiving_multipliers: true # drop multipliers below 0 will, if false, sometimes cause blocks mined to not drop anything.
+# if true, the drop amount can not go below 1 so only blocks that drop multiple items (such as redstone ore, lapis lazuli ore,
+# gold/iron ore with fortune) will be affected, but everything else will drop at least 1.
+# This may be set to false if you desire a more grindy experience for your players, though it might be frustrating for them

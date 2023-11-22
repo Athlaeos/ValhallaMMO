@@ -45,8 +45,11 @@ public class HeavyArmorSkill extends Skill implements Listener {
 
     public HeavyArmorSkill(String type) {
         super(type);
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/heavy_armor.yml").get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/heavy_armor_progression.yml").get();
+        ValhallaMMO.getInstance().save("skills/heavy_armor_progression.yml");
+        ValhallaMMO.getInstance().save("skills/heavy_armor.yml");
+
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/heavy_armor.yml").reload().get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/heavy_armor_progression.yml").reload().get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -153,7 +156,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
 
     @Override
     public int getSkillTreeMenuOrderPriority() {
-        return 55;
+        return 65;
     }
 
     @Override

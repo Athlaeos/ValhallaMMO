@@ -1,0 +1,17 @@
+display_name: '<lang.skill-fishing-displayname>'
+icon: FISHING_ROD
+icon_data: 3510001
+description: '<lang.skill-fishing-description>'
+
+levelbar_title: '<lang.skill-fishing-level-bar>'
+levelbar_color: GREEN # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
+levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID
+
+forgiving_multipliers: true # Drop multipliers below 0 will, if false, sometimes cause fishing catches to not have anything.
+# if true, the drop amount can not go below 1.
+# This may be set to false if you desire a more grindy experience for your players, though it might be frustrating for them
+
+# To avoid having to scan the player's entire inventory for items with specific properties, I'm gonna have you tell the plugin
+# which items it should scan instead. It's recommended to have this be a not very common item, but that doesn't matter a terrible lot
+fishing_bait_materials:
+  - FIREWORK_STAR

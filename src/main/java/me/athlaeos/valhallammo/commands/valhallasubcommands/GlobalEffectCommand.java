@@ -142,7 +142,7 @@ public class GlobalEffectCommand implements Command {
 		} else if (args.length == 8){
 			return Arrays.stream(BarStyle.values()).map(Objects::toString).collect(Collectors.toList());
 		} else if (args.length == 9){
-			return Collections.singletonList("<bar_title>");
+			return List.of("<bar_title>", "placeholders:", "%time1%", "%time2%");
 		}
 		return null;
 	}

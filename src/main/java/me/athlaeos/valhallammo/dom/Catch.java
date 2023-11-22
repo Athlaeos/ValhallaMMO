@@ -15,4 +15,15 @@ public class Catch {
             return r;
         }
     }
+    public static <T> void catchOrLog(Fetcher<T> c){
+        catchOrElse(c, null);
+    }
+
+    public static <T> void catchOrLog(Fetcher<T> c, String log){
+        try {
+            c.get();
+        } catch (Exception e){
+            if (log != null) ValhallaMMO.logWarning(log);
+        }
+    }
 }

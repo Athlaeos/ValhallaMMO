@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -19,6 +20,8 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -44,6 +47,20 @@ public class EntityUtils {
         }
         levelExperienceCache.put(level, xp);
         return xp;
+    }
+
+    /**
+     * Suboptimal solution, but it'll be like this until I figure out a better more reliable method of checking if a player is on the ground
+     */
+    public static boolean isOnGround(Entity e){
+        if (e instanceof Player p) return p.isOnGround();
+        return e.isOnGround();
+    }
+
+    private static boolean downwardsRaytraceBlockSegment(Location l, Vector direction, double length){
+        if (l.getWorld() == null) return false;
+        RayTraceResult result = l.getWorld().rayTraceBlocks(l, direction, length, FluidCollisionMode.NEVER, true);
+        return result != null && result.getHitBlock() != null && !result.getHitBlock().getType().isAir();
     }
 
     public static void setTotalExperience(Player player, int amount) {

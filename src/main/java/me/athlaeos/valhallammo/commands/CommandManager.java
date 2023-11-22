@@ -32,14 +32,15 @@ public class CommandManager implements TabExecutor {
 		commands.put("test", new TestCommand());
 		commands.put("loot", new ManageLootTablesCommand());
 		commands.put("tool", new SpecializedToolCommand());
-//		commands.put("globalbuff", new GlobalEffectCommand());
+		commands.put("armorsets", new ArmorSetManagerCommand());
+		commands.put("items", new CustomItemManagerCommand());
+		commands.put("give", new CustomItemGiveCommand());
+		commands.put("globalbuff", new GlobalEffectCommand());
+		commands.put("resourcepack", new ResourcePackCommand());
 //		commands.put("reload", new ReloadCommand());
 //		commands.put("import", new ImportCommand());
-//		commands.put("itemindex", new ItemDictionaryCommand());
-//		commands.put("resourcepack", new SetupResourcePackCommand());
 //		commands.put("toggleexp", new HideBossBarsCommand());
 //		commands.put("revealrecipekeys", new RecipeRevealToggleCommand());
-//		commands.put("viewrecipes", new TemporaryRecipesViewCommand());
 	}
 
 	public static Map<String, Command> getCommands() {

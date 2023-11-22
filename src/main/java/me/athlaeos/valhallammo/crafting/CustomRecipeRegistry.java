@@ -39,10 +39,6 @@ public class CustomRecipeRegistry {
             .enableComplexMapKeySerialization()
             .create();
 
-    public static Gson getGson() {
-        return gson;
-    }
-
     private static final Collection<NamespacedKey> disabledRecipes = new HashSet<>();
     private static final Map<String, DynamicBrewingRecipe> brewingRecipes = new HashMap<>();
     private static final Map<String, DynamicCauldronRecipe> cauldronRecipes = new HashMap<>();
@@ -254,7 +250,7 @@ public class CustomRecipeRegistry {
             if (f.exists()){
                 try (BufferedReader recipesReader = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
                     T[] collectedRecipes = gson.fromJson(recipesReader, clazz);
-                    for (T recipe : collectedRecipes) recipes.put(recipe.getName(), recipe);
+                    for (T recipe : collectedRecipes) if (recipe != null) recipes.put(recipe.getName(), recipe);
                 } catch (IOException | JsonSyntaxException exception){
                     ValhallaMMO.logSevere("Could not load recipes file " + fileName+ ", " + exception.getMessage());
                 } catch (NoClassDefFoundError ignored){}

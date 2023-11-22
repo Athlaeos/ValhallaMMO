@@ -1,9 +1,9 @@
 package me.athlaeos.valhallammo.item.item_attributes;
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.attributes.DefaultAttributeAdd;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.attributes.DefaultAttributeRemove;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.attributes.DefaultAttributeScale;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeRemove;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import org.bukkit.Material;
@@ -40,17 +40,27 @@ public abstract class AttributeWrapper {
         this.isVanilla = isVanilla;
     }
 
+    private Material icon = null;
+    private double smallIncrement = 0.01;
+    private double bigIncrement = 0.1;
     /**
      * Registers the modifiers for addition, removal, and scaling to {@link ModifierRegistry}
      * @param icon the icon the modifier should have
      * @return this, for ease of registration
      */
     public AttributeWrapper addModifier(Material icon, double smallIncrement, double bigIncrement){
+        this.icon = icon;
+        this.smallIncrement = smallIncrement;
+        this.bigIncrement = bigIncrement;
         ModifierRegistry.register(new DefaultAttributeAdd("attribute_add_" + attribute.toLowerCase(), attribute, smallIncrement, bigIncrement, icon));
         ModifierRegistry.register(new DefaultAttributeRemove("attribute_remove_" + attribute.toLowerCase(), attribute, icon));
         ModifierRegistry.register(new DefaultAttributeScale("attribute_scale_" + attribute.toLowerCase(), attribute, icon));
         return this;
     }
+
+    public Material getIcon() { return icon; }
+    public double getSmallIncrement() { return smallIncrement; }
+    public double getBigIncrement() { return bigIncrement; }
 
     /**
      * Registers the modifiers for addition, removal, and scaling to {@link ModifierRegistry} with the predefined values
@@ -90,11 +100,17 @@ public abstract class AttributeWrapper {
     public Attribute getVanillaAttribute() { return vanillaAttribute; }
     public StatFormat getFormat() { return format; }
     public String getAttributeName(){
-        return TranslationManager.getTranslation("attribute_" + attribute.toLowerCase());
+        return TranslationManager.getRawTranslation("attribute_" + attribute.toLowerCase());
     }
 
     public AttributeWrapper setValue(double value) { this.value = value; return this; }
     public AttributeWrapper setOperation(AttributeModifier.Operation operation) { this.operation = operation; return this; }
+
+
+
+    public String getLoreDisplay(){
+        return null;
+    }
 
     public String getAttributeIcon(){
         return TranslationManager.getTranslation("stat_icon_" + attribute.toLowerCase());

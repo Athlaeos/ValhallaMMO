@@ -263,9 +263,9 @@ public abstract class Skill {
                 List<String> commands = progressionConfig.getStringList("perks." + perkName + ".commands");
                 List<String> undoCommands = progressionConfig.getStringList("perks." + perkName + ".undo_commands");
 
-                int customModelDataUnlockable = baseSkillConfig.getInt("perks." + perkName + ".custom_model_data_unlockable", -1);
-                int customModelDataUnlocked = baseSkillConfig.getInt("perks." + perkName + ".custom_model_data_unlocked", -1);
-                int customModelDataVisible = baseSkillConfig.getInt("perks." + perkName + ".custom_model_data_visible", -1);
+                int customModelDataUnlockable = progressionConfig.getInt("perks." + perkName + ".custom_model_data_unlockable", -1);
+                int customModelDataUnlocked = progressionConfig.getInt("perks." + perkName + ".custom_model_data_unlocked", -1);
+                int customModelDataVisible = progressionConfig.getInt("perks." + perkName + ".custom_model_data_visible", -1);
 
                 Perk newPerk = new Perk(perkName, displayName, description, icon,
                         this, perkX, perkY, hidden, expenses, conditions, required_level, requiredPermission, perkRewards,
@@ -294,13 +294,13 @@ public abstract class Skill {
                         String[] lockedParts = progressionConfig.getString("perks." + perkName + ".connection_line." + i + ".locked", "").split(":");
                         Material lockedMaterial = Material.valueOf(lockedParts[0]);
                         int lockedData = lockedParts.length > 1 ? Integer.parseInt(lockedParts[1]) : -1;
-                        String[] unlockedParts = progressionConfig.getString("perks." + perkName + ".connection_line." + i + ".locked", "").split(":");
+                        String[] unlockedParts = progressionConfig.getString("perks." + perkName + ".connection_line." + i + ".unlocked", "").split(":");
                         Material unlockedMaterial = Material.valueOf(unlockedParts[0]);
                         int unlockedData = unlockedParts.length > 1 ? Integer.parseInt(unlockedParts[1]) : -1;
-                        String[] unlockableParts = progressionConfig.getString("perks." + perkName + ".connection_line." + i + ".locked", "").split(":");
+                        String[] unlockableParts = progressionConfig.getString("perks." + perkName + ".connection_line." + i + ".unlockable", "").split(":");
                         Material unlockableMaterial = Material.valueOf(unlockableParts[0]);
                         int unlockableData = unlockableParts.length > 1 ? Integer.parseInt(unlockableParts[1]) : -1;
-                        connectionLine.add(new PerkConnectionIcon(this, newPerk, lockedMaterial, unlockableMaterial, unlockedMaterial, lockedData, unlockableData, unlockedData));
+                        connectionLine.add(new PerkConnectionIcon(this, newPerk, position[0], position[1], lockedMaterial, unlockableMaterial, unlockedMaterial, lockedData, unlockableData, unlockedData));
                     }
                     newPerk.setConnectionLine(connectionLine);
                 }

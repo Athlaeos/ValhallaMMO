@@ -39,7 +39,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
     private static final NamespacedKey BUTTON_ACTION_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_action");
     private static final List<Integer> gridIndexes = Arrays.asList(11, 12, 13, 20, 21, 22, 29, 30, 31);
     private static final int resultIndex = 23;
-    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("").get();
+    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
 
     private final DynamicGridRecipe recipe;
 
@@ -52,6 +52,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
     private int tinkerGridIndex;
     private int toolIndex;
     private boolean shapeless;
+    private boolean hidden;
     private List<DynamicItemModifier> modifiers;
     private boolean unlockedForEveryone;
     private final ToolRequirement toolRequirement;
@@ -77,6 +78,13 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
                     "&7in the \"tinker this item\" option)",
                     "&7Otherwise, it will simply produce the",
                     "&7item specified as the result.",
+                    "&eClick to toggle on/off")
+            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+    private static final ItemStack toggleHiddenButton = new ItemBuilder(getButtonData("editor_recipe_grid_togglehidden", Material.ANVIL))
+            .name("&eHidden from Recipe Book")
+            .stringTag(BUTTON_ACTION_KEY, "toggleHiddenButton")
+            .lore("&7If enabled, the recipe will",
+                    "&7not be visible in the recipe book.",
                     "&eClick to toggle on/off")
             .flag(ItemFlag.HIDE_ATTRIBUTES).get();
     private static final ItemStack selectTinkerItemButton = new ItemBuilder(getButtonData("editor_recipe_grid_selecttinkeritem", Material.ANVIL))
@@ -226,6 +234,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
         this.validations = recipe.getValidations();
         this.displayName = recipe.getDisplayName();
         this.description = recipe.getDescription();
+        this.hidden = recipe.isHiddenFromBook();
     }
 
     public GridRecipeEditor(PlayerMenuUtility playerMenuUtility, DynamicGridRecipe recipe, String newName) {
@@ -245,6 +254,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
         this.validations = recipe.getValidations();
         this.displayName = recipe.getDisplayName();
         this.description = recipe.getDescription();
+        this.hidden = recipe.isHiddenFromBook();
     }
 
     @Override
@@ -369,6 +379,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
                     recipe.setValidations(validations);
                     recipe.setDescription(description);
                     recipe.setDisplayName(displayName);
+                    recipe.setHiddenFromBook(hidden);
 
                     CustomRecipeRegistry.register(recipe, true);
                     CustomRecipeRegistry.setChangesMade();
@@ -398,6 +409,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
                     }
                 }
                 case "toggleValhallaToolRequirementButton" -> requireValhallaTools = !requireValhallaTools;
+                case "toggleHiddenButton" -> hidden = !hidden;
                 case "toggleTinkerButton" -> tinker = !tinker;
                 case "toggleShapelessButton" -> shapeless = !shapeless;
                 case "toggleUnlockedForEveryoneButton" -> unlockedForEveryone = !unlockedForEveryone;
@@ -575,6 +587,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
         inventory.setItem(1, new ItemBuilder(setDescriptionButton).lore(ItemUtils.setListPlaceholder(ItemUtils.getLore(setDescriptionButton), "%description%", description)).get());
         inventory.setItem(3, new ItemBuilder(selectValidationButton).lore(ItemUtils.setListPlaceholder(ItemUtils.getLore(selectValidationButton), "%description%", validationLore)).get());
         inventory.setItem(5, new ItemBuilder(toggleUnlockedForEveryoneButton).name("&eUnlocked for Everyone " + (unlockedForEveryone ? "&aYes" : "&fNo")).get());
+        inventory.setItem(8, new ItemBuilder(toggleHiddenButton).name("&eHidden from Recipe Book: " + (hidden ? "&aYes" : "&fNo")).get());
         inventory.setItem(9, selectTinkerItemButton);
         inventory.setItem(17, new ItemBuilder(toggleValhallaToolRequirementButton).name("&eValhalla Tools: " + (requireValhallaTools ? "&aYes" : "&fNo")).get());
         inventory.setItem(19, recipeOptionsButton);

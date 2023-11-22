@@ -43,7 +43,7 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
             37, 38, 39, 40, 41, 42, 43
     };
 
-    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("").get();
+    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
 
     private final LootTable table;
     private final LootPool pool;
@@ -116,7 +116,7 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .stringTag(BUTTON_ACTION_KEY, "backToMenuButton")
             .name("&fBack to Menu").get();
-    private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_loottable_newentry", Material.LIME_STAINED_GLASS_PANE))
+    private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_loottable_newentry", Material.LIME_DYE))
             .name("&b&lNew Entry")
             .stringTag(BUTTON_ACTION_KEY, "createNewButton")
             .flag(ItemFlag.HIDE_ATTRIBUTES).get();
@@ -241,9 +241,9 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
                             String.format("(+%.1f/fortune", p.getQuantityMinFortuneBase())) : "")
             ));
             if (!p.getPredicates().isEmpty()) {
-                builder.appendLore("&6" + (p.getPredicateSelection() == LootTable.PredicateSelection.ANY ? "Any" : "All") + "&e of the following");
-                builder.appendLore("&econditions must pass:");
-                p.getPredicates().forEach(pr -> builder.appendLore("&f> " + StringUtils.separateStringIntoLines(pr.getActiveDescription(), 40)));
+                builder.appendLore("&6" + (p.getPredicateSelection() == LootTable.PredicateSelection.ANY ? "Any" : "All") + "&e of the following conditions");
+                builder.appendLore("&emust pass:");
+                p.getPredicates().forEach(pr -> builder.appendLore(StringUtils.separateStringIntoLines("&f> " + pr.getActiveDescription(), 40)));
             }
             if (p.isGuaranteedPresent()){
                 builder.appendLore("&aEntry is always present once if", "&aconditions succeed");
@@ -298,8 +298,7 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
 
     @Override
     public void setPredicates(Collection<LootPredicate> predicates) {
-        pool.getPredicates().clear();
-        pool.getPredicates().addAll(predicates);
+
     }
 
     @Override

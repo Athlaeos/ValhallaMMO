@@ -42,7 +42,7 @@ public class PotionEffectRegistry {
         if (!getActiveEffects(p).isEmpty()) entitiesWithEffects.add(p.getUniqueId());
     }
 
-    public static void loadDefaults() {
+    public static void registerEffects() {
         registerNewEffect(new GenericWrapper("SPEED", (i) -> true, "\uED00", StatFormat.ROMAN).addModifier(Material.SUGAR, 1, 5));
         registerNewEffect(new GenericWrapper("SLOW", (i) -> false, "\uED01", StatFormat.ROMAN).addModifier(Material.ICE, 1, 5));
         registerNewEffect(new GenericWrapper("FAST_DIGGING", (i) -> true, "\uED02", StatFormat.ROMAN).addModifier(Material.GOLDEN_PICKAXE, 1, 5));
@@ -237,7 +237,7 @@ public class PotionEffectRegistry {
 
     public static void reload(){
         registeredEffects.clear();
-        loadDefaults();
+        registerEffects();
     }
 
     public static void setDefaultStoredEffects(ItemMeta meta, Map<String, PotionEffectWrapper> effects){

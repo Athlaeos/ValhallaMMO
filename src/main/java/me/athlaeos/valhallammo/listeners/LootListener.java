@@ -5,26 +5,36 @@ import me.athlaeos.valhallammo.block.BlockDestructionInfo;
 import me.athlaeos.valhallammo.block.BlockExplodeBlockDestructionInfo;
 import me.athlaeos.valhallammo.block.EntityExplodeBlockDestructionInfo;
 import me.athlaeos.valhallammo.block.GenericBlockDestructionInfo;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.dom.Fetcher;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
+import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.event.BlockDestructionEvent;
 import me.athlaeos.valhallammo.event.ValhallaLootPopulateEvent;
+import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
+import me.athlaeos.valhallammo.gui.implementations.LootFreeSelectionMenu;
+import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.loot.LootEntry;
 import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
-import me.athlaeos.valhallammo.utility.BlockStore;
+import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ArchaeologyListener;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,6 +42,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerHarvestBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -40,111 +51,208 @@ import org.bukkit.loot.LootTables;
 import org.bukkit.loot.Lootable;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
 public class LootListener implements Listener {
 
     private static final Map<Block, List<ItemStack>> preparedBlockDrops = new HashMap<>();
+    private static final Map<Block, Double> preparedLuckBuffs = new HashMap<>();
     private static final Map<Block, UUID> transferToInventory = new HashMap<>();
+    private static final Map<UUID, Double> preparedFishingLuckBuffs = new HashMap<>();
+    private static final Map<Block, UUID> blockBreakerMap = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    public LootListener(){
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20)) ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new ArchaeologyListener(), ValhallaMMO.getInstance());
+    }
+
+    public static void setResponsibleBreaker(Block block, Player breaker){
+        blockBreakerMap.put(block, breaker.getUniqueId());
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockPlayerBreak(BlockBreakEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
 
-        AttributeInstance luckInstance = e.getPlayer().getAttribute(Attribute.GENERIC_LUCK);
-        double luck = luckInstance == null ? 0 : luckInstance.getValue();
-        luck += AccumulativeStatManager.getCachedStats("MINING_LUCK", e.getPlayer(), 10000, true);
-        int fortune = 0;
-        ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
-        if (!ItemUtils.isEmpty(hand)){
-            if (hand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) fortune = hand.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
-            else if (hand.containsEnchantment(Enchantment.SILK_TOUCH)) fortune = -1;
-        }
+        Player p = e.getPlayer();
+        Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
+        int fortune = details.getTwo();
+        double luck = details.getOne();
 
         if (onBlockDestruction(e.getBlock(),
-                new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(e.getPlayer()).killer(null).lootingModifier(fortune).luck((float) luck).build(),
+                new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
                 new GenericBlockDestructionInfo(e.getBlock(), e),
-                BlockDestructionEvent.BlockDestructionReason.PLAYER
-        )){
-            e.setDropItems(false);
-        } else {
-            for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
-                if (transferToInventory.containsKey(e.getBlock()) && transferToInventory.get(e.getBlock()).equals(e.getPlayer().getUniqueId())) ItemUtils.addItem(e.getPlayer(), i, false);
-                else e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
-            }
-        }
+                BlockDestructionEvent.BlockDestructionReason.PLAYER_BREAK
+        )) e.setDropItems(false);
+
         clear(e.getBlock());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onBlockHarvest(PlayerHarvestBlockEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getHarvestedBlock().getWorld().getName()) || e.isCancelled()) return;
+
+        Player p = e.getPlayer();
+        Pair<Double, Integer> details = getFortuneAndLuck(p, e.getHarvestedBlock());
+        int fortune = details.getTwo();
+        double luck = details.getOne();
+
+        if (onBlockDestruction(e.getHarvestedBlock(),
+                new LootContext.Builder(e.getHarvestedBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
+                new GenericBlockDestructionInfo(e.getHarvestedBlock(), e),
+                BlockDestructionEvent.BlockDestructionReason.PLAYER_HARVEST
+        )) e.getItemsHarvested().clear();
+
+        clear(e.getHarvestedBlock());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockPlayerBreakFinal(BlockBreakEvent e){
+        if (e.isCancelled()) return;
+        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
+            if (transferToInventory.containsKey(e.getBlock()) && transferToInventory.get(e.getBlock()).equals(e.getPlayer().getUniqueId())) ItemUtils.addItem(e.getPlayer(), i, false);
+            else e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
+        }
+        preparedBlockDrops.remove(e.getBlock());
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBurnBreak(BlockBurnEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
+
+        UUID uuid = blockBreakerMap.get(e.getBlock());
+        blockBreakerMap.remove(e.getBlock());
+        Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+        Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
+        int fortune = details.getTwo();
+        double luck = details.getOne();
+
         if (onBlockDestruction(e.getBlock(),
-                new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(null).killer(null).lootingModifier(0).luck(0).build(),
+                new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
                 new GenericBlockDestructionInfo(e.getBlock(), e),
                 BlockDestructionEvent.BlockDestructionReason.BURN
         )){
             e.getBlock().setType(Material.AIR);
             // block burn events aren't gonna be dropping any items, so the event doesn't need to be cancelled and manually executed
-        } else {
-            for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
-                e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
-            }
         }
         clear(e.getBlock());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockBurnBreakFinal(BlockBurnEvent e){
+        if (e.isCancelled()) return;
+        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
+            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
+        }
+        preparedBlockDrops.remove(e.getBlock());
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockFadeBreak(BlockFadeEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
+
+        UUID uuid = blockBreakerMap.get(e.getBlock());
+        blockBreakerMap.remove(e.getBlock());
+        Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+        Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
+        int fortune = details.getTwo();
+        double luck = details.getOne();
+
         if (onBlockDestruction(e.getBlock(),
-                new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(null).killer(null).lootingModifier(0).luck(0).build(),
+                new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
                 new GenericBlockDestructionInfo(e.getBlock(), e),
                 BlockDestructionEvent.BlockDestructionReason.FADE
         )){
             e.setCancelled(true);
             e.getBlock().setType(e.getNewState().getType());
-        } else {
-            for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
-                e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
-            }
         }
         clear(e.getBlock());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockFadeBreakFinal(BlockFadeEvent e){
+        if (e.isCancelled()) return;
+        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
+            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
+        }
+        preparedBlockDrops.remove(e.getBlock());
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockDecay(LeavesDecayEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
+
+        UUID uuid = blockBreakerMap.get(e.getBlock());
+        blockBreakerMap.remove(e.getBlock());
+        Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+        Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
+        int fortune = details.getTwo();
+        double luck = details.getOne();
+
         if (onBlockDestruction(e.getBlock(),
-                new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(null).killer(null).lootingModifier(0).luck(0).build(),
+                new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
                 new GenericBlockDestructionInfo(e.getBlock(), e),
                 BlockDestructionEvent.BlockDestructionReason.DECAY
         )){
             e.setCancelled(true);
             e.getBlock().setType(Material.AIR);
-        } else {
-            for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
-                e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
-            }
         }
         clear(e.getBlock());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    private Pair<Double, Integer> getFortuneAndLuck(Player p, Block b){
+        int fortune = 0;
+        double luck = 0;
+        if (p != null){
+            AttributeInstance luckInstance = p.getAttribute(Attribute.GENERIC_LUCK);
+            luck = luckInstance == null ? 0 : luckInstance.getValue();
+            luck += preparedLuckBuffs.getOrDefault(b, 0D);
+            ItemStack hand = p.getInventory().getItemInMainHand();
+            if (!ItemUtils.isEmpty(hand)){
+                if (hand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) fortune = hand.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+                else if (hand.containsEnchantment(Enchantment.SILK_TOUCH)) fortune = -1;
+            }
+        }
+        return new Pair<>(luck, fortune);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockDecayFinal(LeavesDecayEvent e){
+        if (e.isCancelled()) return;
+        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
+            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
+        }
+        preparedBlockDrops.remove(e.getBlock());
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockReplaceBreak(BlockFromToEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
+
+        UUID uuid = blockBreakerMap.get(e.getBlock());
+        blockBreakerMap.remove(e.getBlock());
+        Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+        Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
+        int fortune = details.getTwo();
+        double luck = details.getOne();
+
         if (!e.getBlock().getType().isAir() && e.getBlock().getType() != e.getToBlock().getType())
-            if (!onBlockDestruction(e.getBlock(),
-                    new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(null).killer(null).lootingModifier(0).luck(0).build(),
+            onBlockDestruction(e.getBlock(),
+                    new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
                     new GenericBlockDestructionInfo(e.getBlock(), e),
                     BlockDestructionEvent.BlockDestructionReason.REPLACED
-            )){
-                for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
-                    e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
-                }
-            }
+            );
         clear(e.getBlock());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockReplaceBreakFinal(BlockFromToEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
+        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
+            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
+        }
+        preparedBlockDrops.remove(e.getBlock());
     }
 
     private static final Map<Block, Material> explodedBlocks = new HashMap<>();
@@ -168,30 +276,47 @@ public class LootListener implements Listener {
         return value.map(MetadataValue::asInt).orElse(0);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBlockExplodeBreak(BlockExplodeEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
 
         List<Block> blocks = new ArrayList<>(e.blockList());
         blocks.addAll(explodedBlocks.keySet());
         for (Block b : blocks){
+            exploded.add(b);
+            double extraLuck = preparedLuckBuffs.getOrDefault(b, 0D);
             if (onBlockDestruction(b,
-                    new LootContext.Builder(b.getLocation()).lootedEntity(null).killer(null).lootingModifier(0).luck(0).build(),
+                    new LootContext.Builder(b.getLocation()).lootedEntity(null).killer(null).lootingModifier(0).luck((float) extraLuck).build(),
                     new BlockExplodeBlockDestructionInfo(b, e),
                     BlockDestructionEvent.BlockDestructionReason.BLOCK_EXPLOSION
             )) {
                 e.blockList().remove(b);
                 b.setType(Material.AIR);
-            } else {
-                for (ItemStack i : preparedBlockDrops.getOrDefault(b, new ArrayList<>())){
-                    b.getWorld().dropItemNaturally(b.getLocation(), i);
-                }
             }
             clear(b);
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockBlockExplodeBreakFinal(BlockExplodeEvent e){
+        if (e.isCancelled()) return;
+
+        List<Block> blocks = new ArrayList<>(e.blockList());
+        blocks.addAll(explodedBlocks.keySet());
+        for (Block b : blocks){
+            for (ItemStack i : preparedBlockDrops.getOrDefault(b, new ArrayList<>())){
+                b.getWorld().dropItemNaturally(b.getLocation(), i);
+            }
+            preparedBlockDrops.remove(b);
+        }
+    }
+
+    private static final Collection<Block> exploded = new HashSet<>();
+    public static boolean destroyedByExplosion(Block b){
+        return exploded.contains(b);
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockEntityExplodeBreak(EntityExplodeEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         Optional<MetadataValue> uuidMeta = e.getEntity().getMetadata("valhalla_entity_owner").stream().findAny();
@@ -200,25 +325,41 @@ public class LootListener implements Listener {
 
         AttributeInstance luckInstance = owner instanceof LivingEntity l ? l.getAttribute(Attribute.GENERIC_LUCK) : null;
         double luck = luckInstance == null ? 0 : luckInstance.getValue();
-        if (owner != null) luck += AccumulativeStatManager.getCachedStats("BLASTING_LUCK", owner, 10000, true);
 
         List<Block> blocks = new ArrayList<>(e.blockList());
         blocks.addAll(explodedBlocks.keySet());
         for (Block b : blocks){
+            exploded.add(b);
+            double extraLuck = preparedLuckBuffs.getOrDefault(b, 0D);
             if (onBlockDestruction(b,
-                    new LootContext.Builder(b.getLocation()).lootedEntity(owner != null ? owner : e.getEntity()).killer(null).lootingModifier(getFortuneLevel(e.getEntity())).luck((float) luck).build(),
+                    new LootContext.Builder(b.getLocation()).lootedEntity(owner != null ? owner : e.getEntity()).killer(null).lootingModifier(getFortuneLevel(e.getEntity())).luck((float) (luck + extraLuck)).build(),
                     new EntityExplodeBlockDestructionInfo(b, e),
                     BlockDestructionEvent.BlockDestructionReason.ENTITY_EXPLOSION
             )) {
                 e.blockList().remove(b);
                 b.setType(Material.AIR);
-            } else {
-                for (ItemStack i : preparedBlockDrops.getOrDefault(b, new ArrayList<>())){
-                    if (owner instanceof Player p && transferToInventory.containsKey(b) && transferToInventory.get(b).equals(p.getUniqueId())) ItemUtils.addItem(p, i, false);
-                    else b.getWorld().dropItemNaturally(b.getLocation(), i);
-                }
             }
             clear(b);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockEntityExplodeBreakFinal(EntityExplodeEvent e){
+        if (e.isCancelled()) return;
+        Optional<MetadataValue> uuidMeta = e.getEntity().getMetadata("valhalla_entity_owner").stream().findAny();
+        UUID uuid = uuidMeta.map(metadataValue -> UUID.fromString(metadataValue.asString())).orElse(null);
+        Entity owner = uuid == null ? null : ValhallaMMO.getInstance().getServer().getEntity(uuid);
+
+        List<Block> blocks = new ArrayList<>(e.blockList());
+        blocks.addAll(explodedBlocks.keySet());
+        for (Block b : blocks){
+            for (ItemStack i : preparedBlockDrops.getOrDefault(b, new ArrayList<>())){
+                if (owner instanceof Player p && transferToInventory.containsKey(b) && transferToInventory.get(b).equals(p.getUniqueId())) ItemUtils.addItem(p, i, false);
+                else {
+                    b.getWorld().dropItemNaturally(b.getLocation(), i);
+                }
+            }
+            preparedBlockDrops.remove(b);
         }
     }
 
@@ -226,6 +367,15 @@ public class LootListener implements Listener {
         entity.setMetadata("valhalla_entity_owner", new FixedMetadataValue(ValhallaMMO.getInstance(), owner.getUniqueId().toString()));
     }
 
+    /**
+     * Handles the loot following the destruction of a block and prepares them for dropping. Placed blocks will not drop special
+     * loot tables.
+     * @param b the block destroyed
+     * @param context the loot context in which it is destroyed
+     * @param info the destruction info which contains the block and the event responsible for destroying it. Block loot is skipped if according to this info the event is cancelled
+     * @param reason the type of block destruction the block experienced
+     * @return true if the loot table of the block (if any) resulted in the vanilla loot being cleared. False if vanilla loot was untouched
+     */
     private boolean onBlockDestruction(Block b, LootContext context, BlockDestructionInfo info, BlockDestructionEvent.BlockDestructionReason reason){
         BlockDestructionEvent destroyEvent = new BlockDestructionEvent(b, info, reason);
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(destroyEvent);
@@ -233,7 +383,7 @@ public class LootListener implements Listener {
         explodedBlocks.remove(b);
         if (!destroyEvent.getInfo().isCancelled(info.getEvent())){
             LootTable table = LootTableRegistry.getLootTable(b, originalMaterial);
-            if (table == null || BlockStore.isPlaced(b)) return false;
+            if (table == null || BlockUtils.canReward(b)) return false;
             LootTableRegistry.setLootTable(b, null);
             List<ItemStack> generatedLoot = LootTableRegistry.getLoot(table, context, LootTable.LootType.BREAK);
             ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, generatedLoot);
@@ -260,12 +410,12 @@ public class LootListener implements Listener {
         LootTableRegistry.setLootTable(e.getBlock(), table);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onChestOpen(PlayerInteractEvent e){
         if (e.getClickedBlock() == null || ValhallaMMO.isWorldBlacklisted(e.getClickedBlock().getWorld().getName()) ||
                 e.useInteractedBlock() == Event.Result.DENY || e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getHand() == EquipmentSlot.OFF_HAND) return;
         Block b = e.getClickedBlock();
-        if (!(b.getState() instanceof Lootable l) || !(b.getState() instanceof Container c)) return;
+        if (!(b.getState() instanceof Lootable l) || !(b.getState() instanceof Container c) || ArchaeologyListener.isBrushable(b.getState())) return;
         LootTable table = LootTableRegistry.getLootTable(b, b.getType());
         if (table == null && l.getLootTable() != null) table = LootTableRegistry.getLootTable(l.getLootTable().getKey());
         if (table == null) return;
@@ -298,7 +448,7 @@ public class LootListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onItemClick(PlayerInteractEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "attempts_loottable_item") ||
                 e.useItemInHand() == Event.Result.DENY || e.getHand() == EquipmentSlot.OFF_HAND || !(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
@@ -310,30 +460,68 @@ public class LootListener implements Listener {
         Timer.setCooldown(e.getPlayer().getUniqueId(), 500, "attempts_loottable_item");
         e.setCancelled(true);
 
+        Sound sound = LootTableRegistry.getLootSound(item.getMeta());
         AttributeInstance luckInstance = e.getPlayer().getAttribute(Attribute.GENERIC_LUCK);
         double luck = luckInstance == null ? 0 : luckInstance.getValue();
 
         LootContext context = new LootContext.Builder(e.getPlayer().getLocation()).killer(null).lootedEntity(e.getPlayer()).lootingModifier(0).luck((float) luck).build();
-        List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.CONTAINER);
-        ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
-        if (!loottableEvent.isCancelled()){
-            loottableEvent.getDrops().forEach(i -> ItemUtils.addItem(e.getPlayer(), i, true));
+        if (LootTableRegistry.isFreeSelectionTable(item.getMeta())){
+            new LootFreeSelectionMenu(PlayerMenuUtilManager.getPlayerMenuUtility(e.getPlayer()), table, context, LootTableRegistry.allowRepeatedFreeSelection(item.getMeta()), (selection) -> {
+                ItemBuilder handItem = ItemUtils.isEmpty(e.getPlayer().getInventory().getItemInMainHand()) ? null : new ItemBuilder(e.getPlayer().getInventory().getItemInMainHand());
+                if (handItem == null) return;
+                LootTable storedTable = LootTableRegistry.getLootTable(handItem.getMeta());
+                if (storedTable == null || !storedTable.getKey().equals(table.getKey())) return;
 
-            if (clickedItem.getAmount() <= 1) e.getPlayer().getInventory().setItemInMainHand(null);
-            else clickedItem.setAmount(clickedItem.getAmount() - 1);
+                List<ItemStack> rewards = new ArrayList<>();
+                for (LootEntry entry : selection.keySet()){
+                    int times = selection.get(entry);
+                    for (int i = 0; i < times; i++){
+                        ItemBuilder reward = new ItemBuilder(entry.getDrop());
+                        DynamicItemModifier.modify(reward, e.getPlayer(), entry.getModifiers(), false, true, true);
+                        if (!CustomFlag.hasFlag(reward.getMeta(), CustomFlag.UNCRAFTABLE)) {
+                            int quantityMin = Utils.randomAverage(entry.getBaseQuantityMin() + (Math.max(0, context.getLootingModifier()) * entry.getQuantityMinFortuneBase()));
+                            int quantityMax = Utils.randomAverage(entry.getBaseQuantityMax() + (Math.max(0, context.getLootingModifier()) * entry.getQuantityMaxFortuneBase()));
+                            if (quantityMax < quantityMin) quantityMax = quantityMin;
+                            int quantity = Utils.getRandom().nextInt(Math.max(1, quantityMax - quantityMin)) + quantityMin;
+
+                            int trueQuantity = entry.getDrop().getAmount() * quantity;
+                            List<ItemStack> loot;
+                            if (trueQuantity > 0 ) {
+                                loot = new ArrayList<>(ItemUtils.decompressStacks(Map.of(reward.get(), trueQuantity)));
+                            } else continue;
+
+                            rewards.addAll(loot);
+                        }
+                    }
+                }
+                if (sound != null) e.getPlayer().playSound(e.getPlayer(), sound, 1F, 1F);
+                rewards.forEach(i -> ItemUtils.addItem(e.getPlayer(), i, true));
+            }).open();
+        } else {
+            List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.CONTAINER);
+            ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            if (!loottableEvent.isCancelled()){
+                loottableEvent.getDrops().forEach(i -> ItemUtils.addItem(e.getPlayer(), i, true));
+
+                if (clickedItem.getAmount() <= 1) e.getPlayer().getInventory().setItemInMainHand(null);
+                else clickedItem.setAmount(clickedItem.getAmount() - 1);
+            }
+            if (sound != null) e.getPlayer().playSound(e.getPlayer(), sound, 1F, 1F);
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDrops(EntityDeathEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         LivingEntity entity = e.getEntity();
-        Player killer = entity.getKiller();
+        Entity killer = entity.getKiller();
+        EntityDamageEvent lastDamageSource = entity.getLastDamageCause();
+        if (killer == null && lastDamageSource instanceof EntityDamageByEntityEvent event){
+            if (event.getDamager() instanceof LivingEntity realKiller) killer = realKiller;
+        }
         double dropMultiplier = killer == null ? 0 : AccumulativeStatManager.getCachedStats("ENTITY_DROPS", killer, 10000, true);
-        List<ItemStack> newDrops = ItemUtils.multiplyItems(e.getDrops(), 1 + dropMultiplier, false, null);
-        e.getDrops().clear();
-        e.getDrops().addAll(newDrops);
+        ItemUtils.multiplyItems(e.getDrops(), 1 + dropMultiplier, false, null);
 
         LootTable table = LootTableRegistry.getLootTable(entity);
         if (table == null) return;
@@ -344,12 +532,16 @@ public class LootListener implements Listener {
             luck = luckInstance == null ? 0 : luckInstance.getValue();
             luck += AccumulativeStatManager.getCachedStats("ENTITY_DROP_LUCK", killer, 10000, true);
 
-            looting = ItemUtils.isEmpty(killer.getInventory().getItemInMainHand()) ? 0 :
-                    killer.getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+            if (killer instanceof HumanEntity h){
+                looting = ItemUtils.isEmpty(h.getInventory().getItemInMainHand()) ? 0 :
+                        h.getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+            }
         }
 
-        LootContext context = new LootContext.Builder(entity.getLocation()).killer(killer).lootedEntity(entity).lootingModifier(looting).luck((float) luck).build();
+        if (killer != null) realKiller.put(entity.getUniqueId(), killer.getUniqueId());
+        LootContext context = new LootContext.Builder(entity.getLocation()).killer(null).lootedEntity(entity).lootingModifier(looting).luck((float) luck).build();
         List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.KILL);
+        realKiller.remove(entity.getUniqueId());
         ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
         if (!loottableEvent.isCancelled()){
@@ -366,13 +558,25 @@ public class LootListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    private static final Map<UUID, UUID> realKiller = new HashMap<>();
+    public static Entity getRealKiller(Entity victim){
+        UUID killer = realKiller.get(victim.getUniqueId());
+        return killer == null ? null : ValhallaMMO.getInstance().getServer().getEntity(killer);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockDrops(BlockDropItemEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !transferToInventory.containsKey(e.getBlock())){
             clear(e.getBlock());
             return;
         }
-        if (transferToInventory.containsKey(e.getBlock()) && transferToInventory.get(e.getBlock()).equals(e.getPlayer().getUniqueId())){
+        boolean transfer = transferToInventory.containsKey(e.getBlock()) && transferToInventory.get(e.getBlock()).equals(e.getPlayer().getUniqueId());
+        for (ItemStack item : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
+            if (transfer) ItemUtils.addItem(e.getPlayer(), item, false);
+            else e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
+        }
+        preparedBlockDrops.remove(e.getBlock());
+        if (transfer){
             for (Item i : e.getItems()) ItemUtils.addItem(e.getPlayer(), i.getItemStack(), false);
             e.getItems().clear();
         }
@@ -383,50 +587,116 @@ public class LootListener implements Listener {
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             transferToInventory.remove(b);
             preparedBlockDrops.remove(b);
+            preparedLuckBuffs.remove(b);
             explodedBlocks.remove(b);
+            exploded.remove(b);
         }, 1L);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onFish(PlayerFishEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() ||
                 e.getState() != PlayerFishEvent.State.CAUGHT_FISH || !(e.getCaught() instanceof Item i)) return;
-        LootTable table = LootTableRegistry.getFishingLootTable();
-        if (table == null) return;
+        Player p = e.getPlayer();
+        AttributeInstance luckAttribute = p.getAttribute(Attribute.GENERIC_LUCK);
+        double luck = AccumulativeStatManager.getCachedStats("FISHING_LUCK", p, 10000, true) + LootListener.getPreparedLuck(p);
+        if (luckAttribute != null) luck += luckAttribute.getValue();
 
-        double fishingLuck = AccumulativeStatManager.getCachedStats("FISHING_LUCK", e.getPlayer(), 10000, true);
-        LootContext context = new LootContext.Builder(e.getPlayer().getLocation()).killer(null).lootedEntity(e.getPlayer()).lootingModifier(0).luck((float) fishingLuck).build();
+        FishingTableEntry pickedEntry = Utils.weightedSelection(fishingTables, 1, luck).stream().findFirst().orElse(null);
+        if (pickedEntry == null) return; // somehow, no entry. bail out
+        LootContext context = new LootContext.Builder(p.getLocation()).luck((float) luck).lootingModifier(0).killer(p).lootedEntity(p).build();
 
-        List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.FISH);
-        ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
-        if (!loottableEvent.isCancelled()){
-            switch (loottableEvent.getPreservationType()){
-                case CLEAR -> {
-                    if (loottableEvent.getDrops().isEmpty()) e.getHook().setHookedEntity(null);
-                    else {
-                        ItemStack itemToSet = loottableEvent.getDrops().get(0);
+        List<ItemStack> vanillaLoot = new ArrayList<>(pickedEntry.vanillaTable.getLootTable().populateLoot(Utils.getRandom(), context));
+        if (!vanillaLoot.isEmpty()) { // re-setting new vanilla loot to hook
+            i.setItemStack(vanillaLoot.get(0));
+            vanillaLoot.remove(0);
+        }
+        if (pickedEntry.valhallaTable.get() != null){
+            LootTable table = pickedEntry.valhallaTable.get();
+            List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.FISH);
+
+            ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            if (!loottableEvent.isCancelled()){
+                LootListener.prepareFishingDrops(p.getUniqueId(), loottableEvent.getDrops());
+                boolean clearVanilla = switch (loottableEvent.getPreservationType()){
+                    case CLEAR -> true;
+                    case CLEAR_UNLESS_EMPTY -> !loottableEvent.getDrops().isEmpty();
+                    case KEEP -> false;
+                };
+                if (clearVanilla) {
+                    if (loottableEvent.getDrops().isEmpty()) {
+                        e.setCancelled(true); // custom table returned no drops and is configured to clear vanilla loot, so event should be cancelled
+                        return;
+                    } else {
+                        i.setItemStack(loottableEvent.getDrops().get(0)); // overwriting vanilla drop with custom one
                         loottableEvent.getDrops().remove(0);
-                        i.setItemStack(itemToSet);
                     }
-                }
-                case CLEAR_UNLESS_EMPTY -> {
-                    if (!loottableEvent.getDrops().isEmpty()) {
-                        ItemStack itemToSet = loottableEvent.getDrops().get(0);
-                        loottableEvent.getDrops().remove(itemToSet);
-                        i.setItemStack(itemToSet);
-                    }
-                }
-                case KEEP -> {
-                    if (loottableEvent.getDrops().isEmpty()) return;
-                }
+                } prepareFishingDrops(p.getUniqueId(), vanillaLoot);
+                prepareFishingDrops(p.getUniqueId(), loottableEvent.getDrops());
             }
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> loottableEvent.getDrops().forEach(d -> {
-                Item item = e.getHook().getWorld().dropItem(e.getHook().getLocation(), d);
-                item.setVelocity(i.getVelocity());
-            }), 1L);
         }
     }
+
+    public static void simulateFishingEvent(Player p){
+        AttributeInstance luckAttribute = p.getAttribute(Attribute.GENERIC_LUCK);
+        double luck = AccumulativeStatManager.getCachedStats("FISHING_LUCK", p, 10000, true) + LootListener.getPreparedLuck(p);
+        if (luckAttribute != null) luck += luckAttribute.getValue();
+
+        FishingTableEntry pickedEntry = Utils.weightedSelection(fishingTables, 1, luck).stream().findFirst().orElse(null);
+        if (pickedEntry == null) return; // somehow, no entry. bail out
+        LootContext context = new LootContext.Builder(p.getLocation()).luck((float) luck).lootingModifier(0).killer(p).lootedEntity(p).build();
+
+        List<ItemStack> vanillaLoot = new ArrayList<>(pickedEntry.vanillaTable.getLootTable().populateLoot(Utils.getRandom(), context));
+        if (pickedEntry.valhallaTable.get() != null){
+            LootTable table = pickedEntry.valhallaTable.get();
+            List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.FISH);
+
+            ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            if (!loottableEvent.isCancelled()){
+                LootListener.prepareFishingDrops(p.getUniqueId(), loottableEvent.getDrops());
+                boolean clearVanilla = switch (loottableEvent.getPreservationType()){
+                    case CLEAR -> true;
+                    case CLEAR_UNLESS_EMPTY -> !loottableEvent.getDrops().isEmpty();
+                    case KEEP -> false;
+                };
+                if (!clearVanilla) prepareFishingDrops(p.getUniqueId(), vanillaLoot);
+                prepareFishingDrops(p.getUniqueId(), loottableEvent.getDrops());
+            }
+        } else prepareFishingDrops(p.getUniqueId(), vanillaLoot);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onFishFinal(PlayerFishEvent e){
+        preparedFishingLuckBuffs.remove(e.getPlayer().getUniqueId());
+        if (e.isCancelled() || e.getState() != PlayerFishEvent.State.CAUGHT_FISH ) return;
+        preparedFishingDrops.getOrDefault(e.getPlayer().getUniqueId(), new ArrayList<>()).forEach(d -> {
+            Item item = e.getHook().getWorld().dropItem(e.getHook().getLocation(), d);
+            item.setVelocity(fishingItemVelocity(e.getHook().getLocation(), e.getPlayer().getLocation().add(0, e.getPlayer().getBoundingBox().getHeight() / 2, 0)));
+        });
+        preparedFishingDrops.remove(e.getPlayer().getUniqueId());
+    }
+
+    private static final Collection<FishingTableEntry> fishingTables = Set.of(
+            new FishingTableEntry(LootTables.FISHING_FISH, LootTableRegistry::getFishingFishLootTable, 1700, -3),
+            new FishingTableEntry(LootTables.FISHING_JUNK, LootTableRegistry::getFishingJunkLootTable, 200, -39),
+            new FishingTableEntry(LootTables.FISHING_TREASURE, LootTableRegistry::getFishingTreasureLootTable, 100, 42)
+    );
+
+    private record FishingTableEntry(LootTables vanillaTable, Fetcher<LootTable> valhallaTable, double baseWeight, double bonusWeightPerLuck) implements Weighted {
+        @Override public double getWeight() { return baseWeight; }
+        @Override public double getWeight(double luck) { return Math.max(0, baseWeight + (luck * bonusWeightPerLuck)); }
+    }
+
+    private Vector fishingItemVelocity(Location hook, Location player){
+        double d = player.getX() - hook.getX();
+        double e = player.getY() - hook.getY();
+        double f = player.getZ() - hook.getZ();
+        return new Vector(d * 0.1, e * 0.1 + Math.sqrt(Math.sqrt(d * d + e * e + f * f)) * 0.08, f * 0.1);
+    }
+
+    private static final Map<UUID, List<ItemStack>> preparedFishingDrops = new HashMap<>();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPiglinBarter(PiglinBarterEvent e){
@@ -454,9 +724,27 @@ public class LootListener implements Listener {
         }
     }
 
+    public static void addPreparedLuck(Block b, double luck){
+        double existing = preparedLuckBuffs.getOrDefault(b, 0D);
+        preparedLuckBuffs.put(b, existing + luck);
+    }
+
+    public static void addPreparedLuck(Player p, double luck){
+        double existing = preparedFishingLuckBuffs.getOrDefault(p.getUniqueId(), 0D);
+        preparedFishingLuckBuffs.put(p.getUniqueId(), existing + luck);
+    }
+
+    public static double getPreparedLuck(Player p){
+        return preparedFishingLuckBuffs.getOrDefault(p.getUniqueId(), 0D);
+    }
+
+    public static double getPreparedLuck(Block b){
+        return preparedLuckBuffs.getOrDefault(b, 0D);
+    }
+
     /**
      * Returns the extra drops that have been prepared for the given block, to provide some way for other plugins
-     * to see what a block will drop in case that's needed. This is necessary because spigot does not
+     * to see what a block will drop in case that's needed. Spigot does not
      * allow items to be added to a block's drops directly, and so they need to be prepared instead.
      * @param b the block to check its prepared drops for
      * @return the list of extra items that will drop from the block, or an empty list if none.
@@ -465,8 +753,27 @@ public class LootListener implements Listener {
         return preparedBlockDrops.getOrDefault(b, new ArrayList<>());
     }
 
+    /**
+     * Returns the extra drops that have been prepared for the player during fishing
+     * @param p the player to get their extra fishing drops from
+     * @return the list of extra items that will drop from the fishing catch, or an empty list if none.
+     */
+    public static List<ItemStack> getPreparedExtraDrops(Player p){
+        return preparedFishingDrops.getOrDefault(p.getUniqueId(), new ArrayList<>());
+    }
+
     public static void setInstantPickup(Block b, Player who){
         transferToInventory.put(b, who.getUniqueId());
+    }
+
+    public static void prepareFishingDrops(UUID fisher, ItemStack... items){
+        prepareFishingDrops(fisher, List.of(items));
+    }
+
+    public static void prepareFishingDrops(UUID fisher, List<ItemStack> items){
+        List<ItemStack> preparedDrops = preparedFishingDrops.getOrDefault(fisher, new ArrayList<>());
+        preparedDrops.addAll(items);
+        preparedFishingDrops.put(fisher, preparedDrops);
     }
 
     public static void prepareBlockDrops(Block b, ItemStack... items){
@@ -477,5 +784,13 @@ public class LootListener implements Listener {
         List<ItemStack> preparedDrops = preparedBlockDrops.getOrDefault(b, new ArrayList<>());
         preparedDrops.addAll(items);
         preparedBlockDrops.put(b, preparedDrops);
+    }
+
+    public static Map<UUID, List<ItemStack>> getPreparedFishingDrops() {
+        return preparedFishingDrops;
+    }
+
+    public static Map<Block, List<ItemStack>> getPreparedBlockDrops() {
+        return preparedBlockDrops;
     }
 }

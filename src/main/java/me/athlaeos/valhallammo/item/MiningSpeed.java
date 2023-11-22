@@ -101,7 +101,7 @@ public class MiningSpeed {
     }
 
     public static void setDefaultMultiplier(double multiplier, String... matches){
-        setDefaultMultiplier(multiplier, ItemUtils.getMaterialList(matches).toArray(new Material[0]));
+        setDefaultMultiplier(multiplier, ItemUtils.getMaterialSet(matches).toArray(new Material[0]));
     }
 
     public static double getMultiplier(ItemMeta m){

@@ -39,7 +39,7 @@ public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
     private static final int ingredientIndex = 12;
     private static final Collection<Integer> applyOnIndexes = Set.of(28, 30, 32);
     private static final int resultIndex = 24;
-    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("").get();
+    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
 
     private final DynamicBrewingRecipe recipe;
 

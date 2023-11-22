@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.persistence.*;
 import me.athlaeos.valhallammo.persistence.implementations.PDC;
 import me.athlaeos.valhallammo.persistence.implementations.SQL;
 import me.athlaeos.valhallammo.persistence.implementations.SQLite;
+import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import org.bukkit.entity.Player;
@@ -31,6 +32,10 @@ public class ProfileRegistry {
         registerProfileType(new HeavyArmorProfile(null));
         registerProfileType(new LightArmorProfile(null));
         registerProfileType(new MiningProfile(null));
+        registerProfileType(new FarmingProfile(null));
+        registerProfileType(new WoodcuttingProfile(null));
+        registerProfileType(new DiggingProfile(null));
+        registerProfileType(new FishingProfile(null));
     }
 
     /**
@@ -60,10 +65,13 @@ public class ProfileRegistry {
             }
         }
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
-            persistence.saveAllProfiles();
-            ProfileCache.cleanCache();
-        }, delay_profile_saving, delay_profile_saving);
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), ProfileRegistry::saveAll, delay_profile_saving, delay_profile_saving);
+    }
+
+    public static void saveAll(){
+        persistence.saveAllProfiles();
+        ProfileCache.cleanCache();
+        LeaderboardManager.resetLeaderboard();
     }
 
     /**

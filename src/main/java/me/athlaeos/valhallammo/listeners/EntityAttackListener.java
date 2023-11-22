@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.dom.*;
+import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.event.EntityCriticallyHitEvent;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
@@ -55,6 +56,7 @@ public class EntityAttackListener implements Listener {
 
     private final double tridentThrownDamage = ValhallaMMO.getPluginConfig().getDouble("trident_damage_ranged");
     private final double tridentThrownLoyalDamage = ValhallaMMO.getPluginConfig().getDouble("trident_damage_ranged_loyalty");
+    private final double velocityDamageConstant = ValhallaMMO.getPluginConfig().getDouble("velocity_damage_constant");
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onAttack(EntityDamageByEntityEvent e){
@@ -114,6 +116,15 @@ public class EntityAttackListener implements Listener {
         } else {
             // melee damage buffs
             damageMultiplier += AccumulativeStatManager.getCachedAttackerRelationalStats(combatType == CombatType.MELEE_UNARMED ? "UNARMED_DAMAGE_DEALT" : "MELEE_DAMAGE_DEALT", v, e.getDamager(), 10000, true);
+            double velocityBonus = AccumulativeStatManager.getRelationalStats("VELOCITY_DAMAGE_BONUS", v, e.getDamager(), true);
+            if (velocityBonus > 0 && e.getDamager() instanceof LivingEntity l){
+                Vector moveSpeedDirection = MovementListener.getLastMovementVectors().get(e.getDamager().getUniqueId());
+                if (moveSpeedDirection != null){
+                    double speed = moveSpeedDirection.length();
+                    double multiplier = Math.max(0, l.getEyeLocation().getDirection().dot(moveSpeedDirection));
+                    if (!Double.isNaN(speed) && !Double.isNaN(multiplier)) damageMultiplier += (speed / velocityDamageConstant) * multiplier;
+                }
+            }
         }
         EntityProperties victimProperties = EntityCache.getAndCacheProperties(v);
         damageMultiplier += (victimProperties.getLightArmorCount() * AccumulativeStatManager.getCachedAttackerRelationalStats("LIGHT_ARMOR_DAMAGE_BONUS", v, e.getDamager(), 10000, true));
@@ -218,12 +229,12 @@ public class EntityAttackListener implements Listener {
         // custom damage types mechanics
         EntityDamageEvent.DamageCause originalCause = e.getCause();
         double cooldownDamageMultiplier = EntityUtils.cooldownDamageMultiplier(e.getDamager() instanceof Player p ? p.getAttackCooldown() : 1);
-        for (String damageType : customDamageBonusses.keySet()){
-            double baseDamage = AccumulativeStatManager.getCachedAttackerRelationalStats(customDamageBonusses.get(damageType), v, e.getDamager(), 10000, true);
+        for (CustomDamageType damageType : CustomDamageType.getRegisteredTypes().values()){
+            double baseDamage = damageType.damageAdder() == null ? 0 : AccumulativeStatManager.getCachedAttackerRelationalStats(damageType.damageAdder(), v, e.getDamager(), 10000, true);
             double elementalDamage = damageMultiplier * baseDamage * cooldownDamageMultiplier * parryDamageMultiplier;
-            if (!sweep && isPowerAttackable(damageType) && e.getDamager().getFallDistance() > 0) elementalDamage *= powerAttackMultiplier; // power attacks deal 50% more damage
+            if (!sweep && damageType.benefitsFromPowerAttacks() && e.getDamager().getFallDistance() > 0) elementalDamage *= powerAttackMultiplier; // power attacks deal 50% more damage
             if (elementalDamage > 0) {
-                EntityUtils.damage(v, e.getDamager(), elementalDamage, damageType);
+                EntityUtils.damage(v, e.getDamager(), elementalDamage, damageType.getType());
                 v.setNoDamageTicks(0); // the entity should not receive immunity frames for these types of damage, as this will reduce or even nullify the entity attack damage taken afterwards
             }
         }
@@ -241,57 +252,6 @@ public class EntityAttackListener implements Listener {
     private static final Collection<UUID> bleedNextAttack = new HashSet<>();
     public static void bleedNextAttack(LivingEntity entity){
         bleedNextAttack.add(entity.getUniqueId());
-    }
-
-    private static final Map<String, String> customDamageBonusses = new HashMap<>();
-    private static final Map<String, String> customDamageMultipliers = new HashMap<>();
-    private static final Map<String, Boolean> powerAttackableSources = new HashMap<>(); // defines if damage should be multiplied by 1.5x if the attacker is falling (vanilla "crit", though in the plugin defined as power attacks)
-    static {
-        addCustomDamageSource("FIRE_DAMAGE_BONUS", "FIRE_DAMAGE_DEALT", "FIRE");
-        addCustomDamageSource("EXPLOSION_DAMAGE_BONUS", "EXPLOSION_DAMAGE_DEALT", "ENTITY_EXPLOSION");
-        addCustomDamageSource("POISON_DAMAGE_BONUS", "POISON_DAMAGE_DEALT", "POISON");
-        addCustomDamageSource("MAGIC_DAMAGE_BONUS", "MAGIC_DAMAGE_DEALT", "MAGIC");
-        addCustomDamageSource("LIGHTNING_DAMAGE_BONUS", "LIGHTNING_DAMAGE_DEALT", "LIGHTNING");
-        addCustomDamageSource("FREEZING_DAMAGE_BONUS", "FREEZING_DAMAGE_DEALT", "FREEZE");
-        addCustomDamageSource("RADIANT_DAMAGE_BONUS", "RADIANT_DAMAGE_DEALT", "RADIANT");
-        addCustomDamageSource("NECROTIC_DAMAGE_BONUS", "NECROTIC_DAMAGE_DEALT", "NECROTIC");
-        addCustomDamageSource("BLUDGEONING_DAMAGE_BONUS", "BLUDGEONING_DAMAGE_DEALT", "BLUDGEONING");
-
-        setPowerAttackable("BLUDGEONING", true);
-    }
-
-    public static Map<String, String> getCustomDamageMultipliers() {
-        return customDamageMultipliers;
-    }
-
-    public static Map<String, String> getCustomDamageBonusses() {
-        return customDamageBonusses;
-    }
-
-    public static Map<String, Boolean> getPowerAttackableSources() {
-        return powerAttackableSources;
-    }
-
-    /**
-     * Registers a custom damage type to be inflicted on an attack. The additiveStatSource determines the stat source to be gotten from
-     * the {@link AccumulativeStatManager} to gather the base damage of this type dealt to the victim, where the multiplicativeStatSource
-     * determines the stat this base number should be increased/decreased by (-0.3 would be 30% reduced damage)
-     * @param additiveStatSource the base damage stat source of this damage type
-     * @param multiplicativeStatSource the multiplier stat source of this damage type
-     * @param damageType the damage type this attack should deal if values > 0
-     */
-    public static void addCustomDamageSource(String additiveStatSource, String multiplicativeStatSource, String damageType){
-        customDamageBonusses.put(damageType, additiveStatSource);
-        customDamageMultipliers.put(damageType, multiplicativeStatSource);
-    }
-
-    public static void setPowerAttackable(String source, boolean powerHit){
-        if (powerHit) powerAttackableSources.put(source, true);
-        else powerAttackableSources.remove(source);
-    }
-
-    public static boolean isPowerAttackable(String source){
-        return powerAttackableSources.getOrDefault(source, false);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

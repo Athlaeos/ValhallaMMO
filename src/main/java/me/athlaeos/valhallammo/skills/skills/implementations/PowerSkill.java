@@ -17,8 +17,11 @@ public class PowerSkill extends Skill implements Listener {
 
     public PowerSkill(String type) {
         super(type);
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/power.yml").get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/power_progression.yml").get();
+        ValhallaMMO.getInstance().save("skills/power_progression.yml");
+        ValhallaMMO.getInstance().save("skills/power.yml");
+
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/power.yml").reload().get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/power_progression.yml").reload().get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -28,9 +31,10 @@ public class PowerSkill extends Skill implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerLevelUp(PlayerSkillLevelUpEvent e){ // TODO PlayerLevelSkillEvent and listener skills being registered
+    public void onPlayerLevelUp(PlayerSkillLevelUpEvent e){
         if (e.getSkill().equals(this)) return;
-        addEXP(e.getPlayer(), expPerLevelUp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+        int levelsLevelledUp = e.getLevelTo() - e.getLevelFrom();
+        addEXP(e.getPlayer(), expPerLevelUp * levelsLevelledUp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
     @Override

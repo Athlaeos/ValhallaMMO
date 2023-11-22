@@ -73,8 +73,11 @@ public class ArcherySkill extends Skill implements Listener {
 
     public ArcherySkill(String type) {
         super(type);
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/archery.yml").get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/archery_progression.yml").get();
+        ValhallaMMO.getInstance().save("skills/archery_progression.yml");
+        ValhallaMMO.getInstance().save("skills/archery.yml");
+
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/archery.yml").reload().get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/archery_progression.yml").reload().get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -281,7 +284,7 @@ public class ArcherySkill extends Skill implements Listener {
 
     @Override
     public int getSkillTreeMenuOrderPriority() {
-        return 45;
+        return 55;
     }
 
     @Override

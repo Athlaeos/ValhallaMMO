@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ItemSkillRequirements { // TODO modifier impl
+public class ItemSkillRequirements {
     private static final NamespacedKey SKILL_REQUIREMENT = new NamespacedKey(ValhallaMMO.getInstance(), "item_skill_requirement");
     private static final NamespacedKey REQUIREMENT_TYPE = new NamespacedKey(ValhallaMMO.getInstance(), "item_skill_requirement_type");
 

@@ -7,9 +7,11 @@ levelbar_title: '<lang.skill-alchemy-level-bar>'
 levelbar_color: PURPLE # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
 levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID
 
-radius_transmutation_liquid: 2 # Radius of the transmutation potion explosion
 transmutation_liquid_flash: true
 transmutation_sound: BLOCK_ENCHANTMENT_TABLE_USE
+transmutation_name: '<lang.transmutation_potion>'
+transmutation_lore:
+  - '<lang.transmutation_potion_lore>'
 
 # If true, players are able to instantly empty potions when clicking them on a cauldron
 quick_empty_potions: true
@@ -78,34 +80,23 @@ tag_lore: # The treatment lores displayed on the item if hide_treatment_lore is 
   5: '<lang.alchemy-treatment-imbued>'
   6: '<lang.alchemy-treatment-enchanted>'
   7: '<lang.alchemy-treatment-polluted>'
-  8: '<lang.alchemy-treatment-transmutation>'
 
 # Error messages that are notified to the player if their item has a tag it's not allowed to have
 tag_error_disallowed:
-  1: '<lang.smithing-tag-disallowed-unenchantable>'
-  2: '<lang.smithing-tag-disallowed-unmendable>'
-  3: '<lang.smithing-tag-disallowed-razor-sharp>'
-  4: '<lang.smithing-tag-disallowed-well-fit>'
-  5: '<lang.smithing-tag-disallowed-red-hot>'
-  6: '<lang.smithing-tag-disallowed-white-hot>'
+  1: '<lang.alchemy-treatment-disallowed-concentrated>'
+  2: '<lang.alchemy-treatment-disallowed-diluted>'
+  3: '<lang.alchemy-treatment-disallowed-filtered>'
+  4: '<lang.alchemy-treatment-disallowed-empowered>'
+  5: '<lang.alchemy-treatment-disallowed-imbued>'
+  6: '<lang.alchemy-treatment-disallowed-enchanted>'
+  7: '<lang.alchemy-treatment-disallowed-polluted>'
 
 # Error messages that are notified to the player if their item doesn't have a tag it needs to have
 tag_error_required:
-  1: '<lang.smithing-tag-required-unenchantable>'
-  2: '<lang.smithing-tag-required-unmendable>'
-  3: '<lang.smithing-tag-required-razor-sharp>'
-  4: '<lang.smithing-tag-required-well-fit>'
-  5: '<lang.smithing-tag-required-red-hot>'
-  6: '<lang.smithing-tag-required-white-hot>'
-
-  # Vanilla potions, because they can only have whole number strengths, will have whatever the outcome of a scaling
-  # formula rounded DOWNWARDS
-# Here you can fill in the formulas used for calculating the durations of potions brewed
-custom_scalings:
-  multiplier_5x:
-    scaling: '(4.7/300) * %rating% + 0.3,MULTIPLIER,0,none'
-    description: '&fScales from &e0.3&7x-&e5x&7 from 0-300 quality. Use on potion you want to last very long at high skill!'
-  multiplier_4x:
-    scaling: '(3.7/300) * %rating% + 0.3,MULTIPLIER,0,none'
-    description: '&fScales from &e0.3&7x-&e5x&7 from 0-300 quality. Use on potion you want to last very long at high skill!'
-  # expand with your own scalings in the same format in case you want that!
+  1: '<lang.alchemy-treatment-required-concentrated>'
+  2: '<lang.alchemy-treatment-required-diluted>'
+  3: '<lang.alchemy-treatment-required-filtered>'
+  4: '<lang.alchemy-treatment-required-empowered>'
+  5: '<lang.alchemy-treatment-required-imbued>'
+  6: '<lang.alchemy-treatment-required-enchanted>'
+  7: '<lang.alchemy-treatment-required-polluted>'

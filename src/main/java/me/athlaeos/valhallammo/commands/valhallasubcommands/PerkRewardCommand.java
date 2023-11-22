@@ -25,47 +25,50 @@ public class PerkRewardCommand implements Command {
 			}
 		}
 
-		if (args.length >= 3){
-			if (args.length >= 4){
-				targets.addAll(Utils.selectPlayers(sender, args[3]));
-			}
+		if (args.length >= 2){
 			PerkReward baseReward = PerkRewardRegistry.getRegisteredRewards().get(args[1]);
 			if (baseReward == null){
 				Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_reward")));
 				return true;
 			}
 			PerkRewardArgumentType expectedType = baseReward.getRequiredType();
-			Object arg;
-			try {
-				arg = switch (expectedType){
-					case DOUBLE ->  Double.parseDouble(args[2]);
-					case FLOAT -> Float.parseFloat(args[2]);
-					case INTEGER -> Integer.parseInt(args[2]);
-					case STRING -> args[2];
-					case STRING_LIST -> List.of(args[2].split(";"));
-					case BOOLEAN -> Boolean.parseBoolean(args[2]);
-					case NONE -> null;
-				};
-			} catch (IllegalArgumentException ignored){
-				sender.sendMessage(Utils.chat(TranslationManager.getTranslation("error_command_invalid_argument_type")
-						.replace("%type%", expectedType.toString())
-						.replace("%arg%", args[2])));
+			if (args.length >= 3 || expectedType == PerkRewardArgumentType.NONE){
+				if (args.length >= 4 || (expectedType == PerkRewardArgumentType.NONE && args.length > 2)){
+					targets.clear();
+					targets.addAll(Utils.selectPlayers(sender, expectedType == PerkRewardArgumentType.NONE ? args[2] : args[3]));
+				}
+				Object arg;
+				try {
+					arg = switch (expectedType){
+						case NONE -> null;
+						case DOUBLE -> Double.parseDouble(args[2]);
+						case FLOAT -> Float.parseFloat(args[2]);
+						case INTEGER -> Integer.parseInt(args[2]);
+						case STRING -> args[2];
+						case STRING_LIST -> List.of(args[2].split(";"));
+						case BOOLEAN -> Boolean.parseBoolean(args[2]);
+					};
+				} catch (IllegalArgumentException ignored){
+					sender.sendMessage(Utils.chat(TranslationManager.getTranslation("error_command_invalid_argument_type")
+							.replace("%type%", expectedType.toString())
+							.replace("%arg%", args[2])));
+					return true;
+				}
+				PerkReward createdReward = PerkRewardRegistry.createReward(args[1], arg);
+
+				if (createdReward == null){
+					Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_reward")));
+				} else if (targets.isEmpty()){
+					Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_player_offline")));
+				} else {
+					createdReward.setPersistent(true);
+					for (Player target : targets){
+						createdReward.apply(target);
+					}
+					sender.sendMessage(Utils.chat(TranslationManager.getTranslation("status_command_reward_executed")));
+				}
 				return true;
 			}
-			PerkReward createdReward = PerkRewardRegistry.createReward(args[1], arg);
-
-			if (createdReward == null){
-				Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_reward")));
-			} else if (targets.isEmpty()){
-				Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_player_offline")));
-			} else {
-				createdReward.setPersistent(true);
-				for (Player target : targets){
-					createdReward.apply(target);
-				}
-				sender.sendMessage(Utils.chat(TranslationManager.getTranslation("status_command_reward_executed")));
-			}
-			return true;
 		}
 		return false;
 	}

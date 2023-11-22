@@ -47,7 +47,7 @@ public class ProfileStatAttackerHeldItemSource implements AccumulativeStatSource
         }
 
         if (numberType == null) {
-            throw new IllegalArgumentException("ProfileStatSource:" + type.getSimpleName() + " with stat " + stat +
+            throw new IllegalArgumentException("ProfileStatAttackerHeldItemSource:" + type.getSimpleName() + " with stat " + stat +
                     " was initialized, but this profile type does not have such a stat");
         }
     }

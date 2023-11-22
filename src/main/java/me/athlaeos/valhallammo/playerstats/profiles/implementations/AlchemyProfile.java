@@ -11,6 +11,8 @@ import me.athlaeos.valhallammo.skills.skills.implementations.AlchemySkill;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
+
 @SuppressWarnings("unused")
 public class AlchemyProfile extends Profile {
     {
@@ -36,8 +38,17 @@ public class AlchemyProfile extends Profile {
         floatStat("potionCombiningAmplifierMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("potionCombiningDurationMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
 
+        intStat("transmutationRadius", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
+        stringSetStat("unlockedTransmutations");
+
         doubleStat("alchemyEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
     }
+
+    public int getTransmutationRadius() { return getInt("transmutationRadius"); }
+    public void setTransmutationRadius(int value) { setInt("transmutationRadius", value); }
+
+    public Collection<String> getUnlockedTransmutations() { return getStringSet("unlockedTransmutations"); }
+    public void setUnlockedTransmutations(Collection<String> value) { setStringSet("unlockedTransmutations", value); }
 
     public boolean isPotionCombiningUnlocked(){ return getBoolean("potionCombiningUnlocked"); }
     public void setPotionCombiningUnlocked(boolean value) { setBoolean("potionCombiningUnlocked", value);}
@@ -114,7 +125,7 @@ public class AlchemyProfile extends Profile {
     }
 
     @Override
-    protected String getTableName() {
+    public String getTableName() {
         return "profiles_alchemy";
     }
 

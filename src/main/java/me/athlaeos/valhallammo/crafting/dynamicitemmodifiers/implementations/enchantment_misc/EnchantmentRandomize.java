@@ -4,7 +4,9 @@ import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.item.EnchantingItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.utility.Enchanter;
 import org.bukkit.Material;
@@ -18,7 +20,7 @@ import java.util.*;
 
 public class EnchantmentRandomize extends DynamicItemModifier {
     private int level = 10;
-    private boolean scaleWithSkill = false; // TODO after adding enchantment skill make this scale
+    private boolean scaleWithSkill = false;
     private boolean includeTreasure = false;
 
     public EnchantmentRandomize(String name) {
@@ -33,12 +35,15 @@ public class EnchantmentRandomize extends DynamicItemModifier {
         if (chosenEnchantments.isEmpty()) return;
         if (outputItem.getItem().getType() == Material.BOOK) outputItem.type(Material.ENCHANTED_BOOK);
 
-        if (outputItem.getMeta() instanceof EnchantmentStorageMeta eMeta){
-            for (Enchantment e : chosenEnchantments.keySet()){
-                eMeta.addStoredEnchant(e, chosenEnchantments.get(e), false);
+        for (Enchantment e : chosenEnchantments.keySet()){
+            int lv = chosenEnchantments.get(e);
+            if (scaleWithSkill){
+                int skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", crafter, 10000, true);
+                skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", crafter, 10000, true)));
+                lv = EnchantingItemPropertyManager.getScaledLevel(e, skill, lv);
             }
-        } else {
-            outputItem.getItem().addEnchantments(chosenEnchantments);
+            if (outputItem.getMeta() instanceof EnchantmentStorageMeta eMeta) eMeta.addStoredEnchant(e, lv, false);
+            else outputItem.enchant(e, lv);
         }
     }
 

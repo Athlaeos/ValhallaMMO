@@ -174,7 +174,7 @@ public class EnchantingProfile extends Profile {
     }
 
     @Override
-    protected String getTableName() {
+    public String getTableName() {
         return "profiles_enchanting";
     }
 

@@ -1,0 +1,319 @@
+starting_perks:
+  woodcutting_woodcuttingspeedbonus_add: -0.3
+
+experience: # Everything about leveling and experience progression for Landscaping
+  max_level: 100 # Max level for landscaping, players can still gain exp after reaching 100
+  exp_level_curve: '0.25 * (%level% + 300 * 2^(%level%/7.6)) + 300' # Here the x-axis represents level and the y-axis is the exp required to
+  # progress to that level.
+  # The area under this graph from point a to point b represents the total amount of experience needed to get from level
+  # a to b. You don't have to work with this, it's only for those who really want to make this progression their own.
+  # By default, it takes about 4300 exp to get from 0 to 20, 27,000 to get from 20 to 40, 164,000 from 40 to 60,
+  # 1,000,000 from 60 to 80, and 6,300,000 from 80 to 100- or 7,500,000 from 0 to 100.
+  woodcutting_strip:
+    STRIPPED_OAK_LOG: 5
+    STRIPPED_SPRUCE_LOG: 5
+    STRIPPED_BIRCH_LOG: 5
+    STRIPPED_JUNGLE_LOG: 5
+    STRIPPED_ACACIA_LOG: 5
+    STRIPPED_DARK_OAK_LOG: 5
+    STRIPPED_MANGROVE_LOG: 5
+    STRIPPED_WARPED_STEM: 7
+    STRIPPED_CRIMSON_STEM: 7
+    STRIPPED_OAK_WOOD: 7
+    STRIPPED_SPRUCE_WOOD: 7
+    STRIPPED_BIRCH_WOOD: 7
+    STRIPPED_JUNGLE_WOOD: 7
+    STRIPPED_ACACIA_WOOD: 7
+    STRIPPED_DARK_OAK_WOOD: 7
+    STRIPPED_MANGROVE_WOOD: 7
+    STRIPPED_CHERRY_WOOD: 7
+    STRIPPED_WARPED_HYPHAE: 10
+    STRIPPED_CRIMSON_HYPHAE: 10
+  woodcutting_break:
+    OAK_LOG: 10
+    SPRUCE_LOG: 10
+    BIRCH_LOG: 10
+    JUNGLE_LOG: 10
+    ACACIA_LOG: 10
+    DARK_OAK_LOG: 10
+    MANGROVE_LOG: 10
+    WARPED_STEM: 14
+    CRIMSON_STEM: 14
+    OAK_WOOD: 14
+    SPRUCE_WOOD: 14
+    BIRCH_WOOD: 14
+    JUNGLE_WOOD: 14
+    ACACIA_WOOD: 14
+    DARK_OAK_WOOD: 14
+    MANGROVE_ROOTS: 14
+    CHERRY_WOOD: 14
+    MANGROVE_WOOD: 14
+    WARPED_HYPHAE: 20
+    CRIMSON_HYPHAE: 20
+
+special_perks: []
+
+commands: []
+
+messages:
+  - '<lang.skill-level-up-landscaping>'
+
+leveling_perks:
+  woodcutting_woodcuttingspeedbonus_add: 0.005
+  woodcutting_woodcuttingdrops_add: 0.01
+
+starting_coordinates: '3,8' # The coordinates in the skill tree the player sees first when switching to the skill tree
+
+perks:
+  woodcutting_perk_1:
+    icon: WOODEN_AXE
+    coords: "3,8"
+    name: "<lang.woodcutting_perk_1_name>"
+    description: "<lang.woodcutting_perk_1_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      woodcutting_woodcuttingspeedbonus_add: 0.1
+      woodcutting_blockexperiencerate_add: 0.1
+    messages:
+      - "<lang.woodcutting_perk_1_messages>"
+    custom_model_data_unlockable: -1
+    custom_model_data_unlocked: -1
+    custom_model_data_visible: -1
+  woodcutting_perk_2:
+    icon: GOLDEN_APPLE
+    coords: "3,6"
+    name: "<lang.woodcutting_perk_2_name>"
+    description: "<lang.woodcutting_perk_2_description>"
+    cost: 1
+    hidden: false
+    required_lv: 20
+    perk_rewards:
+      woodcutting_blockexperiencerate_add: 0.1
+      woodcutting_woodcuttingluck_add: 10
+    messages:
+      - "<lang.woodcutting_perk_2_messages>"
+    requireperk_all:
+      - woodcutting_perk_1
+    connection_line:
+      '1':
+        position: '3,7'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  woodcutting_perk_3:
+    icon: STONE_AXE
+    coords: "3,4"
+    name: "<lang.woodcutting_perk_3_name>"
+    description: "<lang.woodcutting_perk_3_description>"
+    cost: 1
+    hidden: false
+    required_lv: 40
+    perk_rewards:
+      woodcutting_treecapitatorunlocked_set: true
+      woodcutting_treecapitatorcooldown_add: 200
+      woodcutting_treecapitatorlimit_add: 8
+      woodcutting_treecapitatorblocks_add_all: 0
+    messages:
+      - "<lang.woodcutting_perk_3_messages>"
+    connection_line:
+      '1':
+        position: '3,5'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+    requireperk_all:
+      - woodcutting_perk_2
+  woodcutting_perk_4:
+    icon: OAK_SAPLING
+    coords: "3,2"
+    name: "<lang.woodcutting_perk_4_name>"
+    description: "<lang.woodcutting_perk_4_description>"
+    cost: 1
+    hidden: false
+    required_lv: 60
+    perk_rewards:
+      woodcutting_blockexperiencerate_add: 0.3
+      woodcutting_woodcuttingspeedbonus_add: 0.1
+      woodcutting_instantgrowthrate_add: 2
+    messages:
+      - "<lang.woodcutting_perk_4_messages>"
+    connection_line:
+      '1':
+        position: '3,3'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+    requireperk_all:
+      - woodcutting_perk_3
+  woodcutting_perk_5:
+    icon: GOLDEN_APPLE
+    custom_model_data_unlockable: 1998270
+    custom_model_data_unlocked: 1998270
+    custom_model_data_visible: 1998270
+    coords: "3,0"
+    name: "<lang.woodcutting_perk_5_name>"
+    description: "<lang.woodcutting_perk_5_description>"
+    cost: 1
+    hidden: false
+    required_lv: 80
+    perk_rewards:
+      woodcutting_woodcuttingluck_add: 10
+    messages:
+      - "<lang.woodcutting_perk_5_messages>"
+    requireperk_all:
+      - woodcutting_perk_4
+    connection_line:
+      '1':
+        position: '3,1'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  woodcutting_perk_carpentry_a:
+    icon: OAK_LOG
+    coords: "1,4"
+    name: "<lang.woodcutting_perk_carpentry_a_name>"
+    description: "<lang.woodcutting_perk_carpentry_a_description>"
+    cost: 1
+    hidden: false
+    required_lv: 50
+    perk_rewards:
+      recipes_unlock:
+        - planks_oak_6
+        - planks_birch_6
+        - planks_spruce_6
+        - planks_acacia_6
+        - planks_jungle_6
+        - planks_dark_oak_6
+        - planks_cherry_6
+        - planks_crimson_6
+        - planks_warped_6
+        - sticks_planks_8
+        - sticks_logs_24
+    messages:
+      - "<lang.woodcutting_perk_carpentry_a_messages>"
+    requireperk_all:
+      - woodcutting_perk_3
+    connection_line:
+      '1':
+        position: '2,4'
+        locked: GRAY_DYE:1172701
+        unlockable: ORANGE_DYE:1172801
+        unlocked: LIME_DYE:1172901
+  woodcutting_perk_carpentry_b:
+    icon: OAK_STAIRS
+    coords: "0,3"
+    name: "<lang.woodcutting_perk_carpentry_b_name>"
+    description: "<lang.woodcutting_perk_carpentry_b_description>"
+    cost: 1
+    hidden: false
+    required_lv: 70
+    perk_rewards:
+      recipes_unlock:
+        - stairs_oak_8
+        - stairs_birch_8
+        - stairs_spruce_8
+        - stairs_acacia_8
+        - stairs_jungle_8
+        - stairs_dark_oak_8
+        - stairs_cherry_8
+        - stairs_crimson_8
+        - stairs_warped_8
+        - fences_oak_6
+        - fences_birch_6
+        - fences_spruce_6
+        - fences_acacia_6
+        - fences_jungle_6
+        - fences_dark_oak_6
+        - fences_cherry_6
+        - fences_crimson_6
+        - fences_warped_6
+        - fence_gates_oak_4
+        - fence_gates_birch_4
+        - fence_gates_spruce_4
+        - fence_gates_acacia_4
+        - fence_gates_jungle_4
+        - fence_gates_dark_oak_4
+        - fence_gates_cherry_4
+        - fence_gates_crimson_4
+        - fence_gates_warped_4
+        - doors_oak_6
+        - doors_birch_6
+        - doors_spruce_6
+        - doors_acacia_6
+        - doors_jungle_6
+        - doors_dark_oak_6
+        - doors_cherry_6
+        - doors_crimson_6
+        - doors_warped_6
+        - trap_doors_oak_8
+        - trap_doors_birch_8
+        - trap_doors_spruce_8
+        - trap_doors_acacia_8
+        - trap_doors_jungle_8
+        - trap_doors_dark_oak_8
+        - trap_doors_cherry_8
+        - trap_doors_crimson_8
+        - trap_doors_warped_8
+        - signs_oak_12
+        - signs_birch_12
+        - signs_spruce_12
+        - signs_acacia_12
+        - signs_jungle_12
+        - signs_dark_oak_12
+        - signs_cherry_12
+        - signs_crimson_12
+        - signs_warped_12
+    messages:
+      - "<lang.woodcutting_perk_carpentry_b_messages>"
+    requireperk_all:
+      - woodcutting_perk_carpentry_a
+    connection_line:
+      '1':
+        position: '0,4'
+        locked: GRAY_DYE:1172702
+        unlockable: ORANGE_DYE:1172802
+        unlocked: LIME_DYE:1172902
+  woodcutting_perk_capitator_a:
+    icon: IRON_AXE
+    coords: "5,4"
+    name: "<lang.woodcutting_perk_capitator_a_name>"
+    description: "<lang.woodcutting_perk_capitator_a_description>"
+    cost: 1
+    hidden: false
+    required_lv: 50
+    perk_rewards:
+      woodcutting_treecapitatorcooldown_add: -60
+      woodcutting_treecapitatorlimit_add: 24
+    messages:
+      - "<lang.woodcutting_perk_capitator_a_messages>"
+    connection_line:
+      '1':
+        position: '4,4'
+        locked: GRAY_DYE:1172701
+        unlockable: ORANGE_DYE:1172801
+        unlocked: LIME_DYE:1172901
+    requireperk_all:
+      - woodcutting_perk_3
+  woodcutting_perk_capitator_b:
+    icon: DIAMOND_AXE
+    coords: "6,3"
+    name: "<lang.woodcutting_perk_capitator_b_name>"
+    description: "<lang.woodcutting_perk_capitator_b_description>"
+    cost: 1
+    hidden: false
+    required_lv: 70
+    perk_rewards:
+      woodcutting_treecapitatorcooldown_add: -80
+      woodcutting_treecapitatorlimit_add: 96
+    messages:
+      - "<lang.woodcutting_perk_capitator_b_messages>"
+    connection_line:
+      '1':
+        position: '6,4'
+        locked: GRAY_DYE:1172704
+        unlockable: ORANGE_DYE:1172804
+        unlocked: LIME_DYE:1172904
+    requireperk_all:
+      - woodcutting_perk_capitator_a

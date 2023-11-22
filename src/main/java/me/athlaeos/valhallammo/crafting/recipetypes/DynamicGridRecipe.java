@@ -41,6 +41,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     private int tinkerGridIndex = -1;
     private int toolIndex = -1;
     private boolean shapeless = false;
+    private boolean hiddenFromBook = false;
     private List<DynamicItemModifier> modifiers = new ArrayList<>();
     private boolean unlockedForEveryone = false;
     private ToolRequirement toolRequirement = new ToolRequirement(ToolRequirementType.NOT_REQUIRED, -1);
@@ -88,6 +89,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     public Collection<String> getValidations() {return validations;}
     public String getDescription() { return description; }
     public String getDisplayName() { return displayName; }
+    public void setHiddenFromBook(boolean hiddenFromBook) { this.hiddenFromBook = hiddenFromBook; }
 
     public void setDisplayName(String displayName) { this.displayName = displayName; }
     public void setDescription(String description) { this.description = description; }
@@ -105,6 +107,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     public void setTinker(boolean tinker) { this.tinker = tinker; }
     public void setToolIndex(int toolIndex) { this.toolIndex = toolIndex; }
     public void setValidations(Collection<String> validations) {this.validations = validations;}
+    public boolean isHiddenFromBook() { return hiddenFromBook; }
 
     public ShapelessRecipe getShapelessRecipe(){
         if (!shapeless || this.items.isEmpty()) return null;

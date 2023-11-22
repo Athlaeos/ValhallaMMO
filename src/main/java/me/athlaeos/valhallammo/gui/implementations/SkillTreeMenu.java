@@ -58,10 +58,6 @@ public class SkillTreeMenu extends Menu {
     private final String perk_requirement_status_unlocked = TranslationManager.getTranslation("perk_requirement_status_unlocked");
     private final String perk_requirement_status_permanently_locked = TranslationManager.getTranslation("perk_requirement_status_permanently_locked");
     private final String perk_requirement_status_fake_unlocked = TranslationManager.getTranslation("perk_requirement_status_fake_unlocked");
-    private static int configInt(String key){
-        return ValhallaMMO.getPluginConfig().getInt(key);
-    }
-
 
     public SkillTreeMenu(PlayerMenuUtility playerMenuUtility) {
         super(playerMenuUtility);
@@ -95,6 +91,8 @@ public class SkillTreeMenu extends Menu {
         return 54;
     }
 
+    private String perkConfirmation = null;
+
     @Override
     public void handleMenu(InventoryClickEvent e) {
         e.setCancelled(true);
@@ -116,6 +114,7 @@ public class SkillTreeMenu extends Menu {
             if (x != x2 || y != y2) {
                 // navigational buttons were clicked, so nothing else needs to run
                 setMenuItems();
+                perkConfirmation = null;
                 return;
             }
 
@@ -137,20 +136,23 @@ public class SkillTreeMenu extends Menu {
                     Perk p = PerkRegistry.getPerk(id);
                     if (p != null){
                         if (p.canUnlock(target)){
-                            // persist perk as unlocked
-                            PowerProfile account = ProfileRegistry.getPersistentProfile(target, PowerProfile.class);
+                            if (perkConfirmation != null && perkConfirmation.equals(p.getName())){
+                                perkConfirmation = null;
+                                // persist perk as unlocked
+                                PowerProfile account = ProfileRegistry.getPersistentProfile(target, PowerProfile.class);
 
-                            Collection<String> perks = account.getUnlockedPerks();
-                            perks.add(p.getName());
-                            account.setUnlockedPerks(perks);
+                                Collection<String> perks = account.getUnlockedPerks();
+                                perks.add(p.getName());
+                                account.setUnlockedPerks(perks);
 
-                            ProfileRegistry.setPersistentProfile(target, account, PowerProfile.class);
+                                ProfileRegistry.setPersistentProfile(target, account, PowerProfile.class);
 
-                            // execute perk's rewards
-                            p.execute(target);
+                                // execute perk's rewards
+                                p.execute(target);
 
-                            // remove resources
-                            for (ResourceExpense expense : p.getExpenses()) expense.purchase(target, true);
+                                // remove resources
+                                for (ResourceExpense expense : p.getExpenses()) expense.purchase(target, true);
+                            } else perkConfirmation = p.getName();
                         } else {
                             for (ResourceExpense expense : p.getExpenses()){
                                 if (!expense.canPurchase(target)) playerMenuUtility.getOwner().sendMessage(Utils.chat(expense.getInsufficientFundsMessage()));
@@ -159,7 +161,7 @@ public class SkillTreeMenu extends Menu {
                         skillTrees.put(selectedSkill.getType(), getSkillTree(selectedSkill));
                     }
                 }
-            }
+            } else perkConfirmation = null;
         }
         setMenuItems();
     }
@@ -222,6 +224,11 @@ public class SkillTreeMenu extends Menu {
                 Skill s = SkillRegistry.getSkill(storedType);
                 if (s != null) {
                     PowerProfile acc = ProfileRegistry.getMergedProfile(target, PowerProfile.class);
+                    meta.setDisplayName(Utils.chat(s.getDisplayName() + (acc.getNewGamePlus() > 0 ?
+                            TranslationManager.getTranslation("prestige_level_format")
+                                    .replace("%prestige_roman%", StringUtils.toRoman(acc.getNewGamePlus())
+                                            .replace("%prestige_numeric%", String.valueOf(acc.getNewGamePlus()))) :
+                            "")));
 
                     Profile p = ProfileRegistry.getPersistentProfile(target, s.getProfileType());
                     double expRequired = s.expForLevel(p.getLevel() + 1);
@@ -232,7 +239,8 @@ public class SkillTreeMenu extends Menu {
                                 .replace("%exp_current%", String.format("%.2f", p.getEXP()))
                                 .replace("%exp_next%", (expRequired < 0) ? TranslationManager.getTranslation("max_level") : String.format("%.2f", expRequired))
                                 .replace("%exp_total%", String.format("%.2f", p.getTotalEXP()))
-                                .replace("%skillpoints%", "" + (acc.getSpendableSkillPoints() - acc.getSpentSkillPoints()))));
+                                .replace("%prestigepoints%", String.valueOf((acc.getSpendablePrestigePoints() - acc.getSpentPrestigePoints())))
+                                .replace("%skillpoints%", String.valueOf((acc.getSpendableSkillPoints() - acc.getSpentSkillPoints())))));
                     }
                     meta.setLore(lore);
                     ItemUtils.setItemMeta(i, meta);
@@ -311,13 +319,10 @@ public class SkillTreeMenu extends Menu {
         perks.sort(Comparator.comparingInt(Perk::getLevelRequirement));
         for (Perk p : perks){
             if ((!p.isHiddenUntilRequirementsMet()) || p.shouldBeVisible(target) || p.hasUnlocked(target)){
-                ItemStack perkIcon = new ItemBuilder(p.getIcon())
-                        .name(p.getDisplayName())
-                        .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS)
-                        .get();
+                ItemBuilder perkIcon = new ItemBuilder(p.getIcon())
+                        .name(perkConfirmation != null && perkConfirmation.equals(p.getName()) ? TranslationManager.getTranslation("skilltree_perk_confirmation").replace("%perk%", p.getDisplayName()) : p.getDisplayName())
+                        .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS);
 
-                ItemMeta perkMeta = ItemUtils.getItemMeta(perkIcon);
-                if (perkMeta == null) continue;
                 List<String> iconLore = new ArrayList<>();
 
                 int unlockedStatus = p.hasPermanentlyLocked(target) ? 2 : // permanently locked
@@ -397,25 +402,21 @@ public class SkillTreeMenu extends Menu {
                         iconLore.add(line);
                     }
                 }
-                perkMeta.setLore(iconLore);
+                perkIcon.lore(iconLore);
 
                 boolean unlocked = p.hasUnlocked(target);
-                boolean visible = p.shouldBeVisible(target);
-                int data = unlocked ? p.getCustomModelDataUnlocked() : visible ? p.getCustomModelDataUnlockable() : p.getCustomModelDataVisible();
-                if (data > 0) perkMeta.setCustomModelData(0);
+                boolean unlockable = p.canUnlock(target);
+                int data = unlocked ? p.getCustomModelDataUnlocked() : unlockable ? p.getCustomModelDataUnlockable() : p.getCustomModelDataVisible();
+                if (data > 0) perkIcon.data(data);
 
-                perkMeta.getPersistentDataContainer().set(buttonKey, PersistentDataType.STRING, p.getName());
-                perkMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE);
-                ItemUtils.setItemMeta(perkIcon, perkMeta);
-                skillTree[p.getY() + 2 + yOff][p.getX() + 4 + xOff] = perkIcon;
+                perkIcon.stringTag(buttonKey, p.getName());
+                skillTree[p.getY() + 2 + yOff][p.getX() + 4 + xOff] = perkIcon.get();
 
                 for (PerkConnectionIcon i : p.getConnectionLine()) {
-                    ItemStack icon = unlocked ?
-                            new ItemBuilder(i.getUnlockedMaterial()).data(i.getUnlockedData()).name("").get()
-                            : visible ?
-                            new ItemBuilder(i.getUnlockableMaterial()).data(i.getUnlockableData()).name("").get() :
-                            new ItemBuilder(i.getLockedMaterial()).data(i.getLockedData()).name("").get();
-                    skillTree[p.getY() + 2 + yOff][p.getX() + 4 + xOff] = icon;
+                    int d = unlocked ? i.getUnlockedData() : unlockable ? i.getUnlockableData() : i.getLockedData();
+                    Material m = unlocked ? i.getUnlockedMaterial() : unlockable ? i.getUnlockableMaterial() : i.getLockedMaterial();
+                    ItemStack icon = new ItemBuilder(m).data(d).name("&r").get();
+                    skillTree[i.getY() + 2 + yOff][i.getX() + 4 + xOff] = icon;
                 }
             }
         }

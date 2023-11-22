@@ -3,9 +3,11 @@ package me.athlaeos.valhallammo.nms;
 import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
 import net.md_5.bungee.api.chat.BaseComponent;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -24,4 +26,5 @@ public interface NMS extends Listener {
     Sound blockSound(Block b);
 
     void setBookContents(ItemStack book, List<BaseComponent[]> pages);
+
 }

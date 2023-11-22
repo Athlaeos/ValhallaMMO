@@ -1,8 +1,11 @@
 package me.athlaeos.valhallammo.playerstats;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.entities.EntityClassification;
+import me.athlaeos.valhallammo.entities.MonsterScalingManager;
 import me.athlaeos.valhallammo.item.WeightClass;
 import me.athlaeos.valhallammo.listeners.MovementListener;
+import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.playerstats.statsources.*;
@@ -10,6 +13,7 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -33,7 +37,7 @@ public class AccumulativeStatManager {
         register("TOTAL_HEAVY_ARMOR", new TotalHeavyArmorSource());
         register("HEAVY_ARMOR", new AttributeDefenderSource("GENERIC_ARMOR").weight(WeightClass.HEAVY).penalty("armor"), new PotionEffectSource("HEAVY_ARMOR"));
         register("HEAVY_ARMOR_MULTIPLIER");
-        register("TOTAL_WEIGHTLESS_ARMOR", new TotalWeightlessArmorSource());
+        register("TOTAL_WEIGHTLESS_ARMOR", new SetBonusSource("GENERIC_ARMOR"), new TotalWeightlessArmorSource());
         register("WEIGHTLESS_ARMOR", new AttributeDefenderSource("GENERIC_ARMOR").weight(WeightClass.WEIGHTLESS).penalty("armor"), new ProfileStatSource(PowerProfile.class, "armorBonus"), new GlobalBuffSource("armor_bonus"), new PotionEffectSource("ARMOR_FLAT"));
         register("ARMOR_MULTIPLIER_BONUS", new ProfileStatSource(PowerProfile.class, "armorMultiplierBonus"), new GlobalBuffSource("fraction_armor_bonus"), new PotionEffectSource("ARMOR_FRACTION"));
         register("TOUGHNESS", new AttributeDefenderSource("GENERIC_ARMOR_TOUGHNESS").penalty("armor"), new SourceSource("TOUGHNESS_BONUS"));
@@ -45,20 +49,21 @@ public class AccumulativeStatManager {
         registerOffensive("ARMOR_FRACTION_IGNORED", new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "penetrationFraction", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "penetrationFraction", WeightClass.LIGHT), new GlobalBuffSource("fraction_armor_penetration"), new AttributeAttackerSource("ARMOR_PENETRATION_FRACTION").penalty("attribute"), new PotionEffectAttackerSource("ARMOR_PENETRATION_FRACTION"));
 
         // vanilla non-customized attributes (handled in MovementListener in the form of unique attributes), equipment does not need to be scanned
-        register("HEALTH_BONUS", new ProfileStatSource(PowerProfile.class, "healthBonus"), new GlobalBuffSource("health_bonus"), new PotionEffectSource("MAX_HEALTH_FLAT"));
+        register("HEALTH_BONUS", new SetBonusSource("GENERIC_MAX_HEALTH"), new ProfileStatSource(PowerProfile.class, "healthBonus"), new GlobalBuffSource("health_bonus"), new PotionEffectSource("MAX_HEALTH_FLAT"));
         register("HEALTH_MULTIPLIER_BONUS", new ProfileStatSource(PowerProfile.class, "healthMultiplier"), new GlobalBuffSource("fraction_health_bonus"), new PotionEffectSource("MAX_HEALTH_FRACTION"));
-        register("MOVEMENT_SPEED_BONUS", new ProfileStatSource(PowerProfile.class, "movementSpeedBonus"), new GlobalBuffSource("movement_speed"), new PotionEffectSource("MOVEMENT_SPEED"));
-        register("KNOCKBACK_RESISTANCE", new ResistanceArmorWeightClassSource("knockback_resistance"), new ProfileStatSource(PowerProfile.class, "knockbackResistanceBonus"), new GlobalBuffSource("knockback_resistance"), new PotionEffectSource("KNOCKBACK_RESISTANCE"));
-        register("TOUGHNESS_BONUS", new ProfileStatSource(PowerProfile.class, "toughnessBonus"), new GlobalBuffSource("toughness_bonus"), new PotionEffectSource("ARMOR_TOUGHNESS_FLAT"));
-        registerOffensive("ATTACK_DAMAGE_BONUS", new ProfileStatSource(PowerProfile.class, "attackDamageBonus"), new GlobalBuffSource("attack_damage_bonus"), new PotionEffectAttackerSource("EXTRA_ATTACK_DAMAGE"));
-        register("ATTACK_SPEED_BONUS", new ProfileStatWeightSource(HeavyWeaponsProfile.class, "attackSpeedMultiplier", WeightClass.HEAVY, false), new ProfileStatWeightSource(LightWeaponsProfile.class, "attackSpeedMultiplier", WeightClass.LIGHT, false), new MainHandPenalty("speed"), new ProfileStatSource(PowerProfile.class, "attackSpeedBonus"), new GlobalBuffSource("fraction_attack_speed_bonus"), new PotionEffectSource("ATTACK_SPEED"));
-        register("LUCK_BONUS", new ProfileStatSource(PowerProfile.class, "luckBonus"), new GlobalBuffSource("luck_bonus"), new PotionEffectSource("CUSTOM_LUCK"));
+        register("MOVEMENT_SPEED_BONUS", new SetBonusSource("GENERIC_MOVEMENT_SPEED"), new ProfileStatSource(PowerProfile.class, "movementSpeedBonus"), new GlobalBuffSource("movement_speed"), new PotionEffectSource("MOVEMENT_SPEED"));
+        register("KNOCKBACK_RESISTANCE", new SetBonusSource("GENERIC_KNOCKBACK_RESISTANCE"), new ResistanceArmorWeightClassSource("knockback_resistance"), new ProfileStatSource(PowerProfile.class, "knockbackResistanceBonus"), new GlobalBuffSource("knockback_resistance"), new PotionEffectSource("KNOCKBACK_RESISTANCE"));
+        register("TOUGHNESS_BONUS", new SetBonusSource("GENERIC_ARMOR_TOUGHNESS"), new ProfileStatSource(PowerProfile.class, "toughnessBonus"), new GlobalBuffSource("toughness_bonus"), new PotionEffectSource("ARMOR_TOUGHNESS_FLAT"));
+        registerOffensive("ATTACK_DAMAGE_BONUS", new SetBonusSource("GENERIC_ATTACK_DAMAGE"), new ProfileStatSource(PowerProfile.class, "attackDamageBonus"), new GlobalBuffSource("attack_damage_bonus"), new PotionEffectAttackerSource("EXTRA_ATTACK_DAMAGE"));
+        register("ATTACK_SPEED_BONUS", new SetBonusSource("GENERIC_ATTACK_SPEED"), new ProfileStatWeightSource(HeavyWeaponsProfile.class, "attackSpeedMultiplier", WeightClass.HEAVY, false), new ProfileStatWeightSource(LightWeaponsProfile.class, "attackSpeedMultiplier", WeightClass.LIGHT, false), new MainHandPenalty("speed"), new ProfileStatSource(PowerProfile.class, "attackSpeedBonus"), new GlobalBuffSource("fraction_attack_speed_bonus"), new PotionEffectSource("ATTACK_SPEED"));
+        register("LUCK_BONUS", new SetBonusSource("GENERIC_LUCK"), new ProfileStatSource(PowerProfile.class, "luckBonus"), new GlobalBuffSource("luck_bonus"), new PotionEffectSource("CUSTOM_LUCK"));
 
         // custom damage types and multipliers
-        registerOffensive("DAMAGE_DEALT", new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "damageMultiplier", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "damageMultiplier", WeightClass.LIGHT), new AttributeAttackerSource("DAMAGE_ALL").penalty("damage"), new ProfileStatSource(PowerProfile.class, "attackDamageMultiplier"), new GlobalBuffSource("fraction_damage_bonus"), new PotionEffectAttackerSource("DAMAGE_ALL"));
+        registerOffensive("DAMAGE_DEALT", new ProfileStatAttackerVictimClassSource(FarmingProfile.class, "butcheryDamageMultiplier", EntityClassification.ANIMAL), new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "damageMultiplier", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "damageMultiplier", WeightClass.LIGHT), new AttributeAttackerSource("DAMAGE_ALL").penalty("damage"), new ProfileStatSource(PowerProfile.class, "attackDamageMultiplier"), new GlobalBuffSource("fraction_damage_bonus"), new PotionEffectAttackerSource("DAMAGE_ALL"));
         registerOffensive("MELEE_DAMAGE_DEALT", new AttributeAttackerSource("DAMAGE_MELEE").penalty("damage"), new ProfileStatSource(PowerProfile.class, "meleeAttackDamageMultiplier"), new GlobalBuffSource("fraction_melee_damage_bonus"), new PotionEffectAttackerSource("DAMAGE_MELEE"));
         registerOffensive("RANGED_DAMAGE_DEALT", new ProfileStatAttackerHeldItemSource(ArcheryProfile.class, "bowDamageMultiplier", Material.BOW), new ProfileStatAttackerHeldItemSource(ArcheryProfile.class, "crossbowDamageMultiplier", Material.CROSSBOW), new AttributeAttackerSource("DAMAGE_RANGED").penalty("damage"), new ProfileStatSource(PowerProfile.class, "rangedAttackDamageMultiplier"), new GlobalBuffSource("fraction_ranged_damage_bonus"), new PotionEffectAttackerSource("DAMAGE_RANGED"));
         registerOffensive("UNARMED_DAMAGE_DEALT", new AttributeAttackerSource("DAMAGE_UNARMED").penalty("damage"), new ProfileStatSource(PowerProfile.class, "unarmedAttackDamageMultiplier"), new GlobalBuffSource("fraction_unarmed_damage_bonus"), new PotionEffectAttackerSource("DAMAGE_UNARMED"));
+        registerOffensive("VELOCITY_DAMAGE_BONUS", new AttributeAttackerSource("VELOCITY_DAMAGE"), new PotionEffectAttackerSource("VELOCITY_DAMAGE"));
         registerOffensive("LIGHT_ARMOR_DAMAGE_BONUS", new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "damageToLightArmorMultiplier", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "damageToLightArmorMultiplier", WeightClass.LIGHT), new AttributeAttackerSource("LIGHT_ARMOR_DAMAGE"), new ProfileStatSource(LightWeaponsProfile.class, "damageToLightArmorMultiplier"), new ProfileStatSource(HeavyWeaponsProfile.class, "damageToLightArmorMultiplier"));
         registerOffensive("HEAVY_ARMOR_DAMAGE_BONUS", new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "damageToHeavyArmorMultiplier", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "damageToHeavyArmorMultiplier", WeightClass.LIGHT), new AttributeAttackerSource("HEAVY_ARMOR_DAMAGE"), new ProfileStatSource(LightWeaponsProfile.class, "damageToHeavyArmorMultiplier"), new ProfileStatSource(HeavyWeaponsProfile.class, "damageToHeavyArmorMultiplier"));
         registerOffensive("FIRE_DAMAGE_BONUS", new AttributeAttackerSource("EXTRA_FIRE_DAMAGE").penalty("damage"), new ProfileStatSource(PowerProfile.class, "fireDamageBonus"), new PotionEffectAttackerSource("EXTRA_FIRE_DAMAGE"));
@@ -136,32 +141,33 @@ public class AccumulativeStatManager {
         register("COOKING_SPEED_BONUS", new AttributeSource("COOKING_SPEED").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "cookingSpeedBonus"), new GlobalBuffSource("cooking_time_reduction"), new PotionEffectSource("COOKING_SPEED"));
         register("AMMO_SAVE_CHANCE", new ProfileStatSource(ArcheryProfile.class, "ammoSaveChance"), new AttributeSource("AMMO_CONSUMPTION", true));
         register("DURABILITY_BONUS", new AttributeSource("DURABILITY"), new ProfileStatSource(PowerProfile.class, "durabilityMultiplier"), new GlobalBuffSource("fraction_durability_bonus"), new PotionEffectSource("DURABILITY"));
-        register("ENTITY_DROPS", new ProfileStatWeightSource(HeavyWeaponsProfile.class, "dropsMultiplier", WeightClass.HEAVY, false), new ProfileStatWeightSource(LightWeaponsProfile.class, "dropsMultiplier", WeightClass.LIGHT, false), new AttributeSource("ENTITY_DROPS").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "entityDropMultiplier"), new GlobalBuffSource("entity_drops"), new PotionEffectSource("ENTITY_DROPS")); // TODO impl
-        register("ENTITY_DROP_LUCK", new ProfileStatWeightSource(HeavyWeaponsProfile.class, "rareDropsMultiplier", WeightClass.HEAVY, false), new ProfileStatWeightSource(LightWeaponsProfile.class, "rareDropsMultiplier", WeightClass.LIGHT, false), new AttributeSource("ENTITY_RARE_DROPS").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "entityRareDropMultiplier"), new GlobalBuffSource("entity_rare_drops"), new PotionEffectSource("ENTITY_RARE_DROPS")); // TODO impl
-        register("JUMP_HEIGHT_MULTIPLIER", new AttributeSource("JUMP_HEIGHT").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "jumpHeightBonus"), new PotionEffectSource("JUMP_HEIGHT")); // TODO impl
-        register("JUMPS_BONUS", new AttributeSource("JUMPS").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "jumpBonus"), new PotionEffectSource("JUMPS")); // TODO impl
+        register("ENTITY_DROPS", new ProfileStatWeightSource(HeavyWeaponsProfile.class, "dropsMultiplier", WeightClass.HEAVY, false), new ProfileStatWeightSource(LightWeaponsProfile.class, "dropsMultiplier", WeightClass.LIGHT, false), new AttributeSource("ENTITY_DROPS").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "entityDropMultiplier"), new GlobalBuffSource("entity_drops"), new PotionEffectSource("ENTITY_DROPS"));
+        register("ENTITY_DROP_LUCK", new ProfileStatAttackerVictimClassSource(FarmingProfile.class, "butcheryLuck", EntityClassification.ANIMAL), new ProfileStatWeightSource(HeavyWeaponsProfile.class, "rareDropsMultiplier", WeightClass.HEAVY, false), new ProfileStatWeightSource(LightWeaponsProfile.class, "rareDropsMultiplier", WeightClass.LIGHT, false), new AttributeSource("ENTITY_RARE_DROPS").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "entityRareDropMultiplier"), new GlobalBuffSource("entity_rare_drops"), new PotionEffectSource("ENTITY_RARE_DROPS"));
+        register("JUMP_HEIGHT_MULTIPLIER", new AttributeSource("JUMP_HEIGHT").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "jumpHeightBonus"), new PotionEffectSource("JUMP_HEIGHT"));
+        register("JUMPS_BONUS", new AttributeSource("JUMPS").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "jumpBonus"), new PotionEffectSource("JUMPS"));
         register("SNEAK_MOVEMENT_SPEED_BONUS", new AttributeSource("SNEAK_MOVEMENT_SPEED_BONUS").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "sneakMovementSpeedBonus"), new GlobalBuffSource("movement_sneak_speed"), new PotionEffectSource("SNEAK_MOVEMENT_SPEED_BONUS"));
         register("SPRINT_MOVEMENT_SPEED_BONUS", new AttributeSource("SPRINT_MOVEMENT_SPEED_BONUS").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "sprintMovementSpeedBonus"), new GlobalBuffSource("movement_sprint_speed"), new PotionEffectSource("SPRINT_MOVEMENT_SPEED_BONUS"));
         register("DIG_SPEED", new AttributeSource("DIG_SPEED"), new PotionEffectSource("DIG_SPEED"), new DrillingMiningSpeedSource());
-        register("BLOCK_SPECIFIC_DIG_SPEED", new MiningDrillingActiveSource(), new MiningStatSource("miningSpeedBonus"), new MiningUnbreakableBlocksSource()); // should never be cached as this stat is dependent on the block currently being looked at
+        register("BLOCK_SPECIFIC_DIG_SPEED", new DiggingStatSource("diggingSpeedBonus"), new WoodcuttingStatSource("woodcuttingSpeedBonus"), new MiningDrillingActiveSource(), new MiningStatSource("miningSpeedBonus"), new MiningUnbreakableBlocksSource()); // should never be cached as this stat is dependent on the block currently being looked at
         register("FISHING_LUCK", new AttributeSource("FISHING_LUCK"), new PotionEffectSource("FISHING_LUCK"), new FishingLuckLotSSource(), new FishingLuckLuckSource(), new FishingLuckFullMoonSource(), new FishingLuckNewMoonSource());
+        register("FISHING_SPEED_MULTIPLIER", new AttributeSource("FISHING_LUCK"), new PotionEffectSource("FISHING_LUCK"), new FishingLuckLotSSource(), new FishingLuckLuckSource(), new FishingLuckFullMoonSource(), new FishingLuckNewMoonSource());
         register("EXPLOSION_RADIUS_MULTIPLIER", new ProfileStatSource(MiningProfile.class, "tntBlastRadius"), new AttributeSource("EXPLOSION_POWER"), new PotionEffectSource("EXPLOSION_POWER"), new GlobalBuffSource("blast_mining_radius_multiplier"));
 
         // food related
-        register("FOOD_BONUS_MAGICAL");
-        register("FOOD_BONUS_MEAT");
-        register("FOOD_BONUS_SEAFOOD");
-        register("FOOD_BONUS_VEGETABLE");
-        register("FOOD_BONUS_FRUIT");
-        register("FOOD_BONUS_GRAIN");
-        register("FOOD_BONUS_DAIRY");
-        register("FOOD_BONUS_SWEET");
-        register("FOOD_BONUS_SEASONING");
-        register("FOOD_BONUS_FATS");
-        register("FOOD_BONUS_NUTS");
-        register("FOOD_BONUS_BEVERAGE");
-        register("FOOD_BONUS_ALCOHOLIC");
-        register("FOOD_BONUS_SPOILED");
+        register("FOOD_BONUS_VEGETABLE", new ProfileStatSource(PowerProfile.class, "foodBonusVegetable"));
+        register("FOOD_BONUS_SEASONING", new ProfileStatSource(PowerProfile.class, "foodBonusSeasoning"));
+        register("FOOD_BONUS_ALCOHOLIC", new ProfileStatSource(PowerProfile.class, "foodBonusAlcoholic"));
+        register("FOOD_BONUS_BEVERAGE", new ProfileStatSource(PowerProfile.class, "foodBonusBeverage"));
+        register("FOOD_BONUS_SPOILED", new ProfileStatSource(PowerProfile.class, "foodBonusSpoiled"));
+        register("FOOD_BONUS_SEAFOOD", new ProfileStatSource(PowerProfile.class, "foodBonusSeafood"));
+        register("FOOD_BONUS_MAGICAL", new ProfileStatSource(PowerProfile.class, "foodBonusMagical"));
+        register("FOOD_BONUS_SWEET", new ProfileStatSource(PowerProfile.class, "foodBonusSweet"));
+        register("FOOD_BONUS_GRAIN", new ProfileStatSource(PowerProfile.class, "foodBonusGrain"));
+        register("FOOD_BONUS_FRUIT", new ProfileStatSource(PowerProfile.class, "foodBonusFruit"));
+        register("FOOD_BONUS_NUTS", new ProfileStatSource(PowerProfile.class, "foodBonusNuts"));
+        register("FOOD_BONUS_DAIRY", new ProfileStatSource(PowerProfile.class, "foodBonusDairy"));
+        register("FOOD_BONUS_MEAT", new ProfileStatSource(PowerProfile.class, "foodBonusMeat"));
+        register("FOOD_BONUS_FATS", new ProfileStatSource(PowerProfile.class, "foodBonusFats"));
 
         // smithing stats
         register("SMITHING_QUALITY_GENERAL", new AttributeSource("SMITHING_QUALITY").penalty("attribute"), new ProfileStatSource(SmithingProfile.class, "genericCraftingSkill"), new GlobalBuffSource("smithing_quality"), new PotionEffectSource("SMITHING_QUALITY"));
@@ -230,56 +236,32 @@ public class AccumulativeStatManager {
         register("ENCHANTING_REFUND_AMOUNT", new AttributeSource("ENCHANTING_REFUND_FRACTION"), new PotionEffectSource("ENCHANTING_REFUND_FRACTION"), new ProfileStatSource(EnchantingProfile.class, "essenceRefundFraction"), new GlobalBuffSource("enchanting_exp_refund_amount"));
         register("ENCHANTING_EXP_GAIN", new ProfileStatSource(EnchantingProfile.class, "enchantingEXPMultiplier"), new GlobalBuffSource("enchanting_experience"));
 
-//        register("FARMING_BREEDING_AGE_REDUCTION", new FarmingProfileBabyAnimalAgeMultiplierSource(), new GlobalBuffSource("farming_animal_age_reduction"));
-//        register("FARMING_DAMAGE_ANIMAL_MULTIPLIER", true, new FarmingProfileAnimalDamageMultiplierSource());
-//        register("FARMING_ANIMAL_DROP_MULTIPLIER", new GlobalBuffSource("farming_animal_drop_multiplier"));
-//        register("FARMING_ANIMAL_RARE_DROP_MULTIPLIER", new FarmingProfileAnimalRareDropChanceMultiplierSource(), new GlobalBuffSource("farming_animal_rare_drop_multiplier"));
-//        register("FARMING_BREEDING_VANILLA_EXP_MULTIPLIER", new FarmingProfileBreedingVanillaEXPMultiplierSource());
-//        register("FARMING_DROP_MULTIPLIER", new FarmingProfileDropMultiplierSource(), new ArbitraryEnchantmentAmplifierSource("FARMING_EXTRA_DROPS"), new PotionExtraDropsSource(), new GlobalBuffSource("farming_drop_multiplier"));
-//        register("FARMING_VANILLA_EXP_REWARD", new FarmingProfileFarmingVanillaEXPRewardSource(), new GlobalBuffSource("farming_vanilla_exp"));
-//        register("FARMING_FISHING_REWARD_TIER", new FarmingProfileFishingRewardTierSource(), new FarmingLOTSFishingRewardTierSource(), new FarmingLuckFishingRewardTierSource(), new ArbitraryEnchantmentAmplifierSource("FARMING_FISHING_TIER"), new GlobalBuffSource("farming_fishing_tier"));
-//        register("FARMING_FISHING_TIME_MULTIPLIER", new FarmingProfileFishingTimeMultiplierSource(), new GlobalBuffSource("farming_fishing_speed_multiplier"));
-//        register("FARMING_FISHING_VANILLA_EXP_MULTIPLIER", new FarmingProfileFishingVanillaEXPMultiplierSource(), new GlobalBuffSource("farming_fishing_vanilla_exp_multiplier"));
-//        register("FARMING_HONEY_SAVE_CHANCE", new FarmingProfileHiveHoneySaveChanceSource(), new GlobalBuffSource("farming_honey_save_chance"));
-//        register("FARMING_INSTANT_GROWTH_RATE", new FarmingProfileInstantGrowthRateSource(), new GlobalBuffSource("farming_instant_growth_rate"));
-//        register("FARMING_RARE_DROP_CHANCE_MULTIPLIER", new FarmingProfileRareDropChanceMultiplierSource(), new FarmingPotionRareDropsSource(), new ArbitraryEnchantmentAmplifierSource("FARMING_RARE_DROPS"), new GlobalBuffSource("farming_rare_drop_multiplier"));
-//        register("FARMING_HUNGER_MULTIPLIER_FISH", new FarmingProfileFoodMultiplierSource(FarmingProfileFoodMultiplierSource.FoodType.FISH));
-//        register("FARMING_HUNGER_MULTIPLIER_MEAT", new FarmingProfileFoodMultiplierSource(FarmingProfileFoodMultiplierSource.FoodType.MEAT));
-//        register("FARMING_HUNGER_MULTIPLIER_VEGETARIAN", new FarmingProfileFoodMultiplierSource(FarmingProfileFoodMultiplierSource.FoodType.VEG));
-//        register("FARMING_HUNGER_MULTIPLIER_GARBAGE", new FarmingProfileFoodMultiplierSource(FarmingProfileFoodMultiplierSource.FoodType.GARBAGE));
-//        register("FARMING_HUNGER_MULTIPLIER_MAGICAL", new FarmingProfileFoodMultiplierSource(FarmingProfileFoodMultiplierSource.FoodType.MAGICAL));
-//        register("FARMING_EXP_GAIN_GENERAL", new FarmingProfileGeneralEXPSource(), new PermissionExpGainSource("FARMING"), new GlobalBuffSource("farming_experience"));
-//        register("FARMING_EXP_GAIN_BREEDING", new FarmingProfileBreedingEXPSource());
-//        register("FARMING_EXP_GAIN_FARMING", new FarmingProfileFarmingEXPSource());
-//        register("FARMING_EXP_GAIN_FISHING", new FarmingProfileFishingEXPSource());
+        register("BUTCHERY_DROP_MULTIPLIER", new ProfileStatSource(FarmingProfile.class, "butcheryDrops"), new AttributeSource("FARMING_DROPS"), new PotionEffectSource("FARMING_DROPS"), new GlobalBuffSource("butchery_drop_multiplier"));
+        register("FARMING_DROP_MULTIPLIER", new ProfileStatSource(FarmingProfile.class, "farmingDrops"), new AttributeSource("FARMING_DROPS"), new PotionEffectSource("FARMING_DROPS"), new GlobalBuffSource("farming_drop_multiplier"));
+        register("FARMING_LUCK", new ProfileStatSource(FarmingProfile.class, "farmingLuck"), new AttributeSource("FARMING_RARE_DROPS"), new PotionEffectSource("FARMING_RARE_DROPS"), new GlobalBuffSource("farming_luck"));
+        register("FARMING_EXP_GAIN", new ProfileStatSource(FarmingProfile.class, "farmingEXPMultiplier"), new GlobalBuffSource("farming_experience"));
 
-        register("MINING_DROP_MULTIPLIER", new ProfileStatSource(MiningProfile.class, "miningDrops"));
-        register("BLASTING_DROP_MULTIPLIER", new ProfileStatSource(MiningProfile.class, "blastingDrops"));
-        register("BLASTING_LUCK", new ProfileStatSource(MiningProfile.class, "blastingLuck"), new GlobalBuffSource("blasting_luck"));
-        register("MINING_LUCK", new ProfileStatSource(MiningProfile.class, "miningLuck"), new GlobalBuffSource("mining_luck"));
+        register("MINING_DROP_MULTIPLIER", new ProfileStatSource(MiningProfile.class, "miningDrops"), new AttributeSource("MINING_DROPS"), new PotionEffectSource("MINING_DROPS"), new GlobalBuffSource("mining_drop_multiplier"));
+        register("MINING_LUCK", new ProfileStatSource(MiningProfile.class, "miningLuck"), new AttributeSource("MINING_RARE_DROPS"), new PotionEffectSource("MINING_RARE_DROPS"), new GlobalBuffSource("mining_luck"));
+        register("BLASTING_DROP_MULTIPLIER", new ProfileStatSource(MiningProfile.class, "blastingDrops"), new AttributeSource("MINING_DROPS"), new PotionEffectSource("MINING_DROPS"), new GlobalBuffSource("blasting_drop_multiplier"));
+        register("BLASTING_LUCK", new ProfileStatSource(MiningProfile.class, "blastingLuck"), new AttributeSource("MINING_RARE_DROPS"), new PotionEffectSource("MINING_RARE_DROPS"), new GlobalBuffSource("blasting_luck"));
         register("MINING_EXP_GAIN", new ProfileStatSource(MiningProfile.class, "miningEXPMultiplier"), new GlobalBuffSource("mining_experience"));
 
-//        register("LANDSCAPING_DIGGING_DROP_MULTIPLIER", new ArbitraryEnchantmentAmplifierSource("DIGGING_EXTRA_DROPS"), new LandscapingProfileDiggingDropMultiplierSource(), new GlobalBuffSource("landscaping_digging_drop_multiplier"));
-//        register("LANDSCAPING_DIGGING_RARE_DROP_MULTIPLIER", new ArbitraryEnchantmentAmplifierSource("DIGGING_RARE_DROPS"), new LandscapingProfileDiggingRareDropChanceMultiplierSource(), new GlobalBuffSource("landscaping_digging_rare_drop_multiplier"));
-//        register("LANDSCAPING_WOODCUTTING_DROP_MULTIPLIER", new ArbitraryEnchantmentAmplifierSource("WOODCUTTING_EXTRA_DROPS"), new LandscapingProfileWoodcuttingDropMultiplierSource(), new GlobalBuffSource("landscaping_woodcutting_drop_multiplier"));
-//        register("LANDSCAPING_WOODCUTTING_RARE_DROP_MULTIPLIER", new ArbitraryEnchantmentAmplifierSource("WOODCUTTING_RARE_DROPS"), new LandscapingProfileWoodcuttingRareDropChanceMultiplierSource(), new GlobalBuffSource("landscaping_woodcutting_rare_drop_multiplier"));
-//        register("LANDSCAPING_WOODSTRIPPING_RARE_DROP_MULTIPLIER", new LandscapingProfileWoodstrippingRareDropChanceMultiplierSource(), new GlobalBuffSource("landscaping_woodstripping_rare_drop_multiplier"));
-//        register("LANDSCAPING_INSTANT_GROWTH_RATE", new LandscapingProfileInstantGrowthRateSource(), new GlobalBuffSource("landscaping_instant_growth_rate"));
-//        register("LANDSCAPING_PLACEMENT_REACH_BONUS", new LandscapingProfilePlaceReachBonusSource(), new GlobalBuffSource("landscaping_placement_reach"));
-//        register("LANDSCAPING_EXP_GAIN_GENERAL", new LandscapingProfileGeneralEXPSource(), new GlobalBuffSource("landscaping_experience"));
-//        register("LANDSCAPING_WOODCUTTING_VANILLA_EXP_REWARD", new LandscapingProfileWoodcuttingExperienceRateSource(), new GlobalBuffSource("landscaping_woodcutting_vanilla_exp_reward"));
-//        register("LANDSCAPING_DIGGING_VANILLA_EXP_REWARD", new LandscapingProfileDiggingExperienceRateSource(), new GlobalBuffSource("landscaping_digging_vanilla_exp_reward"));
-//        register("LANDSCAPING_EXP_GAIN_WOODCUTTING", new LandscapingProfileWoodcuttingEXPSource());
-//        register("LANDSCAPING_EXP_GAIN_WOODSTRIPPING", new LandscapingProfileWoodstrippingEXPSource());
-//        register("LANDSCAPING_EXP_GAIN_DIGGING", new LandscapingProfileDiggingEXPSource());
+        register("DIGGING_DROP_MULTIPLIER", new ProfileStatSource(DiggingProfile.class, "diggingDrops"), new AttributeSource("DIGGING_DROPS"), new PotionEffectSource("DIGGING_DROPS"), new GlobalBuffSource("digging_drop_multiplier"));
+        register("DIGGING_LUCK", new ProfileStatSource(DiggingProfile.class, "diggingLuck"), new AttributeSource("DIGGING_RARE_DROPS"), new PotionEffectSource("DIGGING_RARE_DROPS"), new GlobalBuffSource("digging_luck"));
+        register("DIGGING_EXP_GAIN", new ProfileStatSource(DiggingProfile.class, "diggingEXPMultiplier"), new GlobalBuffSource("digging_experience"));
+
+        register("WOODCUTTING_DROP_MULTIPLIER", new ProfileStatSource(WoodcuttingProfile.class, "woodcuttingDrops"), new AttributeSource("WOODCUTTING_DROPS"), new PotionEffectSource("WOODCUTTING_DROPS"), new GlobalBuffSource("woodcutting_drop_multiplier"));
+        register("WOODCUTTING_LUCK", new ProfileStatSource(WoodcuttingProfile.class, "woodcuttingLuck"), new AttributeSource("WOODCUTTING_RARE_DROPS"), new PotionEffectSource("WOODCUTTING_RARE_DROPS"), new GlobalBuffSource("woodcutting_luck"));
+        register("WOODCUTTING_EXP_GAIN", new ProfileStatSource(WoodcuttingProfile.class, "woodcuttingEXPMultiplier"), new GlobalBuffSource("woodcutting_experience"));
+
+        register("FISHING_EXP_GAIN", new ProfileStatSource(FishingProfile.class, "fishingEXPMultiplier"), new GlobalBuffSource("fishing_experience"));
 
         register("ARCHERY_EXP_GAIN", new ProfileStatSource(ArcheryProfile.class, "archeryEXPMultiplier"));
-//
-//        register("LIGHT_ARMOR_MULTIPLIER", new LightArmorProfileArmorValueMultiplierSource(), new LightArmorProfileFullArmorArmorValueBonusSource(), new ArbitraryPotionAmplifierSource("LIGHT_ARMOR_FRACTION_BONUS", false));
-//        register("LIGHT_ARMOR_EXP_GAIN", new LightArmorEXPSource());
-//
-//        register("HEAVY_ARMOR_MULTIPLIER", new HeavyArmorProfileArmorValueMultiplierSource(), new HeavyArmorProfileFullArmorArmorValueBonusSource(), new ArbitraryPotionAmplifierSource("HEAVY_ARMOR_FRACTION_BONUS", false));
-//        register("HEAVY_ARMOR_EXP_GAIN", new HeavyArmorEXPSource());
+
+        register("LIGHT_ARMOR_EXP_GAIN", new ProfileStatSource(LightArmorProfile.class, "lightArmorEXPMultiplier"));
+
+        register("HEAVY_ARMOR_EXP_GAIN", new ProfileStatSource(HeavyArmorProfile.class, "heavyArmorEXPMultiplier"));
 
         register("LIGHT_WEAPONS_EXP_GAIN", new ProfileStatSource(LightWeaponsProfile.class, "lightWeaponsEXPMultiplier"));
 
@@ -330,10 +312,13 @@ public class AccumulativeStatManager {
      * @return the combined stat number
      */
     public static double getStats(String stat, Entity e, boolean use) {
-        Collection<AccumulativeStatSource> existingSources = getStatCollector(stat).getStatSources();
+        StatCollector collector = getStatCollector(stat);
+        Collection<AccumulativeStatSource> existingSources = collector.getStatSources();
         double value = 0;
         for (AccumulativeStatSource s : existingSources){
             value += s.fetch(e, use);
+            if (!collector.isAttackerPossessive() && e instanceof LivingEntity l && !(l instanceof Player)) value += MonsterScalingManager.getStatValue(l, stat);
+            if (!collector.isAttackerPossessive() && e instanceof Player p) value += PartyManager.getCompanyStats(p, stat);
         }
         return (double) Math.round(value * 1000000d) / 1000000d; // round to 6 decimals
     }
@@ -342,27 +327,15 @@ public class AccumulativeStatManager {
      * Collects all the stats of the given stat name. For example, if 'LIGHT_GENERIC_ARMOR' is given, it will return the<br>
      * given entity's total armor points influenced by the second entity given, which would be the accumulation of<br>
      * actual skill, potion effects, global boosters, etc.<br>
-     * This method should be used in situations involving two entities, where the FIRST entity is the "main" entity in<br>
-     * question, and the SECOND entity the... well.. other entity.<br>
+     * This method should be used in situations involving two entities, where the FIRST entity is the defending entity in<br>
+     * question, and the SECOND entity attacking entity.<br>
      *<br>
-     * It's a bit confusing, but for example in the context of getting an entity's total armor value when getting<br>
-     * damaged the FIRST entity is the entity being damaged and the SECOND entity a possible entity attacking,<br>
-     * so things like armor penetration may apply.<br>
-     *<br>
-     * For an entity attacking another entity though where you want to gather the CRIT CHANCE of the attacking entity,<br>
-     * this attacking entity is the main entity and the damaged entity is the other entity.<br>
-     *<br>
-     * As a rule of thumb: with OFFENSIVE stats the ATTACKING entity is the main entity, with DEFENSIVE stats the<br>
-     * DEFENDING entity is the main entity.<br>
-     * Exceptions to this rule are stats where a second entity is not relevant such as ARCHERY_INACCURACY and so<br>
-     * this method should not be used to obtain them to begin with.<br>
-     *<br>
-     * If the second entity is null, getStats(String, Entity, boolean) is being called instead.<br>
+     * If the second entity is null, {@link AccumulativeStatManager#getStats(String, Entity, boolean)} is being called instead.<br>
      * If a stat source associated with the given stat is not an EvEAccumulativeStatSource, a regular AccumulativeStatSource<br>
      * is being used instead where the second entity is not involved.
      * @param stat the stat to gather its total from
-     * @param e1 the entity to gether their stats from
-     * @param e2 the second entity involved in stat accumulation
+     * @param e1 the defending entity to gather their stats from
+     * @param e2 the attacking entity involved in stat accumulation
      * @param use if true, it will be assumed the stat is actually being used in practice rather than being a visual
      *            for show. Example: if a player were to craft an item and had some potion effect to boost their
      *            crafting quality, use would be true. If the player were to only look at the item in the crafting menu,
@@ -372,11 +345,21 @@ public class AccumulativeStatManager {
     public static double getRelationalStats(String stat, Entity e1, Entity e2, boolean use) {
         if (e1 == null) return 0;
         if (e2 == null) return getStats(stat, e1, use);
-        Collection<AccumulativeStatSource> existingSources = getStatCollector(stat).getStatSources();
+        StatCollector collector = getStatCollector(stat);
+        Collection<AccumulativeStatSource> existingSources = collector.getStatSources();
         double value = 0;
         for (AccumulativeStatSource s : existingSources){
-            if (s instanceof EvEAccumulativeStatSource os) value += os.fetch(e1, e2, use);
-            else value += s.fetch(e1, use);
+            if (s instanceof EvEAccumulativeStatSource os) {
+                value += os.fetch(e1, e2, use);
+                if (collector.isAttackerPossessive() && e2 instanceof LivingEntity l && !(l instanceof Player)) value += MonsterScalingManager.getStatValue(l, stat);
+                else if (!collector.isAttackerPossessive() && e1 instanceof LivingEntity l && !(l instanceof Player)) value += MonsterScalingManager.getStatValue(l, stat);
+                if (collector.isAttackerPossessive() && e2 instanceof Player p) value += PartyManager.getCompanyStats(p, stat);
+                else if (!collector.isAttackerPossessive() && e1 instanceof Player p) value += PartyManager.getCompanyStats(p, stat);
+            } else {
+                value += s.fetch(e1, use);
+                if (!collector.isAttackerPossessive() && e1 instanceof LivingEntity l && !(l instanceof Player)) value += MonsterScalingManager.getStatValue(l, stat);
+                if (!collector.isAttackerPossessive() && e1 instanceof Player p) value += PartyManager.getCompanyStats(p, stat);
+            }
         }
         return Utils.round6Decimals(value); // round to 6 decimals
     }

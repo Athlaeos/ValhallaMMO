@@ -6,4 +6,5 @@ public interface ValhallaKeyedRecipe {
     NamespacedKey getKey();
     void registerRecipe();
     void unregisterRecipe();
+    boolean isHiddenFromBook();
 }

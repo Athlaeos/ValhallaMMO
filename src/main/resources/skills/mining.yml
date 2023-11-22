@@ -7,14 +7,14 @@ levelbar_title: '<lang.skill-mining-level-bar>'
 levelbar_color: RED # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
 levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID
 
+vein_mining_instant: false # If true, vein mining breaks all blocks connected to the vein instantly (otherwise it would be 1 block at a time)
 break_limit_vein_mining: 64 # Maximum amount of blocks the Vein Mining special ability is allowed to break
-instant_pickup_vein_mining: true # If true, drops from vein mining are transferred to the player immediately. If false, they drop normally.
 
 drilling_toggle_on: '<lang.skill-mining-drilling-enabled>'
 drilling_toggle_off: '<lang.skill-mining-drilling-disabled>'
 drilling_enable_sound: ENTITY_GLOW_SQUID_AMBIENT
 drilling_active_sound: BLOCK_STONE_HIT
-drilling_effect_particle: 'BLOCK_DUST'
+drilling_effect_particle: 'NONE' #'BLOCK_DUST'
 drilling_effect_color: '#f54242'
 
 forgiving_multipliers: true # drop multipliers below 0 will, if false, sometimes cause blocks mined to not drop anything.

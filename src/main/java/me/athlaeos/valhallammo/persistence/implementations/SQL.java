@@ -2,25 +2,24 @@ package me.athlaeos.valhallammo.persistence.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.persistence.Database;
+import me.athlaeos.valhallammo.playerstats.LeaderboardEntry;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
+import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.UUID;
+import java.sql.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SQL extends ProfilePersistence implements Database {
     private final Map<UUID, Map<Class<? extends Profile>, Profile>> persistentProfiles = new HashMap<>();
@@ -88,6 +87,30 @@ public class SQL extends ProfilePersistence implements Database {
         }
     }
 
+    public static void getLeaderboard(Connection conn, String statement, int page, Action<List<LeaderboardEntry>> callback, Collection<String> extraStats) {
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            List<LeaderboardEntry> entries = new ArrayList<>();
+            try {
+                PreparedStatement stmt = conn.prepareStatement(statement);
+                ResultSet set = stmt.executeQuery();
+                int rank = page * LeaderboardManager.getPageEntryLimit();
+                while (set.next()){
+                    double value = set.getDouble("score");
+                    UUID uuid = UUID.fromString(set.getString("owner"));
+                    OfflinePlayer player = ValhallaMMO.getInstance().getServer().getOfflinePlayer(uuid);
+                    Map<String, Double> extraStat = new HashMap<>();
+                    for (String e : extraStats) extraStat.put(e, set.getDouble(e));
+                    entries.add(new LeaderboardEntry(player.getName(), player.getUniqueId(), value, rank + 1, extraStat));
+                    rank++;
+                }
+            } catch (SQLException ex){
+                ValhallaMMO.logWarning("Could not fetch leaderboard due to an exception: ");
+                ex.printStackTrace();
+            }
+            callback.act(entries);
+        });
+    }
+
     @Override
     public void setPersistentProfile(Player p, Profile profile, Class<? extends Profile> type) {
         Map<Class<? extends Profile>, Profile> profiles = persistentProfiles.get(p.getUniqueId());
@@ -100,6 +123,21 @@ public class SQL extends ProfilePersistence implements Database {
         Map<Class<? extends Profile>, Profile> profiles = skillProfiles.get(p.getUniqueId());
         profiles.put(type, profile);
         skillProfiles.put(p.getUniqueId(), profiles);
+    }
+
+    public static String leaderboardQuery(Profile p, String stat, int page, Collection<String> extraStats){
+        String t = p.getTableName();
+        String c = stat.toLowerCase();
+        return String.format("SELECT %s.owner%s, %s.%s AS score FROM %s ORDER BY score DESC LIMIT %d, %d;", t,
+                extraStats.stream().map(e -> String.format(", %s.%s", t, e)).collect(Collectors.joining()), t, c, t,
+                page * LeaderboardManager.getPageEntryLimit(),
+                (page + 1) * LeaderboardManager.getPageEntryLimit());
+    }
+
+    @Override
+    public void queryLeaderboardEntries(Class<? extends Profile> profile, String stat, int page, Action<List<LeaderboardEntry>> callback, Collection<String> extraStats) {
+        Profile p = ProfileRegistry.getRegisteredProfiles().get(profile);
+        getLeaderboard(conn, leaderboardQuery(p, stat, page, extraStats), page, callback, extraStats);
     }
 
     @SuppressWarnings("unchecked")

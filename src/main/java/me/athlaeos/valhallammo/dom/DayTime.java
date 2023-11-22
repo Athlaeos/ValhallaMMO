@@ -38,6 +38,10 @@ public enum DayTime {
     public static DayTime getTime(World world) {
         if (world.getEnvironment() != World.Environment.NORMAL) return TIMELESS;
         long time = world.getTime();
+        return getTime(time);
+    }
+
+    public static DayTime getTime(long time) {
         for (DayTime dayTime : values()){
             if (dayTime.fromTime <= time && dayTime.toTime >= time) return dayTime;
         }

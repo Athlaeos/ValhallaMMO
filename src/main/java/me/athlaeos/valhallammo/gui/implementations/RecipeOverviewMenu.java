@@ -54,8 +54,8 @@ public class RecipeOverviewMenu extends Menu {
     public static void registerCategory(RecipeCategory category){ categories.put(category.getId(), category); }
     public static Map<String, RecipeCategory> getCategories() { return new HashMap<>(categories); }
 
-    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("").get();
-    private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_STAINED_GLASS_PANE))
+    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
+    private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_DYE))
             .name("&b&lNew")
             .stringTag(KEY_ACTION, "createNewButton")
             .flag(ItemFlag.HIDE_ATTRIBUTES).get();

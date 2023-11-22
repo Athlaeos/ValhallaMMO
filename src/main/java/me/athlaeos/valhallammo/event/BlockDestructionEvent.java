@@ -31,7 +31,8 @@ public class BlockDestructionEvent extends BlockEvent {
     }
 
     public enum BlockDestructionReason{
-        PLAYER,
+        PLAYER_BREAK,
+        PLAYER_HARVEST,
         BLOCK_EXPLOSION,
         ENTITY_EXPLOSION,
         BURN,

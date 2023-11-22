@@ -20,7 +20,9 @@ import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.*;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -39,6 +41,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MiningSkill extends Skill implements Listener {
     private final Map<Material, Double> dropsExpValues = new HashMap<>();
@@ -46,7 +49,7 @@ public class MiningSkill extends Skill implements Listener {
     private final double blastingExpMultiplier;
 
     private final int veinMiningLimit;
-    private final boolean veinMiningInstantPickup;
+    private final boolean veinMiningInstant;
 
     private final boolean forgivingDropMultipliers; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
     private final boolean tntPreventChaining;
@@ -61,20 +64,24 @@ public class MiningSkill extends Skill implements Listener {
 
     public MiningSkill(String type) {
         super(type);
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/mining.yml").get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/mining_progression.yml").get();
+        ValhallaMMO.getInstance().save("skills/mining_progression.yml");
+        ValhallaMMO.getInstance().save("skills/mining.yml");
+
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/mining.yml").reload().get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/mining_progression.yml").reload().get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
         miningExpMultiplier = progressionConfig.getDouble("experience.exp_multiplier_mine");
         blastingExpMultiplier = progressionConfig.getDouble("experience.exp_multiplier_blast");
         veinMiningLimit = skillConfig.getInt("break_limit_vein_mining");
-        veinMiningInstantPickup = skillConfig.getBoolean("instant_pickup_vein_mining");
+        veinMiningInstant = skillConfig.getBoolean("vein_mining_instant");
         forgivingDropMultipliers = skillConfig.getBoolean("forgiving_multipliers");
         tntPreventChaining = skillConfig.getBoolean("remove_tnt_chaining");
         drillingOn = TranslationManager.translatePlaceholders(skillConfig.getString("drilling_toggle_on"));
         drillingActivationSound = Catch.catchOrElse(() -> Sound.valueOf(skillConfig.getString("drilling_enable_sound")), null, "Invalid drilling activation sound given in skills/mining.yml drilling_enable_sound");
 
+        Collection<String> invalidMaterials = new HashSet<>();
         ConfigurationSection blockBreakSection = progressionConfig.getConfigurationSection("experience.mining_break");
         if (blockBreakSection != null){
             for (String key : blockBreakSection.getKeys(false)){
@@ -83,9 +90,13 @@ public class MiningSkill extends Skill implements Listener {
                     double reward = progressionConfig.getDouble("experience.mining_break." + key);
                     dropsExpValues.put(block, reward);
                 } catch (IllegalArgumentException ignored){
-                    ValhallaMMO.logWarning("invalid block type given:" + key + " for the block break rewards in skills/mining_progression.yml, no reward set for this type until corrected.");
+                    invalidMaterials.add(key);
                 }
             }
+        }
+        if (!invalidMaterials.isEmpty()) {
+            ValhallaMMO.logWarning("The following materials in skills/mining_progression.yml do not exist, no exp values set (ignore warning if your version does not have these materials)");
+            ValhallaMMO.logWarning(String.join(", ", invalidMaterials));
         }
 
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
@@ -103,6 +114,8 @@ public class MiningSkill extends Skill implements Listener {
             {1, 1, -1}, {1, 1, 0}, {1, 1, 1}
     };
 
+    private final Collection<UUID> veinMiningPlayers = new HashSet<>();
+
     @EventHandler(priority = EventPriority.LOW)
     public void onBlockBreak(BlockBreakEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
@@ -111,48 +124,71 @@ public class MiningSkill extends Skill implements Listener {
             e.setCancelled(true);
             return;
         }
-        if (!dropsExpValues.containsKey(e.getBlock().getType())) return;
-        int experience = e.getExpToDrop() + Utils.randomAverage(profile.getBlockExperienceRate());
-        experience = Utils.randomAverage(experience * (1D + profile.getBlockExperienceMultiplier()));
-        e.setExpToDrop(experience);
+        if (dropsExpValues.containsKey(e.getBlock().getType())) {
+            int experience = e.getExpToDrop() + Utils.randomAverage(profile.getBlockExperienceRate());
+            experience = Utils.randomAverage(experience * (1D + profile.getBlockExperienceMultiplier()));
+            e.setExpToDrop(experience);
+        }
+        LootListener.addPreparedLuck(e.getBlock(), AccumulativeStatManager.getCachedStats("MINING_LUCK", e.getPlayer(), 10000, true));
 
-        if (profile.isVeinMiningUnlocked() && profile.getVeinMinerValidBlocks().contains(e.getBlock().getType().toString()) && Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_vein_miner")){
-            List<Block> vein = BlockUtils.getBlockVein(e.getBlock(), veinMiningLimit, b -> b.getType() == e.getBlock().getType(), veinMiningScanArea);
+        if (!veinMiningPlayers.contains(e.getPlayer().getUniqueId()) && profile.isVeinMiningUnlocked() && profile.getVeinMinerValidBlocks().contains(e.getBlock().getType().toString()) && Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_vein_miner")){
+            Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), veinMiningLimit, b -> b.getType() == e.getBlock().getType(), veinMiningScanArea);
+            veinMiningPlayers.add(e.getPlayer().getUniqueId());
             e.setCancelled(true);
-            if (profile.isVeinMiningInstantPickup())
+
+            if (veinMiningInstant)
                 BlockUtils.processBlocks(e.getPlayer(), vein, p -> {
                     EntityProperties properties = EntityCache.getAndCacheProperties(p);
                     return properties.getMainHand() != null && EquipmentClass.getMatchingClass(properties.getMainHand().getMeta()) == EquipmentClass.PICKAXE;
-                    }, b -> e.getPlayer().breakBlock(b), null);
+                    }, b -> {
+                    if (profile.isVeinMiningInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
+                    CustomBreakSpeedListener.markInstantBreak(b);
+                    e.getPlayer().breakBlock(b);
+                }, (b) -> veinMiningPlayers.remove(b.getUniqueId()));
             else
                 BlockUtils.processBlocksPulse(e.getPlayer(), e.getBlock(), vein, p -> {
                     EntityProperties properties = EntityCache.getAndCacheProperties(p);
                     return properties.getMainHand() != null && EquipmentClass.getMatchingClass(properties.getMainHand().getMeta()) == EquipmentClass.PICKAXE;
                 }, b -> {
-                    if (veinMiningInstantPickup) LootListener.setInstantPickup(b, e.getPlayer());
+                    if (profile.isVeinMiningInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
+                    CustomBreakSpeedListener.markInstantBreak(b);
                     e.getPlayer().breakBlock(b);
-                }, null);
+                }, (b) -> veinMiningPlayers.remove(b.getUniqueId()));
             Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getVeinMiningCooldown(), "mining_vein_miner");
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onItemsDropped(BlockDropItemEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || BlockStore.isPlaced(e.getBlock())) return;
+    @EventHandler(priority = EventPriority.HIGH)
+    public void lootTableDrops(BlockBreakEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlock())) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("MINING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
+        // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
+        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
+
+        double expQuantity = 0;
+        for (ItemStack i : LootListener.getPreparedExtraDrops(e.getBlock())){
+            if (ItemUtils.isEmpty(i)) continue;
+            expQuantity += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+        }
+        addEXP(e.getPlayer(), expQuantity * miningExpMultiplier, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onItemsDropped(BlockDropItemEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState())) return;
+        double dropMultiplier = AccumulativeStatManager.getCachedStats("MINING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
+        // multiply the item drops from the event itself and grant exp for the initial items and extra drops
         List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getItemStack().getType()));
-        LootListener.prepareBlockDrops(e.getBlock(), extraDrops);
+        if (!extraDrops.isEmpty()) LootListener.prepareBlockDrops(e.getBlock(), extraDrops);
 
         double expQuantity = 0;
         for (Item i : e.getItems()){
             if (ItemUtils.isEmpty(i.getItemStack())) continue;
-            if (!dropsExpValues.containsKey(i.getItemStack().getType())) continue;
-            expQuantity += dropsExpValues.get(i.getItemStack().getType());
+            expQuantity += dropsExpValues.getOrDefault(i.getItemStack().getType(), 0D) * i.getItemStack().getAmount();
         }
         for (ItemStack i : extraDrops){
             if (ItemUtils.isEmpty(i)) continue;
-            if (!dropsExpValues.containsKey(i.getType())) continue;
-            expQuantity += dropsExpValues.get(i.getType());
+            expQuantity += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
         }
         addEXP(e.getPlayer(), expQuantity * miningExpMultiplier, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
@@ -188,24 +224,25 @@ public class MiningSkill extends Skill implements Listener {
         if (profile.getBlastFortuneLevel() > 0) normalPickaxe.addUnsafeEnchantment(Enchantment.LOOT_BONUS_BLOCKS, profile.getBlastFortuneLevel());
         else if (profile.getBlastFortuneLevel() < 0) normalPickaxe.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 1);
         double blastingDropMultiplier = AccumulativeStatManager.getCachedStats("BLASTING_DROP_MULTIPLIER", responsible, 10000, true);
+        double blastingLuck = AccumulativeStatManager.getCachedStats("BLASTING_LUCK", responsible, 10000, true);
 
         double exp = 0;
         for (Block b : new HashSet<>(e.blockList())){
-            if (b.getType().isAir() || (!tntPreventChaining && b.getType() == Material.TNT) || BlockStore.isPlaced(b)) continue;
+            LootListener.addPreparedLuck(b, blastingLuck);
+            if (b.getType().isAir() || (!tntPreventChaining && b.getType() == Material.TNT) || !BlockUtils.canReward(b)) continue;
             e.blockList().remove(b);
 
             List<ItemStack> predictedDrops = new ArrayList<>(b.getDrops(normalPickaxe));
-            List<ItemStack> newDrops = ItemUtils.multiplyItems(predictedDrops, 1 + blastingDropMultiplier, forgivingDropMultipliers,  (i) -> dropsExpValues.containsKey(i.getType()));
+            ItemUtils.multiplyItems(predictedDrops, 1 + blastingDropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
             LootListener.markExploded(b);
             LootListener.setFortuneLevel(e.getEntity(), profile.getBlastFortuneLevel());
-            LootListener.prepareBlockDrops(b, newDrops);
+            LootListener.prepareBlockDrops(b, predictedDrops);
             LootListener.setEntityOwner(e.getEntity(), responsible);
             if (profile.isBlastingInstantPickup()) LootListener.setInstantPickup(b, responsible);
             b.setType(Material.AIR);
-            for (ItemStack i : newDrops){
+            for (ItemStack i : predictedDrops){
                 if (ItemUtils.isEmpty(i)) continue;
-                if (!dropsExpValues.containsKey(i.getType())) continue;
-                exp += dropsExpValues.get(i.getType());
+                exp += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
             }
         }
         addEXP(responsible, exp * blastingExpMultiplier, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);

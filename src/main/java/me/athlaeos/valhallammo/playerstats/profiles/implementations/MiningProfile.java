@@ -1,14 +1,20 @@
 package me.athlaeos.valhallammo.playerstats.profiles.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.MiningSpeed;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.MiningSkill;
+import me.athlaeos.valhallammo.utility.ItemUtils;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
 
@@ -39,6 +45,10 @@ public class MiningProfile extends Profile {
         intStat("drillingDuration", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
 
         doubleStat("miningEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+
+        stringSetStat("emptyHandToolMaterial");
+        intStat("emptyHandToolFortune", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
+        floatStat("emptyHandToolMiningStrength", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create());
     }
 
     public boolean isVeinMiningUnlocked() { return getBoolean("veinMiningUnlocked"); }
@@ -58,11 +68,15 @@ public class MiningProfile extends Profile {
     public void setDrillingCooldown(int value) { setInt("drillingCooldown", value); }
     public int getDrillingDuration() { return getInt("drillingDuration"); }
     public void setDrillingDuration(int value) { setInt("drillingDuration", value); }
+    public int getEmptyHandToolFortune() { return getInt("emptyHandToolFortune"); }
+    public void setEmptyHandToolFortune(int value) { setInt("emptyHandToolFortune", value); }
 
     public Collection<String> getUnbreakableBlocks() { return getStringSet("unbreakableBlocks"); }
     public void setUnbreakableBlocks(Collection<String> value) { setStringSet("unbreakableBlocks", value); }
     public Collection<String> getVeinMinerValidBlocks() { return getStringSet("veinMinerValidBlocks"); }
     public void setVeinMinerValidBlocks(Collection<String> value) { setStringSet("veinMinerValidBlocks", value); }
+    public Collection<String> getEmptyHandToolMaterial() { return getStringSet("emptyHandToolMaterial"); }
+    public void setEmptyHandToolMaterial(Collection<String> value) { setStringSet("emptyHandToolMaterial", value); }
 
     public float getMiningDrops() { return getFloat("miningDrops"); }
     public void setMiningDrops(float value) { setFloat("miningDrops", value); }
@@ -84,16 +98,43 @@ public class MiningProfile extends Profile {
     public void setBlockExperienceRate(float value) { setFloat("blockExperienceRate", value); }
     public float getBlockExperienceMultiplier() { return getFloat("blockExperienceMultiplier"); }
     public void setBlockExperienceMultiplier(float value) { setFloat("blockExperienceMultiplier", value); }
+    public float getEmptyHandToolMiningStrength() { return getFloat("emptyHandToolMiningStrength"); }
+    public void setEmptyHandToolMiningStrength(float value) { setFloat("emptyHandToolMiningStrength", value); }
 
     public double getMiningEXPMultiplier(){ return getDouble("miningEXPMultiplier");}
     public void setMiningEXPMultiplier(double value){ setDouble("miningEXPMultiplier", value);}
+
+    private ItemBuilder emptyHandTool = null;
+
+    public ItemBuilder getEmptyHandTool() {
+        return emptyHandTool;
+    }
+
+    @Override
+    public void onCacheRefresh() {
+        String value = getEmptyHandToolMaterial().stream().findFirst().orElse(null);
+        if (value == null) {
+            emptyHandTool = null;
+            return;
+        }
+        Material material = ItemUtils.stringToMaterial(value, null);
+        if (material == null) {
+            emptyHandTool = null;
+            return;
+        }
+        int level = getEmptyHandToolFortune();
+        ItemBuilder item = new ItemBuilder(material);
+        if (level != 0) item.enchant(level < 0 ? Enchantment.SILK_TOUCH : Enchantment.LOOT_BONUS_BLOCKS, level < 0 ? 1 : level);
+        if (getEmptyHandToolMiningStrength() > 0) MiningSpeed.setMultiplier(item.getMeta(), getEmptyHandToolMiningStrength());
+        emptyHandTool = new ItemBuilder(item.get());
+    }
 
     public MiningProfile(Player owner) {
         super(owner);
     }
 
     @Override
-    protected String getTableName() {
+    public String getTableName() {
         return "profiles_mining";
     }
 

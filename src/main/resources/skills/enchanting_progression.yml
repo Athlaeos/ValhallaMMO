@@ -1,0 +1,130 @@
+starting_perks: []
+
+experience: # Everything about leveling and experience progression for Enchanting
+  exp_level_curve: '0.25 * (%level% + 300 * 2^(%level%/7.6)) + 300' # Here the x-axis represents level and the y-axis is the exp required to
+  # progress to that level.
+  # The area under this graph from point a to point b represents the total amount of experience needed to get from level
+  # a to b. You don't have to work with this, it's only for those who really want to make this progression their own.
+  # By default, it takes about 4300 exp to get from 0 to 20, 27,000 to get from 20 to 40, 164,000 from 40 to 60,
+  # 1,000,000 from 60 to 80, and 6,300,000 from 80 to 100- or 7,500,000 from 0 to 100.
+  # If you feel progressing is too slow with certain enchantment types, bump its enchantment_base value up. If you think these
+  # default values are unbalanced, let me know so I can adjust them for those getting the plugin in the future!
+
+  # These values should probably be tweaked according to how rare/valuable the enchantments are
+  max_level: 100 # Max level for enchanting, players can still gain exp after reaching 100
+  exp_gain:
+    enchantment_base: # The base amount of experience you get per enchantment per level
+      # Default values are determined off of the enchantment's rarity and max level
+      power: 120
+      efficiency: 120
+      piercing: 120
+      sharpness: 120
+      bane_of_arthropods: 210
+      smite: 210
+      quick_charge: 230
+      impaling: 240
+      protection: 130
+      feather_falling: 220
+      fire_protection: 220
+      projectile_protection: 220
+      blast_protection: 300
+      unbreaking: 250
+      loyalty: 250
+      sweeping: 315
+      fortune: 315
+      looting: 315
+      riptide: 315
+      luck_of_the_sea: 315
+      lure: 315
+      respiration: 315
+      depth_strider: 315
+      thorns: 400
+      soul_speed: 400
+      knockback: 250
+      punch: 375
+      fire_aspect: 375
+      frost_walker: 375
+      mending: 500
+      multishot: 500
+      aqua_affinity: 500
+      flame: 500
+      silk_touch: 700
+      infinity: 700
+      channeling: 700
+    enchantment_level_multiplier: # The original amount of EXP earned from the potion is further changed depending on what the player does after
+      1: 1.0 # Multiplier of the base exp if the enchantment level is just I
+      2: 2.2 # Multiplier of the base exp if the enchantment level is II
+      3: 3.4 # Multiplier of the base exp if the enchantment level is III
+      4: 4.6 # etc.
+      5: 5.8
+      6: 7.0
+      7: 8.2
+      8: 9.4
+      9: 10.6
+      10: 11.8
+    enchantment_type_multiplier:
+      BOW: 1.0
+      CROSSBOW: 1.0
+      WOOD: 0.7
+      LEATHER: 0.9
+      STONE: 0.7
+      CHAINMAIL: 0.9
+      IRON: 1.0
+      GOLD: 1.1
+      DIAMOND: 1.1
+      NETHERITE: 1.2
+      PRISMARINE: 1.0
+      MEMBRANE: 1.0
+    enchantment_item_multiplier:
+      SWORD: 1.0
+      PICKAXE: 1.0
+      AXE: 1.0
+      SHOVEL: 0.90
+      HOE: 1.0
+      BOOTS: 1.0
+      LEGGINGS: 1.05
+      CHESTPLATE: 1.1
+      HELMET: 1.0
+      SHEARS: 1.0
+      TRIDENT: 1.1
+      CROSSBOW: 1.0
+      BOW: 1.0
+      FISHING_ROD: 1.0
+  diminishing_returns:
+    # Diminishing returns reduce the amount of enchanting experience you get depending on the amount of a specific
+    # mob you have killed. Each kill of a mob in the category "on" increases the player's tally counter by 1,
+    # if the tally counter value is more or equal than the amount specified in "amount" the amount of experience is
+    # multiplied by the value specified in "multiplier". After enchanting, the tally counter is reduced by the "amount"
+    # until the tally counter is below the "amount".
+    # Example: a player kills 55 endermen. The next 5 times the player enchants something, their skill experience rewarded
+    # is reduced to only 20% (multiplier of 0.2). Now their tally counter is 5 instead of 55, so their experience isn't reduced.
+    multiplier: 0.2
+    amount: 10
+    on:
+      - ENDERMAN
+      - ZOMBIFIED_PIGLIN
+    mob_experience: # Alternatively, you may also choose to directly reduce (or buff!) the enchanting experience rewarded from these
+      # entities. In case you want to nerf popular experience farms such as Endermen or Zombie Piglin grinders.
+      # By default these multipliers are 1.0 so they don't do anything, they are just there as examples.
+      ENDERMAN: 1.0
+      ZOMBIFIED_PIGLIN: 1.0
+
+
+
+special_perks: # Perks, commands, and messages executed when a player reaches a specific level
+  # If you don't know how to format this, refer to other progression configs (such as smithing) for reference
+  # because I don't know of any perks i wanna put here
+
+commands: # Commands executed every time a player levels this skill. Use %player% as placeholder for the player's name
+  # and %level% for the player's new level
+  - '' # I didn't want commands by default, but you can put them here if you do
+
+messages: # Messages to send to the player every time the player levels this skill.
+  # Use %player% as placeholder for the player's name and %level% for the player's new level
+  - '<lang.skill-level-up-enchanting>'
+
+leveling_perks: []
+
+starting_coordinates: '4,6' # The coordinates in the skill tree the player sees first when switching to the skill tree
+
+perks: []

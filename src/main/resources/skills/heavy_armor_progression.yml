@@ -1,0 +1,30 @@
+starting_perks: []
+
+experience: # Everything about leveling and experience progression for Heavy Armor
+  max_level: 100 # Max level for heavy armor, players can still gain exp after reaching 100
+  exp_level_curve: '0.25 * (%level% + 300 * 2^(%level%/7.6)) + 300' # Here the x-axis represents level and the y-axis is the exp required to
+  # progress to that level.
+  # The area under this graph from point a to point b represents the total amount of experience needed to get from level
+  # a to b. You don't have to work with this, it's only for those who really want to make this progression their own.
+  # By default, it takes about 4300 exp to get from 0 to 20, 27,000 to get from 20 to 40, 164,000 from 40 to 60,
+  # 1,000,000 from 60 to 80, and 6,300,000 from 80 to 100- or 7,500,000 from 0 to 100.
+  exp_damage_piece: 4 # amount of exp gained per point of damage per piece of heavy armor
+  exp_second_piece: 1 # amount of EXP gained per second in combat per piece of heavy armor
+
+special_perks: # Perks, commands, and messages executed when a player reaches a specific level
+  # If you don't know how to format this, refer to other progression configs (such as smithing) for reference
+  # because I don't know of any perks i wanna put here
+
+commands: # Commands executed every time a player levels this skill. Use %player% as placeholder for the player's name
+  # and %level% for the player's new level
+  - '' # I didn't want commands by default, but you can put them here if you do
+
+messages: # Messages to send to the player every time the player levels this skill.
+  # Use %player% as placeholder for the player's name and %level% for the player's new level
+  - '<lang.skill-level-up-heavy-armor>'
+
+leveling_perks: []
+
+starting_coordinates: '4,5' # The coordinates in the skill tree the player sees first when switching to the skill tree
+
+perks: []

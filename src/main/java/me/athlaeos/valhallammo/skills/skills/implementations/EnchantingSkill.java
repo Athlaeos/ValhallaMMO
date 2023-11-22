@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.item.EnchantmentClassification;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
@@ -54,10 +55,24 @@ public class EnchantingSkill extends Skill implements Listener {
     private final Map<EntityType, Double> entityEXPMultipliers = new HashMap<>();
     private final Map<UUID, Integer> diminishingReturnTallyCounter = new HashMap<>();
 
+    private Animation elementalBladeActivationAnimation = AnimationRegistry.ELEMENTAL_BLADE_ACTIVATION;
+    private Animation elementaBladeExpirationAnimation = AnimationRegistry.ELEMENTAL_BLADE_EXPIRATION;
+
+    public void setElementaBladeExpirationAnimation(Animation elementaBladeExpirationAnimation) {
+        this.elementaBladeExpirationAnimation = elementaBladeExpirationAnimation;
+    }
+
+    public void setElementalBladeActivationAnimation(Animation elementalBladeActivationAnimation) {
+        this.elementalBladeActivationAnimation = elementalBladeActivationAnimation;
+    }
+
     public EnchantingSkill(String type) {
         super(type);
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/enchanting.yml").get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/enchanting_progression.yml").get();
+        ValhallaMMO.getInstance().save("skills/enchanting_progression.yml");
+        ValhallaMMO.getInstance().save("skills/enchanting.yml");
+
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/enchanting.yml").reload().get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/enchanting_progression.yml").reload().get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -228,7 +243,9 @@ public class EnchantingSkill extends Skill implements Listener {
             int totalEXP = EntityUtils.getTotalExperience(p);
             if (totalEXP < finalCost) {
                 activeElementalBlade.remove(p.getUniqueId());
-                // TODO communicate end of ability
+                Utils.sendActionBar(p, TranslationManager.getTranslation("skill-enchanting-elemental-blade-expiration-actionbar"));
+                Utils.sendMessage(p, TranslationManager.getTranslation("skill-enchanting-elemental-blade-expiration-chat"));
+                if (elementaBladeExpirationAnimation != null) elementaBladeExpirationAnimation.animate(p, p.getLocation(), p.getEyeLocation().getDirection(), 0);
             } else {
                 enhanced = true; // only perform enhanced attacks if player has successfully spent exp
                 EntityUtils.setTotalExperience(p, totalEXP - finalCost);
@@ -264,13 +281,15 @@ public class EnchantingSkill extends Skill implements Listener {
         if (profile.getActiveElementalDamageMultiplier() == 0 && profile.getActiveElementalDamageConversion() == 0) return;
         // if the player gains no benefit from enhanced attacks, it is considered not unlocked
         if (activeElementalBlade.contains(e.getPlayer().getUniqueId())) {
-            // TODO communicate end of effect
             activeElementalBlade.remove(e.getPlayer().getUniqueId());
-            Utils.sendActionBar(e.getPlayer(), "&cElemental Blade Disabled");
+            Utils.sendActionBar(e.getPlayer(), TranslationManager.getTranslation("skill-enchanting-elemental-blade-expiration-actionbar"));
+            Utils.sendMessage(e.getPlayer(), TranslationManager.getTranslation("skill-enchanting-elemental-blade-expiration-chat"));
+            if (elementaBladeExpirationAnimation != null) elementaBladeExpirationAnimation.animate(e.getPlayer(), e.getPlayer().getLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
         } else {
-            // TODO communicate activation of effect
             activeElementalBlade.add(e.getPlayer().getUniqueId());
-            Utils.sendActionBar(e.getPlayer(), "&aElemental Blade Enabled");
+            Utils.sendActionBar(e.getPlayer(), TranslationManager.getTranslation("skill-enchanting-elemental-blade-activation-actionbar"));
+            Utils.sendMessage(e.getPlayer(), TranslationManager.getTranslation("skill-enchanting-elemental-blade-activation-chat"));
+            if (elementalBladeActivationAnimation != null) elementalBladeActivationAnimation.animate(e.getPlayer(), e.getPlayer().getLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
         }
         e.setCancelled(true);
     }

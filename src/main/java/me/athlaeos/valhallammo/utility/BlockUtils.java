@@ -3,14 +3,19 @@ package me.athlaeos.valhallammo.utility;
 import com.jeff_media.customblockdata.CustomBlockData;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Action;
-import me.athlaeos.valhallammo.item.MaterialClass;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.CaveVines;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -65,7 +70,7 @@ public class BlockUtils {
             {0, 0, -1}
     };
 
-    public static Collection<Block> getBlocksTouching(Block start, int radiusX, int radiusY, int radiusZ, Material... touching){
+    public static Collection<Block> getBlocksTouching(Block start, int radiusX, int radiusY, int radiusZ, Predicate<Material> filter){
         Collection<Block> blocks = new HashSet<>();
         for(double x = start.getLocation().getX() - radiusX; x <= start.getLocation().getX() + radiusX; x++){
             for(double y = start.getLocation().getY() - radiusY; y <= start.getLocation().getY() + radiusY; y++){
@@ -75,39 +80,32 @@ public class BlockUtils {
                 }
             }
         }
-        if (touching.length == 0) return blocks;
+        if (filter == null) return blocks;
         return blocks.stream().filter(block -> {
             for (int[] offset : offsets){
                 Location l = block.getLocation().add(offset[0], offset[1], offset[2]);
-                if (Arrays.asList(touching).contains(l.getBlock().getType())) return true;
+                if (filter.test(l.getBlock().getType())) return true;
             }
             return false;
         }).collect(Collectors.toList());
     }
 
     public static Collection<Block> getBlocksTouchingAnything(Block start, int radiusX, int radiusY, int radiusZ){
-        return getBlocksTouching(start, radiusX, radiusY, radiusZ).stream().filter(block -> {
-            for (int[] offset : offsets){
-                Location l = block.getLocation().add(offset[0], offset[1], offset[2]);
-                if (!l.getBlock().getType().isAir()) return true;
-            }
-            return false;
-        }).collect(Collectors.toList());
+        return getBlocksTouching(start, radiusX, radiusY, radiusZ, (m) -> !m.isAir());
     }
 
-    public static List<Block> getBlockVein(Block origin, int limit, Predicate<Block> filter, int[]... offsets){
+    public static Collection<Block> getBlockVein(Block origin, int limit, Predicate<Block> filter, int[]... offsets){
         if (offsets.length == 0 || limit <= 0) return new ArrayList<>();
         Collection<Block> vein = new HashSet<>();
         Collection<Block> scanBlocks = new HashSet<>(Set.of(origin));
         getSurroundingBlocks(scanBlocks, vein, limit, filter, offsets);
 
-        List<Block> ordered = new ArrayList<>(vein);
-        ordered.sort(Comparator.comparingInt(b -> Utils.getManhattanDistance(b.getLocation(), origin.getLocation())));
-        return ordered;
+        return vein;
     }
 
     private static void getSurroundingBlocks(Collection<Block> scanBlocks, Collection<Block> currentVein, int limit, Predicate<Block> filter, int[]... offsets){
         Collection<Block> newBlocksToScan = new HashSet<>();
+        int prevSize = currentVein.size();
         if (currentVein.size() >= limit) return;
 
         for (Block b : scanBlocks){
@@ -119,7 +117,7 @@ public class BlockUtils {
                 newBlocksToScan.add(block);
             }
         }
-        if (newBlocksToScan.isEmpty()) return;
+        if (newBlocksToScan.isEmpty() || prevSize == currentVein.size()) return;
         getSurroundingBlocks(newBlocksToScan, currentVein, limit, filter, offsets);
     }
 
@@ -129,26 +127,87 @@ public class BlockUtils {
         return blockAlteringPlayers;
     }
 
-    public static void processBlocks(Player responsible, List<Block> blocks, Predicate<Player> validation, Action<Block> process, Action<Block> onFinish){
+    public static void processBlocks(Player responsible, Collection<Block> blocks, Predicate<Player> validation, Action<Block> process, Action<Player> onFinish){
         if (process == null || blocks.isEmpty()) return;
+        Block lastBlock = null;
         for (Block b : blocks){
             if (validation != null && !validation.test(responsible)) continue;
             process.act(b);
+            lastBlock = b;
         }
-        if (onFinish != null) onFinish.act(blocks.get(blocks.size() - 1));
+        if (onFinish != null && lastBlock != null) onFinish.act(responsible);
     }
 
-    public static void processBlocksPulse(Player responsible, Block origin, List<Block> blocks, Predicate<Player> validation, Action<Block> process, Action<Block> onFinish){
-        Map<Integer, List<Block>> sortedByDistance = new HashMap<>();
+    private static final long PULSE_DELAY = 2L;
+    public static void processBlocksPulse(Player responsible, Block origin, Collection<Block> blocks, Predicate<Player> validation, Action<Block> process, Action<Player> onFinish){
+        Map<Double, List<Block>> sortedByDistance = new HashMap<>();
         for (Block b : blocks) {
-            int distance = Utils.getManhattanDistance(origin.getLocation(), b.getLocation());
+            double distance = b.getLocation().distanceSquared(origin.getLocation());
             List<Block> existingBlocks = sortedByDistance.getOrDefault(distance, new ArrayList<>());
             existingBlocks.add(b);
             sortedByDistance.put(distance, existingBlocks);
         }
-        for (Integer distance : sortedByDistance.keySet()){
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> processBlocks(responsible, blocks, validation, process, null), (long) distance);
+        int highest = 0;
+        for (Double distance : sortedByDistance.keySet()){
+            int time = (int) MathUtils.sqrt(distance);
+            if (time > highest) highest = time;
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> processBlocks(responsible, sortedByDistance.get(distance), validation, process, null), time * PULSE_DELAY);
         }
-        if (onFinish != null) onFinish.act(blocks.get(blocks.size() - 1));
+        if (onFinish != null) {
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> onFinish.act(responsible), (highest * PULSE_DELAY) + 1);
+        }
+    }
+
+    public static void processBlocksDelayed(Player responsible, Collection<Block> blocks, Predicate<Player> validation, Action<Block> process, Action<Player> onFinish){
+        Iterator<Block> iterator = blocks.iterator();
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                if (iterator.hasNext()){
+                    Block b = iterator.next();
+                    if (!validation.test(responsible)) {
+                        if (onFinish != null) onFinish.act(responsible);
+                        cancel();
+                    }
+                    else process.act(b);
+                } else {
+                    if (onFinish != null) onFinish.act(responsible);
+                    cancel();
+                }
+            }
+        }.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
+    }
+
+    private static final Collection<Material> ageableExceptions = ItemUtils.getMaterialSet(Arrays.asList(
+            "SUGAR_CANE", "BAMBOO", "CACTUS", "CHORUS_FLOWER", "KELP", "TWISTING_VINES", "WEEPING_VINES", "FROSTED_ICE", "MELON_STEM", "PUMPKIN_STEM"
+    ));
+
+    /**
+     * Returns true if: <br>
+     * - The block is Ageable and not in the list of exceptions, and of max age (fully grown)<br>
+     * - The block is not ageable and not previously placed<br>
+     * @param b the block to check if they're legible for farming rewards
+     * @return true if legible, false if the block is not ageable and placed, or if block is ageable and not fully grown.
+     */
+    public static boolean canReward(Block b){
+        BlockData data = b.getBlockData();
+        if (data instanceof CaveVines c) return c.isBerries();
+        if (!(data instanceof Ageable a) || ageableExceptions.contains(b.getType())) return !BlockStore.isPlaced(b);
+        return a.getAge() >= a.getMaximumAge();
+    }
+
+    public static boolean canReward(BlockState b){
+        BlockData data = b.getBlockData();
+        if (data instanceof CaveVines c) return c.isBerries();
+        if (!(data instanceof Ageable a) || ageableExceptions.contains(b.getType())) return !BlockStore.isPlaced(b.getBlock());
+        return a.getAge() >= a.getMaximumAge();
+    }
+
+    public static void decayBlock(Block block){
+        LeavesDecayEvent decayEvent = new LeavesDecayEvent(block);
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(decayEvent);
+        if (decayEvent.isCancelled()) return;
+
+        block.breakNaturally();
     }
 }
