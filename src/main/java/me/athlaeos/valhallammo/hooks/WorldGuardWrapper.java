@@ -74,13 +74,13 @@ public class WorldGuardWrapper {
         return regions;
     }
 
-    public static boolean isInRegion(Location l, String region){
+    public static boolean isInRegion(Location l, String flagged){
         if (l.getWorld() == null) return false;
         if (ValhallaMMO.isHookFunctional(WorldGuardHook.class)){
             RegionManager worldManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(l.getWorld()));
             if (worldManager == null) return false;
             return worldManager.getApplicableRegions(BlockVector3.at(l.getX(), l.getY(), l.getZ()))
-                    .getRegions().stream().map(ProtectedRegion::getId).anyMatch(id -> id.equals(region));
+                    .getRegions().stream().map(ProtectedRegion::getId).anyMatch(id -> id.equals(flagged));
         }
         return false;
     }

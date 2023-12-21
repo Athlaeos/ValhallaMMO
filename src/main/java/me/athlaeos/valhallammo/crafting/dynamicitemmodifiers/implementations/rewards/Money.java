@@ -7,7 +7,7 @@ import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.VaultHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.command.CommandSender;
-import me.athlaeos.valhallammo.version.VaultTransaction;
+import me.athlaeos.valhallammo.hooks.VaultTransaction;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -157,9 +157,16 @@ public class Money extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.REWARDS.id());
     }
 
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new Money(getName());
+    public DynamicItemModifier copy() {
+        Money m = new Money(getName());
+        m.setAmount(this.amount);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

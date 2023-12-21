@@ -27,9 +27,12 @@ public class ConfigManager {
         return defaultConfigs;
     }
 
+    private static final Collection<String> reloadedConfigs = new HashSet<>();
     public static Config getConfig(String name) {
-        if (!configs.containsKey(name))
+        if (!configs.containsKey(name)){
             configs.put(name, new Config(name));
+            configs.get(name).reload();
+        }
 
         return configs.get(name);
     }

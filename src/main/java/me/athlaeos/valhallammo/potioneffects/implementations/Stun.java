@@ -34,7 +34,7 @@ public class Stun extends PotionEffectWrapper {
     private static int stunImmunityDuration;
 
     static {
-        YamlConfiguration c = ConfigManager.getConfig("config.yml").get();
+        YamlConfiguration c = ConfigManager.getConfig("config.yml").reload().get();
         ConfigurationSection stunEffectSection = c.getConfigurationSection("stun_effects");
         stunImmunityDuration = c.getInt("stun_immunity_duration", 5000);
         if (stunEffectSection != null){

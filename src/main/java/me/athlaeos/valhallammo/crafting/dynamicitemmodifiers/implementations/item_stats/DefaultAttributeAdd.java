@@ -65,28 +65,31 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
     @Override
     public Map<Integer, ItemStack> getButtons() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
+        Set<Pair<Integer, ItemStack>> extraButtons = new HashSet<>();
+        extraButtons.add(new Pair<>(attribute.isVanilla() ? 12 : 13,
+                new ItemBuilder(Material.PAPER)
+                        .name("&dHow strong should this base stat be?")
+                        .lore("&f" + attribute.getAttribute().toLowerCase().replace("_", " ") + " &e" + attribute.getFormat().format(value),
+                                "&6Click to add/subtract " + (5 * smallIncrement),
+                                "&6Shift-Click to add/subtract " + (10 * bigIncrement))
+                        .get()
+        ));
+        if (attribute.isVanilla()){
+            extraButtons.add(new Pair<>(13,
+                    new ItemBuilder(Material.PAPER)
+                            .name("&dWhat should the attribute's operation be?")
+                            .lore("&f" + StringUtils.toPascalCase(operation.toString().replace("_", " ")),
+                                    "&6Click to cycle")
+                            .get()
+            ));
+        }
         return new Pair<>(11,
                 new ItemBuilder(Material.PAPER)
                         .name("&dHow strong should this base stat be?")
-                        .lore("&f" + attribute.getAttribute().toLowerCase().replace("_", " ") + " " + attribute,
+                        .lore("&f" + attribute.getAttribute().toLowerCase().replace("_", " ") + " &e" + attribute.getFormat().format(value),
                                 "&6Click to add/subtract " + smallIncrement,
                                 "&6Shift-Click to add/subtract " + bigIncrement)
-                        .get()).map(attribute.isVanilla() ? Set.of(
-                new Pair<>(attribute.isVanilla() ? 12 : 13,
-                        new ItemBuilder(Material.PAPER)
-                                .name("&dHow strong should this base stat be?")
-                                .lore("&f" + attribute.getAttribute().toLowerCase().replace("_", " ") + " " + attribute,
-                                        "&6Click to add/subtract " + (5 * smallIncrement),
-                                        "&6Shift-Click to add/subtract " + (10 * bigIncrement))
-                                .get()
-                ),
-                new Pair<>(13,
-                        new ItemBuilder(Material.PAPER)
-                                .name("&dWhat should the attribute's operation be?")
-                                .lore("&f" + StringUtils.toPascalCase(operation.toString().replace("_", " ")),
-                                        "&6Click to cycle")
-                                .get()
-        )) : new HashSet<>());
+                        .get()).map(extraButtons);
     }
 
     @Override
@@ -109,7 +112,7 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
     @Override
     public String getActiveDescription() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        return "&fAdds " + attribute.getAttribute().toLowerCase().replace("_", " ") + " " + attribute + " as default stat to the item. ";
+        return "&fAdds " + attribute.getAttribute().toLowerCase().replace("_", " ") + " &e" + attribute.getFormat().format(value) + " as default stat to the item. ";
     }
 
     @Override
@@ -118,9 +121,21 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
         return attribute.isVanilla() ? Set.of(ModifierCategoryRegistry.VANILLA_ATTRIBUTES.id()) : Set.of(ModifierCategoryRegistry.CUSTOM_ATTRIBUTES.id());
     }
 
+    public void setOperation(AttributeModifier.Operation operation) {
+        this.operation = operation;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new DefaultAttributeAdd(getName(), attribute, smallIncrement, bigIncrement, icon);
+    public DynamicItemModifier copy() {
+        DefaultAttributeAdd m = new DefaultAttributeAdd(getName(), attribute, smallIncrement, bigIncrement, icon);
+        m.setOperation(this.operation);
+        m.setValue(this.value);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

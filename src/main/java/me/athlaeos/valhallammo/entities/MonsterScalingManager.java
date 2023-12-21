@@ -33,7 +33,7 @@ public class MonsterScalingManager {
     private static final Map<EntityType, String> entityLevelScaling = new HashMap<>();
 
     public static void loadMonsterScalings(){
-        YamlConfiguration config = ConfigManager.getConfig("mob_stats.yml").get();
+        YamlConfiguration config = ConfigManager.getConfig("mob_stats.yml").reload().get();
 
         enabled = config.getBoolean("enabled");
         if (!enabled) return;

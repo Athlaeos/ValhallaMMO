@@ -80,9 +80,16 @@ public class CostVanillaExperience extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CRAFTING_CONDITIONALS.id());
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new CostVanillaExperience(getName());
+    public DynamicItemModifier copy() {
+        CostVanillaExperience m = new CostVanillaExperience(getName());
+        m.setAmount(this.amount);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

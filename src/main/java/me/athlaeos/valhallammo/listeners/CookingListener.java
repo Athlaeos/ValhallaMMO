@@ -153,6 +153,10 @@ public class CookingListener implements Listener {
                 if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) e.setCancelled(true);
                 return;// vanilla recipe found, cancel if recipe is disabled
             }
+            if (WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), WorldGuardHook.VMMO_CRAFTING_FURNACE)){
+                e.setCancelled(true);
+                return;
+            }
             DynamicCookingRecipe recipe = recipes.getTwo();
             if (!ItemUtils.isEmpty(f.getInventory().getSmelting())){
                 ItemBuilder result = new ItemBuilder(recipe.tinker() ? f.getInventory().getSmelting() : recipe.getResult());
@@ -227,7 +231,6 @@ public class CookingListener implements Listener {
                 }
 
                 DynamicItemModifier.modify(result, owner, recipe.getModifiers(), false, true, true);
-                TranslationManager.translateItemMeta(result.getMeta());
                 if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                     ejectCampfire(c);
                     c.getWorld().playEffect(c.getLocation(), Effect.EXTINGUISH, 0);
@@ -264,6 +267,10 @@ public class CookingListener implements Listener {
                 if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) e.setCancelled(true);
                 return;// vanilla recipe found, cancel if recipe is disabled
             }
+            if (WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), WorldGuardHook.VMMO_CRAFTING_FURNACE)){
+                e.setCancelled(true);
+                return;
+            }
             DynamicCookingRecipe recipe = recipes.getTwo();
             if (ItemUtils.isEmpty(f.getInventory().getSmelting())) return;
             ItemBuilder result = new ItemBuilder(recipe.tinker() ? f.getInventory().getSmelting() : recipe.getResult());
@@ -289,7 +296,6 @@ public class CookingListener implements Listener {
             }
 
             DynamicItemModifier.modify(result, owner, recipe.getModifiers(), false, true, true);
-            TranslationManager.translateItemMeta(result.getMeta());
             if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                 for (Location l : MathUtils.getRandomPointsInArea(f.getLocation().add(0.5, 0.5, 0.5), 1, 10)) f.getWorld().spawnParticle(Particle.ASH, l, 0);
                 f.getWorld().playEffect(f.getLocation(), Effect.EXTINGUISH, 0);

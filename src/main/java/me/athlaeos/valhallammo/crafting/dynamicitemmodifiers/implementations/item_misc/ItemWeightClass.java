@@ -79,9 +79,16 @@ public class ItemWeightClass extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setWeightClass(WeightClass weightClass) {
+        this.weightClass = weightClass;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ItemWeightClass(getName());
+    public DynamicItemModifier copy() {
+        ItemWeightClass m = new ItemWeightClass(getName());
+        m.setWeightClass(this.weightClass);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

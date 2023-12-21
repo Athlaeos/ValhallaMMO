@@ -70,17 +70,21 @@ public class ManageRecipesCommand implements Command {
                         Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_recipe_missing"));
                         return true;
                     }
-                    if (CustomRecipeRegistry.getCauldronRecipes().containsKey(newRecipe))
+                    if (CustomRecipeRegistry.getAllRecipes().contains(newRecipe)){
+                        Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_recipe_exists"));
+                        return true;
+                    }
+                    if (CustomRecipeRegistry.getCauldronRecipes().containsKey(recipe))
                         new CauldronRecipeEditor(PlayerMenuUtilManager.getPlayerMenuUtility(player), CustomRecipeRegistry.getCauldronRecipes().get(recipe), newRecipe).open();
-                    else if (CustomRecipeRegistry.getCookingRecipes().containsKey(newRecipe))
+                    else if (CustomRecipeRegistry.getCookingRecipes().containsKey(recipe))
                         new CookingRecipeEditor(PlayerMenuUtilManager.getPlayerMenuUtility(player), CustomRecipeRegistry.getCookingRecipes().get(recipe), newRecipe).open();
-                    else if (CustomRecipeRegistry.getGridRecipes().containsKey(newRecipe))
+                    else if (CustomRecipeRegistry.getGridRecipes().containsKey(recipe))
                         new GridRecipeEditor(PlayerMenuUtilManager.getPlayerMenuUtility(player), CustomRecipeRegistry.getGridRecipes().get(recipe), newRecipe).open();
-                    else if (CustomRecipeRegistry.getBrewingRecipes().containsKey(newRecipe))
+                    else if (CustomRecipeRegistry.getBrewingRecipes().containsKey(recipe))
                         new BrewingRecipeEditor(PlayerMenuUtilManager.getPlayerMenuUtility(player), CustomRecipeRegistry.getBrewingRecipes().get(recipe), newRecipe).open();
-                    else if (CustomRecipeRegistry.getSmithingRecipes().containsKey(newRecipe))
+                    else if (CustomRecipeRegistry.getSmithingRecipes().containsKey(recipe))
                         new SmithingRecipeEditor(PlayerMenuUtilManager.getPlayerMenuUtility(player), CustomRecipeRegistry.getSmithingRecipes().get(recipe), newRecipe).open();
-                    else if (CustomRecipeRegistry.getImmersiveRecipes().containsKey(newRecipe))
+                    else if (CustomRecipeRegistry.getImmersiveRecipes().containsKey(recipe))
                         new ImmersiveRecipeEditor(PlayerMenuUtilManager.getPlayerMenuUtility(player), CustomRecipeRegistry.getImmersiveRecipes().get(recipe), newRecipe).open();
                     else Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_recipe_exists"));
                     return true;

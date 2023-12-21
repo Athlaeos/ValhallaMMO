@@ -68,8 +68,10 @@ public class PotionTypeRequired extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new PotionTypeRequired(getName(), type);
+    public DynamicItemModifier copy() {
+        PotionTypeRequired m = new PotionTypeRequired(getName(), type);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

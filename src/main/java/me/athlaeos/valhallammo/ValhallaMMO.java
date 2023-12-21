@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.configuration.ConfigUpdater;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierScalingPresets;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.entities.MonsterScalingManager;
 import me.athlaeos.valhallammo.event.PlayerJumpEvent;
 import me.athlaeos.valhallammo.gui.MenuListener;
@@ -83,6 +84,38 @@ public class ValhallaMMO extends JavaPlugin {
         saveConfig("parties.yml");
         saveConfig("block_conversions.yml");
         saveConfig("scaling_presets.yml");
+
+        // skill configs
+        saveConfig("skills/alchemy.yml");
+        saveConfig("skills/alchemy_progression.yml");
+        saveConfig("skills/alchemy_transmutations.yml");
+        saveConfig("skills/archery.yml");
+        saveConfig("skills/archery_progression.yml");
+        saveConfig("skills/digging.yml");
+        saveConfig("skills/digging_progression.yml");
+        saveConfig("skills/enchanting.yml");
+        saveConfig("skills/enchanting_progression.yml");
+        saveConfig("skills/farming.yml");
+        saveConfig("skills/farming_progression.yml");
+        saveConfig("skills/fishing.yml");
+        saveConfig("skills/fishing_progression.yml");
+        saveConfig("skills/heavy_armor.yml");
+        saveConfig("skills/heavy_armor_progression.yml");
+        saveConfig("skills/heavy_weapons.yml");
+        saveConfig("skills/heavy_weapons_progression.yml");
+        saveConfig("skills/light_armor.yml");
+        saveConfig("skills/light_armor_progression.yml");
+        saveConfig("skills/light_weapons.yml");
+        saveConfig("skills/light_weapons_progression.yml");
+        saveConfig("skills/mining.yml");
+        saveConfig("skills/mining_progression.yml");
+        saveConfig("skills/power.yml");
+        saveConfig("skills/power_progression.yml");
+        saveConfig("skills/smithing.yml");
+        saveConfig("skills/smithing_progression.yml");
+        saveConfig("skills/woodcutting.yml");
+        saveConfig("skills/woodcutting_progression.yml");
+
         TranslationManager.load(lang);
         // initialize modifiers and perk rewards
         ResourceExpenseRegistry.registerDefaultExpenses();
@@ -160,7 +193,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerListener(new MovementListener());
         registerListener(new PotionEffectListener());
         registerListener(new ProjectileListener());
-        registerListener(new ReachAttackListener());
+        if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) registerListener(new ReachAttackListener()); // 1.20.5 introduces entity interaction range attributes, rendering this listener obsolete
         registerListener(new RecipeDiscoveryListener());
         registerListener(new SmithingTableListener());
 

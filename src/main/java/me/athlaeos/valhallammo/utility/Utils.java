@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Weighted;
 import net.md_5.bungee.api.ChatColor;
@@ -38,9 +39,13 @@ public class Utils {
     }
 
     public static int getManhattanDistance(Location l1, Location l2){
-        return (int) Math.abs((l1.getX() - l2.getX()) +
-                (l1.getY() - l2.getY()) +
-                (l1.getZ() - l2.getZ()));
+        return Math.abs(l1.getBlockX() - l2.getBlockX()) +
+                Math.abs(l1.getBlockY() - l2.getBlockY()) +
+                Math.abs(l1.getBlockZ() - l2.getBlockZ());
+    }
+
+    public static int getManhattanDistance(int x1, int z1, int x2, int z2){
+        return Math.abs(x1 - x2) + Math.abs(z1 - z2);
     }
 
     public static Map<String, OfflinePlayer> getPlayersFromUUIDs(Collection<UUID> uuids){
@@ -324,11 +329,34 @@ public class Utils {
      * @param message the message to send
      */
     public static void sendMessage(CommandSender whomst, String message){
-        if (!StringUtils.isEmpty(message)) whomst.sendMessage(chat(message));
+        if (!StringUtils.isEmpty(message)) {
+            if (message.startsWith("ACTIONBAR") && whomst instanceof Player p) sendActionBar(p, message.replaceFirst("ACTIONBAR", ""));
+            else if (message.startsWith("TITLE") && whomst instanceof Player p){
+                String title = message.replaceFirst("TITLE", "");
+                String subtitle = "";
+                int titleDuration = 100;
+                int fadeDuration = 10;
+                String subString = StringUtils.substringBetween(message, "TITLE(", ")");
+                if (subString != null){
+                    String[] args = subString.split(";");
+                    if (args.length > 0) title = args[0];
+                    if (args.length > 1) subtitle = args[1];
+                    if (args.length > 2) titleDuration = Catch.catchOrElse(() -> Integer.parseInt(args[2]), 100);
+                    if (args.length > 3) fadeDuration = Catch.catchOrElse(() -> Integer.parseInt(args[2]), 10);
+                }
+                sendTitle(p, title, subtitle, titleDuration, fadeDuration);
+            } else {
+                whomst.sendMessage(chat(message));
+            }
+        }
     }
 
     public static void sendActionBar(Player whomst, String message){
         if (!StringUtils.isEmpty(message)) whomst.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(chat(message)));
+    }
+
+    public static void sendTitle(Player whomst, String title, String subtitle, int duration, int fade){
+        if (!StringUtils.isEmpty(title)) whomst.sendTitle(chat(title), subtitle, fade, duration, fade);
     }
 
     public static <T extends Weighted> List<T> weightedSelection(Collection<T> entries, int rolls, double luck){

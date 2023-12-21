@@ -230,18 +230,18 @@ public class CraftingTableListener implements Listener {
                         ItemMeta cachedMeta = matrixMeta.get(i);
                         if (cachedMeta == null) continue;
                         if (firstItemMaxDurability < 0) {
-                            firstItemMaxDurability = CustomDurabilityManager.getDurability(item, cachedMeta, true);
+                            firstItemMaxDurability = CustomDurabilityManager.getDurability(cachedMeta, true);
                             firstItem = item.clone();
                             firstMeta = cachedMeta;
                         }
-                        combinedDurability += CustomDurabilityManager.getDurability(item, cachedMeta, false);
+                        combinedDurability += CustomDurabilityManager.getDurability(cachedMeta, false);
                     }
                 }
                 // first non-empty item will be used as result
                 if (!ItemUtils.isEmpty(firstItem)){
                     firstItem.getEnchantments().keySet().forEach(firstItem::removeEnchantment);
                     int newDurability = Math.min(combinedDurability + (int) Math.floor(0.05 * firstItemMaxDurability), firstItemMaxDurability);
-                    CustomDurabilityManager.setDurability(firstItem, firstMeta, newDurability, firstItemMaxDurability);
+                    CustomDurabilityManager.setDurability(firstMeta, newDurability, firstItemMaxDurability);
                     ItemUtils.setItemMeta(firstItem, firstMeta);
                     inventory.setResult(firstItem);
                 }

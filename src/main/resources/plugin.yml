@@ -63,6 +63,9 @@ commands:
     usage: "/valtop <leaderboard> <player/page>"
 
 permissions:
+  valhalla.saveall:
+    default: op
+    description: "Access to the /val saveall command, which allows the user to force the plugin to save all profile progress and recipe changes made"
   valhalla.redeemlevels:
     default: true
     description: "Access to the /redeem levels command, which allows the user to exchange level tokens to any skill level (except power)"

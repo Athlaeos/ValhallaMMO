@@ -58,8 +58,10 @@ public class ArrowBehaviorImmunityRemoval extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new ArrowBehaviorImmunityRemoval(getName());
+    public DynamicItemModifier copy() {
+        ArrowBehaviorImmunityRemoval m = new ArrowBehaviorImmunityRemoval(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

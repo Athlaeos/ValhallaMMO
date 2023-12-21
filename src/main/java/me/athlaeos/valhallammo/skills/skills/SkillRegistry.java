@@ -1,6 +1,8 @@
 package me.athlaeos.valhallammo.skills.skills;
 
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
 import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.implementations.*;
@@ -16,7 +18,7 @@ public class SkillRegistry {
     private static Map<String, Skill> allSkillsByType = Collections.unmodifiableMap(new HashMap<>());
 
     public static void registerSkills(){
-        registerSkill(new PowerSkill("POWER"));
+         registerSkill(new PowerSkill("POWER"));
          registerIfConfigEnabled("alchemy", new AlchemySkill("ALCHEMY"));
          registerIfConfigEnabled("smithing", new SmithingSkill("SMITHING"));
          registerIfConfigEnabled("enchanting", new EnchantingSkill("ENCHANTING"));
@@ -67,6 +69,7 @@ public class SkillRegistry {
         PerkRewardRegistry.register(new SkillRefund("refund_skill_" + skill.getType().toLowerCase()));
         PerkRewardRegistry.register(new SkillLevelsAdd("skill_levels_add_" + skill.getType().toLowerCase(), skill));
         PerkRewardRegistry.register(new SkillEXPAdd("skill_exp_add_" + skill.getType().toLowerCase(), skill));
+        ModifierRegistry.register(new SkillExperience("reward_" + skill.getType().toLowerCase() + "_experience", skill.getType()));
     }
 
     public static boolean isRegistered(Class<? extends Skill> skill){

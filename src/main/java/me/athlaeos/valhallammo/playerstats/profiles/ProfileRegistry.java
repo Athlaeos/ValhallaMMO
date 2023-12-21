@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class ProfileRegistry {
     private static ProfilePersistence persistence = null;
-    private static final int delay_profile_saving = ConfigManager.getConfig("config.yml").get().getInt("db_persist_delay");
+    private static final int delay_profile_saving = ConfigManager.getConfig("config.yml").reload().get().getInt("db_persist_delay");
     private static Map<Class<? extends Profile>, Profile> registeredProfiles = Collections.unmodifiableMap(new HashMap<>());
 
     static {
@@ -65,7 +65,10 @@ public class ProfileRegistry {
             }
         }
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), ProfileRegistry::saveAll, delay_profile_saving, delay_profile_saving);
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+            ProfileRegistry.saveAll();
+            LeaderboardManager.clearCache();
+        }, delay_profile_saving, delay_profile_saving);
     }
 
     public static void saveAll(){

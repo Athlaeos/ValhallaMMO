@@ -58,8 +58,10 @@ public class ArrowBehaviorAntiGravity extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new ArrowBehaviorAntiGravity(getName());
+    public DynamicItemModifier copy() {
+        ArrowBehaviorAntiGravity m = new ArrowBehaviorAntiGravity(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

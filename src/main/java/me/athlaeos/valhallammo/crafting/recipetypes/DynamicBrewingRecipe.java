@@ -35,6 +35,7 @@ public class DynamicBrewingRecipe implements ValhallaRecipe {
 
     public String getName() {return name;}
     @Override public ItemStack getResult() { return result; }
+
     public SlotEntry getIngredient() {return ingredient;}
     public SlotEntry getApplyOn() {return applyOn;}
     public List<DynamicItemModifier> getModifiers() {return modifiers;}

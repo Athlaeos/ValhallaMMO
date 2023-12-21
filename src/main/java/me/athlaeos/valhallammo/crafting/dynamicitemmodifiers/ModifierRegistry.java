@@ -114,10 +114,12 @@ public class ModifierRegistry {
         register(new ColorDecimal("color_decimal"));
         register(new ColorRGB("color_rgb"));
         register(new CustomModelDataSet("custom_model_data"));
+        register(new CustomIDSet("custom_id"));
         register(new DisplayNameSet("rename"));
         register(new DurabilityRandomized("durability_randomize"));
         register(new DurabilityRepairNumeric("repair_number"));
         register(new DurabilityRepairScale("repair_scale"));
+        register(new DurabilityScale("durability_scale"));
         register(new EquipmentClassSet("equipment_type"));
         Arrays.stream(CustomFlag.values()).forEach(f -> register(new FlagCustomAdd("flag_" + f.toString().toLowerCase(), f)));
         Arrays.stream(ItemFlag.values()).forEach(f -> register(new FlagVanillaAdd("flag_" + f.toString().toLowerCase(), f)));
@@ -166,7 +168,6 @@ public class ModifierRegistry {
 
         register(new Item("reward_item"));
         register(new Money("reward_money"));
-        SkillRegistry.getAllSkills().values().forEach(s -> register(new SkillExperience("reward_" + s.getType().toLowerCase() + "_experience", s.getType())));
         register(new VanillaExperience("reward_vanilla_experience"));
 
         register(new EffectNullification("food_nullify_effects"));
@@ -189,6 +190,6 @@ public class ModifierRegistry {
 
     public static DynamicItemModifier createModifier(String name){
         if (!modifiers.containsKey(name)) throw new IllegalArgumentException("Modifier " + name + " doesn't exist");
-        return modifiers.get(name).createNew();
+        return modifiers.get(name).copy();
     }
 }

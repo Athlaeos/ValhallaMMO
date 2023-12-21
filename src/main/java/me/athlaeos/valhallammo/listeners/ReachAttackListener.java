@@ -37,15 +37,17 @@ public class ReachAttackListener implements Listener {
         if (cancelNextReachAttack.remove(p.getUniqueId())) return;
 
         double reach = AccumulativeStatManager.getCachedStats("ATTACK_REACH_BONUS", e.getPlayer(), 10000, true);
+        double multiplier = 1 + AccumulativeStatManager.getCachedStats("ATTACK_REACH_MULTIPLIER", e.getPlayer(), 10000, true);
         Timer.setCooldown(e.getPlayer().getUniqueId(), 0, "parry_vulnerable");
         Timer.setCooldown(e.getPlayer().getUniqueId(), 0, "parry_effective"); // swinging your weapon should also cancel parry attempts
-        if (reach <= 0) return;
+        if (reach <= 0 || multiplier <= 0) return;
+        reach = (3 + reach) * multiplier; // TODO Magic number 3, should be replaced with attack reach once Minecraft has it implemented
         Location eyes = p.getEyeLocation();
         Entity vehicle = p.getVehicle();
         // if the player is riding a vehicle their eye location will no longer be accurate, so this estimates the new eye height
         if (vehicle instanceof LivingEntity v) vehicle.getLocation().add(0, v.getEyeHeight() + (0.625 * p.getEyeHeight()), 0);
 
-        RayTraceResult rayTrace = p.getWorld().rayTrace(eyes, eyes.getDirection(), 2.9 + reach, FluidCollisionMode.NEVER, true, 0.1, entity -> !(entity.equals(p)) || entity.equals(vehicle));
+        RayTraceResult rayTrace = p.getWorld().rayTrace(eyes, eyes.getDirection(), reach - 0.1, FluidCollisionMode.NEVER, true, 0.1, entity -> !(entity.equals(p)) || entity.equals(vehicle));
         if (rayTrace != null){
             Entity hit = rayTrace.getHitEntity();
             if (hit == null) return;
@@ -65,14 +67,17 @@ public class ReachAttackListener implements Listener {
             if (!ReachAttackListener.usedReachAttack(p)) ReachAttackListener.cancelNextReachAttack(p);
 
             double reach = AccumulativeStatManager.getCachedStats("ATTACK_REACH_BONUS", p, 10000, true);
-            if (reach < 0){
-                if (reach <= -2.5) {
+            double multiplier = 1 + AccumulativeStatManager.getCachedStats("ATTACK_REACH_MULTIPLIER", p, 10000, true);
+            double defaultReach = 3;
+            double actualReach = (defaultReach + reach) * multiplier;
+            if (actualReach < defaultReach){
+                if (actualReach <= 0.5) {
                     e.setCancelled(true);
                     setLastArmSwingReason(p, ArmSwingReason.FAILED_ATTACK);
                     return;
                 }
                 RayTraceResult rayTrace = e.getDamager().getWorld().rayTrace(((LivingEntity) e.getDamager()).getEyeLocation(),
-                        ((LivingEntity) e.getDamager()).getEyeLocation().getDirection(), 2.5 + reach, FluidCollisionMode.NEVER, true, 0.5, (entity) -> !(entity.equals(e.getDamager()) || entity.equals(e.getDamager().getVehicle())));
+                        ((LivingEntity) e.getDamager()).getEyeLocation().getDirection(), actualReach - 0.5, FluidCollisionMode.NEVER, true, 0.5, (entity) -> !(entity.equals(e.getDamager()) || entity.equals(e.getDamager().getVehicle())));
                 if (rayTrace == null || rayTrace.getHitEntity() == null) {
                     e.setCancelled(true);
                     setLastArmSwingReason(p, ArmSwingReason.FAILED_ATTACK);

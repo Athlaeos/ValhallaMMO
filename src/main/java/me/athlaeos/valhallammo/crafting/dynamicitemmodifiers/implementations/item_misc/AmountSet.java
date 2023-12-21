@@ -71,8 +71,15 @@ public class AmountSet extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new AmountSet(getName());
+    public DynamicItemModifier copy() {
+        AmountSet m = new AmountSet(getName());
+        m.setAmount(this.amount);
+        m.setPriority(this.getPriority());
+        return m;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     @Override

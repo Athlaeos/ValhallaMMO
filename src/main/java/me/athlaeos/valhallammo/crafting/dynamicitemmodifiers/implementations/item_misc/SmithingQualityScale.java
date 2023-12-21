@@ -31,7 +31,7 @@ public class SmithingQualityScale extends DynamicItemModifier {
         if (materialClass != null){
             materialSkill = AccumulativeStatManager.getStats("SMITHING_QUALITY_" + materialClass, crafter, use);
         }
-        SmithingItemPropertyManager.setQuality(outputItem.getMeta(), (int) (materialSkill + generalSkill));
+        SmithingItemPropertyManager.setQuality(outputItem.getMeta(), (int) ((materialSkill + generalSkill) * skillEfficiency));
     }
 
     @Override
@@ -85,9 +85,16 @@ public class SmithingQualityScale extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setSkillEfficiency(double skillEfficiency) {
+        this.skillEfficiency = skillEfficiency;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new SmithingQualityScale(getName());
+    public DynamicItemModifier copy() {
+        SmithingQualityScale m = new SmithingQualityScale(getName());
+        m.setSkillEfficiency(this.skillEfficiency);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

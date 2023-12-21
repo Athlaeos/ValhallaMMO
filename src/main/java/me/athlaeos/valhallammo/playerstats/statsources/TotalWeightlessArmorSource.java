@@ -14,7 +14,7 @@ public class TotalWeightlessArmorSource implements AccumulativeStatSource, EvEAc
 
             double armorMultiplierBonus = 1 + Math.max(0, AccumulativeStatManager.getCachedStats("ARMOR_MULTIPLIER_BONUS", v, 10000, true));
 
-            return Math.max(0, nonEquipmentArmor * armorMultiplierBonus);
+            return nonEquipmentArmor * armorMultiplierBonus;
         }
         return 0;
     }
@@ -28,7 +28,7 @@ public class TotalWeightlessArmorSource implements AccumulativeStatSource, EvEAc
             double armorMultiplierBonus = 1 + Math.max(0, AccumulativeStatManager.getCachedRelationalStats("ARMOR_MULTIPLIER_BONUS", v, a, 10000, true));
             double armorFractionPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("ARMOR_FRACTION_IGNORED", v, a, 10000, true);
 
-            return Math.max(0, (nonEquipmentArmor * armorMultiplierBonus) * (1 - armorFractionPenetration) - armorFlatPenetration);
+            return (nonEquipmentArmor * armorMultiplierBonus) * (1 - armorFractionPenetration) - armorFlatPenetration;
         }
         return 0;
     }

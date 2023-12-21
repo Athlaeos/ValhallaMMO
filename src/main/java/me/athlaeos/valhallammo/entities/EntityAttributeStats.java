@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.entities;
 
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import org.bukkit.attribute.Attribute;
@@ -20,12 +21,19 @@ public class EntityAttributeStats {
         registerAttributeToUpdate(new AttributeDataHolder("valhalla_luck_modifier", "LUCK_BONUS", Attribute.GENERIC_LUCK, AttributeModifier.Operation.ADD_NUMBER));
         registerAttributeToUpdate(new AttributeDataHolder("valhalla_attack_damage_modifier", "ATTACK_DAMAGE_BONUS", Attribute.GENERIC_ATTACK_DAMAGE, AttributeModifier.Operation.ADD_NUMBER));
         registerAttributeToUpdate(new AttributeDataHolder("valhalla_attack_speed_modifier", "ATTACK_SPEED_BONUS", Attribute.GENERIC_ATTACK_SPEED, AttributeModifier.Operation.ADD_SCALAR));
+
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_block_reach_modifier", "BLOCK_REACH", Attribute.valueOf("GENERIC_BLOCK_INTERACTION_RANGE"), AttributeModifier.Operation.ADD_NUMBER));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_block_reach_modifier", "ATTACK_REACH_BONUS", Attribute.valueOf("GENERIC_ENTITY_INTERACTION_RANGE"), AttributeModifier.Operation.ADD_NUMBER));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_block_reach_modifier", "ATTACK_REACH_MULTIPLIER", Attribute.valueOf("GENERIC_ENTITY_INTERACTION_RANGE"), AttributeModifier.Operation.ADD_SCALAR));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_step_height_modifier", "STEP_HEIGHT", Attribute.valueOf("GENERIC_STEP_HEIGHT"), AttributeModifier.Operation.ADD_NUMBER));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_scale_modifier", "SCALE", Attribute.valueOf("GENERIC_SCALE"), AttributeModifier.Operation.ADD_SCALAR));
+        }
     }
 
     public static void updateStats(LivingEntity e){
-        for (EntityAttributeStats.AttributeDataHolder holder : EntityAttributeStats.getAttributesToUpdate().values()){
+        for (AttributeDataHolder holder : attributesToUpdate.values()){
             double value = AccumulativeStatManager.getCachedStats(holder.statSource(), e, 10000, true);
-
             EntityUtils.addUniqueAttribute(e, holder.name(), holder.type(), value, holder.operation());
         }
     }

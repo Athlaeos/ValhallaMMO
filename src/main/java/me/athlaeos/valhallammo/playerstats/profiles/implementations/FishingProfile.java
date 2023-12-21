@@ -16,19 +16,19 @@ public class FishingProfile extends Profile {
     {
         floatStat("fishingDrops", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("fishingLuck", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
-        floatStat("fishingExperienceMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("fishingEssenceMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("fishingSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("baitSaveChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
 
-        doubleStat("fishingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        doubleStat("fishingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
     }
 
     public float getFishingDrops() { return getFloat("fishingDrops"); }
     public void setFishingDrops(float value) { setFloat("fishingDrops", value); }
     public float getFishingLuck() { return getFloat("fishingLuck"); }
     public void setFishingLuck(float value) { setFloat("fishingLuck", value); }
-    public float getFishingExperienceMultiplier() { return getFloat("fishingExperienceMultiplier"); }
-    public void setFishingExperienceMultiplier(float value) { setFloat("fishingExperienceMultiplier", value); }
+    public float getFishingEssenceMultiplier() { return getFloat("fishingEssenceMultiplier"); }
+    public void setFishingEssenceMultiplier(float value) { setFloat("fishingEssenceMultiplier", value); }
     public float getFishingSpeedBonus() { return getFloat("fishingSpeedBonus"); }
     public void setFishingSpeedBonus(float value) { setFloat("fishingSpeedBonus", value); }
     public float getBaitSaveChance() { return getFloat("baitSaveChance"); }

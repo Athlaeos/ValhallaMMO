@@ -99,9 +99,26 @@ public class MiningHardnessTranslationsAdd extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CUSTOM_ATTRIBUTES.id());
     }
 
+    public void setBaseMaterial(Material baseMaterial) {
+        this.baseMaterial = baseMaterial;
+    }
+
+    public void setTranslationMaterial(Material translationMaterial) {
+        this.translationMaterial = translationMaterial;
+    }
+
+    public Map<Material, Material> getTranslations() {
+        return translations;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new MiningHardnessTranslationsAdd(getName());
+    public DynamicItemModifier copy() {
+        MiningHardnessTranslationsAdd m = new MiningHardnessTranslationsAdd(getName());
+        m.setBaseMaterial(this.baseMaterial);
+        m.setTranslationMaterial(this.translationMaterial);
+        m.getTranslations().putAll(this.translations);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

@@ -74,9 +74,16 @@ public class SmithingQualityMultiply extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setMultiplyBy(double multiplyBy) {
+        this.multiplyBy = multiplyBy;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new SmithingQualityMultiply(getName());
+    public DynamicItemModifier copy() {
+        SmithingQualityMultiply m = new SmithingQualityMultiply(getName());
+        m.setMultiplyBy(this.multiplyBy);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

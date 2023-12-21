@@ -99,9 +99,25 @@ public class MiningExceptionsAdd extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CUSTOM_ATTRIBUTES.id());
     }
 
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public void setExceptionMaterial(Material exceptionMaterial) {
+        this.exceptionMaterial = exceptionMaterial;
+    }
+
+    public Map<Material, Double> getExceptions() {
+        return exceptions;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new MiningExceptionsAdd(getName());
+    public DynamicItemModifier copy() {
+        MiningExceptionsAdd m = new MiningExceptionsAdd(getName());
+        m.setExceptionMaterial(this.exceptionMaterial);
+        m.getExceptions().putAll(this.exceptions);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

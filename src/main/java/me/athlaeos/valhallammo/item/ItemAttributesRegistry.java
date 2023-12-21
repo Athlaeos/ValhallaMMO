@@ -1,6 +1,10 @@
 package me.athlaeos.valhallammo.item;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeRemove;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.item.item_attributes.implementations.AttributeDisplayWrapper;
 import me.athlaeos.valhallammo.item.item_attributes.implementations.AttributeHiddenWrapper;
@@ -27,6 +31,9 @@ public class ItemAttributesRegistry {
 
     public static void registerAttributes() {
         register(new AttributeHiddenWrapper("CUSTOM_MAX_DURABILITY", StatFormat.INT).addModifier(Material.DIAMOND, 1, 25)); // custom durability is already displayed elsewhere, so this one is hidden
+        ModifierRegistry.register(new DefaultAttributeAdd("custom_durability_set", "CUSTOM_MAX_DURABILITY", 1, 25, Material.DIAMOND));
+        ModifierRegistry.register(new DefaultAttributeRemove("custom_durability_remove", "CUSTOM_MAX_DURABILITY", Material.COAL));
+
         register(new AttributeDisplayWrapper("BOW_STRENGTH", StatFormat.PERCENTILE_BASE_1_P1, "\uEE00", (i) -> i >= 0, Material.BOW, Material.CROSSBOW).offset(1).addModifier(Material.BOW));
         register(new AttributeDisplayWrapper("ARROW_DAMAGE", StatFormat.DIFFERENCE_FLOAT_P1, "\uEE01", (i) -> i >= 0).addModifier(Material.ARROW, 0.1, 1));
         register(new AttributeDisplayWrapper("AMMO_CONSUMPTION", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE02", (i) -> i <= 0).max(0D).addModifier(Material.SPECTRAL_ARROW));
@@ -50,7 +57,7 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("LIGHT_ARMOR_DAMAGE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE14", (i) -> i >= 0).addModifier(Material.CHAINMAIL_HELMET));
         register(new AttributeDisplayWrapper("IMMUNITY_BONUS_FRACTION", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE15", (i) -> i >= 0).addModifier(Material.ENCHANTED_GOLDEN_APPLE));
         register(new AttributeDisplayWrapper("IMMUNITY_BONUS_FLAT", StatFormat.DIFFERENCE_INT, "\uEE16", (i) -> i >= 0).addModifier(Material.GOLDEN_APPLE, 1, 5));
-        register(new AttributeDisplayWrapper("IMMUNITY_REDUCTION", StatFormat.PERCENTILE_BASE_1_P1, "\uEE17", (i) -> i >= 0).addModifier(Material.WITHER_ROSE));
+        register(new AttributeDisplayWrapper("IMMUNITY_REDUCTION", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE17", (i) -> i >= 0).addModifier(Material.WITHER_ROSE));
         register(new AttributeDisplayWrapper("DAMAGE_UNARMED", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE18", (i) -> i >= 0).addModifier(Material.BLAZE_POWDER));
         register(new AttributeDisplayWrapper("DAMAGE_MELEE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE19", (i) -> i >= 0).addModifier(Material.DIAMOND_SWORD));
         register(new AttributeDisplayWrapper("DAMAGE_RANGED", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE1A", (i) -> i >= 0).addModifier(Material.BOW));
@@ -106,9 +113,9 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("GENERIC_ARMOR_TOUGHNESS", "\uEE52", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.DIAMOND_CHESTPLATE, 0.1, 1));
         register(new AttributeDisplayWrapper("GENERIC_ATTACK_DAMAGE", "\uEE54", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).offset(-1).addModifier(Material.IRON_SWORD, 0.1, 1));
         register(new AttributeDisplayWrapper("GENERIC_ATTACK_SPEED", "\uEE55", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).offset(-4).addModifier(Material.GOLDEN_SWORD, 0.1, 1));
-        register(new AttributeDisplayWrapper("GENERIC_KNOCKBACK_RESISTANCE", "\uEE56", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).setOperation(AttributeModifier.Operation.ADD_SCALAR).addModifier(Material.NETHERITE_CHESTPLATE));
-        register(new AttributeDisplayWrapper("GENERIC_MAX_HEALTH", "\uEE57", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.GOLDEN_APPLE, 0.1, 1));
-        register(new AttributeDisplayWrapper("GENERIC_MOVEMENT_SPEED", "\uEE59", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).setOperation(AttributeModifier.Operation.ADD_SCALAR).addModifier(Material.SUGAR));
+        register(new AttributeDisplayWrapper("GENERIC_KNOCKBACK_RESISTANCE", "\uEE56", (i) -> i >= 0, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).setOperation(AttributeModifier.Operation.ADD_SCALAR).addModifier(Material.NETHERITE_CHESTPLATE));
+        register(new AttributeDisplayWrapper("GENERIC_MAX_HEALTH", "\uEE57", (i) -> i >= 0, StatFormat.DIFFERENCE_FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.GOLDEN_APPLE, 0.1, 1));
+        register(new AttributeDisplayWrapper("GENERIC_MOVEMENT_SPEED", "\uEE59", (i) -> i >= 0, StatFormat.DIFFERENCE_FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).setOperation(AttributeModifier.Operation.ADD_SCALAR).addModifier(Material.SUGAR));
 
         // \uEE5A and \uEE5B are occupied by milk and chocolate milk potion effect icons
 
@@ -135,30 +142,40 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("EXTRA_FREEZING_DAMAGE", StatFormat.FLOAT_P1, "\uEE70", (i) -> i >= 0).addModifier(Material.ICE, 0.1, 1));
         register(new AttributeDisplayWrapper("EXTRA_RADIANT_DAMAGE", StatFormat.FLOAT_P1, "\uEE71", (i) -> i >= 0).addModifier(Material.GOLD_INGOT, 0.1, 1));
         register(new AttributeDisplayWrapper("EXTRA_NECROTIC_DAMAGE", StatFormat.FLOAT_P1, "\uEE72", (i) -> i >= 0).addModifier(Material.BONE, 0.1, 1));
-        register(new AttributeDisplayWrapper("BLUDGEONING_RESISTANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE73", (i) -> i >= 0).addModifier(Material.COBBLESTONE));
-        register(new AttributeDisplayWrapper("LIGHTNING_RESISTANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE74", (i) -> i >= 0).addModifier(Material.PRISMARINE_SHARD));
-        register(new AttributeDisplayWrapper("FREEZING_RESISTANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE75", (i) -> i >= 0).addModifier(Material.ICE));
-        register(new AttributeDisplayWrapper("RADIANT_RESISTANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE76", (i) -> i >= 0).addModifier(Material.GOLD_INGOT));
-        register(new AttributeDisplayWrapper("NECROTIC_RESISTANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE77", (i) -> i >= 0).addModifier(Material.BONE));
+        register(new AttributeDisplayWrapper("BLUDGEONING_RESISTANCE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE73", (i) -> i >= 0).addModifier(Material.COBBLESTONE));
+        register(new AttributeDisplayWrapper("LIGHTNING_RESISTANCE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE74", (i) -> i >= 0).addModifier(Material.PRISMARINE_SHARD));
+        register(new AttributeDisplayWrapper("FREEZING_RESISTANCE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE75", (i) -> i >= 0).addModifier(Material.ICE));
+        register(new AttributeDisplayWrapper("RADIANT_RESISTANCE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE76", (i) -> i >= 0).addModifier(Material.GOLD_INGOT));
+        register(new AttributeDisplayWrapper("NECROTIC_RESISTANCE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE77", (i) -> i >= 0).addModifier(Material.BONE));
         // \uEE78 is occupied by the stun effect
-        register(new AttributeDisplayWrapper("DURABILITY", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE79", (i) -> i >= 0).addModifier(Material.DIAMOND));
+        register(new AttributeDisplayWrapper("DURABILITY_MULTIPLIER", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE79", (i) -> i >= 0).addModifier(Material.DIAMOND));
         register(new AttributeDisplayWrapper("ENTITY_DROPS", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE7A", (i) -> i >= 0).addModifier(Material.CHEST));
-        register(new AttributeDisplayWrapper("LIGHT_ARMOR", StatFormat.FLOAT_P1, "\uEE6B", (i) -> i >= 0).addModifier(Material.CHAINMAIL_CHESTPLATE, 0.1, 1));
-        register(new AttributeDisplayWrapper("HEAVY_ARMOR", StatFormat.FLOAT_P1, "\uEE6C", (i) -> i >= 0).addModifier(Material.IRON_CHESTPLATE, 0.1, 1));
-        register(new AttributeDisplayWrapper("CRIT_CHANCE_RESISTANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE6D", (i) -> i >= 0).addModifier(Material.REDSTONE));
-        register(new AttributeDisplayWrapper("CRIT_DAMAGE_RESISTANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE6E", (i) -> i >= 0).addModifier(Material.REDSTONE));
+        register(new AttributeDisplayWrapper("LIGHT_ARMOR", StatFormat.DIFFERENCE_FLOAT_P1, "\uEE6B", (i) -> i >= 0).addModifier(Material.CHAINMAIL_CHESTPLATE, 0.1, 1));
+        register(new AttributeDisplayWrapper("HEAVY_ARMOR", StatFormat.DIFFERENCE_FLOAT_P1, "\uEE6C", (i) -> i >= 0).addModifier(Material.IRON_CHESTPLATE, 0.1, 1));
+        register(new AttributeDisplayWrapper("CRIT_CHANCE_RESISTANCE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE6D", (i) -> i >= 0).addModifier(Material.REDSTONE));
+        register(new AttributeDisplayWrapper("CRIT_DAMAGE_RESISTANCE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE6E", (i) -> i >= 0).addModifier(Material.REDSTONE));
         // \uEE7F is occupied by the fire effect
         // \uEE80-\uEE8A are occupied by instant custom damage effects
         // \uEE8B by bleed, \uEE8C by antibleed, \uEE8D by recalling, \uEE8E by custom heal
-        register(new AttributeDisplayWrapper("LAPIS_SAVE_CHANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE8F", (i) -> i <= 0).addModifier(Material.LAPIS_LAZULI));
-        register(new AttributeDisplayWrapper("ENCHANTING_REFUND_CHANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE90", (i) -> i >= 0).addModifier(Material.ENCHANTING_TABLE));
-        register(new AttributeDisplayWrapper("ENCHANTING_REFUND_FRACTION", StatFormat.PERCENTILE_BASE_1_P1, "\uEE91", (i) -> i >= 0).addModifier(Material.EXPERIENCE_BOTTLE));
+        register(new AttributeDisplayWrapper("LAPIS_SAVE_CHANCE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE8F", (i) -> i <= 0).addModifier(Material.LAPIS_LAZULI));
+        register(new AttributeDisplayWrapper("ENCHANTING_REFUND_CHANCE", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE90", (i) -> i >= 0).addModifier(Material.ENCHANTING_TABLE));
+        register(new AttributeDisplayWrapper("ENCHANTING_REFUND_FRACTION", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE91", (i) -> i >= 0).addModifier(Material.EXPERIENCE_BOTTLE));
         register(new AttributeDisplayWrapper("LINGERING_DURATION_MULTIPLIER", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE92", (i) -> i >= 0).addModifier(Material.LINGERING_POTION));
         register(new AttributeDisplayWrapper("LINGERING_RADIUS_MULTIPLIER", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE93", (i) -> i >= 0).addModifier(Material.LINGERING_POTION));
         register(new AttributeDisplayWrapper("SPLASH_INTENSITY_MINIMUM", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE94", (i) -> i >= 0).addModifier(Material.SPLASH_POTION));
         register(new AttributeDisplayWrapper("ENTITY_RARE_DROPS", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE95", (i) -> i >= 0).addModifier(Material.CHEST));
         register(new AttributeDisplayWrapper("DIG_SPEED", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE96", (i) -> i >= 0).addModifier(Material.DIAMOND_PICKAXE));
-        register(new AttributeDisplayWrapper("MINING_SPEED", StatFormat.FLOAT_P1, "\uEE97", (i) -> i >= 0).addModifier(Material.GOLDEN_PICKAXE));
+        register(new AttributeDisplayWrapper("MINING_SPEED", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE97", (i) -> i >= 0).addModifier(Material.GOLDEN_PICKAXE));
+        // \uEE98 is occupied by fall damage icon
+        register(new AttributeDisplayWrapper("CROSSBOW_MAGAZINE", StatFormat.INT, "\uEE99", (i) -> i >= 0).addModifier(Material.CROSSBOW, 1, 5));
+
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
+            register(new AttributeDisplayWrapper("GENERIC_SCALE", "\uEE9A", (i) -> i >= 0, StatFormat.DIFFERENCE_FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).setOperation(AttributeModifier.Operation.ADD_SCALAR).addModifier(Material.RED_MUSHROOM, 0.01, 0.1));
+            register(new AttributeDisplayWrapper("GENERIC_BLOCK_INTERACTION_RANGE", "\uEE9B", (i) -> i >= 0, StatFormat.DIFFERENCE_FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.SCAFFOLDING, 0.01, 0.25));
+            register(new AttributeDisplayWrapper("GENERIC_STEP_HEIGHT", "\uEE9C", (i) -> i >= 0, StatFormat.DIFFERENCE_FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.RABBIT_FOOT, 0.01, 0.1));
+        }
+        register(new AttributeDisplayWrapper("ATTACK_REACH_MULTIPLIER", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, "\uEE9D", (i) -> i >= 0).addModifier(Material.ENDER_PEARL, 0.1, 1));
+
 
         addVanillaStat(Material.WOODEN_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
         addVanillaStat(Material.WOODEN_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2));
@@ -312,6 +329,11 @@ public class ItemAttributesRegistry {
         return attributes;
     }
 
+    @SuppressWarnings("all")
+    public static boolean hasCustomStats(ItemMeta meta){
+        return ItemUtils.getPDCString(DEFAULT_STATS, meta, null) != null || ItemUtils.getPDCString(ACTUAL_STATS, meta, null) != null;
+    }
+
     /**
      * Fetches the vanilla stats of a material, if any.
      * @param m the item type to fetch its vanilla stats from
@@ -341,7 +363,7 @@ public class ItemAttributesRegistry {
             Collection<String> exclude = new HashSet<>();
             List<AttributeWrapper> orderedWrappers = new ArrayList<>(stats.values());
             orderedWrappers.sort(Comparator.comparingInt((AttributeWrapper a) -> a.getAttributeName().length()));
-            Collections.reverse(orderedWrappers);
+            //Collections.reverse(orderedWrappers);
             for (AttributeWrapper wrapper : orderedWrappers){
                 if (!defaultStats.containsKey(wrapper.getAttribute())) {
                     exclude.add(wrapper.getAttribute());
@@ -454,6 +476,7 @@ public class ItemAttributesRegistry {
         Map<String, AttributeWrapper> actualStats = getStats(meta, false);
         actualStats.remove(wrapper.getAttribute());
 
+        wrapper.onRemove(meta);
         setActualStats(meta, actualStats);
     }
 
@@ -468,6 +491,7 @@ public class ItemAttributesRegistry {
         Map<String, AttributeWrapper> stats = getStats(meta, def);
         AttributeWrapper wrapper = stats.get(attribute);
         if (wrapper == null) return;
+        wrapper = wrapper.copy();
         wrapper.setValue(value);
         stats.put(wrapper.getAttribute(), wrapper);
         if (def) setDefaultStats(meta, stats);

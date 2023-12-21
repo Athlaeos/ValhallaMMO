@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
@@ -20,9 +21,7 @@ import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.*;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.Tag;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.Ageable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -41,7 +40,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MiningSkill extends Skill implements Listener {
     private final Map<Material, Double> dropsExpValues = new HashMap<>();
@@ -67,8 +65,8 @@ public class MiningSkill extends Skill implements Listener {
         ValhallaMMO.getInstance().save("skills/mining_progression.yml");
         ValhallaMMO.getInstance().save("skills/mining.yml");
 
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/mining.yml").reload().get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/mining_progression.yml").reload().get();
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/mining.yml").get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/mining_progression.yml").get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -118,7 +116,8 @@ public class MiningSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onBlockBreak(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() ||
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING)) return;
         MiningProfile profile = ProfileCache.getOrCache(e.getPlayer(), MiningProfile.class);
         if (profile.getUnbreakableBlocks().contains(e.getBlock().getType().toString())) {
             e.setCancelled(true);
@@ -131,7 +130,10 @@ public class MiningSkill extends Skill implements Listener {
         }
         LootListener.addPreparedLuck(e.getBlock(), AccumulativeStatManager.getCachedStats("MINING_LUCK", e.getPlayer(), 10000, true));
 
-        if (!veinMiningPlayers.contains(e.getPlayer().getUniqueId()) && profile.isVeinMiningUnlocked() && profile.getVeinMinerValidBlocks().contains(e.getBlock().getType().toString()) && Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_vein_miner")){
+        if (!veinMiningPlayers.contains(e.getPlayer().getUniqueId()) && profile.isVeinMiningUnlocked() &&
+                profile.getVeinMinerValidBlocks().contains(e.getBlock().getType().toString()) &&
+                Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_vein_miner") &&
+                !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_VEINMINER)){
             Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), veinMiningLimit, b -> b.getType() == e.getBlock().getType(), veinMiningScanArea);
             veinMiningPlayers.add(e.getPlayer().getUniqueId());
             e.setCancelled(true);
@@ -160,7 +162,8 @@ public class MiningSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void lootTableDrops(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlock())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlock()) ||
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING)) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("MINING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
         ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
@@ -175,7 +178,8 @@ public class MiningSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemsDropped(BlockDropItemEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState()) ||
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING)) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("MINING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops
         List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getItemStack().getType()));
@@ -199,7 +203,9 @@ public class MiningSkill extends Skill implements Listener {
                 !e.getPlayer().isSneaking() || e.getHand() == EquipmentSlot.OFF_HAND ||
                 e.useItemInHand() == Event.Result.DENY || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_drilling_cooldown") ||
                 !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_drilling_duration") ||
-                (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK)) return;
+                (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) ||
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_DRILLING)) return;
         ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
         if (ItemUtils.isEmpty(hand) || !hand.getType().toString().endsWith("_PICKAXE")) return;
         MiningProfile profile = ProfileCache.getOrCache(e.getPlayer(), MiningProfile.class);
@@ -218,6 +224,7 @@ public class MiningSkill extends Skill implements Listener {
         if (tnt.getSource() instanceof Player p) responsible = p;
         else if (tnt.getSource() instanceof AbstractArrow a && a.getShooter() instanceof Player p) responsible = p;
         if (responsible == null) return;
+        if (WorldGuardHook.inDisabledRegion(responsible.getLocation(), responsible, WorldGuardHook.VMMO_SKILL_MINING)) return;
 
         MiningProfile profile = ProfileCache.getOrCache(responsible, MiningProfile.class);
         ItemStack normalPickaxe = new ItemStack(Material.IRON_PICKAXE);
@@ -251,6 +258,7 @@ public class MiningSkill extends Skill implements Listener {
     @EventHandler
     public void onTNTDamage(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof Player p) || !(e.getDamager() instanceof TNTPrimed)) return;
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_MINING)) return;
         MiningProfile profile = ProfileCache.getOrCache(p, MiningProfile.class);
         e.setDamage(e.getDamage() * (1 - profile.getTntDamageReduction()));
     }
@@ -277,6 +285,7 @@ public class MiningSkill extends Skill implements Listener {
 
     @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_MINING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
             amount *= (1 + AccumulativeStatManager.getStats("MINING_EXP_GAIN", p, true));
         }

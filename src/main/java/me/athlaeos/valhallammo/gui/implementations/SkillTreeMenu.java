@@ -1,10 +1,12 @@
 package me.athlaeos.valhallammo.gui.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.skills.skills.PerkConnectionIcon;
@@ -37,11 +39,19 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.*;
 
 public class SkillTreeMenu extends Menu {
-    private final NamespacedKey buttonKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_button_id");
+    private static final NamespacedKey buttonKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_button_id");
+    private static final Map<Skill, List<List<List<Perk>>>> skillTrees = new HashMap<>(); // first list represents rows, second columns, third perks on the location
+    private static final Map<Skill, Pair<Integer, Integer>> coordinateOffsets = new HashMap<>();
+
+    static {
+        updateSkillTrees();
+    }
+
+
     private final Player target;
     private final List<ItemStack> skillIcons = new ArrayList<>();
     private Skill selectedSkill;
-    private final Map<String, ItemStack[][]> skillTrees = new HashMap<>();
+    private final Map<Skill, ItemStack[][]> skillTreeItems = new HashMap<>();
     private int x;
     private int y;
 
@@ -63,8 +73,8 @@ public class SkillTreeMenu extends Menu {
         super(playerMenuUtility);
 
         selectedSkill = SkillRegistry.getSkill(PowerSkill.class);
-        x = selectedSkill.getCenterX();
-        y = selectedSkill.getCenterY();
+        x = selectedSkill.getCenterX() + 4;
+        y = selectedSkill.getCenterY() + 2;
         target = playerMenuUtility.getOwner();
 
         buildSkillTrees();
@@ -74,8 +84,8 @@ public class SkillTreeMenu extends Menu {
         super(playerMenuUtility);
 
         selectedSkill = SkillRegistry.getSkill(PowerSkill.class);
-        x = selectedSkill.getCenterX();
-        y = selectedSkill.getCenterY();
+        this.x = selectedSkill.getCenterX() + 4;
+        this.y = selectedSkill.getCenterY() + 2;
         this.target = target;
 
         buildSkillTrees();
@@ -107,15 +117,17 @@ public class SkillTreeMenu extends Menu {
             int y2 = y;
 
             int s = e.getSlot();
-            if ((s == 0 || s == 4 || s == 8) && y - 1 >= 0) y -= 1; // the three northern buttons should subtract y by 1
-            if ((s == 36 || s == 40 || s == 44) && y + 5 < currentSkillTreeHeight()) y += 1; // the three southern buttons should increase y by 1
-            if ((s == 0 || s == 18 || s == 36) && x - 1 >= 0) x -= 1; // the three western buttons should subtract x by 1
-            if ((s == 8 || s == 26 || s == 44) && x + 9 < currentSkillTreeWidth()) x += 1; // the three eastern buttons should increase x by 1
-            if (x != x2 || y != y2) {
-                // navigational buttons were clicked, so nothing else needs to run
-                setMenuItems();
-                perkConfirmation = null;
-                return;
+            if (selectedSkill.isNavigable()){
+                if ((s == 0 || s == 4 || s == 8) && y - 1 >= 2) y -= 1; // the three northern buttons should subtract y by 1
+                if ((s == 36 || s == 40 || s == 44) && y + 3 < currentSkillTreeHeight()) y += 1; // the three southern buttons should increase y by 1
+                if ((s == 0 || s == 18 || s == 36) && x - 1 >= 4) x -= 1; // the three western buttons should subtract x by 1
+                if ((s == 8 || s == 26 || s == 44) && x + 5 < currentSkillTreeWidth()) x += 1; // the three eastern buttons should increase x by 1
+                if (x != x2 || y != y2) {
+                    // navigational buttons were clicked, so nothing else needs to run
+                    setMenuItems();
+                    perkConfirmation = null;
+                    return;
+                }
             }
 
             if (meta.getPersistentDataContainer().has(buttonKey, PersistentDataType.STRING)){
@@ -125,8 +137,8 @@ public class SkillTreeMenu extends Menu {
                     Skill selectedSkill = SkillRegistry.getSkill(id);
                     if (selectedSkill != null) {
                         this.selectedSkill = selectedSkill;
-                        this.x = selectedSkill.getCenterX();
-                        this.y = selectedSkill.getCenterY();
+                        this.x = selectedSkill.getCenterX() + 4;
+                        this.y = selectedSkill.getCenterY() + 2;
                     }
                 } else {
                     if (selectedSkill == null){
@@ -135,6 +147,10 @@ public class SkillTreeMenu extends Menu {
                     }
                     Perk p = PerkRegistry.getPerk(id);
                     if (p != null){
+                        if (p.getSkill().isNavigable()){
+                            this.x = p.getX() + 4;
+                            this.y = p.getY();
+                        }
                         if (p.canUnlock(target)){
                             if (perkConfirmation != null && perkConfirmation.equals(p.getName())){
                                 perkConfirmation = null;
@@ -158,7 +174,7 @@ public class SkillTreeMenu extends Menu {
                                 if (!expense.canPurchase(target)) playerMenuUtility.getOwner().sendMessage(Utils.chat(expense.getInsufficientFundsMessage()));
                             }
                         }
-                        skillTrees.put(selectedSkill.getType(), getSkillTree(selectedSkill));
+                        skillTreeItems.put(selectedSkill, getSkillTree(selectedSkill));
                     }
                 }
             } else perkConfirmation = null;
@@ -172,44 +188,43 @@ public class SkillTreeMenu extends Menu {
     }
 
     private int currentSkillTreeHeight(){
-        return skillTrees.get(selectedSkill.getType()).length;
+        return skillTreeItems.get(selectedSkill).length;
     }
 
     private int currentSkillTreeWidth(){
-        return skillTrees.get(selectedSkill.getType())[0].length;
+        return skillTreeItems.get(selectedSkill)[0].length;
     }
 
     @Override
     public void setMenuItems() {
         inventory.clear();
         setScrollBar();
-        if (selectedSkill != null && skillTrees.containsKey(selectedSkill.getType())){
-            ItemStack[][] treeView = getSkillTreeView(skillTrees.get(selectedSkill.getType()), x, y);
+        if (selectedSkill != null && skillTreeItems.containsKey(selectedSkill)){
+            ItemStack[][] treeView = getSkillTreeView(selectedSkill);
             if (!ArrayUtils.isEmpty(treeView)){
                 int index = 0;
                 if (treeView.length >= 5){
                     for (int r = 0; r < 5; r++){
                         ItemStack[] row = treeView[r];
-                        if (row.length >= 9){
-                            for (int i = 0; i < 9; i++){
-                                if (row[i] != null){
-                                    inventory.setItem(index, row[i]);
-                                }
-                                index++;
-                            }
+                        if (row.length < 9) continue;
+                        for (int i = 0; i < 9; i++){
+                            if (row[i] != null) inventory.setItem(index, row[i]);
+                            index++;
                         }
                     }
                 }
             }
+            if (selectedSkill.isNavigable()){
+                inventory.setItem(0, directionNW);
+                inventory.setItem(4, directionN);
+                inventory.setItem(8, directionNE);
+                inventory.setItem(18, directionW);
+                inventory.setItem(26, directionE);
+                inventory.setItem(36, directionSW);
+                inventory.setItem(40, directionS);
+                inventory.setItem(44, directionSE);
+            }
         }
-        inventory.setItem(0, directionNW);
-        inventory.setItem(4, directionN);
-        inventory.setItem(8, directionNE);
-        inventory.setItem(18, directionW);
-        inventory.setItem(26, directionE);
-        inventory.setItem(36, directionSW);
-        inventory.setItem(40, directionS);
-        inventory.setItem(44, directionSE);
     }
 
     private void setScrollBar(){
@@ -276,147 +291,87 @@ public class SkillTreeMenu extends Menu {
 
     // If everything goes right, this should return a 2D array of itemstacks with a size of at least 9x5
     private ItemStack[][] getSkillTree(Skill skill){
-        if (skill == null) return null;
-        // skilltree size at least 1x1 at the center
-        int minX = skill.getCenterX();
-        int maxX = skill.getCenterX();
-        int minY = skill.getCenterY();
-        int maxY = skill.getCenterY();
+        if (skill == null || !skillTrees.containsKey(skill)) return null;
+        List<List<List<Perk>>> perks = skillTrees.get(skill);
+        if (perks.isEmpty() || perks.get(0).isEmpty()) return null;
 
-        int xOff = 0;
-        int yOff = 0;
-        // move min and max x and y as far apart as necessary to fit skill tree
-        for (Perk p : skill.getPerks()){
-            minX = Math.min(minX, p.getX());
-            maxX = Math.max(maxX, p.getX());
-            minY = Math.min(minY, p.getY());
-            maxY = Math.max(maxY, p.getY());
-        }
+        ItemStack[][] skillTree = new ItemStack[perks.size()][perks.get(0).size()];
+        for (ItemStack[] row : skillTree) Arrays.fill(row, null);
 
-        // offset min and max x and y coords, so they are all 0 and above
-        // if center x or y are negative, offset the center to compensate for it
-        if (minX < 0) {
-            skill.setCenterX(skill.getCenterX() - minX);
-            xOff = -minX;
-            maxX -= minX;
-            minX = 0;
-        }
-        if (minY < 0){
-            skill.setCenterY(skill.getCenterY() - minY);
-            yOff = -minY;
-            maxY -= minY;
-            minY = 0;
-        }
-        int width = (maxX - minX) + 9; // give skill tree an empty border for moving
-        int height = (maxY - minY) + 5;
+        for (int r = 0; r < perks.size(); r++){
+            List<List<Perk>> row = perks.get(r);
+            if (row == null) continue;
+            for (int c = 0; c < row.size(); c++){
+                List<Perk> column = row.get(c);
+                if (column == null) continue;
+                for (Perk p : column){
+                    Pair<Integer, Integer> offsets = coordinateOffsets.get(skill);
+                    if (p == null || !p.shouldBeVisible(target) || offsets == null) continue;
+                    ItemBuilder icon = new ItemBuilder(p.getIcon())
+                            .name(perkConfirmation != null && perkConfirmation.equals(p.getName()) ? TranslationManager.getTranslation("skilltree_perk_confirmation").replace("%perk%", p.getDisplayName()) : p.getDisplayName())
+                            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS)
+                            .stringTag(buttonKey, p.getName());
+                    int unlockedStatus = p.hasPermanentlyLocked(target) ? 2 : // permanently locked
+                            p.hasFakeUnlocked(target) ? 3 : // fake unlocked
+                                    p.hasUnlocked(target) ? 1 : // unlocked normally
+                                            0; // not unlocked
 
-        ItemStack[][] skillTree = new ItemStack[height][width];
-        for (ItemStack[] row : skillTree){
-            Arrays.fill(row, null);
-        }
-
-        List<Perk> perks = new ArrayList<>(skill.getPerks());
-        perks.sort(Comparator.comparingInt(Perk::getLevelRequirement));
-        for (Perk p : perks){
-            if ((!p.isHiddenUntilRequirementsMet()) || p.shouldBeVisible(target) || p.hasUnlocked(target)){
-                ItemBuilder perkIcon = new ItemBuilder(p.getIcon())
-                        .name(perkConfirmation != null && perkConfirmation.equals(p.getName()) ? TranslationManager.getTranslation("skilltree_perk_confirmation").replace("%perk%", p.getDisplayName()) : p.getDisplayName())
-                        .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS);
-
-                List<String> iconLore = new ArrayList<>();
-
-                int unlockedStatus = p.hasPermanentlyLocked(target) ? 2 : // permanently locked
-                        p.hasFakeUnlocked(target) ? 3 : // fake unlocked
-                                p.hasUnlocked(target) ? 1 : // unlocked normally
-                                        0; // not unlocked
-                for (String l : TranslationManager.getListTranslation("skilltree_perk_format")){
-                    if (l.contains("%description%")){
-                        String description = p.getDescription();
-                        for (PerkReward reward : p.getRewards()){
-                            description = description.replace("{" + reward.getName() + "}", reward.rewardPlacholder());
-                        }
-                        iconLore.addAll(Utils.chat(StringUtils.separateStringIntoLines(description, 40)));
-                    } else if (UnlockConditionRegistry.getValuePlaceholders().stream().anyMatch(c -> l.contains(String.format("%%%s%%", c)))) { // if lore contains a value placeholder
-                        // retrieve the condition matching the placeholder, and insert value into perk lore if there is one
-                        UnlockCondition condition = p.getConditions().stream().filter(c -> l.contains(String.format("%%%s%%", c.getValuePlaceholder()))).findAny().orElse(null);
-                        if (condition != null && condition.getConditionMessages() != null && !condition.getConditionMessages().isEmpty()){
-                            // inserts lore if placeholder is present
-                            iconLore.addAll(Utils.chat(condition.getConditionMessages()));
-                        }
-                    } else if (UnlockConditionRegistry.getFailurePlaceholders().stream().anyMatch(c -> l.contains(String.format("%%%s%%", c)))) { // if lore contains a failure placeholder
-                        // retrieve the condition matching the placeholder, and insert value into perk lore if there is one
-                        UnlockCondition condition = p.getConditions().stream().filter(c -> l.contains(String.format("%%%s%%", c.getFailurePlaceholder()))).findAny().orElse(null);
-                        if (unlockedStatus == 0 && !p.metConditionRequirements(target, false) && condition != null && !StringUtils.isEmpty(condition.getFailedConditionMessage())){
-                            // inserts lore if placeholder is present but also if target did not meet conditions
-                            iconLore.add(Utils.chat(condition.getFailedConditionMessage()));
-                        }
-                    } else if (ResourceExpenseRegistry.getValuePlaceholders().stream().anyMatch(c -> l.contains(String.format("%%%s%%", c)))) { // if lore contains a cost placeholder
-                        // retrieve the expense matching the placeholder, and insert value into perk lore if there is one
-                        ResourceExpense condition = p.getExpenses().stream().filter(c -> l.contains(String.format("%%%s%%", c.getCostMessage()))).findAny().orElse(null);
-                        if (condition != null && !StringUtils.isEmpty(condition.getCostMessage())){
-                            // inserts lore if placeholder is present
-                            iconLore.add(Utils.chat(condition.getCostMessage()));
-                        }
-                    } else if (ResourceExpenseRegistry.getFailurePlaceholders().stream().anyMatch(c -> l.contains(String.format("%%%s%%", c)))) { // if lore contains a cost placeholder
-                        // retrieve the expense matching the placeholder, and insert value into perk lore if there is one
-                        ResourceExpense condition = p.getExpenses().stream().filter(c -> l.contains(String.format("%%%s%%", c.getCostMessage()))).findAny().orElse(null);
-                        if (unlockedStatus == 0 && !p.metResourceRequirements(target) && condition != null && !StringUtils.isEmpty(condition.getInsufficientFundsMessage())){
-                            // inserts lore if placeholder is present but also if target did not meet conditions
-                            iconLore.add(Utils.chat(condition.getInsufficientFundsMessage()));
-                        }
-                    } else if (l.contains("%warning_levels%")){
-                        if (unlockedStatus == 0 &&
-                                !p.metLevelRequirement(target) &&
-                                !StringUtils.isEmpty(perk_requirement_warning_levels)) iconLore.add(Utils.chat(perk_requirement_warning_levels));
-                    } else if (l.contains("%status_unlocked%")){
-                        String status = switch (unlockedStatus) {
-                            case 1 -> perk_requirement_status_unlocked;
-                            case 2 -> perk_requirement_status_permanently_locked;
-                            case 3 -> perk_requirement_status_fake_unlocked;
-                            default -> null;
-                        };
-                        if (!StringUtils.isEmpty(status)) {
-                            iconLore.add(Utils.chat(status));
-                        }
-                    } else if (l.contains("%warning_cost%")){
-                        if (unlockedStatus == 0 && !p.metResourceRequirements(target)) {
-                            for (ResourceExpense expense : p.getExpenses()){
-                                if (!expense.canPurchase(target)) iconLore.add(Utils.chat(expense.getInsufficientFundsMessage()));
+                    List<String> lore = new ArrayList<>();
+                    TranslationManager.getListTranslation("skilltree_perk_format").forEach(l -> {
+                        if (l.contains("%description%")) {
+                            String description = p.getDescription();
+                            for (PerkReward reward : p.getRewards()) description = description.replace("{" + reward.getName() + "}", reward.rewardPlaceholder());
+                            lore.addAll(Utils.chat(StringUtils.separateStringIntoLines(description, 40)));
+                        } else if (UnlockConditionRegistry.getValuePlaceholders().stream().anyMatch(con -> l.contains(String.format("%%%s%%", con)))) { // if lore contains a value placeholder
+                            UnlockCondition condition = p.getConditions().stream().filter(con -> l.contains(String.format("%%%s%%", con.getValuePlaceholder()))).findAny().orElse(null);
+                            if (condition != null && condition.getConditionMessages() != null && !condition.getConditionMessages().isEmpty()) lore.addAll(Utils.chat(condition.getConditionMessages()));
+                        } else if (UnlockConditionRegistry.getFailurePlaceholders().stream().anyMatch(con -> l.contains(String.format("%%%s%%", con)))) { // if lore contains a failure placeholder
+                            UnlockCondition condition = p.getConditions().stream().filter(con -> l.contains(String.format("%%%s%%", con.getFailurePlaceholder()))).findAny().orElse(null);
+                            if (unlockedStatus == 0 && !p.metConditionRequirements(target, false) && condition != null && !StringUtils.isEmpty(condition.getFailedConditionMessage())) lore.add(Utils.chat(condition.getFailedConditionMessage()));
+                        } else if (ResourceExpenseRegistry.getValuePlaceholders().stream().anyMatch(con -> l.contains(String.format("%%%s%%", con)))) { // if lore contains a cost placeholder
+                            ResourceExpense condition = p.getExpenses().stream().filter(con -> l.contains(String.format("%%%s%%", con.getCostMessage()))).findAny().orElse(null);
+                            if (condition != null && !StringUtils.isEmpty(condition.getCostMessage())) lore.add(Utils.chat(condition.getCostMessage()));
+                        } else if (ResourceExpenseRegistry.getFailurePlaceholders().stream().anyMatch(con -> l.contains(String.format("%%%s%%", con)))) { // if lore contains a cost placeholder
+                            ResourceExpense condition = p.getExpenses().stream().filter(con -> l.contains(String.format("%%%s%%", con.getCostMessage()))).findAny().orElse(null);
+                            if (unlockedStatus == 0 && !p.metResourceRequirements(target) && condition != null && !StringUtils.isEmpty(condition.getInsufficientFundsMessage())) lore.add(Utils.chat(condition.getInsufficientFundsMessage()));
+                        } else if (l.contains("%warning_levels%")){
+                            if (unlockedStatus == 0 && !p.metLevelRequirement(target) && !StringUtils.isEmpty(perk_requirement_warning_levels)) lore.add(Utils.chat(perk_requirement_warning_levels));
+                        } else if (l.contains("%status_unlocked%")){
+                            String status = switch (unlockedStatus) {
+                                case 1 -> perk_requirement_status_unlocked;
+                                case 2 -> perk_requirement_status_permanently_locked;
+                                case 3 -> perk_requirement_status_fake_unlocked;
+                                default -> null;
+                            };
+                            if (!StringUtils.isEmpty(status)) lore.add(Utils.chat(status));
+                        } else if (l.contains("%warning_cost%")){
+                            if (unlockedStatus == 0 && !p.metResourceRequirements(target)) {
+                                for (ResourceExpense expense : p.getExpenses()) if (!expense.canPurchase(target)) lore.add(Utils.chat(expense.getInsufficientFundsMessage()));
                             }
+                        } else if (l.contains("%status_unlockable%")){
+                            if (unlockedStatus == 0 && p.canUnlock(target) && !StringUtils.isEmpty(perk_requirement_status_unlockable)) lore.add(Utils.chat(perk_requirement_status_unlockable));
+                        } else if (l.contains("%cost%")){
+                            if (unlockedStatus == 0) for (ResourceExpense expense : p.getExpenses()) lore.add(Utils.chat(expense.getCostMessage()));
+                        } else {
+                            lore.add(Utils.chat(PlaceholderRegistry.parse(l.replace("%level_required%", String.valueOf(p.getLevelRequirement())).replace("%skill%", p.getSkill().getDisplayName()), target)));
                         }
-                    } else if (l.contains("%status_unlockable%")){
-                        if (unlockedStatus == 0 && p.canUnlock(target)){
-                            if (!StringUtils.isEmpty(perk_requirement_status_unlockable)){
-                                iconLore.add(Utils.chat(perk_requirement_status_unlockable));
-                            }
-                        }
-                    } else if (l.contains("%cost%")){
-                        if (unlockedStatus == 0){
-                            for (ResourceExpense expense : p.getExpenses()) iconLore.add(Utils.chat(expense.getCostMessage()));
-                        }
-                    } else {
-                        String line = Utils.chat(PlaceholderRegistry.parse(
-                                l.replace("%level_required%", String.valueOf(p.getLevelRequirement()))
-                                        .replace("%skill%", p.getSkill().getDisplayName()), target)
-                        );
-                        iconLore.add(line);
+                    });
+                    icon.lore(lore);
+                    boolean unlocked = p.hasUnlocked(target);
+                    boolean unlockable = p.canUnlock(target);
+                    int data = unlocked ? p.getCustomModelDataUnlocked() : unlockable ? p.getCustomModelDataUnlockable() : p.getCustomModelDataVisible();
+                    if (data > 0) icon.data(data);
+
+                    int xOff = offsets.getOne(), yOff = offsets.getTwo();
+
+                    skillTree[r][c] = icon.get();
+
+                    for (PerkConnectionIcon i : p.getConnectionLine()) {
+                        int d = unlocked ? i.getUnlockedData() : unlockable ? i.getUnlockableData() : i.getLockedData();
+                        Material m = unlocked ? i.getUnlockedMaterial() : unlockable ? i.getUnlockableMaterial() : i.getLockedMaterial();
+                        ItemStack line = new ItemBuilder(m).data(d).name("&r").get();
+                        skillTree[i.getY() + 2 + yOff][i.getX() + 4 + xOff] = line;
                     }
-                }
-                perkIcon.lore(iconLore);
-
-                boolean unlocked = p.hasUnlocked(target);
-                boolean unlockable = p.canUnlock(target);
-                int data = unlocked ? p.getCustomModelDataUnlocked() : unlockable ? p.getCustomModelDataUnlockable() : p.getCustomModelDataVisible();
-                if (data > 0) perkIcon.data(data);
-
-                perkIcon.stringTag(buttonKey, p.getName());
-                skillTree[p.getY() + 2 + yOff][p.getX() + 4 + xOff] = perkIcon.get();
-
-                for (PerkConnectionIcon i : p.getConnectionLine()) {
-                    int d = unlocked ? i.getUnlockedData() : unlockable ? i.getUnlockableData() : i.getLockedData();
-                    Material m = unlocked ? i.getUnlockedMaterial() : unlockable ? i.getUnlockableMaterial() : i.getLockedMaterial();
-                    ItemStack icon = new ItemBuilder(m).data(d).name("&r").get();
-                    skillTree[i.getY() + 2 + yOff][i.getX() + 4 + xOff] = icon;
                 }
             }
         }
@@ -424,28 +379,18 @@ public class SkillTreeMenu extends Menu {
     }
 
     // If everything goes right, this should return a 9x5 section 2D array of itemstacks given a center point x and y of
-    // the whole skill tree map. If the given map isn't at least 9x5 in size, it returns an empty 9x5 array.
-    private ItemStack[][] getSkillTreeView(ItemStack[][] fullSkillTree, int centerX, int centerY){
+    // the whole skill tree map. If the given map isn't at least 9x5 in size, it returns an empty 9x5 array. This should never occur though
+    private ItemStack[][] getSkillTreeView(Skill skill){
         ItemStack[][] view = new ItemStack[5][9];
-        centerX += 4;
-        centerY += 2;
-        if (centerY - 2 < 0) {
-            centerY = 2;
-        }
-        if (centerY + 2 >= fullSkillTree.length) {
-            centerY = fullSkillTree.length - 1;
-        }
-        if (fullSkillTree.length < 5){
-            return view;
-        }
-        ItemStack[][] skillTreeYSection = Arrays.copyOfRange(fullSkillTree, centerY - 2, centerY + 3);
+        ItemStack[][] fullSkillTree = skillTreeItems.get(skill);
+        int x = Math.max(4, Math.min(fullSkillTree[0].length - 1, this.x));
+        int y = Math.max(2, Math.min(fullSkillTree.length - 1, this.y));
+
+        ItemStack[][] skillTreeYSection = Arrays.copyOfRange(fullSkillTree, y - 2, y + 3);// pick 5 rows from the skill tree's height
         for (int i = 0; i < skillTreeYSection.length; i++){
             ItemStack[] row = skillTreeYSection[i];
             if (row != null){
-                if (row.length < 9) return view;
-                if (centerX - 4 < 0) centerX = 4;
-                if (centerX + 4 >= row.length) centerX = row.length - 1;
-                ItemStack[] nineWideRow = Arrays.copyOfRange(row, centerX - 4, centerX + 5);
+                ItemStack[] nineWideRow = Arrays.copyOfRange(row, x - 4, x + 5); // pick 9 columns from the skill tree's width
                 view[i] = nineWideRow;
             }
         }
@@ -466,7 +411,7 @@ public class SkillTreeMenu extends Menu {
                         .get();
 
                 skillIcons.add(skillIcon);
-                skillTrees.put(s.getType(), getSkillTree(s));
+                skillTreeItems.put(s, getSkillTree(s));
             }
             // makes sure there are enough items in the skillIcons to fill a 9-item row of icons
             for (int i = 0; i < 9; i++){
@@ -475,5 +420,62 @@ public class SkillTreeMenu extends Menu {
             }
             setMenuItems();
         });
+    }
+
+    public static void updateSkillTree(Skill skill){
+        if (!skill.isLevelableSkill()) return;
+        int minX = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE, minY = Integer.MAX_VALUE, maxY = Integer.MIN_VALUE, offsetX = 0, offsetY = 0;
+        boolean initialized = false;
+        for (Perk perk : skill.getPerks()){
+            minX = Math.min(perk.getX(), minX);
+            maxX = Math.max(perk.getX(), maxX);
+            minY = Math.min(perk.getY(), minY);
+            maxY = Math.max(perk.getY(), maxY);
+            initialized = true;
+            for (PerkConnectionIcon line : perk.getConnectionLine()){
+                minX = Math.min(line.getX(), minX);
+                maxX = Math.max(line.getX(), maxX);
+                minY = Math.min(line.getY(), minY);
+                maxY = Math.max(line.getY(), maxY);
+            }
+        }
+        if (!initialized) {
+            coordinateOffsets.put(skill, new Pair<>(0, 0));
+            List<List<List<Perk>>> perks = new ArrayList<>();
+            for (int i = 0; i < 5; i++){
+                List<List<Perk>> rows = new ArrayList<>();
+                for (int o = 0; o < 9; o++) rows.add(null);
+                perks.add(rows);
+            }
+            skillTrees.put(skill, perks);
+            return;
+        }
+        if (minX != 0) offsetX = -minX; // if the minimum value of x isn't 0, all perks should be offset by the amount that would make it 0.
+        if (minY != 0) offsetY = -minY; // same with the y values. after all that is done we're left with a normalized skill tree with all positive locations starting at 0,0
+        coordinateOffsets.put(skill, new Pair<>(offsetX, offsetY));
+
+        int width = Math.max(9, (maxX + offsetX) - (minX + offsetX)) + 8, height = Math.max(5, (maxY + offsetY) - (minY + offsetY)) + 4; // define width and height with an additional 8 and 4 spaces so the array comes out at least 9x5 in size
+
+        List<List<List<Perk>>> perks = new ArrayList<>();
+        for (int i = 0; i <= height; i++){
+            List<List<Perk>> rows = new ArrayList<>();
+            for (int o = 0; o < width; o++) rows.add(null);
+            perks.add(rows);
+        }
+
+        for (Perk perk : skill.getPerks()){
+            List<Perk> perksAtSpot = perks.get(perk.getY() + 2 + offsetY).get(perk.getX() + 4 + offsetX); // multiple perks can share the same location, so it must be a list
+            if (perksAtSpot == null) perksAtSpot = new ArrayList<>();
+            perksAtSpot.add(perk);
+            if (perksAtSpot.size() > 1) perksAtSpot.sort(Comparator.comparingInt(Perk::getLevelRequirement));
+            perks.get(perk.getY() + 2 + offsetY).set(perk.getX() + 4 + offsetX, perksAtSpot);
+        }
+
+        skillTrees.put(skill, perks);
+    }
+    public static void updateSkillTrees(){
+        skillTrees.clear();
+        coordinateOffsets.clear();
+        for (Skill skill : SkillRegistry.getAllSkills().values()) updateSkillTree(skill);
     }
 }

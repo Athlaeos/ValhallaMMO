@@ -154,7 +154,7 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
 
     @Override
     public String getAttributeIcon() {
-        return StringUtils.isEmpty(super.getAttributeIcon()) ? ValhallaMMO.isResourcePackConfigForced() ? "&f" + defaultIcon : super.getAttributeIcon() : super.getAttributeIcon();
+        return StringUtils.isEmpty(super.getAttributeIcon()) ? ValhallaMMO.isResourcePackConfigForced() ? "&f" + defaultIcon + " " : super.getAttributeIcon() : super.getAttributeIcon();
     }
 
     @Override

@@ -40,6 +40,7 @@ public class PerkRewardRegistry {
                 }
                 if (profile.shouldBooleanStatHavePerkReward(s)){
                     register(new ProfileBooleanSet(skill + "_" + s + "_set", s, profile.getClass()));
+                    register(new ProfileBooleanToggle(skill + "_" + s + "_toggle", s, profile.getClass()));
                 }
             }
         }
@@ -48,7 +49,10 @@ public class PerkRewardRegistry {
             register(new ProgressReset("reset_" + type.toString().toLowerCase(), type));
         }
 
-        register(new ProfileStringListAdd("perks_fake_unlock", "fakeUnlockedPerks", PowerProfile.class));
+        register(new ProfileStringListAdd("perks_unlocked_add", "unlockedPerks", PowerProfile.class));
+        register(new ProfileStringListRemove("perks_unlocked_remove", "unlockedPerks", PowerProfile.class));
+        register(new ProfileStringListAdd("perks_fake_unlock_add", "fakeUnlockedPerks", PowerProfile.class));
+        register(new ProfileStringListRemove("perks_fake_unlock_remove", "fakeUnlockedPerks", PowerProfile.class));
         register(new ProfileStringListClear("perks_fake_unlock_clear", "fakeUnlockedPerks", PowerProfile.class));
         register(new ProfileStringListAdd("perks_locked_add", "permanentlyLockedPerks", PowerProfile.class));
         register(new ProfileStringListClear("perks_locked_clear", "permanentlyLockedPerks", PowerProfile.class));
@@ -57,6 +61,7 @@ public class PerkRewardRegistry {
         register(new ProfileStringListFill("recipes_unlock_all", "unlockedRecipes", PowerProfile.class, CustomRecipeRegistry::getAllRecipes));
         register(new ProfileStringListClear("recipes_lock_all", "unlockedRecipes", PowerProfile.class));
         register(new ProfileStringListAdd("enchanting_add_elemental_type", "elementalDamageTypes", EnchantingProfile.class));
+        register(new ProfileStringSetSingle("enchanting_set_elemental_type", "elementalDamageTypes", EnchantingProfile.class));
         register(new ProfileStringListRemove("enchanting_remove_elemental_type", "elementalDamageTypes", EnchantingProfile.class));
         register(new ProfileStringListClear("enchanting_clear_elemental_type", "elementalDamageTypes", EnchantingProfile.class));
         register(new ProfileStringListAdd("lightarmor_add_immune_effect", "setImmunePotionEffects", LightArmorProfile.class));

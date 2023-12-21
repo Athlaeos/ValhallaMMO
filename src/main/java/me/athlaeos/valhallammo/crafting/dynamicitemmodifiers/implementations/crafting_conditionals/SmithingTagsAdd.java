@@ -99,9 +99,16 @@ public class SmithingTagsAdd extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CRAFTING_CONDITIONALS.id());
     }
 
+    public Collection<Integer> getTags() {
+        return tags;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new SmithingTagsAdd(getName());
+    public DynamicItemModifier copy() {
+        SmithingTagsAdd m = new SmithingTagsAdd(getName());
+        m.getTags().addAll(this.tags);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

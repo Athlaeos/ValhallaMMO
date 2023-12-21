@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public abstract class AttributeWrapper {
     protected final String attribute;
-    protected Double min = Double.MIN_VALUE;
+    protected Double min = Double.NEGATIVE_INFINITY;
     protected Double max = Double.MAX_VALUE;
     protected double value;
     protected final StatFormat format;
@@ -57,11 +57,6 @@ public abstract class AttributeWrapper {
         ModifierRegistry.register(new DefaultAttributeScale("attribute_scale_" + attribute.toLowerCase(), attribute, icon));
         return this;
     }
-
-    public Material getIcon() { return icon; }
-    public double getSmallIncrement() { return smallIncrement; }
-    public double getBigIncrement() { return bigIncrement; }
-
     /**
      * Registers the modifiers for addition, removal, and scaling to {@link ModifierRegistry} with the predefined values
      * of 0.01 for smallIncrement, and 0.1 for bigIncrement
@@ -71,6 +66,10 @@ public abstract class AttributeWrapper {
     public AttributeWrapper addModifier(Material icon){
         return addModifier(icon, 0.01, 0.1);
     }
+
+    public Material getIcon() { return icon; }
+    public double getSmallIncrement() { return smallIncrement; }
+    public double getBigIncrement() { return bigIncrement; }
 
     public boolean isCompatible(ItemStack i){
         return true;

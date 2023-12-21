@@ -1,33 +1,255 @@
-starting_perks: []
+starting_perks:
+  lightweapons_attackspeedmultiplier_add: -0.3
+  lightweapons_damagemultiplier_add: -0.3
+  lightweapons_knockbackmultiplier_add: -0.3
 
-experience: # Everything about leveling and experience progression for Light Armor
-  max_level: 100 # Max level for light weapons, players can still gain exp after reaching 100
-  exp_level_curve: '0.25 * (%level% + 300 * 2^(%level%/7.6)) + 300' # Here the x-axis represents level and the y-axis is the exp required to
-  # progress to that level.
-  # The area under this graph from point a to point b represents the total amount of experience needed to get from level
-  # a to b. You don't have to work with this, it's only for those who really want to make this progression their own.
-  # By default, it takes about 4300 exp to get from 0 to 20, 27,000 to get from 20 to 40, 164,000 from 40 to 60,
-  # 1,000,000 from 60 to 80, and 6,300,000 from 80 to 100- or 7,500,000 from 0 to 100.
-  exp_per_damage: 7 # amount of exp gained per point of damage dealt
+experience:
+  max_level: 100
+  exp_level_curve: '0.25 * (%level% + 300 * 2^(%level%/7.6)) + 300'
+  exp_per_damage: 7
   spawner_spawned_multiplier: 0.7
-  exp_enemies_nerfed: # Exp multipliers when hitting certain types of enemies
+  exp_enemies_nerfed:
     ENDERMAN: 0.1
     ZOMBIFIED_PIGLIN: 0.1
 
-special_perks: # Perks, commands, and messages executed when a player reaches a specific level
-  # If you don't know how to format this, refer to other progression configs (such as smithing) for reference
-  # because I don't know of any perks i wanna put here
+special_perks: []
 
-commands: # Commands executed every time a player levels this skill. Use %player% as placeholder for the player's name
-  # and %level% for the player's new level
-  - '' # I didn't want commands by default, but you can put them here if you do
+commands: []
 
-messages: # Messages to send to the player every time the player levels this skill.
-  # Use %player% as placeholder for the player's name and %level% for the player's new level
+messages:
   - '<lang.skill-level-up-light-weapons>'
 
-leveling_perks: []
+leveling_perks:
+  lightweapons_attackspeedmultiplier_add: 0.005
+  lightweapons_damagemultiplier_add: 0.005
 
-starting_coordinates: '4,10' # The coordinates in the skill tree the player sees first when switching to the skill tree
+starting_coordinates: '2,10' # The coordinates in the skill tree the player sees first when switching to the skill tree
 
-perks: []
+perks:
+  lightweapons_perk_1:
+    icon: WOODEN_SWORD
+    coords: "2,10"
+    name: "<lang.lightweapons_perk_1_name>"
+    description: "<lang.lightweapons_perk_1_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      lightweapons_damagemultiplier_add: 0.1
+      recipes_unlock:
+        - craft_wooden_dagger
+        - craft_stone_dagger
+        - craft_golden_dagger
+        - craft_iron_dagger
+        - craft_diamond_dagger
+        - craft_netherite_dagger
+    messages:
+      - "<lang.lightweapons_perk_1_messages>"
+    custom_model_data_unlockable: -1
+    custom_model_data_unlocked: -1
+    custom_model_data_visible: -1
+  lightweapons_perk_2:
+    icon: STONE_SWORD
+    coords: "2,8"
+    name: "<lang.lightweapons_perk_2_name>"
+    description: "<lang.lightweapons_perk_2_description>"
+    cost: 1
+    hidden: false
+    required_lv: 20
+    perk_rewards:
+      lightweapons_attackspeedmultiplier_add: 0.1
+      lightweapons_critchance_add: 0.1
+      recipes_unlock:
+        - craft_wooden_rapier
+        - craft_stone_rapier
+        - craft_golden_rapier
+        - craft_iron_rapier
+        - craft_diamond_rapier
+        - craft_netherite_rapier
+    messages:
+      - "<lang.lightweapons_perk_2_messages>"
+    requireperk_all:
+      - lightweapons_perk_1
+    connection_line:
+      '1':
+        position: '2,9'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  lightweapons_perk_3:
+    icon: GOLDEN_SWORD
+    coords: "2,6"
+    name: "<lang.lightweapons_perk_3_name>"
+    description: "<lang.lightweapons_perk_3_description>"
+    cost: 1
+    hidden: false
+    required_lv: 40
+    perk_rewards:
+      lightweapons_damagemultiplier_add: 0.1
+      lightweapons_parryeffectiveduration_add: 7
+      lightweapons_parryvulnerableduration_add: 14
+      lightweapons_parrycooldown_add: 100
+      lightweapons_parryenemydebuffduration_add: 30
+      lightweapons_parryselfdebuffduration_add: 30
+      lightweapons_parrydamagereduction_add: 0.75
+      lightweapons_parrycooldownsuccessreduction_add: 0.5
+    messages:
+      - "<lang.lightweapons_perk_3_messages>"
+    requireperk_all:
+      - lightweapons_perk_2
+    connection_line:
+      '1':
+        position: '2,7'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  lightweapons_perk_4:
+    icon: IRON_SWORD
+    coords: "2,4"
+    name: "<lang.lightweapons_perk_4_name>"
+    description: "<lang.lightweapons_perk_4_description>"
+    cost: 1
+    hidden: false
+    required_lv: 60
+    perk_rewards:
+      lightweapons_attackspeedmultiplier_add: 0.2
+      lightweapons_immunityreductionfraction_add: 0.1
+    messages:
+      - "<lang.lightweapons_perk_4_messages>"
+    requireperk_all:
+      - lightweapons_perk_3
+    connection_line:
+      '1':
+        position: '2,5'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  lightweapons_perk_5:
+    icon: DIAMOND_SWORD
+    coords: "2,2"
+    name: "<lang.lightweapons_perk_5_name>"
+    description: "<lang.lightweapons_perk_5_description>"
+    cost: 1
+    hidden: false
+    required_lv: 80
+    perk_rewards:
+      lightweapons_damagemultiplier_add: 0.1
+      lightweapons_immunityreductionfraction_add: 0.2
+      lightweapons_parryeffectiveduration_add: 7
+      lightweapons_parryvulnerableduration_add: 1
+      lightweapons_parrycooldown_add: -60
+      lightweapons_parryenemydebuffduration_add: 10
+      lightweapons_parryselfdebuffduration_add: -10
+      lightweapons_parrydamagereduction_add: 0.25
+      lightweapons_parrycooldownsuccessreduction_add: 0.5
+      recipes_unlock:
+        - craft_wooden_mace
+        - craft_stone_mace
+        - craft_golden_mace
+        - craft_iron_mace
+        - craft_diamond_mace
+        - craft_netherite_mace
+    messages:
+      - "<lang.lightweapons_perk_5_messages>"
+    requireperk_all:
+      - lightweapons_perk_4
+    connection_line:
+      '1':
+        position: '2,3'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  lightweapons_perk_6:
+    icon: NETHERITE_SWORD
+    coords: "2,0"
+    name: "<lang.lightweapons_perk_6_name>"
+    description: "<lang.lightweapons_perk_6_description>"
+    cost: 1
+    hidden: false
+    required_lv: 100
+    perk_rewards:
+      lightweapons_critchance_add: 0.1
+      lightweapons_critdamage_add: 0.3
+      lightweapons_bleedoncrit_toggle: 0
+      lightweapons_bleeddamage_add: 1
+    messages:
+      - "<lang.lightweapons_perk_6_messages>"
+    requireperk_all:
+      - lightweapons_perk_5
+    connection_line:
+      '1':
+        position: '2,1'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  lightweapons_perk_a1:
+    icon: BLAZE_POWDER
+    coords: "0,7"
+    name: "<lang.lightweapons_perk_a1_name>"
+    description: "<lang.lightweapons_perk_a1_description>"
+    cost: 1
+    hidden: false
+    required_lv: 50
+    perk_rewards:
+      lightweapons_coatingunlocked_toggle: 0
+      lightweapons_coatingcharges_add: 3
+      lightweapons_coatingdurationmultiplier_add: -0.8
+      lightweapons_coatingamplifiermultiplier_add: -0.5
+    messages:
+      - "<lang.lightweapons_perk_a1_messages>"
+    requireperk_all:
+      - lightweapons_perk_3
+    connection_line:
+      '1':
+        position: '1,6'
+        locked: GRAY_DYE:1172713
+        unlockable: ORANGE_DYE:1172813
+        unlocked: LIME_DYE:1172913
+      '2':
+        position: '1,7'
+        locked: GRAY_DYE:1172714
+        unlockable: ORANGE_DYE:1172814
+        unlocked: LIME_DYE:1172914
+  lightweapons_perk_a2:
+    icon: BLAZE_ROD
+    coords: "4,7"
+    name: "<lang.lightweapons_perk_a2_name>"
+    description: "<lang.lightweapons_perk_a2_description>"
+    cost: 1
+    hidden: false
+    required_lv: 70
+    perk_rewards:
+      lightweapons_coatingcharges_add: 4
+      lightweapons_coatingdurationmultiplier_add: 0.1
+      lightweapons_coatingamplifiermultiplier_add: 0.25
+    messages:
+      - "<lang.lightweapons_perk_a2_messages>"
+    requireperk_all:
+      - lightweapons_perk_a1
+    connection_line:
+      '1':
+        position: '3,7'
+        locked: GRAY_DYE:1172712
+        unlockable: ORANGE_DYE:1172812
+        unlocked: LIME_DYE:1172912
+      '2':
+        position: '3,6'
+        locked: GRAY_DYE:1172715
+        unlockable: ORANGE_DYE:1172815
+        unlocked: LIME_DYE:1172915
+  lightweapons_perk_combo:
+    icon: NETHERITE_CHESTPLATE
+    coords: "2,11"
+    name: "<lang.lightweapons_perk_combo_name>"
+    description: "<lang.lightweapons_perk_combo_description>"
+    cost: 1
+    hidden: false
+    required_lv: 70
+    other_levels_required:
+      - HEAVY_ARMOR:70
+    perk_rewards:
+      lightweapons_penetrationflat_add: 10
+      lightweapons_attackreachbonus_add: 1
+      lightweapons_knockbackmultiplier_add: 0.3
+    messages:
+      - "<lang.lightweapons_perk_combo_messages>"

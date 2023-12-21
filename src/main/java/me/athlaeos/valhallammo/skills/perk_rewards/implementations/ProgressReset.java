@@ -29,7 +29,7 @@ public class ProgressReset extends PerkReward {
     }
 
     @Override
-    public String rewardPlacholder() {
+    public String rewardPlaceholder() {
         return "";
     }
 

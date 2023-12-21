@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations
 
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
+import me.athlaeos.valhallammo.item.CustomID;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -50,11 +51,12 @@ public class MaterialWithDataChoice extends RecipeOption implements IngredientCh
     }
 
     @Override
-    public boolean matches(ItemStack i1, ItemStack i2) {
-        ItemMeta i1Meta = i1.getItemMeta();
+    public boolean matches(ItemStack i1, ItemStack i2) {        ItemMeta i1Meta = i1.getItemMeta();
         ItemMeta i2Meta = i2.getItemMeta();
-        if (i1Meta != null && !i1Meta.hasCustomModelData() && i2Meta != null && !i2Meta.hasCustomModelData()) return true; // if both have no data, return true
-        if (i1Meta == null || !i1Meta.hasCustomModelData() || i2Meta == null || !i2Meta.hasCustomModelData()) return false; // if one of them has data when the other one doesn't, return false
+        if (i1Meta == null && i2Meta == null) return true;
+        if (i1Meta == null || i2Meta == null) return false;
+        if (!i1Meta.hasCustomModelData() && !i2Meta.hasCustomModelData()) return true;
+        if (!i1Meta.hasCustomModelData() || !i2Meta.hasCustomModelData()) return false;
         return i1.getType() == i2.getType() && i1Meta.getCustomModelData() == i2Meta.getCustomModelData();
     }
 

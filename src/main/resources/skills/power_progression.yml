@@ -1,27 +1,306 @@
-starting_perks: []
+starting_perks:
+  power_spendableskillpoints_add: 3
+  power_critdamageresistance_add: 0.5
+  power_bleeddamage_add: 2
+  power_bleedduration_add: 80
 
-experience: # Everything about leveling and experience progression for Smithing
-  exp_level_curve: '(%level%/100) * 1800 + 800' # Here the x-axis represents level and the y-axis is the exp required to
-  # progress to that level.
-  # The area under this graph from point a to point b represents the total amount of experience needed to get from level
-  # a to b. You don't have to work with this, it's only for those who really want to make this progression their own.
-  # By default this exp curve is linear, meaning each level adds a consistent amount of exp required to progress to the
-  # next level. By default, it takes about 170,000 exp to reach level 100. If each skill levelup grants 100 exp, which
-  # it does by default, you'd need to level 17 skills to level 100 to reach player level 100. By default there are
-  # 13 skills (premium has 17) so you'd either need to re-do 4 skills or max all the premium skills to reach lv100.
-  max_level: 256 # Max level allowed
-  exp_gain: 100 # Experience gained whenever the player levels any skill
+experience: 
+  exp_level_curve: '(%level%/100) * 1800 + 800' 
+  max_level: 256
+  exp_gain: 100 
 
-commands: # Commands executed every time a player levels this skill. Use %player% as placeholder for the player's name
-  # and %level% for the player's new level
-  - '' # I didn't want commands by default, but you can put them here if you do
+commands: []
 
-messages: # Messages to send to the player every time the player levels this skill.
-  # Use %player% as placeholder for the player's name and %level% for the player's new level
-  - '<lang.skill-level-up-account>'
+messages: 
+  - '<lang.skill-level-up-power>'
 
-leveling_perks: []
+leveling_perks:
+  power_spendableskillpoints_add: 1
 
 starting_coordinates: '3,1' # The coordinates in the skill tree the player sees first when switching to the skill tree
 
-perks: []
+navigable: false
+perks:
+  power_perk_1a:
+    icon: GLISTERING_MELON_SLICE
+    coords: "0,2"
+    name: "<lang.power_perk_1a_name>"
+    description: "<lang.power_perk_1a_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      power_healthbonus_add: 2
+    messages:
+      - "<lang.power_perk_1a_messages>"
+    custom_model_data_unlockable: -1
+    custom_model_data_unlocked: -1
+    custom_model_data_visible: -1
+  power_perk_2a:
+    icon: GOLDEN_APPLE
+    coords: "0,1"
+    name: "<lang.power_perk_2a_name>"
+    description: "<lang.power_perk_2a_description>"
+    cost: 1
+    hidden: true
+    required_lv: 30
+    perk_rewards:
+      power_healthbonus_add: 3
+    messages:
+      - "<lang.power_perk_2a_messages>"
+    requireperk_all:
+      - power_perk_1a
+  power_perk_3a:
+    icon: ENCHANTED_GOLDEN_APPLE
+    coords: "0,0"
+    name: "<lang.power_perk_3a_name>"
+    description: "<lang.power_perk_3a_description>"
+    cost: 1
+    hidden: true
+    required_lv: 60
+    perk_rewards:
+      power_healthbonus_add: 5
+    messages:
+      - "<lang.power_perk_3a_messages>"
+    requireperk_all:
+      - power_perk_2a
+  power_perk_1b:
+    icon: LEATHER_CHESTPLATE
+    coords: "1,2"
+    name: "<lang.power_perk_1b_name>"
+    description: "<lang.power_perk_1b_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      power_armorbonus_add: 2
+    messages:
+      - "<lang.power_perk_1b_messages>"
+  power_perk_2b:
+    icon: IRON_CHESTPLATE
+    coords: "1,1"
+    name: "<lang.power_perk_2b_name>"
+    description: "<lang.power_perk_2b_description>"
+    cost: 1
+    hidden: true
+    required_lv: 30
+    perk_rewards:
+      power_armorbonus_add: 3
+    messages:
+      - "<lang.power_perk_2b_messages>"
+    requireperk_all:
+      - power_perk_1b
+  power_perk_3b:
+    icon: NETHERITE_CHESTPLATE
+    coords: "1,0"
+    name: "<lang.power_perk_3b_name>"
+    description: "<lang.power_perk_3b_description>"
+    cost: 1
+    hidden: true
+    required_lv: 60
+    perk_rewards:
+      power_armorbonus_add: 5
+    messages:
+      - "<lang.power_perk_3b_messages>"
+    requireperk_all:
+      - power_perk_2b
+  power_perk_1c:
+    icon: SUNFLOWER
+    coords: "2,2"
+    name: "<lang.power_perk_1c_name>"
+    description: "<lang.power_perk_1c_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      power_luckbonus_add: 0.2
+    messages:
+      - "<lang.power_perk_1c_messages>"
+  power_perk_2c:
+    icon: RABBIT_FOOT
+    coords: "2,1"
+    name: "<lang.power_perk_2c_name>"
+    description: "<lang.power_perk_2c_description>"
+    cost: 1
+    hidden: true
+    required_lv: 30
+    perk_rewards:
+      power_luckbonus_add: 0.3
+    messages:
+      - "<lang.power_perk_2c_messages>"
+    requireperk_all:
+      - power_perk_1c
+  power_perk_3c:
+    icon: NETHER_STAR
+    coords: "2,0"
+    name: "<lang.power_perk_3c_name>"
+    description: "<lang.power_perk_3c_description>"
+    cost: 1
+    hidden: true
+    required_lv: 60
+    perk_rewards:
+      power_luckbonus_add: 0.5
+    messages:
+      - "<lang.power_perk_3c_messages>"
+    requireperk_all:
+      - power_perk_2c
+  power_perk_1d:
+    icon: APPLE
+    coords: "3,2"
+    name: "<lang.power_perk_1d_name>"
+    description: "<lang.power_perk_1d_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      power_healthregenerationbonus_add: 0.2
+    messages:
+      - "<lang.power_perk_1d_messages>"
+  power_perk_2d:
+    icon: GHAST_TEAR
+    coords: "3,1"
+    name: "<lang.power_perk_2d_name>"
+    description: "<lang.power_perk_2d_description>"
+    cost: 1
+    hidden: true
+    required_lv: 30
+    perk_rewards:
+      power_healthregenerationbonus_add: 0.3
+    messages:
+      - "<lang.power_perk_2d_messages>"
+    requireperk_all:
+      - power_perk_1d
+  power_perk_3d:
+    icon: DRAGON_EGG
+    coords: "3,0"
+    name: "<lang.power_perk_3d_name>"
+    description: "<lang.power_perk_3d_description>"
+    cost: 1
+    hidden: true
+    required_lv: 60
+    perk_rewards:
+      power_healthregenerationbonus_add: 0.5
+    messages:
+      - "<lang.power_perk_3d_messages>"
+    requireperk_all:
+      - power_perk_2d
+  power_perk_1e:
+    icon: WOODEN_SWORD
+    coords: "4,2"
+    name: "<lang.power_perk_1e_name>"
+    description: "<lang.power_perk_1e_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      power_attackdamagemultiplier_add: 0.05
+    messages:
+      - "<lang.power_perk_1e_messages>"
+  power_perk_2e:
+    icon: IRON_SWORD
+    coords: "4,1"
+    name: "<lang.power_perk_2e_name>"
+    description: "<lang.power_perk_2e_description>"
+    cost: 1
+    hidden: true
+    required_lv: 30
+    perk_rewards:
+      power_attackdamagemultiplier_add: 0.075
+    messages:
+      - "<lang.power_perk_2e_messages>"
+    requireperk_all:
+      - power_perk_1e
+  power_perk_3e:
+    icon: NETHERITE_SWORD
+    coords: "4,0"
+    name: "<lang.power_perk_3e_name>"
+    description: "<lang.power_perk_3e_description>"
+    cost: 1
+    hidden: true
+    required_lv: 60
+    perk_rewards:
+      power_attackdamagemultiplier_add: 0.125
+    messages:
+      - "<lang.power_perk_3e_messages>"
+    requireperk_all:
+      - power_perk_2e
+  power_perk_1f:
+    icon: IRON_INGOT
+    coords: "5,2"
+    name: "<lang.power_perk_1f_name>"
+    description: "<lang.power_perk_1f_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      power_entitydropmultiplier_add: 0.2
+    messages:
+      - "<lang.power_perk_1f_messages>"
+  power_perk_2f:
+    icon: GOLD_INGOT
+    coords: "5,1"
+    name: "<lang.power_perk_2f_name>"
+    description: "<lang.power_perk_2f_description>"
+    cost: 1
+    hidden: true
+    required_lv: 30
+    perk_rewards:
+      power_entitydropmultiplier_add: 0.3
+    messages:
+      - "<lang.power_perk_2f_messages>"
+    requireperk_all:
+      - power_perk_1f
+  power_perk_3f:
+    icon: DIAMOND
+    coords: "5,0"
+    name: "<lang.power_perk_3f_name>"
+    description: "<lang.power_perk_3f_description>"
+    cost: 1
+    hidden: true
+    required_lv: 60
+    perk_rewards:
+      power_entitydropmultiplier_add: 0.5
+    messages:
+      - "<lang.power_perk_3f_messages>"
+    requireperk_all:
+      - power_perk_2f
+  power_perk_1g:
+    icon: ENDER_PEARL
+    coords: "6,2"
+    name: "<lang.power_perk_1g_name>"
+    description: "<lang.power_perk_1g_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      power_cooldownreduction_add: 0.1
+    messages:
+      - "<lang.power_perk_1g_messages>"
+  power_perk_2g:
+    icon: ENDER_EYE
+    coords: "6,1"
+    name: "<lang.power_perk_2g_name>"
+    description: "<lang.power_perk_2g_description>"
+    cost: 1
+    hidden: true
+    required_lv: 30
+    perk_rewards:
+      power_cooldownreduction_add: 0.15
+    messages:
+      - "<lang.power_perk_2g_messages>"
+    requireperk_all:
+      - power_perk_1g
+  power_perk_3g:
+    icon: CLOCK
+    coords: "6,0"
+    name: "<lang.power_perk_3g_name>"
+    description: "<lang.power_perk_3g_description>"
+    cost: 1
+    hidden: true
+    required_lv: 60
+    perk_rewards:
+      power_cooldownreduction_add: 0.25
+    messages:
+      - "<lang.power_perk_3g_messages>"
+    requireperk_all:
+      - power_perk_2g

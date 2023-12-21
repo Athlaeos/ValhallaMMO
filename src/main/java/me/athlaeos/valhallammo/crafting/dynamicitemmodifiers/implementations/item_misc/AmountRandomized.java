@@ -87,9 +87,21 @@ public class AmountRandomized extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setLowerBound(int lowerBound) {
+        this.lowerBound = lowerBound;
+    }
+
+    public void setUpperBound(int upperBound) {
+        this.upperBound = upperBound;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new AmountRandomized(getName());
+    public DynamicItemModifier copy() {
+        AmountRandomized m = new AmountRandomized(getName());
+        m.setLowerBound(this.lowerBound);
+        m.setUpperBound(this.upperBound);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

@@ -28,7 +28,7 @@ public class WoodcuttingProfile extends Profile {
         intStat("treeCapitatorLimit", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
         stringSetStat("treeCapitatorValidBlocks");
 
-        doubleStat("woodcuttingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        doubleStat("woodcuttingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
     }
 
     public boolean isTreeCapitatorUnlocked() { return getBoolean("treeCapitatorUnlocked"); }

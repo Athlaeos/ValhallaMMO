@@ -105,9 +105,16 @@ public class CustomModelDataSet extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setCustomModelData(Integer customModelData) {
+        this.customModelData = customModelData;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new CustomModelDataSet(getName());
+    public DynamicItemModifier copy() {
+        CustomModelDataSet m = new CustomModelDataSet(getName());
+        m.setCustomModelData(this.customModelData);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

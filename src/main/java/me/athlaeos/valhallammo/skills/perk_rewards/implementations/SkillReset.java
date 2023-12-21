@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.skills.perk_rewards.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
@@ -18,8 +19,9 @@ public class SkillReset extends PerkReward {
     @Override
     public void apply(Player player) {
         Skill s = SkillRegistry.getSkill(skill);
-        if (s != null) ProfileRegistry.reset(player, s.getClass());
-        else ValhallaMMO.logWarning("Skill reset reward executed, but skill " + skill + " is not a valid skill!");
+        if (s != null) {
+            ProfileRegistry.reset(player, s.getClass());
+        } else ValhallaMMO.logWarning("Skill reset reward executed, but skill " + skill + " is not a valid skill!");
     }
 
     @Override
@@ -32,7 +34,7 @@ public class SkillReset extends PerkReward {
     }
 
     @Override
-    public String rewardPlacholder() {
+    public String rewardPlaceholder() {
         Skill s = SkillRegistry.getSkill(skill);
         if (s != null) return s.getDisplayName();
         return "";

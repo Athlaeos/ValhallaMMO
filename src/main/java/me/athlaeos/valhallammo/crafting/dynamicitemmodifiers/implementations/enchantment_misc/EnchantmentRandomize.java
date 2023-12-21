@@ -114,9 +114,26 @@ public class EnchantmentRandomize extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ENCHANTMENT_MISC.id());
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setScaleWithSkill(boolean scaleWithSkill) {
+        this.scaleWithSkill = scaleWithSkill;
+    }
+
+    public void setIncludeTreasure(boolean includeTreasure) {
+        this.includeTreasure = includeTreasure;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new EnchantmentRandomize(getName());
+    public DynamicItemModifier copy() {
+        EnchantmentRandomize m = new EnchantmentRandomize(getName());
+        m.setIncludeTreasure(this.includeTreasure);
+        m.setScaleWithSkill(this.scaleWithSkill);
+        m.setLevel(this.level);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

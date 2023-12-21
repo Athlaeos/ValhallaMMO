@@ -44,7 +44,7 @@ public class MiningProfile extends Profile {
         intStat("drillingCooldown", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
         intStat("drillingDuration", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
 
-        doubleStat("miningEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        doubleStat("miningEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
 
         stringSetStat("emptyHandToolMaterial");
         intStat("emptyHandToolFortune", new PropertyBuilder().format(StatFormat.INT).perkReward().create());

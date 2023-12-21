@@ -68,9 +68,16 @@ public class SmithingQualitySet extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setQuality(int quality) {
+        this.quality = quality;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new SmithingQualitySet(getName());
+    public DynamicItemModifier copy() {
+        SmithingQualitySet m = new SmithingQualitySet(getName());
+        m.setQuality(this.quality);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

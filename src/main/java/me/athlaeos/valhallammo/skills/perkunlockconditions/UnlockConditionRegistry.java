@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.skills.perkunlockconditions;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.implementations.AllPerksUnlockedRequirement;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.implementations.OtherSkillLevelRequirement;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.implementations.SinglePerkUnlockedRequirement;
+import me.athlaeos.valhallammo.skills.perkunlockconditions.implementations.VersionMinimumRequirement;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public class UnlockConditionRegistry {
         register(new AllPerksUnlockedRequirement());
         register(new SinglePerkUnlockedRequirement());
         register(new OtherSkillLevelRequirement());
-
+        register(new VersionMinimumRequirement());
     }
 
     public static void register(UnlockCondition expense){

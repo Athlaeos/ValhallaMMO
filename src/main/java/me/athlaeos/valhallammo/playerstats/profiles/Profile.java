@@ -447,4 +447,21 @@ public abstract class Profile {
             return def;
         }
     }
+
+    public static StatFormat getFormat(Class<? extends Profile> type, String stat){
+        Profile profile = ProfileRegistry.getRegisteredProfiles().get(type);
+        for (String i : profile.intStatNames()){
+            if (!i.equals(stat)) continue;
+            return profile.getNumberStatProperties().get(i).getFormat();
+        }
+        for (String i : profile.floatStatNames()){
+            if (!i.equals(stat)) continue;
+            return profile.getNumberStatProperties().get(i).getFormat();
+        }
+        for (String i : profile.doubleStatNames()){
+            if (!i.equals(stat)) continue;
+            return profile.getNumberStatProperties().get(i).getFormat();
+        }
+        return null;
+    }
 }

@@ -20,11 +20,10 @@ import java.util.*;
 
 public class DurabilityRepairScale extends DynamicItemModifier {
     private double skillEfficiency = 1;
-    private final Scaling scaling;
+    private static final Scaling scaling = Scaling.fromConfig("skills/smithing.yml", "scaling_repair");
 
     public DurabilityRepairScale(String name) {
         super(name);
-        this.scaling = Scaling.fromConfig("skills/smithing.yml", "scaling_repair");
     }
 
     @Override
@@ -36,14 +35,14 @@ public class DurabilityRepairScale extends DynamicItemModifier {
         if (materialClass != null){
             materialSkill = AccumulativeStatManager.getStats("SMITHING_QUALITY_" + materialClass, crafter, use);
         }
-        int itemDurability = CustomDurabilityManager.getDurability(outputItem.getItem(), outputItem.getMeta(), false);
-        int maxDurability = CustomDurabilityManager.getDurability(outputItem.getItem(), outputItem.getMeta(), true);
+        int itemDurability = CustomDurabilityManager.getDurability(outputItem.getMeta(), false);
+        int maxDurability = CustomDurabilityManager.getDurability(outputItem.getMeta(), true);
         if (itemDurability >= maxDurability) return;
         if (itemDurability > 0){
             // Item has custom durability
             double fractionToRepair = scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf(((generalSkill + materialSkill) * skillEfficiency))));
             int addDurability = (int) (fractionToRepair * (double) maxDurability);
-            CustomDurabilityManager.damage(outputItem.getItem(), outputItem.getMeta(), -addDurability);
+            CustomDurabilityManager.damage(outputItem.getMeta(), -addDurability);
         }
     }
 
@@ -97,9 +96,16 @@ public class DurabilityRepairScale extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setSkillEfficiency(double skillEfficiency) {
+        this.skillEfficiency = skillEfficiency;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new DurabilityRepairScale(getName());
+    public DynamicItemModifier copy() {
+        DurabilityRepairScale m = new DurabilityRepairScale(getName());
+        m.setSkillEfficiency(this.skillEfficiency);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

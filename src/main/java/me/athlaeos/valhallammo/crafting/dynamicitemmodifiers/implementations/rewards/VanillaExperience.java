@@ -72,9 +72,16 @@ public class VanillaExperience extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.REWARDS.id());
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new VanillaExperience(getName());
+    public DynamicItemModifier copy() {
+        VanillaExperience m = new VanillaExperience(getName());
+        m.setAmount(this.amount);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

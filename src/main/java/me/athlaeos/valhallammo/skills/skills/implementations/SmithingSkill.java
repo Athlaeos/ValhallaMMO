@@ -3,6 +3,8 @@ package me.athlaeos.valhallammo.skills.skills.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
+import me.athlaeos.valhallammo.item.MaterialClass;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.SmithingProfile;
@@ -16,8 +18,8 @@ public class SmithingSkill extends Skill {
         ValhallaMMO.getInstance().save("skills/smithing_progression.yml");
         ValhallaMMO.getInstance().save("skills/smithing.yml");
 
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/smithing.yml").reload().get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/smithing_progression.yml").reload().get();
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/smithing.yml").get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/smithing_progression.yml").get();
 
         loadCommonConfig(skillConfig, progressionConfig);
     }
@@ -44,9 +46,15 @@ public class SmithingSkill extends Skill {
 
     @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_SMITHING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
-            amount *= (1 + AccumulativeStatManager.getStats("SMITHING_EXP_GAIN", p, true));
+            amount *= (1 + AccumulativeStatManager.getStats("SMITHING_EXP_GAIN_GENERAL", p, true));
         }
         super.addEXP(p, amount, silent, reason);
+    }
+
+    public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason, MaterialClass material) {
+        amount *= (1 + AccumulativeStatManager.getStats("SMITHING_EXP_GAIN_" + material, p, true));
+        addEXP(p, amount, silent, reason);
     }
 }

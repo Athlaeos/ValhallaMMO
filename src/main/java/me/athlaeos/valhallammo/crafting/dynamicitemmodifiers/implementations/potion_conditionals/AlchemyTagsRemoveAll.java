@@ -58,8 +58,10 @@ public class AlchemyTagsRemoveAll extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new AlchemyTagsRemoveAll(getName());
+    public DynamicItemModifier copy() {
+        AlchemyTagsRemoveAll m = new AlchemyTagsRemoveAll(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

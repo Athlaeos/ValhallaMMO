@@ -125,10 +125,11 @@ public class Perk {
     }
 
     public boolean shouldBeVisible(Player p){
+        if (!isHiddenUntilRequirementsMet() || canUnlock(p)) return true;
         PowerProfile profile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
-        if (profile.getUnlockedPerks().contains(this.name)) return false;
+        if (profile.getUnlockedPerks().contains(this.name)) return true;
         if (profile.getPermanentlyLockedPerks().contains(this.name)) return false;
-        if (profile.getFakeUnlockedPerks().contains(this.name)) return false;
+        if (profile.getFakeUnlockedPerks().contains(this.name)) return true;
         return metConditionRequirements(p, true);
     }
 
@@ -231,6 +232,7 @@ public class Perk {
 
     public void execute(Player p){
         for (String message : messages){
+            for (PerkReward reward : rewards) message = message.replace("{" + reward.getName() + "}", reward.rewardPlaceholder());
             p.sendMessage(Utils.chat(message));
         }
         for (String command : commands){

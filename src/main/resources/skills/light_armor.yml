@@ -11,5 +11,5 @@ adrenaline_effects: # is to be formatted by EFFECT;AMPLIFIER;DURATION;AMPLIFIERP
   # amplifiers are rounded down, so SPEED 0.5 would not give any speed effect
   - SPEED;1;200;0.5;50 # gives SPEED I for 10s where the amplifier increases by 0.5 and duration by 2.5s per extra level
   - JUMP;1;200;0.5;50
-  - REGENERATION;0.5;200;0.5;50
+  - REGENERATION;1;200;0.5;50
   - DAMAGE_RESISTANCE;0;200;0.25;50

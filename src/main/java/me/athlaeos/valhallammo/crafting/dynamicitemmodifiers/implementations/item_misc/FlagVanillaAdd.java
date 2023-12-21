@@ -73,8 +73,10 @@ public class FlagVanillaAdd extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new FlagVanillaAdd(getName(), flag);
+    public DynamicItemModifier copy() {
+        FlagVanillaAdd m = new FlagVanillaAdd(getName(), flag);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

@@ -103,8 +103,10 @@ public class ConversionEffect extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new ConversionEffect(getName());
+    public DynamicItemModifier copy() {
+        ConversionEffect m = new ConversionEffect(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

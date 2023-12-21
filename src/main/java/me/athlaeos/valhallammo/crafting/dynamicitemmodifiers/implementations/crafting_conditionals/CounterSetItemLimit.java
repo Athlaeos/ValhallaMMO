@@ -72,9 +72,16 @@ public class CounterSetItemLimit extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CRAFTING_CONDITIONALS.id());
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new CounterSetItemLimit(getName());
+    public DynamicItemModifier copy() {
+        CounterSetItemLimit m = new CounterSetItemLimit(getName());
+        m.setAmount(this.amount);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

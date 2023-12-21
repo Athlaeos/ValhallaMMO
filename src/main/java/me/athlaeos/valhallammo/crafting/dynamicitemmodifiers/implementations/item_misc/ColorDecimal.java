@@ -125,9 +125,16 @@ public class ColorDecimal extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id(), ModifierCategoryRegistry.POTION_MISC.id());
     }
 
+    public void setDecimal(int decimal) {
+        this.decimal = decimal;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ColorDecimal(getName());
+    public DynamicItemModifier copy() {
+        ColorDecimal m = new ColorDecimal(getName());
+        m.setDecimal(this.decimal);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

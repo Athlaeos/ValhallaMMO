@@ -21,10 +21,10 @@ public class LeaderboardCommand implements TabExecutor {
 			return true;
 		}
 		if (args.length == 0) return false;
-		int page = 0;
+		int page = 1;
 		if (args.length > 1){
 			try {
-				page = Integer.parseInt(args[1]);
+				page = Math.max(1, Integer.parseInt(args[1]));
 			} catch (IllegalArgumentException ignored){
 				Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_invalid_number"));
 				return true;

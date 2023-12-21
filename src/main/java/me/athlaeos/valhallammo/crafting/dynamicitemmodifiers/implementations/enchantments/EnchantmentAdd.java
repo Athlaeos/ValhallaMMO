@@ -119,11 +119,17 @@ public class EnchantmentAdd extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ENCHANTMENTS.id());
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
+    public DynamicItemModifier copy() {
         Enchantment e = Enchantment.getByKey(NamespacedKey.minecraft(enchantment));
         if (e == null) throw new IllegalStateException("Enchantment " + enchantment + " is invalid");
-        return new EnchantmentAdd(getName(), e, icon);
+        EnchantmentAdd m = new EnchantmentAdd(getName(), e, icon);
+        m.setLevel(this.level);
+        return m;
     }
 
     @Override

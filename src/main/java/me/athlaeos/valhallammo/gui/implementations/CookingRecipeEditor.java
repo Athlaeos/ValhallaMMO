@@ -29,10 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRecipeOptionMenu, SetValidationsMenu {
     private static final NamespacedKey BUTTON_ACTION_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_action");
@@ -208,15 +205,15 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
         this.type = recipe.getType();
         this.recipe = new DynamicCookingRecipe(newName, recipe.getType());
 
-        this.input = recipe.getInput();
-        this.result = recipe.getResult();
+        this.input = new SlotEntry(recipe.getInput().getItem().clone(), recipe.getInput().getOption());
+        this.result = recipe.getResult().clone();
         this.requireValhallaTools = recipe.requireValhallaTools();
         this.tinker = recipe.tinker();
         this.cookTime = recipe.getCookTime();
         this.experience = recipe.getExperience();
-        this.modifiers = recipe.getModifiers();
+        this.modifiers = new ArrayList<>(recipe.getModifiers().stream().map(DynamicItemModifier::copy).toList());
         this.unlockedForEveryone = recipe.isUnlockedForEveryone();
-        this.validations = recipe.getValidations();
+        this.validations = new HashSet<>(recipe.getValidations());
         this.displayName = recipe.getDisplayName();
         this.description = recipe.getDescription();
         this.hidden = recipe.isHiddenFromBook();

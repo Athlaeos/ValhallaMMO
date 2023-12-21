@@ -280,11 +280,15 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                                     .replace("%item%", recipe.getMetaRequirement().getChoice().ingredientDescription(i));
                         }).collect(Collectors.toList())
                 );
-                lore = ItemUtils.setListPlaceholder(lore, "%modifiers%",
+                List<String> newLore = new ArrayList<>();
+                for (String s : ItemUtils.setListPlaceholder(lore, "%modifiers%",
                         recipe.getModifiers().stream().map(DynamicItemModifier::getActiveDescription)
                                 .filter(Objects::nonNull)
                                 .collect(Collectors.toList())
-                );
+                )){
+                    newLore.addAll(StringUtils.separateStringIntoLines(s, 40));
+                }
+                lore = newLore;
                 String time = String.format("%.1f", (Math.max(0, recipe.getTimeToCraft() * (1 - craftingTimeReduction))/20D));
                 lore = lore.stream().map(l -> l.replace("%crafting_time%", time)).collect(Collectors.toList());
 

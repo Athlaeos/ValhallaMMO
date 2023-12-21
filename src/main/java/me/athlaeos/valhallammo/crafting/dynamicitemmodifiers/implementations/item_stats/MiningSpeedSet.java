@@ -69,9 +69,16 @@ public class MiningSpeedSet extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CUSTOM_ATTRIBUTES.id());
     }
 
+    public void setValue(double value) {
+        this.value = value;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new MiningSpeedSet(getName());
+    public DynamicItemModifier copy() {
+        MiningSpeedSet m = new MiningSpeedSet(getName());
+        m.setValue(this.value);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

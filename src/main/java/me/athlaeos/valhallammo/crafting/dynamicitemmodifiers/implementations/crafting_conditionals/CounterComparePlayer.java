@@ -69,8 +69,10 @@ public class CounterComparePlayer extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new CounterComparePlayer(getName());
+    public DynamicItemModifier copy() {
+        CounterComparePlayer m = new CounterComparePlayer(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

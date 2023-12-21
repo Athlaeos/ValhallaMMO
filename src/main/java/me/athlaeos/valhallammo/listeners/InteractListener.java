@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.BlockInteractConversions;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.utility.Parryer;
 import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.event.Event;
@@ -24,7 +25,9 @@ public class InteractListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockConvert(PlayerInteractEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.useItemInHand() == Event.Result.DENY ||
-                e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getClickedBlock() == null || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_block_conversions")) return;
+                e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getClickedBlock() == null ||
+                !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_block_conversions") ||
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_BLOCKCONVERSIONS)) return;
         if (BlockInteractConversions.trigger(e.getPlayer(), e.getClickedBlock())) e.setCancelled(true);
         Timer.setCooldown(e.getPlayer().getUniqueId(), 250, "cooldown_block_conversions");
     }

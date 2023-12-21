@@ -16,8 +16,8 @@ import java.util.Collection;
 @SuppressWarnings("unused")
 public class EnchantingProfile extends Profile {
     {
-        intStat("enchantingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("anvilSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("enchantingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("anvilSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
 
         floatStat("enchantingSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("anvilSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
@@ -59,7 +59,7 @@ public class EnchantingProfile extends Profile {
         intStat("levelBonusGenericOffensive", new PropertyBuilder().format(StatFormat.DIFFERENCE_INT).perkReward().create());
         intStat("levelBonusGenericUtility", new PropertyBuilder().format(StatFormat.DIFFERENCE_INT).perkReward().create());
 
-        doubleStat("enchantingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        doubleStat("enchantingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
     }
 
     public int getEnchantmentBonus(EnchantmentClassification e){
@@ -133,11 +133,11 @@ public class EnchantingProfile extends Profile {
         }
     }
 
-    public int getEnchantingSkill(){ return getInt("enchantingSkill"); }
-    public void setEnchantingSkill(int value) { setInt("enchantingSkill", value); }
+    public float getEnchantingSkill(){ return getFloat("enchantingSkill"); }
+    public void setEnchantingSkill(float value) { setFloat("enchantingSkill", value); }
 
-    public int getAnvilSkill(){ return getInt("anvilSkill"); }
-    public void setAnvilSkill(int value) { setInt("anvilSkill", value); }
+    public float getAnvilSkill(){ return getFloat("anvilSkill"); }
+    public void setAnvilSkill(float value) { setFloat("anvilSkill", value); }
 
     public float getEnchantmentAmplificationChance(){ return getFloat("enchantmentAmplificationChance"); }
     public void setEnchantmentAmplificationChance(float value) { setFloat("enchantmentAmplificationChance", value); }

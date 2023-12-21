@@ -32,7 +32,7 @@ public class ExperienceExpense implements ResourceExpense {
         EntityUtils.setTotalExperience(p, EntityUtils.getTotalExperience(p) + cost);
     }
 
-    private final boolean refundable = ConfigManager.getConfig("config.yml").get().getBoolean("forgettable_perks_refund_exp");
+    private final boolean refundable = ConfigManager.getConfig("config.yml").reload().get().getBoolean("forgettable_perks_refund_exp");
     @Override
     public boolean isRefundable() {
         return refundable;

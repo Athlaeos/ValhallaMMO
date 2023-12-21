@@ -17,6 +17,7 @@ public class RecipeOptionRegistry {
         registerOption(new SimilarTypeChoice());
         registerOption(new ConfigurableMaterialsChoice());
         registerOption(new PotionChoice());
+        registerOption(new MaterialWithIDChoice());
     }
 
     public static void registerOption(RecipeOption c) {

@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.skills.perk_rewards.implementations;
 
+import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
@@ -42,7 +43,7 @@ public class ProfileStringListFill extends PerkReward {
     }
 
     @Override
-    public String rewardPlacholder() {
+    public String rewardPlaceholder() {
         return "";
     }
 

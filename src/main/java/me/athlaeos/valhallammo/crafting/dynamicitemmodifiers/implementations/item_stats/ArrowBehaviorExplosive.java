@@ -97,9 +97,26 @@ public class ArrowBehaviorExplosive extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CUSTOM_ATTRIBUTES.id());
     }
 
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+
+    public void setIncendiary(boolean incendiary) {
+        this.incendiary = incendiary;
+    }
+
+    public void setDestructive(boolean destructive) {
+        this.destructive = destructive;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ArrowBehaviorExplosive(getName());
+    public DynamicItemModifier copy() {
+        ArrowBehaviorExplosive m = new ArrowBehaviorExplosive(getName());
+        m.setDestructive(this.destructive);
+        m.setIncendiary(this.incendiary);
+        m.setRadius(this.radius);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

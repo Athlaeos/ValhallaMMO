@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.FoodClass;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.PowerSkill;
@@ -23,7 +24,7 @@ public class PowerProfile extends Profile {
         doubleStat("redeemableExperience", new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).perkReward().create()); // generic experience points that can be invested into any skill (except Power)
         intStat("itemCounterLimit", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
 
-        doubleStat("allSkillEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        doubleStat("allSkillEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
         floatStat("healthBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
         floatStat("healthMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("movementSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
@@ -34,6 +35,10 @@ public class PowerProfile extends Profile {
         floatStat("armorMultiplierBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("toughnessBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
         floatStat("attackReachBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
+        floatStat("attackReachMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("blockReachBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
+        floatStat("stepHeightBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
+        floatStat("scaleMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("attackDamageBonus", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
         floatStat("fireDamageBonus", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
         floatStat("explosionDamageBonus", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
@@ -102,7 +107,8 @@ public class PowerProfile extends Profile {
         floatStat("reflectFraction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("jumpHeightBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         intStat("jumpBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_INT).min(0).perkReward().create());
-        intStat("parryEffectivenessDuration", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).min(0).perkReward().create());
+        intStat("crossbowMagazine", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        intStat("parryEffectiveDuration", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).min(0).perkReward().create());
         intStat("parryVulnerableDuration", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).min(0).perkReward().create());
         intStat("parryEnemyDebuffDuration", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).min(0).perkReward().create());
         intStat("parrySelfDebuffDuration", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).min(0).perkReward().create());
@@ -124,6 +130,7 @@ public class PowerProfile extends Profile {
         floatStat("foodBonusDairy", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
         floatStat("foodBonusMeat", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
         floatStat("foodBonusFats", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        booleanStat("badFoodImmune", new BooleanProperties(true, true));
 
         stringSetStat("unlockedPerks");
         stringSetStat("fakeUnlockedPerks"); // if a perk is "fake unlocked" it will be excluded from stat calculation, as if the player hasn't unlocked it at all
@@ -175,6 +182,9 @@ public class PowerProfile extends Profile {
         }, value);
     }
 
+    public boolean isBadFoodImmune() { return getBoolean("badFoodImmune"); }
+    public void setBadFoodImmune(boolean immune) { setBoolean("badFoodImmune", immune); }
+
     public boolean hidePotionEffectBar() { return getBoolean("hidePotionEffectBar"); }
     public void togglePotionEffectBar() { setBoolean("hidePotionEffectBar", !hidePotionEffectBar()); }
 
@@ -200,6 +210,9 @@ public class PowerProfile extends Profile {
     public int getSpendablePrestigePoints(){ return getInt("spendablePrestigePoints");}
     public void setSpendablePrestigePoints(int value){ setInt("spendablePrestigePoints", value);}
 
+    public int getCrossbowMagazine(){ return getInt("crossbowMagazine"); }
+    public void setCrossbowMagazine(int points){ setInt("crossbowMagazine", points); }
+
     public int getSpentPrestigePoints(){ return getInt("spentPrestigePoints"); }
     public void setSpentPrestigePoints(int points){ setInt("spentPrestigePoints", points); }
 
@@ -218,11 +231,23 @@ public class PowerProfile extends Profile {
     public float getJumpHeightBonus(){ return getFloat("jumpHeightBonus");}
     public void setJumpHeightBonus(float value){ setFloat("jumpHeightBonus", value);}
 
+    public float getBlockReachBonus(){ return getFloat("blockReachBonus");}
+    public void setBlockReachBonus(float value){ setFloat("blockReachBonus", value);}
+
+    public float getStepHeightBonus(){ return getFloat("stepHeightBonus");}
+    public void setStepHeightBonus(float value){ setFloat("stepHeightBonus", value);}
+
+    public float getScaleMultiplier(){ return getFloat("scaleMultiplier");}
+    public void setScaleMultiplier(float value){ setFloat("scaleMultiplier", value);}
+
+    public float getAttackReachMultiplier(){ return getFloat("attackReachMultiplier");}
+    public void setAttackReachMultiplier(float value){ setFloat("attackReachMultiplier", value);}
+
     public float getDismountChance(){ return getFloat("dismountChance");}
     public void setDismountChance(float value){ setFloat("dismountChance", value);}
 
-    public int getParryEffectivenessDuration(){ return getInt("parryEffectivenessDuration");}
-    public void setParryEffectivenessDuration(int value){ setInt("parryEffectivenessDuration", value);}
+    public int getParryEffectiveDuration(){ return getInt("parryEffectiveDuration");}
+    public void setParryEffectiveDuration(int value){ setInt("parryEffectiveDuration", value);}
 
     public int getParryVulnerableDuration(){ return getInt("parryVulnerableDuration");}
     public void setParryVulnerableDuration(int value){ setInt("parryVulnerableDuration", value);}

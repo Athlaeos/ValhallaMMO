@@ -44,7 +44,7 @@ public class EntityDamagedListener implements Listener {
             boolean applyImmunity = l.getHealth() - customDamage > 0;
             if (customDamage > 0 && ValhallaMMO.isHookFunctional(DamageIndicator.class)) {
                 l.playEffect(EntityEffect.ARMOR_STAND_HIT);
-                if ( DamageIndicator.update(l, type, customDamage)) customDamage = 0;
+                if (DamageIndicator.update(l, type, customDamage)) customDamage = 0;
                 e.setDamage(0);
                 applyImmunity = true;
             }
@@ -116,6 +116,11 @@ public class EntityDamagedListener implements Listener {
         if (c.getStringList("armor_effective_types").contains(damageCause)){
             double totalArmor = AccumulativeStatManager.getCachedRelationalStats("ARMOR_TOTAL", e.getEntity(), lastDamager, 10000, true);
             double toughness = Math.max(0, AccumulativeStatManager.getCachedRelationalStats("TOUGHNESS", e.getEntity(), lastDamager, 2000, true));
+            if (totalArmor < 0){
+                double negativeArmorDamageDebuff = c.getDouble("negative_armor_damage_buff");
+                resistedDamage *= (1 + (-totalArmor * negativeArmorDamageDebuff));
+                totalArmor = 0;
+            }
 
             String scaling = c.getString("damage_formula_physical", "%damage% * (10 / (10 + %armor%)) - (%damage%^2 * 0.00005 * %toughness%)");
             boolean mode = c.getString("damage_formula_mode", "SET").equalsIgnoreCase("set");

@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.CombatType;
 import me.athlaeos.valhallammo.event.EntityCriticallyHitEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.listeners.EntityAttackListener;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
@@ -76,8 +77,8 @@ public class ArcherySkill extends Skill implements Listener {
         ValhallaMMO.getInstance().save("skills/archery_progression.yml");
         ValhallaMMO.getInstance().save("skills/archery.yml");
 
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/archery.yml").reload().get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/archery_progression.yml").reload().get();
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/archery.yml").get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/archery_progression.yml").get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -118,7 +119,9 @@ public class ArcherySkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCrossbowUnload(InventoryClickEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() || !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_crossbow_unload_attempts")) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() ||
+                !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_crossbow_unload_attempts") ||
+                WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
         if ((!(e.getClickedInventory() instanceof PlayerInventory)) || !e.isRightClick()) return; // player inventory must be right-clicked
         Timer.setCooldown(e.getWhoClicked().getUniqueId(), 500, "delay_crossbow_unload_attempts"); // setting cooldown between attempts so this can't be spammed with some macro
         if (ItemUtils.isEmpty(e.getCurrentItem()) || e.getCurrentItem().getType() != Material.CROSSBOW) return; // neither items must be empty
@@ -136,7 +139,10 @@ public class ArcherySkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onInteract(PlayerInteractEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.getHand() == EquipmentSlot.OFF_HAND || e.useItemInHand() == Event.Result.DENY || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_charged_shot_attempts")) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.getHand() == EquipmentSlot.OFF_HAND ||
+                e.useItemInHand() == Event.Result.DENY || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_charged_shot_attempts") ||
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ARCHERY) ||
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_COMBAT_CHARGEDSHOT)) return;
         Timer.setCooldown(e.getPlayer().getUniqueId(), 500, "delay_charged_shot_attempts");
         if (!e.getPlayer().isSneaking() && e.getAction() != Action.LEFT_CLICK_AIR && e.getAction() != Action.LEFT_CLICK_BLOCK) return;
         ItemStack mainHand = e.getPlayer().getInventory().getItemInMainHand();
@@ -147,8 +153,9 @@ public class ArcherySkill extends Skill implements Listener {
         chargedShotUsers.put(e.getPlayer().getUniqueId(), new ChargedShotUser(
                 profile.getChargedShotCharges(), profile.getChargedShotVelocityBonus(),
                 profile.getChargedShotDamageMultiplier(), profile.getChargedShotKnockback(),
-                profile.getChargedShotPiercing(), profile.doChargedShotsFireAtFullVelocity(),
-                profile.isChargedShotAntiGravity(), profile.doChargedShotCrossbowsInstantlyReload()
+                profile.getChargedShotPiercing(), profile.getChargedShotAccuracy(),
+                profile.doChargedShotsFireAtFullVelocity(), profile.isChargedShotAntiGravity(),
+                profile.doChargedShotCrossbowsInstantlyReload()
         ));
         Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getChargedShotCooldown() * 50, "cooldown_charged_shot");
         if (chargedShotActivationAnimation != null) chargedShotActivationAnimation.animate(e.getPlayer(), e.getPlayer().getEyeLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
@@ -159,6 +166,7 @@ public class ArcherySkill extends Skill implements Listener {
     public void onArrowHit(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         if (!(e.getDamager() instanceof AbstractArrow a) || !(a.getShooter() instanceof Player p) || a instanceof Trident || !(e.getEntity() instanceof LivingEntity v)) return;
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
 
         ArcheryProfile profile = ProfileCache.getOrCache(p, ArcheryProfile.class);
         ItemBuilder bow = ProjectileListener.getBow(a);
@@ -202,6 +210,7 @@ public class ArcherySkill extends Skill implements Listener {
     public void onCrit(EntityCriticallyHitEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         if (e.getCritter() instanceof AbstractArrow a && a.getShooter() instanceof Player p && e.getEntity() instanceof LivingEntity l){
+            if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
             ArcheryProfile profile = ProfileCache.getOrCache(p, ArcheryProfile.class);
             if (profile.doesBleedOnCrit()) Bleeder.inflictBleed(l, p, CombatType.RANGED);
             if (profile.doesStunOnCrit()) Stun.attemptStun(l, p);
@@ -215,6 +224,7 @@ public class ArcherySkill extends Skill implements Listener {
         ItemStack consumable = e.getConsumable();
         if (!(e.getProjectile() instanceof AbstractArrow a) || a instanceof Trident || ItemUtils.isEmpty(consumable) || ItemUtils.isEmpty(bow)) return;
         if (!(a.getShooter() instanceof Player p) || ProjectileListener.isShotFromMultishot(a)) return;
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
 
         ChargedShotUser user = chargedShotUsers.get(p.getUniqueId());
         if (user == null) return;
@@ -255,6 +265,7 @@ public class ArcherySkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         if (!(e.getProjectile() instanceof AbstractArrow a) || a instanceof Trident || ItemUtils.isEmpty(e.getConsumable()) || ItemUtils.isEmpty(e.getBow())) return;
         if (!(a.getShooter() instanceof Player p)) return;
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
 
         ChargedShotUser user = chargedShotUsers.get(p.getUniqueId());
         if (user != null && user.maxVelocity && user.charges > 0) a.setVelocity(a.getVelocity().normalize().multiply(3));
@@ -294,6 +305,7 @@ public class ArcherySkill extends Skill implements Listener {
 
     @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
             amount *= (1 + AccumulativeStatManager.getStats("ARCHERY_EXP_GAIN", p, true));
         }
@@ -321,22 +333,24 @@ public class ArcherySkill extends Skill implements Listener {
         return chargedShotUsers;
     }
 
-    private static class ChargedShotUser{
+    public static class ChargedShotUser{
         private int charges;
         private final float velocityBuff;
         private final float damageBuff;
         private final int knockbackBuff;
         private final int piercingBuff;
+        private final float accuracyBuff;
         private final boolean maxVelocity;
         private final boolean crossbowInstantReload;
         private final boolean noGravity;
 
-        public ChargedShotUser(int charges, float velocity, float damage, int knockback, int piercing, boolean maxVelocity, boolean noGravity, boolean crossbowInstantReload){
+        public ChargedShotUser(int charges, float velocity, float damage, int knockback, int piercing, float accuracyBuff, boolean maxVelocity, boolean noGravity, boolean crossbowInstantReload){
             this.charges = charges;
             this.velocityBuff = velocity;
             this.damageBuff = damage;
             this.knockbackBuff = knockback;
             this.piercingBuff = piercing;
+            this.accuracyBuff = accuracyBuff;
             this.maxVelocity = maxVelocity;
             this.noGravity = noGravity;
             this.crossbowInstantReload = crossbowInstantReload;
@@ -346,5 +360,15 @@ public class ArcherySkill extends Skill implements Listener {
             charges--;
             return charges >= 0;
         }
+
+        public int getCharges() { return charges; }
+        public float getVelocityBuff() { return velocityBuff; }
+        public float getDamageBuff() { return damageBuff; }
+        public int getKnockbackBuff() { return knockbackBuff; }
+        public int getPiercingBuff() { return piercingBuff; }
+        public float getAccuracyBuff() { return accuracyBuff; }
+        public boolean isMaxVelocity() { return maxVelocity; }
+        public boolean isNoGravity() { return noGravity; }
+        public boolean isCrossbowInstantReload() { return crossbowInstantReload; }
     }
 }

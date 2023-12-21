@@ -98,9 +98,16 @@ public class FoodClassSet extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.FOOD.id());
     }
 
+    public void setFoodClass(FoodClass foodClass) {
+        this.foodClass = foodClass;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new FoodClassSet(getName());
+    public DynamicItemModifier copy() {
+        FoodClassSet m = new FoodClassSet(getName());
+        m.setFoodClass(this.foodClass);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

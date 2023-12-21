@@ -50,7 +50,7 @@ public abstract class CookingRecipeCategory extends RecipeCategory{
             lore.add("&8&m                <>                ");
 
             if (recipe.getModifiers().isEmpty()) lore.add("&aNo modifiers executed");
-            recipe.getModifiers().forEach(m -> lore.add(m.getActiveDescription()));
+            recipe.getModifiers().forEach(m -> lore.addAll(StringUtils.separateStringIntoLines(m.getActiveDescription(), 40)));
 
             icons.add(new ItemBuilder(recipe.tinker() ? recipe.getInput().getItem().getType() : recipe.getResult().getType())
                     .name("&f" + recipe.getName())

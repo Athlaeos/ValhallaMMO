@@ -39,8 +39,7 @@ public class SmithingItemPropertyManager {
     }
 
     public static void loadConfig(){
-        String config = "skills/smithing.yml";
-        YamlConfiguration yaml = ConfigManager.getConfig(config).get();
+        YamlConfiguration yaml = ConfigManager.getConfig( "skills/smithing.yml").get();
 
         ConfigurationSection qualitySection = yaml.getConfigurationSection("quality_lore");
         if (qualitySection != null){
@@ -168,7 +167,7 @@ public class SmithingItemPropertyManager {
 
     public static void setQualityLore(ItemMeta meta){
         if (meta == null) return;
-        List<String> currentLore = meta.getLore() != null ? meta.getLore() : new ArrayList<>();
+        List<String> currentLore = ItemUtils.getLore(meta);
         List<String> newLore = new ArrayList<>();
         int tagIndex = -1; // the purpose of this is to track where in the lore tags are placed, so the position doesn't change
         for (String l : currentLore){
@@ -269,15 +268,18 @@ public class SmithingItemPropertyManager {
 
     public static void applyAttributeScaling(ItemMeta meta, Scaling scaling, int quality, String attribute, double minimumFraction){
         if (scaling == null) return;
-        if (ItemAttributesRegistry.getStats(meta, false).isEmpty()) ItemAttributesRegistry.applyVanillaStats(meta);
+        if (!ItemAttributesRegistry.hasCustomStats(meta)) ItemAttributesRegistry.applyVanillaStats(meta);
         AttributeWrapper defaultAttribute = ItemAttributesRegistry.getAttribute(meta, attribute, true);
         if (defaultAttribute == null) return;
+        defaultAttribute = defaultAttribute.copy();
+
         double defaultValue = defaultAttribute.getValue();
         double result = Utils.round6Decimals(
                 scaling.evaluate(
                         scaling.getExpression().replace("%rating%", String.valueOf(quality)),
                         defaultValue
-                ));
+                )
+        );
         result = Math.max(minimumFraction * result, result);
         ItemAttributesRegistry.setStat(meta, attribute, result, false);
     }

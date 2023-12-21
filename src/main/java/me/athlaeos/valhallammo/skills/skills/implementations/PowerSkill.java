@@ -20,8 +20,8 @@ public class PowerSkill extends Skill implements Listener {
         ValhallaMMO.getInstance().save("skills/power_progression.yml");
         ValhallaMMO.getInstance().save("skills/power.yml");
 
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/power.yml").reload().get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/power_progression.yml").reload().get();
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/power.yml").get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/power_progression.yml").get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 

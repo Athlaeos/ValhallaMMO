@@ -46,6 +46,7 @@
     "status_command_durable_effect_applied": "&a%effect% granted!",
     "status_command_instant_effect_applied": "&a%effect% %amplifier% granted!",
     "status_command_exp_success": "&aGiven %player% %amount% %skill% EXP",
+    "status_command_saveall_done": "&aEverything saved!",
     "status_command_levels_redeemed": "&aRedeemed %amount% %skill% levels!",
     "status_command_exp_redeemed": "&aRedeemed %amount% %skill% exp!",
     "status_profiles_loaded": "&aYour stats are loaded in",
@@ -70,6 +71,7 @@
     "status_command_party_created_by_admin": "&aA party named &2%party% &ahas been created in your name",
     "status_command_party_invalid_rank": "&cRank does not exist!",
     "status_command_party_member_not_inviteable": "&cPlayer cannot be invited",
+    "status_command_party_forbidden_region": "&cNot allowed here!",
     "status_command_party_target_no_party": "&cTarget is not in a party",
     "status_command_party_sender_no_party": "&cYou're not in a party",
     "status_command_party_target_higher_rank": "&cYou can't do this to a member of higher rank",
@@ -143,9 +145,8 @@
     "leaderboard_heavy_weapons_level": "&#ff7640Heavy Weapons Level &7(p.%page%)",
     "leaderboard_light_armor_level": "&#ffac40Light Armor Level &7(p.%page%)",
     "leaderboard_heavy_armor_level": "&#ff7640Heavy Armor Level &7(p.%page%)",
-    "leaderboard_personal_prefix": "&7%player% is ranked ",
+    "leaderboard_personal_prefix": "&7>>> ",
     "leaderboard_unranked": "&7%player% is not on the leaderboard yet! ",
-    "personal_entry_prefix": "&7%player% is ranked ",
     "perk_forget": "&cYou forgot %perk%",
     "warning_command_reload": "&cWarning! Changes made to recipes and loot tables will be saved before the reload and will cause a lag spike. Type &4/val reload confirm&c to really reload",
     "warning_profile_reset": "&cHold on! This type of reset cannot be undone and will completely reset (part of) the player's progress. Execute this command again to reset, otherwise let the request expire in 10 seconds.",
@@ -174,6 +175,7 @@
     "description_command_revealrecipes": "Allows you to view the exact names of the vanilla recipes you're crafting, allowing you to disable them in config.yml",
     "description_command_loottables": "Allows you to manage and edit the plugin's loot tables",
     "description_command_tool": "Allows you to give yourself one of a limited selection of tools with specialized purposes",
+    "description_command_saveall": "Forces the plugin to save all current progress",
     "description_command_armorsets": "Allows you to manage and create new armor sets with stat buffs. Armor set application on items should be done with modifiers",
     "description_command_items": "Allows you to add custom items to the plugin's item collection, for usage in /val give or in modifiers",
     "description_command_give": "Allows you to give a player an item from the plugin's item collection, defined in /val items",
@@ -202,6 +204,7 @@
     "translation_true": "Yes",
     "translation_disables": "&cDisables",
     "translation_enables": "&aEnables",
+    "translation_toggles": "&aToggles",
     "menu_loottablefreeselection_guaranteedincluded": "&aGuaranteed Reward!",
     "menu_loottablefreeselection_nameformat": "&e%quantity%%item%",
     "menu_loottablefreeselection_confirmselection": "&aConfirm",
@@ -259,6 +262,7 @@
     "perk_format_separator": "&8&m                               ",
     "perk_requirement_warning_levels": "&cInsufficient Level",
     "perk_requirement_warning_perks": "&cRequired perks not unlocked",
+    "perk_requirement_warning_outdated": "&cThis perk is not functional in this version!",
     "perk_requirement_status_unlockable": "&aClick to unlock this perk",
     "perk_requirement_status_unlocked": "&aPerk unlocked",
     "perk_requirement_status_permanently_locked": "&ePerk can no longer be unlocked",
@@ -322,130 +326,132 @@
     "validation_warning_water_nearby_required": "&cRequires water nearby",
     "validation_warning_lava_nearby_required": "&cRequires lava nearby",
 
-    "attribute_bow_strength": "%icon% %value% Shot Speed",
-    "attribute_arrow_damage": "%icon% %value% Arrow Damage",
-    "attribute_ammo_consumption": "%icon% %value% Ammo Consumption",
-    "attribute_arrow_velocity": "%icon% %value% Arrow Speed",
-    "attribute_arrow_accuracy": "%icon% %value% Accuracy",
-    "attribute_arrow_piercing": "%icon% %value% Piercing",
-    "attribute_knockback": "%icon% %value% Knockback",
-    "attribute_stun_chance": "%icon% %value% Stun Chance",
-    "attribute_bleed_chance": "%icon% %value% Bleed Chance",
-    "attribute_bleed_damage": "%icon% %value% Bleed Damage",
-    "attribute_bleed_duration": "%icon% %value% Bleed Duration",
-    "attribute_crit_chance": "%icon% %value% Crit Chance",
-    "attribute_crit_damage": "%icon% %value% Crit Damage",
-    "attribute_armor_penetration_flat": "%icon% %value% Armor Piercing",
-    "attribute_light_armor_penetration_flat": "%icon% %value% Light Armor Piercing",
-    "attribute_heavy_armor_penetration_flat": "%icon% %value% Heavy Armor Piercing",
-    "attribute_armor_penetration_fraction": "%icon% %value% Armor Piercing",
-    "attribute_light_armor_penetration_fraction": "%icon% %value% Light Armor Piercing",
-    "attribute_heavy_armor_penetration_fraction": "%icon% %value% Heavy Armor Piercing",
-    "attribute_heavy_armor_damage": "%icon% %value% Heavy Armor Damage",
-    "attribute_light_armor_damage": "%icon% %value% Light Armor Damage",
-    "attribute_immunity_bonus_fraction": "%icon% %value% Immunity",
-    "attribute_immunity_bonus_flat": "%icon% %value% Immunity",
-    "attribute_immunity_reduction": "%icon% %value% Immunity Reduction",
-    "attribute_damage_unarmed": "%icon% %value% Unarmed Damage",
-    "attribute_damage_melee": "%icon% %value% Melee Damage",
-    "attribute_damage_ranged": "%icon% %value% Ranged Damage",
-    "attribute_damage_all": "%icon% %value% Damage",
-    "attribute_attack_reach": "%icon% %value% Attack Reach",
-    "attribute_velocity_damage": "%icon% %value% Thrust Damage",
-    "attribute_dismount_chance": "%icon% %value% Dismounting",
-    "attribute_damage_resistance": "%icon% %value% Damage Resistance",
-    "attribute_explosion_resistance": "%icon% %value% Explosion Resistance",
-    "attribute_fall_damage_resistance": "%icon% %value% Fall Damage Resistance",
-    "attribute_fire_resistance": "%icon% %value% Fire Resistance",
-    "attribute_magic_resistance": "%icon% %value% Magic Resistance",
-    "attribute_bleed_resistance": "%icon% %value% Bleed Resistance",
-    "attribute_stun_resistance": "%icon% %value% Stun Resistance",
-    "attribute_poison_resistance": "%icon% %value% Poison Resistance",
-    "attribute_projectile_resistance": "%icon% %value% Projectile Resistance",
-    "attribute_melee_resistance": "%icon% %value% Melee Resistance",
-    "attribute_bludgeoning_resistance": "%icon% %value% Bludgeoning Resistance",
-    "attribute_lightning_resistance": "%icon% %value% Lightning Resistance",
-    "attribute_freezing_resistance": "%icon% %value% Frost Resistance",
-    "attribute_radiant_resistance": "%icon% %value% Radiant Resistance",
-    "attribute_necrotic_resistance": "%icon% %value% Necrotic Resistance",
-    "attribute_crit_chance_resistance": "%icon% %value% Crit Chance Resistance",
-    "attribute_crit_damage_resistance": "%icon% %value% Crit Damage Resistance",
-    "attribute_dodge_chance": "%icon% %value% Dodge Chance",
-    "attribute_healing_bonus": "%icon% %value% Healing",
-    "attribute_food_consumption": "%icon% %value% Food Consumption",
-    "attribute_cooldown_reduction": "%icon% %value% Cooldown Reduction",
-    "attribute_explosion_power": "%icon% %value% TNT Power",
-    "attribute_crafting_speed": "%icon% %value% Crafting Speed",
-    "attribute_alchemy_quality": "%icon% %value% Alchemy Skill",
-    "attribute_alchemy_quality_fraction": "%icon% %value% Alchemy Skill",
-    "attribute_enchanting_quality": "%icon% %value% Enchanting Skill",
-    "attribute_enchanting_quality_fraction": "%icon% %value% Enchanting Skill",
-    "attribute_anvil_quality_flat": "%icon% %value% Anvil Skill",
-    "attribute_anvil_quality_fraction": "%icon% %value% Anvil Skill",
-    "attribute_brewing_ingredient_consumption": "%icon% %value% Brewing Ingredient Consumption",
-    "attribute_brewing_speed": "%icon% %value% Brewing Speed",
-    "attribute_potion_consumption": "%icon% %value% Potion Consumption",
-    "attribute_throwing_velocity": "%icon% %value% Throwing Speed",
-    "attribute_smithing_quality": "%icon% %value% Smithing Skill",
-    "attribute_smithing_quality_fraction": "%icon% %value% Smithing Skill",
-    "attribute_mining_rare_drops": "%icon% %value% Mining Luck",
-    "attribute_mining_drops": "%icon% %value% Mining Drops",
-    "attribute_woodcutting_rare_drops": "%icon% %value% Woodcutting Luck",
-    "attribute_woodcutting_drops": "%icon% %value% Woodcutting Drops",
-    "attribute_digging_rare_drops": "%icon% %value% Digging Luck",
-    "attribute_digging_drops": "%icon% %value% Digging Drops",
-    "attribute_farming_rare_drops": "%icon% %value% Farming Luck",
-    "attribute_farming_drops": "%icon% %value% Farming Drops",
-    "attribute_fishing_luck": "%icon% %value% Fishing Luck",
-    "attribute_skill_exp_gain": "%icon% %value% Skill EXP",
-    "attribute_vanilla_exp_gain": "%icon% %value% Enchanting Essence",
-    "attribute_damage_taken": "%icon% %value% Damage Taken",
-    "attribute_reflect_chance": "%icon% %value% Reflect Chance",
-    "attribute_reflect_fraction": "%icon% %value% Reflect Damage",
-    "attribute_generic_luck": "%icon% %value% Luck",
-    "attribute_generic_armor": "%icon% %value% Armor",
-    "attribute_generic_armor_toughness": "%icon% %value% Armor Toughness",
-    "attribute_generic_attack_damage": "%icon% %value% Attack Damage",
-    "attribute_generic_attack_speed": "%icon% %value% Attack Speed",
-    "attribute_generic_knockback_resistance": "%icon% %value% Knockback Resistance",
-    "attribute_generic_max_health": "%icon% %value% Max Health",
-    "attribute_generic_movement_speed": "%icon% %value% Movement Speed",
-    "attribute_sneak_movement_speed_bonus": "%icon% %value% Sneaking Speed",
-    "attribute_sprint_movement_speed_bonus": "%icon% %value% Sprinting Speed",
-    "attribute_damage_explosion": "%icon% %value% Explosion Damage",
-    "attribute_damage_fire": "%icon% %value% Fire Damage",
-    "attribute_damage_magic": "%icon% %value% Magic Damage",
-    "attribute_damage_poison": "%icon% %value% Poison Damage",
-    "attribute_damage_bludgeoning": "%icon% %value% Bludgeoning Damage",
-    "attribute_damage_lightning": "%icon% %value% Lightning Damage",
-    "attribute_damage_freezing": "%icon% %value% Freezing Damage",
-    "attribute_damage_radiant": "%icon% %value% Radiant Damage",
-    "attribute_damage_necrotic": "%icon% %value% Necrotic Damage",
-    "attribute_extra_explosion_damage": "%icon% %value% Explosion Damage",
-    "attribute_extra_fire_damage": "%icon% %value% Fire Damage",
-    "attribute_extra_magic_damage": "%icon% %value% Magic Damage",
-    "attribute_extra_poison_damage": "%icon% %value% Poison Damage",
-    "attribute_extra_bludgeoning_damage": "%icon% %value% Bludgeoning Damage",
-    "attribute_extra_lightning_damage": "%icon% %value% Lightning Damage",
-    "attribute_extra_freezing_damage": "%icon% %value% Freezing Damage",
-    "attribute_extra_radiant_damage": "%icon% %value% Radiant Damage",
-    "attribute_extra_necrotic_damage": "%icon% %value% Necrotic Damage",
-    "attribute_cooking_speed": "%icon% %value% Cooking Speed",
-    "attribute_jump_height": "%icon% %value% Jump Height",
-    "attribute_jumps": "%icon% %value% Multi-Jumps",
-    "attribute_durability": "%icon% %value% Durability",
-    "attribute_entity_drops": "%icon% %value% Mob Drops",
-    "attribute_light_armor": "%icon% %value% Light Armor",
-    "attribute_heavy_armor": "%icon% %value% Heavy Armor",
-    "attribute_lapis_save_chance": "%icon% %value% Lapis Consumption",
-    "attribute_enchanting_refund_chance": "%icon% %value% Essence Refund Chance",
-    "attribute_enchanting_refund_fraction": "%icon% %value% Essence Refunded",
-    "attribute_lingering_duration_multiplier": "%icon% %value% Lingering Duration",
-    "attribute_lingering_radius_multiplier": "%icon% %value% Lingering Radius",
-    "attribute_splash_intensity_minimum": "%icon% %value% Splash Efficiency",
-    "attribute_entity_rare_drops": "%icon% %value% Mob Treasure Luck",
-    "attribute_dig_speed": "%icon% %value% Mining Speed",
-    "attribute_mining_speed": "%icon% %value% Mining Speed",
+    "attribute_bow_strength": "%icon%%value% Shot Speed",
+    "attribute_arrow_damage": "%icon%%value% Arrow Damage",
+    "attribute_ammo_consumption": "%icon%%value% Ammo Consumption",
+    "attribute_arrow_velocity": "%icon%%value% Arrow Speed",
+    "attribute_arrow_accuracy": "%icon%%value% Accuracy",
+    "attribute_arrow_piercing": "%icon%%value% Piercing",
+    "attribute_knockback": "%icon%%value% Knockback",
+    "attribute_stun_chance": "%icon%%value% Stun Chance",
+    "attribute_bleed_chance": "%icon%%value% Bleed Chance",
+    "attribute_bleed_damage": "%icon%%value% Bleed Damage",
+    "attribute_bleed_duration": "%icon%%value% Bleed Duration",
+    "attribute_crit_chance": "%icon%%value% Crit Chance",
+    "attribute_crit_damage": "%icon%%value% Crit Damage",
+    "attribute_armor_penetration_flat": "%icon%%value% Armor Piercing",
+    "attribute_light_armor_penetration_flat": "%icon%%value% Light Armor Piercing",
+    "attribute_heavy_armor_penetration_flat": "%icon%%value% Heavy Armor Piercing",
+    "attribute_armor_penetration_fraction": "%icon%%value% Armor Piercing",
+    "attribute_light_armor_penetration_fraction": "%icon%%value% Light Armor Piercing",
+    "attribute_heavy_armor_penetration_fraction": "%icon%%value% Heavy Armor Piercing",
+    "attribute_heavy_armor_damage": "%icon%%value% Heavy Armor Damage",
+    "attribute_light_armor_damage": "%icon%%value% Light Armor Damage",
+    "attribute_immunity_bonus_fraction": "%icon%%value% Immunity",
+    "attribute_immunity_bonus_flat": "%icon%%value% Immunity",
+    "attribute_immunity_reduction": "%icon%%value% Immunity Reduction",
+    "attribute_damage_unarmed": "%icon%%value% Unarmed Damage",
+    "attribute_damage_melee": "%icon%%value% Melee Damage",
+    "attribute_damage_ranged": "%icon%%value% Ranged Damage",
+    "attribute_damage_all": "%icon%%value% Damage",
+    "attribute_attack_reach": "%icon%%value% Attack Reach",
+    "attribute_velocity_damage": "%icon%%value% Thrust Damage",
+    "attribute_dismount_chance": "%icon%%value% Dismounting",
+    "attribute_damage_resistance": "%icon%%value% Damage Resistance",
+    "attribute_explosion_resistance": "%icon%%value% Explosion Resistance",
+    "attribute_fall_damage_resistance": "%icon%%value% Fall Damage Resistance",
+    "attribute_fire_resistance": "%icon%%value% Fire Resistance",
+    "attribute_magic_resistance": "%icon%%value% Magic Resistance",
+    "attribute_bleed_resistance": "%icon%%value% Bleed Resistance",
+    "attribute_stun_resistance": "%icon%%value% Stun Resistance",
+    "attribute_poison_resistance": "%icon%%value% Poison Resistance",
+    "attribute_projectile_resistance": "%icon%%value% Projectile Resistance",
+    "attribute_melee_resistance": "%icon%%value% Melee Resistance",
+    "attribute_bludgeoning_resistance": "%icon%%value% Bludgeoning Resistance",
+    "attribute_lightning_resistance": "%icon%%value% Lightning Resistance",
+    "attribute_freezing_resistance": "%icon%%value% Frost Resistance",
+    "attribute_radiant_resistance": "%icon%%value% Radiant Resistance",
+    "attribute_necrotic_resistance": "%icon%%value% Necrotic Resistance",
+    "attribute_crit_chance_resistance": "%icon%%value% Crit Chance Resistance",
+    "attribute_crit_damage_resistance": "%icon%%value% Crit Damage Resistance",
+    "attribute_dodge_chance": "%icon%%value% Dodge Chance",
+    "attribute_healing_bonus": "%icon%%value% Healing",
+    "attribute_food_consumption": "%icon%%value% Food Consumption",
+    "attribute_cooldown_reduction": "%icon%%value% Cooldown Reduction",
+    "attribute_explosion_power": "%icon%%value% TNT Power",
+    "attribute_crafting_speed": "%icon%%value% Crafting Speed",
+    "attribute_alchemy_quality": "%icon%%value% Alchemy Skill",
+    "attribute_alchemy_quality_fraction": "%icon%%value% Alchemy Skill",
+    "attribute_enchanting_quality": "%icon%%value% Enchanting Skill",
+    "attribute_enchanting_quality_fraction": "%icon%%value% Enchanting Skill",
+    "attribute_anvil_quality_flat": "%icon%%value% Anvil Skill",
+    "attribute_anvil_quality_fraction": "%icon%%value% Anvil Skill",
+    "attribute_brewing_ingredient_consumption": "%icon%%value% Brewing Ingredient Consumption",
+    "attribute_brewing_speed": "%icon%%value% Brewing Speed",
+    "attribute_potion_consumption": "%icon%%value% Potion Consumption",
+    "attribute_throwing_velocity": "%icon%%value% Throwing Speed",
+    "attribute_smithing_quality": "%icon%%value% Smithing Skill",
+    "attribute_smithing_quality_fraction": "%icon%%value% Smithing Skill",
+    "attribute_mining_rare_drops": "%icon%%value% Mining Luck",
+    "attribute_mining_drops": "%icon%%value% Mining Drops",
+    "attribute_woodcutting_rare_drops": "%icon%%value% Woodcutting Luck",
+    "attribute_woodcutting_drops": "%icon%%value% Woodcutting Drops",
+    "attribute_digging_rare_drops": "%icon%%value% Digging Luck",
+    "attribute_digging_drops": "%icon%%value% Digging Drops",
+    "attribute_farming_rare_drops": "%icon%%value% Farming Luck",
+    "attribute_farming_drops": "%icon%%value% Farming Drops",
+    "attribute_fishing_luck": "%icon%%value% Fishing Luck",
+    "attribute_skill_exp_gain": "%icon%%value% Skill EXP",
+    "attribute_vanilla_exp_gain": "%icon%%value% Enchanting Essence",
+    "attribute_damage_taken": "%icon%%value% Damage Taken",
+    "attribute_reflect_chance": "%icon%%value% Reflect Chance",
+    "attribute_reflect_fraction": "%icon%%value% Reflect Damage",
+    "attribute_generic_luck": "%icon%%value% Luck",
+    "attribute_generic_armor": "%icon%%value% Armor",
+    "attribute_generic_armor_toughness": "%icon%%value% Armor Toughness",
+    "attribute_generic_attack_damage": "%icon%%value% Attack Damage",
+    "attribute_generic_attack_speed": "%icon%%value% Attack Speed",
+    "attribute_generic_knockback_resistance": "%icon%%value% Knockback Resistance",
+    "attribute_generic_max_health": "%icon%%value% Max Health",
+    "attribute_generic_movement_speed": "%icon%%value% Movement Speed",
+    "attribute_sneak_movement_speed_bonus": "%icon%%value% Sneaking Speed",
+    "attribute_sprint_movement_speed_bonus": "%icon%%value% Sprinting Speed",
+    "attribute_damage_explosion": "%icon%%value% Explosion Damage",
+    "attribute_damage_fire": "%icon%%value% Fire Damage",
+    "attribute_damage_magic": "%icon%%value% Magic Damage",
+    "attribute_damage_poison": "%icon%%value% Poison Damage",
+    "attribute_damage_bludgeoning": "%icon%%value% Bludgeoning Damage",
+    "attribute_damage_lightning": "%icon%%value% Lightning Damage",
+    "attribute_damage_freezing": "%icon%%value% Freezing Damage",
+    "attribute_damage_radiant": "%icon%%value% Radiant Damage",
+    "attribute_damage_necrotic": "%icon%%value% Necrotic Damage",
+    "attribute_extra_explosion_damage": "%icon%%value% Explosion Damage",
+    "attribute_extra_fire_damage": "%icon%%value% Fire Damage",
+    "attribute_extra_magic_damage": "%icon%%value% Magic Damage",
+    "attribute_extra_poison_damage": "%icon%%value% Poison Damage",
+    "attribute_extra_bludgeoning_damage": "%icon%%value% Bludgeoning Damage",
+    "attribute_extra_lightning_damage": "%icon%%value% Lightning Damage",
+    "attribute_extra_freezing_damage": "%icon%%value% Freezing Damage",
+    "attribute_extra_radiant_damage": "%icon%%value% Radiant Damage",
+    "attribute_extra_necrotic_damage": "%icon%%value% Necrotic Damage",
+    "attribute_cooking_speed": "%icon%%value% Cooking Speed",
+    "attribute_jump_height": "%icon%%value% Jump Height",
+    "attribute_jumps": "%icon%%value% Multi-Jumps",
+    "attribute_entity_drops": "%icon%%value% Mob Drops",
+    "attribute_light_armor": "%icon%%value% Light Armor",
+    "attribute_heavy_armor": "%icon%%value% Heavy Armor",
+    "attribute_lapis_save_chance": "%icon%%value% Lapis Consumption",
+    "attribute_enchanting_refund_chance": "%icon%%value% Essence Refund Chance",
+    "attribute_enchanting_refund_fraction": "%icon%%value% Essence Refunded",
+    "attribute_lingering_duration_multiplier": "%icon%%value% Lingering Duration",
+    "attribute_lingering_radius_multiplier": "%icon%%value% Lingering Radius",
+    "attribute_splash_intensity_minimum": "%icon%%value% Splash Efficiency",
+    "attribute_entity_rare_drops": "%icon%%value% Mob Treasure Luck",
+    "attribute_dig_speed": "%icon%%value% Mining Speed",
+    "attribute_mining_speed": "%icon%%value% Mining Speed",
+    "attribute_durability_multiplier": "%icon%%value% Durability",
+    "attribute_crossbow_magazine": "",
+    "attribute_attack_reach_multiplier": "%icon%%value% Attack Reach",
     "stat_attribute_negative_prefix": "&c",
     "stat_attribute_positive_prefix": "&7",
 
@@ -609,7 +615,7 @@
     "potion_name_fire": "Napalm",
     "potion_name_jumps": "Air Jumping",
     "potion_name_jump_height": "Jumping",
-    "potion_name_durability": "Permanence",
+    "potion_name_durability_multiplier": "Permanence",
     "potion_name_light_armor": "Leatherskin",
     "potion_name_heavy_armor": "Ironskin",
     "potion_name_entity_drops": "Looting",
@@ -636,6 +642,8 @@
     "potion_name_splash_intensity_minimum": "Alchemy",
     "potion_name_entity_rare_drops": "Looting",
     "potion_name_dig_speed": "Drilling",
+    "potion_name_crossbow_magazine": "",
+    "potion_name_attack_reach_multiplier": "Reach",
     "potion_name_chocolate_milk": "Chocolate Milk",
     "potion_name_milk": "Milk",
 
@@ -795,7 +803,7 @@
     "effect_name_stun": "%icon% Stun %duration%",
     "effect_name_jumps": "%icon% Multi-Jumps %value% %duration%",
     "effect_name_jump_height": "%icon% Jump Height %value% %duration%",
-    "effect_name_durability": "%icon% Durability %value% %duration%",
+    "effect_name_durability_multiplier": "%icon% Durability %value% %duration%",
     "effect_name_entity_drops": "%icon% Mob Drops %value% %duration%",
     "effect_name_light_armor": "%icon% Light Armor %value% %duration%",
     "effect_name_heavy_armor": "%icon% Heavy Armor %value% %duration%",
@@ -823,6 +831,8 @@
     "effect_name_splash_intensity_minimum": "%icon% Splash Efficiency %value% %duration%",
     "effect_name_entity_rare_drops": "%icon% Mob Treasure %value% %duration%",
     "effect_name_dig_speed": "%icon% Mining Speed %value% %duration%",
+    "effect_name_crossbow_magazine": "%icon% Magazine Size %value% %duration%",
+    "effect_name_attack_reach_multiplier": "%icon% Attack Reach %value% %duration%",
     "stat_potion_positive_prefix": "&a",
     "stat_potion_negative_prefix": "&c",
 
@@ -976,7 +986,7 @@
     "stat_icon_damage_freezing": "",
     "stat_icon_damage_radiant": "",
     "stat_icon_damage_necrotic": "",
-    "stat_icon_durability": "",
+    "stat_icon_durability_multiplier": "",
     "stat_icon_entity_drops": "",
     "stat_icon_cooking_speed": "",
     "stat_icon_sneak_movement_speed_bonus": "",
@@ -1007,6 +1017,8 @@
     "stat_icon_jump_height": "",
     "stat_icon_dig_speed": "",
     "stat_icon_mining_speed": "",
+    "stat_icon_crossbow_magazine": "",
+    "stat_icon_attack_reach_multiplier": "",
 
     "translation_next_page": "&7&lNext Page",
     "translation_previous_page": "&7&lPrevious Page",
@@ -1159,7 +1171,7 @@
     "skill-woodcutting-description": "&8Practice Woodcutting to increase your wood harvesting, to augment your building skills, and to gain more building material from less resources",
     "skill-woodcutting-displayname": "&7Woodcutting",
     "skill-woodcutting-level-bar": "&7Woodcutting &aLV %lv_current% &2%exp_current%&7/&2%exp_next% &7(&a%exp%&7)",
-    "skill-digging-description": "&8Practice Digging to increase your bounty from the earth, to find more treasure, and to gain the ability to sift small items from sand and gravel",
+    "skill-digging-description": "&8Practice Digging to increase your bounty from the earth, to find more treasure in archaeology, and to gain the ability to sift small items from sand and gravel",
     "skill-digging-displayname": "&7Digging",
     "skill-digging-level-bar": "&7Digging &aLV %lv_current% &2%exp_current%&7/&2%exp_next% &7(&a%exp%&7)",
     "skill-heavy-weapons-description": "&8Heavy Weapons aren't very effective at blocking incoming attacks, but hit much harder and are more effective against armor",
@@ -1167,7 +1179,7 @@
     "skill-heavy-weapons-level-bar": "&7Heavy Weapons &cLV %lv_current% &4%exp_current%&7/&4%exp_next% &7(&c%exp%&7)",
     "skill-heavy-armor-description": "&8Practice Heavy Armor to greatly reduce damage taken, and become an undefeatable menace at the cost of some mobility",
     "skill-heavy-armor-displayname": "&7Heavy Armor",
-    "skill-heavy-armor-level-bar": "&7Heavy Armor &eLV %lv_current% &4%exp_current%&7/&4%exp_next% &7(&e%exp%&7)",
+    "skill-heavy-armor-level-bar": "&7Heavy Armor &cLV %lv_current% &4%exp_current%&7/&4%exp_next% &7(&c%exp%&7)",
     "skill-fishing-description": "&8Practice Fishing to... get more fish. And to find sunken treasure. Use bait to get rare items more frequently",
     "skill-fishing-displayname": "&7Fishing",
     "skill-fishing-level-bar": "&7Fishing &bLV %lv_current% &9%exp_current%&7/&9%exp_next% &7(&b%exp%&7)",
@@ -1176,8 +1188,8 @@
     "skill-farming-level-bar": "&7Farming &aLV %lv_current% &2%exp_current%&7/&2%exp_next% &7(&a%exp%&7)",
     "skill-enchanting-description": "&8Practice Enchanting to enhance your ability to imbue items with magic, both on the enchanting table and the anvil. Achieve enchantment levels previously impossible",
     "skill-enchanting-displayname": "&7Enchanting",
-    "skill-enchanting-elemental-blade-activation-actionbar": "&8[[&dElemental Blade Activated&8]]",
-    "skill-enchanting-elemental-blade-expiration-actionbar": "&8[[&7Elemental Blade Expired&8]]",
+    "skill-enchanting-elemental-blade-activation-actionbar": "&8[[&dHexblade Activated&8]]",
+    "skill-enchanting-elemental-blade-expiration-actionbar": "&8[[&7Hexblade Expired&8]]",
     "skill-enchanting-elemental-blade-activation-chat": "",
     "skill-enchanting-elemental-blade-expiration-chat": "",
     "skill-enchanting-level-bar": "&7Enchanting &bLV&b%lv_current% &9%exp_current%&7/&9%exp_next% &7(&b%exp%&7)",
@@ -1322,12 +1334,24 @@
     "material-iron-mace": "&fIron Mace",
     "material-diamond-mace": "&fDiamond Mace",
     "material-netherite-mace": "&fNetherite Mace",
+    "material-wooden-rapier": "&fWooden Rapier",
+    "material-stone-rapier": "&fStone Rapier",
+    "material-gold-rapier": "&fGold Rapier",
+    "material-iron-rapier": "&fIron Rapier",
+    "material-diamond-rapier": "&fDiamond Rapier",
+    "material-netherite-rapier": "&fNetherite Rapier",
     "material-wooden-warhammer": "&fWooden Warhammer",
     "material-stone-warhammer": "&fStone Warhammer",
     "material-gold-warhammer": "&fGold Warhammer",
     "material-iron-warhammer": "&fIron Warhammer",
     "material-diamond-warhammer": "&fDiamond Warhammer",
     "material-netherite-warhammer": "&fNetherite Warhammer",
+    "material-wooden-greataxe": "&fWooden Great-Axe",
+    "material-stone-greataxe": "&fStone Great-Axe",
+    "material-gold-greataxe": "&fGold Great-Axe",
+    "material-iron-greataxe": "&fIron Great-Axe",
+    "material-diamond-greataxe": "&fDiamond Great-Axe",
+    "material-netherite-greataxe": "&fNetherite Great-Axe",
     "material-wooden-spear": "&fWooden Spear",
     "material-stone-spear": "&fStone Spear",
     "material-gold-spear": "&fGold Spear",
@@ -1344,14 +1368,14 @@
     "woodcutting_perk_4_description": "&7Speeds up your woodcutting by &a20%&7, you gain a lot more essence per block, and placed saplings grow twice as fast.",
     "woodcutting_perk_5_name": "&aCrystal Leaves",
     "woodcutting_perk_5_description": "&7Leaves sometimes drop &aJewelled Apples&7, and Golden Apples drop more frequently.",
-    "woodcutting_perk_carpentry_a_name": "&aCarpentry I",
-    "woodcutting_perk_carpentry_a_description": "&7Increases output of planks and stick recipes",
-    "woodcutting_perk_carpentry_b_name": "&aCarpentry II",
-    "woodcutting_perk_carpentry_b_description": "&7Increases output of all wooden building block recipes",
+    "woodcutting_perk_carpentry_a_name": "&aCarpentry",
+    "woodcutting_perk_carpentry_a_description": "&7Increases output of most wood-related recipes",
     "woodcutting_perk_capitator_a_name": "&aDeforestation II",
     "woodcutting_perk_capitator_a_description": "&7Empowers Tree Capitator to a 32-block limit, and lowers cooldown to 7 seconds.",
     "woodcutting_perk_capitator_b_name": "&aDeforestation III",
     "woodcutting_perk_capitator_b_description": "&7Empowers Tree Capitator to a 128-block limit, and lowers cooldown to 3 seconds.",
+    "woodcutting_perk_combo_name": "&aActive Lifestyle",
+    "woodcutting_perk_combo_description": "&7Increases the nutritional value of many foods, reduces hunger consumption, and increases health regeneration",
     "smithing_perk_1_name": "&eCraftsman",
     "smithing_perk_1_description": "&7Greatly buffs the quality of your &eWooden&7 and &eLeather&7 items.",
     "smithing_perk_2_name": "&eApprentice Blacksmith",
@@ -1369,31 +1393,1104 @@
     "smithing_perk_enderic_name": "&dExotic Smithing",
     "smithing_perk_enderic_description": "&7Grants you the ability to craft elytras",
     "smithing_perk_bows_name": "&eAdvanced Fletching",
-    "smithing_perk_bows_description": "&7Greatly buffs the quality of your &eBows&7 and &eCrossbows"
+    "smithing_perk_bows_description": "&7Greatly buffs the quality of your &eBows&7 and &eCrossbows",
+    "alchemy_perk_1_name": "&dStable Burn",
+    "alchemy_perk_1_description": "&7Speeds up your potion brewing by &d{alchemy_brewingtimereduction_add}",
+    "alchemy_perk_2_name": "&dPotent Ingredients",
+    "alchemy_perk_2_description": "&7Grants a &d{alchemy_brewingingredientsavechance_add} &7chance to not spend ingredients during brewing",
+    "alchemy_perk_a1_name": "&dVolatile Poisons",
+    "alchemy_perk_a1_description": "&7Enhances the quality of your poisons. Your indirect hits with splash potions become stronger",
+    "alchemy_perk_a2_name": "&dChemical Artillery",
+    "alchemy_perk_a2_description": "&7Enhances the quality of your poisons further. Enhances your splash potion intensity, lingering potion duration and radius, and throwing force. ",
+    "alchemy_perk_b1_name": "&dEffective Catalysts",
+    "alchemy_perk_b1_description": "&7Enhances the quality of your beneficial potions. Speeds up potion brewing by &d{alchemy_brewingtimereduction_add}",
+    "alchemy_perk_b2_name": "&dExotic Ingredients",
+    "alchemy_perk_b2_description": "&7Increases chance to not spend ingredients by &d{alchemy_brewingingredientsavechance_add}&7 and unlocks &dHaste&7 and &dHealth Boost&7 potion recipes",
+    "alchemy_perk_3_name": "&dMighty Mixtures",
+    "alchemy_perk_3_description": "&7Allows you to merge the effects of multiple potions into one, up to &d{alchemy_potioncombiningmaxcombinations_add}&7 times, at some loss of duration",
+    "alchemy_perk_4_name": "&dPrima Materia",
+    "alchemy_perk_4_description": "&7Greatly buffs the quality of all your potions. Unlocks &dTransmutation",
+    "alchemy_perk_combo_name": "&dEtching Venom",
+    "alchemy_perk_combo_description": "&7Adds &d{lightweapons_coatingcharges_add} &7charges to your Weapon Coating ability. You unlock recipes for a couple simple poisons that can be crafted without a brewing stand",
+    "mining_perk_1_name": "&eBrittle Rock",
+    "mining_perk_1_description": "&7Speeds up your mining by &e{mining_miningspeedbonus_add}&7 and you gain a little bit of essence per block",
+    "mining_perk_2_name": "&eSpelunking",
+    "mining_perk_2_description": "&7Increases mining drops by &e{mining_miningdrops_add}&7 and luck by &e{mining_miningluck_add}&7. Increases cooking speed by &e{power_cookingspeedbonus_add}",
+    "mining_perk_a1_name": "&eDemolist",
+    "mining_perk_a1_description": "&7Increases TNT blast radius and damage resistance by &e{mining_tntblastradius_add}&7, and increases blasting drops by &e{mining_blastingdrops_add}",
+    "mining_perk_a2_name": "&eEarthshaker",
+    "mining_perk_a2_description": "&eDoubles &7the effects of Demolist, and you gain triple the TNT when crafting.",
+    "mining_perk_a3_name": "&eEnchanted Explosives",
+    "mining_perk_a3_description": "&7Allows you to pick between &eSilk Touch &7and &eFortune II&7 as enchantments to apply on all your TNT",
+    "mining_perk_a3silktouch_name": "&eEnchanted Explosives: Silk Touch",
+    "mining_perk_a3silktouch_description": "&7Your TNT breaks blocks as if broken with a Silk Touch pickaxe",
+    "mining_perk_a3fortune_name": "&eEnchanted Explosives: Fortune",
+    "mining_perk_a3fortune_description": "&7Your TNT breaks blocks as if broken with a Fortune II pickaxe",
+    "mining_perk_b1_name": "&eDwarven Aptitude",
+    "mining_perk_b1_description": "&7Speeds up your mining by &e{mining_miningspeedbonus_add}&7, increases essence per block, and unlocks the &eDrilling &7ability",
+    "mining_perk_b2_name": "&eVein Extraction",
+    "mining_perk_b2_description": "&7Increases mining drops by &e{mining_miningdrops_add}&7 and luck by &e{mining_miningluck_add}&7. Unlocks &eVein Mining&7and increases cooking speed by &e{power_cookingspeedbonus_add}",
+    "mining_perk_3_name": "&eEarthsplitter",
+    "mining_perk_3_description": "&7Increases drilling speed by another &e{mining_drillingspeedbonus_add}&7, and &ehalves &7its cooldown. You gain &edouble &7essence from blocks and increases cooking speed by &e{power_cookingspeedbonus_add}",
+    "mining_perk_4_name": "&eAspect of Kali",
+    "mining_perk_4_description": "&7Your Vein Mining ability may now vein-mine blocks like &eAndesite, Granite, Diorite, and other common non-stone blocks&7. Its drops are now also instantly transferred to your inventory. Increases cooking speed by &e{power_cookingspeedbonus_add}",
+    "archery_perk_1_name": "&eRanger",
+    "archery_perk_1_description": "&7Slightly improves accuracy, increases damage by &e{archery_bowdamagemultiplier_add}",
+    "archery_perk_2_name": "&eResourceful Hunter",
+    "archery_perk_2_description": "&7Unlocks &eStone Arrows&7, decreases ammo consumption by &e{archery_ammosavechance_add}",
+    "archery_perk_3_name": "&eArcher",
+    "archery_perk_3_description": "&7Unlocks &eCopper and Golden Arrows&7, improves accuracy further, and grants &e{archery_bowcritchance_add} &7critical strike chance",
+    "archery_perk_4_name": "&eLong-Ranged Infantry",
+    "archery_perk_4_description": "&7Unlocks &eIron and Enderic Arrows&7, increases ranged damage by &e{archery_bowdamagemultiplier_add}&7 and you deal more damage the further away you are from the target. Decreases ammo consumption by &e{archery_ammosavechance_add}",
+    "archery_perk_5_name": "&eSniper",
+    "archery_perk_5_description": "&7Unlocks &eDiamond Arrows&7, increases critical strike chance by &e{archery_bowcritchance_add}&7 and critical strike damage by &e{archery_critdamage_add}&7. Improves accuracy greatly.",
+    "archery_perk_6_name": "&eNecrotic Shots",
+    "archery_perk_6_description": "&7Unlocks &eNetherite and Unholy Arrows&7, removes the damage penalty off of Infinity bows, and drastically improves the damage dealt over greater distances.",
+    "archery_perk_c1_name": "&eCharged Shot I",
+    "archery_perk_c1_description": "&7Unlocks &eCharged Shot&7. Charged shots benefit from extra piercing, knockback, speed, accuracy, and damage.",
+    "archery_perk_c2_name": "&eCharged Shot II",
+    "archery_perk_c2_description": "&7Charged shots gain &e{archery_chargedshotcharges_add}&7 and reduced cooldown. More charges, piercing, knockback, and damage. Charged shots now also ignore gravity and always fly at max speed.",
+    "archery_perk_stealth_name": "&eAssassin",
+    "archery_perk_stealth_description": "&7Hit shots are now guaranteed to critically hit if the enemy is looking away and out of combat. Critical hits deal &e{archery_critdamage_add}&7 more damage and cause bleeding.",
+    "digging_perk_1_name": "&aDigger",
+    "digging_perk_1_description": "&7Speeds up your digging by &a{digging_diggingspeedbonus_add}&7, and you gain a little bit of essence per block.",
+    "digging_perk_2_name": "&aFilterer",
+    "digging_perk_2_description": "&7You start finding simple resources from the ground, and you gain more essence per block.",
+    "digging_perk_3_name": "&aGround Replication",
+    "digging_perk_3_description": "&7You learn the composition of the earth, and can now reproduce it (unlocks recipes for various ground-type blocks).",
+    "digging_perk_a1_name": "&aArchaeologist",
+    "digging_perk_a1_description": "&7Suspicious blocks have a &a{digging_archaeologyrepeatchance_add} &7chance to return.",
+    "digging_perk_a2_name": "&aAncient History",
+    "digging_perk_a2_description": "&7Suspicious blocks have an additional &a{digging_archaeologyrepeatchance_add} &7chance to return, and you gain a small chance (which increases around structures) to find suspicious sand or gravel while digging.",
+    "digging_perk_b1_name": "&aExcavator",
+    "digging_perk_b1_description": "&7Speeds up your digging by another &a{digging_diggingspeedbonus_add}.",
+    "digging_perk_b2_name": "&aPanning",
+    "digging_perk_b2_description": "&7You start finding valuable resources from the ground.",
+    "digging_perk_4_name": "&aHidden Treasure",
+    "digging_perk_4_description": "&7You'll occasionally start finding treasure while digging.",
+    "digging_perk_combo_name": "&aFlexible Builder",
+    "digging_perk_combo_description": "&7Unlocks several interactions allowing you to more easily detail your builds. (examples, putting moss on cobblestone, putting cracks in bricks)",
+    "enchanting_perk_1_name": "&bRunic Focus",
+    "enchanting_perk_1_description": "&7Increases enchanting skill by &b{enchanting_enchantingskill_add}",
+    "enchanting_perk_a1_name": "&bStable Conduit",
+    "enchanting_perk_a1_description": "&7Decreases essence consumption by &b{enchanting_essencerefundfraction_add}&7, and lapis consumption by &b{enchanting_lapissavechance_add}",
+    "enchanting_perk_a2_name": "&bPure Conduit",
+    "enchanting_perk_a2_description": "&7Increases enchanting skill by &b{enchanting_enchantingskill_add}&7, decreases essence consumption by &b{enchanting_essencerefundfraction_add}&7, and lapis consumption by &b{enchanting_lapissavechance_add}",
+    "enchanting_perk_b1_name": "&bMental Focus",
+    "enchanting_perk_b1_description": "&7You gain &b{enchanting_essencemultiplier_add} &7more essence from everything, and level all skills &b{power_allskillexpmultiplier_add} &7faster",
+    "enchanting_perk_b2_name": "&bHexblade",
+    "enchanting_perk_b2_description": "&7Unlocks &bHexblade&7. You gain &b{enchanting_essencemultiplier_add} &7more essence from everything, and level all skills &b{power_allskillexpmultiplier_add} &7faster",
+    "enchanting_perk_radiant_name": "&bHexblade: &e&lHoly",
+    "enchanting_perk_radiant_description": "&7Hexblade deals &e&lHoly &7damage, especially effective against the undead and also nether creatures, though everything else is immune. You can switch Hexblade damage types at any time.",
+    "enchanting_perk_necrotic_name": "&bHexblade: &8&lUnholy",
+    "enchanting_perk_necrotic_description": "&7Hexblade deals &8&lUnholy &7damage, useless against undead but effective against everything else. You can switch Hexblade damage types at any time.",
+    "enchanting_perk_2_name": "&bArcane Fortitude",
+    "enchanting_perk_2_description": "&7Increases enchanting skill by &b{enchanting_enchantingskill_add}&7 and reduces essence consumption by &b{enchanting_essencerefundfraction_add}&7. You may pick between damage or protection enchantments to boost by &b+1&7 level",
+    "enchanting_perk_sharpnesses_name": "&bArcane Fortitude: Damage",
+    "enchanting_perk_sharpnesses_description": "&7Any new &bSharpness&7, &bSmite&7, &bImpaling&7, &bPower&7, and &bBane of Arthropods&7 enchantments are permanently buffed by 1 level. You may only pick once",
+    "enchanting_perk_protections_name": "&bArcane Fortitude: Protection",
+    "enchanting_perk_protections_description": "&7Any new &bBlast&7, &bProjectile&7, &bFire&7, and regular &bProtection&7, as well as &bFeather Falling&7 enchantments are permanently buffed by 1 level. You may only pick once",
+    "enchanting_perk_3_name": "&bArchmage",
+    "enchanting_perk_3_description": "&7Increases enchanting skill by &b{enchanting_enchantingskill_add}&7. You may pick between Looting or Unbreaking to boost by &b+2&7 levels, or Fortune by +1 level",
+    "enchanting_perk_fortune_name": "&bArchmage: Fortune",
+    "enchanting_perk_fortune_description": "&7Any new &bFortune&7 enchantments are permanently buffed by &b1&7 level. You may only pick once",
+    "enchanting_perk_looting_name": "&bArchmage: Looting",
+    "enchanting_perk_looting_description": "&7Any new &bLooting&7 enchantments are permanently buffed by &b&l2&7 levels. You may only pick once",
+    "enchanting_perk_unbreaking_name": "&bArchmage: Unbreaking",
+    "enchanting_perk_unbreaking_description": "&7Any new &bUnbreaking&7 enchantments are permanently buffed by &b&l2&7 levels. You may only pick once",
+    "enchanting_perk_4_name": "&bDivine Nexus",
+    "enchanting_perk_4_description": "&7Increases enchanting skill by &b{enchanting_enchantingskill_add}&7. You may pick between any of all offensive, defensive, or utility enchantments to boost by &b+1&7 level",
+    "enchanting_perk_offensive_name": "&bDivine Nexus: Evocation",
+    "enchanting_perk_offensive_description": "&7Any new &boffensive&7 enchantments are permanently buffed by &b1&7 levels. You may only pick once",
+    "enchanting_perk_defensive_name": "&bDivine Nexus: Abjuration",
+    "enchanting_perk_defensive_description": "&7Any new &bdefensive&7 enchantments are permanently buffed by &b1&7 levels. You may only pick once",
+    "enchanting_perk_utility_name": "&bDivine Nexus: Divination",
+    "enchanting_perk_utility_description": "&7Any new &butility&7 enchantments are permanently buffed by &b1&7 levels. You may only pick once",
+    "enchanting_perk_combo_name": "&bHalfling Luck",
+    "enchanting_perk_combo_description": "&7Increases luck by &b{power_luckbonus_add}",
+    "lightweapons_perk_1_name": "&ePage",
+    "lightweapons_perk_1_description": "&7Increases damage by &e{lightweapons_damagemultiplier_add}&7. Unlocks &eDagger &7recipes",
+    "lightweapons_perk_2_name": "&eSquire",
+    "lightweapons_perk_2_description": "&7Increases attack speed by &e{lightweapons_attackspeedmultiplier_add}&7, and grants &e{lightweapons_critchance_add} &7critical strike chance. Unlocks &eRapier &7recipes",
+    "lightweapons_perk_3_name": "&eKnight",
+    "lightweapons_perk_3_description": "&7Unlocks &eParry&7. Increases damage by &e{lightweapons_damagemultiplier_add}",
+    "lightweapons_perk_4_name": "&ePaladin",
+    "lightweapons_perk_4_description": "&7Increases attack speed by &e{lightweapons_attackspeedmultiplier_add}&7, and enemies are immune for &e{lightweapons_immunityreductionfraction_add} &7less",
+    "lightweapons_perk_5_name": "&eTemplar",
+    "lightweapons_perk_5_description": "&7Increases damage by &e{lightweapons_damagemultiplier_add}&7, &eParry &7becomes much easier and stronger, and enemies are immune for &e{lightweapons_immunityreductionfraction_add} &7less. Unlocks &eMace &7recipes",
+    "lightweapons_perk_6_name": "&eWarlord",
+    "lightweapons_perk_6_description": "&7Increases critical strike chance by &e{lightweapons_critchance_add}&7, and critical strikes deal &e{lightweapons_critdamage_add} &7more damage. Critical strikes now inflict &eBleeding&7, and bleeding deals &e{lightweapons_bleeddamage_add} &7more damage",
+    "lightweapons_perk_a1_name": "&eWeapon Coating",
+    "lightweapons_perk_a1_description": "&7Unlocks &eWeapon Coating&7, allowing you to apply potion effects onto your weapons. Potion effects applied are reduced in strength and duration and last for &e{lightweapons_coatingcharges_add} &7hits",
+    "lightweapons_perk_a2_name": "&eBioweapon",
+    "lightweapons_perk_a2_description": "&eWeapon Coating &7becomes even stronger, lasting longer, applying a greater effect, and staying on your weapons for &e{lightweapons_coatingcharges_add} &7more hits",
+    "lightweapons_perk_combo_name": "&eTitan",
+    "lightweapons_perk_combo_description": "&7Gain &e{lightweapons_penetrationflat_add} &7armor penetration, &e{lightweapons_knockbackmultiplier_add} &7more knockback, and &e{lightweapons_attackreachbonus_add} &7greater attack reach",
+    "heavyweapons_perk_1_name": "&cSavage",
+    "heavyweapons_perk_1_description": "&7Increases damage by &c{heavyweapons_damagemultiplier_add}&7. Unlocks &eWarhammer &7recipes",
+    "heavyweapons_perk_2_name": "&cBrute",
+    "heavyweapons_perk_2_description": "&7Increases power attack damage by &c{heavyweapons_powerattackdamagemultiplier_add}&7, and grants &c{heavyweapons_critchance_add} &7critical strike chance. Unlocks &cGreataxe &7recipes",
+    "heavyweapons_perk_3_name": "&cBarbarian",
+    "heavyweapons_perk_3_description": "&7Power attacks now deal &c{heavyweapons_powerattackfraction_add} &7splash damage in a &c{heavyweapons_powerattackradius_add}&7 block radius. Increases damage by &c{heavyweapons_damagemultiplier_add}",
+    "heavyweapons_perk_4_name": "&cViking",
+    "heavyweapons_perk_4_description": "&7Increases power attack damage by &c{heavyweapons_powerattackdamagemultiplier_add}&7, and you gain &c{heavyweapons_penetrationflat_add} &7armor penetration",
+    "heavyweapons_perk_5_name": "&cBerserker",
+    "heavyweapons_perk_5_description": "&7Increases damage by &c{heavyweapons_damagemultiplier_add}&7, power attacks deal much greater splash damage in a larger radius, and you gain &c{heavyweapons_penetrationflat_add}&7 additional armor penetration. Unlocks &cSpear &7recipes",
+    "heavyweapons_perk_6_name": "&cDeathbringer",
+    "heavyweapons_perk_6_description": "&7Increases critical strike chance by &c{heavyweapons_critchance_add}&7, and critical strikes deal &c{heavyweapons_critdamage_add} &7more damage. Critical strikes now inflict &cBleeding&7, and bleeding deals &c{heavyweapons_bleeddamage_add} &7more damage",
+    "heavyweapons_perk_a1_name": "&cWeapon Coating",
+    "heavyweapons_perk_a1_description": "&7Unlocks &cWeapon Coating&7, allowing you to apply potion effects onto your weapons. Potion effects applied are reduced in strength and duration and last for &c{heavyweapons_coatingcharges_add} &7hits",
+    "heavyweapons_perk_a2_name": "&cToxic Steel",
+    "heavyweapons_perk_a2_description": "&cWeapon Coating &7becomes even stronger, lasting longer, applying a greater effect, and staying on your weapons for &c{heavyweapons_coatingcharges_add} &7more hits",
+    "heavyweapons_perk_combo_name": "&cShattering Blows",
+    "heavyweapons_perk_combo_description": "&7Gain &c{heavyweapons_penetrationfraction_add} &7armor penetration, &c{heavyweapons_stunchance_add} &7stun chance, and you deal &c{heavyweapons_damagetolightarmormultiplier_add} &7more damage for each piece of light armor the enemy wears",
+    "heavyarmor_perk_1_name": "&cFortified Fit",
+    "heavyarmor_perk_1_description": "&7Heavy armor becomes &c{heavyarmor_heavyarmormultiplier_add} &7more protective",
+    "heavyarmor_perk_1a_name": "&cNever Skip Leg Day",
+    "heavyarmor_perk_1a_description": "&7Heavy armor slows you down less",
+    "heavyarmor_perk_2a_name": "&cInnovative Infantry",
+    "heavyarmor_perk_2a_description": "&7You only need to wear 3 pieces of heavy armor to benefit from heavy armor set bonuses. Heavy armor slows you down for half as much",
+    "heavyarmor_perk_1b_name": "&cVital Steel",
+    "heavyarmor_perk_1b_description": "&7Wearing a full set of heavy armor grants you &c{heavyarmor_sethealingbonus_add} &7additional healing. Heavy armor becomes &c{heavyarmor_heavyarmormultiplier_add} &7more protective",
+    "heavyarmor_perk_2b_name": "&cSpiked Suit",
+    "heavyarmor_perk_2b_description": "&7Wearing a full set of heavy armor grants you a &c{heavyarmor_setreflectchance_add} &7chance to reflect &c{heavyarmor_setreflectfraction_add} &7damage back to the attacker. Heavy armor becomes &c{heavyarmor_heavyarmormultiplier_add} &7more protective",
+    "heavyarmor_perk_2_name": "&cJuggernaut",
+    "heavyarmor_perk_2_description": "&7Wearing a full set of heavy armor grants you &c{heavyarmor_setknockbackresistance_add} &7knockback resistance, as well as immunity to &cWeakness&7, &cSlowness&7, and &cLevitation",
+    "heavyarmor_perk_1c_name": "&cRage",
+    "heavyarmor_perk_1c_description": "&7Unlocks &cRage&7. Reaching low HP briefly grants you various powerful buffs to help you stay in a fight for much longer",
+    "heavyarmor_perk_2c_name": "&cFury",
+    "heavyarmor_perk_2c_description": "&7Upgrades &cRage&7, increasing the strength and duration of its buffs and reducing its cooldown by half",
+    "heavyarmor_perk_combo_name": "&cKnow Your Weaknesses",
+    "heavyarmor_perk_combo_description": "&7Wearing a full set of heavy armor grants you &c{heavyarmor_setcritchanceresistance_add}&7 critical strike resistance and gain &c{heavyarmor_setimmunityfractionbonus_add} immunity",
+    "lightarmor_perk_1_name": "&eIron Studs",
+    "lightarmor_perk_1_description": "&7Light armor becomes &e{lightarmor_lightarmormultiplier_add} &7more protective",
+    "lightarmor_perk_1a_name": "&eUnburdened",
+    "lightarmor_perk_1a_description": "&7Light armor slows you down half as much",
+    "lightarmor_perk_2a_name": "&eResourceful Scout",
+    "lightarmor_perk_2a_description": "&7You only need to wear 3 pieces of light armor to benefit from light armor set bonuses. Light armor no longer slows you down",
+    "lightarmor_perk_1b_name": "&eControlled Metabolism",
+    "lightarmor_perk_1b_description": "&7Wearing a full set of light armor grants you &e{lightarmor_sethungersavechance_add} &7reduced hunger consumption. Light armor becomes &e{lightarmor_lightarmormultiplier_add} &7more protective",
+    "lightarmor_perk_2b_name": "&eSwift Reflexes",
+    "lightarmor_perk_2b_description": "&7Wearing a full set of light armor grants you a &e{lightarmor_setdodgechance_add} &7chance to dodge an attack. Light armor becomes &e{lightarmor_lightarmormultiplier_add} &7more protective",
+    "lightarmor_perk_2_name": "&eDragonscales",
+    "lightarmor_perk_2_description": "&7Wearing a full set of light armor grants you &e{lightarmor_setmagicresistance_add} &7magic damage resistance, as well as immunity to &ePoison&7, &eBlindness&7, and &eHunger",
+    "lightarmor_perk_1c_name": "&eAdrenaline",
+    "lightarmor_perk_1c_description": "&7Unlocks &eAdrenaline&7. Reaching low HP briefly grants you various powerful buffs to help you get away from danger",
+    "lightarmor_perk_2c_name": "&eBolt",
+    "lightarmor_perk_2c_description": "&7Upgrades &eAdrenaline&7, increasing the strength and duration of its buffs and reducing its cooldown by half",
+    "lightarmor_perk_combo_name": "&ePerfect Composure",
+    "lightarmor_perk_combo_description": "&7Wearing a full set of light armor grants you &e{lightarmor_setcritchanceresistance_add}&7 critical strike resistance and stun immunity",
+    "farming_perk_1_name": "&aGentle Touch",
+    "farming_perk_1_description": "&7Unlocks ability to right-click crops to harvest and replant them",
+    "farming_perk_2_name": "&aMagical Soil",
+    "farming_perk_2_description": "&7Crops grow faster, and yield some experience when harvested",
+    "farming_perk_3_name": "&aBlessed Harvest",
+    "farming_perk_3_description": "&7Crop harvest increases by &a{farming_farmingdrops_add}&7 and yield even more experience",
+    "farming_perk_4_name": "&aDivine Harvest",
+    "farming_perk_4_description": "&7Crop harvest increases by &a{farming_farmingdrops_add}&7 and yield a lot of experience",
+    "farming_perk_5_name": "&aAutomagical Agriculture",
+    "farming_perk_5_description": "&7Unlocks &aField Harvest&7, an ability that allows you to harvest a large area of crops almost instantly",
+    "farming_perk_1a_name": "&aAnimal Husbandry",
+    "farming_perk_1a_description": "&7Animals grow up &a{farming_growuptimemultiplier_add} &7faster and drop &a{farming_butcherydrops_add}&7 more items. Bred animals grant &a{farming_breedingexperiencemultiplier_add} &7more essence",
+    "farming_perk_2a_name": "&aButchery",
+    "farming_perk_2a_description": "&7Animals grow up &a{farming_growuptimemultiplier_add} &7faster and drop &a{farming_butcherydrops_add}&7 more items. Bred animals grant &a{farming_breedingexperiencemultiplier_add} &7more essence, and you deal &aquadruple &7damage to animals",
+    "farming_perk_1b_name": "&aBeekeeper",
+    "farming_perk_1b_description": "&7Bees no longer target you. Hives have a &a{farming_hivehoneysavechance_add} &7chance to refill after harvesting",
+    "farming_perk_1c_name": "&aTrash Diet",
+    "farming_perk_1c_description": "&7You become immune against poisonous/rotten foods and they feed you &athrice&7 as much, &cbut all other foods lose &4{power_foodbonusvegetable_add}&c nutrition&7. Locks &cBalanced Diet",
+    "farming_perk_2c_name": "&aBalanced Diet",
+    "farming_perk_2c_description": "&7All foods, except poisonous/rotten ones, feed you &a{power_foodbonusvegetable_add} &7more. Locks &cTrash Diet",
+    "fishing_perk_1_name": "&bLucky Fisherman",
+    "fishing_perk_1_description": "&7Increases fishing luck by &b{fishing_fishingluck_add}",
+    "fishing_perk_2_name": "&bPassion for the Seas",
+    "fishing_perk_2_description": "&7Increases essence gotten from fishing by &b{fishing_fishingessencemultiplier_add}",
+    "fishing_perk_3_name": "&bDeep Senses",
+    "fishing_perk_3_description": "&7Lures fish &b{fishing_fishingspeedbonus_add} &7faster, increases fishing luck by &b{fishing_fishingluck_add}",
+    "fishing_perk_4_name": "&bDual Hooks",
+    "fishing_perk_4_description": "&7Gain a &b{fishing_fishingdrops_add}&7 chance to double catch",
+    "fishing_perk_5_name": "&bGolden Bait",
+    "fishing_perk_5_description": "&7Lures fish &b{fishing_fishingspeedbonus_add} &7faster, increases fishing luck by &b{fishing_fishingluck_add}",
+    "fishing_perk_6_name": "&bMystic Bait",
+    "fishing_perk_6_description": "&7Gain a &b{fishing_fishingdrops_add}&7 chance to double catch, as well as &b{fishing_fishingessencemultiplier_add} &7more essence from fishing",
+    "fishing_perk_combo_name": "&bDeep Sea Scavenging",
+    "fishing_perk_combo_description": "&7Unlocks ability to break down tools and equipment into their base parts",
+    "power_perk_1a_name": "&cVitality I",
+    "power_perk_1a_description": "&7Max Health &c{power_healthbonus_add}",
+    "power_perk_2a_name": "&cVitality II",
+    "power_perk_2a_description": "&7Max Health &c{power_healthbonus_add}",
+    "power_perk_3a_name": "&cVitality III",
+    "power_perk_3a_description": "&7Max Health &c{power_healthbonus_add}",
+    "power_perk_1b_name": "&fIron Skin I",
+    "power_perk_1b_description": "&7Natural Armor &f+{power_armorbonus_add}",
+    "power_perk_2b_name": "&fIron Skin II",
+    "power_perk_2b_description": "&7Natural Armor &f+{power_armorbonus_add}",
+    "power_perk_3b_name": "&fIron Skin III",
+    "power_perk_3b_description": "&7Natural Armor &f+{power_armorbonus_add}",
+    "power_perk_1c_name": "&aDivine Favor I",
+    "power_perk_1c_description": "&7Luck &a+{power_luckbonus_add}",
+    "power_perk_2c_name": "&aDivine Favor II",
+    "power_perk_2c_description": "&7Luck &a+{power_luckbonus_add}",
+    "power_perk_3c_name": "&aDivine Favor III",
+    "power_perk_3c_description": "&7Luck &a+{power_luckbonus_add}",
+    "power_perk_1d_name": "&dRestoration I",
+    "power_perk_1d_description": "&7Health Regeneration &d{power_healthregenerationbonus_add}",
+    "power_perk_2d_name": "&dRestoration II",
+    "power_perk_2d_description": "&7Health Regeneration &d{power_healthregenerationbonus_add}",
+    "power_perk_3d_name": "&dRestoration III",
+    "power_perk_3d_description": "&7Health Regeneration &d{power_healthregenerationbonus_add}",
+    "power_perk_1e_name": "&ePhysique I",
+    "power_perk_1e_description": "&7Damage Dealt &e{power_attackdamagemultiplier_add}",
+    "power_perk_2e_name": "&ePhysique II",
+    "power_perk_2e_description": "&7Damage Dealt &e{power_attackdamagemultiplier_add}",
+    "power_perk_3e_name": "&ePhysique III",
+    "power_perk_3e_description": "&7Damage Dealt &e{power_attackdamagemultiplier_add}",
+    "power_perk_1f_name": "&eLooter I",
+    "power_perk_1f_description": "&7Mob Drops &e{power_entitydropmultiplier_add}",
+    "power_perk_2f_name": "&eLooter II",
+    "power_perk_2f_description": "&7Mob Drops &e{power_entitydropmultiplier_add}",
+    "power_perk_3f_name": "&eLooter III",
+    "power_perk_3f_description": "&7Mob Drops &e{power_entitydropmultiplier_add}",
+    "power_perk_1g_name": "&bAmbition I",
+    "power_perk_1g_description": "&7Ability Cooldown Reduction &b+{power_cooldownreduction_add}",
+    "power_perk_2g_name": "&bAmbition II",
+    "power_perk_2g_description": "&7Ability Cooldown Reduction &b+{power_cooldownreduction_add}",
+    "power_perk_3g_name": "&bAmbition III",
+    "power_perk_3g_description": "&7Ability Cooldown Reduction &b+{power_cooldownreduction_add}"
   },
   "stringListTranslations": {
+    "power_perk_1a_messages": [
+      "&c✰ &4Vitality I &c✰",
+      "&c{power_healthbonus_add} &7Max Health"
+    ],
+    "power_perk_2a_messages": [
+      "&c✰ &4Vitality II &c✰",
+      "&c{power_healthbonus_add} &7Max Health"
+    ],
+    "power_perk_3a_messages": [
+      "&c✰ &4Vitality III &c✰",
+      "&c{power_healthbonus_add} &7Max Health"
+    ],
+    "power_perk_1b_messages": [
+      "&f✰ &7Iron Skin I &f✰",
+      "&f+{power_armorbonus_add} &7Natural Armor"
+    ],
+    "power_perk_2b_messages": [
+      "&f✰ &7Iron Skin II &f✰",
+      "&f+{power_armorbonus_add} &7Natural Armor"
+    ],
+    "power_perk_3b_messages": [
+      "&f✰ &7Iron Skin III &f✰",
+      "&f+{power_armorbonus_add} &7Natural Armor"
+    ],
+    "power_perk_1c_messages": [
+      "&a✰ &2Divine Favor I &a✰",
+      "&a+{power_luckbonus_add} &7Luck"
+    ],
+    "power_perk_2c_messages": [
+      "&a✰ &2Divine Favor II &a✰",
+      "&a+{power_luckbonus_add} &7Luck"
+    ],
+    "power_perk_3c_messages": [
+      "&a✰ &2Divine Favor III &a✰",
+      "&a+{power_luckbonus_add} &7Luck"
+    ],
+    "power_perk_1d_messages": [
+      "&d✰ &5Restoration I &d✰",
+      "&d{power_healthregenerationbonus_add} &7Health Regeneration"
+    ],
+    "power_perk_2d_messages": [
+      "&d✰ &5Restoration II &d✰",
+      "&d{power_healthregenerationbonus_add} &7Health Regeneration"
+    ],
+    "power_perk_3d_messages": [
+      "&d✰ &5Restoration III &d✰",
+      "&d{power_healthregenerationbonus_add} &7Health Regeneration"
+    ],
+    "power_perk_1e_messages": [
+      "&e✰ &6Physique I &e✰",
+      "&e{power_attackdamagemultiplier_add} &7Damage Dealt"
+    ],
+    "power_perk_2e_messages": [
+      "&e✰ &6Physique II &e✰",
+      "&e{power_attackdamagemultiplier_add} &7Damage Dealt"
+    ],
+    "power_perk_3e_messages": [
+      "&e✰ &6Physique III &e✰",
+      "&e{power_attackdamagemultiplier_add} &7Damage Dealt"
+    ],
+    "power_perk_1f_messages": [
+      "&e✰ &6Looter I &e✰",
+      "&e{power_entitydropmultiplier_add} &7Mob Drops"
+    ],
+    "power_perk_2f_messages": [
+      "&e✰ &6Looter II &e✰",
+      "&e{power_entitydropmultiplier_add} &7Mob Drops"
+    ],
+    "power_perk_3f_messages": [
+      "&e✰ &6Looter III &e✰",
+      "&e{power_entitydropmultiplier_add} &7Mob Drops"
+    ],
+    "power_perk_1g_messages": [
+      "&b✰ &9Ambition I &b✰",
+      "&b+{power_cooldownreduction_add} &7Cooldown Reduction"
+    ],
+    "power_perk_2g_messages": [
+      "&b✰ &9Ambition II &b✰",
+      "&b+{power_cooldownreduction_add} &7Cooldown Reduction"
+    ],
+    "power_perk_3g_messages": [
+      "&b✰ &9Ambition III &b✰",
+      "&b+{power_cooldownreduction_add} &7Cooldown Reduction"
+    ],
+    "fishing_perk_1_messages": [
+      "&b✰ &9Lucky Fisherman &b✰",
+      "&b{fishing_fishingluck_add} &7Fishing Luck"
+    ],
+    "fishing_perk_2_messages": [
+      "&b✰ &9Passion for the Seas &b✰",
+      "&b{fishing_fishingessencemultiplier_add} &7Fishing Essence"
+    ],
+    "fishing_perk_3_messages": [
+      "&b✰ &9Deep Senses &b✰",
+      "&b{fishing_fishingspeedbonus_add} &7Luring Speed",
+      "&b{fishing_fishingluck_add} &7Fishing Luck"
+    ],
+    "fishing_perk_4_messages": [
+      "&b✰ &9Dual Hooks &b✰",
+      "&b{fishing_fishingdrops_add} &7Double Catch Chance"
+    ],
+    "fishing_perk_5_messages": [
+      "&b✰ &9Golden Bait &b✰",
+      "&b{fishing_fishingspeedbonus_add} &7Luring Speed",
+      "&b{fishing_fishingluck_add} &7Fishing Luck"
+    ],
+    "fishing_perk_6_messages": [
+      "&b✰ &9Mystic Bait &b✰",
+      "&b{fishing_fishingdrops_add} &7Double Catch Chance",
+      "&b{fishing_fishingessencemultiplier_add} &7Fishing Essence"
+    ],
+    "fishing_perk_combo_messages": [
+      "&b✰ &9Deep Sea Scavenging &b✰",
+      "&bRecipes Unlocked",
+      "&7- All salvaging recipes",
+      "&8To salvage an item combine it with a pair of shears in a crafting grid"
+    ],
+    "farming_perk_1_messages": [
+      "&a✰ &2Gentle Touch &a✰",
+      "&aRight-Clicking crops now harvests and replants them"
+    ],
+    "farming_perk_2_messages": [
+      "&a✰ &2Magical Soil &a✰",
+      "&a+{farming_farmingdrops_add} &7Farming Drops",
+      "&a+{farming_farmingexperiencerate_add} &7Essence Dropped"
+    ],
+    "farming_perk_3_messages": [
+      "&a✰ &2Blessed Harvest &a✰",
+      "&a+{farming_instantgrowthrate_add} &7Growth Rate",
+      "&a+{farming_farmingexperiencerate_add} &7Essence Dropped"
+    ],
+    "farming_perk_4_messages": [
+      "&a✰ &2Divine Harvest &a✰",
+      "&a+{farming_instantgrowthrate_add} &7Growth Rate",
+      "&a+{farming_farmingexperiencerate_add} &7Essence Dropped"
+    ],
+    "farming_perk_5_messages": [
+      "&a✰ &2Automagical Agriculture &a✰",
+      "&a+Field Harvest",
+      "&7- 5s Cooldown",
+      "&7- Instantly pick up all crops",
+      "&7- Harvests up to 256 crops instantly",
+      "&8Activated by Shift-Right-Clicking a crop"
+    ],
+    "farming_perk_1a_messages": [
+      "&a✰ &2Animal Husbandry &a✰",
+      "&a+{farming_growuptimemultiplier_add} &7Animal Growth Speed",
+      "&a+{farming_butcherydrops_add} &7Animal Drops",
+      "&a+{farming_breedingexperiencemultiplier_add} &7Reproduction Essence"
+    ],
+    "farming_perk_2a_messages": [
+      "&a✰ &2Butchery &a✰",
+      "&a+{farming_growuptimemultiplier_add} &7Animal Growth Speed",
+      "&a+{farming_butcherydrops_add} &7Animal Drops",
+      "&a+{farming_breedingexperiencemultiplier_add} &7Reproduction Essence",
+      "&a+4x Damage Dealt to Animals"
+    ],
+    "farming_perk_1b_messages": [
+      "&a✰ &2Beekeeping &a✰",
+      "&a+{farming_hivehoneysavechance_add} &7Hive Refill Chance",
+      "&a+Bee Aggression Immunity"
+    ],
+    "farming_perk_1c_messages": [
+      "&a✰ &2Trash Diet &a✰",
+      "&a+3x Spoiled Food Value",
+      "&a+Spoiled Food Immunity",
+      "&c{power_foodbonusvegetable_add} &7Food Value",
+      "&7You can no longer pick Balanced Diet",
+      "&8\"I'm the Trash Man! I come out, I throw trash all over the- all over the ring! And then I start eatin' garbage!\""
+    ],
+    "farming_perk_2c_messages": [
+      "&a✰ &2Balanced Diet &a✰",
+      "&a+{power_foodbonusvegetable_add} &7Food Value",
+      "&7You can no longer pick Trash Diet"
+    ],
+    "heavyarmor_perk_1_messages": [
+      "&c✰ &4Fortified Fit &c✰",
+      "&c+{heavyarmor_heavyarmormultiplier_add} &7Heavy Armor"
+    ],
+    "heavyarmor_perk_1a_messages": [
+      "&c✰ &4Never Skip Leg Day &c✰",
+      "&cReduced Heavy Armor Burdening"
+    ],
+    "heavyarmor_perk_2a_messages": [
+      "&c✰ &4Innovative Infantry &c✰",
+      "&c-1 &7Pieces required for full set bonus",
+      "&cReduced Heavy Armor Burdening"
+    ],
+    "heavyarmor_perk_1b_messages": [
+      "&c✰ &4Vital Steel &c✰",
+      "&c+{heavyarmor_heavyarmormultiplier_add} &7Heavy Armor",
+      "&c+Set Bonus",
+      "&7- &c{heavyarmor_sethealingbonus_add}&7 Healing"
+    ],
+    "heavyarmor_perk_2b_messages": [
+      "&c✰ &4Spiked Suit &c✰",
+      "&c+{heavyarmor_heavyarmormultiplier_add} &7Heavy Armor",
+      "&c+Set Bonus",
+      "&7- &c{heavyarmor_setreflectchance_add}&7 chance for &c{heavyarmor_setreflectfraction_add}&7 Damage Reflect"
+    ],
+    "heavyarmor_perk_2_messages": [
+      "&c✰ &4Juggernaut &c✰",
+      "&c+Set Bonuses",
+      "&7- &c{heavyarmor_setknockbackresistance_add}&7 Knockback Resistance",
+      "&7- &cPotion Effect Immunities &7to &cSlowness&7, &cWeakness&7, and &cLevitation"
+    ],
+    "heavyarmor_perk_1c_messages": [
+      "&c✰ &4Rage &c✰",
+      "&c+Rage",
+      "&7- Activates at 30% HP",
+      "&7- 10m Cooldown",
+      "&7- Grants Strength I, Haste I, and Absorption I for 10 seconds"
+    ],
+    "heavyarmor_perk_2c_messages": [
+      "&c✰ &4Fury &c✰",
+      "&cRage",
+      "&7- Activates at 50% HP",
+      "&7- 5m Cooldown",
+      "&7- Grants Strength III, Haste III, Absorption III, and Resistance I for 20 seconds"
+    ],
+    "heavyarmor_perk_combo_messages": [
+      "&c✰ &4Know Your Weaknesses &c✰",
+      "&c+Set Bonuses",
+      "&7- &c{heavyarmor_setcritchanceresistance_add}&7 Crit Resistance",
+      "&7- &c{heavyarmor_setimmunityfractionbonus_add}&7 Immunity"
+    ],
+    "lightarmor_perk_1_messages": [
+      "&e✰ &4Iron Studs &e✰",
+      "&e+{lightarmor_lightarmormultiplier_add} &7Light Armor"
+    ],
+    "lightarmor_perk_1a_messages": [
+      "&e✰ &4Unburdened &e✰",
+      "&eReduced Light Armor Burdening"
+    ],
+    "lightarmor_perk_2a_messages": [
+      "&e✰ &4Resourceful Scout &e✰",
+      "&e-1 &7Pieces required for full set bonus",
+      "&eNo Light Armor Burdening"
+    ],
+    "lightarmor_perk_1b_messages": [
+      "&e✰ &4Controlled Metabolism &e✰",
+      "&e+{lightarmor_lightarmormultiplier_add} &7Light Armor",
+      "&e+Set Bonus",
+      "&7- &e{lightarmor_sethungersavechance_add}&7 Reduced Hunger Consumption"
+    ],
+    "lightarmor_perk_2b_messages": [
+      "&e✰ &4Swift Reflexes &e✰",
+      "&e+{lightarmor_lightarmormultiplier_add} &7Light Armor",
+      "&e+Set Bonus",
+      "&7- &e{lightarmor_setdodgechance_add}&7 Dodge Chance",
+      "&8Dodging an attack completely prevents damage. You must be facing the attacker to be able to dodge attacks"
+    ],
+    "lightarmor_perk_2_messages": [
+      "&e✰ &4Dragonscales &e✰",
+      "&e+Set Bonuses",
+      "&7- &e{lightarmor_setmagicresistance_add}&7 Magic Damage Resistance",
+      "&7- &ePotion Effect Immunities &7to &ePoison&7, &eBlindness&7, and &eHunger"
+    ],
+    "lightarmor_perk_1c_messages": [
+      "&e✰ &4Adrenaline &e✰",
+      "&e+Adrenaline",
+      "&7- Activates at 30% HP",
+      "&7- 10m Cooldown",
+      "&7- Grants Speed I, Jump Boost I, and Regeneration I for 10 seconds"
+    ],
+    "lightarmor_perk_2c_messages": [
+      "&e✰ &4Bolt &e✰",
+      "&eAdrenaline",
+      "&7- Activates at 50% HP",
+      "&7- 5m Cooldown",
+      "&7- Grants Speed III, Jump Boost III, Regeneration III, and Resistance I for 20 seconds"
+    ],
+    "lightarmor_perk_combo_messages": [
+      "&e✰ &4Perfect Composure &e✰",
+      "&e+Set Bonuses",
+      "&7- &e{lightarmor_setcritchanceresistance_add}&7 Crit Resistance",
+      "&7- &eStun Immunity"
+    ],
+    "heavyweapons_perk_1_messages": [
+      "&c✰ &4Savage &c✰",
+      "&c+{heavyweapons_damagemultiplier_add} &7Heavy Weapons Damage",
+      "&cRecipes Unlocked",
+      "&7- All Warhammers",
+      "&8Warhammers benefit from high knockback and deal high bludgeoning damage, but have low attack speed",
+      "&8Bludgeoning damage is more effective against armored targets"
+    ],
+    "heavyweapons_perk_2_messages": [
+      "&c✰ &4Brute &c✰",
+      "&c+{heavyweapons_powerattackdamagemultiplier_add} &7Power Attack Damage",
+      "&8Power Attacks are melee attacks dealt while falling, what vanilla Minecraft considers a 'crit'",
+      "&c+{heavyweapons_critchance_add} &7Crit Chance",
+      "&cRecipe Unlocked",
+      "&7- All Greataxes",
+      "&8Greataxes benefit from very high damage and knockback, but very low attack speed"
+    ],
+    "heavyweapons_perk_3_messages": [
+      "&c✰ &4Barbarian &c✰",
+      "&c+{heavyweapons_damagemultiplier_add} &7Heavy Weapons Damage",
+      "&cPower Attacks",
+      "&7- Now deal &c{heavyweapons_powerattackfraction_add}&7 damage to all enemies in a &c{heavyweapons_powerattackradius_add}&7-block radius"
+    ],
+    "heavyweapons_perk_4_messages": [
+      "&c✰ &4Viking &c✰",
+      "&c+{heavyweapons_powerattackdamagemultiplier_add} &7Power Attack Damage",
+      "&c+{heavyweapons_penetrationflat_add} &7Armor Penetration",
+      "&8Armor penetration reduces the armor value of your attacked targets, increasing damage against them.",
+      "&8Targets without armor still take some extra damage"
+    ],
+    "heavyweapons_perk_5_messages": [
+      "&c✰ &4Berserker &c✰",
+      "&c+{heavyweapons_damagemultiplier_add} &7Heavy Weapons Damage",
+      "&c+{heavyweapons_penetrationflat_add} &7Armor Penetration",
+      "&cPower Attacks",
+      "&7- Now deal &c75%&7 damage to all enemies in a &c2&7-block radius",
+      "&cRecipe Unlocked",
+      "&7- All Spears",
+      "&8Spears benefit from additional range and damage based on how fast you're going towards the target, but have low attack speed"
+    ],
+    "heavyweapons_perk_6_messages": [
+      "&c✰ &4Deathbringer &c✰",
+      "&c+{heavyweapons_critchance_add} &7Crit Chance",
+      "&c+{heavyweapons_critdamage_add} &7Crit Damage",
+      "&c+Crits inflict Bleeding",
+      "&c+{heavyweapons_bleeddamage_add} &7Bleed Damage"
+    ],
+    "heavyweapons_perk_a1_messages": [
+      "&c✰ &4Weapon Coating &c✰",
+      "&c+Weapon Coating",
+      "&7- 2 Charges",
+      "&7- 20% duration",
+      "&7- 75% amplifier",
+      "&8Take a potion and right-click it",
+      "&8on top of a heavy weapon in your",
+      "&8inventory to apply it."
+    ],
+    "heavyweapons_perk_a2_messages": [
+      "&c✰ &4Toxic Steel &c✰",
+      "&cWeapon Coating",
+      "&7- 4 Charges",
+      "&7- 30% duration",
+      "&7- 100% amplifier"
+    ],
+    "heavyweapons_perk_combo_messages": [
+      "&c✰ &4Shattering Blows &c✰",
+      "&c+{heavyweapons_penetrationfraction_add} &7Armor Penetration",
+      "&c+{heavyweapons_stunchance_add} &7Stun Chance",
+      "&c+{heavyweapons_damagetolightarmormultiplier_add} &7Light Armor Damage",
+      "&8Light Armor Damage is extra damage dealt for each piece of light armor the target is wearing"
+    ],
+    "lightweapons_perk_1_messages": [
+      "&e✰ &6Page &e✰",
+      "&e+{lightweapons_damagemultiplier_add} &7Light Weapons Damage",
+      "&cRecipes Unlocked",
+      "&7- All Daggers",
+      "&8Daggers benefit from increased crit chance and high attack speed, but have reduced reach"
+    ],
+    "lightweapons_perk_2_messages": [
+      "&e✰ &6Squire &e✰",
+      "&e+{lightweapons_attackspeedmultiplier_add} &7Attack Speed",
+      "&e+{lightweapons_critchance_add} &7Crit Chance",
+      "&eRecipe Unlocked",
+      "&7- All Rapiers",
+      "&8Rapiers benefit from high attack speed, armor penetration, and immunity frame reduction, but do not inflict knockback and have very low damage"
+    ],
+    "lightweapons_perk_3_messages": [
+      "&e✰ &6Knight &e✰",
+      "&e+{lightweapons_damagemultiplier_add} &7Light Weapons Damage",
+      "&eParry",
+      "&7- 0.35s Duration",
+      "&7- 5s Cooldown",
+      "&7- 50% Cooldown reduced if successful",
+      "&7- 75% Damage reduced",
+      "&8Activated by Right-Clicking with a light weapon in hand.",
+      "&8After having activated a parry, getting hit before the duration",
+      "&8ends reduces the damage taken and greatly weakens the attacker."
+    ],
+    "lightweapons_perk_4_messages": [
+      "&e✰ &6Paladin &e✰",
+      "&e+{lightweapons_attackspeedmultiplier_add} &7Attack Speed",
+      "&e+{lightweapons_immunityreductionfraction_add} &7Immunity Reduction"
+    ],
+    "lightweapons_perk_5_messages": [
+      "&e✰ &6Templar &e✰",
+      "&e+{lightweapons_damagemultiplier_add} &7Light Weapons Damage",
+      "&e+{lightweapons_immunityreductionfraction_add} &7Immunity Reduction",
+      "&eParry",
+      "&7- 0.7s Duration",
+      "&7- 2s Cooldown",
+      "&7- No cooldown if successful",
+      "&7- 100% Damage reduced",
+      "&eRecipe Unlocked",
+      "&7- All Maces",
+      "&8Maces benefit from additional stun chance, but deal lower bludgeoning damage",
+      "&8Bludgeoning damage is more effective against armored targets"
+    ],
+    "lightweapons_perk_6_messages": [
+      "&e✰ &6Warlord &e✰",
+      "&e+{lightweapons_critchance_add} &7Crit Chance",
+      "&e+{lightweapons_critdamage_add} &7Crit Damage",
+      "&e+Crits inflict Bleeding",
+      "&e+{lightweapons_bleeddamage_add} &7Bleed Damage"
+    ],
+    "lightweapons_perk_a1_messages": [
+      "&e✰ &6Weapon Coating &e✰",
+      "&e+Weapon Coating",
+      "&7- 3 Charges",
+      "&7- 20% duration",
+      "&7- 50% amplifier",
+      "&8Take a potion and right-click it",
+      "&8on top of a light weapon in your",
+      "&8inventory to apply it."
+    ],
+    "lightweapons_perk_a2_messages": [
+      "&e✰ &6Bioweapon &e✰",
+      "&eWeapon Coating",
+      "&7- 7 Charges",
+      "&7- 30% duration",
+      "&7- 75% amplifier"
+    ],
+    "lightweapons_perk_combo_messages": [
+      "&e✰ &6Titan &e✰",
+      "&e+{lightweapons_penetrationflat_add} &7Armor Penetration",
+      "&e+{lightweapons_knockbackmultiplier_add} &7Knockback",
+      "&e+{lightweapons_attackreachbonus_add} &7Attack Reach"
+    ],
+    "enchanting_perk_1_messages": [
+      "&b✰ &9Runic Focus &b✰",
+      "&b+{enchanting_enchantingskill_add} &7Enchanting Power"
+    ],
+    "enchanting_perk_a1_messages": [
+      "&b✰ &9Stable Conduit &b✰",
+      "&b+{enchanting_essencerefundfraction_add} &7Essence Refunded",
+      "&b+{enchanting_lapissavechance_add} &7Reduced Lapis Consumption"
+    ],
+    "enchanting_perk_a2_messages": [
+      "&b✰ &9Pure Conduit &b✰",
+      "&b+{enchanting_enchantingskill_add} &7Enchanting Power",
+      "&b+{enchanting_essencerefundfraction_add} &7Essence Refunded",
+      "&b+{enchanting_lapissavechance_add} &7Reduced Lapis Consumption"
+    ],
+    "enchanting_perk_b1_messages": [
+      "&b✰ &9Mental Focus &b✰",
+      "&b+{enchanting_essencemultiplier_add} &7Essence",
+      "&b+{power_allskillexpmultiplier_add} &7Skill EXP"
+    ],
+    "enchanting_perk_b2_messages": [
+      "&b✰ &9Hexblade &b✰",
+      "&b+{enchanting_essencemultiplier_add} &7Essence",
+      "&b+{power_allskillexpmultiplier_add} &7Skill EXP",
+      "&b+Hexblade",
+      "&7- Converts &b{enchanting_activeelementaldamageconversion_add}&7 of your damage into &b60%&7 elemental damage",
+      "&7- Each hit costs &b{enchanting_essencecostperhit_add}&7 essence",
+      "&7- Can pick freely between Holy and Unholy damage",
+      "&8Elemental blade is toggled by using the \"switch hands\" key (default F)"
+    ],
+    "enchanting_perk_radiant_messages": [
+      "&b✰ &9Hexblade: &e&lHoly &b✰",
+      "&7Hexblade now deals &e&lHoly &7damage",
+      "&7- Very effective VS undead",
+      "&7- Effective VS nether mobs",
+      "&7- Powerless VS everything else"
+    ],
+    "enchanting_perk_necrotic_messages": [
+      "&b✰ &9Hexblade: &8&lUnholy &b✰",
+      "&7Hexblade now deals &8&lUnholy &7damage",
+      "&7- Effective VS everything",
+      "&7- Weak VS nether mobs",
+      "&7- Powerless VS undead"
+    ],
+    "enchanting_perk_2_messages": [
+      "&b✰ &9Arcane Fortitude &b✰",
+      "&b+{enchanting_enchantingskill_add} &7Enchanting Power",
+      "&b+{enchanting_essencerefundfraction_add} &7Essence Refunded",
+      "&7Pick between damage and protection enchantments",
+      "&7to boost by &b+1 levels&7. &cChoice is permanent"
+    ],
+    "enchanting_perk_sharpnesses_messages": [
+      "&b✰ &9Arcane Fortitude: Damage &b✰",
+      "&b+1 Level &7to &bSharpness&7, &bSmite&7, &bBane of Arthropods&7,",
+      "&bImpaling&7, and &bPower"
+    ],
+    "enchanting_perk_protections_messages": [
+      "&b✰ &9Arcane Fortitude: Protection &b✰",
+      "&b+1 Level &7to &bFire&7, &bExplosion&7, &bProjectile&7,",
+      "&7and regular &bProtection&7, as well as &bFeather Falling"
+    ],
+    "enchanting_perk_3_messages": [
+      "&b✰ &9Archmage &b✰",
+      "&b+{enchanting_enchantingskill_add} &7Enchanting Power",
+      "&7Pick between Unbreaking or Looting enchantments",
+      "&7to boost by &b+2 levels&7, or Fortune by &b+1 level&7.",
+      "&cChoice is permanent"
+    ],
+    "enchanting_perk_fortune_messages": [
+      "&b✰ &9Archmage: Fortune &b✰",
+      "&b+1 Level &7to &bFortune"
+    ],
+    "enchanting_perk_looting_messages": [
+      "&b✰ &9Archmage: Looting &b✰",
+      "&b+2 Levels &7to &bLooting"
+    ],
+    "enchanting_perk_unbreaking_messages": [
+      "&b✰ &9Archmage: Unbreaking &b✰",
+      "&b+2 Levels &7to &bUnbreaking"
+    ],
+    "enchanting_perk_4_messages": [
+      "&b✰ &9Divine Nexus &b✰",
+      "&b+{enchanting_enchantingskill_add} &7Enchanting Power",
+      "&7Pick between all offensive, defensive, or utility",
+      "&7enchantments to boost by &b+1 levels&7.",
+      "&cChoice is permanent"
+    ],
+    "enchanting_perk_offensive_messages": [
+      "&b✰ &9Divine Nexus: Evocation &b✰",
+      "&b+1 Level &7to &ball offensive enchantments"
+    ],
+    "enchanting_perk_defensive_messages": [
+      "&b✰ &9Divine Nexus: Abjuration &b✰",
+      "&b+1 Levels &7to &ball defensive enchantments"
+    ],
+    "enchanting_perk_utility_messages": [
+      "&b✰ &9Divine Nexus: Divination &b✰",
+      "&b+1 Levels &7to &ball utility enchantments"
+    ],
+    "enchanting_perk_combo_messages": [
+      "&b✰ &9Halfling Luck &b✰",
+      "&b+{power_luckbonus_add} &7Luck"
+    ],
+    "digging_perk_1_messages": [
+      "&a✰ &2Digger &a✰",
+      "&a+{digging_diggingspeedbonus_add} &7Digging Speed"
+    ],
+    "digging_perk_2_messages": [
+      "&a✰ &2Filterer &a✰",
+      "&a+Tier 1 Digging Treasure",
+      "&7- Bones, String, Sticks, Coal, Gunpowder, etc."
+    ],
+    "digging_perk_3_messages": [
+      "&a✰ &2Ground Replication &a✰",
+      "&aRecipes Unlocked",
+      "&7- Mycelium",
+      "&7- Podzol",
+      "&7- Mud",
+      "&7- Clay",
+      "&7- Grass",
+      "&7- Flint",
+      "&7- Soul Sand",
+      "&7- Soul Soil"
+    ],
+    "digging_perk_a1_messages": [
+      "&a✰ &2Archaeologist &a✰",
+      "&a+{digging_archaeologyrepeatchance_add} &7Repeat Brushing Chance",
+      "&a+{digging_archaeologyluck_add} &7Archaeology Luck"
+    ],
+    "digging_perk_a2_messages": [
+      "&a✰ &2Ancient History &a✰",
+      "&a+{digging_archaeologyrepeatchance_add} &7Repeat Brushing Chance",
+      "&aRare chance to find new suspicious blocks",
+      "&awhile digging.",
+      "&7Chance increases greatly around structures."
+    ],
+    "digging_perk_b1_messages": [
+      "&a✰ &2Excavator &a✰",
+      "&a+{digging_diggingspeedbonus_add} &7Digging Speed"
+    ],
+    "digging_perk_b2_messages": [
+      "&a✰ &2Panning &a✰",
+      "&a+Tier 2 Digging Treasure",
+      "&7- Raw Gold, Raw Iron, Raw Copper, Ender Pearls, Amethyst, etc."
+    ],
+    "digging_perk_4_messages": [
+      "&a✰ &2Hidden Treasure &a✰",
+      "&a+Tier 3 Digging Treasure",
+      "&7- Diamonds, Emeralds, Echo Shards, Enchanted Books, Ancient Debris, etc."
+    ],
+    "digging_perk_combo_messages": [
+      "&a✰ &2Flexible Builder &a✰",
+      "&aInteractions Unlocked",
+      "&a- Pickaxes (Right-Click)",
+      "&7    Damages stone-type blocks and bricks",
+      "&7    to a rougher variant. For example",
+      "&8    Bricks > Cracked Bricks",
+      "&8    Stone > Cobblestone",
+      "&8    Cobblestone > Gravel",
+      "&8    Polished Blocks > Unpolished Blocks",
+      "&a- Blaze Powder (Right-Click)",
+      "&7    Melts certain blocks or infuses them",
+      "&7    with lava. For example",
+      "&8    Netherack > Magma",
+      "&8    Raw Metal Blocks > Metal Blocks",
+      "&8    Sand > Glass",
+      "&8    Clay > Terracotta",
+      "&a- Seeds or Kelp (Right-Click)",
+      "&7    Adds vegetation to certain blocks.",
+      "&7    For example",
+      "&8    Cobblestone > Mossy Cobblestone",
+      "&8    Stone > Moss",
+      "&8    Stone Bricks > Mossy Stone Bricks",
+      "&8    Dirt > Grass"
+    ],
+    "archery_perk_1_messages": [
+      "&e✰ &6Ranger &e✰",
+      "&e+{archery_bowdamagemultiplier_add} &7Ranged Damage",
+      "&e+1 Accuracy"
+    ],
+    "archery_perk_2_messages": [
+      "&e✰ &6Resourceful Hunter &e✰",
+      "&e-{archery_ammosavechance_add} &7Ammo Consumption",
+      "&eRecipe Unlocked",
+      "&7- &eStone Arrows"
+    ],
+    "archery_perk_3_messages": [
+      "&e✰ &6Archer &e✰",
+      "&e+{archery_bowcritchance_add} &7Crit Chance",
+      "&e+1.5 Accuracy",
+      "&eRecipes Unlocked",
+      "&7- &eCopper Arrows",
+      "&7- &eGolden Arrows"
+    ],
+    "archery_perk_4_messages": [
+      "&e✰ &6Long-Ranged Infantry &e✰",
+      "&e+{archery_bowdamagemultiplier_add} &7Ranged Damage",
+      "&e+{archery_distancedamagebonus_add} &7Damage/10 blocks distance",
+      "&e-{archery_ammosavechance_add} &7Ammo Consumption",
+      "&eRecipes Unlocked",
+      "&7- &eIron Arrows",
+      "&7- &eEnderic Arrows"
+    ],
+    "archery_perk_5_messages": [
+      "&e✰ &6Sniper &e✰",
+      "&e+{archery_bowcritchance_add} &7Crit Chance",
+      "&e+{archery_critdamage_add} &7Crit Damage",
+      "&e+2.5 Accuracy",
+      "&eRecipe Unlocked",
+      "&7- &eDiamond Arrows"
+    ],
+    "archery_perk_6_messages": [
+      "&e✰ &6Necrotic Shots &e✰",
+      "&e+{archery_distancedamagebonus_add} &7Damage/10 blocks distance",
+      "&e-Infinity damage penalty",
+      "&eRecipes Unlocked",
+      "&7- &eNetherite Arrows",
+      "&7- &eUnholy Arrows"
+    ],
+    "archery_perk_c1_messages": [
+      "&e✰ &6Charged Shot I &e✰",
+      "&e+Charged Shot",
+      "&7- 30s Cooldown",
+      "&7- 3 Charges",
+      "&7- 1 Piercing",
+      "&7- 1 Knockback",
+      "&7- +50% Velocity",
+      "&8Activate by Sneak-Left clicking with",
+      "&8a bow or crossbow in hand."
+    ],
+    "archery_perk_c2_messages": [
+      "&e✰ &6Charged Shot II &e✰",
+      "&eCharged Shot",
+      "&7- 20s Cooldown",
+      "&7- 5 Charges",
+      "&7- 3 Piercing",
+      "&7- 2 Knockback",
+      "&7- +20% Damage",
+      "&7- +50% Velocity",
+      "&7- Ignores Gravity",
+      "&7- Bows shoot at max velocity",
+      "&7- Crossbows instantly reload"
+    ],
+    "archery_perk_stealth_messages": [
+      "&e✰ &6Assassin &e✰",
+      "&e+Guaranteed crit while stealthed",
+      "&8Stealth is defined by the target",
+      "&8looking away and not being in combat",
+      "&e+{archery_critdamage_add} &7Crit Damage",
+      "&e+Crits cause bleeding"
+    ],
+    "mining_perk_1_messages": [
+      "&e✰ &6Brittle Rock &e✰",
+      "&e+{mining_miningspeedbonus_add} &7Mining Speed"
+    ],
+    "mining_perk_2_messages": [
+      "&e✰ &6Spelunking &e✰",
+      "&e+{mining_miningdrops_add} &7Mining Drops",
+      "&e+{mining_miningluck_add} &7Mining Luck",
+      "&e+{power_cookingspeedbonus_add} &7Cooking Speed"
+    ],
+    "mining_perk_a1_messages": [
+      "&e✰ &6Demolist &e✰",
+      "&e+{mining_blastingdrops_add} &7Blast Mining Drops",
+      "&e+{mining_tntblastradius_add} &7TNT Power",
+      "&e+{mining_tntdamagereduction_add} &7TNT Resistance"
+    ],
+    "mining_perk_a2_messages": [
+      "&e✰ &6Earthshaker &e✰",
+      "&e+{mining_blastingdrops_add} &7Blast Mining Drops",
+      "&e+{mining_tntblastradius_add} &7TNT Power",
+      "&e+{mining_tntdamagereduction_add} &7TNT Resistance",
+      "&eRecipe Unlocked",
+      "&7- &eTriple TNT"
+    ],
+    "mining_perk_a3_messages": [
+      "&e✰ &6Enchanted Explosives &e✰",
+      "&ePick between Silk Touch and",
+      "&eFortune II to put on your TNT.",
+      "&8Check your skill tree to pick"
+    ],
+    "mining_perk_a3silktouch_messages": [
+      "&7>>> &eSilk Touch &7selected",
+      "&8All your TNT now breaks blocks as",
+      "&8if broken by a Silk Touch pickaxe"
+    ],
+    "mining_perk_a3fortune_messages": [
+      "&7>>> &eFortune II &7selected",
+      "&8All your TNT now breaks blocks as",
+      "&8if broken by a Fortune II pickaxe"
+    ],
+    "mining_perk_b1_messages": [
+      "&e✰ &6Dwarven Aptitude &e✰",
+      "&e+{mining_miningspeedbonus_add} &7Mining Speed",
+      "&e+{mining_blockexperiencerate_add} &7Essence/block",
+      "&e+Drilling",
+      "&7- 60s Cooldown",
+      "&7- 10s Duration",
+      "&7- +200% Mining Speed",
+      "&8Activate by Sneak-Right-Clicking with",
+      "&8a pickaxe in hand."
+    ],
+    "mining_perk_b2_messages": [
+      "&e✰ &6Vein Extraction &e✰",
+      "&e+{mining_miningdrops_add} &7Mining Drops",
+      "&e+{mining_miningluck_add} &7Mining Luck",
+      "&e+{power_cookingspeedbonus_add} &7Cooking Speed",
+      "&e+Vein Miner",
+      "&7- Ores only",
+      "&8Sneak while breaking a block to rapidly",
+      "&8harvest all connected blocks to it."
+    ],
+    "mining_perk_3_messages": [
+      "&e✰ &6Earthsplitter &e✰",
+      "&e+{mining_blockexperiencemultiplier_add} &7Block Essence",
+      "&e+{power_cookingspeedbonus_add} &7Cooking Speed",
+      "&eDrilling",
+      "&7- 30s Cooldown",
+      "&7- &e{mining_drillingspeedbonus_add} Mining Speed"
+    ],
+    "mining_perk_4_messages": [
+      "&e✰ &6Aspect of Kali &e✰",
+      "&e+{power_cookingspeedbonus_add} &7Cooking Speed",
+      "&eVein Miner",
+      "&7- Most Stone-type Blocks (not Stone)"
+    ],
+    "alchemy_perk_1_messages": [
+      "&d✰ &5Stable Burn &d✰",
+      "&d+{alchemy_brewingtimereduction_add} &7Brewing Speed"
+    ],
+    "alchemy_perk_2_messages": [
+      "&d✰ &5Potent Ingredients &d✰",
+      "&d+{alchemy_brewingingredientsavechance_add} &7Ingredient Save Chance"
+    ],
+    "alchemy_perk_a1_messages": [
+      "&d✰ &5Volatile Poisons &d✰",
+      "&d+{alchemy_debuffbrewingskill_add} &7Poison Quality",
+      "&d+{alchemy_splashintensityminimum_add} &7Splash Intensity"
+    ],
+    "alchemy_perk_a2_messages": [
+      "&d✰ &5Chemical Artillery &d✰",
+      "&d+{alchemy_debuffbrewingskill_add} &7Poison Quality",
+      "&d+{alchemy_splashintensityminimum_add} &7Splash Intensity",
+      "&d+{alchemy_lingeringdurationmultiplier_add} &7Lingering Duration",
+      "&d+{alchemy_lingeringradiusmultiplier_add} &7Lingering Radius",
+      "&d+{alchemy_throwvelocity_add} &7Throwing Force"
+    ],
+    "alchemy_perk_b1_messages": [
+      "&d✰ &5Effective Catalysts &d✰",
+      "&d+{alchemy_debuffbrewingskill_add} &7Beneficial Potion Quality",
+      "&d+{alchemy_brewingtimereduction_add} &7Brewing Speed"
+    ],
+    "alchemy_perk_b2_messages": [
+      "&d✰ &5Exotic Ingredients &d✰",
+      "&d+{alchemy_buffbrewingskill_add} &7Beneficial Potion Quality",
+      "&d+{alchemy_brewingingredientsavechance_add} &7Ingredient Save Chance",
+      "&dPotion Recipes Unlocked:",
+      "&7- Haste (Awkward Potion + Nether Quartz)",
+      "&7- Health Boost (Awkward Potion + Sweet Berries)"
+    ],
+    "alchemy_perk_3_messages": [
+      "&d✰ &5Mighty Mixtures &d✰",
+      "&d+{alchemy_brewingtimereduction_add} &7Brewing Speed",
+      "&d+Potion Mixing",
+      "&7- Up to 3x",
+      "&7- 20% duration loss",
+      "&8Take a potion and right-click it",
+      "&8on top of another potion in your",
+      "&8inventory to merge them."
+    ],
+    "alchemy_perk_4_messages": [
+      "&d✰ &5Prima Materia &d✰",
+      "&d+{alchemy_buffbrewingskill_add} &7Potion Quality",
+      "&dPotion Recipes Unlocked:",
+      "&7- &#0077ffAlchemic Precursor &7(Nether Star)"
+    ],
+    "alchemy_perk_combo_messages": [
+      "&d✰ &5Etching Venom &d✰",
+      "&d+{lightweapons_coatingcharges_add} &7Weapon Coating Charges",
+      "&dRecipes Unlocked",
+      "&7- Empty Vial",
+      "&7- Vial 'o' Poison",
+      "&7- Vial 'o' Pain",
+      "&7- Vial 'o' Rot",
+      "&7- Vial 'o' Holy Water"
+    ],
     "smithing_perk_1_messages": [
       "&e✰ &6Craftsman &e✰",
-      "&e+50 &7Wood Quality",
-      "&e+50 &7Leather Quality"
+      "&e+{smithing_woodcraftingskill_add} &7Wood Quality",
+      "&e+{smithing_leathercraftingskill_add} &7Leather Quality"
     ],
     "smithing_perk_2_messages": [
       "&e✰ &6Apprentice Blacksmith &e✰",
-      "&e+50 &7Stone Quality",
-      "&e+50 &7Chainmail Quality"
+      "&e+{smithing_stonecraftingskill_add} &7Stone Quality",
+      "&e+{smithing_chaincraftingskill_add} &7Chainmail Quality"
     ],
     "smithing_perk_3_messages": [
       "&e✰ &6Blacksmith &e✰",
-      "&e+50 &7Iron Quality",
-      "&e+50 &7Gold Quality"
+      "&e+{smithing_ironcraftingskill_add} &7Iron Quality",
+      "&e+{smithing_goldcraftingskill_add} &7Gold Quality"
     ],
     "smithing_perk_4_messages": [
       "&e✰ &6Crystalsmith &e✰",
-      "&e+50 &7Diamond Quality"
+      "&e+{smithing_diamondcraftingskill_add} &7Diamond Quality"
     ],
     "smithing_perk_5_messages": [
       "&e✰ &6Hellforge &e✰",
-      "&e+50 &7Netherite Quality"
+      "&e+{smithing_netheritecraftingskill_add} &7Netherite Quality"
     ],
     "smithing_perk_6_messages": [
       "&e✰ &6Masterpiece &e✰",
@@ -1412,8 +2509,8 @@
     ],
     "smithing_perk_bows_messages": [
       "&e✰ &6Advanced Fletching &e✰",
-      "&e+50 &7Bow Quality",
-      "&e+50 &7Crossbow Quality"
+      "&e+{smithing_bowcraftingskill_add} &7Bow Quality",
+      "&e+{smithing_crossbowcraftingskill_add} &7Crossbow Quality"
     ],
     "woodcutting_perk_1_messages": [
       "&a✰ &2Novice Woodcutting &a✰",
@@ -1430,7 +2527,9 @@
       "&a✰ &2Deforestation I &a✰",
       "&a+Tree Capitator",
       "&7- Small trees (8 blocks)",
-      "&7- 10s cooldown"
+      "&7- 10s Cooldown",
+      "&8Sneak while breaking the base of a",
+      "&8tree to quickly harvest the entire tree"
     ],
     "woodcutting_perk_4_messages": [
       "&a✰ &2Arborist &a✰",
@@ -1445,26 +2544,26 @@
       "&a+More common golden Apple drops"
     ],
     "woodcutting_perk_carpentry_a_messages": [
-      "&a✰ &2Carpentry I &a✰",
-      "&a+More planks from logs",
-      "&a+More sticks from planks"
-    ],
-    "woodcutting_perk_carpentry_b_messages": [
-      "&a✰ &2Carpentry II &a✰",
-      "&a+More output from wooden",
-      "&abuilding block recipes"
+      "&a✰ &2Carpentry &a✰",
+      "&a+Increased output from most wood recipes"
     ],
     "woodcutting_perk_capitator_a_messages": [
       "&a✰ &2Deforestation II &a✰",
       "&aTree Capitator",
       "&7- Medium trees (32 blocks)",
-      "&7- 7s cooldown"
+      "&7- 7s Cooldown"
     ],
     "woodcutting_perk_capitator_b_messages": [
       "&a✰ &2Deforestation III &a✰",
       "&aTree Capitator",
       "&7- Large trees (128 blocks)",
-      "&7- 3s cooldown"
+      "&7- 3s Cooldown"
+    ],
+    "woodcutting_perk_combo_messages": [
+      "&a✰ &2Active Lifestyle &a✰",
+      "&a+{power_foodbonusseafood_add}&7 Food Nutrition",
+      "&a+{power_hungersavechance_add}&7 Reduced Hunger Consumption",
+      "&a+{power_healthregenerationbonus_add}&7 Health Regeneration"
     ],
     "party-level-description-1": [
       "&e+5 Party Capacity &7(Now 10)",
@@ -1582,6 +2681,7 @@
       "%warning_levels%",
       "%warning_other_levels%",
       "%warning_all_perks%",
+      "%warning_version%",
       "%warning_one_perks%",
       "%warning_cost%",
       "%status_unlockable%",
@@ -1617,46 +2717,46 @@
       "&a%member_list%"
     ],
     "skill-level-up-power": [
-      "&7You leveled up to &e%level%&7. Check &e/skills &7for available perks"
+      "TITLE(&7You leveled up to &e%level%&7;&7Check &e/skills &7for available perks;60;10)"
     ],
     "skill-level-up-smithing": [
-      "&eSmithing&7 leveled up to &e%level%"
+      "TITLE(;&eSmithing&7 leveled up to &e%level%)"
     ],
     "skill-level-up-mining": [
-      "&cMining&7 leveled up to &c%level%"
+      "TITLE(;&cMining&7 leveled up to &c%level%)"
     ],
     "skill-level-up-light-weapons": [
-      "&eLight Weapons&7 leveled up to &e%level%"
+      "TITLE(;&eLight Weapons&7 leveled up to &e%level%)"
     ],
     "skill-level-up-light-armor": [
-      "&eLight Armor&7 leveled up to &e%level%"
+      "TITLE(;&eLight Armor&7 leveled up to &e%level%)"
     ],
     "skill-level-up-woodcutting": [
-      "&aWoodcutting&7 leveled up to &a%level%"
+      "TITLE(;&aWoodcutting&7 leveled up to &a%level%)"
     ],
     "skill-level-up-digging": [
-      "&aDigging&7 leveled up to &a%level%"
+      "TITLE(;&aDigging&7 leveled up to &a%level%)"
     ],
     "skill-level-up-heavy-weapons": [
-      "&cHeavy Weapons&7 leveled up to &c%level%"
+      "TITLE(;&cHeavy Weapons&7 leveled up to &c%level%)"
     ],
     "skill-level-up-heavy-armor": [
-      "&cHeavy Armor&7 leveled up to &c%level%"
+      "TITLE(;&cHeavy Armor&7 leveled up to &c%level%)"
     ],
     "skill-level-up-farming": [
-      "&aFarming&7 leveled up to &a%level%"
+      "TITLE(;&aFarming&7 leveled up to &a%level%)"
     ],
     "skill-level-up-fishing": [
-      "&bFishing&7 leveled up to &b%level%"
+      "TITLE(;&bFishing&7 leveled up to &b%level%)"
     ],
     "skill-level-up-enchanting": [
-      "&bEnchanting&7 leveled up to &b%level%"
+      "TITLE(;&bEnchanting&7 leveled up to &b%level%)"
     ],
     "skill-level-up-archery": [
-      "&eArchery&7 leveled up to &e%level%"
+      "TITLE(;&eArchery&7 leveled up to &e%level%)"
     ],
     "skill-level-up-alchemy": [
-      "&dAlchemy&7 leveled up to &d%level%"
+      "TITLE(;&dAlchemy&7 leveled up to &d%level%)"
     ],
     "default_recipe_description_cooking": [
       "&e%input% &ecooks into %result%"

@@ -76,9 +76,16 @@ public class ArmorSetSet extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setSet(String set) {
+        this.set = set;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ArmorSetSet(getName());
+    public DynamicItemModifier copy() {
+        ArmorSetSet m = new ArmorSetSet(getName());
+        m.setSet(this.set);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

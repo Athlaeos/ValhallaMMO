@@ -107,9 +107,21 @@ public class Item extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.REWARDS.id());
     }
 
+    public void setCurrentReward(ItemStack currentReward) {
+        this.currentReward = currentReward;
+    }
+
+    public void setRewardMeta(ItemMeta rewardMeta) {
+        this.rewardMeta = rewardMeta;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new Item(getName());
+    public DynamicItemModifier copy() {
+        Item m = new Item(getName());
+        m.setCurrentReward(this.currentReward);
+        m.setRewardMeta(this.rewardMeta);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

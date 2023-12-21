@@ -92,6 +92,7 @@ public class PredicateRegistry {
         register(new WorldFilter());
         register(new EntityLevelFilter());
         register(new BabyFilter());
+        register(new NearbyStructureFilter());
     }
 
     public static void register(LootPredicate predicate){

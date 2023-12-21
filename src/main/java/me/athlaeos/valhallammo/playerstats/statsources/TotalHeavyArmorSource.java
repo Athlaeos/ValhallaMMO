@@ -15,9 +15,9 @@ public class TotalHeavyArmorSource implements AccumulativeStatSource, EvEAccumul
             double heavyArmorMultiplier = 1 + Math.max(0, AccumulativeStatManager.getCachedStats("HEAVY_ARMOR_MULTIPLIER", v, 10000, true));
             double armorMultiplierBonus = 1 + Math.max(0, AccumulativeStatManager.getCachedStats("ARMOR_MULTIPLIER_BONUS", v, 10000, true));
 
-            double totalHeavyArmor = Math.max(0, heavyArmor * heavyArmorMultiplier);
+            double totalHeavyArmor = heavyArmor * heavyArmorMultiplier;
 
-            return Math.max(0, totalHeavyArmor * armorMultiplierBonus);
+            return totalHeavyArmor * armorMultiplierBonus;
         }
         return 0;
     }
@@ -33,9 +33,9 @@ public class TotalHeavyArmorSource implements AccumulativeStatSource, EvEAccumul
             double armorMultiplierBonus = 1 + Math.max(0, AccumulativeStatManager.getCachedRelationalStats("ARMOR_MULTIPLIER_BONUS", v, a, 10000, true));
             double armorFractionPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("ARMOR_FRACTION_IGNORED", v, a, 10000, true);
 
-            double totalHeavyArmor = Math.max(0, (heavyArmor * heavyArmorMultiplier) * (1 - heavyArmorFractionPenetration) - heavyArmorFlatPenetration);
+            double totalHeavyArmor = (heavyArmor * heavyArmorMultiplier) * (1 - heavyArmorFractionPenetration) - heavyArmorFlatPenetration;
 
-            return Math.max(0, (totalHeavyArmor * armorMultiplierBonus) * (1 - armorFractionPenetration));
+            return (totalHeavyArmor * armorMultiplierBonus) * (1 - armorFractionPenetration);
         }
         return 0;
     }

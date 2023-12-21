@@ -17,7 +17,7 @@ public class TotalLightArmorSource implements AccumulativeStatSource, EvEAccumul
 
             double totalLightArmor = Math.max(0, lightArmor * lightArmorMultiplier);
 
-            return Math.max(0, totalLightArmor * armorMultiplierBonus);
+            return totalLightArmor * armorMultiplierBonus;
         }
         return 0;
     }
@@ -33,9 +33,9 @@ public class TotalLightArmorSource implements AccumulativeStatSource, EvEAccumul
             double armorMultiplierBonus = 1 + Math.max(0, AccumulativeStatManager.getCachedRelationalStats("ARMOR_MULTIPLIER_BONUS", v, a, 10000, true));
             double armorFractionPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("ARMOR_FRACTION_IGNORED", v, a, 10000, true);
 
-            double totalLightArmor = Math.max(0, (lightArmor * lightArmorMultiplier) * (1 - lightArmorFractionPenetration) - lightArmorFlatPenetration);
+            double totalLightArmor = (lightArmor * lightArmorMultiplier) * (1 - lightArmorFractionPenetration) - lightArmorFlatPenetration;
 
-            return Math.max(0, (totalLightArmor * armorMultiplierBonus) * (1 - armorFractionPenetration));
+            return (totalLightArmor * armorMultiplierBonus) * (1 - armorFractionPenetration);
         }
         return 0;
     }

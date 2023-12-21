@@ -24,7 +24,7 @@ public class DurabilityRepairNumeric extends DynamicItemModifier {
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         if (!(outputItem.getMeta() instanceof Damageable) || outputItem.getItem().getType().getMaxDurability() <= 0) return;
-        CustomDurabilityManager.damage(outputItem.getItem(), outputItem.getMeta(), -repair);
+        CustomDurabilityManager.damage(outputItem.getMeta(), -repair);
     }
 
     @Override
@@ -69,9 +69,16 @@ public class DurabilityRepairNumeric extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setRepair(int repair) {
+        this.repair = repair;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new DurabilityRepairNumeric(getName());
+    public DynamicItemModifier copy() {
+        DurabilityRepairNumeric m = new DurabilityRepairNumeric(getName());
+        m.setRepair(this.repair);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

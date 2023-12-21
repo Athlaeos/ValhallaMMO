@@ -11,7 +11,6 @@ import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.dom.Action;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Question;
 import me.athlaeos.valhallammo.dom.Questionnaire;
 import me.athlaeos.valhallammo.gui.*;
@@ -30,10 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import static me.athlaeos.valhallammo.gui.implementations.RecipeOptionMenu.KEY_OPTION_ID;
 
@@ -210,17 +206,17 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
         super(playerMenuUtility);
         this.recipe = new DynamicSmithingRecipe(newName);
 
-        this.template = recipe.getTemplate();
-        this.base = recipe.getBase();
-        this.addition = recipe.getAddition();
-        this.result = recipe.getResult();
+        this.template = new SlotEntry(recipe.getTemplate().getItem().clone(), recipe.getTemplate().getOption());
+        this.base = new SlotEntry(recipe.getBase().getItem().clone(), recipe.getBase().getOption());
+        this.addition = new SlotEntry(recipe.getAddition().getItem().clone(), recipe.getAddition().getOption());
+        this.result = recipe.getResult().clone();
         this.requireValhallaTools = recipe.requireValhallaTools();
         this.tinker = recipe.tinkerBase();
         this.consumeAddition = recipe.consumeAddition();
-        this.resultModifiers = recipe.getResultModifiers();
-        this.additionModifiers = recipe.getAdditionModifiers();
+        this.resultModifiers = new ArrayList<>(recipe.getResultModifiers().stream().map(DynamicItemModifier::copy).toList());
+        this.additionModifiers = new ArrayList<>(recipe.getAdditionModifiers().stream().map(DynamicItemModifier::copy).toList());
         this.unlockedForEveryone = recipe.isUnlockedForEveryone();
-        this.validations = recipe.getValidations();
+        this.validations = new HashSet<>(recipe.getValidations());
         this.displayName = recipe.getDisplayName();
         this.description = recipe.getDescription();
     }
@@ -369,7 +365,7 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
                 if (!ItemUtils.isEmpty(cursor)){
                     String option = ItemUtils.getPDCString(KEY_OPTION_ID, cursor, null);
                     if (option == null){
-                        if (e.getRawSlot() == templateIndex && MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20))
+                        if (e.getRawSlot() == templateIndex)
                             template = new SlotEntry(new ItemBuilder(cursor.clone()).amount(1).get(), new MaterialChoice());
                         else if (e.getRawSlot() == baseIndex)
                             base = new SlotEntry(new ItemBuilder(cursor.clone()).amount(1).get(), new MaterialChoice());
@@ -377,7 +373,7 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
                             addition = new SlotEntry(new ItemBuilder(cursor.clone()).amount(1).get(), new MaterialChoice());
                     } else {
                         if (selectedChoice != null) {
-                            if (e.getRawSlot() == templateIndex && MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20)){
+                            if (e.getRawSlot() == templateIndex){
                                 if (selectedChoice.isCompatible(template.getItem()) && selectedChoice.isCompatibleWithInputItem(false)){
                                     if (selectedChoice instanceof IngredientChoice c) template.setOption(c);
                                     e.getWhoClicked().setItemOnCursor(null);
@@ -429,7 +425,7 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
     public void setMenuItems() {
         inventory.clear();
         if (!ValhallaMMO.getPluginConfig().getBoolean("admin_gui_filler_removal")) for (int i = 0; i < 54; i++) inventory.setItem(i, filler);
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20)) inventory.setItem(templateIndex, null);
+        inventory.setItem(templateIndex, null);
         inventory.setItem(baseIndex, null);
         inventory.setItem(additionIndex, null);
         if (!tinker) inventory.setItem(resultIndex, null);
@@ -444,7 +440,7 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
                 new ItemBuilder(template.getItem().clone()).appendLore(templateLore).get();
         ItemStack baseIcon = new ItemBuilder(base.getItem().clone()).appendLore(baseLore).get();
         ItemStack additionIcon = new ItemBuilder(addition.getItem().clone()).appendLore(additionLore).get();
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20)) inventory.setItem(templateIndex, templateIcon);
+        inventory.setItem(templateIndex, templateIcon);
         inventory.setItem(baseIndex, baseIcon);
         inventory.setItem(additionIndex, additionIcon);
         if (!tinker) inventory.setItem(resultIndex, result.clone());

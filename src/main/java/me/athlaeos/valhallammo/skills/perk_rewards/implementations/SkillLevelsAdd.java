@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.skills.perk_rewards.implementations;
 
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
+import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 import me.athlaeos.valhallammo.skills.skills.Skill;
@@ -30,7 +31,7 @@ public class SkillLevelsAdd extends PerkReward {
     }
 
     @Override
-    public String rewardPlacholder() {
+    public String rewardPlaceholder() {
         return String.valueOf(levels);
     }
 

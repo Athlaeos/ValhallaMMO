@@ -112,9 +112,20 @@ public class AlchemyTagsCancelIfAbsent extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.POTION_CONDITIONALS.id());
     }
 
+    public void setTag(int tag) {
+        this.tag = tag;
+    }
+
+    public Collection<Integer> getTags() {
+        return tags;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new AlchemyTagsCancelIfAbsent(getName());
+    public DynamicItemModifier copy() {
+        AlchemyTagsCancelIfAbsent m = new AlchemyTagsCancelIfAbsent(getName());
+        m.setTag(this.tag);
+        m.getTags().addAll(this.tags);
+        return m;
     }
 
     @Override

@@ -1,11 +1,6 @@
 package me.athlaeos.valhallammo.crafting.recipetypes;
 
-import me.athlaeos.valhallammo.ValhallaMMO;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
 
 public interface ValhallaRecipe {
     /**

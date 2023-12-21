@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class TransformItemMaterial extends DynamicItemModifier {
-    private final Map<EquipmentClass, Material> classToMaterialMapping = new HashMap<>();
+    private static final Map<String, Map<EquipmentClass, Material>> classToMaterialMapping = new HashMap<>();
     private final Material icon;
     private final String materialPrefix;
 
@@ -40,14 +40,17 @@ public class TransformItemMaterial extends DynamicItemModifier {
     private void map(EquipmentClass equipmentClass, String material, String equipment){
         Material m = ItemUtils.stringToMaterial(material + equipment, null);
         if (m == null) return;
-        classToMaterialMapping.put(equipmentClass, m);
+        Map<EquipmentClass, Material> existingMaterials = classToMaterialMapping.getOrDefault(material, new HashMap<>());
+        existingMaterials.put(equipmentClass, m);
+        classToMaterialMapping.put(material, existingMaterials);
     }
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         EquipmentClass equipmentClass = EquipmentClass.getMatchingClass(outputItem.getMeta());
-        Material transformTo = classToMaterialMapping.get(equipmentClass);
-        if (equipmentClass == null || transformTo == null) return;
+        if (equipmentClass == null) return;
+        Material transformTo = classToMaterialMapping.getOrDefault(materialPrefix, new HashMap<>()).get(equipmentClass);
+        if (transformTo == null) return;
         outputItem.type(transformTo);
         for (AttributeWrapper wrapper : ItemAttributesRegistry.getVanillaStats(outputItem.getItem().getType()).values()){
             // The item's vanilla stats are updated to their vanilla values, any added custom attributes are left alone
@@ -90,8 +93,10 @@ public class TransformItemMaterial extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new TransformItemMaterial(getName(), icon, materialPrefix);
+    public DynamicItemModifier copy() {
+        TransformItemMaterial m = new TransformItemMaterial(getName(), icon, materialPrefix);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

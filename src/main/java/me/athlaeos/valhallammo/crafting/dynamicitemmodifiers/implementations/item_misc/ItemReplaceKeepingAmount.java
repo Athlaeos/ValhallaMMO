@@ -78,9 +78,21 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setReplaceBy(ItemStack replaceBy) {
+        this.replaceBy = replaceBy;
+    }
+
+    public void setReplaceByMeta(ItemMeta replaceByMeta) {
+        this.replaceByMeta = replaceByMeta;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ItemReplaceKeepingAmount(getName());
+    public DynamicItemModifier copy() {
+        ItemReplaceKeepingAmount m = new ItemReplaceKeepingAmount(getName());
+        m.setReplaceBy(this.replaceBy);
+        m.setReplaceByMeta(this.replaceByMeta);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

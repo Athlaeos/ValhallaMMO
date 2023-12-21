@@ -81,8 +81,10 @@ public class Template extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new Template(getName());
+    public DynamicItemModifier copy() {
+        Template m = new Template(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

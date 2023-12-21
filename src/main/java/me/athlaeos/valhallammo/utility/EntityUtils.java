@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.utility;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.dom.BiFetcher;
 import me.athlaeos.valhallammo.item.WeightClass;
@@ -16,6 +17,8 @@ import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
@@ -31,6 +34,33 @@ public class EntityUtils {
 
     public static int getTotalExperience(Player player) {
         return Math.round(player.getExp() * player.getExpToLevel()) + getTotalExperience(player.getLevel());
+    }
+
+    private static final double inaccuracyConstant = ValhallaMMO.getPluginConfig().getDouble("inaccuracy_constant", 0.015);
+    public static void applyInaccuracy(Entity projectile, Vector primaryDirection, double inaccuracy){
+        Vector projectileVelocity = projectile.getVelocity().clone();
+        double strength = projectileVelocity.length(); // record initial speed of the projectile
+        projectileVelocity = projectileVelocity.normalize(); // reduce vector lengths to 1
+        primaryDirection = primaryDirection.clone().normalize();
+        projectileVelocity.setX(primaryDirection.getX()); // set direction of projectile equal to direction of shooter
+        projectileVelocity.setY(primaryDirection.getY());
+        projectileVelocity.setZ(primaryDirection.getZ());
+        projectileVelocity.multiply(strength); // restore the initial speed to the projectile
+
+        inaccuracy = Math.max(0, inaccuracy);
+        projectileVelocity.setX(projectileVelocity.getX() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
+        projectileVelocity.setY(projectileVelocity.getY() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
+        projectileVelocity.setZ(projectileVelocity.getZ() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
+
+        projectile.setVelocity(projectileVelocity);
+    }
+
+    public static BlockFace getSelectedBlockFace(Player player) {
+        List<Block> lastTwoTargetBlocks = player.getLastTwoTargetBlocks(null, 100);
+        if (lastTwoTargetBlocks.size() != 2 || !lastTwoTargetBlocks.get(1).getType().isOccluding()) return null;
+        Block targetBlock = lastTwoTargetBlocks.get(1);
+        Block adjacentBlock = lastTwoTargetBlocks.get(0);
+        return targetBlock.getFace(adjacentBlock);
     }
 
     private static final Map<Integer, Integer> levelExperienceCache = new HashMap<>();

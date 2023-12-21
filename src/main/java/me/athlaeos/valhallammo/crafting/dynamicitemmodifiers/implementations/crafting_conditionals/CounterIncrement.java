@@ -72,9 +72,16 @@ public class CounterIncrement extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CRAFTING_CONDITIONALS.id());
     }
 
+    public void setBy(int by) {
+        this.by = by;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new CounterIncrement(getName());
+    public DynamicItemModifier copy() {
+        CounterIncrement m = new CounterIncrement(getName());
+        m.setBy(this.by);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

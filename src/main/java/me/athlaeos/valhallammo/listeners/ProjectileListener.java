@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
@@ -11,10 +12,12 @@ import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.item.arrow_attributes.ArrowBehaviorRegistry;
+import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Directional;
 import org.bukkit.enchantments.Enchantment;
@@ -37,7 +40,7 @@ import java.util.*;
 
 public class ProjectileListener implements Listener {
     private final Map<Block, ItemStack> dispensedItems = new HashMap<>();
-    private final double inaccuracyConstant = ValhallaMMO.getPluginConfig().getDouble("inaccuracy_constant", 0.015);
+    private final double infinityAmmoConsumption = ValhallaMMO.getPluginConfig().getDouble("infinity_ammo_consumption_reduction");
 
     private static final Map<UUID, ItemBuilder> projectileShotByMap = new HashMap<>();
 
@@ -72,21 +75,7 @@ public class ProjectileListener implements Listener {
                 AttributeWrapper accuracy = ItemAttributesRegistry.getAttribute(meta, "ARROW_ACCURACY", false);
                 if (accuracy != null) inaccuracy = Math.max(0, inaccuracy - accuracy.getValue());
 
-                Vector aV = a.getVelocity().clone();
-                double strength = aV.length(); // record initial speed of the arrow
-                aV = aV.normalize(); // reduce vector lengths to 1
-                direction = direction.normalize();
-                aV.setX(direction.getX()); // set direction of arrow equal to direction of shooter
-                aV.setY(direction.getY());
-                aV.setZ(direction.getZ());
-                aV.multiply(strength); // restore the initial speed to the arrow
-
-                inaccuracy = Math.max(0, inaccuracy);
-                aV.setX(aV.getX() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
-                aV.setY(aV.getY() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
-                aV.setZ(aV.getZ() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
-
-                e.getEntity().setVelocity(aV);
+                EntityUtils.applyInaccuracy(a, direction, inaccuracy);
             }
 
             setProjectileProperties(e.getEntity(), meta);
@@ -140,6 +129,8 @@ public class ProjectileListener implements Listener {
         return projectileShotByMap.get(arrow.getUniqueId());
     }
 
+    private final Map<UUID, Integer> crossbowReloads = new HashMap<>();
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onShoot(EntityShootBowEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
@@ -166,16 +157,25 @@ public class ProjectileListener implements Listener {
 
             if (shooter instanceof Player p && (e.getProjectile() instanceof AbstractArrow || e.getProjectile() instanceof Firework)){
                 double ammoSaveChance = AccumulativeStatManager.getCachedStats("AMMO_SAVE_CHANCE", shooter, 10000, true);
+                if (hasInfinity) ammoSaveChance += infinityAmmoConsumption;
                 if (Utils.proc(shooter, ammoSaveChance, false)){
                     if (bow.getType() == Material.CROSSBOW){
-                        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                            boolean mainHand = !ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) && p.getInventory().getItemInMainHand().getType() == Material.CROSSBOW;
-                            ItemStack crossbow = mainHand ? p.getInventory().getItemInMainHand() : p.getInventory().getItemInOffHand();
-                            if (ItemUtils.isEmpty(crossbow) || !(crossbow.getItemMeta() instanceof CrossbowMeta crossbowMeta)) return;
-                            crossbowMeta.addChargedProjectile(consumable);
-                            crossbow.setItemMeta(crossbowMeta);
-                        }, 1L);
-                        if (e.getProjectile() instanceof AbstractArrow a) a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+                        int allowedReloads = 1 + (int) Math.round(AccumulativeStatManager.getCachedStats("CROSSBOW_MAGAZINE", p, 10000, true));
+                        int currentReloads = crossbowReloads.getOrDefault(p.getUniqueId(), 0); // reload, increment magazine
+                        if (currentReloads + 1 <= allowedReloads){
+                            crossbowReloads.put(p.getUniqueId(), currentReloads + 1);
+                            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                                boolean mainHand = !ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) && p.getInventory().getItemInMainHand().getType() == Material.CROSSBOW;
+                                ItemStack crossbow = mainHand ? p.getInventory().getItemInMainHand() : p.getInventory().getItemInOffHand();
+                                if (ItemUtils.isEmpty(crossbow) || !(crossbow.getItemMeta() instanceof CrossbowMeta crossbowMeta)) return;
+                                crossbowMeta.addChargedProjectile(consumable);
+                                crossbow.setItemMeta(crossbowMeta);
+                            }, 1L);
+                            if (e.getProjectile() instanceof AbstractArrow a) a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+                        } else {
+                            crossbowReloads.remove(p.getUniqueId()); // do not reload, but reset magazine
+                            p.playSound(p, Sound.ITEM_CROSSBOW_LOADING_END, 1F, 1F);
+                        }
                         return;
                     } else if (e.getProjectile() instanceof AbstractArrow a && !(a instanceof Trident)){
                         // arrows may be preserved with infinity if they resemble a vanilla arrow, or if they have the infinityExploitable flag
@@ -235,7 +235,7 @@ public class ProjectileListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onDamage(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         if (e.getDamager() instanceof Projectile p && e.getEntity() instanceof LivingEntity l && !EntityClassification.matchesClassification(e.getEntity().getType(), EntityClassification.UNALIVE)){
@@ -245,7 +245,7 @@ public class ProjectileListener implements Listener {
             LivingEntity trueDamager = p.getShooter() instanceof LivingEntity d ? d : null;
 
             // apply potion effects
-            if (p instanceof AbstractArrow && !(p instanceof Trident)){
+            if (!(p instanceof Trident)){
                 cancelNextArrowEffects.add(e.getEntity().getUniqueId());
                 for (PotionEffectWrapper wrapper : PotionEffectRegistry.getStoredEffects(storedMeta, false).values()){
                     int duration = (int) Math.floor(wrapper.getDuration() / 8D); // the duration displayed on the item will not

@@ -56,8 +56,10 @@ public class ItemUnbreakable extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new ItemUnbreakable(getName());
+    public DynamicItemModifier copy() {
+        ItemUnbreakable m = new ItemUnbreakable(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

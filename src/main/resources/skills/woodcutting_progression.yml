@@ -56,7 +56,7 @@ special_perks: []
 commands: []
 
 messages:
-  - '<lang.skill-level-up-landscaping>'
+  - '<lang.skill-level-up-woodcutting>'
 
 leveling_perks:
   woodcutting_woodcuttingspeedbonus_add: 0.005
@@ -67,7 +67,7 @@ starting_coordinates: '3,8' # The coordinates in the skill tree the player sees 
 perks:
   woodcutting_perk_1:
     icon: WOODEN_AXE
-    coords: "3,8"
+    coords: "3,11"
     name: "<lang.woodcutting_perk_1_name>"
     description: "<lang.woodcutting_perk_1_description>"
     cost: 1
@@ -83,7 +83,7 @@ perks:
     custom_model_data_visible: -1
   woodcutting_perk_2:
     icon: GOLDEN_APPLE
-    coords: "3,6"
+    coords: "3,8"
     name: "<lang.woodcutting_perk_2_name>"
     description: "<lang.woodcutting_perk_2_description>"
     cost: 1
@@ -99,12 +99,17 @@ perks:
     connection_line:
       '1':
         position: '3,7'
-        locked: GRAY_DYE:1172700
-        unlockable: ORANGE_DYE:1172800
-        unlocked: LIME_DYE:1172900
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+      '2':
+        position: '3,6'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
   woodcutting_perk_3:
     icon: STONE_AXE
-    coords: "3,4"
+    coords: "3,5"
     name: "<lang.woodcutting_perk_3_name>"
     description: "<lang.woodcutting_perk_3_description>"
     cost: 1
@@ -119,20 +124,25 @@ perks:
       - "<lang.woodcutting_perk_3_messages>"
     connection_line:
       '1':
-        position: '3,5'
-        locked: GRAY_DYE:1172700
-        unlockable: ORANGE_DYE:1172800
-        unlocked: LIME_DYE:1172900
+        position: '3,10'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+      '2':
+        position: '3,9'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
     requireperk_all:
       - woodcutting_perk_2
   woodcutting_perk_4:
     icon: OAK_SAPLING
-    coords: "3,2"
+    coords: "1,3"
     name: "<lang.woodcutting_perk_4_name>"
     description: "<lang.woodcutting_perk_4_description>"
     cost: 1
     hidden: false
-    required_lv: 60
+    required_lv: 80
     perk_rewards:
       woodcutting_blockexperiencerate_add: 0.3
       woodcutting_woodcuttingspeedbonus_add: 0.1
@@ -141,10 +151,20 @@ perks:
       - "<lang.woodcutting_perk_4_messages>"
     connection_line:
       '1':
-        position: '3,3'
-        locked: GRAY_DYE:1172700
-        unlockable: ORANGE_DYE:1172800
-        unlocked: LIME_DYE:1172900
+        position: '2,5'
+        locked: GRAY_DYE:1172708
+        unlockable: ORANGE_DYE:1172808
+        unlocked: LIME_DYE:1172908
+      '2':
+        position: '1,5'
+        locked: GRAY_DYE:1172720
+        unlockable: ORANGE_DYE:1172820
+        unlocked: LIME_DYE:1172920
+      '3':
+        position: '1,4'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
     requireperk_all:
       - woodcutting_perk_3
   woodcutting_perk_5:
@@ -152,12 +172,12 @@ perks:
     custom_model_data_unlockable: 1998270
     custom_model_data_unlocked: 1998270
     custom_model_data_visible: 1998270
-    coords: "3,0"
+    coords: "2,0"
     name: "<lang.woodcutting_perk_5_name>"
     description: "<lang.woodcutting_perk_5_description>"
     cost: 1
     hidden: false
-    required_lv: 80
+    required_lv: 100
     perk_rewards:
       woodcutting_woodcuttingluck_add: 10
     messages:
@@ -166,18 +186,28 @@ perks:
       - woodcutting_perk_4
     connection_line:
       '1':
-        position: '3,1'
-        locked: GRAY_DYE:1172700
-        unlockable: ORANGE_DYE:1172800
-        unlocked: LIME_DYE:1172900
+        position: '2,1'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
+      '2':
+        position: '2,2'
+        locked: GRAY_DYE:1172706
+        unlockable: ORANGE_DYE:1172806
+        unlocked: LIME_DYE:1172906
+      '3':
+        position: '2,3'
+        locked: GRAY_DYE:1172714
+        unlockable: ORANGE_DYE:1172814
+        unlocked: LIME_DYE:1172914
   woodcutting_perk_carpentry_a:
     icon: OAK_LOG
-    coords: "1,4"
+    coords: "5,2"
     name: "<lang.woodcutting_perk_carpentry_a_name>"
     description: "<lang.woodcutting_perk_carpentry_a_description>"
     cost: 1
     hidden: false
-    required_lv: 50
+    required_lv: 60
     perk_rewards:
       recipes_unlock:
         - planks_oak_6
@@ -191,26 +221,6 @@ perks:
         - planks_warped_6
         - sticks_planks_8
         - sticks_logs_24
-    messages:
-      - "<lang.woodcutting_perk_carpentry_a_messages>"
-    requireperk_all:
-      - woodcutting_perk_3
-    connection_line:
-      '1':
-        position: '2,4'
-        locked: GRAY_DYE:1172701
-        unlockable: ORANGE_DYE:1172801
-        unlocked: LIME_DYE:1172901
-  woodcutting_perk_carpentry_b:
-    icon: OAK_STAIRS
-    coords: "0,3"
-    name: "<lang.woodcutting_perk_carpentry_b_name>"
-    description: "<lang.woodcutting_perk_carpentry_b_description>"
-    cost: 1
-    hidden: false
-    required_lv: 70
-    perk_rewards:
-      recipes_unlock:
         - stairs_oak_8
         - stairs_birch_8
         - stairs_spruce_8
@@ -266,23 +276,38 @@ perks:
         - signs_crimson_12
         - signs_warped_12
     messages:
-      - "<lang.woodcutting_perk_carpentry_b_messages>"
+      - "<lang.woodcutting_perk_carpentry_a_messages>"
     requireperk_all:
-      - woodcutting_perk_carpentry_a
+      - woodcutting_perk_3
     connection_line:
       '1':
-        position: '0,4'
-        locked: GRAY_DYE:1172702
-        unlockable: ORANGE_DYE:1172802
-        unlocked: LIME_DYE:1172902
+        position: '4,5'
+        locked: GRAY_DYE:1172714
+        unlockable: ORANGE_DYE:1172814
+        unlocked: LIME_DYE:1172914
+      '2':
+        position: '4,4'
+        locked: GRAY_DYE:1172721
+        unlockable: ORANGE_DYE:1172821
+        unlocked: LIME_DYE:1172921
+      '3':
+        position: '5,4'
+        locked: GRAY_DYE:1172722
+        unlockable: ORANGE_DYE:1172822
+        unlocked: LIME_DYE:1172922
+      '4':
+        position: '5,3'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
   woodcutting_perk_capitator_a:
     icon: IRON_AXE
-    coords: "5,4"
+    coords: "6,6"
     name: "<lang.woodcutting_perk_capitator_a_name>"
     description: "<lang.woodcutting_perk_capitator_a_description>"
     cost: 1
     hidden: false
-    required_lv: 50
+    required_lv: 60
     perk_rewards:
       woodcutting_treecapitatorcooldown_add: -60
       woodcutting_treecapitatorlimit_add: 24
@@ -290,20 +315,35 @@ perks:
       - "<lang.woodcutting_perk_capitator_a_messages>"
     connection_line:
       '1':
-        position: '4,4'
-        locked: GRAY_DYE:1172701
-        unlockable: ORANGE_DYE:1172801
-        unlocked: LIME_DYE:1172901
+        position: '4,8'
+        locked: GRAY_DYE:1172709
+        unlockable: ORANGE_DYE:1172809
+        unlocked: LIME_DYE:1172909
+      '2':
+        position: '5,8'
+        locked: GRAY_DYE:1172722
+        unlockable: ORANGE_DYE:1172822
+        unlocked: LIME_DYE:1172922
+      '3':
+        position: '5,7'
+        locked: GRAY_DYE:1172721
+        unlockable: ORANGE_DYE:1172821
+        unlocked: LIME_DYE:1172921
+      '4':
+        position: '6,7'
+        locked: GRAY_DYE:1172718
+        unlockable: ORANGE_DYE:1172818
+        unlocked: LIME_DYE:1172918
     requireperk_all:
       - woodcutting_perk_3
   woodcutting_perk_capitator_b:
     icon: DIAMOND_AXE
-    coords: "6,3"
+    coords: "7,4"
     name: "<lang.woodcutting_perk_capitator_b_name>"
     description: "<lang.woodcutting_perk_capitator_b_description>"
     cost: 1
     hidden: false
-    required_lv: 70
+    required_lv: 80
     perk_rewards:
       woodcutting_treecapitatorcooldown_add: -80
       woodcutting_treecapitatorlimit_add: 96
@@ -311,9 +351,60 @@ perks:
       - "<lang.woodcutting_perk_capitator_b_messages>"
     connection_line:
       '1':
-        position: '6,4'
-        locked: GRAY_DYE:1172704
-        unlockable: ORANGE_DYE:1172804
-        unlocked: LIME_DYE:1172904
+        position: '7,6'
+        locked: GRAY_DYE:1172714
+        unlockable: ORANGE_DYE:1172814
+        unlocked: LIME_DYE:1172914
+      '2':
+        position: '7,5'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
     requireperk_all:
       - woodcutting_perk_capitator_a
+  woodcutting_perk_combo:
+    icon: APPLE
+    coords: "0,6"
+    name: "<lang.woodcutting_perk_combo_name>"
+    description: "<lang.woodcutting_perk_combo_description>"
+    cost: 1
+    hidden: false
+    required_lv: 50
+    perk_rewards:
+      power_foodbonusvegetable_add: 0.3
+      power_foodbonusseafood_add: 0.3
+      power_foodbonusmagical_add: 0.3
+      power_foodbonusgrain_add: 0.3
+      power_foodbonusfruit_add: 0.3
+      power_foodbonusnuts_add: 0.3
+      power_foodbonusdairy_add: 0.3
+      power_foodbonusmeat_add: 0.3
+      power_healthregenerationbonus_add: 0.3
+      power_hungersavechance_add: 0.3
+    messages:
+      - "<lang.woodcutting_perk_combo_messages>"
+    other_levels_required:
+      - DIGGING:50
+    connection_line:
+      '1':
+        position: '2,8'
+        locked: GRAY_DYE:1172708
+        unlockable: ORANGE_DYE:1172808
+        unlocked: LIME_DYE:1172908
+      '2':
+        position: '1,8'
+        locked: GRAY_DYE:1172707
+        unlockable: ORANGE_DYE:1172807
+        unlocked: LIME_DYE:1172907
+      '3':
+        position: '0,8'
+        locked: GRAY_DYE:1172720
+        unlockable: ORANGE_DYE:1172820
+        unlocked: LIME_DYE:1172920
+      '4':
+        position: '0,7'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
+    requireperk_all:
+      - woodcutting_perk_2

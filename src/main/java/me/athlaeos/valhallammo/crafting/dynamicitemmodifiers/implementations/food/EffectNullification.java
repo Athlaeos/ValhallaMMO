@@ -59,8 +59,10 @@ public class EffectNullification extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new EffectNullification(getName());
+    public DynamicItemModifier copy() {
+        EffectNullification m = new EffectNullification(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

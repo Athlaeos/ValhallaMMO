@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.potioneffects;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.potioneffects.implementations.*;
 import me.athlaeos.valhallammo.utility.*;
@@ -202,7 +203,7 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("RADIANT_RESISTANCE", (i) -> i >= 0, "\uEE76", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.GOLD_INGOT));
         registerNewEffect(new GenericWrapper("NECROTIC_RESISTANCE", (i) -> i >= 0, "\uEE77", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.BONE));
         registerNewEffect(new Stun("STUN", "\uEE78").addModifier(Material.IRON_BLOCK));
-        registerNewEffect(new GenericWrapper("DURABILITY", (i) -> i >= 0, "\uEE79", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.DIAMOND));
+        registerNewEffect(new GenericWrapper("DURABILITY_MULTIPLIER", (i) -> i >= 0, "\uEE79", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.DIAMOND));
         registerNewEffect(new GenericWrapper("ENTITY_DROPS", (i) -> i >= 0, "\uEE7A", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.CHEST));
         registerNewEffect(new GenericWrapper("LIGHT_ARMOR", (i) -> i >= 0, "\uEE7B", StatFormat.DIFFERENCE_FLOAT_P1).addModifier(Material.CHAINMAIL_CHESTPLATE, 0.1, 1));
         registerNewEffect(new GenericWrapper("HEAVY_ARMOR", (i) -> i >= 0, "\uEE7C", StatFormat.DIFFERENCE_FLOAT_P1).addModifier(Material.IRON_CHESTPLATE, 0.1, 1));
@@ -233,6 +234,12 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("ENTITY_RARE_DROPS", (i) -> i >= 0, "\uEE95", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.CHEST));
         registerNewEffect(new GenericWrapper("DIG_SPEED", (i) -> i >= 0, "\uEE96", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.DIAMOND_PICKAXE));
         // \uEE97 is occupied by mining speed
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
+            registerNewEffect(new GenericWrapper("GENERIC_SCALE", (i) -> i >= 0, "\uEE9A", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.RED_MUSHROOM, 0.01, 0.1));
+            registerNewEffect(new GenericWrapper("GENERIC_BLOCK_INTERACTION_RANGE", (i) -> i >= 0, "\uEE9B", StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.SCAFFOLDING, 0.01, 0.25));
+            registerNewEffect(new GenericWrapper("GENERIC_STEP_HEIGHT", (i) -> i >= 0, "\uEE9C", StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.RABBIT_FOOT, 0.01, 0.1));
+        }
+        registerNewEffect(new GenericWrapper("ATTACK_REACH_MULTIPLIER", (i) -> i >= 0, "\uEE9D", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.ENDER_PEARL));
     }
 
     public static void reload(){

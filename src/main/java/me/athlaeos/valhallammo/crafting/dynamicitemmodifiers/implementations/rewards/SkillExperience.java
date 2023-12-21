@@ -5,6 +5,8 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.MaterialClass;
+import me.athlaeos.valhallammo.skills.skills.implementations.SmithingSkill;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
@@ -28,7 +30,8 @@ public class SkillExperience extends DynamicItemModifier {
         if (!use) return;
         Skill s = SkillRegistry.getSkill(skill);
         if (s == null) return;
-        s.addEXP(crafter, amount * timesExecuted, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+        if (s instanceof SmithingSkill smithing) smithing.addEXP(crafter, amount * timesExecuted, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, MaterialClass.getMatchingClass(outputItem.getMeta()));
+        else s.addEXP(crafter, amount * timesExecuted, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
     @Override
@@ -107,9 +110,16 @@ public class SkillExperience extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.REWARDS.id());
     }
 
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new SkillExperience(getName(), skill);
+    public DynamicItemModifier copy() {
+        SkillExperience m = new SkillExperience(getName(), skill);
+        m.setAmount(this.amount);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

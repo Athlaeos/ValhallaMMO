@@ -37,7 +37,7 @@ public class PlaceholderRegistry {
         registerPlaceholder(new RegionalDifficultyLevelRoundedPlaceholder("%difficulty_regional_rounded%"));
     }
 
-    public void registerPlaceholder(Placeholder p) {
+    public static void registerPlaceholder(Placeholder p) {
         placeholders.put(p.getPlaceholder(), p);
     }
 

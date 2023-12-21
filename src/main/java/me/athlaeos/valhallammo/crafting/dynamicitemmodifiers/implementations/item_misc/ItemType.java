@@ -73,9 +73,16 @@ public class ItemType extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ItemType(getName());
+    public DynamicItemModifier copy() {
+        ItemType m = new ItemType(getName());
+        m.setMaterial(this.material);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

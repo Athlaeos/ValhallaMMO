@@ -71,9 +71,16 @@ public class ToolIdSet extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ToolIdSet(getName());
+    public DynamicItemModifier copy() {
+        ToolIdSet m = new ToolIdSet(getName());
+        m.setId(this.id);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

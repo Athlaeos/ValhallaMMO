@@ -70,8 +70,10 @@ public class DefaultAttributeRemove extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new DefaultAttributeRemove(getName(), attribute, icon);
+    public DynamicItemModifier copy() {
+        DefaultAttributeRemove m = new DefaultAttributeRemove(getName(), attribute, icon);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

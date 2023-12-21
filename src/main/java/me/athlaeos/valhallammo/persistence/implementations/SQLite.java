@@ -4,12 +4,15 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.persistence.Database;
+import me.athlaeos.valhallammo.playerstats.LeaderboardCompatible;
 import me.athlaeos.valhallammo.playerstats.LeaderboardEntry;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
+import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -18,7 +21,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
-public class SQLite extends ProfilePersistence implements Database {
+public class SQLite extends ProfilePersistence implements Database, LeaderboardCompatible {
     private final Map<UUID, Map<Class<? extends Profile>, Profile>> persistentProfiles = new HashMap<>();
     private final Map<UUID, Map<Class<? extends Profile>, Profile>> skillProfiles = new HashMap<>();
     private Connection conn;
@@ -39,7 +42,7 @@ public class SQLite extends ProfilePersistence implements Database {
             }
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
-            ValhallaMMO.logFine("SQLite connection created! Keep in mind a backup called valhallammo_playerdata_backup.db is kept in your server directory in case you accidentally remove the player data file");
+            ValhallaMMO.logFine("SQLite connection created! Deleting this file will reset everyone's progress, so back this file up or ignore it in case you want to delete/reset the configs.");
             return conn;
         } catch (SQLException ex) {
             ValhallaMMO.logSevere("SQLite exception on initialize " + ex);
@@ -68,16 +71,11 @@ public class SQLite extends ProfilePersistence implements Database {
     }
 
     @Override
-    public void queryLeaderboardEntries(Class<? extends Profile> profile, String stat, int page, Action<List<LeaderboardEntry>> callback, Collection<String> extraStats) {
-        Profile p = ProfileRegistry.getRegisteredProfiles().get(profile);
-        SQL.getLeaderboard(conn, SQL.leaderboardQuery(p, stat, page, extraStats), page, callback, extraStats);
-    }
-
-    @Override
     public void setPersistentProfile(Player p, Profile profile, Class<? extends Profile> type) {
         Map<Class<? extends Profile>, Profile> profiles = persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>());
         profiles.put(type, profile);
         persistentProfiles.put(p.getUniqueId(), profiles);
+        ProfilePersistence.scheduleProfilePersisting(p, type);
     }
 
     @Override
@@ -135,6 +133,7 @@ public class SQLite extends ProfilePersistence implements Database {
         for (UUID p : new HashSet<>(persistentProfiles.keySet())){
             Player player = ValhallaMMO.getInstance().getServer().getPlayer(p);
             for (Profile profile : persistentProfiles.get(p).values()){
+                if (!shouldPersist(profile)) continue;
                 try {
                     profile.insertOrUpdateProfile(this);
                 } catch (SQLException e){
@@ -151,6 +150,7 @@ public class SQLite extends ProfilePersistence implements Database {
         if (persistentProfiles.containsKey(p.getUniqueId())){
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (Profile profile : persistentProfiles.get(p.getUniqueId()).values()){
+                    if (!shouldPersist(profile)) continue;
                     try {
                         profile.insertOrUpdateProfile(this);
                     } catch (SQLException e){
@@ -161,5 +161,29 @@ public class SQLite extends ProfilePersistence implements Database {
                 persistentProfiles.remove(p.getUniqueId());
             });
         }
+    }
+
+    @Override
+    public Map<Integer, LeaderboardEntry> queryLeaderboardEntries(LeaderboardManager.Leaderboard leaderboard) {
+        Map<Integer, LeaderboardEntry> entries = new HashMap<>();
+        Profile profile = ProfileRegistry.getRegisteredProfiles().get(leaderboard.profile());
+        try {
+            PreparedStatement stmt = conn.prepareStatement(SQL.leaderboardQuery(profile, leaderboard.mainStat(), leaderboard.extraStats().values()));
+            ResultSet set = stmt.executeQuery();
+            int rank = 1;
+            while (set.next()){
+                double value = set.getDouble("main_stat");
+                UUID uuid = UUID.fromString(set.getString("owner"));
+                OfflinePlayer player = ValhallaMMO.getInstance().getServer().getOfflinePlayer(uuid);
+                Map<String, Double> extraStat = new HashMap<>();
+                for (String e : leaderboard.extraStats().values()) extraStat.put(e, set.getDouble(e));
+                entries.put(rank, new LeaderboardEntry(player.getName(), player.getUniqueId(), value, rank, extraStat));
+                rank++;
+            }
+        } catch (SQLException ex){
+            ValhallaMMO.logWarning("Could not fetch leaderboard due to an exception: ");
+            ex.printStackTrace();
+        }
+        return entries;
     }
 }

@@ -12,6 +12,7 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -217,14 +218,19 @@ public class DamageIndicator extends PluginHook implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onArrowHitDummy(ProjectileHitEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getHitEntity() == null ||
-                e.getHitBlock() != null || !(e.getEntity() instanceof AbstractArrow a)) return;
+                e.getHitBlock() != null || !(e.getEntity() instanceof AbstractArrow a) || !(e.getHitEntity() instanceof LivingEntity l) ||
+                !isDummy(l)) return;
         ItemBuilder stored = ItemUtils.getStoredItem(a);
         if (stored == null) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (a.isValid()) {
-                a.getWorld().dropItem(a.getLocation(), stored.get());
+                if (a.getPickupStatus() == AbstractArrow.PickupStatus.ALLOWED) a.getWorld().dropItem(a.getLocation(), stored.get());
                 a.remove();
             }
         }, 2L);
+    }
+
+    public static void markCrit(Entity crit){
+        if (ValhallaMMO.isHookFunctional(DamageIndicator.class)) critIndicator.add(crit.getUniqueId());
     }
 }

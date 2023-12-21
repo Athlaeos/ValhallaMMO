@@ -109,9 +109,21 @@ public class SkillRequirementAdd extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setLevelRequired(int levelRequired) {
+        this.levelRequired = levelRequired;
+    }
+
+    public void setShouldFulfillAll(boolean shouldFulfillAll) {
+        this.shouldFulfillAll = shouldFulfillAll;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new SkillRequirementAdd(getName(), skill);
+    public DynamicItemModifier copy() {
+        SkillRequirementAdd m = new SkillRequirementAdd(getName(), skill);
+        m.setLevelRequired(this.levelRequired);
+        m.setShouldFulfillAll(this.shouldFulfillAll);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

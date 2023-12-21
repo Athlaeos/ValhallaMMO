@@ -66,9 +66,16 @@ public class ArrowBehaviorLightning extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CUSTOM_ATTRIBUTES.id());
     }
 
+    public void setRequiresRain(boolean requiresRain) {
+        this.requiresRain = requiresRain;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ArrowBehaviorLightning(getName());
+    public DynamicItemModifier copy() {
+        ArrowBehaviorLightning m = new ArrowBehaviorLightning(getName());
+        m.setRequiresRain(this.requiresRain);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

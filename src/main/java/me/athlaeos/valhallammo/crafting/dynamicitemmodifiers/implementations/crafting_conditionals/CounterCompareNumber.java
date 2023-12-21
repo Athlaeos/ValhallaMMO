@@ -77,9 +77,16 @@ public class CounterCompareNumber extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CRAFTING_CONDITIONALS.id());
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new CounterCompareNumber(getName());
+    public DynamicItemModifier copy() {
+        CounterCompareNumber m = new CounterCompareNumber(getName());
+        m.setAmount(this.amount);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

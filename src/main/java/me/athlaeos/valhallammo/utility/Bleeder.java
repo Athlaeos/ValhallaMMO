@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.CombatType;
 import me.athlaeos.valhallammo.event.EntityBleedEvent;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -31,7 +32,7 @@ public class Bleeder {
     private static final int maxStacks = ValhallaMMO.getPluginConfig().getInt("bleed_max_stacks", 5);
 
     public static void reload(){
-        delay = ConfigManager.getConfig("config.yml").get().getInt("bleed_delay", 40);
+        delay = ConfigManager.getConfig("config.yml").reload().get().getInt("bleed_delay", 40);
     }
 
     /**
@@ -75,6 +76,8 @@ public class Bleeder {
     public static void inflictBleed(LivingEntity bleeder, Entity causedBy, int duration, double damage, int stacks, CombatType combatType){
         if (damage <= 0) return;
         if (bleeder instanceof Player p && (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR)) return;
+        if (bleeder instanceof Player p && WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_BLEED)) return;
+        else if (WorldGuardHook.inDisabledRegion(bleeder.getLocation(), WorldGuardHook.VMMO_COMBAT_BLEED)) return;
         BleedingInstance instance = bleedingEntities.get(bleeder.getUniqueId());
         double resistance = AccumulativeStatManager.getRelationalStats("BLEED_RESISTANCE", bleeder, causedBy, true);
         EntityBleedEvent event = new EntityBleedEvent(bleeder, causedBy, combatType, damage, resistance, duration, stacks);

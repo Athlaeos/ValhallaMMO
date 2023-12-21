@@ -113,9 +113,26 @@ public class PotionEffectAdd extends DynamicItemModifier {
         return effect.isVanilla() ? Set.of(ModifierCategoryRegistry.VANILLA_POTION_EFFECTS.id()) : Set.of(ModifierCategoryRegistry.CUSTOM_POTION_EFFECTS.id());
     }
 
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public void setCharges(int charges) {
+        this.charges = charges;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new PotionEffectAdd(getName(), effect, smallIncrement, bigIncrement, icon);
+    public DynamicItemModifier copy() {
+        PotionEffectAdd m = new PotionEffectAdd(getName(), effect, smallIncrement, bigIncrement, icon);
+        m.setCharges(this.charges);
+        m.setDuration(this.duration);
+        m.setValue(this.value);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

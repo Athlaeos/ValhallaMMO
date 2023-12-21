@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.LeaderboardEntry;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
+import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
@@ -25,6 +26,7 @@ public class PDC extends ProfilePersistence {
         Map<Class<? extends Profile>, Profile> profiles = persistentProfiles.get(p.getUniqueId());
         profiles.put(type, profile);
         persistentProfiles.put(p.getUniqueId(), profiles);
+        ProfilePersistence.scheduleProfilePersisting(p, type);
     }
 
     @Override
@@ -32,11 +34,6 @@ public class PDC extends ProfilePersistence {
         Map<Class<? extends Profile>, Profile> profiles = skillProfiles.get(p.getUniqueId());
         profiles.put(type, profile);
         skillProfiles.put(p.getUniqueId(), profiles);
-    }
-
-    @Override
-    public void queryLeaderboardEntries(Class<? extends Profile> profile, String stat, int page, Action<List<LeaderboardEntry>> callback, Collection<String> extraStats) {
-
     }
 
     @SuppressWarnings("unchecked")

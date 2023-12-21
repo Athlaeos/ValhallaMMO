@@ -12,7 +12,7 @@ public class ModifierScalingPresets {
     private static final Map<String, Scaling> scalings = new TreeMap<>();
 
     public static void loadScalings(){
-        YamlConfiguration config = ConfigManager.getConfig("scaling_presets.yml").get();
+        YamlConfiguration config = ConfigManager.getConfig("scaling_presets.yml").reload().get();
 
         ConfigurationSection scalingSection = config.getConfigurationSection("scalings");
         if (scalingSection == null) return;

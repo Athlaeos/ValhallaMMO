@@ -68,8 +68,10 @@ public class PotionTypeForbidden extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new PotionTypeForbidden(getName(), type);
+    public DynamicItemModifier copy() {
+        PotionTypeForbidden m = new PotionTypeForbidden(getName(), type);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

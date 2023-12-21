@@ -8,7 +8,6 @@ conversions:
       # If there's a 'c:' before the material, it's marked to be consumed on usage
       # If the consumed item is a damageable tool, it's instead damaged by 1 or broken
       c:WHEAT_SEEDS: -1
-      c:BONE_MEAL: -1
       c:KELP: -1
   mossify_stone:
     from: STONE
@@ -16,14 +15,12 @@ conversions:
     sound: ITEM_CROP_PLANT
     with:
       c:WHEAT_SEEDS: -1
-      c:BONE_MEAL: -1
       c:KELP: -1
-  grow_grass_from:
+  grow_grass:
     from: DIRT
     to: GRASS_BLOCK
     sound: ITEM_CROP_PLANT
     with:
-      c:BONE_MEAL: -1
       c:KELP: -1
   mossify_bricks:
     from: STONE_BRICKS
@@ -31,7 +28,6 @@ conversions:
     sound: ITEM_CROP_PLANT
     with:
       c:WHEAT_SEEDS: -1
-      c:BONE_MEAL: -1
       c:KELP: -1
   damage_bricks:
     from: STONE_BRICKS

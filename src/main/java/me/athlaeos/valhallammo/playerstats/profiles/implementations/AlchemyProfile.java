@@ -16,9 +16,9 @@ import java.util.Collection;
 @SuppressWarnings("unused")
 public class AlchemyProfile extends Profile {
     {
-        intStat("genericBrewingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("buffBrewingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        intStat("debuffBrewingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("genericBrewingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("buffBrewingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("debuffBrewingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
 
         floatStat("genericBrewingSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("buffBrewingSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
@@ -41,7 +41,7 @@ public class AlchemyProfile extends Profile {
         intStat("transmutationRadius", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
         stringSetStat("unlockedTransmutations");
 
-        doubleStat("alchemyEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        doubleStat("alchemyEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
     }
 
     public int getTransmutationRadius() { return getInt("transmutationRadius"); }

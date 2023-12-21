@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.event.ValhallaLootPopulateEvent;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.listeners.LootListener;
 import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
@@ -47,8 +48,8 @@ public class FishingSkill extends Skill implements Listener {
         ValhallaMMO.getInstance().save("skills/fishing_progression.yml");
         ValhallaMMO.getInstance().save("skills/fishing.yml");
 
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/fishing.yml").reload().get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/fishing_progression.yml").reload().get();
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/fishing.yml").get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/fishing_progression.yml").get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -78,7 +79,9 @@ public class FishingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void baitChecker(PlayerFishEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() || e.getState() != PlayerFishEvent.State.CAUGHT_FISH) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() ||
+                e.getState() != PlayerFishEvent.State.CAUGHT_FISH ||
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FISHING)) return;
 
         for (int i = 0; i < e.getPlayer().getInventory().getContents().length; i++){
             ItemStack at = e.getPlayer().getInventory().getItem(i);
@@ -96,7 +99,9 @@ public class FishingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onCatch(PlayerFishEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())  || e.isCancelled() || !(e.getState() == PlayerFishEvent.State.FISHING || e.getState() == PlayerFishEvent.State.CAUGHT_FISH)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() ||
+                !(e.getState() == PlayerFishEvent.State.FISHING || e.getState() == PlayerFishEvent.State.CAUGHT_FISH) ||
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FISHING)) return;
         FishingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FishingProfile.class);
         if (e.getState() == PlayerFishEvent.State.FISHING) {
             double multiplier = (1 / (1 + Math.max(-0.999, profile.getFishingSpeedBonus())));
@@ -118,7 +123,7 @@ public class FishingSkill extends Skill implements Listener {
                     else at.setAmount(at.getAmount() - 1);
                 }
             }
-            e.setExpToDrop(Utils.randomAverage(e.getExpToDrop() * (1 + extraCatches) * (1 + profile.getFishingExperienceMultiplier())));
+            e.setExpToDrop(Utils.randomAverage(e.getExpToDrop() * (1 + extraCatches) * (1 + profile.getFishingEssenceMultiplier())));
 
             if (!(e.getCaught() instanceof Item item) || !ItemUtils.isEmpty(item.getItemStack())) return;
             double exp = dropsExpValues.getOrDefault(item.getItemStack().getType(), 0D) * item.getItemStack().getAmount();
@@ -152,6 +157,7 @@ public class FishingSkill extends Skill implements Listener {
 
     @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_FISHING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
             amount *= (1 + AccumulativeStatManager.getStats("FISHING_EXP_GAIN", p, true));
         }

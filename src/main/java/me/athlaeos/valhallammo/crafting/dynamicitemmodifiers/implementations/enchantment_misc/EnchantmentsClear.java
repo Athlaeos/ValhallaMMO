@@ -77,9 +77,16 @@ public class EnchantmentsClear extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ENCHANTMENT_MISC.id());
     }
 
+    public void setIgnoreCursed(boolean ignoreCursed) {
+        this.ignoreCursed = ignoreCursed;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new EnchantmentsClear(getName());
+    public DynamicItemModifier copy() {
+        EnchantmentsClear m = new EnchantmentsClear(getName());
+        m.setIgnoreCursed(this.ignoreCursed);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

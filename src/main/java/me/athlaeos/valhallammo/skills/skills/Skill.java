@@ -62,7 +62,7 @@ public abstract class Skill {
     protected BarColor expBarColor;
     protected BarStyle expBarStyle;
     protected String expBarTitle;
-
+    protected boolean isNavigable;
 
     /**
      * If true, the skill is intended to be interacted with and progressed through. If not, the skill is intended
@@ -102,10 +102,6 @@ public abstract class Skill {
         return centerX;
     }
 
-    public void setCenterX(int centerX) {
-        this.centerX = centerX;
-    }
-
     /**
      * @return The starting Y coordinate when the menu is first opened. The top-left corner is X0, Y0.
      * Going right from there is positive X, going down is positive Y.
@@ -122,10 +118,6 @@ public abstract class Skill {
         return centerY;
     }
 
-    public void setCenterY(int centerY) {
-        this.centerY = centerY;
-    }
-
     public BarColor getExpBarColor() {
         return expBarColor;
     }
@@ -137,6 +129,7 @@ public abstract class Skill {
     public String getExpBarTitle() {
         return expBarTitle;
     }
+    public boolean isNavigable() { return isNavigable; }
 
     public String getExpStatus() {
         return TranslationManager.getTranslation("status_experience_gained");
@@ -170,6 +163,7 @@ public abstract class Skill {
         this.description = Utils.chat(TranslationManager.translatePlaceholders(baseSkillConfig.getString("description")));
         this.icon = ItemUtils.getIconFromConfig(baseSkillConfig, "icon", getClass().getSimpleName() + " skill config", new ItemStack(Material.BARRIER));
         this.requiredPermission = baseSkillConfig.getString("permission");
+        this.isNavigable = progressionConfig.getBoolean("navigable", true);
 
         int modelData = baseSkillConfig.getInt("icon_data", -1);
         if (modelData >= 0){
@@ -668,6 +662,10 @@ public abstract class Skill {
                 }
             }
 
+            for (String message : levelingMessages){
+                Utils.sendMessage(p, TranslationManager.translatePlaceholders(message).replace("%level%", String.valueOf(to)));
+            }
+
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (int i = from + 1; i <= to; i++) {
                     for (PerkReward reward : levelingPerks) {
@@ -748,7 +746,7 @@ public abstract class Skill {
         }
     }
 
-    private final boolean perksForgettable = ConfigManager.getConfig("config.yml").get().getBoolean("forgettable_perks");
+    private final boolean perksForgettable = ConfigManager.getConfig("config.yml").reload().get().getBoolean("forgettable_perks");
 
     /**
      * if true, players that level downwards will forget perks if they no longer meet their perk requirements (level & perk dependencies)

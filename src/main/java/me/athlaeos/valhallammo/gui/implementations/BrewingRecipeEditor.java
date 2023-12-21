@@ -190,13 +190,13 @@ public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
         super(playerMenuUtility);
         this.recipe = new DynamicBrewingRecipe(newName);
 
-        this.ingredient = recipe.getIngredient();
-        this.applyOn = recipe.getApplyOn();
-        this.result = recipe.getResult();
+        this.ingredient = new SlotEntry(recipe.getIngredient().getItem().clone(), recipe.getIngredient().getOption());
+        this.applyOn = new SlotEntry(recipe.getApplyOn().getItem().clone(), recipe.getApplyOn().getOption());
+        this.result = recipe.getResult().clone();
         this.requireValhallaTools = recipe.requireValhallaTools();
         this.tinker = recipe.tinker();
         this.consumeIngredient = recipe.consumeIngredient();
-        this.modifiers = recipe.getModifiers();
+        this.modifiers = new ArrayList<>(recipe.getModifiers().stream().map(DynamicItemModifier::copy).toList());
         this.unlockedForEveryone = recipe.isUnlockedForEveryone();
         this.brewTime = recipe.getBrewTime();
         this.displayName = recipe.getDisplayName();

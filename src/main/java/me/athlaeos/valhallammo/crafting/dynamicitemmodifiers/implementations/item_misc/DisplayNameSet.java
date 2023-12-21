@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 
 public class DisplayNameSet extends DynamicItemModifier {
-    private String name;
+    private String displayName;
 
     public DisplayNameSet(String name) {
         super(name);
@@ -24,18 +24,18 @@ public class DisplayNameSet extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        outputItem.name(name);
+        outputItem.name(displayName);
     }
 
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
         if (button == 12) {
             ItemStack cursor = e.getCursor();
-            if (ItemUtils.isEmpty(cursor)) name = null;
+            if (ItemUtils.isEmpty(cursor)) displayName = null;
             else {
                 ItemMeta meta = cursor.getItemMeta();
-                if (meta != null && meta.hasDisplayName()) name = meta.getDisplayName();
-                else name = null;
+                if (meta != null && meta.hasDisplayName()) displayName = meta.getDisplayName();
+                else displayName = null;
             }
         }
     }
@@ -45,7 +45,8 @@ public class DisplayNameSet extends DynamicItemModifier {
         return new Pair<>(12,
                 new ItemBuilder(Material.INK_SAC)
                         .name("&eWhat should the name be?")
-                        .lore("&6Click with another named item",
+                        .lore("&fSet to " + displayName,
+                                "&6Click with another named item",
                                 "&6to copy the name over.",
                                 "&6Or with empty cursor to reset",
                                 "&6the name back to nothing.")
@@ -69,7 +70,7 @@ public class DisplayNameSet extends DynamicItemModifier {
 
     @Override
     public String getActiveDescription() {
-        return "&fChanges the display name of the item to " + (name == null ? "nothing" : name);
+        return "&fChanges the display name of the item to " + (displayName == null ? "nothing" : displayName);
     }
 
     @Override
@@ -77,16 +78,23 @@ public class DisplayNameSet extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new DisplayNameSet(getName());
+    public DynamicItemModifier copy() {
+        DisplayNameSet m = new DisplayNameSet(getName());
+        m.setDisplayName(this.displayName);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 1) return "You must indicate the new name of the item, or 'null' for nothing";
-        if (args[0].equalsIgnoreCase("null")) name = null;
-        else name = Utils.chat(args[0]);
+        if (args[0].equalsIgnoreCase("null")) displayName = null;
+        else displayName = Utils.chat(args[0]);
         return null;
     }
 

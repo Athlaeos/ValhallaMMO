@@ -62,7 +62,7 @@ public class ImmersiveRecipeCategory extends RecipeCategory{
             } else lore.add("&fNo special conditions required");
             lore.add("&8&m                <>                ");
 
-            recipe.getModifiers().forEach(m -> lore.add(m.getActiveDescription()));
+            recipe.getModifiers().forEach(m -> lore.addAll(StringUtils.separateStringIntoLines(m.getActiveDescription(), 40)));
 
             icons.add(new ItemBuilder(recipe.getResult().getType())
                     .name("&f" + recipe.getName())

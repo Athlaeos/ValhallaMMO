@@ -35,7 +35,7 @@ public class EconomyExpense implements ResourceExpense {
         e.depositPlayer(p, cost);
     }
 
-    private final boolean refundable = ConfigManager.getConfig("config.yml").get().getBoolean("forgettable_perks_refund_money");
+    private final boolean refundable = ConfigManager.getConfig("config.yml").reload().get().getBoolean("forgettable_perks_refund_money");
     @Override
     public boolean isRefundable() {
         return refundable;

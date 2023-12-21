@@ -19,8 +19,8 @@ public class GlobalEffect extends BukkitRunnable {
 
     private static final Map<String, EffectProperties> activeGlobalEffects = new HashMap<>();
     private static final Collection<String> validEffects = new HashSet<>();
-    private static final int globalbuff_bossbar_duration = ConfigManager.getConfig("config.yml").get().getInt("globalbuff_bossbar_duration", 10);
-    private static final int globalbuff_cycle_pause = ConfigManager.getConfig("config.yml").get().getInt("globalbuff_cycle_pause", 300);
+    private static final int globalbuff_bossbar_duration = ConfigManager.getConfig("config.yml").reload().get().getInt("globalbuff_bossbar_duration", 10);
+    private static final int globalbuff_cycle_pause = ConfigManager.getConfig("config.yml").reload().get().getInt("globalbuff_cycle_pause", 300);
 
     public GlobalEffect(){
         this.runTaskTimer(ValhallaMMO.getInstance(), 1L, 20L);
@@ -135,7 +135,7 @@ public class GlobalEffect extends BukkitRunnable {
     }
 
     public static void saveActiveGlobalEffects(){
-        YamlConfiguration config = ConfigManager.getConfig("global_effects.yml").get();
+        YamlConfiguration config = ConfigManager.getConfig("global_effects.yml").reload().get();
         ConfigurationSection section = config.getConfigurationSection("active_effects");
         if (section != null){
             section.getKeys(false).forEach(s -> config.set("active_effects." + s, null));
@@ -156,7 +156,7 @@ public class GlobalEffect extends BukkitRunnable {
     }
 
     public static void loadActiveGlobalEffects(){
-        YamlConfiguration config = ConfigManager.getConfig("global_effects.yml").get();
+        YamlConfiguration config = ConfigManager.getConfig("global_effects.yml").reload().get();
         ConfigurationSection section = config.getConfigurationSection("active_effects");
         if (section != null){
             for (String effect : section.getKeys(false)){

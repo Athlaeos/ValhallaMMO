@@ -71,9 +71,16 @@ public class AlchemyQualityAdd extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.POTION_MISC.id());
     }
 
+    public void setQuality(int quality) {
+        this.quality = quality;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new AlchemyQualityAdd(getName());
+    public DynamicItemModifier copy() {
+        AlchemyQualityAdd m = new AlchemyQualityAdd(getName());
+        m.setQuality(this.quality);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

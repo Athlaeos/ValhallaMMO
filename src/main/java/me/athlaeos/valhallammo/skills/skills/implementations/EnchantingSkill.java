@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.EnchantmentClassification;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.item.*;
@@ -58,7 +59,7 @@ public class EnchantingSkill extends Skill implements Listener {
     private Animation elementalBladeActivationAnimation = AnimationRegistry.ELEMENTAL_BLADE_ACTIVATION;
     private Animation elementaBladeExpirationAnimation = AnimationRegistry.ELEMENTAL_BLADE_EXPIRATION;
 
-    public void setElementaBladeExpirationAnimation(Animation elementaBladeExpirationAnimation) {
+    public void setElementalBladeExpirationAnimation(Animation elementaBladeExpirationAnimation) {
         this.elementaBladeExpirationAnimation = elementaBladeExpirationAnimation;
     }
 
@@ -71,8 +72,8 @@ public class EnchantingSkill extends Skill implements Listener {
         ValhallaMMO.getInstance().save("skills/enchanting_progression.yml");
         ValhallaMMO.getInstance().save("skills/enchanting.yml");
 
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/enchanting.yml").reload().get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/enchanting_progression.yml").reload().get();
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/enchanting.yml").get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/enchanting_progression.yml").get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -137,6 +138,7 @@ public class EnchantingSkill extends Skill implements Listener {
 
     @EventHandler
     public void onGrindstoneUsage(InventoryClickEvent e){
+        if (WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         if (e.getClickedInventory() instanceof GrindstoneInventory && !e.isCancelled()){
             Timer.setCooldown(e.getWhoClicked().getUniqueId(), 5000, "cancel_essence_multiplication");
         }
@@ -164,6 +166,7 @@ public class EnchantingSkill extends Skill implements Listener {
 
     @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
             amount *= (1 + AccumulativeStatManager.getStats("ENCHANTING_EXP_GAIN", p, true));
         }
@@ -177,7 +180,8 @@ public class EnchantingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEnchantItem(EnchantItemEvent e) {
-        if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName()) || e.isCancelled() ||
+                WorldGuardHook.inDisabledRegion(e.getEnchanter().getLocation(), e.getEnchanter(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         Player enchanter = e.getEnchanter();
         ItemBuilder item = new ItemBuilder(e.getItem());
         if (CustomFlag.hasFlag(item.getMeta(), CustomFlag.UNENCHANTABLE)) {
@@ -214,19 +218,41 @@ public class EnchantingSkill extends Skill implements Listener {
             e.getEnchantsToAdd().put(en, Math.max(1, e.getEnchantsToAdd().get(en) + enchantmentBonus));
         }
 
-        addEXP(enchanter, EXPForEnchantments(enchanter, e.getEnchantsToAdd()), false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+        double exp = EXPForEnchantments(enchanter, e.getEnchantsToAdd());
+        if (doDiminishingReturnsApply(enchanter)){
+            exp *= diminishingReturnsMultiplier;
+            reduceTallyCounter(enchanter);
+        }
+        addEXP(enchanter, exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
         storedEnchantmentOffers.remove(enchanter.getUniqueId());
         enchantmentOfferSkillLevels.remove(enchanter.getUniqueId());
+
+        if (e.getEnchanter().getGameMode() == GameMode.CREATIVE) return;
+        int consumed = e.whichButton() + 1;
+        consumed = Utils.randomAverage(consumed * profile.getLapisSaveChance());
+        if (consumed <= 0) return;
+        ItemStack slot = e.getInventory().getItem(1);
+        ItemStack lapis = new ItemStack(Material.LAPIS_LAZULI, consumed);
+        if (ItemUtils.isEmpty(slot)) e.getInventory().setItem(1, lapis);
+        else {
+            if (slot.isSimilar(lapis) && slot.getAmount() + lapis.getAmount() <= lapis.getType().getMaxStackSize()){
+                slot.setAmount(slot.getAmount() + lapis.getAmount());
+            } else {
+                ItemUtils.addItem(e.getEnchanter(), lapis, true);
+            }
+        }
     }
 
     private static final Collection<UUID> activeElementalBlade = new HashSet<>();
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onAttack(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !EntityDamagedListener.getEntityDamageCauses().contains(e.getCause().toString())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
+                !EntityDamagedListener.getEntityDamageCauses().contains(e.getCause().toString())) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
         if (!(trueDamager instanceof Player p) || !(e.getEntity() instanceof LivingEntity v)) return;
+        if (WorldGuardHook.inDisabledRegion(e.getDamager().getLocation(), p, WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         EnchantingProfile profile = ProfileCache.getOrCache(p, EnchantingProfile.class);
         if (profile.getElementalDamageTypes().isEmpty()) return;
 
@@ -275,6 +301,7 @@ public class EnchantingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onHandSwap(PlayerSwapHandItemsEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
+        if (WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_hand_swap")) return; // to prevent spam, a cooldown of 0.5 seconds is applied
         if (EquipmentClass.isHandHeld(ItemUtils.getItemMeta(e.getMainHandItem()))) return; // if the item has no attack damage attribute, it is not considered a handheld weapo
         EnchantingProfile profile = ProfileCache.getOrCache(e.getPlayer(), EnchantingProfile.class);
@@ -295,17 +322,16 @@ public class EnchantingSkill extends Skill implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onEntityKilled(EntityDeathEvent event) {
-        if (event.getEntity().getKiller() == null) return;
-        incrementMobTally(event.getEntity().getKiller(), event.getEntityType());
+    public void onEntityKilled(EntityDeathEvent e) {
+        if (e.getEntity().getKiller() == null) return;
+        if (diminishingReturnsEntities.contains(e.getEntityType())) incrementMobTally(e.getEntity().getKiller(), e.getEntityType());
 
-        if (entityEXPMultipliers.containsKey(event.getEntityType())){
-            event.setDroppedExp(Utils.randomAverage(event.getDroppedExp() * entityEXPMultipliers.get(event.getEntityType())));
-        }
+        e.setDroppedExp(Utils.randomAverage(e.getDroppedExp() * entityEXPMultipliers.getOrDefault(e.getEntityType(), 1D)));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onExpAbsorb(PlayerExpChangeEvent e){
+        if (WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cancel_essence_multiplication")) return;
         double multiplier = 1 + AccumulativeStatManager.getCachedStats("ENCHANTING_VANILLA_EXP_GAIN", e.getPlayer(), 10000, true);
         e.setAmount(Utils.randomAverage(e.getAmount() * multiplier));
@@ -332,11 +358,12 @@ public class EnchantingSkill extends Skill implements Listener {
 
     @SuppressWarnings("all")
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onAnvilUsage(PrepareAnvilEvent event) {
-        Player combiner = (Player) event.getView().getPlayer();
-        ItemStack i1 = event.getInventory().getItem(0);
-        ItemStack i2 = event.getInventory().getItem(1);
-        ItemStack r = event.getResult();
+    public void onAnvilUsage(PrepareAnvilEvent e) {
+        Player combiner = (Player) e.getView().getPlayer();
+        if (WorldGuardHook.inDisabledRegion(combiner.getLocation(), combiner, WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
+        ItemStack i1 = e.getInventory().getItem(0);
+        ItemStack i2 = e.getInventory().getItem(1);
+        ItemStack r = e.getResult();
         if (!ItemUtils.isEmpty(i1) && !ItemUtils.isEmpty(i2) && !ItemUtils.isEmpty(r)) {
             ItemBuilder item1 = new ItemBuilder(i1);
             ItemBuilder item2 = new ItemBuilder(i2);
@@ -353,9 +380,9 @@ public class EnchantingSkill extends Skill implements Listener {
             if (CustomFlag.hasFlag(item1.getMeta(), CustomFlag.UNENCHANTABLE) || CustomFlag.hasFlag(item2.getMeta(), CustomFlag.UNENCHANTABLE)){
                 boolean matches = r.getEnchantments().size() == i1.getEnchantments().size();
                 if (matches){
-                    for (Enchantment e : i1Enchantments.keySet()){
-                        if (resultEnchantments.getOrDefault(e, -1).intValue() != i1Enchantments.get(e).intValue()){
-                            event.setResult(null);
+                    for (Enchantment en : i1Enchantments.keySet()){
+                        if (resultEnchantments.getOrDefault(en, -1).intValue() != i1Enchantments.get(en).intValue()){
+                            e.setResult(null);
                             return;
                         }
                     }
@@ -373,9 +400,9 @@ public class EnchantingSkill extends Skill implements Listener {
                 skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY_ANVIL", combiner, 10000, true)));
 
                 EnchantingProfile profile = ProfileCache.getOrCache(combiner, EnchantingProfile.class);
-                for (Enchantment e : Enchantment.values()) {
-                    int enchantmentBonus = profile.getEnchantmentBonus(e) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(e));
-                    maxLevels.put(e, e.getMaxLevel() == 1 ? 1 : creative ? Integer.MAX_VALUE : (EnchantingItemPropertyManager.getScaledAnvilLevel(e, skill) + enchantmentBonus));
+                for (Enchantment en : Enchantment.values()) {
+                    int enchantmentBonus = profile.getEnchantmentBonus(en) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(en));
+                    maxLevels.put(en, en.getMaxLevel() == 1 ? 1 : creative ? Integer.MAX_VALUE : (EnchantingItemPropertyManager.getScaledAnvilLevel(en, skill) + enchantmentBonus));
                 }
                 anvilMaxLevelCache.put(combiner.getUniqueId(), maxLevels);
             } else {
@@ -389,21 +416,21 @@ public class EnchantingSkill extends Skill implements Listener {
                 }
             }
 
-            event.getInventory().setMaximumRepairCost(Integer.MAX_VALUE); // i don't even remember why this is here
+            e.getInventory().setMaximumRepairCost(Integer.MAX_VALUE); // i don't even remember why this is here
             combiner.updateInventory();
 
             Map<Enchantment, Integer> newEnchantments = combineEnchantments(i1Enchantments, i2Enchantments, maxLevels);
             result.disEnchant();
-            for (Enchantment e : resultEnchantments.keySet()){
-                if (newEnchantments.containsKey(e)) {
-                    result.enchant(e, newEnchantments.get(e));
+            for (Enchantment en : resultEnchantments.keySet()){
+                if (newEnchantments.containsKey(en)) {
+                    result.enchant(en, newEnchantments.get(en));
                 }
             }
 
-            event.setResult(result.get());
+            e.setResult(result.get());
 
-            if (event.getInventory().getRepairCost() >= 40){
-                event.getInventory().setRepairCost(39);
+            if (e.getInventory().getRepairCost() >= 40){
+                e.getInventory().setRepairCost(39);
             }
 
             combiner.updateInventory();

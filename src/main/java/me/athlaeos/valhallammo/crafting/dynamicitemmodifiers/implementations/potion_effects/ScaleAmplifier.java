@@ -38,7 +38,7 @@ public class ScaleAmplifier extends DynamicItemModifier {
     private double minimum = 1;
     private String skillToScaleWith = "ALCHEMY";
 
-    private double skillEfficiency = 0.5;
+    private double skillEfficiency = 1;
     private double minimumValue = 0;
 
     public ScaleAmplifier(String name) {
@@ -276,9 +276,79 @@ public class ScaleAmplifier extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.POTION_MISC.id());
     }
 
+    public void setSkillEfficiency(double skillEfficiency) {
+        this.skillEfficiency = skillEfficiency;
+    }
+
+    public void setLowerBound(Double lowerBound) {
+        this.lowerBound = lowerBound;
+    }
+
+    public void setUpperBound(Double upperBound) {
+        this.upperBound = upperBound;
+    }
+
+    public void setAmplifier(double amplifier) {
+        this.amplifier = amplifier;
+    }
+
+    public void setCommandScaling(String commandScaling) {
+        this.commandScaling = commandScaling;
+    }
+
+    public void setMinimum(double minimum) {
+        this.minimum = minimum;
+    }
+
+    public void setMinimumValue(double minimumValue) {
+        this.minimumValue = minimumValue;
+    }
+
+    public void setMode(Scaling.ScalingMode mode) {
+        this.mode = mode;
+    }
+
+    public void setPresetScaling(String presetScaling) {
+        this.presetScaling = presetScaling;
+    }
+
+    public void setRangeOffset(double rangeOffset) {
+        this.rangeOffset = rangeOffset;
+    }
+
+    public void setSkillRange(double skillRange) {
+        this.skillRange = skillRange;
+    }
+
+    public void setSkillToScaleWith(String skillToScaleWith) {
+        this.skillToScaleWith = skillToScaleWith;
+    }
+
+    public double getRangeOffset() {
+        return rangeOffset;
+    }
+
+    public String getPresetScaling() {
+        return presetScaling;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ScaleAmplifier(getName());
+    public DynamicItemModifier copy() {
+        ScaleAmplifier m = new ScaleAmplifier(getName());
+        m.setPresetScaling(this.presetScaling);
+        m.setAmplifier(this.amplifier);
+        m.setCommandScaling(this.commandScaling);
+        m.setMinimum(this.minimum);
+        m.setLowerBound(this.lowerBound);
+        m.setMinimumValue(this.minimumValue);
+        m.setMode(this.mode);
+        m.setRangeOffset(this.rangeOffset);
+        m.setSkillEfficiency(this.skillEfficiency);
+        m.setSkillRange(this.skillRange);
+        m.setSkillToScaleWith(this.skillToScaleWith);
+        m.setUpperBound(this.upperBound);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

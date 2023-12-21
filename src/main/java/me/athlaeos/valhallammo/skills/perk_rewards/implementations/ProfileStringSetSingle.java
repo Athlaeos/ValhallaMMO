@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.skills.perk_rewards.implementations;
 
+import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
@@ -55,7 +56,7 @@ public class ProfileStringSetSingle extends PerkReward {
     }
 
     @Override
-    public String rewardPlacholder() {
+    public String rewardPlaceholder() {
         return "";
     }
 

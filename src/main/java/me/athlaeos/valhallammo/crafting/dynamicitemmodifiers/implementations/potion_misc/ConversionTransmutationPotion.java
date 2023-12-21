@@ -60,8 +60,10 @@ public class ConversionTransmutationPotion extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new ConversionTransmutationPotion(getName());
+    public DynamicItemModifier copy() {
+        ConversionTransmutationPotion m = new ConversionTransmutationPotion(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

@@ -261,18 +261,18 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
         super(playerMenuUtility);
         this.recipe = new ImmersiveCraftingRecipe(newName);
 
-        this.ingredients = recipe.getIngredients();
+        this.ingredients = new HashMap<>(recipe.getIngredients());
         this.metaRequirement = recipe.getMetaRequirement();
         this.block = recipe.getBlock();
         this.timeToCraft = recipe.getTimeToCraft();
         this.destroyStation = recipe.destroysStation();
-        this.modifiers = recipe.getModifiers();
-        this.tinkerInput = recipe.getTinkerInput();
-        this.result = recipe.getResult();
+        this.modifiers = new ArrayList<>(recipe.getModifiers().stream().map(DynamicItemModifier::copy).toList());
+        this.tinkerInput = new SlotEntry(recipe.getTinkerInput().getItem().clone(), recipe.getTinkerInput().getOption());
+        this.result = recipe.getResult().clone();
         this.tinker = recipe.tinker();
         this.requireValhallaTools = recipe.requiresValhallaTools();
-        this.validations = recipe.getValidations();
-        this.toolRequirement = recipe.getToolRequirement();
+        this.validations = new HashSet<>(recipe.getValidations());
+        this.toolRequirement = new ToolRequirement(recipe.getToolRequirement().getToolRequirementType(), recipe.getToolRequirement().getRequiredToolID());
         this.consecutiveCrafts = recipe.getConsecutiveCrafts();
         this.unlockedForEveryone = recipe.isUnlockedForEveryone();
         this.displayName = recipe.getDisplayName();

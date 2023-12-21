@@ -12,6 +12,9 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Orientable;
+import org.bukkit.block.data.type.Slab;
+import org.bukkit.block.data.type.Stairs;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -38,7 +41,7 @@ public class BlockInteractConversions {
     }
 
     public static void loadConversions(){
-        YamlConfiguration config = ConfigManager.getConfig("block_conversions.yml").get();
+        YamlConfiguration config = ConfigManager.getConfig("block_conversions.yml").reload().get();
 
         ConfigurationSection conversionSection = config.getConfigurationSection("conversions");
         if (conversionSection != null){
@@ -111,6 +114,9 @@ public class BlockInteractConversions {
                     user, true, mainHand ? EquipmentSlot.HAND : EquipmentSlot.OFF_HAND);
             ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
             if (event.isCancelled()) return false;
+            if (clicked.getBlockData() instanceof Stairs s1) ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> { if (clicked.getBlockData() instanceof Stairs s2) s2.setShape(s1.getShape()); },1L);
+            if (clicked.getBlockData() instanceof Slab s1) ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> { if (clicked.getBlockData() instanceof Slab s2) s2.setType(s1.getType()); },1L);
+
             clicked.setType(conversion.to);
             if (conversion.sound != null) user.playSound(user.getLocation(), conversion.sound, 1F, 1F);
             if (!data.getTwo()) return true;

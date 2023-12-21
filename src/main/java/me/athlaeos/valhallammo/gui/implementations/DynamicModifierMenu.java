@@ -205,7 +205,7 @@ public class DynamicModifierMenu extends Menu {
         Map<String, DynamicItemModifier> modifiers = ModifierRegistry.getModifiers();
         Collection<String> currentStringModifiers = currentModifiers.stream().map(DynamicItemModifier::getName).collect(Collectors.toSet());
         List<DynamicItemModifier> sortedModifiers = new ArrayList<>(modifiers.values());
-        sortedModifiers.sort(Comparator.comparing(DynamicItemModifier::getName));
+        sortedModifiers.sort(Comparator.comparing(DynamicItemModifier::getDisplayName));
 
         List<ItemStack> totalModifierButtons = new ArrayList<>();
         for (DynamicItemModifier modifier : sortedModifiers){

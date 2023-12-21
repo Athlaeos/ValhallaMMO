@@ -111,9 +111,16 @@ public class SmithingTagsCancelIfPresent extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CRAFTING_CONDITIONALS.id());
     }
 
+    public Collection<Integer> getTags() {
+        return tags;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new SmithingTagsCancelIfPresent(getName());
+    public DynamicItemModifier copy() {
+        SmithingTagsCancelIfPresent m = new SmithingTagsCancelIfPresent(getName());
+        m.getTags().addAll(this.tags);
+        m.setPriority(m.getPriority());
+        return m;
     }
 
     @Override

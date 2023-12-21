@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.persistence.Database;
+import me.athlaeos.valhallammo.playerstats.LeaderboardCompatible;
 import me.athlaeos.valhallammo.playerstats.LeaderboardEntry;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
@@ -21,14 +22,14 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class SQL extends ProfilePersistence implements Database {
+public class SQL extends ProfilePersistence implements Database, LeaderboardCompatible {
     private final Map<UUID, Map<Class<? extends Profile>, Profile>> persistentProfiles = new HashMap<>();
     private final Map<UUID, Map<Class<? extends Profile>, Profile>> skillProfiles = new HashMap<>();
 
     private Connection conn;
     @Override
     public Connection getConnection() {
-        YamlConfiguration config = ConfigManager.getConfig("config.yml").get();
+        YamlConfiguration config = ConfigManager.getConfig("config.yml").reload().get();
         String host = config.getString("db_host");
         String database = config.getString("db_database");
         String username = config.getString("db_username");
@@ -87,35 +88,12 @@ public class SQL extends ProfilePersistence implements Database {
         }
     }
 
-    public static void getLeaderboard(Connection conn, String statement, int page, Action<List<LeaderboardEntry>> callback, Collection<String> extraStats) {
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
-            List<LeaderboardEntry> entries = new ArrayList<>();
-            try {
-                PreparedStatement stmt = conn.prepareStatement(statement);
-                ResultSet set = stmt.executeQuery();
-                int rank = page * LeaderboardManager.getPageEntryLimit();
-                while (set.next()){
-                    double value = set.getDouble("score");
-                    UUID uuid = UUID.fromString(set.getString("owner"));
-                    OfflinePlayer player = ValhallaMMO.getInstance().getServer().getOfflinePlayer(uuid);
-                    Map<String, Double> extraStat = new HashMap<>();
-                    for (String e : extraStats) extraStat.put(e, set.getDouble(e));
-                    entries.add(new LeaderboardEntry(player.getName(), player.getUniqueId(), value, rank + 1, extraStat));
-                    rank++;
-                }
-            } catch (SQLException ex){
-                ValhallaMMO.logWarning("Could not fetch leaderboard due to an exception: ");
-                ex.printStackTrace();
-            }
-            callback.act(entries);
-        });
-    }
-
     @Override
     public void setPersistentProfile(Player p, Profile profile, Class<? extends Profile> type) {
         Map<Class<? extends Profile>, Profile> profiles = persistentProfiles.get(p.getUniqueId());
         profiles.put(type, profile);
         persistentProfiles.put(p.getUniqueId(), profiles);
+        ProfilePersistence.scheduleProfilePersisting(p, type);
     }
 
     @Override
@@ -123,21 +101,6 @@ public class SQL extends ProfilePersistence implements Database {
         Map<Class<? extends Profile>, Profile> profiles = skillProfiles.get(p.getUniqueId());
         profiles.put(type, profile);
         skillProfiles.put(p.getUniqueId(), profiles);
-    }
-
-    public static String leaderboardQuery(Profile p, String stat, int page, Collection<String> extraStats){
-        String t = p.getTableName();
-        String c = stat.toLowerCase();
-        return String.format("SELECT %s.owner%s, %s.%s AS score FROM %s ORDER BY score DESC LIMIT %d, %d;", t,
-                extraStats.stream().map(e -> String.format(", %s.%s", t, e)).collect(Collectors.joining()), t, c, t,
-                page * LeaderboardManager.getPageEntryLimit(),
-                (page + 1) * LeaderboardManager.getPageEntryLimit());
-    }
-
-    @Override
-    public void queryLeaderboardEntries(Class<? extends Profile> profile, String stat, int page, Action<List<LeaderboardEntry>> callback, Collection<String> extraStats) {
-        Profile p = ProfileRegistry.getRegisteredProfiles().get(profile);
-        getLeaderboard(conn, leaderboardQuery(p, stat, page, extraStats), page, callback, extraStats);
     }
 
     @SuppressWarnings("unchecked")
@@ -185,6 +148,7 @@ public class SQL extends ProfilePersistence implements Database {
         for (UUID p : new HashSet<>(persistentProfiles.keySet())){
             Player player = ValhallaMMO.getInstance().getServer().getPlayer(p);
             for (Profile profile : persistentProfiles.get(p).values()){
+                if (!shouldPersist(profile)) continue;
                 try {
                     profile.insertOrUpdateProfile(this);
                 } catch (SQLException e){
@@ -201,6 +165,7 @@ public class SQL extends ProfilePersistence implements Database {
         if (persistentProfiles.containsKey(p.getUniqueId())){
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (Profile profile : persistentProfiles.get(p.getUniqueId()).values()){
+                    if (!shouldPersist(profile)) continue;
                     try {
                         profile.insertOrUpdateProfile(this);
                     } catch (SQLException e){
@@ -211,5 +176,45 @@ public class SQL extends ProfilePersistence implements Database {
                 persistentProfiles.remove(p.getUniqueId());
             });
         }
+    }
+
+    public static String leaderboardQuery(Profile p, String stat, Collection<String> extraStats){
+        String query = """
+                SELECT %s.owner AS owner%s, %s.%s AS main_stat
+                FROM %s ORDER BY %s DESC%s;
+                """;
+        String t = p.getTableName();
+        String c = stat.toLowerCase();
+        return String.format(query,
+                t, extraStats.stream().map(e -> String.format(", %s.%s", t, e)).collect(Collectors.joining()),
+                t, c, t, c, extraStats.stream().map(e -> String.format(", %s DESC", e)).collect(Collectors.joining()));
+//        return String.format("SELECT %s.owner%s, %s.%s AS score FROM %s ORDER BY score DESC LIMIT %d, %d;", t,
+//                extraStats.stream().map(e -> String.format(", %s.%s", t, e)).collect(Collectors.joining()), t, c, t,
+//                page * LeaderboardManager.getPageEntryLimit(),
+//                (page + 1) * LeaderboardManager.getPageEntryLimit());
+    }
+
+    @Override
+    public Map<Integer, LeaderboardEntry> queryLeaderboardEntries(LeaderboardManager.Leaderboard leaderboard) {
+        Map<Integer, LeaderboardEntry> entries = new HashMap<>();
+        Profile profile = ProfileRegistry.getRegisteredProfiles().get(leaderboard.profile());
+        try {
+            PreparedStatement stmt = conn.prepareStatement(leaderboardQuery(profile, leaderboard.mainStat(), leaderboard.extraStats().values()));
+            ResultSet set = stmt.executeQuery();
+            int rank = 1;
+            while (set.next()){
+                double value = set.getDouble("main_stat");
+                UUID uuid = UUID.fromString(set.getString("owner"));
+                OfflinePlayer player = ValhallaMMO.getInstance().getServer().getOfflinePlayer(uuid);
+                Map<String, Double> extraStat = new HashMap<>();
+                for (String e : leaderboard.extraStats().values()) extraStat.put(e, set.getDouble(e));
+                entries.put(rank, new LeaderboardEntry(player.getName(), player.getUniqueId(), value, rank, extraStat));
+                rank++;
+            }
+        } catch (SQLException ex){
+            ValhallaMMO.logWarning("Could not fetch leaderboard due to an exception: ");
+            ex.printStackTrace();
+        }
+        return entries;
     }
 }

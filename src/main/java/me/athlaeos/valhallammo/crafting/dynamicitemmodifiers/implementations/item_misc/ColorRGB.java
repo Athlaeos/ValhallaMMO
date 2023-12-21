@@ -126,9 +126,26 @@ public class ColorRGB extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id(), ModifierCategoryRegistry.POTION_MISC.id());
     }
 
+    public void setRed(int red) {
+        this.red = red;
+    }
+
+    public void setBlue(int blue) {
+        this.blue = blue;
+    }
+
+    public void setGreen(int green) {
+        this.green = green;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ColorRGB(getName());
+    public DynamicItemModifier copy() {
+        ColorRGB m = new ColorRGB(getName());
+        m.setRed(this.red);
+        m.setGreen(this.green);
+        m.setBlue(this.blue);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

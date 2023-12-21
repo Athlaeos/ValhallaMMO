@@ -11,9 +11,11 @@ db_password: 'password'
 db_port: 3306
 db_ping_delay: 24000 # delay (in game ticks) where the database is pinged to keep the connection alive
 db_persist_delay: 6000 # delay (in game ticks) where all profiles currently in memory are persisted.
+# Leaderboards are also reset after this happens.
 # Should a crash happen, it will not roll back too much progress. Resets immediately persist someone's profile
 profile_caching: 10000 # duration (in milliseconds) where profiles are cached in memory. Changes to profiles should
 # immediately reset the cache, so it shouldn't really matter how high this is set to.
+minimum_exp: 500 # Skill profiles with less than the given amount of EXP will not be saved at all. This is to prevent essentially empty profiles from being saved
 
 # RESOURCE PACK
 resourcepack_port: 30005
@@ -91,6 +93,9 @@ custom_mining_speeds: true
 
 # GAMEPLAY
 
+skill_gap_pvp_prevention: true # If true, if two players fought each-other and their power levels are too far apart, they will not be able to fight
+skill_gap_pvp_level: 20 # The maximum level difference allowed until players are able to fight each-other again
+
 # Adds an additional effect to the luck stat. Chance-based effects will now roll once extra for each point of luck the player has.
 # As example: If a player has 20% crit chance and 1 luck, if a player hits something and doesn't crit this effect is re-rolled for a favourable outcome.
 # So 20% crit becomes roughly 36% crit.
@@ -102,8 +107,7 @@ validation_surrounding_quantity: 20 # Certain validations require an amount of b
 validation_vacinity_radius: 5 # Certain validations require a block to be within the radius of the block used for crafting. This determines that radius
 validation_vacinity_height: 2 # The radius doesn't have to be a cube. This determines how much higher/lower that block is allowed to be from the crafting block
 
-fishing_luck_luck: 0.5 # The amount of "fishing luck" given per point of the generic "luck" stat the player has
-fishing_luck_lots: 1 # The amount of "fishing luck" given per level of the "Luck of the Sea" enchantment
+fishing_luck_lots: 0.5 # The amount of "fishing luck" given per level of the "Luck of the Sea" enchantment
 fishing_luck_rain: 1 # The amount of "fishing luck" granted while it's raining
 fishing_luck_fullmoon: 3 # The amount of "fishing luck" granted when it's nighttime and full moon
 fishing_luck_newmoon: 0 # The amount of "fishing luck" granted while it's nighttime and new moon
@@ -168,6 +172,7 @@ inaccuracy_constant: 0.015
 dispenser_inaccuracy: 7
 multishot_all_hit: true # If true, the extra arrows from multishot void the hit entity's immunity frames allowing all arrows to hit (if they hit at all)
 multishot_damage_reduction: 0.5 # If hit by several multishot arrows at the same time, these extra arrows have their damage reduced by the given factor (if hit by 3 arrows for example, the first does 1x damage and others do 0.5x damage)
+infinity_ammo_consumption_reduction: 0.5 # Having infinity on your bow reduces damage and exp gained from it. Regular arrows are still infinite, but custom arrows only benefit from reduced ammo consumption
 
 # Various skills have abilities that may "stun" targets, which are just a collection of potion effects
 # These potion effects are defined as...
@@ -203,6 +208,9 @@ parry_failed_debuffs: # The debuffs the parrier receives when they fail the parr
   SLOW: 0 # Slowness I for the duration
   WEAKNESS: 0 # Weakness I for the duration
 
+parry_projectiles: true # If true, you can also parry projectiles.
+parried_projectiles_reflect: true # If true, parried projectiles are shot back to the shooter. For functionality this also means no damage is taken
+
 parry_sound: BLOCK_IRON_TRAPDOOR_OPEN # Sound that plays when someone attempts a parry
 parry_success_sound: ENTITY_ITEM_BREAK # Sound that plays when a parried target is hit by an attack
 parry_failed_sound: ITEM_SHIELD_BREAK # Sound that plays when the parrier is hit after having failed a parry
@@ -222,7 +230,8 @@ damage_formula_physical: '%damage% * (10 / (10 + %armor%)) - (%damage%^2 * 0.000
 damage_formula_mode: SET # Valid modes are SET and MULTIPLY
 # SET sets physical damage to the outcome of this formula. The outcome cannot go below 0
 # MULTIPLY multiplies the original damage and sets that as the final damage. The outcome cannot go below 0
-damage_reduction_cap: 0.1 # The final damage cannot go below this fraction of the original damage
+damage_reduction_cap: 0.1 # The final damage cannot go below this fraction of the original damage due to armor
+# Damage mitigation applies before the armor check, so it can still reduce damage taken
 armor_effective_types:
   - PROJECTILE
   - FALLING_BLOCK
@@ -234,6 +243,8 @@ armor_effective_types:
   - CONTACT
   - FALLING_BLOCK
   - LAVA
+negative_armor_damage_buff: 0.025 # If armor penetration (or negative armor) results in a negative armor value on the damaged target,
+# their damage taken increases by this value for each point of armor they are in the negative. (-10 armor would result in a 25% damage taken increase)
 
 # ValhallaMMO features a dodge mechanic, these are its balance options
 prevent_dodge_not_facing_attacker: true # If enabled, no matter what, the defender will never be able to dodge if
@@ -286,7 +297,7 @@ buff_resistance_reduction: 0.2 # Damage reduction per level of the Resistance bu
 light_damage_resistance: 0.00 # All damage reduced per piece of light armor
 light_melee_resistance: 0.00 # Melee damage reduced per piece of light armor
 light_projectile_resistance: 0.00 # Projectile damage reduced per piece of light armor
-light_bludgeoning_resistance: 0.00 # Bludgeoning damage resistance per piece of light armor
+light_bludgeoning_resistance: -0.0625 # Bludgeoning damage resistance per piece of light armor
 light_fire_resistance: 0.00 # Fire damage reduced per piece of light armor
 light_explosion_resistance: 0.00 # Explosion damage resistance reduced per piece of light armor
 light_magic_resistance: 0.00 # Magic damage reduced per piece of light armor
@@ -305,7 +316,7 @@ light_knockback_resistance: 0.00 # Knockback reduced per piece of light armor
 heavy_damage_resistance: 0.00 # All damage reduced per piece of heavy armor
 heavy_melee_resistance: 0.025 # Melee damage reduced per piece of heavy armor (default up to 10%)
 heavy_projectile_resistance: 0.05 # Projectile damage reduced per piece of heavy armor (default up to 20%)
-heavy_bludgeoning_resistance: 0.00 # Bludgeoning damage resistance per piece of heavy armor
+heavy_bludgeoning_resistance: -0.125 # Bludgeoning damage resistance per piece of heavy armor
 heavy_fire_resistance: 0.00 # Fire damage reduced per piece of heavy armor
 heavy_explosion_resistance: 0.05 # Explosion damage resistance reduced per piece of heavy armor
 heavy_magic_resistance: 0.00 # Magic damage reduced per piece of heavy armor

@@ -63,7 +63,7 @@ public class CustomRecipeRegistry {
         loadCauldronRecipes("recipes/cauldron_recipes.json", false);
         loadCookingRecipes("recipes/cooking_recipes.json", false);
 
-        YamlConfiguration disabled = ConfigManager.getConfig("recipes/disabled_recipes.yml").get();
+        YamlConfiguration disabled = ConfigManager.getConfig("recipes/disabled_recipes.yml").reload().get();
         for (String s : disabled.getStringList("disabled")){
             try {
                 NamespacedKey recipeKey = NamespacedKey.minecraft(s.toLowerCase());
@@ -100,7 +100,7 @@ public class CustomRecipeRegistry {
         new RecipePersistence<DynamicCauldronRecipe>().saveRecipesToFile("recipes/cauldron_recipes.json", cauldronRecipes.values());
         new RecipePersistence<DynamicCookingRecipe>().saveRecipesToFile("recipes/cooking_recipes.json", cookingRecipes.values());
 
-        YamlConfiguration disabled = ConfigManager.getConfig("recipes/disabled_recipes.yml").get();
+        YamlConfiguration disabled = ConfigManager.getConfig("recipes/disabled_recipes.yml").reload().get();
         disabled.set("disabled", disabledRecipes.stream().map(NamespacedKey::getKey).collect(Collectors.toList()));
         ConfigManager.saveConfig("recipes/disabled_recipes.yml");
     }

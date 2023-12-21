@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.utility;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.CustomDurabilityManager;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -45,7 +46,7 @@ public class ItemUtils {
     private static final Map<UUID, Long> storedProjectileCachedAt = new HashMap<>();
 
     private static final Collection<Tag<Material>> materialTags = new HashSet<>(Arrays.asList(Tag.PLANKS, Tag.LOGS, Tag.ITEMS_STONE_TOOL_MATERIALS, Tag.ANVIL, Tag.CAULDRONS,
-    Tag.WOOL, Tag.BEDS, Tag.SAPLINGS, Tag.ITEMS_BANNERS, Tag.CANDLES, Tag.COAL_ORES, Tag.WOOL_CARPETS, Tag.GOLD_ORES, Tag.IRON_ORES, Tag.LAPIS_ORES, Tag.COPPER_ORES, Tag.DIAMOND_ORES,
+    Tag.WOOL, Tag.BEDS, Tag.SAPLINGS, Tag.ITEMS_BANNERS, Tag.CANDLES, Tag.COAL_ORES, Tag.GOLD_ORES, Tag.IRON_ORES, Tag.LAPIS_ORES, Tag.COPPER_ORES, Tag.DIAMOND_ORES,
     Tag.EMERALD_ORES, Tag.REDSTONE_ORES, Tag.DOORS, Tag.FENCES, Tag.FENCE_GATES, Tag.SMALL_FLOWERS, Tag.ITEMS_BOATS, Tag.ITEMS_FISHES, Tag.ITEMS_MUSIC_DISCS, Tag.LEAVES,
     Tag.PRESSURE_PLATES, Tag.SAND, Tag.SIGNS, Tag.TALL_FLOWERS, Tag.TRAPDOORS, Tag.WALLS));
     
@@ -74,6 +75,8 @@ public class ItemUtils {
     }
 
     static {
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_19)) materialTags.add(Tag.WOOL_CARPETS);
+
         Tag<Material> buckets = of("buckets", Material.BUCKET, Material.MILK_BUCKET, Material.POWDER_SNOW_BUCKET, Material.LAVA_BUCKET, Material.WATER_BUCKET, Material.AXOLOTL_BUCKET, Material.COD_BUCKET, Material.PUFFERFISH_BUCKET, Material.SALMON_BUCKET, Material.TROPICAL_FISH_BUCKET);
         materialTags.add(buckets);
         Tag<Material> potions = of("potions", Material.POTION, Material.SPLASH_POTION, Material.LINGERING_POTION);
@@ -97,7 +100,7 @@ public class ItemUtils {
         registerSimilarItem(Material.WHITE_BED, Tag.BEDS, "ingredient_any_bed");
         registerSimilarItem(Material.WHITE_BANNER, Tag.BANNERS, "ingredient_any_banner");
         registerSimilarItem(Material.WHITE_CANDLE, Tag.CANDLES, "ingredient_any_candle");
-        registerSimilarItem(Material.WHITE_CARPET, Tag.WOOL_CARPETS, "ingredient_any_carpet");
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_19)) registerSimilarItem(Material.WHITE_CARPET, Tag.WOOL_CARPETS, "ingredient_any_carpet");
         registerSimilarItem(Material.COAL_ORE, Tag.COAL_ORES, "ingredient_any_coal_ore");
         registerSimilarItem(Material.DIAMOND_ORE, Tag.DIAMOND_ORES, "ingredient_any_diamond_ore");
         registerSimilarItem(Material.GOLD_ORE, Tag.GOLD_ORES, "ingredient_any_gold_ore");
@@ -616,7 +619,7 @@ public class ItemUtils {
                         setItemMeta(item, damageable);
                     }
                 } else {
-                    if (CustomDurabilityManager.getDurability(item, meta, false) <= 0){
+                    if (CustomDurabilityManager.getDurability(meta, false) <= 0){
                         who.playEffect(breakEffect);
                         return true;
                     }

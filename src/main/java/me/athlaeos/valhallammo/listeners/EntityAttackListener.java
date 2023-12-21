@@ -6,6 +6,8 @@ import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.dom.*;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.event.EntityCriticallyHitEvent;
+import me.athlaeos.valhallammo.hooks.DamageIndicator;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -14,6 +16,8 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
@@ -53,6 +57,8 @@ public class EntityAttackListener implements Listener {
     private final EntityDamageEvent.DamageCause reflectDamageType = Catch.catchOrElse(() -> EntityDamageEvent.DamageCause.valueOf(ValhallaMMO.getPluginConfig().getString("reflect_damage_type")), EntityDamageEvent.DamageCause.THORNS, "Invalid reflect damage type given, used default");
     private final Sound critSound = Catch.catchOrElse(() -> Sound.valueOf(ValhallaMMO.getPluginConfig().getString("crit_sound_effect")), Sound.ENCHANT_THORNS_HIT, "Invalid crit sound effect given, used default");
     private Animation critAnimation = ValhallaMMO.getPluginConfig().getBoolean("crit_particle_effect", true) ? AnimationRegistry.getAnimation(AnimationRegistry.ENTITY_FLASH.id()) : null;
+    private final boolean skillGapPvPPrevention = ValhallaMMO.getPluginConfig().getBoolean("skill_gap_pvp_prevention");
+    private final int skillGapPvPLevel = ValhallaMMO.getPluginConfig().getInt("skill_gap_pvp_level");
 
     private final double tridentThrownDamage = ValhallaMMO.getPluginConfig().getDouble("trident_damage_ranged");
     private final double tridentThrownLoyalDamage = ValhallaMMO.getPluginConfig().getDouble("trident_damage_ranged_loyalty");
@@ -62,6 +68,15 @@ public class EntityAttackListener implements Listener {
     public void onAttack(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof LivingEntity v)) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
+
+        if (v instanceof Player pV && trueDamager instanceof Player pA && skillGapPvPPrevention){
+            PowerProfile victimProfile = ProfileCache.getOrCache(pV, PowerProfile.class);
+            PowerProfile attackerProfile = ProfileCache.getOrCache(pA, PowerProfile.class);
+            if (Math.abs(attackerProfile.getLevel() - victimProfile.getLevel()) > skillGapPvPLevel) {
+                e.setCancelled(true);
+                return;
+            }
+        }
         boolean sweep = e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK;
 
         AttributeInstance dL = trueDamager instanceof LivingEntity a ? a.getAttribute(Attribute.GENERIC_LUCK) : null;
@@ -100,10 +115,8 @@ public class EntityAttackListener implements Listener {
             if(a.getEquipment() != null && !ItemUtils.isEmpty(a.getEquipment().getItemInMainHand())) combatType = CombatType.MELEE_ARMED;
 
             // parry mechanic
-            if (e.getDamager() instanceof LivingEntity d){
-                if (facing) parryDamageMultiplier = Parryer.handleParry(e);
-                Timer.setCooldown(d.getUniqueId(), 0, "parry_effective"); // the attacker should have their parry interrupted if they attack while active
-            }
+            if (facing) parryDamageMultiplier = Parryer.handleParry(e);
+            Timer.setCooldown(trueDamager.getUniqueId(), 0, "parry_effective"); // the attacker should have their parry interrupted if they attack while active
         }
 
         // damage buffs
@@ -133,7 +146,7 @@ public class EntityAttackListener implements Listener {
 
         // custom crit mechanics
         // the crit mechanic fetches the victim's crit chance and damage resistance stats and so sweeping hits should not be able to crit
-        if (!sweep){
+        if (!sweep && (!(trueDamager instanceof Player p) || !WorldGuardHook.inDisabledRegion(v.getLocation(), p, WorldGuardHook.VMMO_COMBAT_CRIT))){
             double critChanceResistance = AccumulativeStatManager.getCachedRelationalStats("CRIT_CHANCE_RESISTANCE", v, e.getDamager(), 10000, true);
             double critChance = AccumulativeStatManager.getCachedAttackerRelationalStats("CRIT_CHANCE", v, e.getDamager(), 10000, true) * (1 - critChanceResistance);
             if (critNextAttack.contains(trueDamager.getUniqueId()) || Utils.proc(critChance, damagerLuck - victimLuck, false)) {
@@ -144,6 +157,7 @@ public class EntityAttackListener implements Listener {
                 ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
                 if (!event.isCancelled()){
                     e.setDamage(event.getDamageBeforeCrit() * event.getCritMultiplier());
+                    DamageIndicator.markCrit(v);
                     if (critAnimation != null) critAnimation.animate(v, v.getEyeLocation().add(0, -v.getHeight()/2, 0), e.getDamager() instanceof LivingEntity l ? l.getEyeLocation().getDirection() : e.getDamager().getVelocity(), 0);
                     if (critSound != null) v.getWorld().playSound(v.getEyeLocation(), critSound, 1F, 1F);
                 }
@@ -159,11 +173,13 @@ public class EntityAttackListener implements Listener {
 
         // damage reflecting mechanic
         if (!sweep && reflectDamageType != null && e.getCause() != reflectDamageType && trueDamager instanceof LivingEntity a){
-            if (Utils.proc(AccumulativeStatManager.getCachedRelationalStats("REFLECT_CHANCE", v, e.getDamager(), 10000, true), victimLuck - damagerLuck, false)){
-                double reflectFraction = AccumulativeStatManager.getCachedRelationalStats("REFLECT_FRACTION", v, e.getDamager(), 10000, true);
-                double reflectDamage = e.getDamage() * reflectFraction;
-                a.playEffect(EntityEffect.THORNS_HURT);
-                EntityUtils.damage(a, v, reflectDamage, reflectDamageType.toString());
+            if (!(v instanceof Player p) || !WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_REFLECT)){
+                if (Utils.proc(AccumulativeStatManager.getCachedRelationalStats("REFLECT_CHANCE", v, e.getDamager(), 10000, true), victimLuck - damagerLuck, false)){
+                    double reflectFraction = AccumulativeStatManager.getCachedRelationalStats("REFLECT_FRACTION", v, e.getDamager(), 10000, true);
+                    double reflectDamage = e.getDamage() * reflectFraction;
+                    a.playEffect(EntityEffect.THORNS_HURT);
+                    EntityUtils.damage(a, v, reflectDamage, reflectDamageType.toString());
+                }
             }
         }
 
@@ -208,7 +224,8 @@ public class EntityAttackListener implements Listener {
         // custom power attack mechanics
         double powerAttackMultiplier = 1.5;
         // sweep attacks should not trigger custom power attack damage multipliers
-        if (!sweep && e.getDamager() instanceof LivingEntity a && a.getFallDistance() > 0){
+        if (!sweep && e.getDamager() instanceof LivingEntity a && a.getFallDistance() > 0 &&
+                (!(a instanceof Player p) || WorldGuardHook.inDisabledRegion(a.getLocation(), p, WorldGuardHook.VMMO_COMBAT_POWERATTACK))){
             String damageSource = EntityDamagedListener.getLastDamageCause(v);
             powerAttackMultiplier += AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_DAMAGE_MULTIPLIER", v, a, 10000, true);
 
@@ -259,6 +276,7 @@ public class EntityAttackListener implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
 
         if (e.getDamager() instanceof LivingEntity a && e.getEntity() instanceof LivingEntity v && a.getEquipment() != null){
+            if (a instanceof Player p && WorldGuardHook.inDisabledRegion(a.getLocation(), p, WorldGuardHook.VMMO_COMBAT_WEAPONCOATING)) return;
             ItemStack hand = a.getEquipment().getItemInMainHand();
             if (ItemUtils.isEmpty(hand)) return;
             ItemBuilder weapon = new ItemBuilder(hand);

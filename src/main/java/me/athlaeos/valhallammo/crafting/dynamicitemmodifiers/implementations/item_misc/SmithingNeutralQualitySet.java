@@ -40,17 +40,21 @@ public class SmithingNeutralQualitySet extends DynamicItemModifier {
         return new Pair<>(12,
                 new ItemBuilder(Material.PAPER)
                         .name("&eHow much quality is neutral for this item?")
-                        .lore("&eDetermines the tooltip added to the",
+                        .lore("&fSet to &e" + neutral,
+                                " ",
+                                "&eDetermines the tooltip added to the",
                                 "&eitem. Neutral is typically the quality",
                                 "&eat which an item is at vanilla strength.",
-                                "&eNeutral quality is considered" + SmithingItemPropertyManager.getQualityLore(neutral, neutral),
+                                "&eNeutral quality is considered " + SmithingItemPropertyManager.getQualityLore(neutral, neutral),
                                 "&6Click to add/subtract 1",
                                 "&6Shift-Click to add/subtract 10")
                         .get()).map(Set.of(
                 new Pair<>(17,
                         new ItemBuilder(Material.PAPER)
                                 .name("&9Neutral quality info")
-                                .lore("&bNeutral quality is an arbitrary",
+                                .lore("&fSet to &e" + neutral,
+                                        " ",
+                                        "&bNeutral quality is an arbitrary",
                                         "&bquality level at which an item",
                                         "&bis considered 'good' by the plugin.",
                                         "",
@@ -88,9 +92,16 @@ public class SmithingNeutralQualitySet extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setNeutral(int neutral) {
+        this.neutral = neutral;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new SmithingNeutralQualitySet(getName());
+    public DynamicItemModifier copy() {
+        SmithingNeutralQualitySet m = new SmithingNeutralQualitySet(getName());
+        m.setNeutral(this.neutral);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

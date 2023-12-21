@@ -95,9 +95,21 @@ public class SmithingQualityRandomized extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setUpperBound(double upperBound) {
+        this.upperBound = upperBound;
+    }
+
+    public void setLowerBound(double lowerBound) {
+        this.lowerBound = lowerBound;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new SmithingQualityRandomized(getName());
+    public DynamicItemModifier copy() {
+        SmithingQualityRandomized m = new SmithingQualityRandomized(getName());
+        m.setLowerBound(this.lowerBound);
+        m.setUpperBound(this.upperBound);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

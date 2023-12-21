@@ -15,6 +15,7 @@ import me.athlaeos.valhallammo.gui.implementations.SmithingRecipeEditor;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -56,13 +57,13 @@ public class SmithingRecipeCategory extends RecipeCategory{
             if (!recipe.consumeAddition()){
                 if (recipe.getAdditionModifiers().isEmpty()) lore.add("&aNo modifiers executed on addition");
                 else lore.add("&fAddition Modifiers");
-                recipe.getAdditionModifiers().forEach(m -> lore.add(m.getActiveDescription()));
+                recipe.getAdditionModifiers().forEach(m -> lore.addAll(StringUtils.separateStringIntoLines(m.getActiveDescription(), 40)));
                 lore.add("&8&m                <>                ");
             }
 
             if (recipe.getResultModifiers().isEmpty()) lore.add("&aNo modifiers executed on result");
             else lore.add("&fResult Modifiers");
-            recipe.getResultModifiers().forEach(m -> lore.add(m.getActiveDescription()));
+            recipe.getResultModifiers().forEach(m -> lore.addAll(StringUtils.separateStringIntoLines(m.getActiveDescription(), 40)));
 
             icons.add(new ItemBuilder(recipe.tinkerBase() ? recipe.getBase().getItem().getType() : recipe.getResult().getType())
                     .name("&f" + recipe.getName())

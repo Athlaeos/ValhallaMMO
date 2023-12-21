@@ -98,9 +98,16 @@ public class EquipmentClassSet extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setEquipmentClass(EquipmentClass equipmentClass) {
+        this.equipmentClass = equipmentClass;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new EquipmentClassSet(getName());
+    public DynamicItemModifier copy() {
+        EquipmentClassSet m = new EquipmentClassSet(getName());
+        m.setEquipmentClass(this.equipmentClass);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

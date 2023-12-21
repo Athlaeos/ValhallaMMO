@@ -58,8 +58,10 @@ public class SmithingTagsRemoveAll extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new SmithingTagsRemoveAll(getName());
+    public DynamicItemModifier copy() {
+        SmithingTagsRemoveAll m = new SmithingTagsRemoveAll(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

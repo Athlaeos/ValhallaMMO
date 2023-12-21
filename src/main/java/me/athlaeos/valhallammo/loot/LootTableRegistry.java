@@ -137,11 +137,8 @@ public class LootTableRegistry {
                 int quantity = Utils.getRandom().nextInt(Math.max(1, quantityMax - quantityMin)) + quantityMin;
 
                 int trueQuantity = selectedEntry.getDrop().getAmount() * quantity;
-                if (trueQuantity > 0 ) {
-                    loot.addAll(ItemUtils.decompressStacks(Map.of(item, trueQuantity)));
-                } else continue;
-
-                loot.add(item);
+                if (trueQuantity > 0 ) loot.addAll(ItemUtils.decompressStacks(Map.of(item, trueQuantity)));
+                else loot.add(item);
             }
         }
         return loot;

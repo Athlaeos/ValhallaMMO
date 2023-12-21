@@ -120,9 +120,31 @@ public class LootTableSet extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setFreeSelection(boolean freeSelection) {
+        this.freeSelection = freeSelection;
+    }
+
+    public void setLootSound(Sound lootSound) {
+        this.lootSound = lootSound;
+    }
+
+    public void setLootTable(String lootTable) {
+        this.lootTable = lootTable;
+    }
+
+    public void setRepeatSelection(boolean repeatSelection) {
+        this.repeatSelection = repeatSelection;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new LootTableSet(getName());
+    public DynamicItemModifier copy() {
+        LootTableSet m = new LootTableSet(getName());
+        m.setLootSound(this.lootSound);
+        m.setLootTable(this.lootTable);
+        m.setFreeSelection(this.freeSelection);
+        m.setRepeatSelection(this.repeatSelection);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

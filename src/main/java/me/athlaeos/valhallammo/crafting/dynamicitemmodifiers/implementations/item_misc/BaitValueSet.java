@@ -69,9 +69,16 @@ public class BaitValueSet extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setBait(double bait) {
+        this.bait = bait;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new BaitValueSet(getName());
+    public DynamicItemModifier copy() {
+        BaitValueSet m = new BaitValueSet(getName());
+        m.setBait(this.bait);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

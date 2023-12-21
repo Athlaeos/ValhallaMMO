@@ -241,17 +241,17 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
         super(playerMenuUtility);
         this.recipe = new DynamicGridRecipe(newName);
 
-        this.items = recipe.getItems();
-        this.result = recipe.getResult();
+        this.items = new HashMap<>(recipe.getItems());
+        this.result = recipe.getResult().clone();
         this.requireValhallaTools = recipe.requireValhallaTools();
         this.tinker = recipe.tinker();
         this.tinkerGridIndex = recipe.getTinkerGridIndex();
         this.toolIndex = recipe.getToolIndex();
         this.shapeless = recipe.isShapeless();
-        this.modifiers = recipe.getModifiers();
+        this.modifiers = new ArrayList<>(recipe.getModifiers().stream().map(DynamicItemModifier::copy).toList());
         this.unlockedForEveryone = recipe.isUnlockedForEveryone();
-        this.toolRequirement = recipe.getToolRequirement();
-        this.validations = recipe.getValidations();
+        this.toolRequirement = new ToolRequirement(recipe.getToolRequirement().getToolRequirementType(), recipe.getToolRequirement().getRequiredToolID());
+        this.validations = new HashSet<>(recipe.getValidations());
         this.displayName = recipe.getDisplayName();
         this.description = recipe.getDescription();
         this.hidden = recipe.isHiddenFromBook();

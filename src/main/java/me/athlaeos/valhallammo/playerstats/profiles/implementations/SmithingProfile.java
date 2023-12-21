@@ -13,19 +13,19 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("unused")
 public class SmithingProfile extends Profile {
     {
-        floatStat("genericCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        floatStat("bowCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        floatStat("crossbowCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        floatStat("woodCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        floatStat("leatherCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        floatStat("stoneCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        floatStat("chainCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        floatStat("goldCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        floatStat("ironCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        floatStat("diamondCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        floatStat("netheriteCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        floatStat("prismarineCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
-        floatStat("endericCraftingSkill", new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        floatStat("genericCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("bowCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("crossbowCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("woodCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("leatherCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("stoneCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("chainCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("goldCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("ironCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("diamondCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("netheriteCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("prismarineCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("endericCraftingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
 
         floatStat("genericCraftingSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("bowCraftingSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
@@ -41,19 +41,19 @@ public class SmithingProfile extends Profile {
         floatStat("prismarineCraftingSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("endericCraftingSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
 
-        doubleStat("genericEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        doubleStat("bowEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        doubleStat("crossbowEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        doubleStat("woodEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        doubleStat("leatherEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        doubleStat("stoneEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        doubleStat("chainEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        doubleStat("goldEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        doubleStat("ironEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        doubleStat("diamondEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        doubleStat("netheriteEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        doubleStat("prismarineEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        doubleStat("endericEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        doubleStat("genericEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("bowEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("crossbowEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("woodEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("leatherEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("stoneEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("chainEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("goldEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("ironEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("diamondEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("netheriteEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("prismarineEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("endericEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
     }
 
     public float getCraftingSkill(MaterialClass material){

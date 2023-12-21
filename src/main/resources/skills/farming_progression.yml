@@ -109,7 +109,7 @@ experience:
     MUTTON: 50
     LEATHER: 30
     FEATHER: 10
-    WOOL: 20
+    WHITE_WOOL: 20
 
 special_perks: []
 
@@ -118,8 +118,234 @@ commands: []
 messages:
   - '<lang.skill-level-up-farming>'
 
-leveling_perks: []
+leveling_perks:
+  farming_farmingdrops_add: 0.01
 
-starting_coordinates: '4,9'
+starting_coordinates: '3,7'
 
-perks: []
+perks:
+  farming_perk_1:
+    icon: WOODEN_HOE
+    coords: "3,7"
+    name: "<lang.farming_perk_1_name>"
+    description: "<lang.farming_perk_1_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      farming_instantharvesting_toggle: 0
+    messages:
+      - "<lang.farming_perk_1_messages>"
+    custom_model_data_unlockable: -1
+    custom_model_data_unlocked: -1
+    custom_model_data_visible: -1
+  farming_perk_2:
+    icon: STONE_HOE
+    coords: "3,5"
+    name: "<lang.farming_perk_2_name>"
+    description: "<lang.farming_perk_2_description>"
+    cost: 1
+    hidden: false
+    required_lv: 20
+    perk_rewards:
+      farming_farmingexperiencerate_add: 0.3
+      farming_instantgrowthrate_add: 1
+    messages:
+      - "<lang.farming_perk_2_messages>"
+    requireperk_all:
+      - farming_perk_1
+    connection_line:
+      '1':
+        position: '3,6'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  farming_perk_3:
+    icon: IRON_HOE
+    coords: "3,3"
+    name: "<lang.farming_perk_3_name>"
+    description: "<lang.farming_perk_3_description>"
+    cost: 1
+    hidden: false
+    required_lv: 40
+    perk_rewards:
+      farming_farmingexperiencerate_add: 0.3
+      farming_farmingluck_add: 3
+      farming_farmingdrops_add: 0.2
+    messages:
+      - "<lang.farming_perk_3_messages>"
+    requireperk_all:
+      - farming_perk_2
+    connection_line:
+      '1':
+        position: '3,4'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  farming_perk_4:
+    icon: DIAMOND_HOE
+    coords: "3,1"
+    name: "<lang.farming_perk_4_name>"
+    description: "<lang.farming_perk_4_description>"
+    cost: 1
+    hidden: false
+    required_lv: 80
+    perk_rewards:
+      farming_farmingexperiencerate_add: 0.4
+      farming_farmingluck_add: 3
+      farming_farmingdrops_add: 0.3
+    messages:
+      - "<lang.farming_perk_4_messages>"
+    requireperk_all:
+      - farming_perk_3
+    connection_line:
+      '1':
+        position: '3,2'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  farming_perk_5:
+    icon: NETHERITE_HOE
+    coords: "3,0"
+    name: "<lang.farming_perk_5_name>"
+    description: "<lang.farming_perk_5_description>"
+    cost: 1
+    hidden: false
+    required_lv: 100
+    perk_rewards:
+      farming_fieldharvestunlocked_toggle: 0
+      farming_fieldharvestinstantpickup_toggle: 0
+      farming_fieldharvestcooldown_add: 100
+    messages:
+      - "<lang.farming_perk_5_messages>"
+    requireperk_all:
+      - farming_perk_4
+  farming_perk_1a:
+    icon: LEATHER
+    coords: "1,6"
+    name: "<lang.farming_perk_1a_name>"
+    description: "<lang.farming_perk_1a_description>"
+    cost: 1
+    hidden: false
+    required_lv: 40
+    perk_rewards:
+      farming_growuptimemultiplier_add: 0.4
+      farming_butcherydrops_add: 0.2
+      farming_breedingexperiencemultiplier_add: 0.5
+    messages:
+      - "<lang.farming_perk_1a_messages>"
+    requireperk_all:
+      - farming_perk_1
+    connection_line:
+      '1':
+        position: '2,7'
+        locked: GRAY_DYE:1172712
+        unlockable: ORANGE_DYE:1172812
+        unlocked: LIME_DYE:1172912
+      '2':
+        position: '2,6'
+        locked: GRAY_DYE:1172715
+        unlockable: ORANGE_DYE:1172815
+        unlocked: LIME_DYE:1172915
+  farming_perk_2a:
+    icon: BEEF
+    coords: "0,4"
+    name: "<lang.farming_perk_2a_name>"
+    description: "<lang.farming_perk_2a_description>"
+    cost: 1
+    hidden: false
+    required_lv: 60
+    perk_rewards:
+      farming_growuptimemultiplier_add: 0.6
+      farming_butcherydrops_add: 0.3
+      farming_breedingexperiencemultiplier_add: 0.5
+      farming_butcherydamagemultiplier_add: 3
+    messages:
+      - "<lang.farming_perk_2a_messages>"
+    requireperk_all:
+      - farming_perk_1a
+    connection_line:
+      '1':
+        position: '1,5'
+        locked: GRAY_DYE:1172719
+        unlockable: ORANGE_DYE:1172819
+        unlocked: LIME_DYE:1172919
+      '2':
+        position: '0,5'
+        locked: GRAY_DYE:1172716
+        unlockable: ORANGE_DYE:1172816
+        unlocked: LIME_DYE:1172916
+  farming_perk_1b:
+    icon: HONEYCOMB
+    coords: "5,6"
+    name: "<lang.farming_perk_1b_name>"
+    description: "<lang.farming_perk_1b_description>"
+    cost: 1
+    hidden: false
+    required_lv: 50
+    perk_rewards:
+      farming_beeaggroimmunity_toggle: 0
+      farming_hivehoneysavechance_add: 0.5
+    messages:
+      - "<lang.farming_perk_1b_messages>"
+    requireperk_all:
+      - farming_perk_1
+    connection_line:
+      '1':
+        position: '4,7'
+        locked: GRAY_DYE:1172714
+        unlockable: ORANGE_DYE:1172814
+        unlocked: LIME_DYE:1172914
+      '2':
+        position: '4,6'
+        locked: GRAY_DYE:1172713
+        unlockable: ORANGE_DYE:1172813
+        unlocked: LIME_DYE:1172913
+  farming_perk_1c:
+    icon: ROTTEN_FLESH
+    coords: "2,8"
+    name: "<lang.farming_perk_1c_name>"
+    description: "<lang.farming_perk_1c_description>"
+    cost: 1
+    hidden: false
+    required_lv: 30
+    perk_rewards:
+      power_badfoodimmune_toggle: 0
+      power_foodbonusspoiled_add: 2
+      power_foodbonusvegetable_add: -0.2
+      power_foodbonusseafood_add: -0.2
+      power_foodbonusmagical_add: -0.2
+      power_foodbonusgrain_add: -0.2
+      power_foodbonusfruit_add: -0.2
+      power_foodbonusnuts_add: -0.2
+      power_foodbonusdairy_add: -0.2
+      power_foodbonusmeat_add: -0.2
+      perks_locked_add:
+        - farming_perk_2c
+    messages:
+      - "<lang.farming_perk_1c_messages>"
+    requireperk_all:
+      - farming_perk_1
+  farming_perk_2c:
+    icon: BREAD
+    coords: "4,8"
+    name: "<lang.farming_perk_2c_name>"
+    description: "<lang.farming_perk_2c_description>"
+    cost: 1
+    hidden: false
+    required_lv: 50
+    perk_rewards:
+      power_foodbonusvegetable_add: 0.2
+      power_foodbonusseafood_add: 0.2
+      power_foodbonusmagical_add: 0.2
+      power_foodbonusgrain_add: 0.2
+      power_foodbonusfruit_add: 0.2
+      power_foodbonusnuts_add: 0.2
+      power_foodbonusdairy_add: 0.2
+      power_foodbonusmeat_add: 0.2
+      perks_locked_add:
+        - farming_perk_1c
+    messages:
+      - "<lang.farming_perk_2c_messages>"
+    requireperk_all:
+      - farming_perk_1

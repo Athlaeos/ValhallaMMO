@@ -13,3 +13,4 @@ valid_coating_items:
   - POTION
   - SPLASH_POTION
   - LINGERING_POTION
+  - SNOWBALL

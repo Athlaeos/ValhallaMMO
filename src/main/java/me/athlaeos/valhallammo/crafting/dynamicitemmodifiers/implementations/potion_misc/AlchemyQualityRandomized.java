@@ -95,9 +95,21 @@ public class AlchemyQualityRandomized extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.POTION_MISC.id());
     }
 
+    public void setUpperBound(double upperBound) {
+        this.upperBound = upperBound;
+    }
+
+    public void setLowerBound(double lowerBound) {
+        this.lowerBound = lowerBound;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new AlchemyQualityRandomized(getName());
+    public DynamicItemModifier copy() {
+        AlchemyQualityRandomized m = new AlchemyQualityRandomized(getName());
+        m.setLowerBound(this.lowerBound);
+        m.setUpperBound(this.upperBound);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

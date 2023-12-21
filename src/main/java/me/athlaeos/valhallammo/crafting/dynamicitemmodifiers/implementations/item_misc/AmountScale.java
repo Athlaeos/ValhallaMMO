@@ -130,9 +130,26 @@ public class AmountScale extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setDamagePenalty(boolean damagePenalty) {
+        this.damagePenalty = damagePenalty;
+    }
+
+    public void setMinimumFraction(double minimumFraction) {
+        this.minimumFraction = minimumFraction;
+    }
+
+    public void setSkillEfficiency(double skillEfficiency) {
+        this.skillEfficiency = skillEfficiency;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new AmountScale(getName());
+    public DynamicItemModifier copy() {
+        AmountScale m = new AmountScale(getName());
+        m.setDamagePenalty(this.damagePenalty);
+        m.setMinimumFraction(this.minimumFraction);
+        m.setSkillEfficiency(this.skillEfficiency);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

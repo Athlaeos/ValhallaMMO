@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierPriority;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierScalingPresets;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
@@ -37,7 +38,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
     private double minimum = 1;
     private String skillToScaleWith = "SMITHING";
 
-    private double skillEfficiency = 0.5;
+    private double skillEfficiency = 1;
     private double minimumValue = 0;
     private final String attribute;
     private final Material icon;
@@ -78,6 +79,8 @@ public class DefaultAttributeScale extends DynamicItemModifier {
         }
 
         int finalQuality = (int) Math.round(skillEfficiency * skill);
+        if (!ItemAttributesRegistry.hasCustomStats(outputItem.getMeta())) ItemAttributesRegistry.applyVanillaStats(outputItem.getMeta());
+
         SmithingItemPropertyManager.applyAttributeScaling(outputItem.getMeta(), scaling, finalQuality, attribute, minimumValue);
     }
 
@@ -125,7 +128,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
                 else lowerBound = (lowerBound == null ? 0 : lowerBound) + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 0.25 : 0.01));
             }
             case 21 -> skillEfficiency = Math.max(0, skillEfficiency + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.1 : 0.01)));
-            case 23 -> minimumValue = Math.max(0, minimumValue + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.1 : 0.01)));
+            case 23 -> minimumValue += ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.1 : 0.01));
         }
         if (button != 0 && button != 21 && button != 23 && getButtons().containsKey(button)) presetScaling = null;
     }
@@ -178,7 +181,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
                                                 .name("&fUpper Bound")
                                                 .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
                                                         String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
-                                                        String.format("&fSet to: %s", upperBound == null ? "none" : String.format("%.2f", upperBound)),
+                                                        String.format("&fSet to: &e%s", upperBound == null ? "none" : String.format("%.2f", upperBound)),
                                                         "&fSets the maximum value that can",
                                                         "&fbe produced with the formula.",
                                                         "&6Click to add/subtract 0.01",
@@ -188,7 +191,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
                                                 .name("&fAmplifier")
                                                 .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
                                                         String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
-                                                        String.format("&fSet to: %.2f", amplifier),
+                                                        String.format("&fSet to: &e%.2f", amplifier),
                                                         "&fSets how much the formula will",
                                                         "&fscale up over the course of",
                                                         String.format("&e%.0f &f%s skill", skillRange, StringUtils.toPascalCase(skillToScaleWith)),
@@ -198,7 +201,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
                                                 .name("&fSkill Range")
                                                 .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
                                                         String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
-                                                        String.format("&fSet to: %.0f", skillRange),
+                                                        String.format("&fSet to: &e%.0f", skillRange),
                                                         "&fSets the range of skill required ",
                                                         String.format("&ffor the formula to go up by %.2f", amplifier),
                                                         "&6Click to add/subtract 1",
@@ -207,7 +210,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
                                                 .name("&fOffset")
                                                 .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
                                                         String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
-                                                        String.format("&fSet to: %.0f", rangeOffset),
+                                                        String.format("&fSet to: &e%.0f", rangeOffset),
                                                         "&fMoves the pivot point to a",
                                                         "&fdifferent skill point.",
                                                         "&aKeep in mind negative values equate",
@@ -220,7 +223,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
                                                 .name("&fMinimum (Pivot Point)")
                                                 .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
                                                         String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
-                                                        String.format("&fSet to: %.0f", minimum),
+                                                        String.format("&fSet to: &e%.0f", minimum),
                                                         "&fSets the baseline value the",
                                                         "&fformula will produce. ",
                                                         String.format("&f%.0f skill is required to reach %.2f", -rangeOffset, minimum),
@@ -230,7 +233,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
                                                 .name("&fSkill to use")
                                                 .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
                                                         String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
-                                                        String.format("&fSet to: %s", StringUtils.toPascalCase(skillToScaleWith)),
+                                                        String.format("&fSet to: &e%s", StringUtils.toPascalCase(skillToScaleWith)),
                                                         "&fSets which skill should be used",
                                                         "&fto define the scaling's strength",
                                                         "&eSmithing and Alchemy are exceptions",
@@ -241,7 +244,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
                                                 .name("&fLower Bound")
                                                 .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
                                                         String.format("&fCurrent Mode: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getScalingType() : mode),
-                                                        String.format("&fSet to: %s", lowerBound == null ? "none" : String.format("%.2f", lowerBound)),
+                                                        String.format("&fSet to: &e%s", lowerBound == null ? "none" : String.format("%.2f", lowerBound)),
                                                         "&fSets the minimum value that can",
                                                         "&fbe produced with the formula.",
                                                         "&6Click to add/subtract 0.01",
@@ -271,7 +274,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
     @Override
     public String getActiveDescription() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        return String.format("&fScales the item's %s stat according to the formula %s, using the mode %s. %s%s",
+        return String.format("&fScales the item's %s stat according to the formula /n%s, using the mode %s. %s%s",
                 attribute.getAttribute().toLowerCase().replace("_", " "),
                 buildScaling(), mode,
                 lowerBound == null ? "" : "&fResult cannot go below " + lowerBound + ". ",
@@ -284,10 +287,80 @@ public class DefaultAttributeScale extends DynamicItemModifier {
         return attribute.isVanilla() ? Set.of(ModifierCategoryRegistry.VANILLA_ATTRIBUTES.id()) : Set.of(ModifierCategoryRegistry.CUSTOM_ATTRIBUTES.id());
     }
 
+    public void setSkillEfficiency(double skillEfficiency) {
+        this.skillEfficiency = skillEfficiency;
+    }
+
+    public void setLowerBound(Double lowerBound) {
+        this.lowerBound = lowerBound;
+    }
+
+    public void setUpperBound(Double upperBound) {
+        this.upperBound = upperBound;
+    }
+
+    public void setAmplifier(double amplifier) {
+        this.amplifier = amplifier;
+    }
+
+    public void setCommandScaling(String commandScaling) {
+        this.commandScaling = commandScaling;
+    }
+
+    public void setMinimum(double minimum) {
+        this.minimum = minimum;
+    }
+
+    public void setMinimumValue(double minimumValue) {
+        this.minimumValue = minimumValue;
+    }
+
+    public void setMode(Scaling.ScalingMode mode) {
+        this.mode = mode;
+    }
+
+    public void setPresetScaling(String presetScaling) {
+        this.presetScaling = presetScaling;
+    }
+
+    public void setRangeOffset(double rangeOffset) {
+        this.rangeOffset = rangeOffset;
+    }
+
+    public void setSkillRange(double skillRange) {
+        this.skillRange = skillRange;
+    }
+
+    public void setSkillToScaleWith(String skillToScaleWith) {
+        this.skillToScaleWith = skillToScaleWith;
+    }
+
+    public double getRangeOffset() {
+        return rangeOffset;
+    }
+
+    public String getPresetScaling() {
+        return presetScaling;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
+    public DynamicItemModifier copy() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        return new DefaultAttributeScale(getName(), attribute.getAttribute(), icon);
+        DefaultAttributeScale m = new DefaultAttributeScale(getName(), attribute.getAttribute(), icon);
+        m.setPresetScaling(this.presetScaling);
+        m.setAmplifier(this.amplifier);
+        m.setCommandScaling(this.commandScaling);
+        m.setMinimum(this.minimum);
+        m.setLowerBound(this.lowerBound);
+        m.setMinimumValue(this.minimumValue);
+        m.setMode(this.mode);
+        m.setRangeOffset(this.rangeOffset);
+        m.setSkillEfficiency(this.skillEfficiency);
+        m.setSkillRange(this.skillRange);
+        m.setSkillToScaleWith(this.skillToScaleWith);
+        m.setUpperBound(this.upperBound);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

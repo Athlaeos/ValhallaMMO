@@ -59,8 +59,10 @@ public class ItemDummyHelmet extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new ItemDummyHelmet(getName());
+    public DynamicItemModifier copy() {
+        ItemDummyHelmet m = new ItemDummyHelmet(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

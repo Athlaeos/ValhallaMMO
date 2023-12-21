@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.skills.skills.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import me.athlaeos.valhallammo.listeners.LootListener;
@@ -50,8 +51,8 @@ public class WoodcuttingSkill extends Skill implements Listener {
         ValhallaMMO.getInstance().save("skills/woodcutting_progression.yml");
         ValhallaMMO.getInstance().save("skills/woodcutting.yml");
 
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/woodcutting.yml").reload().get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/woodcutting_progression.yml").reload().get();
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/woodcutting.yml").get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/woodcutting_progression.yml").get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -102,7 +103,8 @@ public class WoodcuttingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onBlockBreak(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !Tag.LOGS.isTagged(e.getBlock().getType())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !Tag.LOGS.isTagged(e.getBlock().getType()) ||
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING)) return;
         WoodcuttingProfile profile = ProfileCache.getOrCache(e.getPlayer(), WoodcuttingProfile.class);
 
         double woodCuttingLuck = AccumulativeStatManager.getCachedStats("WOODCUTTING_LUCK", e.getPlayer(), 10000, true);
@@ -115,7 +117,8 @@ public class WoodcuttingSkill extends Skill implements Listener {
                 profile.isTreeCapitatorUnlocked() &&
                 profile.getTreeCapitatorValidBlocks().contains(e.getBlock().getType().toString()) &&
                 Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "woodcutting_tree_capitator") &&
-                isTree(e.getBlock())){
+                isTree(e.getBlock()) &&
+                !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_TREECAPITATOR)){
             Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), treeCapitatorLimit, b -> Tag.LOGS.isTagged(b.getType()), treeCapitatorScanArea);
             if (vein.size() > profile.getTreeCapitatorLimit()) {
                 Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getTreeCapitatorCooldown(), "woodcutting_tree_capitator");
@@ -186,7 +189,8 @@ public class WoodcuttingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void lootTableDrops(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !Tag.LOGS.isTagged(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlock())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !Tag.LOGS.isTagged(e.getBlock().getType()) ||
+                !BlockUtils.canReward(e.getBlock()) || WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING)) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("WOODCUTTING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
         ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
@@ -201,7 +205,8 @@ public class WoodcuttingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemsDropped(BlockDropItemEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState()) ||
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING)) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("WOODCUTTING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops
         List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getItemStack().getType()));
@@ -221,6 +226,8 @@ public class WoodcuttingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPlaced(BlockPlaceEvent e) {
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() ||
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING)) return;
         Block b = e.getBlock();
         if (stripExpValues.containsKey(b.getType()) && dropsExpValues.containsKey(e.getBlockReplacedState().getType())) {
             double amount = stripExpValues.get(b.getType());
@@ -254,6 +261,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
 
     @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_WOODCUTTING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
             amount *= (1 + AccumulativeStatManager.getStats("WOODCUTTING_EXP_GAIN", p, true));
         }

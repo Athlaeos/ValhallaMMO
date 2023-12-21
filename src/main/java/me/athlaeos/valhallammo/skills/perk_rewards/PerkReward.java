@@ -53,7 +53,7 @@ public abstract class PerkReward implements Cloneable{
         return (PerkReward) super.clone();
     }
 
-    public abstract String rewardPlacholder();
+    public abstract String rewardPlaceholder();
 
     protected int parseInt(Object o){
         if (o instanceof Number number) return number.intValue();

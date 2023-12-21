@@ -60,9 +60,9 @@ public class AlchemySkill extends Skill implements Listener {
         ValhallaMMO.getInstance().save("skills/alchemy_progression.yml");
         ValhallaMMO.getInstance().save("skills/alchemy.yml");
 
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/alchemy.yml").reload().get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/alchemy_progression.yml").reload().get();
-        YamlConfiguration transmutationConfig = ConfigManager.getConfig("skills/alchemy_transmutations.yml").reload().get();
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/alchemy.yml").get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/alchemy_progression.yml").get();
+        YamlConfiguration transmutationConfig = ConfigManager.getConfig("skills/alchemy_transmutations.yml").get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -111,6 +111,7 @@ public class AlchemySkill extends Skill implements Listener {
 
     @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ALCHEMY)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
             amount *= (1 + AccumulativeStatManager.getStats("ALCHEMY_EXP_GAIN", p, true));
         }
@@ -119,7 +120,9 @@ public class AlchemySkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPotionCombine(InventoryClickEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() || !e.isRightClick() || !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_combining_attempts")) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() || !e.isRightClick() ||
+                !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_combining_attempts") ||
+                WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_ALCHEMY)) return;
         if (!(e.getClickedInventory() instanceof PlayerInventory) || !e.isRightClick()) return; // player inventory must be right-clicked
         Timer.setCooldown(e.getWhoClicked().getUniqueId(), 500, "delay_combining_attempts"); // setting cooldown between attempts so this can't be spammed with some macro
         if (ItemUtils.isEmpty(e.getCurrentItem()) || ItemUtils.isEmpty(e.getCursor())) return; // neither items must be empty
@@ -158,11 +161,11 @@ public class AlchemySkill extends Skill implements Listener {
 
         for (PotionEffectWrapper wrapper : combinedEffects.values()){
             if (wrapper.isVanilla()) {
-                wrapper.setAmplifier(((1 + wrapper.getAmplifier()) * profile.getPotionCombiningAmplifierMultiplier()) - 1);
+                wrapper.setAmplifier(((1 + wrapper.getAmplifier()) * (1 + profile.getPotionCombiningAmplifierMultiplier())) - 1);
             } else {
-                wrapper.setAmplifier(wrapper.getAmplifier() * profile.getPotionCombiningAmplifierMultiplier());
+                wrapper.setAmplifier(wrapper.getAmplifier() * (1 + profile.getPotionCombiningAmplifierMultiplier()));
             }
-            wrapper.setDuration((int) Math.floor(wrapper.getDuration() * profile.getPotionCombiningDurationMultiplier()));
+            wrapper.setDuration((int) Math.floor(wrapper.getDuration() * (1 + profile.getPotionCombiningDurationMultiplier())));
             combinedEffects.put(wrapper.getEffect(), wrapper);
         }
 
@@ -181,7 +184,7 @@ public class AlchemySkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCauldronInteract(PlayerInteractEvent e){
-        if (!quickEmptyPotions) return;
+        if (!quickEmptyPotions || WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ALCHEMY)) return;
         Block b = e.getClickedBlock();
         if (b != null && (b.getType() == Material.CAULDRON || b.getType().toString().equals("WATER_CAULDRON"))){
             ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
@@ -194,7 +197,10 @@ public class AlchemySkill extends Skill implements Listener {
 
     @EventHandler(priority=EventPriority.MONITOR)
     public void onProjectileHitBlock(ProjectileHitEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getHitBlock() == null || !(e.getEntity() instanceof ThrownPotion t) || !(t.getShooter() instanceof Player p)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
+                e.getHitBlock() == null || !(e.getEntity() instanceof ThrownPotion t) ||
+                !(t.getShooter() instanceof Player p) ||
+                WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ALCHEMY)) return;
         ItemMeta potionMeta = ItemUtils.getItemMeta(t.getItem());
         if (!isTransmutationPotion(potionMeta)) return;
 

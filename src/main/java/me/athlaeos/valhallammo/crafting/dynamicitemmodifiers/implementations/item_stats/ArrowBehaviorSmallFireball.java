@@ -84,9 +84,21 @@ public class ArrowBehaviorSmallFireball extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CUSTOM_ATTRIBUTES.id());
     }
 
+    public void setIncendiary(boolean incendiary) {
+        this.incendiary = incendiary;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ArrowBehaviorSmallFireball(getName());
+    public DynamicItemModifier copy() {
+        ArrowBehaviorSmallFireball m = new ArrowBehaviorSmallFireball(getName());
+        m.setIncendiary(this.incendiary);
+        m.setRadius(this.radius);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class AlchemyQualityScale extends DynamicItemModifier {
         if (materialClass != null){
             typeSkill = AccumulativeStatManager.getStats("ALCHEMY_QUALITY_" + effectClass, crafter, use);
         }
-        AlchemyItemPropertyManager.setQuality(outputItem.getMeta(), (int) (typeSkill + generalSkill));
+        AlchemyItemPropertyManager.setQuality(outputItem.getMeta(), (int) ((typeSkill + generalSkill) * skillEfficiency));
     }
 
     @Override
@@ -98,9 +98,21 @@ public class AlchemyQualityScale extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.POTION_MISC.id());
     }
 
+    public void setSkillEfficiency(double skillEfficiency) {
+        this.skillEfficiency = skillEfficiency;
+    }
+
+    public void setEffectClass(EffectClass effectClass) {
+        this.effectClass = effectClass;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new AlchemyQualityScale(getName());
+    public DynamicItemModifier copy() {
+        AlchemyQualityScale m = new AlchemyQualityScale(getName());
+        m.setEffectClass(this.effectClass);
+        m.setSkillEfficiency(this.skillEfficiency);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

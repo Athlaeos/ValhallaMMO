@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.CustomFlag;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.NamespacedKey;
@@ -27,7 +28,7 @@ public abstract class DynamicItemModifier {
     public abstract String getDescription();
     public abstract String getActiveDescription();
     public abstract Collection<String> getCategories();
-    public abstract DynamicItemModifier createNew();
+    public abstract DynamicItemModifier copy();
 
     /**
      * Should return an error message if incorrectly parsed, null if execution is fine
@@ -98,6 +99,7 @@ public abstract class DynamicItemModifier {
             modifier.processItem(p, i, use, validate, count);
             if (ItemUtils.isEmpty(i.getItem()) || CustomFlag.hasFlag(i.getMeta(), CustomFlag.UNCRAFTABLE)) break;
         }
+        TranslationManager.translateItemMeta(i.getMeta());
     }
 
     /**
@@ -136,6 +138,8 @@ public abstract class DynamicItemModifier {
             if (ItemUtils.isEmpty(i1.getItem()) || CustomFlag.hasFlag(i1.getMeta(), CustomFlag.UNCRAFTABLE) ||
                     ItemUtils.isEmpty(i2.getItem()) || CustomFlag.hasFlag(i2.getMeta(), CustomFlag.UNCRAFTABLE)) break;
         }
+        TranslationManager.translateItemMeta(i1.getMeta());
+        TranslationManager.translateItemMeta(i2.getMeta());
     }
 
     /**

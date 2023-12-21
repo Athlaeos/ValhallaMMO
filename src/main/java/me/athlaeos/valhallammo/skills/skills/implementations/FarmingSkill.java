@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import me.athlaeos.valhallammo.listeners.LootListener;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -65,8 +66,8 @@ public class FarmingSkill extends Skill implements Listener {
         ValhallaMMO.getInstance().save("skills/farming_progression.yml");
         ValhallaMMO.getInstance().save("skills/farming.yml");
 
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/farming.yml").reload().get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/farming_progression.yml").reload().get();
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/farming.yml").get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/farming_progression.yml").get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -144,7 +145,8 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void lootTableDrops(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlock())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlock()) ||
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
 
         if (blockDropExpValues.containsKey(e.getBlock().getType())) {
             FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
@@ -170,12 +172,16 @@ public class FarmingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInteract(PlayerInteractEvent e){
         if (e.getClickedBlock() == null || ValhallaMMO.isWorldBlacklisted(e.getClickedBlock().getWorld().getName()) ||
-                e.useInteractedBlock() == Event.Result.DENY || e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getHand() == EquipmentSlot.OFF_HAND) return;
+                e.useInteractedBlock() == Event.Result.DENY || e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getHand() == EquipmentSlot.OFF_HAND ||
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
 
         Block clickedBlock = e.getClickedBlock();
         FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
         if (clickedBlock.getBlockData() instanceof Ageable a && a.getAge() >= a.getMaximumAge() && harvestableCrops.contains(clickedBlock.getType())) {
-            if (profile.isFieldHarvestUnlocked() && e.getPlayer().isSneaking() && Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "farming_field_harvest") && !fieldHarvestingPlayers.contains(e.getPlayer().getUniqueId())) {
+            if (profile.isFieldHarvestUnlocked() && e.getPlayer().isSneaking() &&
+                    Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "farming_field_harvest") &&
+                    !fieldHarvestingPlayers.contains(e.getPlayer().getUniqueId()) &&
+                    !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_VEINFARMER)) {
                 Collection<Block> vein = BlockUtils.getBlockVein(clickedBlock, fieldHarvestLimit, b ->
                         harvestableCrops.contains(b.getType()) && b.getBlockData() instanceof Ageable ag && ag.getAge() >= ag.getMaximumAge(),
                         fieldHarvestScanArea);
@@ -224,7 +230,8 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPlace(BlockPlaceEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !harvestableCrops.contains(e.getBlock().getType())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !harvestableCrops.contains(e.getBlock().getType()) ||
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
         Block b = e.getBlock();
         if (b.getBlockData() instanceof Ageable a) {
             FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
@@ -237,7 +244,9 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockHarvest(PlayerHarvestBlockEvent e) {
-        if (ValhallaMMO.isWorldBlacklisted(e.getHarvestedBlock().getWorld().getName()) || e.isCancelled() || !blockInteractExpValues.containsKey(e.getHarvestedBlock().getType())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getHarvestedBlock().getWorld().getName()) || e.isCancelled() ||
+                !blockInteractExpValues.containsKey(e.getHarvestedBlock().getType()) ||
+                WorldGuardHook.inDisabledRegion(e.getHarvestedBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("FARMING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         ItemUtils.multiplyItems(e.getItemsHarvested(), dropMultiplier, forgivingDropMultipliers, (i) -> blockInteractExpValues.containsKey(i.getType()));
         ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getHarvestedBlock()), dropMultiplier, forgivingDropMultipliers, (i) -> blockInteractExpValues.containsKey(i.getType()));
@@ -263,7 +272,8 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemsDropped(BlockDropItemEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState()) ||
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("FARMING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops
         List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> blockDropExpValues.containsKey(i.getItemStack().getType()));
@@ -284,7 +294,8 @@ public class FarmingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBeeAggro(EntityTargetLivingEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof Bee b) ||
-        !(e.getTarget() instanceof Player p) || e.getReason() != EntityTargetEvent.TargetReason.CLOSEST_PLAYER) return;
+                !(e.getTarget() instanceof Player p) || e.getReason() != EntityTargetEvent.TargetReason.CLOSEST_PLAYER ||
+                WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_FARMING)) return;
         FarmingProfile profile = ProfileCache.getOrCache(p, FarmingProfile.class);
         if (!profile.hasBeeAggroImmunity()) return;
         e.setCancelled(true);
@@ -311,6 +322,7 @@ public class FarmingSkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.ANIMAL)) return;
         Player killer = e.getEntity().getKiller();
         if (killer == null) return;
+        if (WorldGuardHook.inDisabledRegion(killer.getLocation(), killer, WorldGuardHook.VMMO_SKILL_FARMING)) return;
         double multiplier = AccumulativeStatManager.getCachedStats("BUTCHERY_DROP_MULTIPLIER", killer, 10000, true);
         ItemUtils.multiplyItems(e.getDrops(), 1 + multiplier, forgivingDropMultipliers, (i) -> entityDropExpValues.containsKey(i.getType()));
 
@@ -324,8 +336,10 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onAnimalBreed(EntityBreedEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.ANIMAL)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
+                !EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.ANIMAL)) return;
         if (!(e.getBreeder() instanceof Player p) || !(e.getEntity() instanceof org.bukkit.entity.Ageable a)) return;
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_FARMING)) return;
         FarmingProfile profile = ProfileCache.getOrCache(p, FarmingProfile.class);
         int newAge = (int) Math.ceil(a.getAge() * (1 / (Math.max(-0.999, profile.getGrowUpTimeMultiplier()) + 1)));
         a.setAge(newAge);
@@ -358,6 +372,7 @@ public class FarmingSkill extends Skill implements Listener {
 
     @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_FARMING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
             amount *= (1 + AccumulativeStatManager.getStats("FARMING_EXP_GAIN", p, true));
         }

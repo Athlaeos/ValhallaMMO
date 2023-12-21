@@ -83,8 +83,10 @@ public class PotionTypeSet extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new PotionTypeSet(getName());
+    public DynamicItemModifier copy() {
+        PotionTypeSet m = new PotionTypeSet(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

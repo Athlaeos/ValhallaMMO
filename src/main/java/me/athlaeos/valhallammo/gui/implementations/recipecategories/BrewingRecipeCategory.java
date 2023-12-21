@@ -12,6 +12,7 @@ import me.athlaeos.valhallammo.gui.implementations.RecipeOverviewMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -41,7 +42,7 @@ public class BrewingRecipeCategory extends RecipeCategory{
                     "&8&m                <>                "
             ));
             if (recipe.getModifiers().isEmpty()) lore.add("&aNo modifiers executed");
-            recipe.getModifiers().forEach(m -> lore.add(m.getActiveDescription()));
+            recipe.getModifiers().forEach(m -> lore.addAll(StringUtils.separateStringIntoLines(m.getActiveDescription(), 40)));
 
             icons.add(new ItemBuilder(recipe.tinker() ? recipe.getApplyOn().getItem().getType() : recipe.getResult().getType())
                     .name("&f" + recipe.getName())

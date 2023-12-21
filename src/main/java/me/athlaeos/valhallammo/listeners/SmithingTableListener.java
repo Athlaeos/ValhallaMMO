@@ -58,6 +58,11 @@ public class SmithingTableListener implements Listener {
             if (!ItemUtils.isEmpty(template)) template = template.clone();
 
             Pair<SmithingRecipe, DynamicSmithingRecipe> recipes = getSmithingRecipe(template, base.getItem(), addition.getItem());
+            if (recipes == null){
+                e.setCancelled(true);
+                s.setResult(null);
+                return;
+            }
             if (recipes.getOne() == null) {
                 return; // no recipe was found at all, so do nothing
             }
@@ -143,6 +148,10 @@ public class SmithingTableListener implements Listener {
         ItemBuilder addition = ItemUtils.isEmpty(rawAddition) ? null : new ItemBuilder(rawAddition);
         if (base == null || addition == null) return;
         Pair<SmithingRecipe, DynamicSmithingRecipe> recipes = getSmithingRecipe(template, base.getItem(), addition.getItem());
+        if (recipes == null){
+            e.setResult(null);
+            return;
+        }
         if (recipes.getOne() == null) {
             e.setResult(null);
             return; // no recipe was found at all, so do nothing
@@ -200,8 +209,8 @@ public class SmithingTableListener implements Listener {
                 return;
             }
         }
-        if (CustomDurabilityManager.getDurability(result.getItem(), result.getMeta(), true) > 0 && CustomDurabilityManager.getDurability(result.getItem(), result.getMeta(), false) <= 0) result = null;
-        if (CustomDurabilityManager.getDurability(addition.getItem(), addition.getMeta(), true) > 0 && CustomDurabilityManager.getDurability(addition.getItem(), addition.getMeta(), false) <= 0) result = null;
+        if (CustomDurabilityManager.getDurability(result.getMeta(), true) > 0 && CustomDurabilityManager.getDurability(result.getMeta(), false) <= 0) result = null;
+        if (CustomDurabilityManager.getDurability(addition.getMeta(), true) > 0 && CustomDurabilityManager.getDurability(addition.getMeta(), false) <= 0) result = null;
         smithingAdditionInfoMap.put(p.getUniqueId(), new SmithingAdditionInfo(recipe, base.get(), originalAddition, addition.get()));
         e.setResult(result == null ? null : result.get());
     }
@@ -216,25 +225,26 @@ public class SmithingTableListener implements Listener {
         Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
         SmithingRecipe found = null;
         while (iterator.hasNext()){
-            if (iterator.next() instanceof SmithingRecipe s){
-                if (s.getBase().test(base) && s.getAddition().test(addition)){
-                    found = s;
-                    DynamicSmithingRecipe dynamicRecipe = CustomRecipeRegistry.getSmithingRecipesByKey().get(s.getKey());
-                    if (dynamicRecipe != null) {
-                        // templates are considered matching if templates aren't in the game yet, if the dynamic recipe template is null,
-                        // or if the dynamic template matches the template item
-                        boolean templatesMatch = !isTemplateCompatible || ((dynamicRecipe.getTemplate() == null || dynamicRecipe.getTemplate().getOption() == null || ItemUtils.isEmpty(dynamicRecipe.getTemplate().getItem())) ?
-                                ItemUtils.isEmpty(template) :
-                                dynamicRecipe.getTemplate().getOption().matches(dynamicRecipe.getTemplate().getItem(), template));
-                        Pair<SmithingRecipe, DynamicSmithingRecipe> match = new Pair<>(found, dynamicRecipe);
-                        if (templatesMatch) {
-                            smithingRecipeCache.put(key, match);
-                            return match;
-                        }
+            if (iterator.next() instanceof SmithingRecipe s && s.getBase().test(base) && s.getAddition().test(addition)){
+                found = s;
+                DynamicSmithingRecipe dynamicRecipe = CustomRecipeRegistry.getSmithingRecipesByKey().get(s.getKey());
+                if (dynamicRecipe != null && dynamicRecipe.getBase().getOption().matches(dynamicRecipe.getBase().getItem(), base) &&
+                        dynamicRecipe.getAddition().getOption().matches(dynamicRecipe.getAddition().getItem(), addition)) {
+                    // templates are considered matching if templates aren't in the game yet, if the dynamic recipe template is null,
+                    // or if the dynamic template matches the template item
+                    boolean templatesMatch = !isTemplateCompatible || ((dynamicRecipe.getTemplate() == null || dynamicRecipe.getTemplate().getOption() == null || ItemUtils.isEmpty(dynamicRecipe.getTemplate().getItem())) ?
+                            ItemUtils.isEmpty(template) :
+                            dynamicRecipe.getTemplate().getOption().matches(dynamicRecipe.getTemplate().getItem(), template));
+                    Pair<SmithingRecipe, DynamicSmithingRecipe> match = new Pair<>(found, dynamicRecipe);
+                    if (templatesMatch) {
+                        smithingRecipeCache.put(key, match);
+                        return match;
                     }
                 }
             }
         }
+        // if a valhalla recipe is found but its items do not match, return null. null should mean the recipe should be cancelled
+        if (found != null && CustomRecipeRegistry.getSmithingRecipesByKey().containsKey(found.getKey())) return null;
         return new Pair<>(found, null);
     }
 

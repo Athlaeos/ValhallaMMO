@@ -47,7 +47,7 @@ public class TranslationManager {
     }
 
     public static List<String> getListTranslation(String key) {
-        return pluginTranslations.getStringListTranslations().getOrDefault(key, Collections.singletonList(key));
+        return pluginTranslations.getStringListTranslations().getOrDefault(key, new ArrayList<>());
     }
 
     public static String getIndexedString(int id){

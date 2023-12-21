@@ -101,9 +101,26 @@ public class ArrowBehaviorIncendiary extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.CUSTOM_ATTRIBUTES.id());
     }
 
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public void setDensity(double density) {
+        this.density = density;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ArrowBehaviorIncendiary(getName());
+    public DynamicItemModifier copy() {
+        ArrowBehaviorIncendiary m = new ArrowBehaviorIncendiary(getName());
+        m.setDensity(this.density);
+        m.setDuration(this.duration);
+        m.setRadius(this.radius);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

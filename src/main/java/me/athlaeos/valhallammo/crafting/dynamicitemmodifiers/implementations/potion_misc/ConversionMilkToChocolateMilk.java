@@ -70,8 +70,10 @@ public class ConversionMilkToChocolateMilk extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new ConversionMilkToChocolateMilk(getName());
+    public DynamicItemModifier copy() {
+        ConversionMilkToChocolateMilk m = new ConversionMilkToChocolateMilk(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

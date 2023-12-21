@@ -76,9 +76,21 @@ public class ItemReplace extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setReplaceByMeta(ItemMeta replaceByMeta) {
+        this.replaceByMeta = replaceByMeta;
+    }
+
+    public void setReplaceBy(ItemStack replaceBy) {
+        this.replaceBy = replaceBy;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new ItemReplace(getName());
+    public DynamicItemModifier copy() {
+        ItemReplace m = new ItemReplace(getName());
+        m.setReplaceBy(this.replaceBy);
+        m.setReplaceByMeta(this.replaceByMeta);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

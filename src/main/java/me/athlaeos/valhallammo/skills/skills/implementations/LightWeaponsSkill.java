@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.CombatType;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.WeightClass;
 import me.athlaeos.valhallammo.event.EntityCriticallyHitEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
@@ -58,8 +59,8 @@ public class LightWeaponsSkill extends Skill implements Listener {
         ValhallaMMO.getInstance().save("skills/light_weapons_progression.yml");
         ValhallaMMO.getInstance().save("skills/light_weapons.yml");
 
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/light_weapons.yml").reload().get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/light_weapons_progression.yml").reload().get();
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/light_weapons.yml").get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/light_weapons_progression.yml").get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -82,7 +83,9 @@ public class LightWeaponsSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCoatingApply(InventoryClickEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() || !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_coating_attempts")) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() ||
+                !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_coating_attempts") ||
+                WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_LIGHTWEAPONS)) return;
         if (!(e.getClickedInventory() instanceof PlayerInventory) || !e.isRightClick()) return; // player inventory must be right-clicked
         Timer.setCooldown(e.getWhoClicked().getUniqueId(), 500, "delay_coating_attempts"); // setting cooldown between attempts so this can't be spammed with some macro
         if (ItemUtils.isEmpty(e.getCurrentItem()) || ItemUtils.isEmpty(e.getCursor())) return; // neither items must be empty
@@ -98,8 +101,8 @@ public class LightWeaponsSkill extends Skill implements Listener {
         Map<String, PotionEffectWrapper> newEffects = new HashMap<>();
         for (PotionEffectWrapper wrapper : effects.values()){
             newEffects.put(wrapper.getEffect(), wrapper
-                    .setAmplifier(profile.getCoatingAmplifierMultiplier() * wrapper.getAmplifier())
-                    .setDuration((int) Math.floor(profile.getCoatingDurationMultiplier() * wrapper.getDuration()))
+                    .setAmplifier((1 + profile.getCoatingAmplifierMultiplier()) * wrapper.getAmplifier())
+                    .setDuration((int) Math.floor((1 + profile.getCoatingDurationMultiplier()) * wrapper.getDuration()))
                     .setCharges(profile.getCoatingCharges())
             );
         }
@@ -119,6 +122,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
     public void onAttack(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         if (e.getDamager() instanceof Player p && e.getEntity() instanceof LivingEntity l){
+            if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTWEAPONS)) return;
             ItemBuilder weapon = EntityCache.getAndCacheProperties(p).getMainHand();
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.LIGHT) return;
             LightWeaponsProfile profile = ProfileCache.getOrCache(p, LightWeaponsProfile.class);
@@ -135,6 +139,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
     public void onExpAttack(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         if (e.getDamager() instanceof Player p && e.getEntity() instanceof Monster l){
+            if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTWEAPONS)) return;
             ItemBuilder weapon = EntityCache.getAndCacheProperties(p).getMainHand();
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.LIGHT) return;
 
@@ -155,6 +160,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
     public void onCrit(EntityCriticallyHitEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         if (e.getCritter() instanceof Player p && e.getEntity() instanceof LivingEntity l){
+            if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTWEAPONS)) return;
             ItemBuilder weapon = EntityCache.getAndCacheProperties(p).getMainHand();
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.LIGHT) return;
             LightWeaponsProfile profile = ProfileCache.getOrCache(p, LightWeaponsProfile.class);
@@ -185,6 +191,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
 
     @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTWEAPONS)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
             amount *= (1 + AccumulativeStatManager.getStats("LIGHT_WEAPONS_EXP_GAIN", p, true));
         }

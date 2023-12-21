@@ -25,9 +25,9 @@ public class DurabilityRandomized extends DynamicItemModifier {
         if (!use) return;
         if (!(outputItem.getMeta() instanceof Damageable) || outputItem.getItem().getType().getMaxDurability() <= 0) return;
         if (CustomDurabilityManager.hasCustomDurability(outputItem.getMeta())){
-            int maxDurability = CustomDurabilityManager.getDurability(outputItem.getItem(), outputItem.getMeta(), true);
+            int maxDurability = CustomDurabilityManager.getDurability(outputItem.getMeta(), true);
             int randomDurability = Utils.getRandom().nextInt(maxDurability) + 1;
-            CustomDurabilityManager.setDurability(outputItem.getItem(), outputItem.getMeta(), randomDurability, maxDurability);
+            CustomDurabilityManager.setDurability(outputItem.getMeta(), randomDurability, maxDurability);
         } else {
             Damageable meta = (Damageable) outputItem.getMeta();
             int maxDurability = outputItem.getItem().getType().getMaxDurability();
@@ -70,8 +70,10 @@ public class DurabilityRandomized extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new DurabilityRandomized(getName());
+    public DynamicItemModifier copy() {
+        DurabilityRandomized m = new DurabilityRandomized(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

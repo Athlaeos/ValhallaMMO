@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -29,6 +30,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class PartyManager {
     private static final Gson gson = new GsonBuilder()
@@ -98,7 +100,9 @@ public class PartyManager {
         int expSharingRadius = getTotalIntStat("exp_sharing_radius", party);
         if (expSharingRadius == 0 || expSharingMultiplier <= 0) return nearbyMembers;
 
-        return membersInRadius(p, expSharingRadius);
+        return membersInRadius(p, expSharingRadius).stream().filter(pl ->
+                !WorldGuardHook.inDisabledRegion(pl.getLocation(), pl, WorldGuardHook.VMMO_PARTY_EXPSHARING)).collect(Collectors.toSet()
+        );
     }
 
     public static Collection<Player> membersInRadius(Player p, int radius){
@@ -262,8 +266,10 @@ public class PartyManager {
         if (from.getUniqueId().equals(to.getUniqueId())) return ErrorStatus.TARGET_SENDER_SAME;
         Party fromParty = getParty(from);
         if (fromParty == null) return ErrorStatus.SENDER_NO_PARTY;
+        if (WorldGuardHook.inDisabledRegion(from.getLocation(), from, WorldGuardHook.VMMO_PARTY_ITEMSHARING)) return ErrorStatus.FORBIDDEN_REGION;
         Party toParty = getParty(to);
         if (toParty == null) return ErrorStatus.TARGET_NO_PARTY;
+        if (WorldGuardHook.inDisabledRegion(to.getLocation(), to, WorldGuardHook.VMMO_PARTY_ITEMSHARING)) return ErrorStatus.FORBIDDEN_REGION;
         if (!fromParty.getId().equals(toParty.getId())) return ErrorStatus.NOT_IN_SAME_PARTY;
         if (!getBoolStat("item_sharing", fromParty) || fromParty.isItemSharingEnabled() == null || !fromParty.isItemSharingEnabled()) return ErrorStatus.FEATURE_NOT_UNLOCKED;
         int reach = getTotalIntStat("item_sharing_radius", fromParty);
@@ -657,7 +663,7 @@ public class PartyManager {
 
     @SuppressWarnings("all")
     public static void loadParties(){
-        YamlConfiguration config = ConfigManager.getConfig("parties.yml").get();
+        YamlConfiguration config = ConfigManager.getConfig("parties.yml").reload().get();
         enabledParties = config.getBoolean("enabled");
         if (!enabledParties) return;
         enabledEXPSharing = config.getBoolean("exp_sharing");
@@ -851,6 +857,7 @@ public class PartyManager {
     public enum ErrorStatus{
         NO_PERMISSION("error_command_no_permission"),
         TARGET_NOT_INVITEABLE("status_command_party_member_not_inviteable"),
+        FORBIDDEN_REGION("status_command_party_forbidden_region"),
         TARGET_NO_PARTY("status_command_party_target_no_party"),
         SENDER_NO_PARTY("status_command_party_sender_no_party"),
         TARGET_HIGHER_RANK("status_command_party_target_higher_rank"),

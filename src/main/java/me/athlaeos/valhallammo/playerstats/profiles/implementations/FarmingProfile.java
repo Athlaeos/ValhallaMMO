@@ -30,7 +30,7 @@ public class FarmingProfile extends Profile {
         booleanStat("fieldHarvestInstantPickup", new BooleanProperties(true, true));
         intStat("fieldHarvestCooldown", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
 
-        doubleStat("farmingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        doubleStat("farmingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
     }
 
     public boolean isInstantHarvesting() { return getBoolean("instantHarvesting"); }

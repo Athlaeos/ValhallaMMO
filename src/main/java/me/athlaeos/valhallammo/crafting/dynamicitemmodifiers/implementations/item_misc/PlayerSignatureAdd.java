@@ -85,9 +85,16 @@ public class PlayerSignatureAdd extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setEnd(boolean end) {
+        this.end = end;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new PlayerSignatureAdd(getName());
+    public DynamicItemModifier copy() {
+        PlayerSignatureAdd m = new PlayerSignatureAdd(getName());
+        m.setEnd(this.end);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

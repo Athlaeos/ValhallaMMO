@@ -70,9 +70,16 @@ public class AmountAdd extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new AmountAdd(getName());
+    public DynamicItemModifier copy() {
+        AmountAdd m = new AmountAdd(getName());
+        m.setAmount(this.amount);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

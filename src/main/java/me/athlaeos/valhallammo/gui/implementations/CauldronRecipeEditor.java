@@ -217,17 +217,17 @@ public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetR
         super(playerMenuUtility);
         this.recipe = new DynamicCauldronRecipe(newName);
 
-        this.ingredients = recipe.getIngredients();
-        this.catalyst = recipe.getCatalyst();
-        this.result = recipe.getResult();
-        this.modifiers = recipe.getModifiers();
+        this.ingredients = new HashMap<>(recipe.getIngredients());
+        this.catalyst = new SlotEntry(recipe.getCatalyst().getItem().clone(), recipe.getCatalyst().getOption());
+        this.result = recipe.getResult().clone();
+        this.modifiers = new ArrayList<>(recipe.getModifiers().stream().map(DynamicItemModifier::copy).toList());
         this.requireValhallaTools = recipe.requiresValhallaTools();
         this.tinker = recipe.tinkerCatalyst();
         this.timedRecipe = recipe.isTimedRecipe();
         this.cookTime = recipe.getCookTime();
         this.unlockedForEveryone = recipe.isUnlockedForEveryone();
         this.metaRequirement = recipe.getMetaRequirement();
-        this.validations = recipe.getValidations();
+        this.validations = new HashSet<>(recipe.getValidations());
         this.displayName = recipe.getDisplayName();
         this.description = recipe.getDescription();
     }

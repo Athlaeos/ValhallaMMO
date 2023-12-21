@@ -34,7 +34,7 @@ public class PrestigePointsExpense implements ResourceExpense {
         ProfileRegistry.setSkillProfile(p, profile, PowerProfile.class);
     }
 
-    private final boolean refundable = ConfigManager.getConfig("config.yml").get().getBoolean("forgettable_perks_refund_prestigepoints", true);
+    private final boolean refundable = ConfigManager.getConfig("config.yml").reload().get().getBoolean("forgettable_perks_refund_prestigepoints", true);
     @Override
     public boolean isRefundable() {
         return refundable;

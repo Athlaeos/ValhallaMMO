@@ -10,7 +10,7 @@ experience:
   exp_level_curve: '0.25 * (%level% + 300 * 2^(%level%/7.6)) + 300'
   max_level: 100
 
-starting_coordinates: '3,5'
+starting_coordinates: '3,3'
 
 special_perks:
   20:
@@ -210,7 +210,7 @@ perks:
     commands:
       - "valhallammo:val effect smithing_masterpiece_flat 100 -1"
     perk_rewards:
-      p:perks_fake_unlock:
+      p:perks_fake_unlock_add:
         - smithing_perk_6 # Permanently unlocks this perk, preventing the player from getting the reward again.
     messages:
       - "<lang.smithing_perk_6_messages>"
@@ -269,7 +269,7 @@ perks:
     requireperk_all:
       - smithing_perk_3
   smithing_perk_enderic:
-    icon: MEMBRANE
+    icon: PHANTOM_MEMBRANE
     coords: "5,3"
     name: "<lang.smithing_perk_enderic_name>"
     description: "<lang.smithing_perk_enderic_description>"

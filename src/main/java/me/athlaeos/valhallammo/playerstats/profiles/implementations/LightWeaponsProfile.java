@@ -19,6 +19,7 @@ public class LightWeaponsProfile extends Profile {
         floatStat("powerAttackRadius", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("attackSpeedMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("attackReachBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
+        floatStat("attackReachMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("knockbackMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("damageToLightArmorMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("damageToHeavyArmorMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
@@ -39,6 +40,8 @@ public class LightWeaponsProfile extends Profile {
         floatStat("dropsMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("rareDropsMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
 
+        floatStat("parryDamageReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("parryCooldownSuccessReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         intStat("bleedDuration", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
         intStat("stunDuration", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
         intStat("parryEffectiveDuration", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
@@ -55,7 +58,7 @@ public class LightWeaponsProfile extends Profile {
         booleanStat("critOnStun", new BooleanProperties(true, true));
         booleanStat("coatingUnlocked", new BooleanProperties(true, true));
 
-        doubleStat("lightWeaponsEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        doubleStat("lightWeaponsEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
     }
 
     public boolean doesBleedOnCrit() { return getBoolean("bleedOnCrit"); }
@@ -105,9 +108,17 @@ public class LightWeaponsProfile extends Profile {
 
     public float getPowerAttackDamageMultiplier() { return getFloat("overheadDamageMultiplier"); }
     public void setPowerAttackDamageMultiplier(float value) { setFloat("overheadDamageMultiplier", value); }
+    public float getAttackReachMultiplier() { return getFloat("attackReachMultiplier"); }
+    public void setAttackReachMultiplier(float value) { setFloat("attackReachMultiplier", value); }
 
     public float getPowerAttackFraction() { return getFloat("overheadFraction"); }
     public void setPowerAttackFraction(float value) { setFloat("overheadFraction", value); }
+
+    public float getParryDamageReduction() { return getFloat("parryDamageReduction"); }
+    public void setParryDamageReduction(float value) { setFloat("parryDamageReduction", value); }
+
+    public float getParryCooldownSuccessReduction() { return getFloat("parryCooldownSuccessReduction"); }
+    public void setParryCooldownSuccessReduction(float value) { setFloat("parryCooldownSuccessReduction", value); }
 
     public float getPowerAttackRadius() { return getFloat("overheadRadius"); }
     public void setPowerAttackRadius(float value) { setFloat("overheadRadius", value); }

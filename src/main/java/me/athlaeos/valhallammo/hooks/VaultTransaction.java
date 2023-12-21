@@ -1,4 +1,4 @@
-package me.athlaeos.valhallammo.version;
+package me.athlaeos.valhallammo.hooks;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.hooks.VaultHook;

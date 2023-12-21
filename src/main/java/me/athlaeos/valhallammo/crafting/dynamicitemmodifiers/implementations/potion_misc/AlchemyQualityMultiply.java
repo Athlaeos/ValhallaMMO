@@ -74,9 +74,16 @@ public class AlchemyQualityMultiply extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.POTION_MISC.id());
     }
 
+    public void setMultiplyBy(double multiplyBy) {
+        this.multiplyBy = multiplyBy;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new AlchemyQualityMultiply(getName());
+    public DynamicItemModifier copy() {
+        AlchemyQualityMultiply m = new AlchemyQualityMultiply(getName());
+        m.setMultiplyBy(this.multiplyBy);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

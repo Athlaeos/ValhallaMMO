@@ -8,7 +8,7 @@ import me.athlaeos.valhallammo.hooks.VaultHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.localization.TranslationManager;
-import me.athlaeos.valhallammo.version.VaultTransaction;
+import me.athlaeos.valhallammo.hooks.VaultTransaction;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -37,6 +37,10 @@ public class CostMoney extends DynamicItemModifier {
                             .replace("%cost%", String.format("%,.2f", amount))
             );
         }
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     @Override
@@ -169,8 +173,11 @@ public class CostMoney extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new CostMoney(getName());
+    public DynamicItemModifier copy() {
+        CostMoney m = new CostMoney(getName());
+        m.setAmount(this.amount);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

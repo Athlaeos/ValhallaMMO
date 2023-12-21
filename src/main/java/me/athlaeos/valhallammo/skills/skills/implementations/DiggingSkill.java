@@ -2,7 +2,10 @@ package me.athlaeos.valhallammo.skills.skills.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
+import me.athlaeos.valhallammo.dom.Structures;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import me.athlaeos.valhallammo.listeners.LootListener;
@@ -16,6 +19,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.WoodcuttingP
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.*;
+import me.athlaeos.valhallammo.version.DiggingArchaeologyExtension;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
@@ -44,8 +48,8 @@ public class DiggingSkill extends Skill implements Listener {
         ValhallaMMO.getInstance().save("skills/digging_progression.yml");
         ValhallaMMO.getInstance().save("skills/digging.yml");
 
-        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/digging.yml").reload().get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/digging_progression.yml").reload().get();
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/digging.yml").get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/digging_progression.yml").get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 
@@ -70,11 +74,15 @@ public class DiggingSkill extends Skill implements Listener {
         }
 
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20))
+            ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new DiggingArchaeologyExtension(this), ValhallaMMO.getInstance());
     }
 
     @EventHandler(priority = EventPriority.LOW)
     public void onBlockBreak(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlock())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() ||
+                !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlock()) ||
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING)) return;
 
         DiggingProfile profile = ProfileCache.getOrCache(e.getPlayer(), DiggingProfile.class);
         e.setExpToDrop(e.getExpToDrop() + Utils.randomAverage(profile.getBlockExperienceRate()));
@@ -83,7 +91,9 @@ public class DiggingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void lootTableDrops(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlock())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() ||
+                !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlock()) ||
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING)) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("DIGGING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
         ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
@@ -98,7 +108,9 @@ public class DiggingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemsDropped(BlockDropItemEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlockState())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() ||
+                !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlockState()) ||
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING)) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("DIGGING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops
         List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getItemStack().getType()));
@@ -138,6 +150,7 @@ public class DiggingSkill extends Skill implements Listener {
 
     @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
+        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_DIGGING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
             amount *= (1 + AccumulativeStatManager.getStats("DIGGING_EXP_GAIN", p, true));
         }

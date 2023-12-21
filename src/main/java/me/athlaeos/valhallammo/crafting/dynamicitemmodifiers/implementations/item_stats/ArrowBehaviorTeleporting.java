@@ -58,8 +58,10 @@ public class ArrowBehaviorTeleporting extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new ArrowBehaviorTeleporting(getName());
+    public DynamicItemModifier copy() {
+        ArrowBehaviorTeleporting m = new ArrowBehaviorTeleporting(getName());
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

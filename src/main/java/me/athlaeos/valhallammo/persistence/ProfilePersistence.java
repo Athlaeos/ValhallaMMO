@@ -1,8 +1,10 @@
 package me.athlaeos.valhallammo.persistence;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.playerstats.LeaderboardEntry;
+import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
@@ -12,18 +14,13 @@ import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class ProfilePersistence {
 
     public abstract void setPersistentProfile(Player p, Profile profile, Class<? extends Profile> type);
     public abstract void setSkillProfile(Player p, Profile profile, Class<? extends Profile> type);
-
-    public abstract void queryLeaderboardEntries(Class<? extends Profile> profile, String stat, int page, Action<List<LeaderboardEntry>> callback, Collection<String> extraStats);
 
     public abstract <T extends Profile> T getPersistentProfile(Player p, Class<T> type);
     public abstract <T extends Profile> T getSkillProfile(Player p, Class<T> type);
@@ -120,6 +117,25 @@ public abstract class ProfilePersistence {
 
     public static String serializeStringSet(Collection<String> stringSet) {
         return String.join("<>", stringSet);
+    }
+
+    private static final Map<UUID, Collection<Class<? extends Profile>>> profilesToSave = new HashMap<>();
+
+    /**
+     * Tells the plugin that this profile type of a player should be persisted, even if the profile doesn't meet the necessary EXP requirements
+     * @param p the player who's profile should be saved
+     * @param typeToSave the profile type the plugin should persist
+     */
+    public static void scheduleProfilePersisting(Player p, Class<? extends Profile> typeToSave){
+        Collection<Class<? extends Profile>> types = profilesToSave.getOrDefault(p.getUniqueId(), new HashSet<>());
+        types.add(typeToSave);
+        profilesToSave.put(p.getUniqueId(), types);
+    }
+    @SuppressWarnings("all")
+    public boolean shouldPersist(Profile profile){
+        if (profile.getOwner() == null) return false;
+        return ValhallaMMO.getPluginConfig().getDouble("minimum_exp") <= profile.getTotalEXP() ||
+                profilesToSave.getOrDefault(profile.getOwner(), new HashSet<>()).contains(profile.getClass());
     }
 
     public static Collection<String> deserializeStringSet(String serializedStringSet) {

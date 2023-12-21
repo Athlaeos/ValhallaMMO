@@ -68,9 +68,16 @@ public class SaturationValueSet extends DynamicItemModifier {
         return Set.of(ModifierCategoryRegistry.FOOD.id());
     }
 
+    public void setSaturation(float saturation) {
+        this.saturation = saturation;
+    }
+
     @Override
-    public DynamicItemModifier createNew() {
-        return new SaturationValueSet(getName());
+    public DynamicItemModifier copy() {
+        SaturationValueSet m = new SaturationValueSet(getName());
+        m.setSaturation(this.saturation);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

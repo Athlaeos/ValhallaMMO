@@ -73,8 +73,10 @@ public class FlagCustomAdd extends DynamicItemModifier {
     }
 
     @Override
-    public DynamicItemModifier createNew() {
-        return new FlagCustomAdd(getName(), flag);
+    public DynamicItemModifier copy() {
+        FlagCustomAdd m = new FlagCustomAdd(getName(), flag);
+        m.setPriority(this.getPriority());
+        return m;
     }
 
     @Override

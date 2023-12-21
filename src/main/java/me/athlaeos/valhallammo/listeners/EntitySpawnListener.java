@@ -40,10 +40,10 @@ public class EntitySpawnListener implements Listener {
                 e.isCancelled() || EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE)) return;
         int predictedLevel = MonsterScalingManager.getNewLevel(e.getEntity());
         if (predictedLevel < 0) return;
+        AttributeInstance maxHealth = e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
+
         MonsterScalingManager.setLevel(e.getEntity(), predictedLevel);
 
-        EntityAttributeStats.updateStats(e.getEntity());
-        AttributeInstance maxHealth = e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (maxHealth != null) e.getEntity().setHealth(maxHealth.getValue());
     }
 
