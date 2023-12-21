@@ -16,6 +16,7 @@ Features include
   - Drop chances may be weighted, affected by luck and/or fortune/looting, and have lots of environmental conditions available. 
 - Recipe editors
   - Entirely GUI-based
+  - Powerful functions to edit items based on player progress, or to apply conditions to recipes. These functions are available to any item-based feature in ValhallaMMO
 - New recipe types
   - Immersive, requiring the player to spend some time hammering away at a crafting station of choice to craft something
   - Cooking, requiring the player to combine a number of ingredients within a cauldron and either letting it boil for a given amount of time, or to trigger the recipe with a catalyst
