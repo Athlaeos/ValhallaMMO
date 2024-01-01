@@ -44,11 +44,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.Athlaeos</groupId>
-            <artifactId>ValhallaMMO</artifactId>
-            <version>Tag</version>
-        </dependency>
-        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.20-R0.1-SNAPSHOT</version>
