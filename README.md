@@ -34,3 +34,7 @@ I know it's a lot to take in, but I've done my best to design its default featur
 All this customization is completely optional and so you will probably not even need to touch it. But if you want to customize the plugin, it's there for you to use.
 
 The wiki is not yet finished, and will be worked on once BETA is released.
+
+To install it, download the jar in the releases and insert it into your plugins folder.
+If you want the resource pack, execute the "/val resourcepack setup" command to install it on your server.
+The plugin works on Spigot and its forks, on version 1.19 and above. 
