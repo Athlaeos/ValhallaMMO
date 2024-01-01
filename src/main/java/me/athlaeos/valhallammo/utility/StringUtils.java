@@ -36,11 +36,11 @@ public class StringUtils {
     }
 
     public static String toRoman(int number) {
-        if (number == 0) return "0";
+        if (number <= 0) return "0";
         if (number == 1) return "I";
-        int l =  romanNumeralsMap.floorKey(number);
-        if ( number == l ) return romanNumeralsMap.get(number);
-        return romanNumeralsMap.get(l) + toRoman(number-l);
+        int l = romanNumeralsMap.floorKey(number);
+        if (number == l) return romanNumeralsMap.get(number);
+        return romanNumeralsMap.get(l) + toRoman(number - l);
     }
 
     /**
@@ -56,7 +56,7 @@ public class StringUtils {
         String hrs = "" + hours;
         ticks %= (base * 3600);
         int minutes = (int) Math.floor(ticks / (60D * base));
-        String mins = (minutes > 9 ? "" : "0") + minutes;
+        String mins = (hours > 0 ? "0" : "") + minutes;
         ticks %= (base * 60);
         int seconds = (int) Math.floor(ticks / (double) base);
         String secs = (seconds > 9 ? "" : "0") + seconds;

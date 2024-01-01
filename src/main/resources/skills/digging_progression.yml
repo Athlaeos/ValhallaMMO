@@ -121,7 +121,22 @@ perks:
         - craft_flint
         - craft_clay
         - craft_mud
-        - craft_concrete_16
+        - craft_concrete_white
+        - craft_concrete_orange
+        - craft_concrete_magenta
+        - craft_concrete_light_blue
+        - craft_concrete_yellow
+        - craft_concrete_lime
+        - craft_concrete_pink
+        - craft_concrete_grey
+        - craft_concrete_light_grey
+        - craft_concrete_cyan
+        - craft_concrete_purple
+        - craft_concrete_blue
+        - craft_concrete_brown
+        - craft_concrete_green
+        - craft_concrete_red
+        - craft_concrete_black
     messages:
       - "<lang.digging_perk_3_messages>"
     requireperk_all:

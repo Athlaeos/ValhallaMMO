@@ -19,7 +19,7 @@ import java.util.*;
 
 public class PotionEffectAdd extends DynamicItemModifier {
     private final String effect;
-    private double value = 0.1;
+    private double value = 0;
     private long duration = 1800;
     private int charges = -1;
     private final double smallIncrement;
@@ -41,11 +41,16 @@ public class PotionEffectAdd extends DynamicItemModifier {
         effect.setDuration(duration);
         effect.setCharges(ItemUtils.isConsumable(outputItem.getItem().getType()) ? -1 : charges);
         PotionEffectRegistry.addDefaultEffect(outputItem.getMeta(), effect);
+        PotionEffectRegistry.updateItemName(outputItem.getMeta(), false, false);
     }
 
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
-        if (button == 11) value = value + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? bigIncrement : smallIncrement));
+        if (button == 11) {
+            value = value + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? bigIncrement : smallIncrement));
+            PotionEffectWrapper effect = PotionEffectRegistry.getEffect(this.effect);
+            if (effect.isVanilla()) value = Math.max(0, value);
+        }
         else if (button == 13) duration = Math.max(0, duration + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 300 : 20)));
         else if (button == 17) charges = Math.max(-1, charges + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 5 : 1)));
     }
@@ -57,6 +62,7 @@ public class PotionEffectAdd extends DynamicItemModifier {
                 new ItemBuilder(Material.PAPER)
                         .name("&dHow strong should this effect be?")
                         .lore("&f" + effect.getEffect().toLowerCase().replace("_", " ") + " " + effect.getFormat().format(value + (effect.isVanilla() ? 1 : 0)) + " &f(" + StringUtils.toTimeStamp(duration, 20) + ")",
+                                "&e" + String.format("%.2f", value),
                                 "&6Click to add/subtract " + smallIncrement,
                                 "&6Shift-Click to add/subtract " + bigIncrement)
                         .get()).map(Set.of(

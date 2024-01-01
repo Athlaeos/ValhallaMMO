@@ -329,7 +329,7 @@
     "attribute_bow_strength": "%icon%%value% Shot Speed",
     "attribute_arrow_damage": "%icon%%value% Arrow Damage",
     "attribute_ammo_consumption": "%icon%%value% Ammo Consumption",
-    "attribute_arrow_velocity": "%icon%%value% Arrow Speed",
+    "attribute_arrow_velocity": "%icon%%value% Velocity",
     "attribute_arrow_accuracy": "%icon%%value% Accuracy",
     "attribute_arrow_piercing": "%icon%%value% Piercing",
     "attribute_knockback": "%icon%%value% Knockback",
@@ -468,7 +468,7 @@
     "potion_name_blindness": "Blindness",
     "potion_name_darkness": "Abyss",
     "potion_name_confusion": "Nausea",
-    "potion_name_damage_resistance": "Ambrosia",
+    "potion_name_damage_resistance": "the Turtle Master",
     "potion_name_fast_digging": "Haste",
     "potion_name_fire_resistance": "Fire Resistance",
     "potion_name_glowing": "Glowing",
@@ -665,7 +665,7 @@
     "effect_name_hero_of_the_village": "%icon% Hero of the Village %value% %duration%",
     "effect_name_hunger": "%icon% Hunger %value% %duration%",
     "effect_name_increase_damage": "%icon% Strength %value% %duration%",
-    "effect_name_invisibility": "%icon% Invisibility %value% %duration%",
+    "effect_name_invisibility": "%icon% Invisibility %duration%",
     "effect_name_jump": "%icon% Jump Boost %value% %duration%",
     "effect_name_levitation": "%icon% Levitation %value% %duration%",
     "effect_name_luck": "%icon% Luck %value% %duration%",
@@ -673,7 +673,7 @@
     "effect_name_regeneration": "%icon% Regeneration %value% %duration%",
     "effect_name_slow": "%icon% Slowness %value% %duration%",
     "effect_name_slow_digging": "%icon% Mining Fatigue %value% %duration%",
-    "effect_name_slow_falling": "%icon% Slow Falling %value% %duration%",
+    "effect_name_slow_falling": "%icon% Slow Falling %duration%",
     "effect_name_speed": "%icon% Speed Boost %value% %duration%",
     "effect_name_unluck": "%icon% Bad Luck %value% %duration%",
     "effect_name_water_breathing": "%icon% Water Breathing %duration%",
@@ -1136,18 +1136,21 @@
     "smithing-quality-masterful": "&6Masterful",
     "smithing-quality-fabled": "&6&lFabled",
     "smithing-quality-peerless": "&8&lPeerless",
+    "smithing-tag-plated": "&8Plated",
     "smithing-tag-unmendable": "&cUnmendable",
     "smithing-tag-unenchantable": "&cUnenchantable",
     "smithing-tag-razor-sharp": "&7Razor Sharp",
     "smithing-tag-well-fit": "&7Well-Fit",
     "smithing-tag-red-hot": "&6Red-Hot",
     "smithing-tag-white-hot": "&eWhite-Hot",
+    "smithing-tag-disallowed-plated": "&8Already has plating!",
     "smithing-tag-disallowed-unenchantable": "&cItem must be enchantable!",
     "smithing-tag-disallowed-unmendable": "&cItem must be mendable!",
     "smithing-tag-disallowed-razor-sharp": "&cItem cannot already be sharpened!",
     "smithing-tag-disallowed-well-fit": "&cItem cannot already be well-fit!",
     "smithing-tag-disallowed-red-hot": "&cItem cannot already be hot!",
     "smithing-tag-disallowed-white-hot": "&cItem cannot already be hot!",
+    "smithing-tag-required-plated": "&cItem must be plated!",
     "smithing-tag-required-unenchantable": "&cItem must be unenchantable!",
     "smithing-tag-required-unmendable": "&cItem must be unmendable!",
     "smithing-tag-required-razor-sharp": "&cItem must be sharpened already!",
@@ -1264,6 +1267,9 @@
     "trinket-paladins-bane": "&dPaladins Bane",
     "trinket-ring-of-reach": "&eRing of Reach",
     "trinket-gungnirs-might": "&dGungnir's Might",
+    "material-dummy-head": "&fDummy Head",
+    "material-crystal-apple": "&aCrystal Apple",
+    "material-diamond-shard": "&fDiamond Shard",
     "material-hot-gold-ingot": "&6Hot Gold Ingot",
     "material-hot-iron-ingot": "&6Hot Iron Ingot",
     "material-unstable-diamond": "&dUnstable Diamond",
@@ -1308,12 +1314,18 @@
     "material-ambrosial-nectar": "&fAmbrosial Nectar",
     "material-bustling-fungus": "&fBustling Fungus",
     "material-pollen-stalks": "&fPollen Stalks",
+    "material-empty-vial": "&fEmpty Vial",
+    "material-vial-poison": "&fVial 'o' Poison",
+    "material-vial-harming": "&fVial 'o' Harming",
+    "material-vial-holy": "&fVial 'o' Holiness",
+    "material-vial-rot": "&fVial 'o' Rot",
+    "material-choral-leather": "&fChoral Leather",
     "material-flint-arrow": "&fFlint Arrow",
     "material-wooden-arrow": "&fWooden Arrow",
     "material-carbon-arrow": "&fCarbon Arrow",
     "material-stone-arrow": "&fStone Arrow",
     "material-copper-arrow": "&fCopper Arrow",
-    "material-gold-arrow": "&fGold Arrow",
+    "material-golden-arrow": "&fGold Arrow",
     "material-iron-arrow": "&fIron Arrow",
     "material-diamond-arrow": "&fDiamond Arrow",
     "material-netherite-arrow": "&fNetherite Arrow",
@@ -1324,40 +1336,41 @@
     "material-unholy-arrow": "&8Unholy Arrow",
     "material-wooden-dagger": "&fWooden Dagger",
     "material-stone-dagger": "&fStone Dagger",
-    "material-gold-dagger": "&fGold Dagger",
+    "material-golden-dagger": "&fGolden Dagger",
     "material-iron-dagger": "&fIron Dagger",
     "material-diamond-dagger": "&fDiamond Dagger",
     "material-netherite-dagger": "&fNetherite Dagger",
     "material-wooden-mace": "&fWooden Mace",
     "material-stone-mace": "&fStone Mace",
-    "material-gold-mace": "&fGold Mace",
+    "material-golden-mace": "&fGolden Mace",
     "material-iron-mace": "&fIron Mace",
     "material-diamond-mace": "&fDiamond Mace",
     "material-netherite-mace": "&fNetherite Mace",
     "material-wooden-rapier": "&fWooden Rapier",
     "material-stone-rapier": "&fStone Rapier",
-    "material-gold-rapier": "&fGold Rapier",
+    "material-golden-rapier": "&fGolden Rapier",
     "material-iron-rapier": "&fIron Rapier",
     "material-diamond-rapier": "&fDiamond Rapier",
     "material-netherite-rapier": "&fNetherite Rapier",
     "material-wooden-warhammer": "&fWooden Warhammer",
     "material-stone-warhammer": "&fStone Warhammer",
-    "material-gold-warhammer": "&fGold Warhammer",
+    "material-golden-warhammer": "&fGolden Warhammer",
     "material-iron-warhammer": "&fIron Warhammer",
     "material-diamond-warhammer": "&fDiamond Warhammer",
     "material-netherite-warhammer": "&fNetherite Warhammer",
     "material-wooden-greataxe": "&fWooden Great-Axe",
     "material-stone-greataxe": "&fStone Great-Axe",
-    "material-gold-greataxe": "&fGold Great-Axe",
+    "material-golden-greataxe": "&fGolden Great-Axe",
     "material-iron-greataxe": "&fIron Great-Axe",
     "material-diamond-greataxe": "&fDiamond Great-Axe",
     "material-netherite-greataxe": "&fNetherite Great-Axe",
     "material-wooden-spear": "&fWooden Spear",
     "material-stone-spear": "&fStone Spear",
-    "material-gold-spear": "&fGold Spear",
+    "material-golden-spear": "&fGolden Spear",
     "material-iron-spear": "&fIron Spear",
     "material-diamond-spear": "&fDiamond Spear",
     "material-netherite-spear": "&fNetherite Spear",
+    "recipe-displayname-salvage": "&fSalvage %item%",
     "woodcutting_perk_1_name": "&aNovice Woodcutting",
     "woodcutting_perk_1_description": "&7Speeds up your woodcutting by &a10%&7, and you gain a little bit of essence per block",
     "woodcutting_perk_2_name": "&aGolden Leaves",
@@ -1941,7 +1954,7 @@
       "&c+{heavyweapons_damagemultiplier_add} &7Heavy Weapons Damage",
       "&cRecipes Unlocked",
       "&7- All Warhammers",
-      "&8Warhammers benefit from high knockback and deal high bludgeoning damage, but have low attack speed",
+      "&8Warhammers benefit from increased stun chance, knockback, and deal high bludgeoning damage, but have low attack speed",
       "&8Bludgeoning damage is more effective against armored targets"
     ],
     "heavyweapons_perk_2_messages": [
@@ -1951,7 +1964,7 @@
       "&c+{heavyweapons_critchance_add} &7Crit Chance",
       "&cRecipe Unlocked",
       "&7- All Greataxes",
-      "&8Greataxes benefit from very high damage and knockback, but very low attack speed"
+      "&8Greataxes benefit from very high damage and crit chance, but very low attack speed"
     ],
     "heavyweapons_perk_3_messages": [
       "&c✰ &4Barbarian &c✰",
@@ -1974,7 +1987,7 @@
       "&7- Now deal &c75%&7 damage to all enemies in a &c2&7-block radius",
       "&cRecipe Unlocked",
       "&7- All Spears",
-      "&8Spears benefit from additional range and damage based on how fast you're going towards the target, but have low attack speed"
+      "&8Spears benefit from additional range and damage based on how fast you're going towards the target, but have reduced attack damage and speed"
     ],
     "heavyweapons_perk_6_messages": [
       "&c✰ &4Deathbringer &c✰",
@@ -2465,9 +2478,9 @@
       "&dRecipes Unlocked",
       "&7- Empty Vial",
       "&7- Vial 'o' Poison",
-      "&7- Vial 'o' Pain",
+      "&7- Vial 'o' Harming",
       "&7- Vial 'o' Rot",
-      "&7- Vial 'o' Holy Water"
+      "&7- Vial 'o' Holiness"
     ],
     "smithing_perk_1_messages": [
       "&e✰ &6Craftsman &e✰",
@@ -2501,11 +2514,14 @@
     ],
     "smithing_perk_prismarine_messages": [
       "&e✰ &6Marine Smithing &e✰",
-      "&e+Trident Recipe Unlocked"
+      "&eRecipe Unlocked",
+      "&7- Trident"
     ],
     "smithing_perk_enderic_messages": [
       "&e✰ &6Exotic Smithing &e✰",
-      "&e+Elytra Recipe Unlocked"
+      "&eRecipes Unlocked",
+      "&7- Elytra",
+      "&7- Choral Leather"
     ],
     "smithing_perk_bows_messages": [
       "&e✰ &6Advanced Fletching &e✰",
@@ -2539,7 +2555,7 @@
     ],
     "woodcutting_perk_5_messages": [
       "&a✰ &2Crystal Leaves &a✰",
-      "&a+Rare chance for &lJewelled Apple",
+      "&a+Rare chance for &lCrystal Apple",
       "&adrops from leaves.",
       "&a+More common golden Apple drops"
     ],
@@ -2717,7 +2733,7 @@
       "&a%member_list%"
     ],
     "skill-level-up-power": [
-      "TITLE(&7You leveled up to &e%level%&7;&7Check &e/skills &7for available perks;60;10)"
+      "TITLE(&7You leveled up to &e%level%&7;&7Check &e/skills &7for available perks;40;5)"
     ],
     "skill-level-up-smithing": [
       "TITLE(;&eSmithing&7 leveled up to &e%level%)"
@@ -2764,10 +2780,10 @@
     "default_recipe_description_grid": [
       "%ingredients%",
       "&e=",
-      "&e%result%"
+      "&f%result%"
     ],
     "default_recipe_description_smithing": [
-      "&e%base% &e+ %addition% &e= %result%"
+      "&f%base% &e+ %addition% &e= &f%result%"
     ],
     "default_recipe_description_brewing": [
       "&e%ingredient% &ebrewed into &e%applyon%",

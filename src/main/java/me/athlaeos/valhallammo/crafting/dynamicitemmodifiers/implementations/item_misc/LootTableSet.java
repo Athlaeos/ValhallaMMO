@@ -166,7 +166,8 @@ public class LootTableSet extends DynamicItemModifier {
     @Override
     public List<String> commandSuggestions(CommandSender executor, int currentArg) {
         if (currentArg == 0) return new ArrayList<>(LootTableRegistry.getLootTables().keySet());
-        if (currentArg == 1 || currentArg == 2) return List.of("yes", "no");
+        if (currentArg == 1) return List.of("<select_freely?>", "yes", "no");
+        if (currentArg == 2) return List.of("<select_repeatedly?>", "yes", "no");
         if (currentArg == 3) return Arrays.stream(Sound.values()).map(Sound::toString).collect(Collectors.toList());
         return null;
     }

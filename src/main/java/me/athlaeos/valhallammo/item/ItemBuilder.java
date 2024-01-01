@@ -116,7 +116,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder amount(int amount){
-        item.setAmount(amount);
+        item.setAmount(Math.min(amount, 64));
         return this;
     }
 

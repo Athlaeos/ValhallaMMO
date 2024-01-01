@@ -41,6 +41,7 @@ public abstract class StatFormat {
     public static final StatFormat DIFFERENCE_PERCENTILE_BASE_100_P6 = new DifferencePercentileBase100Format(5);
     public static final StatFormat DIFFERENCE_TIME_SECONDS_BASE_20_P1 = new DifferenceTimeFormat(1, 20);
     public static final StatFormat DIFFERENCE_TIME_SECONDS_BASE_1000_P1 = new DifferenceTimeFormat(1, 1000);
+    public static final StatFormat NONE = new None();
 
     public abstract String format(Number stat);
 }

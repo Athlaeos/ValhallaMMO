@@ -178,7 +178,7 @@ public class LootFreeSelectionMenu extends Menu {
             int index = 0;
             for (ItemBuilder i : guaranteedDropsPages.get(guaranteedDropsPage - 1)){
                 i = new ItemBuilder(i.getItem().clone()).setMeta(i.getMeta().clone());
-                inventory.setItem(entryGuaranteedLayoutPriority[index], i.prependLore(TranslationManager.getTranslation("menu_loottablefreeselection_guaranteedincluded")).get());
+                inventory.setItem(entryGuaranteedLayoutPriority[index], i.prependLore(TranslationManager.getTranslation("menu_loottablefreeselection_guaranteedincluded")).translate().get());
                 index++;
             }
         }
@@ -201,7 +201,7 @@ public class LootFreeSelectionMenu extends Menu {
                             .name(TranslationManager.getTranslation("menu_loottablefreeselection_nameformat").replace("%quantity%", selection.containsKey(uuid) ? quantity : "").replace("%item%", ItemUtils.getItemName(i.getMeta())))
                             .prependLore(ItemUtils.setListPlaceholder(TranslationManager.getListTranslation("loot_selection_prefix"), "%rolls%", (allowedPicks > 0 ? "&a" : "&c") + allowedPicks))
                             .appendLore(ItemUtils.setListPlaceholder(TranslationManager.getListTranslation("loot_selection_suffix"), "%rolls%", (allowedPicks > 0 ? "&a" : "&c") + allowedPicks))
-                            .get()
+                            .translate().get()
                     );
 
                     inventory.setItem(entrySelectLayoutPriority[index] + 9,
@@ -210,7 +210,8 @@ public class LootFreeSelectionMenu extends Menu {
                                     .prependLore(ItemUtils.setListPlaceholder(TranslationManager.getListTranslation("loot_selection_prefix"), "%rolls%", (allowedPicks > 0 ? "&a" : "&c") + allowedPicks))
                                     .appendLore(ItemUtils.setListPlaceholder(TranslationManager.getListTranslation("loot_selection_suffix"), "%rolls%", (allowedPicks > 0 ? "&a" : "&c") + allowedPicks))
                                     .stringTag(BUTTON_DATA, uuidString)
-                                    .amount(Math.max(1, selection.getOrDefault(uuid, 1))).get()
+                                    .amount(Math.max(1, selection.getOrDefault(uuid, 1)))
+                                    .translate().get()
                     );
                 }
                 index++;

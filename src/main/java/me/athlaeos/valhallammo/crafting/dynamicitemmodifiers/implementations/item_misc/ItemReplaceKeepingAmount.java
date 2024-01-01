@@ -10,14 +10,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ItemReplaceKeepingAmount extends DynamicItemModifier {
     private ItemStack replaceBy = new ItemStack(Material.DIAMOND);
-    private ItemMeta replaceByMeta = ItemUtils.getItemMeta(replaceBy);
 
     public ItemReplaceKeepingAmount(String name) {
         super(name);
@@ -27,7 +25,7 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier {
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         int amount = outputItem.getItem().getAmount();
         outputItem.setItem(replaceBy);
-        outputItem.setMeta(replaceByMeta);
+        outputItem.setMeta(ItemUtils.getItemMeta(replaceBy));
         outputItem.amount(amount);
     }
 
@@ -37,7 +35,6 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier {
             ItemStack cursor = e.getCursor();
             if (!ItemUtils.isEmpty(cursor)) {
                 replaceBy = cursor.clone();
-                replaceByMeta = ItemUtils.getItemMeta(replaceBy);
             }
         }
     }
@@ -49,7 +46,7 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier {
                         .name("&eWhat should the new item be?")
                         .lore("&6Click with another item to",
                                 "&6copy it over.",
-                                "&fSet to " + ItemUtils.getItemName(replaceByMeta))
+                                "&fSet to " + ItemUtils.getItemName(ItemUtils.getItemMeta(replaceBy)))
                         .get()).map(new HashSet<>());
     }
 
@@ -70,7 +67,7 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier {
 
     @Override
     public String getActiveDescription() {
-        return "&fItem will be replaced by " + ItemUtils.getItemName(replaceByMeta) + ", but the original amount of the item stays the same.";
+        return "&fItem will be replaced by " + ItemUtils.getItemName(ItemUtils.getItemMeta(replaceBy)) + ", but the original amount of the item stays the same.";
     }
 
     @Override
@@ -82,15 +79,10 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier {
         this.replaceBy = replaceBy;
     }
 
-    public void setReplaceByMeta(ItemMeta replaceByMeta) {
-        this.replaceByMeta = replaceByMeta;
-    }
-
     @Override
     public DynamicItemModifier copy() {
         ItemReplaceKeepingAmount m = new ItemReplaceKeepingAmount(getName());
         m.setReplaceBy(this.replaceBy);
-        m.setReplaceByMeta(this.replaceByMeta);
         m.setPriority(this.getPriority());
         return m;
     }

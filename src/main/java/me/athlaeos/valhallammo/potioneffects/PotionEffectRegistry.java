@@ -44,39 +44,39 @@ public class PotionEffectRegistry {
     }
 
     public static void registerEffects() {
-        registerNewEffect(new GenericWrapper("SPEED", (i) -> true, "\uED00", StatFormat.ROMAN).addModifier(Material.SUGAR, 1, 5));
-        registerNewEffect(new GenericWrapper("SLOW", (i) -> false, "\uED01", StatFormat.ROMAN).addModifier(Material.ICE, 1, 5));
-        registerNewEffect(new GenericWrapper("FAST_DIGGING", (i) -> true, "\uED02", StatFormat.ROMAN).addModifier(Material.GOLDEN_PICKAXE, 1, 5));
-        registerNewEffect(new GenericWrapper("SLOW_DIGGING", (i) -> false, "\uED03", StatFormat.ROMAN).addModifier(Material.SPONGE, 1, 5));
-        registerNewEffect(new GenericWrapper("INCREASE_DAMAGE", (i) -> true, "\uED04", StatFormat.ROMAN).addModifier(Material.BLAZE_POWDER, 1, 5));
-        registerNewEffect(new GenericWrapper("HEAL", (i) -> true, "\uED05", StatFormat.ROMAN).addModifier(Material.GLISTERING_MELON_SLICE, 1, 5));
-        registerNewEffect(new GenericWrapper("HARM", (i) -> false, "\uED06", StatFormat.ROMAN).addModifier(Material.DRAGON_BREATH, 1, 5));
-        registerNewEffect(new GenericWrapper("JUMP", (i) -> true, "\uED07", StatFormat.ROMAN).addModifier(Material.SLIME_BLOCK, 1, 5));
-        registerNewEffect(new GenericWrapper("CONFUSION", (i) -> false, "\uED08", StatFormat.ROMAN).addModifier(Material.ANVIL, 1, 5));
-        registerNewEffect(new GenericWrapper("REGENERATION", (i) -> true, "\uED09", StatFormat.ROMAN).addModifier(Material.GHAST_TEAR, 1, 5));
-        registerNewEffect(new GenericWrapper("DAMAGE_RESISTANCE", (i) -> true, "\uED0A", StatFormat.ROMAN).addModifier(Material.ENCHANTED_GOLDEN_APPLE, 1, 5));
-        registerNewEffect(new GenericWrapper("FIRE_RESISTANCE", (i) -> true, "\uED0B", StatFormat.ROMAN).addModifier(Material.MAGMA_CREAM, 1, 5));
-        registerNewEffect(new GenericWrapper("WATER_BREATHING", (i) -> true, "\uED0C", StatFormat.ROMAN).addModifier(Material.PUFFERFISH, 1, 5));
-        registerNewEffect(new GenericWrapper("INVISIBILITY", (i) -> true, "\uED0D", StatFormat.ROMAN).addModifier(Material.GLASS, 1, 5));
-        registerNewEffect(new GenericWrapper("BLINDNESS", (i) -> false, "\uED0E", StatFormat.ROMAN).addModifier(Material.INK_SAC, 1, 5));
-        registerNewEffect(new GenericWrapper("DARKNESS", (i) -> false, "\uED0F", StatFormat.ROMAN).addModifier(Material.BLACK_STAINED_GLASS, 1, 5));
-        registerNewEffect(new GenericWrapper("NIGHT_VISION", (i) -> true, "\uED10", StatFormat.ROMAN).addModifier(Material.GOLDEN_CARROT, 1, 5));
-        registerNewEffect(new GenericWrapper("HUNGER", (i) -> false, "\uED11", StatFormat.ROMAN).addModifier(Material.ROTTEN_FLESH, 1, 5));
-        registerNewEffect(new GenericWrapper("WEAKNESS", (i) -> false, "\uED12", StatFormat.ROMAN).addModifier(Material.WOODEN_SWORD, 1, 5));
-        registerNewEffect(new GenericWrapper("POISON", (i) -> false, "\uED13", StatFormat.ROMAN).addModifier(Material.SPIDER_EYE, 1, 5));
-        registerNewEffect(new GenericWrapper("WITHER", (i) -> false, "\uED14", StatFormat.ROMAN).addModifier(Material.WITHER_SKELETON_SKULL, 1, 5));
-        registerNewEffect(new GenericWrapper("HEALTH_BOOST", (i) -> true, "\uED15", StatFormat.ROMAN).addModifier(Material.SWEET_BERRIES, 1, 5));
-        registerNewEffect(new GenericWrapper("ABSORPTION", (i) -> true, "\uED16", StatFormat.ROMAN).addModifier(Material.GOLDEN_APPLE, 1, 5));
-        registerNewEffect(new GenericWrapper("SATURATION", (i) -> true, "\uED17", StatFormat.ROMAN).addModifier(Material.COOKED_BEEF, 1, 5));
-        registerNewEffect(new GenericWrapper("GLOWING", (i) -> true, "\uED18", StatFormat.ROMAN).addModifier(Material.GLOWSTONE_DUST, 1, 5));
-        registerNewEffect(new GenericWrapper("LEVITATION", (i) -> false, "\uED19", StatFormat.ROMAN).addModifier(Material.SHULKER_SHELL, 1, 5));
-        registerNewEffect(new GenericWrapper("LUCK", (i) -> true, "\uED1A", StatFormat.ROMAN).addModifier(Material.RABBIT_FOOT, 1, 5));
-        registerNewEffect(new GenericWrapper("UNLUCK", (i) -> false, "\uED1B", StatFormat.ROMAN).addModifier(Material.BONE, 1, 5));
-        registerNewEffect(new GenericWrapper("SLOW_FALLING", (i) -> true, "\uED1C", StatFormat.ROMAN).addModifier(Material.PHANTOM_MEMBRANE, 1, 5));
-        registerNewEffect(new GenericWrapper("CONDUIT_POWER", (i) -> true, "\uED1D", StatFormat.ROMAN).addModifier(Material.CONDUIT, 1, 5));
-        registerNewEffect(new GenericWrapper("DOLPHINS_GRACE", (i) -> true, "\uED1E", StatFormat.ROMAN).addModifier(Material.HEART_OF_THE_SEA, 1, 5));
-        registerNewEffect(new GenericWrapper("BAD_OMEN", (i) -> false, "\uED1F", StatFormat.ROMAN).addModifier(Material.IRON_AXE, 1, 5));
-        registerNewEffect(new GenericWrapper("HERO_OF_THE_VILLAGE", (i) -> true, "\uED20", StatFormat.ROMAN).addModifier(Material.EMERALD, 1, 5));
+        registerNewEffect(new GenericWrapper("SPEED", (i) -> true, "\uED00", StatFormat.ROMAN).addModifier(Material.SUGAR, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("SLOW", (i) -> false, "\uED01", StatFormat.ROMAN).addModifier(Material.ICE, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("FAST_DIGGING", (i) -> true, "\uED02", StatFormat.ROMAN).addModifier(Material.GOLDEN_PICKAXE, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("SLOW_DIGGING", (i) -> false, "\uED03", StatFormat.ROMAN).addModifier(Material.SPONGE, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("INCREASE_DAMAGE", (i) -> true, "\uED04", StatFormat.ROMAN).addModifier(Material.BLAZE_POWDER, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("HEAL", (i) -> true, "\uED05", StatFormat.ROMAN).addModifier(Material.GLISTERING_MELON_SLICE, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("HARM", (i) -> false, "\uED06", StatFormat.ROMAN).addModifier(Material.DRAGON_BREATH, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("JUMP", (i) -> true, "\uED07", StatFormat.ROMAN).addModifier(Material.SLIME_BLOCK, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("CONFUSION", (i) -> false, "\uED08", StatFormat.ROMAN).addModifier(Material.ANVIL, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("REGENERATION", (i) -> true, "\uED09", StatFormat.ROMAN).addModifier(Material.GHAST_TEAR, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("DAMAGE_RESISTANCE", (i) -> true, "\uED0A", StatFormat.ROMAN).addModifier(Material.ENCHANTED_GOLDEN_APPLE, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("FIRE_RESISTANCE", (i) -> true, "\uED0B", StatFormat.ROMAN).addModifier(Material.MAGMA_CREAM, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("WATER_BREATHING", (i) -> true, "\uED0C", StatFormat.ROMAN).addModifier(Material.PUFFERFISH, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("INVISIBILITY", (i) -> true, "\uED0D", StatFormat.ROMAN).addModifier(Material.GLASS, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("BLINDNESS", (i) -> false, "\uED0E", StatFormat.ROMAN).addModifier(Material.INK_SAC, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("DARKNESS", (i) -> false, "\uED0F", StatFormat.ROMAN).addModifier(Material.BLACK_STAINED_GLASS, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("NIGHT_VISION", (i) -> true, "\uED10", StatFormat.ROMAN).addModifier(Material.GOLDEN_CARROT, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("HUNGER", (i) -> false, "\uED11", StatFormat.ROMAN).addModifier(Material.ROTTEN_FLESH, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("WEAKNESS", (i) -> false, "\uED12", StatFormat.ROMAN).addModifier(Material.WOODEN_SWORD, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("POISON", (i) -> false, "\uED13", StatFormat.ROMAN).addModifier(Material.SPIDER_EYE, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("WITHER", (i) -> false, "\uED14", StatFormat.ROMAN).addModifier(Material.WITHER_SKELETON_SKULL, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("HEALTH_BOOST", (i) -> true, "\uED15", StatFormat.ROMAN).addModifier(Material.SWEET_BERRIES, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("ABSORPTION", (i) -> true, "\uED16", StatFormat.ROMAN).addModifier(Material.GOLDEN_APPLE, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("SATURATION", (i) -> true, "\uED17", StatFormat.ROMAN).addModifier(Material.COOKED_BEEF, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("GLOWING", (i) -> true, "\uED18", StatFormat.ROMAN).addModifier(Material.GLOWSTONE_DUST, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("LEVITATION", (i) -> false, "\uED19", StatFormat.ROMAN).addModifier(Material.SHULKER_SHELL, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("LUCK", (i) -> true, "\uED1A", StatFormat.ROMAN).addModifier(Material.RABBIT_FOOT, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("UNLUCK", (i) -> false, "\uED1B", StatFormat.ROMAN).addModifier(Material.BONE, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("SLOW_FALLING", (i) -> true, "\uED1C", StatFormat.ROMAN).addModifier(Material.PHANTOM_MEMBRANE, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("CONDUIT_POWER", (i) -> true, "\uED1D", StatFormat.ROMAN).addModifier(Material.CONDUIT, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("DOLPHINS_GRACE", (i) -> true, "\uED1E", StatFormat.ROMAN).addModifier(Material.HEART_OF_THE_SEA, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("BAD_OMEN", (i) -> false, "\uED1F", StatFormat.ROMAN).addModifier(Material.IRON_AXE, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("HERO_OF_THE_VILLAGE", (i) -> true, "\uED20", StatFormat.ROMAN).addModifier(Material.EMERALD, 0.01, 0.25));
 
         registerNewEffect(new GenericWrapper("BOW_STRENGTH", (i) -> i >= 0, "\uEE00", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.BOW));
         registerNewEffect(new GenericWrapper("ARROW_DAMAGE", (i) -> i >= 0, "\uEE01", StatFormat.DIFFERENCE_FLOAT_P1).addModifier(Material.ARROW, 0.1, 1));
@@ -330,7 +330,7 @@ public class PotionEffectRegistry {
 
                 if (effect.isVanilla()){
                     // applying a vanilla effect
-                    int amplifier = (int) Math.floor(effect.getAmplifier());
+                    int amplifier = Math.max(0, (int) Math.floor(effect.getAmplifier()));
                     int duration = (int) effect.getDuration();
 
                     if (meta instanceof PotionMeta p) p.addCustomEffect(new PotionEffect(effect.getVanillaEffect(), duration, amplifier), true);
@@ -366,12 +366,12 @@ public class PotionEffectRegistry {
      */
     public static void addDefaultEffect(ItemMeta meta, PotionEffectWrapper wrapper){
         Map<String, PotionEffectWrapper> defaultEffects = getStoredEffects(meta, true);
-        if (wrapper.getAmplifier() != 0) defaultEffects.put(wrapper.getEffect(), wrapper);
+        if (wrapper.getAmplifier() != (wrapper.isVanilla ? -1 : 0)) defaultEffects.put(wrapper.getEffect(), wrapper);
         else defaultEffects.remove(wrapper.getEffect());
         setDefaultStoredEffects(meta, defaultEffects);
 
         Map<String, PotionEffectWrapper> actualEffects = getStoredEffects(meta, false);
-        if (wrapper.getAmplifier() != 0) actualEffects.putIfAbsent(wrapper.getEffect(), wrapper);
+        if (wrapper.getAmplifier() != (wrapper.isVanilla ? -1 : 0)) actualEffects.putIfAbsent(wrapper.getEffect(), wrapper);
         else actualEffects.remove(wrapper.getEffect());
 
         setActualStoredEffects(meta, actualEffects);
@@ -710,7 +710,7 @@ public class PotionEffectRegistry {
         // if the meta has no display name, override is enabled, or the display name already contains the format it was previously, set the new display name
         if (!meta.hasDisplayName() || override ||
                 ChatColor.stripColor(meta.getDisplayName()).contains(ChatColor.stripColor(Utils.chat(plainFormat.replace("%effect%", ""))))){
-            Map<String, PotionEffectWrapper> effects = getStoredEffects(meta, false);
+            Map<String, PotionEffectWrapper> effects = getStoredEffects(meta, true);
             if (effects.isEmpty()) return;
             PotionEffectWrapper effectForName = effects.values().stream().findAny().orElse(null);
             String effectName = effectForName.getPotionName();

@@ -1,8 +1,74 @@
 starting_perks:
   power_spendableskillpoints_add: 3
-  power_critdamageresistance_add: 0.5
+  power_critdamage_add: 0.5
   power_bleeddamage_add: 2
   power_bleedduration_add: 80
+  recipes_unlock:
+    - planks_oak_4
+    - planks_birch_4
+    - planks_spruce_4
+    - planks_acacia_4
+    - planks_jungle_4
+    - planks_dark_oak_4
+    - planks_cherry_4
+    - planks_crimson_4
+    - planks_warped_4
+    - sticks_planks_4
+    - sticks_logs_16
+    - stairs_oak_4
+    - stairs_birch_4
+    - stairs_spruce_4
+    - stairs_acacia_4
+    - stairs_jungle_4
+    - stairs_dark_oak_4
+    - stairs_cherry_4
+    - stairs_crimson_4
+    - stairs_warped_4
+    - fences_oak_3
+    - fences_birch_3
+    - fences_spruce_3
+    - fences_acacia_3
+    - fences_jungle_3
+    - fences_dark_oak_3
+    - fences_cherry_3
+    - fences_crimson_3
+    - fences_warped_3
+    - fence_gates_oak_1
+    - fence_gates_birch_1
+    - fence_gates_spruce_1
+    - fence_gates_acacia_1
+    - fence_gates_jungle_1
+    - fence_gates_dark_oak_1
+    - fence_gates_cherry_1
+    - fence_gates_crimson_1
+    - fence_gates_warped_1
+    - doors_oak_3
+    - doors_birch_3
+    - doors_spruce_3
+    - doors_acacia_3
+    - doors_jungle_3
+    - doors_dark_oak_3
+    - doors_cherry_3
+    - doors_crimson_3
+    - doors_warped_3
+    - trap_doors_oak_2
+    - trap_doors_birch_2
+    - trap_doors_spruce_2
+    - trap_doors_acacia_2
+    - trap_doors_jungle_2
+    - trap_doors_dark_oak_2
+    - trap_doors_cherry_2
+    - trap_doors_crimson_2
+    - trap_doors_warped_2
+    - signs_oak_3
+    - signs_birch_3
+    - signs_spruce_3
+    - signs_acacia_3
+    - signs_jungle_3
+    - signs_dark_oak_3
+    - signs_cherry_3
+    - signs_crimson_3
+    - signs_warped_3
 
 experience: 
   exp_level_curve: '(%level%/100) * 1800 + 800' 

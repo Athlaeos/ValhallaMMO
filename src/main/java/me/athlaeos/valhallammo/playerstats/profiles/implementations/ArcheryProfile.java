@@ -15,6 +15,7 @@ public class ArcheryProfile extends Profile {
     {
         floatStat("bowDamageMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("crossbowDamageMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("arrowVelocityMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("bowCritChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("crossbowCritChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("ammoSaveChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
@@ -98,6 +99,9 @@ public class ArcheryProfile extends Profile {
 
     public float getBowCritChance() { return getFloat("bowCritChance"); }
     public void setBowCritChance(float value) { setFloat("bowCritChance", value); }
+
+    public float getArrowVelocityMultiplier() { return getFloat("arrowVelocityMultiplier"); }
+    public void setArrowVelocityMultiplier(float value) { setFloat("arrowVelocityMultiplier", value); }
 
     public float getCrossbowCritChance() { return getFloat("crossbowCritChance"); }
     public void setCrossbowCritChance(float value) { setFloat("crossbowCritChance", value); }

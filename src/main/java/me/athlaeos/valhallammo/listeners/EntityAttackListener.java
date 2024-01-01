@@ -8,9 +8,7 @@ import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.event.EntityCriticallyHitEvent;
 import me.athlaeos.valhallammo.hooks.DamageIndicator;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
-import me.athlaeos.valhallammo.item.EquipmentClass;
-import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
-import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -78,6 +76,13 @@ public class EntityAttackListener implements Listener {
             }
         }
         boolean sweep = e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK;
+        if (sweep && trueDamager instanceof LivingEntity a && a.getEquipment() != null && !ItemUtils.isEmpty(a.getEquipment().getItemInMainHand())){
+            ItemMeta mainHand = ItemUtils.getItemMeta(a.getEquipment().getItemInMainHand());
+            if (SweepStatus.preventSweeping(mainHand)) {
+                e.setCancelled(true);
+                return;
+            }
+        }
 
         AttributeInstance dL = trueDamager instanceof LivingEntity a ? a.getAttribute(Attribute.GENERIC_LUCK) : null;
         double damagerLuck = dL != null ? dL.getValue() : 0;

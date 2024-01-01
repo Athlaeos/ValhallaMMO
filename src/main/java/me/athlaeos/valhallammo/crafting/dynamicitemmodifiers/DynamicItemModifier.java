@@ -71,6 +71,7 @@ public abstract class DynamicItemModifier {
     public abstract void processItem(Player crafter, ItemBuilder i, boolean use, boolean validate, int timesExecuted);
 
     public void failedRecipe(ItemBuilder i, String message){
+        if (message == null) message = "";
         i.flag(CustomFlag.UNCRAFTABLE).stringTag(ERROR_MESSAGE, message).lore(StringUtils.separateStringIntoLines(message, 40));
     }
 
@@ -99,7 +100,7 @@ public abstract class DynamicItemModifier {
             modifier.processItem(p, i, use, validate, count);
             if (ItemUtils.isEmpty(i.getItem()) || CustomFlag.hasFlag(i.getMeta(), CustomFlag.UNCRAFTABLE)) break;
         }
-        TranslationManager.translateItemMeta(i.getMeta());
+        i.translate();
     }
 
     /**
@@ -138,8 +139,8 @@ public abstract class DynamicItemModifier {
             if (ItemUtils.isEmpty(i1.getItem()) || CustomFlag.hasFlag(i1.getMeta(), CustomFlag.UNCRAFTABLE) ||
                     ItemUtils.isEmpty(i2.getItem()) || CustomFlag.hasFlag(i2.getMeta(), CustomFlag.UNCRAFTABLE)) break;
         }
-        TranslationManager.translateItemMeta(i1.getMeta());
-        TranslationManager.translateItemMeta(i2.getMeta());
+        i1.translate();
+        i2.translate();
     }
 
     /**

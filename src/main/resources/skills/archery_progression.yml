@@ -62,7 +62,7 @@ perks:
     perk_rewards:
       archery_ammosavechance_add: 0.1
       recipes_unlock:
-        - arrows_stone
+        - craft_stone_arrows
     messages:
       - "<lang.archery_perk_2_messages>"
     requireperk_all:
@@ -99,8 +99,8 @@ perks:
       archery_bowcritchance_add: 0.1
       archery_crossbowcritchance_add: 0.1
       recipes_unlock:
-        - arrows_copper
-        - arrows_gold
+        - craft_copper_arrows
+        - craft_golden_arrows
     messages:
       - "<lang.archery_perk_3_messages>"
     requireperk_all:
@@ -133,8 +133,8 @@ perks:
       archery_ammosavechance_add: 0.2
       archery_distancedamagebonus_add: 0.05
       recipes_unlock:
-        - arrows_iron
-        - arrows_teleport
+        - craft_iron_arrows
+        - craft_teleport_arrows
     messages:
       - "<lang.archery_perk_4_messages>"
     requireperk_all:
@@ -156,7 +156,7 @@ perks:
       archery_inaccuracy_add: -2.5
       archery_critdamage_add: 0.3
       recipes_unlock:
-        - arrows_diamond
+        - craft_diamond_arrows
     messages:
       - "<lang.archery_perk_5_messages>"
     requireperk_all:
@@ -187,8 +187,8 @@ perks:
       archery_distancedamagebonus_add: 0.1
       archery_infinitydamagemultiplier_add: 0.3
       recipes_unlock:
-        - arrows_netherite
-        - arrows_removeimmunity
+        - craft_netherite_arrows
+        - craft_removeimmunity_arrows
     messages:
       - "<lang.archery_perk_6_messages>"
     requireperk_all:

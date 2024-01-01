@@ -15,10 +15,8 @@ public class ResourcePackListener implements Listener {
     public void onJoin(PlayerJoinEvent e){
         String currentVersion = e.getPlayer().getPersistentDataContainer().getOrDefault(RESOURCEPACK_VERSION, PersistentDataType.STRING, "");
         String packVersion = ResourcePack.getVersion();
-        if (!currentVersion.equals(packVersion)) {
-            ResourcePack.sendUpdate(e.getPlayer());
-            e.getPlayer().getPersistentDataContainer().set(RESOURCEPACK_VERSION, PersistentDataType.STRING, packVersion);
-        }
+        if (!currentVersion.equals(packVersion)) e.getPlayer().getPersistentDataContainer().set(RESOURCEPACK_VERSION, PersistentDataType.STRING, packVersion);
+        ResourcePack.sendUpdate(e.getPlayer());
     }
 
     public static void resetPackVersion(Player p){

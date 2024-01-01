@@ -36,7 +36,7 @@ public class ToolIdSet extends DynamicItemModifier {
 
     @Override
     public Map<Integer, ItemStack> getButtons() {
-        return new Pair<>(11,
+        return new Pair<>(12,
                 new ItemBuilder(Material.PAPER)
                         .name("&fWhich tool ID?")
                         .lore("&fTool ID set to &e" + id,

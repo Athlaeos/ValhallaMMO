@@ -204,10 +204,10 @@ public class EntityUtils {
                 properties.setLightArmorCount(WeightClass.getArmorWeightClassCount(e, WeightClass.LIGHT));
                 properties.setWeightlessArmorCount(WeightClass.getArmorWeightClassCount(e, WeightClass.WEIGHTLESS));
 
-                if (properties.getHelmet() != null) properties.setHelmetAttributes(ItemAttributesRegistry.getStats(properties.getHelmet().getMeta(), true));
-                if (properties.getChestplate() != null) properties.setChestPlateAttributes(ItemAttributesRegistry.getStats(properties.getChestplate().getMeta(), true));
-                if (properties.getLeggings() != null) properties.setLeggingsAttributes(ItemAttributesRegistry.getStats(properties.getLeggings().getMeta(), true));
-                if (properties.getBoots() != null) properties.setBootsAttributes(ItemAttributesRegistry.getStats(properties.getBoots().getMeta(), true));
+                if (properties.getHelmet() != null) properties.setHelmetAttributes(ItemAttributesRegistry.getStats(properties.getHelmet().getMeta(), false));
+                if (properties.getChestplate() != null) properties.setChestPlateAttributes(ItemAttributesRegistry.getStats(properties.getChestplate().getMeta(), false));
+                if (properties.getLeggings() != null) properties.setLeggingsAttributes(ItemAttributesRegistry.getStats(properties.getLeggings().getMeta(), false));
+                if (properties.getBoots() != null) properties.setBootsAttributes(ItemAttributesRegistry.getStats(properties.getBoots().getMeta(), false));
                 for (BiFetcher<List<ItemStack>, LivingEntity> fetcher : otherEquipmentFetchers){
                     List<ItemBuilder> otherEquipment = fetcher.get(e).stream().map(ItemBuilder::new).collect(Collectors.toList());
                     properties.getMiscEquipment().addAll(otherEquipment);
@@ -225,12 +225,12 @@ public class EntityUtils {
                 if (properties.getMainHand() != null &&
                         !EquipmentClass.isArmor(properties.getMainHand().getMeta()) &&
                         EquipmentClass.getMatchingClass(properties.getMainHand().getMeta()) != EquipmentClass.TRINKET
-                ) properties.setMainHandAttributes(ItemAttributesRegistry.getStats(properties.getMainHand().getMeta(), true));
+                ) properties.setMainHandAttributes(ItemAttributesRegistry.getStats(properties.getMainHand().getMeta(), false));
 
                 if (properties.getOffHand() != null &&
                         !EquipmentClass.isArmor(properties.getOffHand().getMeta()) &&
                         EquipmentClass.getMatchingClass(properties.getOffHand().getMeta()) != EquipmentClass.TRINKET
-                ) properties.setOffHandAttributes(ItemAttributesRegistry.getStats(properties.getOffHand().getMeta(), true));
+                ) properties.setOffHandAttributes(ItemAttributesRegistry.getStats(properties.getOffHand().getMeta(), false));
             }
         }
         if (getPotionEffects) {

@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
+import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.CustomDurabilityManager;
 import me.athlaeos.valhallammo.item.EquipmentClass;
@@ -46,43 +47,37 @@ public class CraftingTableListener implements Listener {
         if (e.getWhoClicked() instanceof Player crafter && (e.getRecipe() instanceof ShapedRecipe || e.getRecipe() instanceof ShapelessRecipe)){
             DynamicGridRecipe recipe = CustomRecipeRegistry.getGridRecipesByKey().get(((Keyed) e.getRecipe()).getKey());
             if (recipe == null) return; // not a valhalla recipe, don't do anything
-            PowerProfile profile = ProfileCache.getOrCache(crafter, PowerProfile.class);
             CraftingInventory inventory = e.getInventory();
-            if (profile == null ||
-                    (inventory.getLocation() != null && inventory.getLocation().getWorld() != null && ValhallaMMO.isWorldBlacklisted(inventory.getLocation().getWorld().getName())) ||
-                    (WorldGuardHook.inDisabledRegion(inventory.getLocation(), WorldGuardHook.VMMO_CRAFTING_CRAFTINGTABLE)) ||
-                    (!crafter.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName()))) {
+            if ((inventory.getLocation() != null && inventory.getLocation().getWorld() != null && ValhallaMMO.isWorldBlacklisted(inventory.getLocation().getWorld().getName())) ||
+                    (WorldGuardHook.inDisabledRegion(inventory.getLocation(), WorldGuardHook.VMMO_CRAFTING_CRAFTINGTABLE))) {
                 // If the recipe or the player's profile are null, the player hasn't unlocked
                 // the recipe, the world is blacklisted, or the location is in a region which blocks custom recipes,
                 // nullify result
                 e.setCancelled(true);
                 return;
             }
-            ItemStack result = verifyIngredients(crafter, recipe, inventory.getMatrix());
+            PowerProfile profile = ProfileCache.getOrCache(crafter, PowerProfile.class);
+            ItemStack result = verifyIngredients(crafter, profile, recipe, inventory.getMatrix());
             if (ItemUtils.isEmpty(result)){
-                e.setCancelled(true);
-                return;
+                Pair<DynamicGridRecipe, ItemStack> corrected = correctRecipe(crafter, profile, recipe, inventory.getMatrix());
+                if (corrected == null){
+                    e.setCancelled(true);
+                    return;
+                }
+                recipe = corrected.getOne();
+                result = corrected.getTwo();
             }
+
             PlayerInventory playerInventory = crafter.getInventory();
             ClickType clickType = e.getClick();
             int amountCrafted = 1;
             boolean toolRequired = recipe.getToolRequirement().getToolRequirementType() != ToolRequirementType.NOT_REQUIRED &&
                     recipe.getToolRequirement().getRequiredToolID() >= 0;
 
-
+            boolean verifyClicks = false;
             switch (clickType){
                 case DROP, CONTROL_DROP -> {} // do nothing special because these actions do not require empty inventory space
-                case LEFT, RIGHT -> {
-                    // check if cursor can accept the result item
-                    ItemStack cursor = e.getCursor();
-                    if (!ItemUtils.isEmpty(cursor)){
-                        // cancel crafting if the result no longer fits in the cursor
-                        if (!cursor.isSimilar(result) || cursor.getAmount() + result.getAmount() > cursor.getType().getMaxStackSize()){
-                            e.setCancelled(true);
-                            return;
-                        }
-                    }
-                }
+                case LEFT, RIGHT -> verifyClicks = true;
                 case SHIFT_LEFT, SHIFT_RIGHT -> {
                     // calculate how many items can be crafted
 
@@ -165,7 +160,19 @@ public class CraftingTableListener implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            inventory.setResult(resultBuilder.get());
+            ItemStack finalResult = resultBuilder.get();
+            if (verifyClicks){
+                // check if cursor can accept the result item
+                ItemStack cursor = e.getCursor();
+                if (!ItemUtils.isEmpty(cursor)){
+                    // cancel crafting if the result no longer fits in the cursor
+                    if (!cursor.isSimilar(finalResult) || cursor.getAmount() + finalResult.getAmount() > cursor.getType().getMaxStackSize()){
+                        e.setCancelled(true);
+                        return;
+                    }
+                }
+            }
+            inventory.setResult(finalResult);
             if (!ItemUtils.isEmpty(result)){
                 recipe.getValidations().forEach(v -> {
                     Validation validation = ValidationRegistry.getValidation(v);
@@ -278,12 +285,20 @@ public class CraftingTableListener implements Listener {
                 inventory.setResult(null);
                 return;
             }
-            ItemStack result = verifyIngredients(crafter, recipe, inventory.getMatrix());
-            if (!ItemUtils.isEmpty(result)){
-                ItemBuilder resultBuilder = new ItemBuilder(result);
-                DynamicItemModifier.modify(resultBuilder, crafter, recipe.getModifiers(), false, false, true);
-                inventory.setResult(resultBuilder.get());
-            } else inventory.setResult(null);
+            ItemStack result = verifyIngredients(crafter, profile, recipe, inventory.getMatrix());
+            if (ItemUtils.isEmpty(result)){
+                Pair<DynamicGridRecipe, ItemStack> corrected = correctRecipe(crafter, profile, recipe, inventory.getMatrix());
+                if (corrected == null){
+                    inventory.setResult(null);
+                    return;
+                }
+                recipe = corrected.getOne();
+                result = corrected.getTwo();
+            }
+
+            ItemBuilder resultBuilder = new ItemBuilder(result);
+            DynamicItemModifier.modify(resultBuilder, crafter, recipe.getModifiers(), false, false, true);
+            inventory.setResult(resultBuilder.get());
         } else if (crafted instanceof ComplexRecipe r){
             if (r.getKey().getKey().equals("tipped_arrow") && !ItemUtils.isEmpty(inventory.getResult()) && Arrays.stream(inventory.getMatrix()).noneMatch(ItemUtils::isEmpty)){
                 ItemStack[] m = inventory.getMatrix();
@@ -319,8 +334,9 @@ public class CraftingTableListener implements Listener {
         }
     }
 
-    private ItemStack verifyIngredients(Player clicker, DynamicGridRecipe recipe, ItemStack[] matrix){
+    private ItemStack verifyIngredients(Player clicker, PowerProfile profile, DynamicGridRecipe recipe, ItemStack[] matrix){
         ItemStack result = recipe.getResult().clone();
+        if (!clicker.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName())) return null;
         Map<Integer, ItemMeta> matrixMeta = matrixMetaCache.getOrDefault(clicker.getUniqueId(), new HashMap<>());
         if (recipe.tinker()){
             SlotEntry tinkerEntry = recipe.getGridTinkerEquipment();
@@ -382,5 +398,15 @@ public class CraftingTableListener implements Listener {
 
     private IngredientChoice defaultChoice(SlotEntry entry){
         return Objects.requireNonNullElse(entry.getOption(), new MaterialChoice());
+    }
+
+    private Pair<DynamicGridRecipe, ItemStack> correctRecipe(Player crafter, PowerProfile profile, DynamicGridRecipe original, ItemStack[] grid){
+        int ingredients = original.getItems().size();
+        for (DynamicGridRecipe recipe : CustomRecipeRegistry.getGridRecipesByIngredientQuantity().getOrDefault(ingredients, new HashSet<>())){
+            if (recipe.getName().equals(original.getName())) continue;
+            ItemStack result = verifyIngredients(crafter, profile, recipe, grid);
+            if (!ItemUtils.isEmpty(result)) return new Pair<>(recipe, result);
+        }
+        return null;
     }
 }

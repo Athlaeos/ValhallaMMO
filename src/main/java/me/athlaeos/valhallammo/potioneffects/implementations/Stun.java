@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
+import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.EffectClass;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
@@ -31,7 +32,7 @@ import java.util.Map;
 
 public class Stun extends PotionEffectWrapper {
     private static final Collection<PotionEffectWrapper> stunEffects = new HashSet<>();
-    private static int stunImmunityDuration;
+    private static final int stunImmunityDuration;
 
     static {
         YamlConfiguration c = ConfigManager.getConfig("config.yml").reload().get();
@@ -170,5 +171,10 @@ public class Stun extends PotionEffectWrapper {
 
     private String prefix(){
         return TranslationManager.getTranslation("stat_potion_negative_prefix");
+    }
+
+    @Override
+    public StatFormat getFormat() {
+        return StatFormat.NONE;
     }
 }

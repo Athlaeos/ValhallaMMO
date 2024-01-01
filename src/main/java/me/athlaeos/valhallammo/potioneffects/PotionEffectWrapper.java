@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.pot
 import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -85,5 +86,16 @@ public abstract class PotionEffectWrapper {
 
     public static String prefix(boolean positive){
         return TranslationManager.getTranslation("stat_potion_" + (positive ? "positive" : "negative") + "_prefix");
+    }
+
+    public String getTrimmedEffectName(){
+        return getEffectName().replace("%icon%", "").replace("%duration%", "").replace("%value%", "").trim();
+    }
+
+    public String getFormattedEffectName(boolean positive, double value, long duration){
+        return getEffectName().replace("%icon%", getEffectIcon() + prefix(positive))
+                .replace("%value%", format == null ? "" :  format.format(value + (isVanilla ? 1 : 0)))
+                .replace("%duration%", String.format("(%s)", StringUtils.toTimeStamp(duration, 20)))
+                .trim();
     }
 }

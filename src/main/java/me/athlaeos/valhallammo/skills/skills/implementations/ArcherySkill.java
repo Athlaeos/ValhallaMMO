@@ -274,7 +274,7 @@ public class ArcherySkill extends Skill implements Listener {
     public static double getChargedShotDamageBuff(UUID uuid){
         ChargedShotUser user = chargedShotUsers.get(uuid);
         if (user == null) return 0;
-        return user.velocityBuff;
+        return user.damageBuff;
     }
 
     public static int getChargedShotCharges(UUID uuid){

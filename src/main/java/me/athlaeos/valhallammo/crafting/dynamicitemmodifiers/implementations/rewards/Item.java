@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 public class Item extends DynamicItemModifier {
     private final List<ItemStack> rewards = new ArrayList<>();
     private ItemStack currentReward = new ItemStack(Material.GOLD_INGOT);
-    private ItemMeta rewardMeta = ItemUtils.getItemMeta(currentReward);
 
     public Item(String name) {
         super(name);
@@ -41,7 +39,6 @@ public class Item extends DynamicItemModifier {
             ItemStack cursor = e.getCursor();
             if (!ItemUtils.isEmpty(cursor)) {
                 currentReward = cursor.clone();
-                rewardMeta = ItemUtils.getItemMeta(currentReward);
             }
         } else if (button == 17){
             if (e.isShiftClick()) rewards.clear();
@@ -60,12 +57,12 @@ public class Item extends DynamicItemModifier {
                         .name("&eWhat should the new item be?")
                         .lore("&6Click with another item to",
                                 "&6copy it over.",
-                                "&fSet to " + ItemUtils.getItemName(rewardMeta))
+                                "&fSet to " + ItemUtils.getItemName(ItemUtils.getItemMeta(currentReward)))
                         .get()).map(Set.of(
                 new Pair<>(17,
                         new ItemBuilder(Material.STRUCTURE_VOID)
                                 .name("&fConfirm Item")
-                                .lore("&fCurrently selected: &e" + ItemUtils.getItemName(rewardMeta),
+                                .lore("&fCurrently selected: &e" + ItemUtils.getItemName(ItemUtils.getItemMeta(currentReward)),
                                         "&6Click to add selected item to",
                                         "&6the list.",
                                         "&6Shift-Click to clear list",
@@ -111,15 +108,10 @@ public class Item extends DynamicItemModifier {
         this.currentReward = currentReward;
     }
 
-    public void setRewardMeta(ItemMeta rewardMeta) {
-        this.rewardMeta = rewardMeta;
-    }
-
     @Override
     public DynamicItemModifier copy() {
         Item m = new Item(getName());
         m.setCurrentReward(this.currentReward);
-        m.setRewardMeta(this.rewardMeta);
         m.setPriority(this.getPriority());
         return m;
     }

@@ -28,10 +28,10 @@ public class AlchemyQualityScale extends DynamicItemModifier {
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         double typeSkill = 0;
-        double generalSkill = AccumulativeStatManager.getStats("ALCHEMY_QUALITY_GENERAL", crafter, use);
+        double generalSkill = AccumulativeStatManager.getCachedStats("ALCHEMY_QUALITY_GENERAL", crafter, 10000, use);
         MaterialClass materialClass = MaterialClass.getMatchingClass(outputItem.getMeta());
         if (materialClass != null){
-            typeSkill = AccumulativeStatManager.getStats("ALCHEMY_QUALITY_" + effectClass, crafter, use);
+            typeSkill = AccumulativeStatManager.getCachedStats("ALCHEMY_QUALITY_" + effectClass, crafter, 10000, use);
         }
         AlchemyItemPropertyManager.setQuality(outputItem.getMeta(), (int) ((typeSkill + generalSkill) * skillEfficiency));
     }

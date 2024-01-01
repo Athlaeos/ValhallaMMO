@@ -26,7 +26,7 @@ public class ItemType extends DynamicItemModifier {
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         outputItem.type(material);
-        PotionEffectRegistry.updateEffectLore(outputItem.getMeta());
+        PotionEffectRegistry.updateItemName(outputItem.getMeta(), true, false);
     }
 
     @Override
@@ -35,6 +35,10 @@ public class ItemType extends DynamicItemModifier {
             ItemStack cursor = e.getCursor();
             if (!ItemUtils.isEmpty(cursor)) material = cursor.getType();
         }
+    }
+
+    public Material getMaterial() {
+        return material;
     }
 
     @Override
@@ -65,7 +69,7 @@ public class ItemType extends DynamicItemModifier {
 
     @Override
     public String getActiveDescription() {
-        return "&fItem type will change to " + StringUtils.toPascalCase(material.toString());
+        return "&fItem type will change to " + StringUtils.toPascalCase((material == null ? Material.BARRIER : material).toString());
     }
 
     @Override

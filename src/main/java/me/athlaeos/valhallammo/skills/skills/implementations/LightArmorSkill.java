@@ -135,7 +135,7 @@ public class LightArmorSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPotionEffect(EntityCustomPotionEffectEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getNewEffect() == null) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getNewEffect() == null || e.getCause() == EntityPotionEffectEvent.Cause.POTION_DRINK) return;
         if (!(e.getEntity() instanceof Player p)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTARMOR) ||
                 WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_POTIONIMMUNITY)) return;

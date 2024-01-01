@@ -28,19 +28,20 @@ public class DurabilityRepairScale extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!(outputItem.getMeta() instanceof Damageable) || outputItem.getItem().getType().getMaxDurability() <= 0) return;
-        double materialSkill = 0;
-        double generalSkill = Math.round(skillEfficiency * AccumulativeStatManager.getStats("SMITHING_QUALITY_GENERAL", crafter, use));
+        if (!(outputItem.getMeta() instanceof Damageable) || outputItem.getItem().getType().getMaxDurability() <= 0 || scaling == null) return;
+        double skill = Math.round(skillEfficiency * AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_GENERAL", crafter, 10000, use));
+        double skillMultiplier = 1 + AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_GENERAL", crafter, 10000, use);
         MaterialClass materialClass = MaterialClass.getMatchingClass(outputItem.getMeta());
         if (materialClass != null){
-            materialSkill = AccumulativeStatManager.getStats("SMITHING_QUALITY_" + materialClass, crafter, use);
+            skill += AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_" + materialClass, crafter, 10000, use);
+            skillMultiplier += AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_" + materialClass, crafter, 10000, use);
         }
         int itemDurability = CustomDurabilityManager.getDurability(outputItem.getMeta(), false);
         int maxDurability = CustomDurabilityManager.getDurability(outputItem.getMeta(), true);
         if (itemDurability >= maxDurability) return;
         if (itemDurability > 0){
             // Item has custom durability
-            double fractionToRepair = scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf(((generalSkill + materialSkill) * skillEfficiency))));
+            double fractionToRepair = scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf((skill * skillMultiplier * skillEfficiency))));
             int addDurability = (int) (fractionToRepair * (double) maxDurability);
             CustomDurabilityManager.damage(outputItem.getMeta(), -addDurability);
         }

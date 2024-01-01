@@ -78,6 +78,10 @@ public class ValhallaMMO extends JavaPlugin {
         save("recipes/immersive_recipes.json");
         save("recipes/cauldron_recipes.json");
         save("recipes/smithing_recipes.json");
+        save("loot_table_config.json");
+        save("loot_tables/digging.json");
+        save("loot_tables/fishing.json");
+        save("loot_tables/woodcutting.json");
         saveConfig("recipes/disabled_recipes.yml");
         saveConfig("leaderboards.yml");
         saveConfig("mob_stats.yml");
@@ -196,6 +200,7 @@ public class ValhallaMMO extends JavaPlugin {
         if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) registerListener(new ReachAttackListener()); // 1.20.5 introduces entity interaction range attributes, rendering this listener obsolete
         registerListener(new RecipeDiscoveryListener());
         registerListener(new SmithingTableListener());
+//        registerListener(new ThrownWeaponListener()); // might end up not using
 
         registerListener(new BlockHardnessStick());
 
@@ -300,9 +305,7 @@ public class ValhallaMMO extends JavaPlugin {
 
     public void save(String name){
         File file = new File(this.getDataFolder(), name);
-        if (!file.exists()){
-            this.saveResource(name, false);
-        }
+        if (!file.exists()) this.saveResource(name, false);
     }
 
     private void updateConfig(String name){

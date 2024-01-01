@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.WeightClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.command.CommandSender;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,7 +30,16 @@ public class ItemWeightClass extends DynamicItemModifier {
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
         if (button == 12) {
-            double placeholder = Math.max(0, 0 + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.1 : 0.01)));
+            List<WeightClass> weightClasses = Arrays.asList(WeightClass.values());
+            int currentClass = weightClasses.indexOf(weightClass);
+            if (e.isLeftClick()) {
+                if (currentClass + 1 >= weightClasses.size()) currentClass = 0;
+                else currentClass++;
+            } else {
+                if (currentClass - 1 < 0) currentClass = weightClasses.size() - 1;
+                else currentClass--;
+            }
+            weightClass = weightClasses.get(currentClass);
         }
     }
 

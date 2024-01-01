@@ -16,7 +16,6 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.pot
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_misc.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.Item;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.Money;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.VanillaExperience;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
@@ -116,6 +115,8 @@ public class ModifierRegistry {
         register(new CustomModelDataSet("custom_model_data"));
         register(new CustomIDSet("custom_id"));
         register(new DisplayNameSet("rename"));
+        register(new PreventSwordSweeping("sweeping_removal"));
+//        register(new ThrowableWeapon("throwable_weapon"));
         register(new DurabilityRandomized("durability_randomize"));
         register(new DurabilityRepairNumeric("repair_number"));
         register(new DurabilityRepairScale("repair_scale"));
@@ -155,6 +156,7 @@ public class ModifierRegistry {
         register(new ConversionTransmutationPotion("transmutation_potion"));
         register(new ScaleAmplifier("potion_amplifier_scale"));
         register(new ScaleDuration("potion_duration_scale"));
+        register(new PotionEffectConvert("potion_effect_convert"));
 
         register(new AlchemyQualityAdd("alchemy_quality_add"));
         register(new AlchemyQualityMultiply("alchemy_quality_multiply"));

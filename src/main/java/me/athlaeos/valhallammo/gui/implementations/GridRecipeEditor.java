@@ -16,6 +16,7 @@ import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Question;
 import me.athlaeos.valhallammo.dom.Questionnaire;
 import me.athlaeos.valhallammo.gui.*;
+import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -255,6 +256,21 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
         this.displayName = recipe.getDisplayName();
         this.description = recipe.getDescription();
         this.hidden = recipe.isHiddenFromBook();
+
+        this.recipe.setItems(items);
+        this.recipe.setResult(result);
+        this.recipe.setModifiers(modifiers);
+        this.recipe.setShapeless(shapeless);
+        this.recipe.setTinker(tinker);
+        this.recipe.setRequireValhallaTools(requireValhallaTools);
+        this.recipe.setTinkerGridIndex(tinkerGridIndex);
+        this.recipe.setToolIndex(toolIndex);
+        this.recipe.setToolRequirement(toolRequirement);
+        this.recipe.setUnlockedForEveryone(unlockedForEveryone);
+        this.recipe.setValidations(validations);
+        this.recipe.setDescription(description);
+        this.recipe.setDisplayName(displayName);
+        this.recipe.setHiddenFromBook(hidden);
     }
 
     @Override
@@ -515,7 +531,8 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
         }
         if (!tinker) inventory.setItem(resultIndex, result.clone());
         else {
-            ItemStack editItem = recipe.getGridTinkerEquipment().getItem();
+            SlotEntry tinkerItem = recipe.getGridTinkerEquipment();
+            ItemStack editItem = tinkerItem == null ? null : tinkerItem.getItem();
             inventory.setItem(resultIndex, ItemUtils.isEmpty(editItem) ?
                     new ItemBuilder(Material.BARRIER).name("&cNo valid tinkerable item found").lore("&7Recipe might not be craftable").get() :
                     new ItemBuilder(editItem.getType()).name("&dTinkered Item").get());

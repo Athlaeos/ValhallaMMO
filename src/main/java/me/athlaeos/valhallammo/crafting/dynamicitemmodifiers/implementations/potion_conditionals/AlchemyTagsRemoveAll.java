@@ -19,7 +19,7 @@ public class AlchemyTagsRemoveAll extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        AlchemyItemPropertyManager.setTags(outputItem.getMeta(), null);
+        AlchemyItemPropertyManager.setTags(outputItem.getMeta(), new HashSet<>());
     }
 
     @Override

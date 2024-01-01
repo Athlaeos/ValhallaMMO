@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.potioneffects.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.potioneffects.EffectClass;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.utility.EntityUtils;
@@ -99,5 +100,10 @@ public class InstantCustomDamage extends PotionEffectWrapper {
 
     private String prefix(){
         return TranslationManager.getTranslation("stat_potion_negative_prefix");
+    }
+
+    @Override
+    public StatFormat getFormat() {
+        return StatFormat.FLOAT_P1;
     }
 }

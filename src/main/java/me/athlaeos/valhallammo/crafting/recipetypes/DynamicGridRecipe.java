@@ -15,6 +15,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -111,33 +112,41 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
 
     public ShapelessRecipe getShapelessRecipe(){
         if (!shapeless || this.items.isEmpty()) return null;
-        ShapelessRecipe recipe = new ShapelessRecipe(shapelessKey, tinker ? getGridTinkerEquipment().getItem() : recipeBookIcon(result));
+        ShapelessRecipe recipe = new ShapelessRecipe(shapelessKey, recipeBookIcon(tinker ? getGridTinkerEquipment().getItem() : result));
         for (Integer i : items.keySet()){
             SlotEntry entry = items.get(i);
             ItemStack item = entry.getItem().clone();
+            ItemMeta meta = ItemUtils.getItemMeta(item);
+            TranslationManager.translateItemMeta(meta);
+            ItemUtils.setItemMeta(item, meta);
             RecipeChoice choice = entry.getOption() == null ? null : entry.getOption().getChoice(item); // if the ingredient or its choice are null, default to RecipeChoice.MaterialChoice
             if (choice == null) choice = new RecipeChoice.MaterialChoice(item.getType());
             if (i == toolIndex) choice = new RecipeChoice.MaterialChoice(ItemUtils.getNonAirMaterialsArray());
 
             recipe.addIngredient(choice);
         }
+
         return recipe;
     }
 
     public ShapedRecipe getShapedRecipe(){
         if (this.items.isEmpty()) return null;
-        ShapedRecipe recipe = new ShapedRecipe(shapedKey, tinker ? getGridTinkerEquipment().getItem() : recipeBookIcon(result));
+        ShapedRecipe recipe = new ShapedRecipe(shapedKey, recipeBookIcon(tinker ? getGridTinkerEquipment().getItem() : result));
         ShapeDetails details = getRecipeShapeStrings();
         recipe.shape(details.shape);
         for (char ci : details.items.keySet()){
             SlotEntry entry = details.items.get(ci);
             ItemStack i = entry.getItem();
             if (ItemUtils.isEmpty(i)) continue;
+            ItemMeta meta = ItemUtils.getItemMeta(i);
+            TranslationManager.translateItemMeta(meta);
+            ItemUtils.setItemMeta(i, meta);
             RecipeChoice choice = entry.getOption() == null ? null : entry.getOption().getChoice(i);
             if (choice == null) choice = new RecipeChoice.MaterialChoice(i.getType());
             if (items.get(toolIndex) != null && items.get(toolIndex).equals(entry)) choice = new RecipeChoice.MaterialChoice(ItemUtils.getNonAirMaterialsArray());
             recipe.setIngredient(ci, choice);
         }
+
         return recipe;
     }
 
@@ -162,7 +171,9 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
                 gridDetails.add(charFormat.replace("%character%", String.valueOf(c)).replace("%ingredient%", SlotEntry.toString(details.getItems().get(c))));
             }
         }
-        ItemBuilder result = new ItemBuilder(this.result);
+        SlotEntry tinkerItem = getGridTinkerEquipment();
+
+        ItemBuilder result = new ItemBuilder(tinker ? (tinkerItem == null || ItemUtils.isEmpty(tinkerItem.getItem()) ? this.result : tinkerItem.getItem()) : this.result);
         List<String> def = TranslationManager.getListTranslation("default_recipe_description_grid");
         String tinkerFormat = TranslationManager.getTranslation("tinker_result_format");
 
@@ -175,8 +186,8 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
         ItemBuilder icon = new ItemBuilder(i)
                 .lore(ItemUtils.setListPlaceholder(lore, "%ingredients%", gridDetails))
                 .translate();
-        if (displayName != null) icon.name(displayName);
-        else if (tinker) icon.name(tinkerFormat.replace("%item%", SlotEntry.toString(getGridTinkerEquipment())));
+        if (displayName != null) icon.name(TranslationManager.translatePlaceholders(displayName).replace("%item%", ItemUtils.getItemName(result.getMeta())));
+        else if (tinker) icon.name(tinkerFormat.replace("%item%", SlotEntry.toString(tinkerItem)));
         else if (result.getMeta().hasDisplayName()) icon.name(result.getMeta().getDisplayName());
 
         return icon.translate().get();
@@ -185,15 +196,16 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     public SlotEntry getGridTinkerEquipment(){
         if (tinkerGridIndex >= 0 && items.containsKey(tinkerGridIndex) && !ItemUtils.isEmpty(items.get(tinkerGridIndex).getItem()))
             return items.get(tinkerGridIndex);
+        SlotEntry tinker = null;
         for (int i = 0; i < 9; i++){
             SlotEntry entry = items.get(i);
             if (entry == null) continue;
             ItemStack matrixItem = entry.getItem();
             if (ItemUtils.isEmpty(matrixItem)) continue;
-
+            if (tinker == null) tinker = entry; // return the first item found in the grid if no others are found
             if (EquipmentClass.getMatchingClass(ItemUtils.getItemMeta(matrixItem)) != null) return entry;
         }
-        return null;
+        return tinker;
     }
 
     public ShapeDetails getRecipeShapeStrings(){
@@ -240,7 +252,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     private char getItemChar(SlotEntry i, String usedChars){
         if (i == null) return ' ';
         if (ItemUtils.isEmpty(i.getItem())) return ' ';
-        String itemName = ChatColor.stripColor(SlotEntry.toString(i));
+        String itemName = ChatColor.stripColor(TranslationManager.translatePlaceholders(SlotEntry.toString(i)));
         char possibleCharacter = (itemName == null || itemName.isEmpty() ? i.getItem().getType().toString() : itemName).toUpperCase().charAt(0);
         if (usedChars.contains(String.valueOf(possibleCharacter))){
             possibleCharacter = i.getItem().getType().toString().toUpperCase().charAt(0);

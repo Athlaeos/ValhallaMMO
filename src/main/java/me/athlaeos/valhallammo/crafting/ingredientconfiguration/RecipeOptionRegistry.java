@@ -18,6 +18,7 @@ public class RecipeOptionRegistry {
         registerOption(new ConfigurableMaterialsChoice());
         registerOption(new PotionChoice());
         registerOption(new MaterialWithIDChoice());
+        registerOption(new PotionMatchEffectsChoice());
     }
 
     public static void registerOption(RecipeOption c) {

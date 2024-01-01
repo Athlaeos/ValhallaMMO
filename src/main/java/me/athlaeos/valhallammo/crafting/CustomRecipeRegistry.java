@@ -41,6 +41,7 @@ public class CustomRecipeRegistry {
 
     private static final Collection<NamespacedKey> disabledRecipes = new HashSet<>();
     private static final Map<String, DynamicBrewingRecipe> brewingRecipes = new HashMap<>();
+    private static final Map<Material, Collection<DynamicBrewingRecipe>> brewingRecipesByIngredient = new HashMap<>();
     private static final Map<String, DynamicCauldronRecipe> cauldronRecipes = new HashMap<>();
     private static final Map<String, DynamicCookingRecipe> cookingRecipes = new HashMap<>();
     private static final Map<String, DynamicGridRecipe> gridRecipes = new HashMap<>();
@@ -48,6 +49,7 @@ public class CustomRecipeRegistry {
     private static final Map<String, ImmersiveCraftingRecipe> immersiveRecipes = new HashMap<>();
     private static final Map<NamespacedKey, DynamicCookingRecipe> cookingRecipesByKey = new HashMap<>();
     private static final Map<NamespacedKey, DynamicGridRecipe> gridRecipesByKey = new HashMap<>();
+    private static final Map<Integer, Collection<DynamicGridRecipe>> gridRecipesByIngredientQuantities = new HashMap<>();
     private static final Map<NamespacedKey, DynamicSmithingRecipe> smithingRecipesByKey = new HashMap<>();
     private static final Map<Material, Collection<ImmersiveCraftingRecipe>> immersiveRecipesByBlock = new HashMap<>();
     private static final Collection<String> allRecipes = new HashSet<>();
@@ -158,6 +160,10 @@ public class CustomRecipeRegistry {
         if (overwrite || !brewingRecipes.containsKey(recipe.getName().toLowerCase())) {
             brewingRecipes.put(recipe.getName().toLowerCase(), recipe);
             allRecipes.add(recipe.getName().toLowerCase());
+
+            Collection<DynamicBrewingRecipe> existing = brewingRecipesByIngredient.getOrDefault(recipe.getIngredient().getItem().getType(), new HashSet<>());
+            existing.add(recipe);
+            brewingRecipesByIngredient.put(recipe.getIngredient().getItem().getType(), existing);
         }
     }
     public static void register(DynamicCauldronRecipe recipe, boolean overwrite){
@@ -193,6 +199,9 @@ public class CustomRecipeRegistry {
             gridRecipes.put(recipe.getName().toLowerCase(), recipe);
             gridRecipesByKey.put(recipe.getKey(), recipe);
             gridRecipesByKey.put(recipe.getKey2(), recipe);
+            Collection<DynamicGridRecipe> existing = gridRecipesByIngredientQuantities.getOrDefault(recipe.getItems().size(), new HashSet<>());
+            existing.add(recipe);
+            gridRecipesByIngredientQuantities.put(recipe.getItems().size(), existing);
             allRecipes.add(recipe.getName().toLowerCase());
             allKeyedRecipes.put(recipe.getKey(), recipe);
             recipe.registerRecipe();
@@ -302,6 +311,10 @@ public class CustomRecipeRegistry {
         return gridRecipesByKey;
     }
 
+    public static Map<Integer, Collection<DynamicGridRecipe>> getGridRecipesByIngredientQuantity() {
+        return gridRecipesByIngredientQuantities;
+    }
+
     public static Map<String, DynamicSmithingRecipe> getSmithingRecipes() {
         return smithingRecipes;
     }
@@ -324,5 +337,9 @@ public class CustomRecipeRegistry {
 
     public static Map<NamespacedKey, ValhallaKeyedRecipe> getAllKeyedRecipes() {
         return allKeyedRecipes;
+    }
+
+    public static Map<Material, Collection<DynamicBrewingRecipe>> getBrewingRecipesByIngredient() {
+        return brewingRecipesByIngredient;
     }
 }

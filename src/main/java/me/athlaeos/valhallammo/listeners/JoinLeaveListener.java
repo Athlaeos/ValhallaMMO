@@ -27,7 +27,6 @@ public class JoinLeaveListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if (!e.getPlayer().isOnline()) return;
         ProfileRegistry.getPersistence().loadProfile(e.getPlayer());
         EntityCache.getAndCacheProperties(e.getPlayer());
         PotionEffectRegistry.updatePlayerAffectedStatus(e.getPlayer());
@@ -40,24 +39,6 @@ public class JoinLeaveListener implements Listener {
             if (maxHealth != null){
                 e.getPlayer().setHealth(Math.max(maxHealth.getValue(), health));
             }
-        }
-
-        PowerProfile p = ProfileCache.getOrCache(e.getPlayer(), PowerProfile.class);
-        boolean allPermission = e.getPlayer().hasPermission("valhalla.allrecipes");
-        for (DynamicGridRecipe recipe : CustomRecipeRegistry.getGridRecipes().values()){
-            if (recipe.isUnlockedForEveryone() || p.getUnlockedRecipes().contains(recipe.getName()) || allPermission)
-                e.getPlayer().discoverRecipe(recipe.getKey());
-            else e.getPlayer().undiscoverRecipe(recipe.getKey());
-        }
-        for (DynamicCookingRecipe recipe : CustomRecipeRegistry.getCookingRecipes().values()){
-            if (recipe.isUnlockedForEveryone() || p.getUnlockedRecipes().contains(recipe.getName()) || allPermission)
-                e.getPlayer().discoverRecipe(recipe.getKey());
-            else e.getPlayer().undiscoverRecipe(recipe.getKey());
-        }
-        for (DynamicSmithingRecipe recipe : CustomRecipeRegistry.getSmithingRecipes().values()){
-            if (recipe.isUnlockedForEveryone() || p.getUnlockedRecipes().contains(recipe.getName()) || allPermission)
-                e.getPlayer().discoverRecipe(recipe.getKey());
-            else e.getPlayer().undiscoverRecipe(recipe.getKey());
         }
     }
 

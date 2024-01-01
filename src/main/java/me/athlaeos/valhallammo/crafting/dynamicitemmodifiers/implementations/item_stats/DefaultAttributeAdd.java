@@ -49,8 +49,8 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
             value = Math.min(attribute.getMax(), Math.max(attribute.getMin(), value + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? bigIncrement : smallIncrement))));
         } else if (button == (attribute.isVanilla() ? 12 : 13)) {
             value = Math.min(attribute.getMax(), Math.max(attribute.getMin(), value + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? bigIncrement * 10 : smallIncrement * 5))));
-        } else if (button == 13){
-            int currentOperation = Arrays.asList(AttributeModifier.Operation.values()).indexOf(attribute.getOperation());
+        } else if (button == 13 && attribute.isVanilla()){
+            int currentOperation = Arrays.asList(AttributeModifier.Operation.values()).indexOf(operation);
             if (e.isLeftClick()) {
                 if (currentOperation + 1 >= AttributeModifier.Operation.values().length) currentOperation = 0;
                 else currentOperation++;
@@ -58,7 +58,7 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
                 if (currentOperation - 1 < 0) currentOperation = AttributeModifier.Operation.values().length - 1;
                 else currentOperation--;
             }
-            attribute.setOperation(AttributeModifier.Operation.values()[currentOperation]);
+            operation = AttributeModifier.Operation.values()[currentOperation];
         }
     }
 

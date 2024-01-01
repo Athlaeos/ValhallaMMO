@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.CombatType;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.potioneffects.EffectClass;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.utility.Bleeder;
@@ -103,5 +104,10 @@ public class Bleed extends PotionEffectWrapper {
 
     private String prefix(){
         return TranslationManager.getTranslation("stat_potion_negative_prefix");
+    }
+
+    @Override
+    public StatFormat getFormat() {
+        return StatFormat.ROMAN;
     }
 }

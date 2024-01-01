@@ -183,7 +183,7 @@ public class AlchemyItemPropertyManager {
     public static void setTags(ItemMeta meta, Collection<Integer> tags){
         if (meta == null) return;
 
-        if (tags.isEmpty()) meta.getPersistentDataContainer().remove(NUMBER_TAGS);
+        if (tags == null || tags.isEmpty()) meta.getPersistentDataContainer().remove(NUMBER_TAGS);
         else meta.getPersistentDataContainer().set(NUMBER_TAGS, PersistentDataType.STRING,
                 tags.stream().map(String::valueOf).collect(Collectors.joining(",")));
 
@@ -202,8 +202,11 @@ public class AlchemyItemPropertyManager {
 
     public static void applyAttributeScaling(ItemMeta i, Scaling scaling, int quality, boolean duration, double minimumAmplifierFraction, double minimumDurationFraction){
         Map<String, PotionEffectWrapper> defaultWrappers = PotionEffectRegistry.getStoredEffects(i, true);
+        Map<String, PotionEffectWrapper> actualWrappers = PotionEffectRegistry.getStoredEffects(i, false);
         Map<String, PotionEffectWrapper> newWrappers = new HashMap<>();
         for (PotionEffectWrapper wrapper : defaultWrappers.values()){
+            PotionEffectWrapper actual = actualWrappers.get(wrapper.getEffect());
+            if (actual == null) continue;
             double defaultStat = duration ? wrapper.getDuration() : wrapper.getAmplifier();
             double minimum = defaultStat * (duration ? minimumDurationFraction : minimumAmplifierFraction);
             if (!duration && wrapper.isVanilla()) minimum = ((1 + defaultStat) * minimum) - 1; // vanilla amplifiers start at 0, so 1 is added to make them 1. This 1 is subtracted again later.
@@ -215,9 +218,9 @@ public class AlchemyItemPropertyManager {
                     ));
             result = Math.max(minimum, result);
 
-            if (duration) wrapper.setDuration((int) result);
-            else wrapper.setAmplifier(wrapper.isVanilla() ? (int) result : result);
-            newWrappers.put(wrapper.getEffect(), wrapper);
+            if (duration) actual.setDuration((int) result);
+            else actual.setAmplifier(wrapper.isVanilla() ? (int) result : result);
+            newWrappers.put(actual.getEffect(), actual);
         }
         PotionEffectRegistry.setActualStoredEffects(i, newWrappers);
     }

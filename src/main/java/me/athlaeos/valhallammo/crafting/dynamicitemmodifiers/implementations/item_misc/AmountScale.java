@@ -21,23 +21,27 @@ import java.util.Map;
 import java.util.Set;
 
 public class AmountScale extends DynamicItemModifier {
-    private double skillEfficiency = 0.5;
+    private double skillEfficiency = 1;
     private double minimumFraction = 0;
     private boolean damagePenalty = true;
-    private final Scaling scaling;
+    private static final Scaling scaling = Scaling.fromConfig("skills/smithing.yml", "quantity_scaling");
 
     public AmountScale(String name) {
         super(name);
-        this.scaling = Scaling.fromConfig("skills/smithing.yml", "quantity_scaling");
     }
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        double materialSkill = 0;
-        double generalSkill = AccumulativeStatManager.getStats("SMITHING_QUALITY_GENERAL", crafter, use);
+        if (scaling == null) {
+            failedRecipe(outputItem, "");
+            return;
+        }
+        double skill = AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_GENERAL", crafter, 10000, use);
+        double skillMultiplier = 1 + AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_GENERAL", crafter, 10000, use);
         MaterialClass materialClass = MaterialClass.getMatchingClass(outputItem.getMeta());
         if (materialClass != null){
-            materialSkill = AccumulativeStatManager.getStats("SMITHING_QUALITY_" + materialClass, crafter, use);
+            skill += AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_" + materialClass, crafter, 10000, use);
+            skillMultiplier += AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_" + materialClass, crafter, 10000, use);
         }
         int originalAmount = outputItem.getItem().getAmount();
 
@@ -49,9 +53,9 @@ public class AmountScale extends DynamicItemModifier {
         }
 
         int minimumAmount = Math.max(0, (int) Math.ceil(originalAmount * minimumFraction));
-        int newAmount = (int) Math.max(minimumAmount, Math.floor(scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf(((generalSkill + materialSkill) * skillEfficiency))), outputItem.getItem().getAmount())));
-        if (newAmount <= 0) return;
-        outputItem.amount(newAmount);
+        int newAmount = (int) Math.max(minimumAmount, Math.floor(scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf((skill * skillMultiplier * skillEfficiency))), originalAmount)));
+        if (newAmount <= 0) failedRecipe(outputItem, "");
+        else outputItem.amount(newAmount);
     }
 
     @Override
@@ -91,7 +95,7 @@ public class AmountScale extends DynamicItemModifier {
                                         ),
                                         new Pair<>(17,
                                                 new ItemBuilder(Material.GOLDEN_PICKAXE)
-                                                        .name("&6Lights Fire to Environment")
+                                                        .name("&6Scale with durability?")
                                                         .lore(String.format("&fSkill efficiency: %.0f%%", skillEfficiency * 100),
                                                                 String.format("&fMinimum fraction of items: &e%.2fx", minimumFraction),
                                                                 String.format("&fReduces with item damage: &e%s", damagePenalty ? "Yes" : "No"),

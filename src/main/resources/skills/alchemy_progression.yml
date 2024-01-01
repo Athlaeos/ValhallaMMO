@@ -151,8 +151,8 @@ perks:
       alchemy_buffbrewingskill_add: 30
       alchemy_brewingingredientsavechance_add: 0.3
       recipes_unlock:
-        - brewing_potion_haste
-        - brewing_potion_health_boost
+        - brew_haste_potion
+        - brew_health_boost_potion
     messages:
       - "<lang.alchemy_perk_b2_messages>"
     requireperk_all:
@@ -205,7 +205,7 @@ perks:
       alchemy_transmutationradius_add: 2
       alchemy_transmutations_unlock_all: 0
       recipes_unlock:
-        - brewing_potion_transmutation
+        - brew_transmutation_potion
     messages:
       - "<lang.alchemy_perk_4_messages>"
     requireperk_one:

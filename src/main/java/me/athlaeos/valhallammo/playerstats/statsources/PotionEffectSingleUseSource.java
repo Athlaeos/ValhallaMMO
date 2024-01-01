@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.playerstats.statsources;
 
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatSource;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
@@ -28,6 +29,7 @@ public class PotionEffectSingleUseSource implements AccumulativeStatSource {
             if (use) {
                 effect.setEffectiveUntil(0);
                 PotionEffectRegistry.addEffect(l, null, effect, true, 1, EntityPotionEffectEvent.Cause.EXPIRATION, EntityPotionEffectEvent.Action.REMOVED);
+                AccumulativeStatManager.resetCache(l);
             }
             return amplifier;
         }

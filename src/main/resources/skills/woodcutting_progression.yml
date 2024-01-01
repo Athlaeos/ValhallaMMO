@@ -220,7 +220,7 @@ perks:
         - planks_crimson_6
         - planks_warped_6
         - sticks_planks_8
-        - sticks_logs_24
+        - sticks_logs_32
         - stairs_oak_8
         - stairs_birch_8
         - stairs_spruce_8
@@ -230,15 +230,15 @@ perks:
         - stairs_cherry_8
         - stairs_crimson_8
         - stairs_warped_8
-        - fences_oak_6
-        - fences_birch_6
-        - fences_spruce_6
-        - fences_acacia_6
-        - fences_jungle_6
-        - fences_dark_oak_6
-        - fences_cherry_6
-        - fences_crimson_6
-        - fences_warped_6
+        - fences_oak_8
+        - fences_birch_8
+        - fences_spruce_8
+        - fences_acacia_8
+        - fences_jungle_8
+        - fences_dark_oak_8
+        - fences_cherry_8
+        - fences_crimson_8
+        - fences_warped_8
         - fence_gates_oak_4
         - fence_gates_birch_4
         - fence_gates_spruce_4
@@ -266,15 +266,15 @@ perks:
         - trap_doors_cherry_8
         - trap_doors_crimson_8
         - trap_doors_warped_8
-        - signs_oak_12
-        - signs_birch_12
-        - signs_spruce_12
-        - signs_acacia_12
-        - signs_jungle_12
-        - signs_dark_oak_12
-        - signs_cherry_12
-        - signs_crimson_12
-        - signs_warped_12
+        - signs_oak_8
+        - signs_birch_8
+        - signs_spruce_8
+        - signs_acacia_8
+        - signs_jungle_8
+        - signs_dark_oak_8
+        - signs_cherry_8
+        - signs_crimson_8
+        - signs_warped_8
     messages:
       - "<lang.woodcutting_perk_carpentry_a_messages>"
     requireperk_all:

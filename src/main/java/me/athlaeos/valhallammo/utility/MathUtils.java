@@ -2,6 +2,8 @@ package me.athlaeos.valhallammo.utility;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -22,6 +24,35 @@ public class MathUtils {
         }
         return locations;
     }
+
+    public static double pitchDegrees(double x, double y, double z){
+        return Math.toDegrees(pitchRadians(x, y, z));
+    }
+
+    public static double pitchDegrees(Vector v){
+        return pitchDegrees(v.getX(), v.getY(), v.getZ());
+    }
+
+    public static double pitchRadians(Vector v){
+        return pitchRadians(v.getX(), v.getY(), v.getZ());
+    }
+
+    public static double pitchRadians(double x, double y, double z){
+        double xz = sqrt(x * x + z * z);
+        return Math.atan2(-y, xz);
+    }
+
+    private static final double HAND_ANGLE = Math.PI / 4;
+    private static final double HAND_RADIUS = .4;
+    public static Vector getHandOffset(Player player, boolean hand) {
+        double a = Math.toRadians(player.getEyeLocation().getYaw());
+        double p = hand ? 1 : -1;
+        double x = HAND_RADIUS * Math.cos(a + Math.PI / 2 + p * HAND_ANGLE);
+        double z = HAND_RADIUS * Math.sin(a + Math.PI / 2 + p * HAND_ANGLE);
+
+        return new Vector(x, 0d, z);
+    }
+
     public static Collection<Location> getRandomPointsInPlane(Location center, double radius, int count){
         Collection<Location> locations = new HashSet<>();
         double minX = center.getX() - radius;

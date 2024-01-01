@@ -29,18 +29,19 @@ public class RecipeDiscoveryListener implements Listener {
             e.getPlayer().undiscoverRecipe(key);
         }
         PowerProfile profile = ProfileRegistry.getMergedProfile(e.getPlayer(), PowerProfile.class);
+        boolean allPermission = e.getPlayer().hasPermission("valhalla.allrecipes");
         for (DynamicGridRecipe recipe : CustomRecipeRegistry.getGridRecipes().values()){
-            if (!recipe.isHiddenFromBook() && profile.getUnlockedRecipes().contains(recipe.getName()))e.getPlayer().discoverRecipe(recipe.getKey()); // all recipes have a shaped variant because these display properly in the recipe book
+            if (!recipe.isHiddenFromBook() && (recipe.isUnlockedForEveryone() || profile.getUnlockedRecipes().contains(recipe.getName()) || allPermission)) e.getPlayer().discoverRecipe(recipe.getKey()); // all recipes have a shaped variant because these display properly in the recipe book
             else e.getPlayer().undiscoverRecipe(recipe.getKey());
 
             e.getPlayer().undiscoverRecipe(recipe.getKey2()); // shapeless recipes cant contain custom metadata options and so will always display wrongly in the recipe book, forget those
         }
         for (DynamicSmithingRecipe recipe : CustomRecipeRegistry.getSmithingRecipes().values()){
-            if (!recipe.isHiddenFromBook() && profile.getUnlockedRecipes().contains(recipe.getName())) e.getPlayer().discoverRecipe(recipe.getKey());
+            if (!recipe.isHiddenFromBook() && (recipe.isUnlockedForEveryone() || profile.getUnlockedRecipes().contains(recipe.getName()) || allPermission)) e.getPlayer().discoverRecipe(recipe.getKey());
             else e.getPlayer().undiscoverRecipe(recipe.getKey());
         }
         for (DynamicCookingRecipe recipe : CustomRecipeRegistry.getCookingRecipes().values()){
-            if (!recipe.isHiddenFromBook() && profile.getUnlockedRecipes().contains(recipe.getName())) e.getPlayer().discoverRecipe(recipe.getKey());
+            if (!recipe.isHiddenFromBook() && (recipe.isUnlockedForEveryone() || profile.getUnlockedRecipes().contains(recipe.getName()) || allPermission)) e.getPlayer().discoverRecipe(recipe.getKey());
             else e.getPlayer().undiscoverRecipe(recipe.getKey());
         }
     }

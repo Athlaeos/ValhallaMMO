@@ -25,13 +25,14 @@ public class SmithingQualityScale extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        double materialSkill = 0;
-        double generalSkill = AccumulativeStatManager.getStats("SMITHING_QUALITY_GENERAL", crafter, use);
+        double skill = AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_GENERAL", crafter, 10000, use);
+        double skillMultiplier = 1 + AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_GENERAL", crafter, 10000, use);
         MaterialClass materialClass = MaterialClass.getMatchingClass(outputItem.getMeta());
         if (materialClass != null){
-            materialSkill = AccumulativeStatManager.getStats("SMITHING_QUALITY_" + materialClass, crafter, use);
+            skill += AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_" + materialClass, crafter, 10000, use);
+            skillMultiplier += AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_" + materialClass, crafter, 10000, use);
         }
-        SmithingItemPropertyManager.setQuality(outputItem.getMeta(), (int) ((materialSkill + generalSkill) * skillEfficiency));
+        SmithingItemPropertyManager.setQuality(outputItem.getMeta(), (int) (skillMultiplier * skill * skillEfficiency));
     }
 
     @Override

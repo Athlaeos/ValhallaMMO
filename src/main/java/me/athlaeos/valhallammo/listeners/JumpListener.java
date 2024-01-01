@@ -47,7 +47,16 @@ public class JumpListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !playersGivenFlight.contains(e.getPlayer().getUniqueId())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
+        if (!playersGivenFlight.contains(e.getPlayer().getUniqueId()) && e.getPlayer().getFallDistance() > 0){
+            int extraJumps = (int) AccumulativeStatManager.getCachedStats("JUMPS_BONUS", e.getPlayer(), 10000, true);
+            if (extraJumps > 0) { // still gives the player access to multi jumping if the player falls off of something
+                jumpsLeft.put(e.getPlayer().getUniqueId(), extraJumps);
+                playersGivenFlight.add(e.getPlayer().getUniqueId());
+                e.getPlayer().setAllowFlight(true);
+            }
+        }
+        if (!playersGivenFlight.contains(e.getPlayer().getUniqueId())) return;
         if (!e.getPlayer().getLocation().add(0, -0.1, 0).getBlock().getType().isSolid()) return; // player not standing on solid ground
         playersGivenFlight.remove(e.getPlayer().getUniqueId());
         e.getPlayer().setAllowFlight(false);

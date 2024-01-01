@@ -99,10 +99,10 @@ public class ScaleDuration extends DynamicItemModifier {
                 else if (lowerBound != null) upperBound = Math.max(lowerBound, (upperBound == null ? 0 : upperBound) + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 0.25 : 0.01)));
                 else upperBound = (upperBound == null ? 0 : upperBound) + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 0.25 : 0.01));
             }
-            case 10 -> amplifier = amplifier + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 0.25 : 0.01));
+            case 10 -> amplifier = amplifier + ((e.isRightClick() ? -1 : 1) * (mode == Scaling.ScalingMode.MULTIPLIER ? (e.isShiftClick() ? 0.25 : 0.01) : (e.isShiftClick() ? 1200 : 20)));
             case 11 -> skillRange = skillRange + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 25 : 1));
             case 12 -> rangeOffset = rangeOffset + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 10 : 1));
-            case 13 -> minimum = minimum + ((e.isRightClick() ? -1 : 1) * (e.isShiftClick() ? 0.25 : 0.01));
+            case 13 -> minimum = minimum + ((e.isRightClick() ? -1 : 1) * (mode == Scaling.ScalingMode.MULTIPLIER ? (e.isShiftClick() ? 0.25 : 0.01) : (e.isShiftClick() ? 1200 : 20)));
             case 14 -> {
                 List<String> skills = new ArrayList<>(SkillRegistry.getAllSkillsByType().keySet());
                 skills.sort(Comparator.comparingInt(s -> SkillRegistry.getSkill(s).getSkillTreeMenuOrderPriority()));
@@ -189,8 +189,8 @@ public class ScaleDuration extends DynamicItemModifier {
                                         "&fSets how much the formula will",
                                         "&fscale up over the course of",
                                         String.format("&e%.0f &f%s skill", skillRange, StringUtils.toPascalCase(skillToScaleWith)),
-                                        "&6Click to add/subtract 0.01",
-                                        "&6Shift-Click to add/subtract 0.25").get()),
+                                        "&6Click to add/subtract " + (mode == Scaling.ScalingMode.MULTIPLIER ? "0.01" : "20"),
+                                        "&6Shift-Click to add/subtract " + (mode == Scaling.ScalingMode.MULTIPLIER ? "0.25" : "1200")).get()),
                         new Pair<>(11, new ItemBuilder(Material.REDSTONE)
                                 .name("&fSkill Range")
                                 .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),
@@ -221,8 +221,8 @@ public class ScaleDuration extends DynamicItemModifier {
                                         "&fSets the baseline value the",
                                         "&fformula will produce. ",
                                         String.format("&f%.0f skill is required to reach %.2f", -rangeOffset, minimum),
-                                        "&6Click to add/subtract 0.01",
-                                        "&6Shift-Click to add/subtract 0.25").get()),
+                                        "&6Click to add/subtract " + (mode == Scaling.ScalingMode.MULTIPLIER ? "0.01" : "20"),
+                                        "&6Shift-Click to add/subtract " + (mode == Scaling.ScalingMode.MULTIPLIER ? "0.25" : "1200")).get()),
                         new Pair<>(14, new ItemBuilder(Material.BOOK)
                                 .name("&fSkill to use")
                                 .lore(String.format("&fCurrent Scaling: &e%s", presetScaling != null ? ModifierScalingPresets.getScalings().get(presetScaling).getExpression() : buildScaling()),

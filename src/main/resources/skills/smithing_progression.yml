@@ -263,7 +263,7 @@ perks:
     perk_rewards:
       smithing_prismarinecraftingskill_add: 50
       recipes_unlock:
-        - trident
+        - craft_trident
     messages:
       - "<lang.smithing_perk_prismarine_messages>"
     requireperk_all:
@@ -279,7 +279,8 @@ perks:
     perk_rewards:
       smithing_endericcraftingskill_add: 50
       recipes_unlock:
-        - elytra
+        - craft_elytra
+        - craft_choral_leather
     messages:
       - "<lang.smithing_perk_enderic_messages>"
     requireperk_all:

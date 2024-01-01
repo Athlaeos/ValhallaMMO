@@ -65,6 +65,10 @@ public class LuckFilter extends LootPredicate {
                                                 .get())));
     }
 
+    public void setFrom(int from) {
+        this.from = from;
+    }
+
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
         if (button == 2) inverted = !inverted;

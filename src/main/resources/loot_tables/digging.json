@@ -1,0 +1,454 @@
+{
+  "key": "digging",
+  "pools": {
+    "treasure": {
+      "parentTable": "digging",
+      "key": "treasure",
+      "entries": {
+        "a42824cc-6b74-4c19-8c98-17f9eb3dfcf3": {
+          "uuid": "a42824cc-6b74-4c19-8c98-17f9eb3dfcf3",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAtJUk9OX05VR0dFVA==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 3,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.0019,
+          "chanceQuality": -2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "819028cc-cebe-46f5-8dc7-c4d1379bbb3d": {
+          "uuid": "819028cc-cebe-46f5-8dc7-c4d1379bbb3d",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AApSQVdfQ09QUEVS\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 6,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 8.0E-4,
+          "chanceQuality": 2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "9908fcd9-147d-4104-9ad6-25d8788e0864": {
+          "uuid": "9908fcd9-147d-4104-9ad6-25d8788e0864",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAhSQVdfR09MRA==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 6,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 8.0E-4,
+          "chanceQuality": 2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "80f09daf-d0fe-4798-8a77-304cf6e9c287": {
+          "uuid": "80f09daf-d0fe-4798-8a77-304cf6e9c287",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAhSQVdfSVJPTg==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 6,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 8.0E-4,
+          "chanceQuality": 2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "e8583042-2c65-45ae-9803-59a5e9173a2d": {
+          "uuid": "e8583042-2c65-45ae-9803-59a5e9173a2d",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5BTUVUSFlTVF9TSEFSRA==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 6,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 8.0E-4,
+          "chanceQuality": 2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "187c0216-a410-4c0c-9412-ba717937ad6c": {
+          "uuid": "187c0216-a410-4c0c-9412-ba717937ad6c",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AARCT05F\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 3,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.0019,
+          "chanceQuality": -2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "9749c76d-91b5-47bc-9e3d-7d7fc4d901f8": {
+          "uuid": "9749c76d-91b5-47bc-9e3d-7d7fc4d901f8",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAtHT0xEX05VR0dFVA==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 3,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.0019,
+          "chanceQuality": -2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "c0907a73-0289-4fa7-9c5b-3dd7885887e8": {
+          "uuid": "c0907a73-0289-4fa7-9c5b-3dd7885887e8",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAZTVFJJTkc=\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 3,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.0019,
+          "chanceQuality": -2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "40e88d2e-b15d-4346-a77e-bac7b6c39a56": {
+          "uuid": "40e88d2e-b15d-4346-a77e-bac7b6c39a56",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdESUFNT05E\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 9,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 2.0E-4,
+          "chanceQuality": 2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "384721c0-88fc-4b90-8a04-f127030a2f51": {
+          "uuid": "384721c0-88fc-4b90-8a04-f127030a2f51",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AARDT0FM\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 3,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.0019,
+          "chanceQuality": -2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "62da3f1d-0f4c-4419-ad86-64bbd833206a": {
+          "uuid": "62da3f1d-0f4c-4419-ad86-64bbd833206a",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAlHVU5QT1dERVI=\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 3,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.0019,
+          "chanceQuality": -2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "255f8036-b81b-48a2-8bcd-10b982fa5b69": {
+          "uuid": "255f8036-b81b-48a2-8bcd-10b982fa5b69",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 9,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 2.0E-4,
+          "chanceQuality": 2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "e406aa44-731c-4295-819d-6109e285dc62": {
+          "uuid": "e406aa44-731c-4295-819d-6109e285dc62",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAtFTkRFUl9QRUFSTA==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 6,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 8.0E-4,
+          "chanceQuality": 2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "cd3ab568-078c-4084-9d97-ff8adebbda47": {
+          "uuid": "cd3ab568-078c-4084-9d97-ff8adebbda47",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAVTVElDSw==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 3,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.0019,
+          "chanceQuality": -2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "52a6a0c4-3ce9-4a68-9c9c-d9d0f5674953": {
+          "uuid": "52a6a0c4-3ce9-4a68-9c9c-d9d0f5674953",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5FTkNIQU5URURfQk9PSw==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 9,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 2.0E-4,
+          "chanceQuality": 2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.EnchantmentRandomize",
+              "DATA": {
+                "level": 40,
+                "scaleWithSkill": false,
+                "includeTreasure": true,
+                "name": "enchant_randomly",
+                "priority": "SOONEST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        },
+        "d2dac405-952f-49fe-9ca5-e8a0248fb77a": {
+          "uuid": "d2dac405-952f-49fe-9ca5-e8a0248fb77a",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AApFQ0hPX1NIQVJE\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 9,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 1.0E-4,
+          "chanceQuality": 2.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        },
+        "8a805870-4200-4775-84af-db4d95742e6d": {
+          "uuid": "8a805870-4200-4775-84af-db4d95742e6d",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5BTkNJRU5UX0RFQlJJUw==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 9,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 1.0E-4,
+          "chanceQuality": 1.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [],
+          "predicateSelection": "ALL"
+        }
+      },
+      "predicates": [],
+      "weighted": false,
+      "weightedRolls": 1,
+      "bonusLuckRolls": 0.5,
+      "predicateSelection": "ANY"
+    }
+  },
+  "icon": "CHEST",
+  "vanillaLootPreservationType": "KEEP"
+}

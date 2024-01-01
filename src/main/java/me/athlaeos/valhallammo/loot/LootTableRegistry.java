@@ -127,7 +127,6 @@ public class LootTableRegistry {
                     if (context.getKiller() == null && selectedEntry.getModifiers().stream().anyMatch(DynamicItemModifier::requiresPlayer)) continue;
                     DynamicItemModifier.modify(builder, (Player) context.getKiller(), selectedEntry.getModifiers(), false, true, true);
                     if (CustomFlag.hasFlag(builder.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
-                    TranslationManager.translateItemMeta(builder.getMeta());
                     item = builder.get();
                 }
 

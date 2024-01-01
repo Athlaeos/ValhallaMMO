@@ -216,7 +216,7 @@ public class BrewingStandListener implements Listener {
                     stand.getWorld().dropItem(stand.getLocation().add(0.5, 0.8, 0.5), ingredient);
                 }
                 if (ingredient.getAmount() <= 1){
-                    if (ItemUtils.getSimilarMaterials(Material.WATER_BUCKET).contains(ingredient.getType())){
+                    if (!saveIngredient && ItemUtils.getSimilarMaterials(Material.WATER_BUCKET).contains(ingredient.getType())){
                         inventory.setIngredient(new ItemStack(Material.BUCKET));
                     } else {
                         inventory.setIngredient(null);
@@ -229,8 +229,6 @@ public class BrewingStandListener implements Listener {
             cancel();
         }
     }
-
-    public static final Map<Material, Collection<DynamicBrewingRecipe>> ingredientBrewingRecipeCache = new HashMap<>();
 
     private Map<Integer, DynamicBrewingRecipe> getBrewingRecipes(BrewerInventory inventory, Player brewer) {
         PowerProfile p = brewer == null ? null : ProfileCache.getOrCache(brewer, PowerProfile.class);
@@ -245,13 +243,8 @@ public class BrewingStandListener implements Listener {
         if (ItemUtils.isEmpty(ingredient)) return recipes;
         ingredient = ingredient.clone();
         ingredient.setAmount(1);
-        Collection<DynamicBrewingRecipe> cached = ingredientBrewingRecipeCache.getOrDefault(ingredient.getType(), new HashSet<>());
-        for (DynamicBrewingRecipe r : cached){ // looping through cached recipes so after some time only a couple recipes have to be checked instead of all of them
-            validateAndInsertRecipe(r, ingredient, brewer, p, allowedAllRecipes, inventory, recipes);
-        }
 
-        for (DynamicBrewingRecipe r : CustomRecipeRegistry.getBrewingRecipes().values()) {
-            if (cached.contains(r)) continue;
+        for (DynamicBrewingRecipe r : CustomRecipeRegistry.getBrewingRecipesByIngredient().getOrDefault(ingredient.getType(), new HashSet<>())) {
             if (validateAndInsertRecipe(r, ingredient, brewer, p, allowedAllRecipes, inventory, recipes) == RecipeStatus.FINISHED) break;
         }
         return recipes;
@@ -259,32 +252,31 @@ public class BrewingStandListener implements Listener {
 
     private RecipeStatus validateAndInsertRecipe(DynamicBrewingRecipe r, ItemStack ingredient, Player brewer, PowerProfile p, boolean allowedAllRecipes, BrewerInventory inventory, Map<Integer, DynamicBrewingRecipe> recipes){
         // profile is null, so recipe is tried in brewing stand without online owner. if the recipe isn't default unlocked or any of its modifiers require a player, skip it.
-        if (p == null && (!r.isUnlockedForEveryone() || r.getModifiers().stream().anyMatch(DynamicItemModifier::requiresPlayer))) return RecipeStatus.SKIP;
+        if (brewer == null && r.getModifiers().stream().anyMatch(DynamicItemModifier::requiresPlayer)) return RecipeStatus.SKIP;
         if (p != null && !allowedAllRecipes &&
                 !r.isUnlockedForEveryone() &&
                 !p.getUnlockedRecipes().contains(r.getName())) return RecipeStatus.SKIP;
 
         for (int i = 0; i < 3; i++) {
             if (recipes.size() == 3) return RecipeStatus.FINISHED; // If all recipes are already determined, we're done. Can cancel!
-            if (recipes.containsKey(i)) return RecipeStatus.SKIP; // If this recipe slot is already occupied, skip to next
+            if (recipes.containsKey(i)) continue; // If this recipe slot is already occupied, skip to next
 
             ItemStack slotItem = inventory.getItem(i);
-            if (ItemUtils.isEmpty(slotItem)) return RecipeStatus.SKIP; // If the slot is empty, might as well continue to next slot
+            if (ItemUtils.isEmpty(slotItem)) continue; // If the slot is empty, might as well continue to next slot
             slotItem = slotItem.clone();
 
-            if (!r.getApplyOn().getOption().matches(r.getApplyOn().getItem(), slotItem)) return RecipeStatus.SKIP;
+            if (!r.getApplyOn().getOption().matches(r.getApplyOn().getItem(), slotItem)) continue;
+            if (!r.getIngredient().getOption().matches(r.getIngredient().getItem(), ingredient)) continue;
+
             // If the slot item does not match the required type, skip to next
             ItemBuilder result = (r.tinker() ? new ItemBuilder(slotItem) : new ItemBuilder(r.getResult()));
             DynamicItemModifier.modify(result, brewer, r.getModifiers(), false, false, true);
 
             if (!ItemUtils.isEmpty(result.getItem()) && !CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) {
-                Collection<DynamicBrewingRecipe> cached = ingredientBrewingRecipeCache.getOrDefault(ingredient.getType(), new HashSet<>());
-                cached.add(r);
-                ingredientBrewingRecipeCache.put(ingredient.getType(), cached);
                 recipes.put(i, r); // If the item is not null by the end of processing, recipes is added.
             }
         }
-        return RecipeStatus.FINISHED;
+        return RecipeStatus.SKIP;
     }
 
     private enum RecipeStatus{

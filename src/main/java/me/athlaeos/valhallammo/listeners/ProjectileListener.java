@@ -141,7 +141,7 @@ public class ProjectileListener implements Listener {
 
         Entity projectile = e.getProjectile();
         LivingEntity shooter = e.getEntity();
-        double speedMultiplier = Math.max(0, 1);// + AccumulativeStatManager.getCachedStats("BOW_SHOT_VELOCITY", shooter, 10000, true);
+        double speedMultiplier = Math.max(0, AccumulativeStatManager.getCachedStats("RANGED_VELOCITY_BONUS", shooter, 10000, true));
 
         ItemStack consumable = e.getConsumable();
         if (!ItemUtils.isEmpty(consumable) && !ItemUtils.isEmpty(bow)){

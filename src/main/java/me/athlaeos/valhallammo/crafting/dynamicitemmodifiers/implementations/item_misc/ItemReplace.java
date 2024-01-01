@@ -10,14 +10,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ItemReplace extends DynamicItemModifier {
     private ItemStack replaceBy = new ItemStack(Material.DIAMOND);
-    private ItemMeta replaceByMeta = ItemUtils.getItemMeta(replaceBy);
 
     public ItemReplace(String name) {
         super(name);
@@ -26,7 +24,7 @@ public class ItemReplace extends DynamicItemModifier {
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         outputItem.setItem(replaceBy);
-        outputItem.setMeta(replaceBy.getItemMeta());
+        outputItem.setMeta(ItemUtils.getItemMeta(replaceBy));
     }
 
     @Override
@@ -35,7 +33,6 @@ public class ItemReplace extends DynamicItemModifier {
             ItemStack cursor = e.getCursor();
             if (!ItemUtils.isEmpty(cursor)) {
                 replaceBy = cursor.clone();
-                replaceByMeta = ItemUtils.getItemMeta(replaceBy);
             }
         }
     }
@@ -47,7 +44,7 @@ public class ItemReplace extends DynamicItemModifier {
                         .name("&eWhat should the new item be?")
                         .lore("&6Click with another item to",
                                 "&6copy it over.",
-                                "&fSet to " + ItemUtils.getItemName(replaceByMeta))
+                                "&fSet to " + ItemUtils.getItemName(ItemUtils.getItemMeta(replaceBy)))
                         .get()).map(new HashSet<>());
     }
 
@@ -68,16 +65,12 @@ public class ItemReplace extends DynamicItemModifier {
 
     @Override
     public String getActiveDescription() {
-        return "&fItem will be replaced by " + ItemUtils.getItemName(replaceByMeta);
+        return "&fItem will be replaced by " + ItemUtils.getItemName(ItemUtils.getItemMeta(replaceBy));
     }
 
     @Override
     public Collection<String> getCategories() {
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
-    }
-
-    public void setReplaceByMeta(ItemMeta replaceByMeta) {
-        this.replaceByMeta = replaceByMeta;
     }
 
     public void setReplaceBy(ItemStack replaceBy) {
@@ -88,7 +81,6 @@ public class ItemReplace extends DynamicItemModifier {
     public DynamicItemModifier copy() {
         ItemReplace m = new ItemReplace(getName());
         m.setReplaceBy(this.replaceBy);
-        m.setReplaceByMeta(this.replaceByMeta);
         m.setPriority(this.getPriority());
         return m;
     }
