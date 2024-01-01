@@ -40,16 +40,17 @@ If you want the resource pack, execute the "/val resourcepack setup" command to 
 The plugin works on Spigot and its forks, on version 1.19 and above. 
 
 # Maven
-
+```
 <repositories>
   <repository>
-		<id>jitpack.io</id>
-		<url>https://jitpack.io</url>
-	</repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
 </repositories>
 
 <dependency>
-	<groupId>com.github.Athlaeos</groupId>
-	<artifactId>ValhallaMMO</artifactId>
-	<version>Tag</version>
+  <groupId>com.github.Athlaeos</groupId>
+  <artifactId>ValhallaMMO</artifactId>
+  <version>Tag</version>
 </dependency>
+```
