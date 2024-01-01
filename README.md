@@ -38,3 +38,18 @@ The wiki is not yet finished, and will be worked on once BETA is released.
 To install it, download the jar in the releases and insert it into your plugins folder.
 If you want the resource pack, execute the "/val resourcepack setup" command to install it on your server.
 The plugin works on Spigot and its forks, on version 1.19 and above. 
+
+# Maven
+
+<repositories>
+  <repository>
+		<id>jitpack.io</id>
+		<url>https://jitpack.io</url>
+	</repository>
+</repositories>
+
+<dependency>
+	<groupId>com.github.Athlaeos</groupId>
+	<artifactId>ValhallaMMO</artifactId>
+	<version>Tag</version>
+</dependency>
