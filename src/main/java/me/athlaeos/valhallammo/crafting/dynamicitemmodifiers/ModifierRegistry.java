@@ -129,6 +129,7 @@ public class ModifierRegistry {
         register(new ItemType("material"));
         register(new ItemUnbreakable("unbreakable"));
         register(new ItemWeightClass("weight_class"));
+        register(new ItemReplaceByIndexed("replace_by_custom"));
         register(new PlayerSignatureAdd("signature"));
         register(new SmithingNeutralQualitySet("smithing_neutral_quality_set"));
         register(new SmithingQualityAdd("smithing_quality_add"));

@@ -1,9 +1,10 @@
 starting_perks:
   enchanting_essencemultiplier_add: -0.3
   enchanting_essencerefundchance_add: 1
+  enchanting_enchantmentamplificationchance_add: 1
 
 experience:
-  exp_level_curve: '0.25 * (%level% + 300 * 2^(%level%/7.6)) + 300'
+  exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   max_level: 100
   exp_gain:
     enchantment_base:

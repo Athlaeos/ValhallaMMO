@@ -16,6 +16,8 @@ public class LootPool {
     // weighted tables roll x amount of times through its available entries, while chanced tables roll through each entry and applies its chance
     private int weightedRolls = 1;
     private double bonusLuckRolls = 0.5;
+    private double dropChance = 1;
+    private double dropLuckChance = 0;
     private LootTable.PredicateSelection predicateSelection = LootTable.PredicateSelection.ANY;
 
     public LootPool(String key, String parentTable){
@@ -41,8 +43,12 @@ public class LootPool {
     public boolean isWeighted() { return weighted; }
     public double getBonusLuckRolls() { return bonusLuckRolls; }
     public LootTable.PredicateSelection getPredicateSelection() { return predicateSelection; }
+    public double getDropChance() { return dropChance; }
+    public double getDropLuckChance() { return dropLuckChance; }
     public void setWeightedRolls(int weightedRolls) { this.weightedRolls = weightedRolls; }
     public void setWeighted(boolean weighted) { this.weighted = weighted; }
     public void setBonusLuckRolls(double bonusLuckRolls) { this.bonusLuckRolls = bonusLuckRolls; }
     public void setPredicateSelection(LootTable.PredicateSelection predicateSelection) { this.predicateSelection = predicateSelection; }
+    public void setDropChance(double dropChance) { this.dropChance = dropChance; }
+    public void setDropLuckChance(double dropLuckChance) { this.dropLuckChance = dropLuckChance; }
 }

@@ -98,7 +98,7 @@ public class LootTableSelectionMenu extends Menu {
                                 else {
                                     LootTable newTable = new LootTable(answer);
                                     LootTableRegistry.registerLootTable(newTable);
-                                    tableAction.act(newTable);
+                                    if (tableAction != null) tableAction.act(newTable);
                                 }
                             };
                         }

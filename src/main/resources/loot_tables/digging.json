@@ -446,6 +446,8 @@
       "weighted": false,
       "weightedRolls": 1,
       "bonusLuckRolls": 0.5,
+      "dropChance": 1.0,
+      "dropLuckChance": 0.0,
       "predicateSelection": "ANY"
     }
   },

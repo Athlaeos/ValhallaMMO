@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
-import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -60,7 +59,9 @@ public class ConfigurableMaterialsChoice extends RecipeOption implements Ingredi
 
     @Override
     public RecipeOption getNew() {
-        return new ConfigurableMaterialsChoice();
+        ConfigurableMaterialsChoice choice = new ConfigurableMaterialsChoice();
+        choice.validChoices.addAll(new HashSet<>(this.validChoices));
+        return choice;
     }
 
     @Override

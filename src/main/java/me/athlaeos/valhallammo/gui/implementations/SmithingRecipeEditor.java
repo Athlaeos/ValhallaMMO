@@ -503,6 +503,7 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
     @Override
     public void setRecipeOption(RecipeOption option) {
         this.selectedChoice = option;
+        if (option == null) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
                 playerMenuUtility.getOwner().setItemOnCursor(new ItemBuilder(option.getIcon()).stringTag(KEY_OPTION_ID, option.getName()).get()), 1L);
     }

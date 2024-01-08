@@ -1,21 +1,11 @@
 package me.athlaeos.valhallammo.gui.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
-import me.athlaeos.valhallammo.crafting.ToolRequirementType;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicBrewingRecipe;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Question;
 import me.athlaeos.valhallammo.dom.Questionnaire;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
-import me.athlaeos.valhallammo.gui.SetModifiersMenu;
-import me.athlaeos.valhallammo.gui.SetRecipeOptionMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.loot.LootPool;
@@ -32,11 +22,8 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
-
-import static me.athlaeos.valhallammo.gui.implementations.RecipeOptionMenu.KEY_OPTION_ID;
 
 public class LootTableEditor extends Menu {
     private static final NamespacedKey BUTTON_ACTION_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_action");

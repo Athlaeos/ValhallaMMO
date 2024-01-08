@@ -486,6 +486,7 @@ public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetR
 
     @Override
     public void setRecipeOption(RecipeOption option) {
+        if (option == null) return;
         if (!option.isCompatible(catalyst.getItem()) || !option.isCompatibleWithInputItem(true)) {
             Utils.sendMessage(playerMenuUtility.getOwner(), "&cNot compatible with this item");
         } else {

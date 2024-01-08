@@ -25,6 +25,7 @@ public class ResourcePackCommand implements Command {
                 String newVersion = String.valueOf(System.currentTimeMillis());
                 ConfigManager.getConfig("config.yml").set("resourcepack_version", newVersion);
                 ConfigManager.getConfig("config.yml").save();
+                ConfigManager.getConfig("config.yml").reload();
                 ResourcePack.generate();
                 ResourcePack.tryStart();
                 Utils.sendMessage(sender, "&aReloaded resource pack!");
@@ -44,6 +45,14 @@ public class ResourcePackCommand implements Command {
                     Utils.sendMessage(sender, "&aSent update!");
                     return true;
                 } else return false;
+            } else if (args[1].equalsIgnoreCase("stophost")) {
+                ConfigManager.getConfig("config.yml").set("resourcepack_port", null);
+                ConfigManager.getConfig("config.yml").set("server_ip", null);
+                ConfigManager.getConfig("config.yml").save();
+                ConfigManager.getConfig("config.yml").reload();
+                Host.setData(null);
+                Host.stop();
+                Utils.sendMessage(sender, "&aHost stopped! Player resource packs will be updated upon re-logging");
             } else if (args[1].equalsIgnoreCase("setup")){
                 if (args.length > 3){
                     if (!ResourcePack.downloadDefault()) {
@@ -56,6 +65,8 @@ public class ResourcePackCommand implements Command {
 
                         Host.setIp(ip);
                         Host.setPort(port);
+                        ConfigManager.getConfig("config.yml").set("resourcepack_port", port);
+                        ConfigManager.getConfig("config.yml").set("server_ip", ip);
                     } catch (IllegalArgumentException ignored){
                         Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_number")));
                         return true;
@@ -108,7 +119,7 @@ public class ResourcePackCommand implements Command {
 
     @Override
     public List<String> getSubcommandArgs(CommandSender sender, String[] args) {
-        if (args.length == 2) return List.of("enable", "disable", "resetplayer", "reload", "setup");
+        if (args.length == 2) return List.of("enable", "disable", "resetplayer", "reload", "setup", "stophost");
         if (args.length == 3 && args[1].equalsIgnoreCase("setup")) return List.of("<your_server_ip>");
         if (args.length == 4 && args[1].equalsIgnoreCase("setup")) return List.of("<available_port>", "30005");
         return null;

@@ -201,10 +201,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "STRIPPED_WARPED_STEM",
+              "WARPED_HYPHAE",
+              "STRIPPED_WARPED_HYPHAE",
+              "WARPED_STEM"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -246,10 +246,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "STRIPPED_WARPED_STEM",
+              "WARPED_HYPHAE",
+              "STRIPPED_WARPED_HYPHAE",
+              "WARPED_STEM"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -3452,36 +3452,6 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
-        "DATA": {
-          "attribute": "DIG_SPEED",
-          "value": 0.0,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.01,
-          "bigIncrement": 0.1,
-          "icon": "DIAMOND_PICKAXE",
-          "name": "attribute_add_dig_speed",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
-          "skillRange": 275.0,
-          "rangeOffset": 25.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_scale_generic_attack_damage",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
@@ -3502,17 +3472,30 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.5,
+          "amplifier": 4.0,
           "skillRange": 275.0,
           "rangeOffset": 25.0,
           "minimum": 0.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
           "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "icon": "IRON_SWORD",
+          "name": "attribute_scale_generic_attack_damage",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
           "attribute": "DIG_SPEED",
+          "value": 0.0,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.01,
+          "bigIncrement": 0.1,
           "icon": "DIAMOND_PICKAXE",
-          "name": "attribute_scale_dig_speed",
-          "priority": "LATER"
+          "name": "attribute_add_dig_speed",
+          "priority": "LATERISH"
         }
       },
       {
@@ -3527,6 +3510,23 @@
           "skillEfficiency": 1.0,
           "minimumValue": 0.0,
           "name": "durability_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.5,
+          "skillRange": 275.0,
+          "rangeOffset": 25.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "DIG_SPEED",
+          "icon": "DIAMOND_PICKAXE",
+          "name": "attribute_scale_dig_speed",
           "priority": "LATER"
         }
       },
@@ -12850,10 +12850,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "SPRUCE_WOOD",
+              "STRIPPED_SPRUCE_WOOD",
+              "SPRUCE_LOG",
+              "STRIPPED_SPRUCE_LOG"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -13155,10 +13155,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "SPRUCE_WOOD",
+              "STRIPPED_SPRUCE_WOOD",
+              "SPRUCE_LOG",
+              "STRIPPED_SPRUCE_LOG"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -13568,10 +13568,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "MANGROVE_WOOD",
+              "STRIPPED_MANGROVE_WOOD",
+              "STRIPPED_MANGROVE_LOG",
+              "MANGROVE_LOG"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -13680,10 +13680,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "MANGROVE_WOOD",
+              "STRIPPED_MANGROVE_WOOD",
+              "STRIPPED_MANGROVE_LOG",
+              "MANGROVE_LOG"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -14026,10 +14026,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "STRIPPED_ACACIA_LOG",
+              "ACACIA_LOG",
+              "ACACIA_WOOD",
+              "STRIPPED_ACACIA_WOOD"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -14565,10 +14565,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "STRIPPED_OAK_WOOD",
+              "OAK_WOOD",
+              "STRIPPED_OAK_LOG",
+              "OAK_LOG"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -15029,10 +15029,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "STRIPPED_OAK_WOOD",
+              "OAK_WOOD",
+              "STRIPPED_OAK_LOG",
+              "OAK_LOG"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -15600,10 +15600,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "STRIPPED_ACACIA_LOG",
+              "ACACIA_LOG",
+              "ACACIA_WOOD",
+              "STRIPPED_ACACIA_WOOD"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -15811,10 +15811,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
+              "STRIPPED_CRIMSON_STEM",
               "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "CRIMSON_HYPHAE",
+              "CRIMSON_STEM"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -15955,10 +15955,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "BIRCH_WOOD",
+              "STRIPPED_BIRCH_WOOD",
+              "STRIPPED_BIRCH_LOG",
+              "BIRCH_LOG"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -16969,10 +16969,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "WARPED_HYPHAE",
+              "STRIPPED_WARPED_HYPHAE",
+              "STRIPPED_WARPED_STEM",
+              "WARPED_STEM"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -19258,10 +19258,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "STRIPPED_JUNGLE_LOG",
+              "STRIPPED_JUNGLE_WOOD",
+              "JUNGLE_WOOD",
+              "JUNGLE_LOG"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -19513,10 +19513,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "STRIPPED_JUNGLE_LOG",
+              "STRIPPED_JUNGLE_WOOD",
+              "JUNGLE_WOOD",
+              "JUNGLE_LOG"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -33598,10 +33598,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "STRIPPED_DARK_OAK_LOG",
+              "STRIPPED_DARK_OAK_WOOD",
+              "DARK_OAK_LOG",
+              "DARK_OAK_WOOD"
             ],
             "key": {
               "namespace": "valhallammo",
@@ -33742,10 +33742,10 @@
           "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
           "DATA": {
             "validChoices": [
-              "CRIMSON_HYPHAE",
-              "CRIMSON_STEM",
-              "STRIPPED_CRIMSON_HYPHAE",
-              "STRIPPED_CRIMSON_STEM"
+              "STRIPPED_DARK_OAK_LOG",
+              "STRIPPED_DARK_OAK_WOOD",
+              "DARK_OAK_LOG",
+              "DARK_OAK_WOOD"
             ],
             "key": {
               "namespace": "valhallammo",

@@ -149,7 +149,7 @@ public class SkillTreeMenu extends Menu {
                     if (p != null){
                         if (p.getSkill().isNavigable()){
                             this.x = p.getX() + 4;
-                            this.y = p.getY();
+                            this.y = p.getY() + 2;
                         }
                         if (p.canUnlock(target)){
                             if (perkConfirmation != null && perkConfirmation.equals(p.getName())){
@@ -383,7 +383,7 @@ public class SkillTreeMenu extends Menu {
     private ItemStack[][] getSkillTreeView(Skill skill){
         ItemStack[][] view = new ItemStack[5][9];
         ItemStack[][] fullSkillTree = skillTreeItems.get(skill);
-        int x = Math.max(4, Math.min(fullSkillTree[0].length - 1, this.x));
+        int x = Math.max(4, Math.min(fullSkillTree[0].length - 1, this.x + coordinateOffsets.get(skill).getOne()));
         int y = Math.max(2, Math.min(fullSkillTree.length - 1, this.y));
 
         ItemStack[][] skillTreeYSection = Arrays.copyOfRange(fullSkillTree, y - 2, y + 3);// pick 5 rows from the skill tree's height

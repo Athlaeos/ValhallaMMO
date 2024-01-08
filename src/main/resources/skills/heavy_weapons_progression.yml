@@ -5,7 +5,7 @@ starting_perks:
 
 experience: 
   max_level: 100 
-  exp_level_curve: '0.25 * (%level% + 300 * 2^(%level%/7.6)) + 300' 
+  exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   exp_per_damage: 10
   spawner_spawned_multiplier: 0.7
   exp_enemies_nerfed: 

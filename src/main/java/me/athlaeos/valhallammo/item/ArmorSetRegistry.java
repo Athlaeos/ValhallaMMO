@@ -44,8 +44,7 @@ public class ArmorSetRegistry {
     }
 
     @SuppressWarnings("all")
-    public static void loadFile(){
-        File f = new File(ValhallaMMO.getInstance().getDataFolder(), "/armor_sets.json");
+    public static void loadFromFile(File f){
         try {
             f.createNewFile();
         } catch (IOException ignored){}

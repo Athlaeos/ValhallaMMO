@@ -30,6 +30,8 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
 
     private static final int predicatesIndex = 1;
     private static final int predicateTypeIndex = 2;
+    private static final int dropChanceIndex = 3;
+    private static final int dropLuckChanceIndex = 4;
     private static final int toggleWeightedIndex = 5;
     private static final int weightedRollsBaseIndex = 6;
     private static final int weightedRollsLuckBonusIndex = 7;
@@ -94,6 +96,22 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
                     "&7occur based on player luck?",
                     "&eClick to change by 0.1",
                     "&eShift-Click to change by 1")
+            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+    private static final ItemStack setDropChanceButton = new ItemBuilder(getButtonData("editor_loottable_setchance", Material.LAPIS_LAZULI))
+            .name("&eDrop Chance")
+            .stringTag(BUTTON_ACTION_KEY, "setDropChanceButton")
+            .lore("&7What should the chance be for this",
+                    "&7pool to be able to drop things?",
+                    "&eClick to change by 1%",
+                    "&eShift-Click to change by 10%")
+            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+    private static final ItemStack setDropLuckChanceButton = new ItemBuilder(getButtonData("editor_loottable_setluckchance", Material.LAPIS_LAZULI))
+            .name("&eDrop Luck Chance")
+            .stringTag(BUTTON_ACTION_KEY, "setDropLuckChanceButton")
+            .lore("&7How much should each point of luck",
+                    "&7affect the drop chance?",
+                    "&eClick to change by 0.1%",
+                    "&eShift-Click to change by 2.5%")
             .flag(ItemFlag.HIDE_ATTRIBUTES).get();
     private static final ItemStack nextPageButton = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
             .name("&7&lNext page")
@@ -192,6 +210,8 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
                 case "toggleWeightedButton" -> pool.setWeighted(!pool.isWeighted());
                 case "setBaseRollsButton" -> pool.setWeightedRolls(pool.getWeightedRolls() + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 5 : 1)));
                 case "setBonusLuckRollsButton" -> pool.setBonusLuckRolls(pool.getBonusLuckRolls() + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 1 : 0.1)));
+                case "setDropChanceButton" -> pool.setDropChance(pool.getDropChance() + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.1 : 0.1)));
+                case "setDropLuckChanceButton" -> pool.setDropLuckChance(pool.getDropLuckChance() + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.25 : 0.1)));
                 case "createNewButton" -> {
                     playerMenuUtility.setPreviousMenu(this);
                     LootEntry entry = pool.addEntry(ItemUtils.isEmpty(e.getCursor()) ? new ItemBuilder(Material.GOLD_INGOT).name("&eReplace me!").lore("&fI'm just a placeholder drop!").get() : e.getCursor().clone());
@@ -290,8 +310,10 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
         inventory.setItem(predicatesIndex, predicateIcon.get());
         if (pool.isWeighted()) {
             inventory.setItem(weightedRollsBaseIndex, new ItemBuilder(setBaseRollsButton).name("&eBase Rolls: " + pool.getWeightedRolls()).get());
-            inventory.setItem(weightedRollsLuckBonusIndex, new ItemBuilder(setBonusLuckRollsButton).name("&eBonus Luck Rolls: " + pool.getBonusLuckRolls()).get());
+            inventory.setItem(weightedRollsLuckBonusIndex, new ItemBuilder(setBonusLuckRollsButton).name(String.format("&eBonus Luck Rolls: %.2f", pool.getBonusLuckRolls())).get());
         }
+        inventory.setItem(dropChanceIndex, new ItemBuilder(setDropChanceButton).name(String.format("&eDrop Chance: %.0f%%", pool.getDropChance() * 100)).get());
+        inventory.setItem(dropLuckChanceIndex, new ItemBuilder(setDropLuckChanceButton).name(String.format("&eDrop Luck Chance: %.2f%%", pool.getDropLuckChance() * 100)).get());
         if (page < pages.size()) inventory.setItem(nextPageIndex, nextPageButton);
         if (page > 1) inventory.setItem(previousPageIndex, previousPageButton);
     }

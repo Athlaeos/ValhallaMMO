@@ -19,5 +19,4 @@ public interface IngredientChoice {
      * @return The description of the ingredients required. Visible to players, so should be translatable
      */
     String ingredientDescription(ItemStack base);
-
 }

@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.configuration.ConfigUpdater;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierScalingPresets;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
+import me.athlaeos.valhallammo.entities.EntityAttributeStats;
 import me.athlaeos.valhallammo.entities.MonsterScalingManager;
 import me.athlaeos.valhallammo.event.PlayerJumpEvent;
 import me.athlaeos.valhallammo.gui.MenuListener;
@@ -229,8 +230,8 @@ public class ValhallaMMO extends JavaPlugin {
 
         CustomRecipeRegistry.loadFiles();
         LootTableRegistry.loadFiles();
-        ArmorSetRegistry.loadFile();
-        CustomItemRegistry.loadFile();
+        ArmorSetRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/armor_sets.json"));
+        CustomItemRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/items.json"));
         LeaderboardManager.loadFile();
 
         // During reloads profiles are persisted. This makes sure profiles of players who are already online are ensured
@@ -253,6 +254,7 @@ public class ValhallaMMO extends JavaPlugin {
                 logSevere("Could not close connection");
             }
         }
+        for (Player p : getServer().getOnlinePlayers()) EntityAttributeStats.removeStats(p);
 
         CustomRecipeRegistry.saveRecipes(false);
         LootTableRegistry.saveLootTables();

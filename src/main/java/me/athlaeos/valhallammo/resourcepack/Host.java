@@ -18,6 +18,7 @@ public class Host {
 
     public static boolean start(){
         try {
+            if (port < 0) throw new Exception();
             if (task != null) task.cancel();
             if (socket == null) {
                 socket = new ServerSocket(port);
@@ -25,7 +26,7 @@ public class Host {
             }
             ValhallaMMO.logFine("Resource pack hosting established!");
         } catch (Exception ex){
-            ex.printStackTrace();
+            ValhallaMMO.logInfo("Resource pack hosting not established! Use /val resourcepack setup if you want ValhallaMMO's resource pack hosted for you");
             return false;
         }
 
@@ -34,6 +35,7 @@ public class Host {
     }
 
     public static void stop(){
+        if (socket == null) return;
         try {
             running = false;
             socket.close();

@@ -578,6 +578,7 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
 
     @Override
     public void setRecipeOption(RecipeOption option) {
+        if (option == null) return;
         if (!option.isCompatible(tinkerInput.getItem()) || !option.isCompatibleWithInputItem(true)) {
             Utils.sendMessage(playerMenuUtility.getOwner(), "&cNot compatible with this item");
         } else {

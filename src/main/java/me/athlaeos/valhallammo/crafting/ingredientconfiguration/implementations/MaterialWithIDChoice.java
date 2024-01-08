@@ -27,7 +27,7 @@ public class MaterialWithIDChoice extends RecipeOption implements IngredientChoi
         return new ItemBuilder(Material.NAME_TAG).name("&7Material-ID Requirement")
         .lore(
             "&aRequire this ingredient to match",
-            "&abase type and custom ID.",
+            "&abase type AND custom ID.",
             "",
             "&7The name of the ingredient will be",
             "&7used to communicate item requirement",
@@ -51,6 +51,7 @@ public class MaterialWithIDChoice extends RecipeOption implements IngredientChoi
 
     @Override
     public boolean matches(ItemStack i1, ItemStack i2) {
+        if (i1.getType() != i2.getType()) return false;
         ItemMeta i1Meta = i1.getItemMeta();
         ItemMeta i2Meta = i2.getItemMeta();
         Integer id1 = CustomID.getID(i1Meta);

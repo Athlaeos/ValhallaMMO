@@ -3,7 +3,7 @@ starting_perks:
 
 experience: # Everything about leveling and experience progression for Landscaping
   max_level: 100 # Max level for landscaping, players can still gain exp after reaching 100
-  exp_level_curve: '0.25 * (%level% + 300 * 2^(%level%/7.6)) + 300' # Here the x-axis represents level and the y-axis is the exp required to
+  exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300' # Here the x-axis represents level and the y-axis is the exp required to
   # progress to that level.
   # The area under this graph from point a to point b represents the total amount of experience needed to get from level
   # a to b. You don't have to work with this, it's only for those who really want to make this progression their own.
@@ -62,7 +62,7 @@ leveling_perks:
   woodcutting_woodcuttingspeedbonus_add: 0.005
   woodcutting_woodcuttingdrops_add: 0.01
 
-starting_coordinates: '3,8' # The coordinates in the skill tree the player sees first when switching to the skill tree
+starting_coordinates: '3,11' # The coordinates in the skill tree the player sees first when switching to the skill tree
 
 perks:
   woodcutting_perk_1:

@@ -1,11 +1,14 @@
 package me.athlaeos.valhallammo.gui.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Question;
 import me.athlaeos.valhallammo.dom.Questionnaire;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
+import me.athlaeos.valhallammo.gui.SetModifiersMenu;
+import me.athlaeos.valhallammo.item.CustomItem;
 import me.athlaeos.valhallammo.item.CustomItemRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
@@ -24,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CustomItemManagementMenu extends Menu {
+public class CustomItemManagementMenu extends Menu implements SetModifiersMenu {
     private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
     private static final NamespacedKey BUTTON_DATA = new NamespacedKey(ValhallaMMO.getInstance(), "button_data");
 
@@ -61,6 +64,8 @@ public class CustomItemManagementMenu extends Menu {
     private String deleteConfirm = null;
     private String reApplyConfirm = null;
 
+    private CustomItem currentItem = null;
+
     @Override
     public void handleMenu(InventoryClickEvent e) {
         e.setCancelled(!(e.getClickedInventory() instanceof PlayerInventory));
@@ -89,10 +94,12 @@ public class CustomItemManagementMenu extends Menu {
                             return (p) -> {
                                 String answer = question.getAnswer().replaceAll(" ", "_").toLowerCase();
                                 if (answer.contains("cancel")) playerMenuUtility.getPreviousMenu().open();
-                                else if (CustomItemRegistry.getItems().containsKey(answer))
+                                else if (CustomItemRegistry.getItems().containsKey(answer)) {
                                     Utils.sendMessage(getWho(), "&cItem id already exists!");
-                                else {
+                                    playerMenuUtility.getPreviousMenu().open();
+                                } else {
                                     CustomItemRegistry.register(answer, finalCursor);
+                                    playerMenuUtility.getPreviousMenu().open();
                                 }
                             };
                         }
@@ -108,16 +115,32 @@ public class CustomItemManagementMenu extends Menu {
         }
         String storedValue = ItemUtils.getPDCString(BUTTON_DATA, clickedItem, null);
         if (StringUtils.isEmpty(storedValue)) return;
-        if (ItemUtils.isEmpty(cursor)) {
-            reApplyConfirm = null;
-            if (deleteConfirm != null && deleteConfirm.equals(storedValue) && e.isRightClick()) CustomItemRegistry.getItems().remove(storedValue);
-            else deleteConfirm = storedValue;
-        } else {
-            deleteConfirm = null;
-            if (reApplyConfirm != null && reApplyConfirm.equals(storedValue)) {
-                CustomItemRegistry.register(storedValue, cursor);
+        CustomItem clicked = CustomItemRegistry.getItem(storedValue);
+        if (clicked != null){
+            if (e.isLeftClick()){
+                currentItem = clicked;
+                if (!e.isShiftClick()){
+                    playerMenuUtility.setPreviousMenu(this);
+                    new DynamicModifierMenu(playerMenuUtility, this).open();
+                    return;
+                } else {
+                    e.getWhoClicked().getInventory().addItem(CustomItemRegistry.getProcessedItem(storedValue));
+                }
+            } else {
+                if (ItemUtils.isEmpty(cursor)) {
+                    reApplyConfirm = null;
+                    if (deleteConfirm != null && deleteConfirm.equals(storedValue) && e.isRightClick()) {
+                        CustomItemRegistry.getItems().remove(storedValue);
+                        e.getWhoClicked().sendMessage(Utils.chat("&aItem removed!"));
+                    } else deleteConfirm = storedValue;
+                } else {
+                    deleteConfirm = null;
+                    if (reApplyConfirm != null && reApplyConfirm.equals(storedValue)) {
+                        CustomItemRegistry.register(storedValue, cursor);
+                        e.getWhoClicked().sendMessage(Utils.chat("&aItem replaced!"));
+                    } else reApplyConfirm = storedValue;
+                }
             }
-            else reApplyConfirm = storedValue;
         }
 
         setMenuItems();
@@ -138,9 +161,13 @@ public class CustomItemManagementMenu extends Menu {
         inventory.clear();
         List<ItemStack> buttons = new ArrayList<>();
         for (String item : CustomItemRegistry.getItems().keySet()){
-            ItemBuilder icon = new ItemBuilder(CustomItemRegistry.getItem(item)).name("&f" + item).stringTag(BUTTON_DATA, item);
-            if (deleteConfirm.equals(item)) icon.prependLore("&cRight-Click to confirm deletion");
-            if (reApplyConfirm.equals(item)) icon.prependLore("&cRight-Click to overwrite item");
+            ItemBuilder icon = new ItemBuilder(CustomItemRegistry.getItem(item).getItem()).name("&f" + item)
+                    .lore("&fClick to edit its modifiers",
+                            "&fShift-Click to get a copy",
+                            "&cRight-Click with nothing to delete",
+                            "&cRight-Click with item to overwrite").stringTag(BUTTON_DATA, item);
+            if (deleteConfirm != null && deleteConfirm.equals(item)) icon.prependLore("&cRight-Click to confirm deletion");
+            if (reApplyConfirm != null && reApplyConfirm.equals(item)) icon.prependLore("&cRight-Click to overwrite item");
             buttons.add(icon.get());
         }
         buttons.add(createNewButton);
@@ -155,5 +182,15 @@ public class CustomItemManagementMenu extends Menu {
 
         inventory.setItem(45, previousPageButton);
         inventory.setItem(53, nextPageButton);
+    }
+
+    @Override
+    public void setResultModifiers(List<DynamicItemModifier> resultModifiers) {
+        if (currentItem != null) currentItem.setModifiers(resultModifiers);
+    }
+
+    @Override
+    public List<DynamicItemModifier> getResultModifiers() {
+        return currentItem == null ? null : currentItem.getModifiers();
     }
 }

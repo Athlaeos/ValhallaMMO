@@ -18,8 +18,8 @@ profile_caching: 10000 # duration (in milliseconds) where profiles are cached in
 minimum_exp: 500 # Skill profiles with less than the given amount of EXP will not be saved at all. This is to prevent essentially empty profiles from being saved
 
 # RESOURCE PACK
-resourcepack_port: 30005
-server_ip: localhost
+resourcepack_port: -1
+server_ip: putiphere
 resourcepack_version: 1.0
 admin_gui_filler_removal: true # If true, admin-visible menus like recipe editor menus will have their filler material removed. Normally this filler material is here
 # to better indicate and distinguish clickable buttons and slots from non-functional slots, but if a custom GUI for example is used then this filler material is not required

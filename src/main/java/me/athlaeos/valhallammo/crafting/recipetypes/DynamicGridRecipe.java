@@ -66,9 +66,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
         if (ValhallaMMO.getInstance().getServer().getRecipe(shapelessKey) != null) ValhallaMMO.getInstance().getServer().removeRecipe(shapelessKey);
         if (shaped != null) ValhallaMMO.getInstance().getServer().addRecipe(shaped);
         else ValhallaMMO.logWarning("Could not generate recipe for " + getName() + ", it has no ingredients!");
-        if (shapeless != null) {
-            ValhallaMMO.getInstance().getServer().addRecipe(shapeless);
-        }
+        if (shapeless != null) ValhallaMMO.getInstance().getServer().addRecipe(shapeless);
     }
 
     @Override
@@ -136,7 +134,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
         recipe.shape(details.shape);
         for (char ci : details.items.keySet()){
             SlotEntry entry = details.items.get(ci);
-            ItemStack i = entry.getItem();
+            ItemStack i = entry.getItem().clone();
             if (ItemUtils.isEmpty(i)) continue;
             ItemMeta meta = ItemUtils.getItemMeta(i);
             TranslationManager.translateItemMeta(meta);
@@ -235,6 +233,12 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
         }
 
         // trimming shape
+        shape = trimShape(shape);
+
+        return new ShapeDetails(shape.toArray(new String[0]), ingredientMap);
+    }
+
+    public static List<String> trimShape(List<String> shape){
         if (shape.get(0).equalsIgnoreCase("   ") && shape.get(1).equalsIgnoreCase("   ")) { shape.remove(0); shape.remove(0); } // if top two rows are empty, remove them
         else if (shape.get(0).equalsIgnoreCase("   ")) shape.remove(0); // if only top row is empty, remove it
 
@@ -245,8 +249,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
         if (shape.stream().allMatch(s -> s.endsWith(" "))) shape = shape.stream().map(s -> s = s.substring(0, s.length() - 1)).collect(Collectors.toList()); // if last character of each line is empty, remove it
         if (shape.stream().allMatch(s -> s.startsWith("  "))) shape = shape.stream().map(s -> s = s.substring(2)).collect(Collectors.toList()); // if first 2 characters of each line is empty, remove them
         if (shape.stream().allMatch(s -> s.startsWith(" "))) shape = shape.stream().map(s -> s = s.substring(1)).collect(Collectors.toList()); // if first character of each line is empty, remove it
-
-        return new ShapeDetails(shape.toArray(new String[0]), ingredientMap);
+        return shape;
     }
 
     private char getItemChar(SlotEntry i, String usedChars){

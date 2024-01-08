@@ -194,8 +194,11 @@ public class LootFreeSelectionMenu extends Menu {
                 if (uuidString != null){
                     UUID uuid = UUID.fromString(uuidString);
                     LootEntry entry = entryMapping.get(uuid);
+                    if (entry == null) continue;
+                    DynamicItemModifier.modify(i, playerMenuUtility.getOwner(), entry.getModifiers(), false, false, true);
+
                     int existingAmount = Math.max(1, selection.getOrDefault(uuid, 1));
-                    String quantity = entry == null ? "" : (entry.getBaseQuantityMin() != entry.getBaseQuantityMax() ? (entry.getBaseQuantityMin() * existingAmount) + "-" + (entry.getBaseQuantityMax() * existingAmount) : String.valueOf(entry.getBaseQuantityMin() * existingAmount)) + "x ";
+                    String quantity = (entry.getBaseQuantityMin() != entry.getBaseQuantityMax() ? (entry.getBaseQuantityMin() * existingAmount) + "-" + (entry.getBaseQuantityMax() * existingAmount) : String.valueOf(entry.getBaseQuantityMin() * existingAmount)) + "x ";
 
                     inventory.setItem(entrySelectLayoutPriority[index], i
                             .name(TranslationManager.getTranslation("menu_loottablefreeselection_nameformat").replace("%quantity%", selection.containsKey(uuid) ? quantity : "").replace("%item%", ItemUtils.getItemName(i.getMeta())))
@@ -219,9 +222,9 @@ public class LootFreeSelectionMenu extends Menu {
         }
 
         if (allowedPicks == 0 || (!allowRepeatedSelection && selection.size() >= generatedItems.size())) inventory.setItem(confirmIndex, confirmSelectionButton);
-        if (guaranteedDropsPage > 0 && guaranteedDropsPage < guaranteedDropsPages.size()) inventory.setItem(previousGuaranteedDropPageIndex, previousPageButtonGuaranteed);
-        if (dropsPage > 0 && dropsPage < dropsPages.size()) inventory.setItem(previousDropPageIndex, previousPageButtonSelection);
-        if (guaranteedDropsPage < guaranteedDropsPages.size()) inventory.setItem(nextGuaranteedDropPageIndex, nextPageButtonGuaranteed);
-        if (dropsPage < dropsPages.size()) inventory.setItem(nextDropPageIndex, nextPageButtonSelection);
+        if (guaranteedDropsPage > 1) inventory.setItem(previousGuaranteedDropPageIndex, previousPageButtonGuaranteed);
+        if (dropsPage > 1) inventory.setItem(previousDropPageIndex, previousPageButtonSelection);
+        if (guaranteedDropsPage <= guaranteedDropsPages.size()) inventory.setItem(nextGuaranteedDropPageIndex, nextPageButtonGuaranteed);
+        if (dropsPage <= dropsPages.size()) inventory.setItem(nextDropPageIndex, nextPageButtonSelection);
     }
 }

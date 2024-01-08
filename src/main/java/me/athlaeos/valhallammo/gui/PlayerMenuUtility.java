@@ -27,7 +27,7 @@ public class PlayerMenuUtility {
         return owner;
     }
     public void addOption(RecipeOption option){
-        options.put(option.getName(), option);
+        options.put(option.getName(), option.getNew());
     }
     public void clearOptions(){
         options.clear();

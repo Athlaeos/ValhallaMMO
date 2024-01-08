@@ -51,7 +51,9 @@ public class MaterialWithDataChoice extends RecipeOption implements IngredientCh
     }
 
     @Override
-    public boolean matches(ItemStack i1, ItemStack i2) {        ItemMeta i1Meta = i1.getItemMeta();
+    public boolean matches(ItemStack i1, ItemStack i2) {
+        if (i1.getType() != i2.getType()) return false;
+        ItemMeta i1Meta = i1.getItemMeta();
         ItemMeta i2Meta = i2.getItemMeta();
         if (i1Meta == null && i2Meta == null) return true;
         if (i1Meta == null || i2Meta == null) return false;

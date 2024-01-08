@@ -71,7 +71,7 @@ public class RecipeOptionMenu extends Menu {
             currentOption = playerMenuUtility.getOptions().getOrDefault(clickedOption, RecipeOptionRegistry.createOption(clickedOption));
             currentOption.onClick(e);
             if (!e.isCancelled()) {
-                if (menu instanceof SetRecipeOptionMenu m) m.setRecipeOption(currentOption);
+                if (menu instanceof SetRecipeOptionMenu m) m.setRecipeOption(currentOption.getNew());
                 menu.open();
                 menu.setMenuItems();
                 return;
@@ -102,6 +102,7 @@ public class RecipeOptionMenu extends Menu {
         for (String optionName : options.keySet()){
             RecipeOption option = playerMenuUtility.getOptions().getOrDefault(optionName, options.get(optionName));
             if (option == null) continue;
+            option = option.getNew();
 
             ItemStack icon = new ItemBuilder(option.getIcon()).stringTag(KEY_OPTION_ID, option.getName()).get();
             totalOptionButtons.add(icon);

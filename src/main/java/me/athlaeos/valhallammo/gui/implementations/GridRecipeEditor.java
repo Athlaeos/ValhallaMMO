@@ -16,7 +16,6 @@ import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Question;
 import me.athlaeos.valhallammo.dom.Questionnaire;
 import me.athlaeos.valhallammo.gui.*;
-import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -452,6 +451,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
                         } else {
                             String option = ItemUtils.getPDCString(KEY_OPTION_ID, cursor, null);
                             if (option != null && selectedOption != null) {
+                                selectedOption = selectedOption.getNew();
                                 if (!selectedOption.isCompatible(entry.getItem()) || !selectedOption.isCompatibleWithInputItem(false)) {
                                     Utils.sendMessage(e.getWhoClicked(), "&cNot compatible with this item");
                                 } else {
@@ -631,6 +631,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
     @Override
     public void setRecipeOption(RecipeOption option) {
         this.selectedOption = option;
+        if (option == null) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
                 playerMenuUtility.getOwner().setItemOnCursor(new ItemBuilder(option.getIcon()).stringTag(KEY_OPTION_ID, option.getName()).get()), 1L);
     }

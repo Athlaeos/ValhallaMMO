@@ -1,13 +1,8 @@
 package me.athlaeos.valhallammo.commands.valhallasubcommands;
 
 import me.athlaeos.valhallammo.commands.Command;
-import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
-import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
-import me.athlaeos.valhallammo.gui.implementations.CustomItemManagementMenu;
 import me.athlaeos.valhallammo.item.CustomItemRegistry;
 import me.athlaeos.valhallammo.localization.TranslationManager;
-import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandSender;
@@ -46,7 +41,7 @@ public class CustomItemGiveCommand implements Command {
 				return true;
 			}
 
-			ItemStack item = CustomItemRegistry.getItem(args[1]);
+			ItemStack item = CustomItemRegistry.getProcessedItem(args[1]);
 			if (item == null) {
 				Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_item")));
 				return true;

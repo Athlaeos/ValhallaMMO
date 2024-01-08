@@ -329,9 +329,9 @@
     "attribute_bow_strength": "%icon%%value% Shot Speed",
     "attribute_arrow_damage": "%icon%%value% Arrow Damage",
     "attribute_ammo_consumption": "%icon%%value% Ammo Consumption",
-    "attribute_arrow_velocity": "%icon%%value% Velocity",
+    "attribute_arrow_velocity": "%icon%%value% Arrow Velocity",
     "attribute_arrow_accuracy": "%icon%%value% Accuracy",
-    "attribute_arrow_piercing": "%icon%%value% Piercing",
+    "attribute_arrow_piercing": "%icon%%value% Arrow Piercing",
     "attribute_knockback": "%icon%%value% Knockback",
     "attribute_stun_chance": "%icon%%value% Stun Chance",
     "attribute_bleed_chance": "%icon%%value% Bleed Chance",
@@ -1252,7 +1252,7 @@
     "trinket-cross-necklace": "&eCross Necklace",
     "trinket-divine-necklace": "&dDivine Necklace",
     "trinket-amulet-of-mania": "&eAmulet of Mania",
-    "trinket-fury": "&dFury Forged",
+    "trinket-fury": "&dFuryforged Pendant",
     "trinket-amulet-of-the-avenger": "&eAmulet of the Avenger",
     "trinket-kratos": "&dKratos",
     "trinket-ring-of-deflection": "&eAmulet of Deflection",
@@ -1267,6 +1267,14 @@
     "trinket-paladins-bane": "&dPaladins Bane",
     "trinket-ring-of-reach": "&eRing of Reach",
     "trinket-gungnirs-might": "&dGungnir's Might",
+    "trinket-tag-accessory": "&8Accessory",
+    "trinket-tag-ring": "&8Ring",
+    "trinket-tag-necklace": "&8Necklace",
+    "trinket-tag-armband": "&8Armband",
+    "trinket-tag-belt": "&8Belt",
+    "trinket-tag-mask": "&8Mask",
+    "trinket-tag-pin": "&8Pin",
+    "trinket-tag-circlet": "&8Circlet",
     "material-dummy-head": "&fDummy Head",
     "material-crystal-apple": "&aCrystal Apple",
     "material-diamond-shard": "&fDiamond Shard",
@@ -2736,43 +2744,56 @@
       "TITLE(&7You leveled up to &e%level%&7;&7Check &e/skills &7for available perks;40;5)"
     ],
     "skill-level-up-smithing": [
-      "TITLE(;&eSmithing&7 leveled up to &e%level%)"
+      "TITLE(&r;&eSmithing&7 leveled up to &e%level%)",
+      "&eSmithing&7 leveled up to &e%level%"
     ],
     "skill-level-up-mining": [
-      "TITLE(;&cMining&7 leveled up to &c%level%)"
+      "TITLE(&r;&cMining&7 leveled up to &c%level%)",
+      "&cMining&7 leveled up to &c%level%"
     ],
     "skill-level-up-light-weapons": [
-      "TITLE(;&eLight Weapons&7 leveled up to &e%level%)"
+      "TITLE(&r;&eLight Weapons&7 leveled up to &e%level%)",
+      "&eLight Weapons&7 leveled up to &e%level%"
     ],
     "skill-level-up-light-armor": [
-      "TITLE(;&eLight Armor&7 leveled up to &e%level%)"
+      "TITLE(&r;&eLight Armor&7 leveled up to &e%level%)",
+      "&eLight Armor&7 leveled up to &e%level%"
     ],
     "skill-level-up-woodcutting": [
-      "TITLE(;&aWoodcutting&7 leveled up to &a%level%)"
+      "TITLE(&r;&aWoodcutting&7 leveled up to &a%level%)",
+      "&aWoodcutting&7 leveled up to &a%level%"
     ],
     "skill-level-up-digging": [
-      "TITLE(;&aDigging&7 leveled up to &a%level%)"
+      "TITLE(&r;&aDigging&7 leveled up to &a%level%)",
+      "&aDigging&7 leveled up to &a%level%"
     ],
     "skill-level-up-heavy-weapons": [
-      "TITLE(;&cHeavy Weapons&7 leveled up to &c%level%)"
+      "TITLE(&r;&cHeavy Weapons&7 leveled up to &c%level%)",
+      "&cHeavy Weapons&7 leveled up to &c%level%"
     ],
     "skill-level-up-heavy-armor": [
-      "TITLE(;&cHeavy Armor&7 leveled up to &c%level%)"
+      "TITLE(&r;&cHeavy Armor&7 leveled up to &c%level%)",
+      "&cHeavy Armor&7 leveled up to &c%level%"
     ],
     "skill-level-up-farming": [
-      "TITLE(;&aFarming&7 leveled up to &a%level%)"
+      "TITLE(&r;&aFarming&7 leveled up to &a%level%)",
+      "&aFarming&7 leveled up to &a%level%"
     ],
     "skill-level-up-fishing": [
-      "TITLE(;&bFishing&7 leveled up to &b%level%)"
+      "TITLE(&r;&bFishing&7 leveled up to &b%level%)",
+      "&bFishing&7 leveled up to &b%level%"
     ],
     "skill-level-up-enchanting": [
-      "TITLE(;&bEnchanting&7 leveled up to &b%level%)"
+      "TITLE(&r;&bEnchanting&7 leveled up to &b%level%)",
+      "&bEnchanting&7 leveled up to &b%level%"
     ],
     "skill-level-up-archery": [
-      "TITLE(;&eArchery&7 leveled up to &e%level%)"
+      "TITLE(&r;&eArchery&7 leveled up to &e%level%)",
+      "&eArchery&7 leveled up to &e%level%"
     ],
     "skill-level-up-alchemy": [
-      "TITLE(;&dAlchemy&7 leveled up to &d%level%)"
+      "TITLE(&r;&dAlchemy&7 leveled up to &d%level%)",
+      "&dAlchemy&7 leveled up to &d%level%"
     ],
     "default_recipe_description_cooking": [
       "&e%input% &ecooks into %result%"

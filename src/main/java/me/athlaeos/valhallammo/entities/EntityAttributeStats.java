@@ -38,6 +38,12 @@ public class EntityAttributeStats {
         }
     }
 
+    public static void removeStats(LivingEntity e){
+        for (AttributeDataHolder holder : attributesToUpdate.values()){
+            EntityUtils.removeUniqueAttribute(e, holder.name(), holder.type());
+        }
+    }
+
     private static void registerAttributeToUpdate(AttributeDataHolder holder){
         attributesToUpdate.put(holder.name, holder);
     }

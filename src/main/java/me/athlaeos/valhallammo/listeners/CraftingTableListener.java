@@ -187,8 +187,7 @@ public class CraftingTableListener implements Listener {
     public void onPrepareCraft(PrepareItemCraftEvent e){
         Recipe crafted = e.getRecipe();
         CraftingInventory inventory = e.getInventory();
-        if (crafted == null ||
-                (crafted instanceof Keyed k && CustomRecipeRegistry.getDisabledRecipes().contains(k.getKey()))){
+        if (crafted == null || (crafted instanceof Keyed k && CustomRecipeRegistry.getDisabledRecipes().contains(k.getKey()))){
             // if the recipe is null, the recipe is disabled, or if the recipe is a repair recipe using custom items,
             // nullify result
             inventory.setResult(null);
@@ -261,10 +260,22 @@ public class CraftingTableListener implements Listener {
 
         if ((crafted instanceof ShapedRecipe || crafted instanceof ShapelessRecipe) && !e.getViewers().isEmpty()){
             DynamicGridRecipe recipe = CustomRecipeRegistry.getGridRecipesByKey().get(((Keyed) crafted).getKey());
-            if (recipe == null) return; // not a valhalla recipe, don't do anything
+            if (recipe == null) {
+                return; // not a valhalla recipe, don't do anything
+            }
             PowerProfile profile = ProfileCache.getOrCache(crafter, PowerProfile.class);
-            if (profile == null ||
-                    (recipe.getValidations().stream().anyMatch(v -> {
+
+            ItemStack result = verifyIngredients(crafter, profile, recipe, inventory.getMatrix());
+            if (ItemUtils.isEmpty(result)){
+                Pair<DynamicGridRecipe, ItemStack> corrected = correctRecipe(crafter, profile, recipe, inventory.getMatrix());
+                if (corrected == null){
+                    inventory.setResult(null);
+                    return;
+                }
+                recipe = corrected.getOne();
+                result = corrected.getTwo();
+            }
+            if (recipe.getValidations().stream().anyMatch(v -> {
                         Validation validation = ValidationRegistry.getValidation(v);
                         if (inventory.getLocation() == null) return false;
                         if (validation != null) {
@@ -273,7 +284,7 @@ public class CraftingTableListener implements Listener {
                             return invalid;
                         }
                         return false;
-                    })) ||
+                    }) ||
                     (inventory.getLocation() != null &&
                             inventory.getLocation().getWorld() != null &&
                             ValhallaMMO.isWorldBlacklisted(inventory.getLocation().getWorld().getName())) ||
@@ -284,16 +295,6 @@ public class CraftingTableListener implements Listener {
                 // which blocks custom recipes, nullify result
                 inventory.setResult(null);
                 return;
-            }
-            ItemStack result = verifyIngredients(crafter, profile, recipe, inventory.getMatrix());
-            if (ItemUtils.isEmpty(result)){
-                Pair<DynamicGridRecipe, ItemStack> corrected = correctRecipe(crafter, profile, recipe, inventory.getMatrix());
-                if (corrected == null){
-                    inventory.setResult(null);
-                    return;
-                }
-                recipe = corrected.getOne();
-                result = corrected.getTwo();
             }
 
             ItemBuilder resultBuilder = new ItemBuilder(result);
@@ -383,9 +384,15 @@ public class CraftingTableListener implements Listener {
                         }
                     }
                 }
-                if (defaultChoice(entry).matches(entry.getItem(), slot)) {
+                IngredientChoice choice = defaultChoice(entry);
+                if (choice.matches(entry.getItem(), slot)) {
                     // The ingredient was found in the matrix items, remove it from the list
-                    allIngredients.removeIf(e -> e.isSimilar(entry));
+                    for (SlotEntry e : allIngredients){
+                        if (e.isSimilar(entry)){
+                            allIngredients.remove(entry);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -402,11 +409,42 @@ public class CraftingTableListener implements Listener {
 
     private Pair<DynamicGridRecipe, ItemStack> correctRecipe(Player crafter, PowerProfile profile, DynamicGridRecipe original, ItemStack[] grid){
         int ingredients = original.getItems().size();
+        ItemStack originalCorrect = verifyIngredients(crafter, profile, original, grid);
+        if (!ItemUtils.isEmpty(originalCorrect)) return new Pair<>(original, originalCorrect);
         for (DynamicGridRecipe recipe : CustomRecipeRegistry.getGridRecipesByIngredientQuantity().getOrDefault(ingredients, new HashSet<>())){
-            if (recipe.getName().equals(original.getName())) continue;
+            if (recipe.getName().equals(original.getName()) || (!original.isShapeless() && !recipe.isShapeless() && !matchesShape(original, recipe))) continue;
             ItemStack result = verifyIngredients(crafter, profile, recipe, grid);
             if (!ItemUtils.isEmpty(result)) return new Pair<>(recipe, result);
         }
         return null;
+    }
+
+    private boolean matchesShape(DynamicGridRecipe d1, DynamicGridRecipe d2){
+        if (d1.isShapeless() || d2.isShapeless()) return false; // cannot work with shapeless recipes
+        String[] shape1 = d1.getRecipeShapeStrings().getShape();
+        String[] shape2 = d2.getRecipeShapeStrings().getShape();
+        if (shape1.length != shape2.length) return false; // shapes do not match in length
+        if (shape1.length == 0) return false; // shape is empty
+        boolean inverse = false;
+        int index = 0;
+        lines:
+        for (int i = 0; i < shape1.length * 2 && index < shape1.length; i++){
+            String s1 = shape1[index];
+            String s2 = inverse ? new StringBuilder(shape2[index]).reverse().toString() : shape2[index];
+            if (s1.length() != s2.length()) return false; // shapes contain strings that do not match in length with eachother
+            char[] s1Chars = s1.toCharArray();
+            char[] s2Chars = s2.toCharArray();
+
+            for (int c = 0; c < s1Chars.length; c++){
+                if ((s1Chars[c] == ' ' && s2Chars[c] == ' ') || (s1Chars[c] != ' ' && s2Chars[c] != ' ')) continue;
+                if (!inverse){
+                    inverse = true;
+                    index = 0;
+                    continue lines;
+                } else return false;
+            }
+            index++;
+        }
+        return true;
     }
 }

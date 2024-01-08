@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillLevelUpEvent;
+import me.athlaeos.valhallammo.event.ValhallaUpdatedStatsEvent;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -371,53 +372,52 @@ public abstract class Skill {
      */
     public void updateLevelUpConditions(Player p, boolean silent){
         Profile profile = ProfileRegistry.getPersistentProfile(p, getProfileType());
-        if (profile != null){
-            int currentLevel = profile.getLevel();
-            double EXP = profile.getEXP();
-            int nextLevel = currentLevel;
-            if (EXP < 0) {
-                // level down
-                nextLevel -= 1; // since the player has negative experience, they should level down at least once.
-                // loop from current level to 0 because that's the max amount of iterations to check for level downs
-                for (int i = nextLevel; i >= 0; i--){
-                    double expForLevel = expForLevel(i);
-                    if (-EXP >= expForLevel) {
-                        // player has enough negative experience to level down once
-                        nextLevel--;
-                        EXP += expForLevel;
-                    } else {
-                        EXP = expForLevel - EXP;
-                        break; // player does not have enough negative experience to level down
-                    }
-                }
-            } else {
-                // level up
-                // loop from current level +1 to max level because that's the max amount of iterations to check for level ups
-                for (int i = nextLevel + 1; i <= maxLevel; i++){
-                    double expForLevel = expForLevel(i);
-                    if (EXP >= expForLevel) {
-                        // player has enough experience to level up once
-                        nextLevel++;
-                        EXP -= expForLevel;
-                    } else break; // player does not have enough experience to level up
+        if (profile == null) return;
+        int currentLevel = profile.getLevel();
+        double EXP = profile.getEXP();
+        int nextLevel = currentLevel;
+        if (EXP < 0) {
+            // level down
+            nextLevel -= 1; // since the player has negative experience, they should level down at least once.
+            // loop from current level to 0 because that's the max amount of iterations to check for level downs
+            for (int i = nextLevel; i >= 0; i--){
+                double expForLevel = expForLevel(i);
+                if (-EXP >= expForLevel) {
+                    // player has enough negative experience to level down once
+                    nextLevel--;
+                    EXP += expForLevel;
+                } else {
+                    EXP = expForLevel - EXP;
+                    break; // player does not have enough negative experience to level down
                 }
             }
-            // if the level doesn't change, nothing further needs to happen
-            if (nextLevel == currentLevel) return;
-
-            profile.setEXP(EXP);
-            profile.setLevel(Math.max(0, nextLevel));
-
-            // if a skill is at level 0, exp and total exp should not go below 0
-            if (profile.getLevel() <= 0 && profile.getEXP() < 0) profile.setEXP(0);
-            if (profile.getLevel() <= 0 && profile.getTotalEXP() < 0) profile.setTotalEXP(0);
-
-            ProfileRegistry.setPersistentProfile(p, profile, getProfileType());
-            changePlayerLevel(p, currentLevel, nextLevel, silent);
-
-            if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()){
-                showBossBar(p, profile, 0);
+        } else {
+            // level up
+            // loop from current level +1 to max level because that's the max amount of iterations to check for level ups
+            for (int i = nextLevel + 1; i <= maxLevel; i++){
+                double expForLevel = expForLevel(i);
+                if (EXP >= expForLevel) {
+                    // player has enough experience to level up once
+                    nextLevel++;
+                    EXP -= expForLevel;
+                } else break; // player does not have enough experience to level up
             }
+        }
+        // if the level doesn't change, nothing further needs to happen
+        if (nextLevel == currentLevel) return;
+
+        profile.setEXP(EXP);
+        profile.setLevel(Math.max(0, nextLevel));
+
+        // if a skill is at level 0, exp and total exp should not go below 0
+        if (profile.getLevel() <= 0 && profile.getEXP() < 0) profile.setEXP(0);
+        if (profile.getLevel() <= 0 && profile.getTotalEXP() < 0) profile.setTotalEXP(0);
+
+        ProfileRegistry.setPersistentProfile(p, profile, getProfileType());
+        changePlayerLevel(p, currentLevel, nextLevel, silent);
+
+        if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()){
+            showBossBar(p, profile, 0);
         }
     }
 
@@ -662,8 +662,10 @@ public abstract class Skill {
                 }
             }
 
-            for (String message : levelingMessages){
-                Utils.sendMessage(p, TranslationManager.translatePlaceholders(message).replace("%level%", String.valueOf(to)));
+            if (!silent){
+                for (String message : levelingMessages){
+                    Utils.sendMessage(p, TranslationManager.translatePlaceholders(message).replace("%level%", String.valueOf(to)));
+                }
             }
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
@@ -744,6 +746,8 @@ public abstract class Skill {
                 }
             }
         }
+
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p));
     }
 
     private final boolean perksForgettable = ConfigManager.getConfig("config.yml").reload().get().getBoolean("forgettable_perks");

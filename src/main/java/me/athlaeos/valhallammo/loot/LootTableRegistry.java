@@ -83,14 +83,18 @@ public class LootTableRegistry {
         if (lootTables != null){
             for (File lootTable : lootTables){
                 if (!lootTable.getName().endsWith(".json")) continue;
-                try (BufferedReader tableReader = new BufferedReader(new FileReader(lootTable, StandardCharsets.UTF_8))) {
-                    LootTable table = gson.fromJson(tableReader, LootTable.class);
-                    registerLootTable(table);
-                } catch (IOException exception){
-                    ValhallaMMO.logSevere(exception.getMessage());
-                    exception.printStackTrace();
-                }
+                loadFromFile(lootTable);
             }
+        }
+    }
+
+    public static void loadFromFile(File file){
+        try (BufferedReader tableReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            LootTable table = gson.fromJson(tableReader, LootTable.class);
+            registerLootTable(table);
+        } catch (IOException exception){
+            ValhallaMMO.logSevere(exception.getMessage());
+            exception.printStackTrace();
         }
     }
 
@@ -99,6 +103,9 @@ public class LootTableRegistry {
         for (String poolName : table.getPools().keySet()){
             LootPool pool = table.getPools().get(poolName);
             if (table.failsPredicates(pool.getPredicateSelection(), type, context, pool.getPredicates())) continue;
+            double rand = Utils.getRandom().nextDouble();
+            if (rand > (pool.getDropChance() + (pool.getDropLuckChance() * context.getLuck()))) continue;
+
             Collection<LootEntry> selectedEntries = new ArrayList<>();
             if (pool.isWeighted()){
                 // weighted selection

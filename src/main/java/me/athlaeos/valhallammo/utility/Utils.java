@@ -185,96 +185,100 @@ public class Utils {
     }
 
     private static final Map<String, Double> evalCache = new HashMap<>();
+    private static final MathEval math = new MathEval();
     public static double eval(String expression) {
-        if (evalCache.containsKey(expression)) return evalCache.get(expression);
-        String str = expression
-                .replaceAll(",", ".")
-                .replace("$pi", String.format("%.15f", Math.PI))
-                .replace("$e", String.format("%.15f", Math.E))
-                .replaceAll("[^A-Za-z0-9.^*/+()-]+", "");
-        if (str.length() <= 0) return 0;
-        double result = new Object() {
-            int pos = -1, ch;
-
-            void nextChar() {
-                ch = (++pos < str.length()) ? str.charAt(pos) : -1;
-            }
-
-            boolean eat(int charToEat) {
-                while (ch == ' ') nextChar();
-                if (ch == charToEat) {
-                    nextChar();
-                    return true;
-                }
-                return false;
-            }
-
-            double parse() {
-                nextChar();
-                double x = parseExpression();
-                if (pos < str.length()) {
-                    throw new RuntimeException("Unexpected: " + (char)ch + " while trying to parse formula " + expression);
-                }
-                return x;
-            }
-
-            // Grammar:
-            // expression = term | expression `+` term | expression `-` term
-            // term = factor | term `*` factor | term `/` factor
-            // factor = `+` factor | `-` factor | `(` expression `)`
-            //        | number | functionName factor | factor `^` factor
-
-            double parseExpression() {
-                double x = parseTerm();
-                for (;;) {
-                    if      (eat('+')) x += parseTerm(); // addition
-                    else if (eat('-')) x -= parseTerm(); // subtraction
-                    else return x;
-                }
-            }
-
-            double parseTerm() {
-                double x = parseFactor();
-                for (;;) {
-                    if      (eat('*')) x *= parseFactor(); // multiplication
-                    else if (eat('/')) x /= parseFactor(); // division
-                    else return x;
-                }
-            }
-
-            double parseFactor() {
-                if (eat('+')) return parseFactor(); // unary plus
-                if (eat('-')) return -parseFactor(); // unary minus
-
-                double x;
-                int startPos = this.pos;
-                if (eat('(')) { // parentheses
-                    x = parseExpression();
-                    eat(')');
-                } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
-                    while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
-                    x = Double.parseDouble(str.substring(startPos, this.pos));
-                } else if (ch >= 'a' && ch <= 'z') { // functions
-                    while (ch >= 'a' && ch <= 'z') nextChar();
-                    String func = str.substring(startPos, this.pos);
-                    x = parseFactor();
-                    x = switch (func) {
-                        case "sqrt" -> MathUtils.sqrt(x);
-                        case "sin" -> MathUtils.sin(MathUtils.toRadians(x));
-                        case "cos" -> MathUtils.cos(MathUtils.toRadians(x));
-                        case "tan" -> MathUtils.tan(MathUtils.toRadians(x));
-                        default ->
-                                throw new RuntimeException("Unknown function: " + func + " while trying to parse formula " + expression);
-                    };
-                } else {
-                    throw new RuntimeException("Unexpected: " + (char)ch + " while trying to parse formula " + expression);
-                }
-
-                if (eat('^')) x = MathUtils.pow(x, parseFactor()); // exponentiation
-
-                return x;
-            }
-        }.parse();
+        if (evalCache.containsKey(expression)) {
+            return evalCache.get(expression);
+        }
+//        String str = expression
+//                .replaceAll(",", ".")
+//                .replace("$pi", String.format("%.15f", Math.PI))
+//                .replace("$e", String.format("%.15f", Math.E))
+//                .replaceAll("[^A-Za-z0-9.^*/+() -]+", "");
+//        if (str.length() <= 0) return 0;
+//        double result = new Object() {
+//            int pos = -1, ch;
+//
+//            void nextChar() {
+//                ch = (++pos < str.length()) ? str.charAt(pos) : -1;
+//            }
+//
+//            boolean eat(int charToEat) {
+//                while (ch == ' ') nextChar();
+//                if (ch == charToEat) {
+//                    nextChar();
+//                    return true;
+//                }
+//                return false;
+//            }
+//
+//            double parse() {
+//                nextChar();
+//                double x = parseExpression();
+//                if (pos < str.length()) {
+//                    throw new RuntimeException("Unexpected: " + (char)ch + " while trying to parse formula " + expression);
+//                }
+//                return x;
+//            }
+//
+//            // Grammar:
+//            // expression = term | expression `+` term | expression `-` term
+//            // term = factor | term `*` factor | term `/` factor
+//            // factor = `+` factor | `-` factor | `(` expression `)`
+//            //        | number | functionName factor | factor `^` factor
+//
+//            double parseExpression() {
+//                double x = parseTerm();
+//                for (;;) {
+//                    if      (eat('+')) x += parseTerm(); // addition
+//                    else if (eat('-')) x -= parseTerm(); // subtraction
+//                    else return x;
+//                }
+//            }
+//
+//            double parseTerm() {
+//                double x = parseFactor();
+//                for (;;) {
+//                    if      (eat('*')) x *= parseFactor(); // multiplication
+//                    else if (eat('/')) x /= parseFactor(); // division
+//                    else return x;
+//                }
+//            }
+//
+//            double parseFactor() {
+//                if (eat('+')) return parseFactor(); // unary plus
+//                if (eat('-')) return -parseFactor(); // unary minus
+//
+//                double x;
+//                int startPos = this.pos;
+//                if (eat('(')) { // parentheses
+//                    x = parseExpression();
+//                    eat(')');
+//                } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
+//                    while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
+//                    x = Double.parseDouble(str.substring(startPos, this.pos));
+//                } else if (ch >= 'a' && ch <= 'z') { // functions
+//                    while (ch >= 'a' && ch <= 'z') nextChar();
+//                    String func = str.substring(startPos, this.pos);
+//                    x = parseFactor();
+//                    x = switch (func) {
+//                        case "sqrt" -> MathUtils.sqrt(x);
+//                        case "sin" -> MathUtils.sin(MathUtils.toRadians(x));
+//                        case "cos" -> MathUtils.cos(MathUtils.toRadians(x));
+//                        case "tan" -> MathUtils.tan(MathUtils.toRadians(x));
+//                        default ->
+//                                throw new RuntimeException("Unknown function: " + func + " while trying to parse formula " + expression);
+//                    };
+//                } else {
+//                    throw new RuntimeException("Unexpected: " + (char)ch + " while trying to parse formula " + expression);
+//                }
+//
+//                if (eat('^')) x = MathUtils.pow(x, parseFactor()); // exponentiation
+//
+//                return x;
+//            }
+//        }.parse();
+        double result = math.evaluate(expression);
         evalCache.put(expression, result);
         return result;
     }
@@ -330,12 +334,13 @@ public class Utils {
      */
     public static void sendMessage(CommandSender whomst, String message){
         if (!StringUtils.isEmpty(message)) {
-            if (message.startsWith("ACTIONBAR") && whomst instanceof Player p) sendActionBar(p, message.replaceFirst("ACTIONBAR", ""));
-            else if (message.startsWith("TITLE") && whomst instanceof Player p){
+            if (message.startsWith("ACTIONBAR") && whomst instanceof Player p) {
+                sendActionBar(p, message.replaceFirst("ACTIONBAR", ""));
+            } else if (message.startsWith("TITLE") && whomst instanceof Player p){
                 String title = message.replaceFirst("TITLE", "");
                 String subtitle = "";
-                int titleDuration = 100;
-                int fadeDuration = 10;
+                int titleDuration = 40;
+                int fadeDuration = 5;
                 String subString = StringUtils.substringBetween(message, "TITLE(", ")");
                 if (subString != null){
                     String[] args = subString.split(";");
@@ -356,7 +361,7 @@ public class Utils {
     }
 
     public static void sendTitle(Player whomst, String title, String subtitle, int duration, int fade){
-        if (!StringUtils.isEmpty(title)) whomst.sendTitle(chat(title), subtitle, fade, duration, fade);
+        if (!StringUtils.isEmpty(title)) whomst.sendTitle(chat(title), chat(subtitle), fade, duration, fade);
     }
 
     public static <T extends Weighted> List<T> weightedSelection(Collection<T> entries, int rolls, double luck){
@@ -372,7 +377,10 @@ public class Utils {
         for (int i = 0; i < rolls; i++){
             double random = Utils.getRandom().nextDouble() * totalWeight;
             for (Pair<T, Double> pair : totalEntries){
-                if (pair.getTwo() >= random) selectedEntries.add(pair.getOne());
+                if (pair.getTwo() >= random) {
+                    selectedEntries.add(pair.getOne());
+                    break;
+                }
             }
         }
         return selectedEntries;
