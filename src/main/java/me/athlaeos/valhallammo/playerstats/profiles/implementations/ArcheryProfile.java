@@ -46,7 +46,7 @@ public class ArcheryProfile extends Profile {
         booleanStat("stunOnCrit", new BooleanProperties(true, true));
         booleanStat("critOnStun", new BooleanProperties(true, true));
 
-        doubleStat("archeryEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("archeryEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).perkReward().create());
     }
 
     public boolean isChargedShotAntiGravity() { return getBoolean("chargedShotNoGravity"); }

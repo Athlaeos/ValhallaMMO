@@ -33,6 +33,7 @@ import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockConditionRegist
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.tools.BlockHardnessStick;
 import me.athlaeos.valhallammo.utility.GlobalEffect;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -201,6 +202,7 @@ public class ValhallaMMO extends JavaPlugin {
         if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) registerListener(new ReachAttackListener()); // 1.20.5 introduces entity interaction range attributes, rendering this listener obsolete
         registerListener(new RecipeDiscoveryListener());
         registerListener(new SmithingTableListener());
+        registerListener(new WorldSaveListener());
 //        registerListener(new ThrownWeaponListener()); // might end up not using
 
         registerListener(new BlockHardnessStick());
@@ -228,11 +230,12 @@ public class ValhallaMMO extends JavaPlugin {
         registerCommand(new ProfileCommand(DiggingProfile.class), "digging");
         registerCommand(new ProfileCommand(FishingProfile.class), "fishing");
 
+        LeaderboardManager.loadFile();
         CustomRecipeRegistry.loadFiles();
         LootTableRegistry.loadFiles();
         ArmorSetRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/armor_sets.json"));
         CustomItemRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/items.json"));
-        LeaderboardManager.loadFile();
+        LeaderboardManager.refreshLeaderboards();
 
         // During reloads profiles are persisted. This makes sure profiles of players who are already online are ensured
         // to be loaded, otherwise their progress is reset
@@ -242,6 +245,8 @@ public class ValhallaMMO extends JavaPlugin {
 
         worldBlacklist.addAll(pluginConfig.getStringList("world_blacklist"));
         if (PotionEffectRegistry.getCustomEffectDisplay() != null) PotionEffectRegistry.getCustomEffectDisplay().start();
+        ItemUtils.startProjectileRunnableCache();
+        GlobalEffect.initializeRunnable();
     }
 
     @Override

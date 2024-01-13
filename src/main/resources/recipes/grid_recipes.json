@@ -2932,6 +2932,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -4009,6 +4017,14 @@
         "DATA": {
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
           "priority": "SOONEST"
         }
       },
@@ -5108,6 +5124,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -5785,6 +5809,14 @@
         "DATA": {
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
           "priority": "SOONEST"
         }
       },
@@ -9088,6 +9120,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -10341,6 +10381,14 @@
         "DATA": {
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
           "priority": "SOONEST"
         }
       },
@@ -14658,6 +14706,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -18612,6 +18668,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -20543,7 +20607,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "BOW_STRENGTH",
-          "value": 1.0999999999999999,
+          "value": 1.1,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.01,
           "bigIncrement": 0.1,
@@ -22142,6 +22206,14 @@
         "DATA": {
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
           "priority": "SOONEST"
         }
       },
@@ -25227,6 +25299,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -28147,6 +28227,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -30737,6 +30825,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -32147,6 +32243,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -32468,6 +32572,14 @@
         "DATA": {
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
           "priority": "SOONEST"
         }
       },
@@ -32825,7 +32937,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "BOW_STRENGTH",
-          "value": 0.9999999999999999,
+          "value": 1,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.01,
           "bigIncrement": 0.1,
@@ -34394,6 +34506,14 @@
         "DATA": {
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "HEAVY",
+          "name": "weight_class",
           "priority": "SOONEST"
         }
       },

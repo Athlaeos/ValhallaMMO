@@ -48,13 +48,15 @@ public class SmithingSkill extends Skill {
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_SMITHING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
-            amount *= (1 + AccumulativeStatManager.getStats("SMITHING_EXP_GAIN_GENERAL", p, true));
+            double multiplier = Math.max(0, 1 + AccumulativeStatManager.getStats("SMITHING_EXP_GAIN_GENERAL", p, true));
+            amount *= multiplier;
         }
         super.addEXP(p, amount, silent, reason);
     }
 
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason, MaterialClass material) {
-        amount *= (1 + AccumulativeStatManager.getStats("SMITHING_EXP_GAIN_" + material, p, true));
+        double multiplier = (1 + AccumulativeStatManager.getStats("SMITHING_EXP_GAIN_" + material, p, true));
+        amount *= multiplier;
         addEXP(p, amount, silent, reason);
     }
 }

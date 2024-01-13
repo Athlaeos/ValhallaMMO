@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.dom.*;
+import me.athlaeos.valhallammo.entities.EntityAttributeStats;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.event.EntityCriticallyHitEvent;
 import me.athlaeos.valhallammo.hooks.DamageIndicator;
@@ -47,8 +48,8 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 public class EntityAttackListener implements Listener {
-
     private static final double facingAngleCos = MathUtils.cos(ValhallaMMO.getPluginConfig().getDouble("facing_angle", 70));
+
     private final boolean requireFacingForDodge = ValhallaMMO.getPluginConfig().getBoolean("prevent_dodge_not_facing_attacker", true);
     private final Particle dodgeParticle = Catch.catchOrElse(() -> Particle.valueOf(ValhallaMMO.getPluginConfig().getString("dodge_effect")), Particle.SWEEP_ATTACK, "Invalid dodge particle effect given, used default");
     private final String dodgeMessage = TranslationManager.getTranslation(ValhallaMMO.getPluginConfig().getString("dodge_message", ""));
@@ -195,12 +196,12 @@ public class EntityAttackListener implements Listener {
             double knockbackResistance = (knockbackInstance == null ? 0 : knockbackInstance.getValue()) - Math.min(0, knockbackBonus);
             if (knockbackBonus > 0) knockbackBonus *= (1 - knockbackResistance);
 
-            if (knockbackResistance > 0) EntityUtils.addUniqueAttribute(v, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResistance, AttributeModifier.Operation.ADD_NUMBER);
+            if (knockbackResistance > 0) EntityUtils.addUniqueAttribute(v, EntityAttributeStats.NEGATIVE_KNOCKBACK, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResistance, AttributeModifier.Operation.ADD_NUMBER);
             if (knockbackBonus != 0){
                 double finalKnockbackBonus = knockbackBonus;
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                     // finishing off custom knockback mechanics (removing attribute if placed, or changing velocity to comply with increased knockback)
-                    if (knockbackResistance > 0) EntityUtils.removeUniqueAttribute(v, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+                    if (knockbackResistance > 0) EntityUtils.removeUniqueAttribute(v, EntityAttributeStats.NEGATIVE_KNOCKBACK, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
                     else if (finalKnockbackBonus > 0){
                         Vector lookingDirection = e.getDamager() instanceof LivingEntity a ? a.getEyeLocation().getDirection().normalize() : e.getDamager().getVelocity().normalize();
 

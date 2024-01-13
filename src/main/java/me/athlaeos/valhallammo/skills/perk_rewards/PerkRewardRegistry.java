@@ -3,6 +3,9 @@ package me.athlaeos.valhallammo.skills.perk_rewards;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.BlockInteractConversions;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
+import me.athlaeos.valhallammo.crafting.recipetypes.ValhallaKeyedRecipe;
+import me.athlaeos.valhallammo.dom.Action;
+import me.athlaeos.valhallammo.dom.BiAction;
 import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
@@ -12,6 +15,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.properties.StatProperties;
 import me.athlaeos.valhallammo.skills.skills.implementations.AlchemySkill;
 import org.bukkit.Material;
 import org.bukkit.Tag;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +53,17 @@ public class PerkRewardRegistry {
             register(new ProgressReset("reset_" + type.toString().toLowerCase(), type));
         }
 
+        BiAction<String, Player> forget = (s, p) -> {
+            ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
+            if (recipe == null) return;
+            p.undiscoverRecipe(recipe.getKey());
+        };
+        BiAction<String, Player> discover = (s, p) -> {
+            ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
+            if (recipe == null) return;
+            p.discoverRecipe(recipe.getKey());
+        };
+
         register(new ProfileStringListAdd("perks_unlocked_add", "unlockedPerks", PowerProfile.class));
         register(new ProfileStringListRemove("perks_unlocked_remove", "unlockedPerks", PowerProfile.class));
         register(new ProfileStringListAdd("perks_fake_unlock_add", "fakeUnlockedPerks", PowerProfile.class));
@@ -56,8 +71,8 @@ public class PerkRewardRegistry {
         register(new ProfileStringListClear("perks_fake_unlock_clear", "fakeUnlockedPerks", PowerProfile.class));
         register(new ProfileStringListAdd("perks_locked_add", "permanentlyLockedPerks", PowerProfile.class));
         register(new ProfileStringListClear("perks_locked_clear", "permanentlyLockedPerks", PowerProfile.class));
-        register(new ProfileStringListAdd("recipes_unlock", "unlockedRecipes", PowerProfile.class));
-        register(new ProfileStringListRemove("recipes_lock", "unlockedRecipes", PowerProfile.class));
+        register(new ProfileStringListAdd("recipes_unlock", "unlockedRecipes", PowerProfile.class, discover, forget));
+        register(new ProfileStringListRemove("recipes_lock", "unlockedRecipes", PowerProfile.class, forget, discover));
         register(new ProfileStringListFill("recipes_unlock_all", "unlockedRecipes", PowerProfile.class, CustomRecipeRegistry::getAllRecipes));
         register(new ProfileStringListClear("recipes_lock_all", "unlockedRecipes", PowerProfile.class));
         register(new ProfileStringListAdd("enchanting_add_elemental_type", "elementalDamageTypes", EnchantingProfile.class));

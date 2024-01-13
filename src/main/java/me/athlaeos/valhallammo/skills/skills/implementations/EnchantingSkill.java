@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.EnchantmentClassification;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
@@ -32,6 +33,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -179,6 +181,32 @@ public class EnchantingSkill extends Skill implements Listener {
     // interacting with an anvil, and each would be calculating the max levels which is unnecessary.
 
     @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPrepareEnchant(PrepareItemEnchantEvent e) {
+        if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName()) || e.isCancelled() ||
+                WorldGuardHook.inDisabledRegion(e.getEnchanter().getLocation(), e.getEnchanter(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
+        Map<Material, Map<Integer, EnchantmentOffer[]>> existingMaterialOffers = storedEnchantmentOffers.getOrDefault(e.getEnchanter().getUniqueId(), new HashMap<>());
+        Map<Integer, EnchantmentOffer[]> existingLevelOffers = existingMaterialOffers.getOrDefault(e.getItem().getType(), new HashMap<>());
+        Player enchanter = e.getEnchanter();
+        if (!existingLevelOffers.containsKey(e.getEnchantmentBonus())){
+            int skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", enchanter, 10000, true);
+            skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", enchanter, 10000, true)));
+            double chance = AccumulativeStatManager.getStats("ENCHANTING_AMPLIFY_CHANCE", e.getEnchanter(), true);
+
+            EnchantingItemPropertyManager.scaleEnchantmentOffers(skill, e.getOffers(), chance);
+
+            existingLevelOffers.put(e.getEnchantmentBonus(), e.getOffers());
+            existingMaterialOffers.put(e.getItem().getType(), existingLevelOffers);
+            enchantmentOfferSkillLevels.put(e.getEnchanter().getUniqueId(), skill);
+            storedEnchantmentOffers.put(e.getEnchanter().getUniqueId(), existingMaterialOffers);
+        } else {
+            EnchantmentOffer[] storedOffers = existingLevelOffers.get(e.getEnchantmentBonus());
+            for (int i = 0; i < storedOffers.length && i < e.getOffers().length; i++){
+                e.getOffers()[i] = storedOffers[i];
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEnchantItem(EnchantItemEvent e) {
         if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName()) || e.isCancelled() ||
                 WorldGuardHook.inDisabledRegion(e.getEnchanter().getLocation(), e.getEnchanter(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
@@ -194,9 +222,10 @@ public class EnchantingSkill extends Skill implements Listener {
         double chance = AccumulativeStatManager.getCachedStats("ENCHANTING_AMPLIFY_CHANCE", enchanter, 10000, true);
 
         for (Enchantment en : e.getEnchantsToAdd().keySet()){
-            if (Utils.proc(chance, 0, false)) e.getEnchantsToAdd().put(en, EnchantingItemPropertyManager.getScaledLevel(en, skill, e.getEnchantsToAdd().get(en)));
+            if (Utils.proc(chance, 0, false)) {
+                e.getEnchantsToAdd().put(en, EnchantingItemPropertyManager.getScaledLevel(en, skill, e.getEnchantsToAdd().get(en)));
+            }
         }
-
 
         Map<Integer, EnchantmentOffer[]> cachedOffers = storedEnchantmentOffers.getOrDefault(enchanter.getUniqueId(), new HashMap<>()).getOrDefault(e.getItem().getType(), new HashMap<>());
         if (enchantmentOfferSkillLevels.getOrDefault(enchanter.getUniqueId(), 0) == skill) {
@@ -227,21 +256,6 @@ public class EnchantingSkill extends Skill implements Listener {
 
         storedEnchantmentOffers.remove(enchanter.getUniqueId());
         enchantmentOfferSkillLevels.remove(enchanter.getUniqueId());
-
-        if (e.getEnchanter().getGameMode() == GameMode.CREATIVE) return;
-        int consumed = e.whichButton() + 1;
-        consumed = Utils.randomAverage(consumed * profile.getLapisSaveChance());
-        if (consumed <= 0) return;
-        ItemStack slot = e.getInventory().getItem(1);
-        ItemStack lapis = new ItemStack(Material.LAPIS_LAZULI, consumed);
-        if (ItemUtils.isEmpty(slot)) e.getInventory().setItem(1, lapis);
-        else {
-            if (slot.isSimilar(lapis) && slot.getAmount() + lapis.getAmount() <= lapis.getType().getMaxStackSize()){
-                slot.setAmount(slot.getAmount() + lapis.getAmount());
-            } else {
-                ItemUtils.addItem(e.getEnchanter(), lapis, true);
-            }
-        }
     }
 
     private static final Collection<UUID> activeElementalBlade = new HashSet<>();

@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.dom;
 
 import org.bukkit.generator.structure.Structure;
+import org.bukkit.generator.structure.StructureType;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -89,6 +90,13 @@ public enum Structures {
     public static Structures fromStructure(Structure structure){
         for (Structures s : values()){
             if (s.getStructure().equals(structure)) return s;
+        }
+        return null;
+    }
+
+    public static Structures fromStructure(StructureType structure){
+        for (Structures s : values()){
+            if (s.getStructure().getStructureType().equals(structure)) return s;
         }
         return null;
     }

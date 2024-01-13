@@ -43,16 +43,18 @@ public class EntityCache {
     }
 
     public static void attemptCacheCleanup(){
-        if (lastCacheCleanup + CACHE_CLEANUP_DELAY < System.currentTimeMillis()){
-            Collection<UUID> uuids = new HashSet<>(cachedProperties.keySet());
-            uuids.forEach(u -> {
-                Entity entity = ValhallaMMO.getInstance().getServer().getEntity(u);
-                if (entity == null || !entity.isValid()){
-                    cachedProperties.remove(u);
-                    lastCacheRefreshMap.remove(u);
-                }
-            });
-            lastCacheCleanup = System.currentTimeMillis();
-        }
+        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+            if (lastCacheCleanup + CACHE_CLEANUP_DELAY < System.currentTimeMillis()){
+                Collection<UUID> uuids = new HashSet<>(cachedProperties.keySet());
+                uuids.forEach(u -> {
+                    Entity entity = ValhallaMMO.getInstance().getServer().getEntity(u);
+                    if (entity == null || !entity.isValid()){
+                        cachedProperties.remove(u);
+                        lastCacheRefreshMap.remove(u);
+                    }
+                });
+                lastCacheCleanup = System.currentTimeMillis();
+            }
+        });
     }
 }

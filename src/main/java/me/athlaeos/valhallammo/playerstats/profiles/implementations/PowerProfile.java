@@ -24,7 +24,7 @@ public class PowerProfile extends Profile {
         doubleStat("redeemableExperience", new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).perkReward().create()); // generic experience points that can be invested into any skill (except Power)
         intStat("itemCounterLimit", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
 
-        doubleStat("allSkillEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("allSkillEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).perkReward().create());
         floatStat("healthBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
         floatStat("healthMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("movementSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
@@ -114,22 +114,22 @@ public class PowerProfile extends Profile {
         intStat("parrySelfDebuffDuration", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).min(0).perkReward().create());
         intStat("parryCooldown", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).min(0).perkReward().create());
         floatStat("parryCooldownSuccessReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
-        floatStat("parryDamageReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("dismountChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusVegetable", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusSeasoning", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusAlcoholic", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusBeverage", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusSpoiled", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusSeafood", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusMagical", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusSweet", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusGrain", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusFruit", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusNuts", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusDairy", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusMeat", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
-        floatStat("foodBonusFats", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).min(0).perkReward().create());
+        floatStat("parryDamageReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("dismountChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusVegetable", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusSeasoning", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusAlcoholic", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusBeverage", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusSpoiled", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusSeafood", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusMagical", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusSweet", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusGrain", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusFruit", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusNuts", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusDairy", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusMeat", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusFats", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         booleanStat("badFoodImmune", new BooleanProperties(true, true));
 
         stringSetStat("unlockedPerks");

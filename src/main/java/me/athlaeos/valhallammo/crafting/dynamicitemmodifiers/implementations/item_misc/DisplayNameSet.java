@@ -94,7 +94,7 @@ public class DisplayNameSet extends DynamicItemModifier {
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 1) return "You must indicate the new name of the item, or 'null' for nothing";
         if (args[0].equalsIgnoreCase("null")) displayName = null;
-        else displayName = Utils.chat(args[0]);
+        else displayName = Utils.chat(args[0].replace("/_", " "));
         return null;
     }
 

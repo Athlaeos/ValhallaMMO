@@ -17,6 +17,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class AccumulativeStatManager {
@@ -54,7 +55,7 @@ public class AccumulativeStatManager {
         register("MOVEMENT_SPEED_BONUS", new SetBonusSource("GENERIC_MOVEMENT_SPEED"), new ProfileStatSource(PowerProfile.class, "movementSpeedBonus"), new GlobalBuffSource("movement_speed"), new PotionEffectSource("MOVEMENT_SPEED"));
         register("KNOCKBACK_RESISTANCE", new SetBonusSource("GENERIC_KNOCKBACK_RESISTANCE"), new ResistanceArmorWeightClassSource("knockback_resistance"), new ProfileStatSource(PowerProfile.class, "knockbackResistanceBonus"), new GlobalBuffSource("knockback_resistance"), new PotionEffectSource("KNOCKBACK_RESISTANCE"));
         register("TOUGHNESS_BONUS", new SetBonusSource("GENERIC_ARMOR_TOUGHNESS"), new ProfileStatSource(PowerProfile.class, "toughnessBonus"), new GlobalBuffSource("toughness_bonus"), new PotionEffectSource("ARMOR_TOUGHNESS_FLAT"));
-        registerOffensive("ATTACK_DAMAGE_BONUS", new SetBonusSource("GENERIC_ATTACK_DAMAGE"), new ProfileStatAttackerSource(PowerProfile.class, "attackDamageBonus"), new GlobalBuffSource("attack_damage_bonus"), new PotionEffectAttackerSource("EXTRA_ATTACK_DAMAGE"));
+        register("ATTACK_DAMAGE_BONUS", new SetBonusSource("GENERIC_ATTACK_DAMAGE"), new ProfileStatSource(PowerProfile.class, "attackDamageBonus"), new GlobalBuffSource("attack_damage_bonus"), new PotionEffectSource("EXTRA_ATTACK_DAMAGE"));
         register("ATTACK_SPEED_BONUS", new SetBonusSource("GENERIC_ATTACK_SPEED"), new ProfileStatWeightSource(HeavyWeaponsProfile.class, "attackSpeedMultiplier", WeightClass.HEAVY, false), new ProfileStatWeightSource(LightWeaponsProfile.class, "attackSpeedMultiplier", WeightClass.LIGHT, false), new MainHandPenalty("speed"), new ProfileStatSource(PowerProfile.class, "attackSpeedBonus"), new GlobalBuffSource("fraction_attack_speed_bonus"), new PotionEffectSource("ATTACK_SPEED"));
         register("LUCK_BONUS", new SetBonusSource("GENERIC_LUCK"), new ProfileStatSource(PowerProfile.class, "luckBonus"), new GlobalBuffSource("luck_bonus"), new PotionEffectSource("CUSTOM_LUCK"));
 
@@ -284,14 +285,14 @@ public class AccumulativeStatManager {
     public static void register(String stat, AccumulativeStatSource... s){
         StatCollector existingSource = sources.get(stat);
         if (existingSource == null) existingSource = new StatCollectorBuilder().addSources(s).build();
-        existingSource.getStatSources().addAll(Arrays.asList(s));
+        else existingSource.getStatSources().addAll(Arrays.asList(s));
         register(stat, existingSource);
     }
 
     public static void registerOffensive(String stat, AccumulativeStatSource... s){
         StatCollector existingSource = sources.get(stat);
         if (existingSource == null) existingSource = new StatCollectorBuilder().addSources(s).setAttackerPossessive().build();
-        existingSource.getStatSources().addAll(Arrays.asList(s));
+        else existingSource.getStatSources().addAll(Arrays.asList(s));
         register(stat, existingSource);
     }
 
@@ -447,21 +448,27 @@ public class AccumulativeStatManager {
      * @return true if the stat is cached and unexpired, false otherwise
      */
     private static boolean isStatCached(Entity e, String stat){
-        if (lastMapCleanup + 120000 < System.currentTimeMillis()){
-            // cleaning up map every 2 minutes
-            Map<UUID, Map<String, Map.Entry<Long, Double>>> clone = new HashMap<>(statCache);
-            for (UUID uuid : clone.keySet()){
-                Entity entity = ValhallaMMO.getInstance().getServer().getEntity(uuid);
-                if (entity != null && !entity.isValid()) statCache.remove(entity.getUniqueId()); // remove invalid entities from the map
-            }
-            lastMapCleanup = System.currentTimeMillis();
-        }
+        attemptMapCleanup();
         if (statCache.containsKey(e.getUniqueId())){
             if (statCache.getOrDefault(e.getUniqueId(), new HashMap<>()).get(stat) != null){
                 return statCache.get(e.getUniqueId()).get(stat).getKey() > System.currentTimeMillis();
             }
         }
         return false;
+    }
+
+    private static void attemptMapCleanup(){
+        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+            if (lastMapCleanup + 120000 < System.currentTimeMillis()){
+                // cleaning up map every 2 minutes
+                Map<UUID, Map<String, Map.Entry<Long, Double>>> clone = new HashMap<>(statCache);
+                for (UUID uuid : clone.keySet()){
+                    Entity entity = ValhallaMMO.getInstance().getServer().getEntity(uuid);
+                    if (entity != null && !entity.isValid()) statCache.remove(entity.getUniqueId()); // remove invalid entities from the map
+                }
+                lastMapCleanup = System.currentTimeMillis();
+            }
+        });
     }
 
     public static void resetCache(Entity e){

@@ -648,7 +648,7 @@ public abstract class Skill {
                 if (!silent){
                     if (specialLevelingMessages.containsKey(i)){
                         for (String message : specialLevelingMessages.get(i)){
-                            p.sendMessage(PlaceholderRegistry.parse(Utils.chat(message), p));
+                            p.sendMessage(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(Utils.chat(message), p), p));
                         }
                     }
                 }
@@ -747,7 +747,9 @@ public abstract class Skill {
             }
         }
 
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p));
+        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
+                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p))
+        );
     }
 
     private final boolean perksForgettable = ConfigManager.getConfig("config.yml").reload().get().getBoolean("forgettable_perks");

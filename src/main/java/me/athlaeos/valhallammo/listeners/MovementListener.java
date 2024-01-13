@@ -39,14 +39,14 @@ public class MovementListener implements Listener {
             EntityAttributeStats.updateStats(e.getPlayer());
 
             AttributeInstance armorInstance = e.getPlayer().getAttribute(Attribute.GENERIC_ARMOR);
-            EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_nullifier", Attribute.GENERIC_ARMOR);
-            EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_display", Attribute.GENERIC_ARMOR);
+            EntityUtils.removeUniqueAttribute(e.getPlayer(), EntityAttributeStats.ARMOR_NULLIFIER, "armor_nullifier", Attribute.GENERIC_ARMOR);
+            EntityUtils.removeUniqueAttribute(e.getPlayer(), EntityAttributeStats.ARMOR_DISPLAY, "armor_display", Attribute.GENERIC_ARMOR);
             if (armorInstance != null){
                 double totalArmor = AccumulativeStatManager.getCachedStats("ARMOR_TOTAL", e.getPlayer(), 10000, true);
                 int scale = ValhallaMMO.getPluginConfig().getInt("armor_scale", 50);
                 double newArmor = Math.max(0, Math.min(20, (totalArmor / scale) * 20));
-                EntityUtils.addUniqueAttribute(e.getPlayer(), "armor_nullifier", Attribute.GENERIC_ARMOR, -armorInstance.getValue(), AttributeModifier.Operation.ADD_NUMBER); // sets armor bar to 0
-                EntityUtils.addUniqueAttribute(e.getPlayer(), "armor_display", Attribute.GENERIC_ARMOR, newArmor, AttributeModifier.Operation.ADD_NUMBER); // then increases armor to match a custom scale
+                EntityUtils.addUniqueAttribute(e.getPlayer(), EntityAttributeStats.ARMOR_NULLIFIER, "armor_nullifier", Attribute.GENERIC_ARMOR, -armorInstance.getValue(), AttributeModifier.Operation.ADD_NUMBER); // sets armor bar to 0
+                EntityUtils.addUniqueAttribute(e.getPlayer(), EntityAttributeStats.ARMOR_DISPLAY, "armor_display", Attribute.GENERIC_ARMOR, newArmor, AttributeModifier.Operation.ADD_NUMBER); // then increases armor to match a custom scale
             }
 
             Timer.setCooldown(e.getPlayer().getUniqueId(), 10000, "delay_movement_update");
@@ -63,9 +63,9 @@ public class MovementListener implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
         if (e.isSneaking()){
             double sneakSpeedBonus = AccumulativeStatManager.getCachedStats("SNEAK_MOVEMENT_SPEED_BONUS", e.getPlayer(), 10000, true);
-            EntityUtils.addUniqueAttribute(e.getPlayer(), "valhalla_sneak_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED, sneakSpeedBonus, AttributeModifier.Operation.ADD_SCALAR);
+            EntityUtils.addUniqueAttribute(e.getPlayer(), EntityAttributeStats.SNEAK_MOVEMENT, "valhalla_sneak_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED, sneakSpeedBonus, AttributeModifier.Operation.ADD_SCALAR);
         } else {
-            EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_sneak_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
+            EntityUtils.removeUniqueAttribute(e.getPlayer(), EntityAttributeStats.SNEAK_MOVEMENT, "valhalla_sneak_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
         }
     }
 
@@ -75,9 +75,9 @@ public class MovementListener implements Listener {
         if (e.isSprinting()){
             double sneakSpeedBonus = AccumulativeStatManager.getCachedStats("SPRINT_MOVEMENT_SPEED_BONUS", e.getPlayer(), 10000, true);
 
-            EntityUtils.addUniqueAttribute(e.getPlayer(), "valhalla_sprint_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED, sneakSpeedBonus, AttributeModifier.Operation.ADD_SCALAR);
+            EntityUtils.addUniqueAttribute(e.getPlayer(), EntityAttributeStats.SPRINT_MOVEMENT, "valhalla_sprint_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED, sneakSpeedBonus, AttributeModifier.Operation.ADD_SCALAR);
         } else {
-            EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_sprint_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
+            EntityUtils.removeUniqueAttribute(e.getPlayer(), EntityAttributeStats.SPRINT_MOVEMENT, "valhalla_sprint_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
         }
     }
 

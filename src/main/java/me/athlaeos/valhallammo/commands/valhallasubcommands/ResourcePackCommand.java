@@ -1,6 +1,5 @@
 package me.athlaeos.valhallammo.commands.valhallasubcommands;
 
-import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.localization.TranslationManager;
@@ -94,7 +93,7 @@ public class ResourcePackCommand implements Command {
 
     @Override
     public String getFailureMessage(String[] args) {
-        return "&c/valhalla resourcepack";
+        return "/valhalla resourcepack <enable/disable/setup/stophost/resetplayer/reload>";
     }
 
     @Override

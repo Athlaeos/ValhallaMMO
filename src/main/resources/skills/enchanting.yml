@@ -43,6 +43,6 @@ scalings:
   quick_charge: '(3/300) * %rating% - 2,ADD_ON_DEFAULT,none,none'
   riptide: '(4/300) * %rating% - 2,ADD_ON_DEFAULT,none,none'
   soul_speed: '(3/300) * %rating% - 1,ADD_ON_DEFAULT,none,none'
-  sweeping_edge: '(3/300) * %rating% - 2,ADD_ON_DEFAULT,none,none'
+  sweeping: '(3/300) * %rating% - 2,ADD_ON_DEFAULT,none,none'
   thorns: '(2/300) * %rating% - 1,ADD_ON_DEFAULT,none,none'
   swift_sneak: '(2/300) * %rating% - 1,ADD_ON_DEFAULT,none,none'

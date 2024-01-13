@@ -63,9 +63,9 @@ public class LeaderboardManager {
             // placeholder format leaderboard_<leaderboard>_<place>
             // place from 1-10
             for (int i = 1; i <= 10; i++){
-                PlaceholderRegistry.registerPlaceholder(new LeaderboardPlaceholder("leaderboard_" + leaderboard + "_" + i, leaderboard, i));
+                PlaceholderRegistry.registerPlaceholder(new LeaderboardPlaceholder("%leaderboard_" + leaderboard + "_" + i + "%", leaderboard, i));
             }
-            PlaceholderRegistry.registerPlaceholder(new LeaderboardPlacementPlaceholder("leaderboard_" + leaderboard + "_placement", leaderboard));
+            PlaceholderRegistry.registerPlaceholder(new LeaderboardPlacementPlaceholder("%leaderboard_" + leaderboard + "_placement%", leaderboard));
         }
     }
 
@@ -86,19 +86,26 @@ public class LeaderboardManager {
         cachedLeaderboardsByPlayer.put(l.key, personalEntries);
     }
 
-    public static void clearCache(){
-        cachedLeaderboardsByRank.clear();
-        cachedLeaderboardsByPlayer.clear();
+    public static void refreshLeaderboards(){
+        for (String leaderboard : LeaderboardManager.getLeaderboards().keySet()){
+            LeaderboardManager.fetchLeaderboard(leaderboard, false, (map) -> {
+                cachedLeaderboardsByRank.put(leaderboard, new HashMap<>());
+                cachedLeaderboardsByPlayer.put(leaderboard, new HashMap<>());
+                cache(leaderboards.get(leaderboard), map);
+            });
+        }
     }
 
-    public static void fetchLeaderboard(String leaderboard, Action<Map<Integer, LeaderboardEntry>> callback){
+    public static void fetchLeaderboard(String leaderboard, boolean cache, Action<Map<Integer, LeaderboardEntry>> callback){
         Leaderboard l = leaderboards.get(leaderboard);
         if (l == null || !(ProfileRegistry.getPersistence() instanceof LeaderboardCompatible f)) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
-            if (cachedLeaderboardsByRank.containsKey(l.key)) callback.act(cachedLeaderboardsByRank.get(l.key));
-            else {
-                cache(l, f.queryLeaderboardEntries(l));
-                callback.act(cachedLeaderboardsByRank.getOrDefault(l.key, new HashMap<>()));
+            if (cachedLeaderboardsByRank.containsKey(l.key)) {
+                if (callback != null) callback.act(cachedLeaderboardsByRank.get(l.key));
+            } else {
+                Map<Integer, LeaderboardEntry> results = f.queryLeaderboardEntries(l);
+                if (cache) cache(l, results);
+                if (callback != null) callback.act(results);
             }
         });
     }
@@ -116,7 +123,7 @@ public class LeaderboardManager {
 
     public static void sendLeaderboard(CommandSender s, String leaderboard, int page){
         Leaderboard l = leaderboards.get(leaderboard);
-        fetchLeaderboard(l.key, (r) -> {
+        fetchLeaderboard(l.key, true, (r) -> {
             int realPage = Math.min((int) Math.ceil(r.size() / (double) pageEntryLimit), page);
             Utils.sendMessage(s, TranslationManager.translatePlaceholders(l.displayName).replace("%page%", String.valueOf(realPage)));
             for (int rank = ((realPage - 1) * pageEntryLimit) + 1; rank <= (realPage) * pageEntryLimit; rank++){

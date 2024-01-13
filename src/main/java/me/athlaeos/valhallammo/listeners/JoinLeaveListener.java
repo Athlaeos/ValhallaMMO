@@ -1,16 +1,10 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicSmithingRecipe;
 import me.athlaeos.valhallammo.entities.EntityAttributeStats;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
-import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.utility.GlobalEffect;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import org.bukkit.NamespacedKey;
@@ -37,7 +31,8 @@ public class JoinLeaveListener implements Listener {
         if (health > 0){
             AttributeInstance maxHealth = e.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH);
             if (maxHealth != null){
-                e.getPlayer().setHealth(Math.max(maxHealth.getValue(), health));
+                if (maxHealth.getValue() < health) health = maxHealth.getValue();
+                e.getPlayer().setHealth(health);
             }
         }
     }
@@ -47,15 +42,15 @@ public class JoinLeaveListener implements Listener {
         // the following code is to remove valhallammo's attribute modifiers off players when they log off
         // this is to prevent, in the case valhallammo is being uninstalled, no unintended attributes remain
         // stuck on the player.
-        EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+        EntityUtils.removeUniqueAttribute(e.getPlayer(), EntityAttributeStats.NEGATIVE_KNOCKBACK, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
 
         e.getPlayer().getPersistentDataContainer().set(HEALTH, PersistentDataType.DOUBLE, e.getPlayer().getHealth());
         for (EntityAttributeStats.AttributeDataHolder holder : EntityAttributeStats.getAttributesToUpdate().values()){
-            EntityUtils.removeUniqueAttribute(e.getPlayer(), holder.name(), holder.type());
+            EntityUtils.removeUniqueAttribute(e.getPlayer(), holder.uuid(), holder.name(), holder.type());
         }
 
-        EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_nullifier", Attribute.GENERIC_ARMOR);
-        EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_display", Attribute.GENERIC_ARMOR);
+        EntityUtils.removeUniqueAttribute(e.getPlayer(), EntityAttributeStats.ARMOR_NULLIFIER, "armor_nullifier", Attribute.GENERIC_ARMOR);
+        EntityUtils.removeUniqueAttribute(e.getPlayer(), EntityAttributeStats.ARMOR_DISPLAY, "armor_display", Attribute.GENERIC_ARMOR);
 
         ProfileRegistry.getPersistence().saveProfile(e.getPlayer());
     }

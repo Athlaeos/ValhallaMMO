@@ -119,18 +119,18 @@ public class EntityUtils {
         player.giveExp(xp);
     }
 
-
-    public static void addUniqueAttribute(LivingEntity e, String identifier, Attribute type, double amount, AttributeModifier.Operation operation){
+    // TODO testing by name is outdated, remove after some time
+    public static void addUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type, double amount, AttributeModifier.Operation operation){
         AttributeInstance instance = e.getAttribute(type);
         if (instance != null){
-            instance.getModifiers().stream().filter(m -> m.getName().equals(identifier)).forEach(instance::removeModifier);
-            if (amount != 0) instance.addModifier(new AttributeModifier(identifier, amount, operation));
+            instance.getModifiers().stream().filter(m -> m != null && (m.getUniqueId().equals(uuid) || m.getName().equals(identifier))).forEach(instance::removeModifier);
+            if (amount != 0) instance.addModifier(new AttributeModifier(uuid, identifier, amount, operation));
         }
     }
 
-    public static void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type){
+    public static void removeUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type){
         AttributeInstance instance = e.getAttribute(type);
-        if (instance != null) instance.getModifiers().stream().filter(m -> m.getName().equals(identifier)).forEach(instance::removeModifier);
+        if (instance != null) instance.getModifiers().stream().filter(m -> m != null && (m.getUniqueId().equals(uuid) || m.getName().equals(identifier))).forEach(instance::removeModifier);
     }
 
     public static boolean addExperience(Player player, int amount){

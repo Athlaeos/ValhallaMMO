@@ -160,7 +160,9 @@ public class ItemUtils {
 
         Arrays.stream(Material.values()).filter(m -> !m.isAir()).forEach(nonAirMaterials::add);
         nonAirMaterialsArray = nonAirMaterials.toArray(new Material[0]);
+    }
 
+    public static void startProjectileRunnableCache(){
         // cleans up the stored projectile cache every 10 seconds, removing items if they've been in there for 10 seconds or longer
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
             for (UUID uuid : new HashMap<>(storedProjectileCache).keySet()){

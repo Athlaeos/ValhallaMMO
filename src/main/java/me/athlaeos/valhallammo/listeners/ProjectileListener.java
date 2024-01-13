@@ -125,15 +125,23 @@ public class ProjectileListener implements Listener {
         ArrowBehaviorRegistry.execute(e, ArrowBehaviorRegistry.getBehaviors(ItemUtils.getItemMeta(e.getConsumable())).values());
     }
 
-    public static ItemBuilder getBow(AbstractArrow arrow){
-        return projectileShotByMap.get(arrow.getUniqueId());
+    public static ItemBuilder getBow(Projectile projectile){
+        return projectileShotByMap.get(projectile.getUniqueId());
+    }
+
+    public static void setBow(Projectile projectile, ItemBuilder bow){
+        projectileShotByMap.put(projectile.getUniqueId(), bow);
+    }
+
+    public static void removeBow(Projectile projectile){
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> projectileShotByMap.remove(projectile.getUniqueId()), 2L);
     }
 
     private final Map<UUID, Integer> crossbowReloads = new HashMap<>();
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onShoot(EntityShootBowEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getProjectile() instanceof Projectile pr)) return;
         ItemStack bow = e.getBow();
         if (e.getProjectile() instanceof AbstractArrow a && a.isShotFromCrossbow() && a.getPickupStatus() != AbstractArrow.PickupStatus.ALLOWED && !ItemUtils.isEmpty(bow) && bow.containsEnchantment(Enchantment.MULTISHOT)){
             setMultishotArrow(a); // it's safe to assume these are secondary multishot arrows
@@ -146,7 +154,7 @@ public class ProjectileListener implements Listener {
         ItemStack consumable = e.getConsumable();
         if (!ItemUtils.isEmpty(consumable) && !ItemUtils.isEmpty(bow)){
             ItemBuilder builderBow = new ItemBuilder(bow);
-            projectileShotByMap.put(e.getProjectile().getUniqueId(), builderBow);
+            setBow(pr, builderBow);
 
             ItemMeta consumableMeta = ItemUtils.getItemMeta(consumable);
             e.getProjectile().setVelocity(e.getProjectile().getVelocity().multiply(speedMultiplier));
@@ -215,7 +223,7 @@ public class ProjectileListener implements Listener {
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> l.setNoDamageTicks(originalDamageTicks), 1L);
         }
 
-        projectileShotByMap.remove(e.getEntity().getUniqueId()); // if an arrow hits anything, the bow it was shot from is forgotten
+        removeBow(e.getEntity()); // if an arrow hits anything, the bow it was shot from is forgotten
 
         ItemBuilder stored = ItemUtils.getStoredItem(e.getEntity());
         if (stored == null) return;
@@ -226,7 +234,7 @@ public class ProjectileListener implements Listener {
     public void onPickup(PlayerPickupArrowEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
         if (!(e.getArrow() instanceof Trident)){
-            projectileShotByMap.remove(e.getArrow().getUniqueId());
+            removeBow(e.getArrow());
             Item i = e.getItem();
             ItemBuilder stored = ItemUtils.getStoredItem(e.getArrow());
             if (stored == null) return;

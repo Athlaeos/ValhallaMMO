@@ -104,7 +104,7 @@ public class PartyCommand implements TabExecutor {
                 }
                 PartyManager.ErrorStatus inviteStatus = PartyManager.invite(p, target);
                 if (inviteStatus != null){
-                    inviteStatus.sendErrorMessage(p);
+                    inviteStatus.sendErrorMessage(p, target);
                     return true;
                 }
                 Utils.sendMessage(p, TranslationManager.getTranslation("status_command_party_invite_sent"));
@@ -140,7 +140,7 @@ public class PartyCommand implements TabExecutor {
                 }
                 PartyManager.ErrorStatus inviteStatus = PartyManager.changeLeader(p, target);
                 if (inviteStatus != null){
-                    inviteStatus.sendErrorMessage(p);
+                    inviteStatus.sendErrorMessage(p, target);
                     return true;
                 }
                 Utils.sendMessage(p, TranslationManager.getTranslation("status_command_party_leadership_transferred"));
@@ -155,7 +155,7 @@ public class PartyCommand implements TabExecutor {
                 }
                 PartyManager.ErrorStatus rankChangeStatus = PartyManager.setMemberRank(p, target, args[2]);
                 if (rankChangeStatus != null){
-                    rankChangeStatus.sendErrorMessage(p);
+                    rankChangeStatus.sendErrorMessage(p, target);
                     return true;
                 }
                 Utils.sendMessage(p, TranslationManager.getTranslation("status_command_party_rank_changed"));
@@ -249,7 +249,7 @@ public class PartyCommand implements TabExecutor {
                 }
                 PartyManager.ErrorStatus transferStatus = PartyManager.shareItem(p, target);
                 if (transferStatus != null){
-                    transferStatus.sendErrorMessage(p);
+                    transferStatus.sendErrorMessage(p, target);
                     return true;
                 }
                 Utils.sendMessage(p, TranslationManager.getTranslation("status_command_party_item_shared"));

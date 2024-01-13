@@ -16,16 +16,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GlobalEffect extends BukkitRunnable {
-
+    private static GlobalEffect runnable = null;
     private static final Map<String, EffectProperties> activeGlobalEffects = new HashMap<>();
     private static final Collection<String> validEffects = new HashSet<>();
     private static final int globalbuff_bossbar_duration = ConfigManager.getConfig("config.yml").reload().get().getInt("globalbuff_bossbar_duration", 10);
     private static final int globalbuff_cycle_pause = ConfigManager.getConfig("config.yml").reload().get().getInt("globalbuff_cycle_pause", 300);
 
-    public GlobalEffect(){
-        this.runTaskTimer(ValhallaMMO.getInstance(), 1L, 20L);
+    public static void initializeRunnable(){
+        if (runnable != null) runnable.cancel();
+        runnable = new GlobalEffect();
+        runnable.runTaskTimer(ValhallaMMO.getInstance(), 1L, 20L);
     }
-
 
     private static List<EffectProperties> currentLoopEffects = new ArrayList<>();
     private static int currentLoopIndex = 0;

@@ -54,6 +54,7 @@ public class CustomRecipeRegistry {
     private static final Map<Material, Collection<ImmersiveCraftingRecipe>> immersiveRecipesByBlock = new HashMap<>();
     private static final Collection<String> allRecipes = new HashSet<>();
     private static final Map<NamespacedKey, ValhallaKeyedRecipe> allKeyedRecipes = new HashMap<>();
+    private static final Map<String, ValhallaKeyedRecipe> allKeyedRecipesByName = new HashMap<>();
 
     private static boolean changesMade = false;
 
@@ -189,6 +190,7 @@ public class CustomRecipeRegistry {
             cookingRecipesByKey.put(recipe.getKey(), recipe);
             allRecipes.add(recipe.getName().toLowerCase());
             allKeyedRecipes.put(recipe.getKey(), recipe);
+            allKeyedRecipesByName.put(recipe.getName(), recipe);
             recipe.registerRecipe();
             CookingListener.campfireRecipeCache.clear();
             CookingListener.furnaceRecipeCache.clear();
@@ -204,6 +206,7 @@ public class CustomRecipeRegistry {
             gridRecipesByIngredientQuantities.put(recipe.getItems().size(), existing);
             allRecipes.add(recipe.getName().toLowerCase());
             allKeyedRecipes.put(recipe.getKey(), recipe);
+            allKeyedRecipesByName.put(recipe.getName(), recipe);
             recipe.registerRecipe();
         }
     }
@@ -213,6 +216,7 @@ public class CustomRecipeRegistry {
             smithingRecipesByKey.put(recipe.getKey(), recipe);
             allRecipes.add(recipe.getName().toLowerCase());
             allKeyedRecipes.put(recipe.getKey(), recipe);
+            allKeyedRecipesByName.put(recipe.getName(), recipe);
             recipe.registerRecipe();
             SmithingTableListener.smithingRecipeCache.clear();
         }
@@ -332,6 +336,10 @@ public class CustomRecipeRegistry {
 
     public static Map<NamespacedKey, ValhallaKeyedRecipe> getAllKeyedRecipes() {
         return allKeyedRecipes;
+    }
+
+    public static Map<String, ValhallaKeyedRecipe> getAllKeyedRecipesByName() {
+        return allKeyedRecipesByName;
     }
 
     public static Map<Material, Collection<DynamicBrewingRecipe>> getBrewingRecipesByIngredient() {

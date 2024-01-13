@@ -33,7 +33,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -108,8 +107,7 @@ public class DiggingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemsDropped(BlockDropItemEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() ||
-                !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlockState()) ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING)) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("DIGGING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops

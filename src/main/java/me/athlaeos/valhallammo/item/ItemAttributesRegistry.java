@@ -34,7 +34,7 @@ public class ItemAttributesRegistry {
         ModifierRegistry.register(new DefaultAttributeAdd("custom_durability_set", "CUSTOM_MAX_DURABILITY", 1, 25, Material.DIAMOND));
         ModifierRegistry.register(new DefaultAttributeRemove("custom_durability_remove", "CUSTOM_MAX_DURABILITY", Material.COAL));
 
-        register(new AttributeDisplayWrapper("BOW_STRENGTH", StatFormat.PERCENTILE_BASE_1_P1, "\uEE00", (i) -> i >= 0, Material.BOW, Material.CROSSBOW).offset(1).addModifier(Material.BOW));
+        register(new AttributeDisplayWrapper("BOW_STRENGTH", StatFormat.PERCENTILE_BASE_1_P1, "\uEE00", (i) -> i >= 0, Material.BOW, Material.CROSSBOW).addModifier(Material.BOW));
         register(new AttributeDisplayWrapper("ARROW_DAMAGE", StatFormat.FLOAT_P1, "\uEE01", (i) -> i >= 0).addModifier(Material.ARROW, 0.01, 0.25));
         register(new AttributeDisplayWrapper("AMMO_CONSUMPTION", StatFormat.PERCENTILE_BASE_1_P1, "\uEE02", (i) -> i <= 0).max(0D).addModifier(Material.SPECTRAL_ARROW));
         register(new AttributeDisplayWrapper("ARROW_VELOCITY", StatFormat.PERCENTILE_BASE_1_P1, "\uEE03", (i) -> i >= 0).addModifier(Material.CROSSBOW));
@@ -111,8 +111,8 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("GENERIC_LUCK", "\uEE4F", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.RABBIT_FOOT, 0.1, 1));
         register(new AttributeDisplayWrapper("GENERIC_ARMOR", "\uEE50", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.IRON_CHESTPLATE, 0.1, 1));
         register(new AttributeDisplayWrapper("GENERIC_ARMOR_TOUGHNESS", "\uEE52", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.DIAMOND_CHESTPLATE, 0.1, 1));
-        register(new AttributeDisplayWrapper("GENERIC_ATTACK_DAMAGE", "\uEE54", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).offset(-1).addModifier(Material.IRON_SWORD, 0.1, 1));
-        register(new AttributeDisplayWrapper("GENERIC_ATTACK_SPEED", "\uEE55", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).offset(-4).addModifier(Material.GOLDEN_SWORD, 0.1, 1));
+        register(new AttributeDisplayWrapper("GENERIC_ATTACK_DAMAGE", "\uEE54", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.IRON_SWORD, 0.1, 1));
+        register(new AttributeDisplayWrapper("GENERIC_ATTACK_SPEED", "\uEE55", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.GOLDEN_SWORD, 0.1, 1));
         register(new AttributeDisplayWrapper("GENERIC_KNOCKBACK_RESISTANCE", "\uEE56", (i) -> i >= 0, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).setOperation(AttributeModifier.Operation.ADD_SCALAR).addModifier(Material.NETHERITE_CHESTPLATE));
         register(new AttributeDisplayWrapper("GENERIC_MAX_HEALTH", "\uEE57", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.GOLDEN_APPLE, 0.1, 1));
         register(new AttributeDisplayWrapper("GENERIC_MOVEMENT_SPEED", "\uEE59", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).setOperation(AttributeModifier.Operation.ADD_SCALAR).addModifier(Material.SUGAR));

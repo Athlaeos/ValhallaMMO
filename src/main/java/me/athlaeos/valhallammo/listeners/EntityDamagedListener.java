@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.CustomDamageType;
 import me.athlaeos.valhallammo.hooks.DamageIndicator;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.EntityEffect;
 import org.bukkit.attribute.Attribute;
@@ -11,6 +12,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -42,11 +44,15 @@ public class EntityDamagedListener implements Listener {
             }
             lastDamageTakenMap.put(l.getUniqueId(), customDamage);
             boolean applyImmunity = l.getHealth() - customDamage > 0;
-            if (customDamage > 0 && ValhallaMMO.isHookFunctional(DamageIndicator.class)) {
+            if (customDamage > 0 && ValhallaMMO.isHookFunctional(DamageIndicator.class) && DamageIndicator.isDummy(l)) {
                 l.playEffect(EntityEffect.ARMOR_STAND_HIT);
                 if (DamageIndicator.update(l, type, customDamage)) customDamage = 0;
                 e.setDamage(0);
                 applyImmunity = true;
+            }
+            if (e instanceof EntityDamageByEntityEvent d && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking() &&
+                    EntityUtils.isEntityFacing(p, d.getDamager().getLocation(), EntityAttackListener.getFacingAngleCos())) {
+                return;
             }
             final double damage = customDamage;
             if (applyImmunity){

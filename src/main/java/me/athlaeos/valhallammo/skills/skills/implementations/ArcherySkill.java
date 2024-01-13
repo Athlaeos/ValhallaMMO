@@ -165,7 +165,8 @@ public class ArcherySkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onArrowHit(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
-        if (!(e.getDamager() instanceof AbstractArrow a) || !(a.getShooter() instanceof Player p) || a instanceof Trident || !(e.getEntity() instanceof LivingEntity v)) return;
+        if (!(e.getDamager() instanceof AbstractArrow a) || !(a.getShooter() instanceof Player p) || a instanceof Trident ||
+                !(e.getEntity() instanceof LivingEntity v)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
 
         ArcheryProfile profile = ProfileCache.getOrCache(p, ArcheryProfile.class);
@@ -173,8 +174,8 @@ public class ArcherySkill extends Skill implements Listener {
         if (bow == null) return;
         boolean hasInfinity = bow.getItem().containsEnchantment(Enchantment.ARROW_INFINITE);
         int distance = (int) p.getLocation().distance(v.getLocation());
-        int damageDistance = (int) (Math.min(damageDistanceLimit, distance) / 10D);
-        int expDistance = (int) (Math.min(expDistanceLimit, distance) / 10D);
+        int damageDistance = (int) Math.ceil(Math.min(damageDistanceLimit, distance) / 10D);
+        int expDistance = (int) Math.ceil(Math.min(expDistanceLimit, distance) / 10D);
 
         double damage = e.getDamage();
         double damageDistanceMultiplier = (1 + profile.getDistanceDamageBase()) + (damageDistance * profile.getDistanceDamageBonus());

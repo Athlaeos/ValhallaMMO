@@ -21,9 +21,21 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 public class BlockListener implements Listener {
+
+    public BlockListener(){
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+            for (Block b : blocksToConsiderBroken) {
+                BlockStore.setPlaced(b, false);
+                BlockStore.setBreakReason(b, BlockStore.BreakReason.MINED);
+            }
+            blocksToConsiderBroken.clear();
+        }, 0L, 5L);
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockForm(BlockFormEvent e){
@@ -63,7 +75,7 @@ public class BlockListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         if (e instanceof BlockMultiPlaceEvent me){
-            me.getReplacedBlockStates().stream().filter(b -> !b.getType().isAir()).forEach(b -> BlockStore.setPlaced(b.getBlock(), true));
+            me.getReplacedBlockStates().forEach(b -> BlockStore.setPlaced(b.getBlock(), true));
         } else {
             if (e.getBlock().getBlockData() instanceof Bisected bisected) {
                 if (bisected.getHalf() == Bisected.Half.TOP) BlockStore.setPlaced(e.getBlock().getRelative(BlockFace.DOWN), true);
@@ -72,22 +84,21 @@ public class BlockListener implements Listener {
         }
     }
 
+    private static final Collection<Block> blocksToConsiderBroken = new HashSet<>();
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
         if (e.getBlock().getBlockData() instanceof Bisected bisected) {
             if (bisected.getHalf() == Bisected.Half.TOP) {
                 Block down = e.getBlock().getRelative(BlockFace.DOWN);
-                BlockStore.setPlaced(down, false);
-                BlockStore.setBreakReason(down, BlockStore.BreakReason.MINED);
+                blocksToConsiderBroken.add(down);
             } else {
                 Block up = e.getBlock().getRelative(BlockFace.UP);
-                BlockStore.setPlaced(up, false);
-                BlockStore.setBreakReason(up, BlockStore.BreakReason.MINED);
+                blocksToConsiderBroken.add(up);
             }
         } else {
-            BlockStore.setPlaced(e.getBlock(), false);
-            BlockStore.setBreakReason(e.getBlock(), BlockStore.BreakReason.MINED);
+            blocksToConsiderBroken.add(e.getBlock());
         }
     }
 

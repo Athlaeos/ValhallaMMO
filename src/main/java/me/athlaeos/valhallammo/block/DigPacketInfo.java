@@ -102,7 +102,8 @@ public class DigPacketInfo {
         if (fatigue != null && fatigue.getAmplifier() != -1) multiplier *= MathUtils.pow(0.3, Math.min(fatigue.getAmplifier() + 1, 4));
 
         if (isInWater(digger) && properties.getCombinedEnchantments().getOrDefault(Enchantment.WATER_WORKER, 0) > 0) multiplier /= 5;
-        if (!EntityUtils.isOnGround(digger)) multiplier /= 5;
+        //if (!EntityUtils.isOnGround(digger)) multiplier /= 5;
+        if (digger.getFallDistance() > 1) multiplier /= 5;
 
         double damage = multiplier / hardness;
 

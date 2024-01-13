@@ -41,7 +41,7 @@ public class AlchemyProfile extends Profile {
         intStat("transmutationRadius", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
         stringSetStat("unlockedTransmutations");
 
-        doubleStat("alchemyEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("alchemyEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).perkReward().create());
     }
 
     public int getTransmutationRadius() { return getInt("transmutationRadius"); }

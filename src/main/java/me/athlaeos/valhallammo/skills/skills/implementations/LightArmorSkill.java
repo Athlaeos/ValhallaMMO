@@ -103,10 +103,11 @@ public class LightArmorSkill extends Skill implements Listener {
         LightArmorProfile profile = ProfileCache.getOrCache(p, LightArmorProfile.class);
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            int count = EntityCache.getAndCacheProperties(p).getLightArmorCount();
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(trueDamager.getType(), 1D);
             double lastDamageTaken = EntityDamagedListener.getLastDamageTaken(p.getUniqueId());
             double exp = expPerDamage * lastDamageTaken * entityExpMultiplier;
-            addEXP(p, exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+            addEXP(p, count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
             if (profile.isAdrenalineUnlocked() && profile.getAdrenalineLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_light_armor_adrenaline") &&
                     !WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_ADRENALINE)){

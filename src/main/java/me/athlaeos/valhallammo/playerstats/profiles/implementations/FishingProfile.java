@@ -20,7 +20,7 @@ public class FishingProfile extends Profile {
         floatStat("fishingSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("baitSaveChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
 
-        doubleStat("fishingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("fishingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).perkReward().create());
     }
 
     public float getFishingDrops() { return getFloat("fishingDrops"); }

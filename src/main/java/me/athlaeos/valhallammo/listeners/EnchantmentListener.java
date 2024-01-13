@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -13,14 +14,31 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Map;
 
 public class EnchantmentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
+    public void onPrepareEnchant(PrepareItemEnchantEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName()) || e.isCancelled()) return;
+        ItemStack item = e.getItem();
+        ItemMeta meta = ItemUtils.getItemMeta(item);
+        if (CustomFlag.hasFlag(meta, CustomFlag.UNENCHANTABLE)) e.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onEnchant(EnchantItemEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName()) || e.isCancelled()) return;
+        ItemStack item = e.getItem();
+        ItemMeta meta = ItemUtils.getItemMeta(item);
+        if (CustomFlag.hasFlag(meta, CustomFlag.UNENCHANTABLE)) {
+            e.setCancelled(true);
+            return;
+        }
+
         Player enchanter = e.getEnchanter();
         int lapisConsumed = e.whichButton() + 1;
 

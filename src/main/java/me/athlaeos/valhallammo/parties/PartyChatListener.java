@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class PartyChatListener implements Listener {
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent e){
         if (!e.getMessage().startsWith("pc:") && !PartyManager.getPartyChatPlayers().contains(e.getPlayer().getUniqueId())) return;
         if (PartyManager.getPartyChatPlayers().contains(e.getPlayer().getUniqueId()) && e.getMessage().startsWith("!")) {
@@ -36,6 +36,7 @@ public class PartyChatListener implements Listener {
                 .replace("%rank%", title)
                 .replace("%party%", party.getDisplayName());
         newChatFormat = PlaceholderRegistry.parse(newChatFormat, e.getPlayer());
+        newChatFormat = PlaceholderRegistry.parsePapi(newChatFormat, e.getPlayer());
         e.getRecipients().clear();
         e.setCancelled(true);
         for (Player p : PartyManager.getOnlinePartyMembers(party)) p.sendMessage(String.format(Utils.chat(newChatFormat), e.getPlayer().getDisplayName(), e.getMessage()));
@@ -44,6 +45,7 @@ public class PartyChatListener implements Listener {
                 .replace("%rank%", title)
                 .replace("%party%", party.getDisplayName());
         spyChatMessage = PlaceholderRegistry.parse(spyChatMessage, e.getPlayer());
+        spyChatMessage = PlaceholderRegistry.parsePapi(spyChatMessage, e.getPlayer());
         for (Player p : Utils.getOnlinePlayersFromUUIDs(PartyManager.getPartySpyPlayers()).values()) {
             if (party.getMembers().containsKey(p.getUniqueId())) continue; // do not send messages to party spies if the messages come from their own party
             if (party.getLeader().equals(p.getUniqueId())) continue; // ... and neither to their leader

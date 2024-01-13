@@ -59,7 +59,7 @@ public class EnchantingProfile extends Profile {
         intStat("levelBonusGenericOffensive", new PropertyBuilder().format(StatFormat.DIFFERENCE_INT).perkReward().create());
         intStat("levelBonusGenericUtility", new PropertyBuilder().format(StatFormat.DIFFERENCE_INT).perkReward().create());
 
-        doubleStat("enchantingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("enchantingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).perkReward().create());
     }
 
     public int getEnchantmentBonus(EnchantmentClassification e){

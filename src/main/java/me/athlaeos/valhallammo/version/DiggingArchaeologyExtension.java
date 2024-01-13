@@ -180,7 +180,7 @@ public class DiggingArchaeologyExtension implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onBrush(BlockDropItemEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !(e.getBlock().getState() instanceof BrushableBlock b) ||
-        !(e.getBlock().getBlockData() instanceof Brushable brushable)) return;
+                !(e.getBlock().getBlockData() instanceof Brushable brushable)) return;
         DiggingProfile profile = ProfileCache.getOrCache(e.getPlayer(), DiggingProfile.class);
 
         double expQuantity = 0;

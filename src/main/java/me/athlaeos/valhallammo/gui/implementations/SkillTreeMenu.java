@@ -6,7 +6,6 @@ import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
-import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.skills.skills.PerkConnectionIcon;
@@ -353,7 +352,7 @@ public class SkillTreeMenu extends Menu {
                         } else if (l.contains("%cost%")){
                             if (unlockedStatus == 0) for (ResourceExpense expense : p.getExpenses()) lore.add(Utils.chat(expense.getCostMessage()));
                         } else {
-                            lore.add(Utils.chat(PlaceholderRegistry.parse(l.replace("%level_required%", String.valueOf(p.getLevelRequirement())).replace("%skill%", p.getSkill().getDisplayName()), target)));
+                            lore.add(Utils.chat(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(l.replace("%level_required%", String.valueOf(p.getLevelRequirement())).replace("%skill%", p.getSkill().getDisplayName()), target), target)));
                         }
                     });
                     icon.lore(lore);
@@ -384,7 +383,7 @@ public class SkillTreeMenu extends Menu {
         ItemStack[][] view = new ItemStack[5][9];
         ItemStack[][] fullSkillTree = skillTreeItems.get(skill);
         int x = Math.max(4, Math.min(fullSkillTree[0].length - 1, this.x + coordinateOffsets.get(skill).getOne()));
-        int y = Math.max(2, Math.min(fullSkillTree.length - 1, this.y));
+        int y = Math.max(2, Math.min(fullSkillTree.length - 1, this.y + coordinateOffsets.get(skill).getTwo()));
 
         ItemStack[][] skillTreeYSection = Arrays.copyOfRange(fullSkillTree, y - 2, y + 3);// pick 5 rows from the skill tree's height
         for (int i = 0; i < skillTreeYSection.length; i++){

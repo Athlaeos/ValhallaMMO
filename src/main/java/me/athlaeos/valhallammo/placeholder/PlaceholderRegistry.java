@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.placeholder;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.hooks.PAPIHook;
+import me.athlaeos.valhallammo.hooks.VaultHook;
 import me.athlaeos.valhallammo.placeholder.placeholders.*;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -9,19 +10,21 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class PlaceholderRegistry {
     private static final Map<String, Placeholder> placeholders = new HashMap<>();
 
-    {
+    static {
         // auto-registering profile stat placeholders
         for (Profile profile : ProfileRegistry.getRegisteredProfiles().values()){
-            for (String intStat : profile.intStatNames()) {
-                StatFormat format = profile.getNumberStatProperties().get(intStat).getFormat();
+            for (String numberStat : profile.getNumberStatProperties().keySet()) {
+                StatFormat format = profile.getNumberStatProperties().get(numberStat).getFormat();
                 if (format == null) continue;
-                registerPlaceholder(new NumericProfileStatPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase() + "_" + intStat.toLowerCase() + "%", profile.getClass(), intStat, format));
+                registerPlaceholder(new NumericProfileStatPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase() + "_" + numberStat.toLowerCase() + "%", profile.getClass(), numberStat, format));
             }
             registerPlaceholder(new ProfileNextLevelPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase() + "_next_level%", profile.getClass(), StatFormat.INT));
             registerPlaceholder(new ProfileNextLevelEXPPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase() + "_next_level_exp%", profile.getClass(), StatFormat.INT));
@@ -45,13 +48,24 @@ public class PlaceholderRegistry {
         return placeholders;
     }
 
+    private static final Map<String, Collection<Placeholder>> placeholderCache = new HashMap<>();
+
     public static String parse(String stringToParse, Player p) {
-        for (Placeholder s : placeholders.values()) {
+        String result = stringToParse;
+        boolean cache = !placeholderCache.containsKey(stringToParse);
+        Collection<Placeholder> placeholdersToCache = new HashSet<>();
+        for (Placeholder s : placeholderCache.getOrDefault(stringToParse, placeholders.values())) {
             if (stringToParse.contains(s.getPlaceholder())) {
-                stringToParse = s.parse(stringToParse, p);
+                result = s.parse(result, p);
+                if (cache) placeholdersToCache.add(s);
             }
         }
-        if (ValhallaMMO.isHookFunctional(PAPIHook.class)) stringToParse = PAPIHook.parse(p, stringToParse);
+        if (cache) placeholderCache.put(stringToParse, placeholdersToCache);
+        return result;
+    }
+
+    public static String parsePapi(String stringToParse, Player p){
+        if (ValhallaMMO.isHookFunctional(PAPIHook.class)) return PAPIHook.parse(p, stringToParse);
         return stringToParse;
     }
 }

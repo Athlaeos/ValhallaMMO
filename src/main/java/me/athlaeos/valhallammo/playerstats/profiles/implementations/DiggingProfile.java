@@ -27,7 +27,7 @@ public class DiggingProfile extends Profile {
         floatStat("archaeologyGravelNearStructureGenerationChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P6).perkReward().create()); // same with gravel
         floatStat("archaeologyDefaultRareLootChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create()); // chance for generated brushable block to contain a rare loot table if no other is specified
 
-        doubleStat("diggingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("diggingEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).perkReward().create());
     }
 
     public float getDiggingDrops() { return getFloat("diggingDrops"); }

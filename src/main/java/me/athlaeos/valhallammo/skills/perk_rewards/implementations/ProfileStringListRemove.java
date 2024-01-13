@@ -1,5 +1,7 @@
 package me.athlaeos.valhallammo.skills.perk_rewards.implementations;
 
+import me.athlaeos.valhallammo.dom.Action;
+import me.athlaeos.valhallammo.dom.BiAction;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
@@ -15,10 +17,21 @@ public class ProfileStringListRemove extends PerkReward {
     private List<String> value;
     private final String stat;
     private final Class<? extends Profile> type;
+    private BiAction<String, Player> addAction = null;
+    private BiAction<String, Player> removeAction = null;
+
     public ProfileStringListRemove(String name, String stat, Class<? extends Profile> type) {
         super(name);
         this.stat = stat;
         this.type = type;
+    }
+
+    public ProfileStringListRemove(String name, String stat, Class<? extends Profile> type, BiAction<String, Player> removeAction, BiAction<String, Player> addAction) {
+        super(name);
+        this.stat = stat;
+        this.type = type;
+        this.removeAction = removeAction;
+        this.addAction = addAction;
     }
 
     @Override
@@ -28,6 +41,7 @@ public class ProfileStringListRemove extends PerkReward {
         Collection<String> existing = profile.getStringSet(stat);
         existing.removeAll(value);
         profile.setStringSet(stat, existing);
+        if (removeAction != null) value.forEach(s -> removeAction.act(s, player));
 
         if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
         else ProfileRegistry.setSkillProfile(player, profile, type);
@@ -40,8 +54,9 @@ public class ProfileStringListRemove extends PerkReward {
         Profile profile = isPersistent() ? ProfileRegistry.getPersistentProfile(player, type) : ProfileRegistry.getSkillProfile(player, type);
 
         Collection<String> existing = profile.getStringSet(stat);
-        existing.removeAll(value);
+        existing.addAll(value);
         profile.setStringSet(stat, existing);
+        if (addAction != null) value.forEach(s -> addAction.act(s, player));
 
         if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
         else ProfileRegistry.setSkillProfile(player, profile, type);

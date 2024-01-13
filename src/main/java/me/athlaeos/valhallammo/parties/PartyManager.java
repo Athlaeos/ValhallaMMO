@@ -183,7 +183,7 @@ public class PartyManager {
         String expForNext = nextLevel == null ?
                 TranslationManager.getTranslation("max_level") : // if either current level or max level are null, assume max level is reached
                 String.format("%,.1f", levelRequirements.getOrDefault(nextLevel.level, 0D) - levelRequirements.getOrDefault(level.getOne().level, 0D));
-        partyInfoFormat.forEach(s -> p.sendMessage(Utils.chat(PlaceholderRegistry.parse(s.replace("%rank%", title)
+        partyInfoFormat.forEach(s -> p.sendMessage(Utils.chat(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(s.replace("%rank%", title)
                 .replace("%level%", level != null ? level.getOne().name : "")
                 .replace("%level_numeric%", level != null ? String.valueOf(level.getOne().level) : "")
                 .replace("%level_roman%", level != null ? StringUtils.toRoman(level.getOne().level) : "")
@@ -192,7 +192,7 @@ public class PartyManager {
                 .replace("%name%", party.getDisplayName())
                 .replace("%description%", party.getDescription())
                 .replace("%member_count%", String.valueOf(party.getMembers().size() + 1))
-                .replace("%member_cap%", String.valueOf(getTotalIntStat("party_capacity", party))), p)
+                .replace("%member_cap%", String.valueOf(getTotalIntStat("party_capacity", party))), p), p)
                 .replace("%status_exp_sharing%", TranslationManager.getTranslation("translation_" + expSharingEnabled))
                 .replace("%status_item_sharing%", TranslationManager.getTranslation("translation_" + itemSharingEnabled))
                 .replace("%status_open%", TranslationManager.getTranslation("translation_" + party.isOpen()))
@@ -271,9 +271,12 @@ public class PartyManager {
         if (toParty == null) return ErrorStatus.TARGET_NO_PARTY;
         if (WorldGuardHook.inDisabledRegion(to.getLocation(), to, WorldGuardHook.VMMO_PARTY_ITEMSHARING)) return ErrorStatus.FORBIDDEN_REGION;
         if (!fromParty.getId().equals(toParty.getId())) return ErrorStatus.NOT_IN_SAME_PARTY;
-        if (!getBoolStat("item_sharing", fromParty) || fromParty.isItemSharingEnabled() == null || !fromParty.isItemSharingEnabled()) return ErrorStatus.FEATURE_NOT_UNLOCKED;
+        boolean itemSharingEnabled = fromParty.isItemSharingEnabled() != null ? fromParty.isItemSharingEnabled() : getBoolStat("item_sharing", fromParty);
+        if (!itemSharingEnabled) return ErrorStatus.FEATURE_NOT_UNLOCKED;
         int reach = getTotalIntStat("item_sharing_radius", fromParty);
-        if (reach >= 0 && (!from.getWorld().getName().equals(to.getWorld().getName()) || from.getLocation().distanceSquared(to.getLocation()) < reach * reach)) return ErrorStatus.OUT_OF_RANGE;
+        if (reach >= 0 && (!from.getWorld().getName().equals(to.getWorld().getName()) || from.getLocation().distanceSquared(to.getLocation()) > reach * reach)) {
+            return ErrorStatus.OUT_OF_RANGE;
+        }
         if (!Timer.isCooldownPassed(from.getUniqueId(), "cooldown_share_item")) return ErrorStatus.ON_COOLDOWN;
         ItemStack hand = from.getInventory().getItemInMainHand();
         if (ItemUtils.isEmpty(hand)) return ErrorStatus.NO_ITEM;
@@ -349,16 +352,14 @@ public class PartyManager {
         if (existingParty != null) return ErrorStatus.ALREADY_IN_PARTY;
         Party toJoin = allParties.get(party);
         if (toJoin == null) return ErrorStatus.PARTY_DOES_NOT_EXIST;
-        if (!toJoin.isOpen() && partyInvites.getOrDefault(p.getUniqueId(), new HashSet<>()).contains(party)) return ErrorStatus.NOT_INVITED;
+        if (!toJoin.isOpen() && !partyInvites.getOrDefault(p.getUniqueId(), new HashSet<>()).contains(party)) return ErrorStatus.NOT_INVITED;
         ErrorStatus joinStatus = joinParty(p, toJoin);
         if (joinStatus != null) return joinStatus;
-        Collection<Player> members = Utils.getOnlinePlayersFromUUIDs(toJoin.getMembers().keySet()).values();
-        Player leader = ValhallaMMO.getInstance().getServer().getPlayer(toJoin.getLeader());
-        if (leader != null) members.add(leader);
+        Collection<Player> members = getOnlinePartyMembers(toJoin);
         for (Player member : members) {
-            Utils.sendMessage(member, PlaceholderRegistry.parse(TranslationManager.getTranslation("status_command_party_member_joined")
+            Utils.sendMessage(member, PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(TranslationManager.getTranslation("status_command_party_member_joined")
                     .replace("%player%", p.getName())
-                    .replace("%party%", toJoin.getDisplayName()), member)
+                    .replace("%party%", toJoin.getDisplayName()), member), member)
             );
         }
         return null;
@@ -546,14 +547,14 @@ public class PartyManager {
             if (level == null) return;
             for (Player p : PartyManager.getOnlinePartyMembers(party)){
                 if (PartyManager.getPartyLevelUpFormat() != null)
-                    Utils.sendMessage(p, PlaceholderRegistry.parse(PartyManager.getPartyLevelUpFormat()
+                    Utils.sendMessage(p, PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(PartyManager.getPartyLevelUpFormat()
                             .replace("%party%", party.getDisplayName())
                             .replace("%level%", level.getOne().getName())
                             .replace("%level_numeric%", String.valueOf(level.getOne().getLevel()))
-                            .replace("%level_roman%", StringUtils.toRoman(level.getOne().getLevel())), p)
+                            .replace("%level_roman%", StringUtils.toRoman(level.getOne().getLevel())), p), p)
                     );
                 if (level.getOne().getLevelUpDescription() != null)
-                    level.getOne().getLevelUpDescription().forEach(d -> Utils.sendMessage(p, Utils.chat(PlaceholderRegistry.parse(d, p))));
+                    level.getOne().getLevelUpDescription().forEach(d -> Utils.sendMessage(p, Utils.chat(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(d, p), p))));
             }
         }
     }
@@ -637,7 +638,7 @@ public class PartyManager {
     public static Collection<Player> getOnlinePartyMembers(Party party){
         Collection<UUID> members = new HashSet<>(party.getMembers().keySet());
         members.add(party.getLeader());
-        return Utils.getOnlinePlayersFromUUIDs(members).values();
+        return new HashSet<>(Utils.getOnlinePlayersFromUUIDs(members).values());
     }
 
     public static Map<String, OfflinePlayer> getPartyMembers(Party party){
@@ -890,6 +891,13 @@ public class PartyManager {
 
         public void sendErrorMessage(CommandSender p){
             Utils.sendMessage(p, message);
+        }
+        public void sendErrorMessage(CommandSender p, Player target){
+            Utils.sendMessage(p, message.replace("%player%", target.getName()));
+        }
+
+        public String getMessage() {
+            return message;
         }
     }
 }

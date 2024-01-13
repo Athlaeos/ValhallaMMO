@@ -97,10 +97,11 @@ public class HeavyArmorSkill extends Skill implements Listener {
         HeavyArmorProfile profile = ProfileCache.getOrCache(p, HeavyArmorProfile.class);
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            int count = EntityCache.getAndCacheProperties(p).getHeavyArmorCount();
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(trueDamager.getType(), 1D);
             double lastDamageTaken = EntityDamagedListener.getLastDamageTaken(p.getUniqueId());
             double exp = expPerDamage * lastDamageTaken * entityExpMultiplier;
-            addEXP(p, exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+            addEXP(p, count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
             if (profile.isRageUnlocked() && profile.getRageLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_heavy_armor_rage") &&
                     !WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_RAGE)){

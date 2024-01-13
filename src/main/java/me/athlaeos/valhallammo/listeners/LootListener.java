@@ -530,6 +530,10 @@ public class LootListener implements Listener {
                 }
                 if (sound != null) e.getPlayer().playSound(e.getPlayer(), sound, 1F, 1F);
                 rewards.forEach(i -> ItemUtils.addItem(e.getPlayer(), i, true));
+
+                ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
+                if (hand.getAmount() <= 1) e.getPlayer().getInventory().setItemInMainHand(null);
+                else hand.setAmount(hand.getAmount() - 1);
             }).open();
         } else {
             List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.CONTAINER);

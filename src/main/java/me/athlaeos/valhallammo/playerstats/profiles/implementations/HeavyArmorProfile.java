@@ -87,7 +87,7 @@ public class HeavyArmorProfile extends Profile {
         intStat("rageCooldown", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
         floatStat("rageThreshold", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
 
-        doubleStat("heavyArmorEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("heavyArmorEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).perkReward().create());
     }
 
     public Collection<String> getImmuneEffects() { return getStringSet("setImmunePotionEffects"); }

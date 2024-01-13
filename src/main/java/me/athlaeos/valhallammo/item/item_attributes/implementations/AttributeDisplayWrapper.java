@@ -132,10 +132,10 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
     @Override
     public String getLoreDisplay(){
         String format = this.format == null ? switch (operation){
-            case ADD_SCALAR -> add_scalar.format(value);
-            case ADD_NUMBER -> add_number.format(value);
-            case MULTIPLY_SCALAR_1 -> multiply_scalar_1.format(value);
-        } : this.format.format(value);
+            case ADD_SCALAR -> add_scalar.format(value + displayStatOffset);
+            case ADD_NUMBER -> add_number.format(value + displayStatOffset);
+            case MULTIPLY_SCALAR_1 -> multiply_scalar_1.format(value + displayStatOffset);
+        } : this.format.format(value + displayStatOffset);
         String translation = getAttributeName();
         String prefix = prefix(isPositive.test(value + displayStatOffset));
         return Utils.chat(prefix + translation
@@ -159,8 +159,8 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
 
     @Override
     public AttributeWrapper copy() {
-        if (format == null) return new AttributeDisplayWrapper(attribute, defaultIcon, isPositive, add_number, add_scalar, multiply_scalar_1).setOperation(operation).setValue(value);
-        else return new AttributeDisplayWrapper(attribute, format, defaultIcon, isPositive, compatibleWith.toArray(new Material[0])).setOperation(operation).setValue(value);
+        if (format == null) return new AttributeDisplayWrapper(attribute, defaultIcon, isPositive, add_number, add_scalar, multiply_scalar_1).offset(displayStatOffset).setOperation(operation).setValue(value);
+        else return new AttributeDisplayWrapper(attribute, format, defaultIcon, isPositive, compatibleWith.toArray(new Material[0])).offset(displayStatOffset).setOperation(operation).setValue(value);
     }
 
     private String prefix(boolean positive){
@@ -179,9 +179,9 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
     @Override
     public String toString(){
         return this.format == null ? switch (operation){
-            case ADD_SCALAR -> add_scalar.format(value);
-            case ADD_NUMBER -> add_number.format(value);
-            case MULTIPLY_SCALAR_1 -> multiply_scalar_1.format(value);
-        } : this.format.format(value);
+            case ADD_SCALAR -> add_scalar.format(value + displayStatOffset);
+            case ADD_NUMBER -> add_number.format(value + displayStatOffset);
+            case MULTIPLY_SCALAR_1 -> multiply_scalar_1.format(value + displayStatOffset);
+        } : this.format.format(value + displayStatOffset);
     }
 }

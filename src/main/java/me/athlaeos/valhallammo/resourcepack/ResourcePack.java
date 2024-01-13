@@ -15,14 +15,14 @@ public class ResourcePack {
      * I copied most of this from thesheepdev's Simple Resourcepack, so code credit for resource pack hosting goes to them
      */
     private static File pack;
-    private static final String defaultPackLink = "https://download.mc-packs.net/pack/b489a41cba07969b3611658941abb90755445a51.zip";
+    private static final String defaultPackLink = "https://download.mc-packs.net/pack/276d3aa97038738d989f1a9626472188a0120791.zip";
 
     public static File getPack() {
         return pack;
     }
 
     public static String getVersion(){
-        return ValhallaMMO.getPluginConfig().getString("resourcepack_version", "1.0");
+        return ValhallaMMO.getPluginConfig().getString("resourcepack_version", "1");
     }
 
     public static void tryStart(){

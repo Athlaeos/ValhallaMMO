@@ -6,6 +6,8 @@ import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.event.PlayerJumpEvent;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.MathUtils;
+import me.athlaeos.valhallammo.utility.Timer;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,10 +33,11 @@ public class JumpListener implements Listener {
 
     @EventHandler
     public void onPlayerJump(PlayerJumpEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "jump_height_boost")) return;
         double jumpHeightBonus = AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getPlayer(), 10000, true);
         if (jumpHeightBonus > 0) {
             e.getPlayer().setVelocity(e.getPlayer().getVelocity().multiply(1 + (jumpHeightBonus * 0.3)));
+            Timer.setCooldown(e.getPlayer().getUniqueId(), 250, "jump_height_boost");
         }
 
         if (e.getPlayer().getAllowFlight()) return; // players who already have the permission to fly are not able to multi-jump
@@ -74,7 +77,8 @@ public class JumpListener implements Listener {
 
     @EventHandler
     public void onToggleFlight(PlayerToggleFlightEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !playersGivenFlight.contains(e.getPlayer().getUniqueId())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !playersGivenFlight.contains(e.getPlayer().getUniqueId()) ||
+        e.getPlayer().getGameMode() == GameMode.CREATIVE || e.getPlayer().getGameMode() == GameMode.SPECTATOR) return;
         e.setCancelled(true);
         double jumpHeightBonus = AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getPlayer(), 10000, true);
 

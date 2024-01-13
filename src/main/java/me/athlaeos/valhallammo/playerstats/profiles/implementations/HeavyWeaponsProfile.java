@@ -58,7 +58,7 @@ public class HeavyWeaponsProfile extends Profile {
         booleanStat("critOnStun", new BooleanProperties(true, true));
         booleanStat("coatingUnlocked", new BooleanProperties(true, true));
 
-        doubleStat("heavyWeaponsEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).min(0).perkReward().create());
+        doubleStat("heavyWeaponsEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).perkReward().create());
     }
 
     public boolean doesBleedOnCrit() { return getBoolean("bleedOnCrit"); }
