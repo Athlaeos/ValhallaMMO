@@ -54,14 +54,19 @@ public class PerkRewardRegistry {
         }
 
         BiAction<String, Player> forget = (s, p) -> {
-            ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
-            if (recipe == null) return;
-            p.undiscoverRecipe(recipe.getKey());
+            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+                ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
+                if (recipe == null) return;
+                p.undiscoverRecipe(recipe.getKey());
+            });
         };
         BiAction<String, Player> discover = (s, p) -> {
-            ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
-            if (recipe == null) return;
-            p.discoverRecipe(recipe.getKey());
+            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+
+                ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
+                if (recipe == null) return;
+                p.discoverRecipe(recipe.getKey());
+            });
         };
 
         register(new ProfileStringListAdd("perks_unlocked_add", "unlockedPerks", PowerProfile.class));

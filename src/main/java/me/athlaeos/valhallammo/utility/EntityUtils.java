@@ -121,16 +121,34 @@ public class EntityUtils {
 
     // TODO testing by name is outdated, remove after some time
     public static void addUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type, double amount, AttributeModifier.Operation operation){
-        AttributeInstance instance = e.getAttribute(type);
-        if (instance != null){
-            instance.getModifiers().stream().filter(m -> m != null && (m.getUniqueId().equals(uuid) || m.getName().equals(identifier))).forEach(instance::removeModifier);
-            if (amount != 0) instance.addModifier(new AttributeModifier(uuid, identifier, amount, operation));
+        try {
+            AttributeInstance instance = e.getAttribute(type);
+            if (instance != null){
+                instance.getModifiers().stream().filter(m -> m != null && (m.getUniqueId().equals(uuid) || m.getName().equals(identifier))).forEach(instance::removeModifier);
+                if (amount != 0) instance.addModifier(new AttributeModifier(uuid, identifier, amount, operation));
+            }
+        } catch (Exception ex){
+            ValhallaMMO.logSevere("Exception occurred adding to " + e.getName() + "'s " + type + " attributes");
+            ex.printStackTrace();
+            if (Timer.isCooldownPassed(e.getUniqueId(), "cooldown_command_data")){
+                ValhallaMMO.getInstance().getServer().dispatchCommand(ValhallaMMO.getInstance().getServer().getConsoleSender(), "data get entity " + e.getUniqueId());
+                Timer.setCooldown(e.getUniqueId(), 600000, "cooldown_command_data");
+            }
         }
     }
 
     public static void removeUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type){
-        AttributeInstance instance = e.getAttribute(type);
-        if (instance != null) instance.getModifiers().stream().filter(m -> m != null && (m.getUniqueId().equals(uuid) || m.getName().equals(identifier))).forEach(instance::removeModifier);
+        try {
+            AttributeInstance instance = e.getAttribute(type);
+            if (instance != null) instance.getModifiers().stream().filter(m -> m != null && (m.getUniqueId().equals(uuid) || m.getName().equals(identifier))).forEach(instance::removeModifier);
+        } catch (Exception ex){
+            ValhallaMMO.logSevere("Exception occurred removing from " + e.getName() + "'s " + type + " attributes");
+            ex.printStackTrace();
+            if (Timer.isCooldownPassed(e.getUniqueId(), "cooldown_command_data")){
+                ValhallaMMO.getInstance().getServer().dispatchCommand(ValhallaMMO.getInstance().getServer().getConsoleSender(), "data get entity " + e.getUniqueId());
+                Timer.setCooldown(e.getUniqueId(), 600000, "cooldown_command_data");
+            }
+        }
     }
 
     public static boolean addExperience(Player player, int amount){
