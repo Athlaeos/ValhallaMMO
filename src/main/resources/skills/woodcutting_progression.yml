@@ -37,6 +37,7 @@ experience: # Everything about leveling and experience progression for Landscapi
     ACACIA_LOG: 20
     DARK_OAK_LOG: 20
     MANGROVE_LOG: 20
+    CHERRY_LOG: 20
     WARPED_STEM: 28
     CRIMSON_STEM: 28
     OAK_WOOD: 28
