@@ -10,11 +10,9 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
-public abstract class Menu implements InventoryHolder {
+public abstract class Menu {
     protected Inventory inventory;
     protected PlayerMenuUtility playerMenuUtility;
 
@@ -33,15 +31,15 @@ public abstract class Menu implements InventoryHolder {
     public abstract void setMenuItems();
 
     public void open(){
-        inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
+        inventory = Bukkit.createInventory(null, getSlots(), getMenuName());
 
         this.setMenuItems();
+        MenuListener.setActiveMenu(playerMenuUtility.getOwner(), this);
 
         playerMenuUtility.getOwner().openInventory(inventory);
     }
 
-    @Override
-    public @NotNull Inventory getInventory(){
+    public Inventory getInventory(){
         return inventory;
     }
 

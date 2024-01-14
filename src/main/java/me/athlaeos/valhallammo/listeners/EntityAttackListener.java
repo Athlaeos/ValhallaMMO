@@ -201,7 +201,7 @@ public class EntityAttackListener implements Listener {
                 double finalKnockbackBonus = knockbackBonus;
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                     // finishing off custom knockback mechanics (removing attribute if placed, or changing velocity to comply with increased knockback)
-                    if (knockbackResistance > 0) EntityUtils.removeUniqueAttribute(v, EntityAttributeStats.NEGATIVE_KNOCKBACK, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+                    if (knockbackResistance > 0) EntityUtils.removeUniqueAttribute(v, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
                     else if (finalKnockbackBonus > 0){
                         Vector lookingDirection = e.getDamager() instanceof LivingEntity a ? a.getEyeLocation().getDirection().normalize() : e.getDamager().getVelocity().normalize();
 

@@ -38,6 +38,8 @@ public class PlaceholderRegistry {
         registerPlaceholder(new SpendablePrestigePointsPlaceholder("%prestigepoints%"));
         registerPlaceholder(new RegionalDifficultyLevelPlaceholder("%difficulty_regional%"));
         registerPlaceholder(new RegionalDifficultyLevelRoundedPlaceholder("%difficulty_regional_rounded%"));
+        registerPlaceholder(new PartyNamePlaceholder("%party_name%"));
+        registerPlaceholder(new PartyDescriptionPlaceholder("%party_description%"));
     }
 
     public static void registerPlaceholder(Placeholder p) {

@@ -103,7 +103,7 @@ public class ResourcePackCommand implements Command {
 
     @Override
     public String getCommand() {
-        return "/valhalla resourcepack <download/enable/disable/setup>";
+        return "/valhalla resourcepack <enable/disable/setup/stophost/resetplayer/reload>";
     }
 
     @Override
