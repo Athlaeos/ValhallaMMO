@@ -96,7 +96,7 @@ public class BlockUtils {
 
     public static Collection<Block> getBlockVein(Block origin, int limit, Predicate<Block> filter, int[]... offsets){
         if (offsets.length == 0 || limit <= 0) return new ArrayList<>();
-        Collection<Block> vein = new HashSet<>();
+        Collection<Block> vein = new HashSet<>(Set.of(origin));
         Collection<Block> scanBlocks = new HashSet<>(Set.of(origin));
         getSurroundingBlocks(scanBlocks, vein, limit, filter, offsets);
 

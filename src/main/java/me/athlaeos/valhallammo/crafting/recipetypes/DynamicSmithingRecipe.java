@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.recipetypes;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
@@ -129,8 +130,11 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
                 new RecipeChoice.MaterialChoice(addition.getItem().getType()) :
                 addition.getOption().getChoice(addition.getItem());
 
+        ItemStack i = result.clone();
+        ResultChangingModifier changer = (ResultChangingModifier) resultModifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
+        if (changer != null) i = changer.getNewResult();
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20) && t != null){
-            return SmithingTransformRecipeWrapper.get(key, translate(result), t, b, a); // using a SmithingTransformRecipe directly results in a ClassNotFoundException on versions lower than 1.20
-        } else return new SmithingRecipe(key, translate(result), b, a);
+            return SmithingTransformRecipeWrapper.get(key, translate(i), t, b, a); // using a SmithingTransformRecipe directly results in a ClassNotFoundException on versions lower than 1.20
+        } else return new SmithingRecipe(key, translate(i), b, a);
     }
 }

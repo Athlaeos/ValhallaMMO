@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.command.CommandSender;
@@ -14,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ItemReplaceKeepingAmount extends DynamicItemModifier {
+public class ItemReplaceKeepingAmount extends DynamicItemModifier implements ResultChangingModifier {
     private ItemStack replaceBy = new ItemStack(Material.DIAMOND);
 
     public ItemReplaceKeepingAmount(String name) {
@@ -27,6 +28,11 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier {
         outputItem.setItem(replaceBy);
         outputItem.setMeta(ItemUtils.getItemMeta(replaceBy));
         outputItem.amount(amount);
+    }
+
+    @Override
+    public ItemStack getNewResult() {
+        return replaceBy;
     }
 
     @Override

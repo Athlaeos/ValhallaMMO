@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.recipetypes;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -89,11 +90,14 @@ public class DynamicCookingRecipe implements ValhallaRecipe, ValhallaKeyedRecipe
         if (input == null || ItemUtils.isEmpty(input.getItem()) ||
                 ItemUtils.isEmpty(result)) return null;
         if (input.getOption() == null) input.setOption(new MaterialChoice());
+        ItemStack i = result.clone();
+        ResultChangingModifier changer = (ResultChangingModifier) modifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
+        if (changer != null) i = changer.getNewResult();
         return switch (type){
-            case SMOKER -> new SmokingRecipe(key, recipeBookIcon(result), input.getOption().getChoice(input.getItem()), experience, cookTime);
-            case BLAST_FURNACE -> new BlastingRecipe(key, recipeBookIcon(result), input.getOption().getChoice(input.getItem()), experience, cookTime);
-            case CAMPFIRE -> new CampfireRecipe(key, recipeBookIcon(result), input.getOption().getChoice(input.getItem()), experience, cookTime);
-            default -> new FurnaceRecipe(key, recipeBookIcon(result), input.getOption().getChoice(input.getItem()), experience, cookTime);
+            case SMOKER -> new SmokingRecipe(key, recipeBookIcon(i), input.getOption().getChoice(input.getItem()), experience, cookTime);
+            case BLAST_FURNACE -> new BlastingRecipe(key, recipeBookIcon(i), input.getOption().getChoice(input.getItem()), experience, cookTime);
+            case CAMPFIRE -> new CampfireRecipe(key, recipeBookIcon(i), input.getOption().getChoice(input.getItem()), experience, cookTime);
+            default -> new FurnaceRecipe(key, recipeBookIcon(i), input.getOption().getChoice(input.getItem()), experience, cookTime);
         };
     }
 

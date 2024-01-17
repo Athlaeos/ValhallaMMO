@@ -724,34 +724,35 @@ public abstract class Skill {
                 if (!runPersistentStartingPerks && r.isPersistent()) continue;
                 r.apply(p);
             }
-            if (level <= 0) return;
+            if (level > 0) {
+                for (int i = 1; i <= level; i++) {
+                    for (PerkReward reward : levelingPerks) {
+                        if (reward instanceof MultipliableReward || reward.isPersistent())
+                            continue; // persistent rewards should not be executed repeatedly
+                        reward.apply(p);
+                    }
 
-            for (int i = 1; i <= level; i++) {
-                for (PerkReward reward : levelingPerks) {
-                    if (reward instanceof MultipliableReward || reward.isPersistent())
-                        continue; // persistent rewards should not be executed repeatedly
-                    reward.apply(p);
+                    // special perk rewards
+                    if (specialLevelingPerks.containsKey(i)) {
+                        for (PerkReward reward : specialLevelingPerks.get(i)) {
+                            if (reward.isPersistent()) continue;
+                            reward.apply(p);
+                        }
+                    }
                 }
 
-                // special perk rewards
-                if (specialLevelingPerks.containsKey(i)) {
-                    for (PerkReward reward : specialLevelingPerks.get(i)) {
-                        if (reward.isPersistent()) continue;
-                        reward.apply(p);
+                for (PerkReward reward : levelingPerks) {
+                    if (reward instanceof MultipliableReward r && !reward.isPersistent()) {
+                        r.apply(p, level);
                     }
                 }
             }
-            for (PerkReward reward : levelingPerks) {
-                if (reward instanceof MultipliableReward r && !reward.isPersistent()) {
-                    r.apply(p, level);
-                }
-            }
+
             Collection<String> unlockedPerks = powerProfile.getUnlockedPerks();
             Collection<String> fakeUnlockedPerks = powerProfile.getFakeUnlockedPerks();
             Collection<String> permanentlyLockedPerks = powerProfile.getPermanentlyLockedPerks();
             for (Perk perk : perks) {
-                if (fakeUnlockedPerks.contains(perk.getName()) || permanentlyLockedPerks.contains(perk.getName()))
-                    continue;
+                if (fakeUnlockedPerks.contains(perk.getName()) || permanentlyLockedPerks.contains(perk.getName())) continue;
                 if (unlockedPerks.contains(perk.getName())) { // do not trigger perks again if they've not been unlocked, or if they're fake unlocked or permanently unlocked
                     for (PerkReward reward : perk.getRewards()) {
                         if (reward.isPersistent()) continue;
@@ -763,7 +764,7 @@ public abstract class Skill {
                 }
             }
 
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p));
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, skillProfile.getClass()));
         });
     }
 

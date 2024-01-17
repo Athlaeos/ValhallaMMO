@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.entities.EntityAttributeStats;
+import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
@@ -27,6 +28,7 @@ public class JoinLeaveListener implements Listener {
         PotionEffectRegistry.updatePlayerAffectedStatus(e.getPlayer());
         GlobalEffect.temporarilyRevealBossBar(e.getPlayer());
         EntityAttributeStats.updateStats(e.getPlayer());
+        PlayerMenuUtilManager.removePlayerMenuUtility(e.getPlayer().getUniqueId());
 
         double health = e.getPlayer().getPersistentDataContainer().getOrDefault(HEALTH, PersistentDataType.DOUBLE, -1D);
         if (health > 0){

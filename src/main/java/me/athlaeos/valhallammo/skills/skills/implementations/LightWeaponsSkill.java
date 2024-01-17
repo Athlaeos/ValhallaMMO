@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.CombatType;
+import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.WeightClass;
 import me.athlaeos.valhallammo.event.EntityCriticallyHitEvent;
@@ -137,7 +138,8 @@ public class LightWeaponsSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onExpAttack(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
+                EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE)) return;
         if (e.getDamager() instanceof Player p && e.getEntity() instanceof Monster l){
             if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTWEAPONS)) return;
             ItemBuilder weapon = EntityCache.getAndCacheProperties(p).getMainHand();

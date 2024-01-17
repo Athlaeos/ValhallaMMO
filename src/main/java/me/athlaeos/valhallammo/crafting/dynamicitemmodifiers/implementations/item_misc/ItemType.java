@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
@@ -16,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ItemType extends DynamicItemModifier {
+public class ItemType extends DynamicItemModifier implements ResultChangingModifier {
     private Material material = Material.DIAMOND;
 
     public ItemType(String name) {
@@ -27,6 +28,11 @@ public class ItemType extends DynamicItemModifier {
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         outputItem.type(material);
         PotionEffectRegistry.updateItemName(outputItem.getMeta(), true, false);
+    }
+
+    @Override
+    public ItemStack getNewResult() {
+        return new ItemStack(material);
     }
 
     @Override

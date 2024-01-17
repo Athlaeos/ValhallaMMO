@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.CustomDurabilityManager;
@@ -204,7 +205,8 @@ public class CraftingTableListener implements Listener {
         }
         matrixMetaCache.put(crafter.getUniqueId(), matrixMeta);
 
-        if (e.isRepair()){
+        boolean isRepair = e.isRepair() || Arrays.stream(e.getInventory().getMatrix()).filter(i -> !ItemUtils.isEmpty(i) && i.getType().getMaxDurability() > 0).count() >= 2;
+        if (isRepair){
             boolean anyCustom = false;
             boolean anyNotCustom = true;
             for (int i = 0; i < inventory.getMatrix().length; i++){
@@ -369,6 +371,7 @@ public class CraftingTableListener implements Listener {
             if (ItemUtils.isEmpty(slot)) continue;
             ItemMeta meta = matrixMeta.get(i);
             if (meta == null) continue;
+
             for (SlotEntry entry : new ArrayList<>(allIngredients)){
                 // If the item is either a matching tool
                 if (toolEntry != null){
@@ -387,12 +390,7 @@ public class CraftingTableListener implements Listener {
                 IngredientChoice choice = defaultChoice(entry);
                 if (choice.matches(entry.getItem(), slot)) {
                     // The ingredient was found in the matrix items, remove it from the list
-                    for (SlotEntry e : allIngredients){
-                        if (e.isSimilar(entry)){
-                            allIngredients.remove(entry);
-                            break;
-                        }
-                    }
+                    if (entry.isSimilar(entry) && allIngredients.remove(entry)) break;
                 }
             }
         }

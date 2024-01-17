@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.item.CustomDurabilityManager;
+import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemSkillRequirements;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -11,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.event.player.PlayerItemMendEvent;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -42,6 +44,21 @@ public class ItemDamageListener implements Listener {
                 // e.getItem().setType(Material.AIR);
                 // e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ITEM_BREAK, 1F, 1F);
             }
+        }
+    }
+
+    @EventHandler(priority=EventPriority.NORMAL)
+    public void onItemMend(PlayerItemMendEvent e){
+        if (e.isCancelled() || ItemUtils.isEmpty(e.getItem())) return;
+        ItemMeta meta = ItemUtils.getItemMeta(e.getItem());
+        if (CustomFlag.hasFlag(meta, CustomFlag.UNMENDABLE)){
+            e.setCancelled(true);
+            return;
+        }
+        if (CustomDurabilityManager.hasCustomDurability(meta)){
+            CustomDurabilityManager.damage(meta, -e.getRepairAmount());
+            e.setCancelled(true);
+            ItemUtils.setItemMeta(e.getItem(), meta);
         }
     }
 }

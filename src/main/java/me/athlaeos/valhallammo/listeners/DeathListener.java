@@ -30,9 +30,9 @@ public class DeathListener implements Listener {
                 TranslationManager.getListTranslation("death_message_" + cause.toLowerCase());
         if (deathMessages == null || deathMessages.isEmpty()) return;
         String pickedEntry = deathMessages.get(Utils.getRandom().nextInt(deathMessages.size()));
-        if (!StringUtils.isEmpty(pickedEntry)) e.setDeathMessage(pickedEntry
+        if (!StringUtils.isEmpty(pickedEntry)) e.setDeathMessage(Utils.chat(pickedEntry
                 .replace("%player%", e.getEntity().getName())
-                .replace("%killer%", lastDamager != null ? lastDamager.getName() : "")
+                .replace("%killer%", lastDamager != null ? lastDamager.getName() : ""))
         );
     }
 

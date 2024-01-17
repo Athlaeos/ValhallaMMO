@@ -5,18 +5,21 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.BlockStore;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.AbstractArrow;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.world.StructureGrowEvent;
@@ -35,6 +38,14 @@ public class BlockListener implements Listener {
             }
             blocksToConsiderBroken.clear();
         }, 0L, 5L);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onFallBlock(EntityChangeBlockEvent event) {
+        if (event.getEntity() instanceof FallingBlock fallingBlock) {
+            Location loc = event.getEntity().getLocation();
+            BlockStore.setPlaced(loc.getBlock(), event.getTo() == fallingBlock.getBlockData().getMaterial());
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

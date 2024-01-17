@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.MathUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,8 +37,8 @@ public class JumpListener implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "jump_height_boost")) return;
         double jumpHeightBonus = AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getPlayer(), 10000, true);
         if (jumpHeightBonus > 0) {
-            e.getPlayer().setVelocity(e.getPlayer().getVelocity().multiply(1 + (jumpHeightBonus * 0.3)));
-            Timer.setCooldown(e.getPlayer().getUniqueId(), 250, "jump_height_boost");
+            e.getPlayer().setVelocity(e.getPlayer().getVelocity().add(new Vector(0, (jumpHeightBonus * 0.1), 0)));
+            Timer.setCooldown(e.getPlayer().getUniqueId(), 333, "jump_height_boost");
         }
 
         if (e.getPlayer().getAllowFlight()) return; // players who already have the permission to fly are not able to multi-jump
@@ -72,6 +73,7 @@ public class JumpListener implements Listener {
         double jumpHeightBonus = AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getEntity(), 10000, true);
         if (jumpHeightBonus == 0) return;
         double fallDamage = Math.max(0, e.getEntity().getFallDistance() - 3 - jumpHeightBonus);
+        if (e.getEntity().getLocation().subtract(0, 0.2, 0).getBlock().getType() == Material.POINTED_DRIPSTONE) fallDamage *= 2;
         e.setDamage(fallDamage);
     }
 
@@ -91,7 +93,7 @@ public class JumpListener implements Listener {
         double motionZ = e.getPlayer().getVelocity().getZ() + (e.getPlayer().isSprinting() ? MathUtils.cos(f) * 0.2 : 0);
         if (multiJumpAnimation != null) multiJumpAnimation.animate(e.getPlayer(), e.getPlayer().getLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
-                e.getPlayer().setVelocity(new Vector(motionX, motionY, motionZ).multiply(1 + (jumpHeightBonus * 0.3))),
+                e.getPlayer().setVelocity(new Vector(motionX, motionY, motionZ).add(new Vector(0, (jumpHeightBonus * 0.1), 0))),
                 1L);
 
         e.getPlayer().setFallDistance(0);

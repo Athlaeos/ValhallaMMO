@@ -113,35 +113,35 @@ public abstract class Profile {
     }
 
     public double getDouble(String stat) {
-        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with this name is registered under " + getClass().getSimpleName());
+        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with this name " + stat + " is registered under " + getClass().getSimpleName());
         return doubles.get(stat).getValue();
     }
     public double getDefaultDouble(String stat) {
-        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with this name is registered under " + getClass().getSimpleName());
+        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with this name " + stat + " is registered under " + getClass().getSimpleName());
         return doubles.get(stat).getDefault();
     }
     public void setDouble(String stat, double value){
-        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with this name is registered under " + getClass().getSimpleName());
+        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with this name " + stat + " is registered under " + getClass().getSimpleName());
         if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMin())) value = Math.max(numberStatProperties.get(stat).getMin(), value);
         if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMax())) value = Math.min(numberStatProperties.get(stat).getMax(), value);
         doubles.get(stat).setValue(value);
     }
 
     public Collection<String> getStringSet(String stat) {
-        if (!stringSets.containsKey(stat)) throw new IllegalArgumentException("No stringSet stat with this name is registered under " + getClass().getSimpleName());
+        if (!stringSets.containsKey(stat)) throw new IllegalArgumentException("No stringSet stat with this name " + stat + " is registered under " + getClass().getSimpleName());
         return stringSets.get(stat);
     }
     public void setStringSet(String stat, Collection<String> value){
-        if (!stringSets.containsKey(stat)) throw new IllegalArgumentException("No stringSet stat with this name is registered under " + getClass().getSimpleName());
+        if (!stringSets.containsKey(stat)) throw new IllegalArgumentException("No stringSet stat with this name " + stat + " is registered under " + getClass().getSimpleName());
         stringSets.put(stat, value);
     }
 
     public boolean getBoolean(String stat) {
-        if (!booleans.containsKey(stat)) throw new IllegalArgumentException("No boolean stat with this name is registered under " + getClass().getSimpleName());
+        if (!booleans.containsKey(stat)) throw new IllegalArgumentException("No boolean stat with this name " + stat + " is registered under " + getClass().getSimpleName());
         return booleans.get(stat).getValue();
     }
     public boolean getDefaultBoolean(String stat) {
-        if (!booleans.containsKey(stat)) throw new IllegalArgumentException("No boolean stat with this name is registered under " + getClass().getSimpleName());
+        if (!booleans.containsKey(stat)) throw new IllegalArgumentException("No boolean stat with this name " + stat + " is registered under " + getClass().getSimpleName());
         return booleans.get(stat).getDefault();
     }
     public boolean shouldBooleanStatHavePerkReward(String stat){
@@ -149,7 +149,7 @@ public abstract class Profile {
         return booleans.get(stat).getProperties().generatePerkReward();
     }
     public void setBoolean(String stat, boolean value){
-        if (!booleans.containsKey(stat)) throw new IllegalArgumentException("No boolean stat with this name is registered under " + getClass().getSimpleName());
+        if (!booleans.containsKey(stat)) throw new IllegalArgumentException("No boolean stat with this name " + stat + " is registered under " + getClass().getSimpleName());
         booleans.get(stat).setValue(value);
     }
 

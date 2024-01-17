@@ -19,6 +19,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfil
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.*;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -117,13 +118,14 @@ public class MiningSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onBlockBreak(BlockBreakEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() ||
-                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING)) return;
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
+                !dropsExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         MiningProfile profile = ProfileCache.getOrCache(e.getPlayer(), MiningProfile.class);
         if (profile.getUnbreakableBlocks().contains(e.getBlock().getType().toString())) {
             e.setCancelled(true);
             return;
         }
-        if (dropsExpValues.containsKey(e.getBlock().getType())) {
+        if (BlockUtils.canReward(e.getBlock())) {
             int experience = e.getExpToDrop() + Utils.randomAverage(profile.getBlockExperienceRate());
             experience = Utils.randomAverage(experience * (1D + profile.getBlockExperienceMultiplier()));
             e.setExpToDrop(experience);

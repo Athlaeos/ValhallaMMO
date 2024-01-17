@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.CombatType;
+import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.event.EntityCriticallyHitEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
@@ -166,7 +167,7 @@ public class ArcherySkill extends Skill implements Listener {
     public void onArrowHit(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         if (!(e.getDamager() instanceof AbstractArrow a) || !(a.getShooter() instanceof Player p) || a instanceof Trident ||
-                !(e.getEntity() instanceof LivingEntity v)) return;
+                !(e.getEntity() instanceof LivingEntity v) || EntityClassification.matchesClassification(v.getType(), EntityClassification.UNALIVE)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
 
         ArcheryProfile profile = ProfileCache.getOrCache(p, ArcheryProfile.class);

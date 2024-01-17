@@ -6,7 +6,7 @@ import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-public class NetworkHandlerImpl implements NetworkHandler{
+public class BlockBreakNetworkHandlerImpl implements NetworkHandler{
     @Override
     public PacketStatus readBefore(Player player, Object packet) {
         if (player.getGameMode() == GameMode.CREATIVE) return PacketStatus.ALLOW;
@@ -24,5 +24,4 @@ public class NetworkHandlerImpl implements NetworkHandler{
 
         CustomBreakSpeedListener.onStop(info);
     }
-
 }

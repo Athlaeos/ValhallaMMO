@@ -161,27 +161,50 @@ public class EntityUtils {
         double total = 0;
         EntityProperties properties = EntityCache.getAndCacheProperties(entity);
         if (properties.getHelmet() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter))
-            total += getValue(entity, equipmentPenalty, properties.getHelmet().getMeta(), properties.getHelmetAttributes(), attribute);
+            total += getValue(entity, equipmentPenalty, properties.getHelmet().getMeta(), properties.getHelmetAttributes(), attribute, null);
         if (properties.getChestplate() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter))
-            total += getValue(entity, equipmentPenalty, properties.getChestplate().getMeta(), properties.getChestPlateAttributes(), attribute);
+            total += getValue(entity, equipmentPenalty, properties.getChestplate().getMeta(), properties.getChestPlateAttributes(), attribute, null);
         if (properties.getLeggings() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter))
-            total += getValue(entity, equipmentPenalty, properties.getLeggings().getMeta(), properties.getLeggingsAttributes(), attribute);
+            total += getValue(entity, equipmentPenalty, properties.getLeggings().getMeta(), properties.getLeggingsAttributes(), attribute, null);
         if (properties.getBoots() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter))
-            total += getValue(entity, equipmentPenalty, properties.getBoots().getMeta(), properties.getBootsAttributes(), attribute);
+            total += getValue(entity, equipmentPenalty, properties.getBoots().getMeta(), properties.getBootsAttributes(), attribute, null);
 
         if (properties.getMainHand() != null && ItemUtils.usedMainHand(properties.getMainHand(), properties.getOffHand()))
-            total += getValue(entity, equipmentPenalty, properties.getMainHand().getMeta(), properties.getMainHandAttributes(), attribute);
-        else if (!mainHandOnly && properties.getOffHand() != null) total += getValue(entity, equipmentPenalty, properties.getOffHand().getMeta(), properties.getOffHandAttributes(), attribute);
+            total += getValue(entity, equipmentPenalty, properties.getMainHand().getMeta(), properties.getMainHandAttributes(), attribute, null);
+        else if (!mainHandOnly && properties.getOffHand() != null) total += getValue(entity, equipmentPenalty, properties.getOffHand().getMeta(), properties.getOffHandAttributes(), attribute, null);
 
         for (ItemBuilder extra : properties.getMiscEquipment()){
-            total += getValue(entity, equipmentPenalty, extra.getMeta(), properties.getMiscEquipmentAttributes().get(extra), attribute);
+            total += getValue(entity, equipmentPenalty, extra.getMeta(), properties.getMiscEquipmentAttributes().get(extra), attribute, null);
         }
         return total;
     }
 
-    private static double getValue(LivingEntity entity, String statPenalty, ItemMeta item, Map<String, AttributeWrapper> wrappers, String attribute){
+    public static double combinedAttributeValue(LivingEntity entity, Attribute attribute, AttributeModifier.Operation operation, WeightClass weightFilter, String equipmentPenalty, boolean mainHandOnly){
+        double total = 0;
+        EntityProperties properties = EntityCache.getAndCacheProperties(entity);
+        if (properties.getHelmet() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter))
+            total += getValue(entity, equipmentPenalty, properties.getHelmet().getMeta(), properties.getHelmetAttributes(), attribute.toString(), operation);
+        if (properties.getChestplate() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter))
+            total += getValue(entity, equipmentPenalty, properties.getChestplate().getMeta(), properties.getChestPlateAttributes(), attribute.toString(), operation);
+        if (properties.getLeggings() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter))
+            total += getValue(entity, equipmentPenalty, properties.getLeggings().getMeta(), properties.getLeggingsAttributes(), attribute.toString(), operation);
+        if (properties.getBoots() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter))
+            total += getValue(entity, equipmentPenalty, properties.getBoots().getMeta(), properties.getBootsAttributes(), attribute.toString(), operation);
+
+        if (properties.getMainHand() != null && ItemUtils.usedMainHand(properties.getMainHand(), properties.getOffHand()))
+            total += getValue(entity, equipmentPenalty, properties.getMainHand().getMeta(), properties.getMainHandAttributes(), attribute.toString(), operation);
+        else if (!mainHandOnly && properties.getOffHand() != null) total += getValue(entity, equipmentPenalty, properties.getOffHand().getMeta(), properties.getOffHandAttributes(), attribute.toString(), operation);
+
+        for (ItemBuilder extra : properties.getMiscEquipment()){
+            if (WeightClass.getWeightClass(extra.getMeta()) != weightFilter) continue;
+            total += getValue(entity, equipmentPenalty, extra.getMeta(), properties.getMiscEquipmentAttributes().get(extra), attribute.toString(), operation);
+        }
+        return total;
+    }
+
+    private static double getValue(LivingEntity entity, String statPenalty, ItemMeta item, Map<String, AttributeWrapper> wrappers, String attribute, AttributeModifier.Operation operation){
         AttributeWrapper attributeWrapper = wrappers.get(attribute);
-        if (attributeWrapper == null) return 0;
+        if (attributeWrapper == null || (operation != null && attributeWrapper.isVanilla() && attributeWrapper.getOperation() != operation)) return 0;
         double value = attributeWrapper.getValue();
         if (statPenalty != null && entity instanceof Player p) value *= (1 + ItemSkillRequirements.getPenalty(p, item, statPenalty));
         return value;
