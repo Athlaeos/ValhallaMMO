@@ -63,8 +63,8 @@ public class EntityAttackListener implements Listener {
     private final double tridentThrownLoyalDamage = ValhallaMMO.getPluginConfig().getDouble("trident_damage_ranged_loyalty");
     private final double velocityDamageConstant = ValhallaMMO.getPluginConfig().getDouble("velocity_damage_constant");
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onAttack(EntityDamageByEntityEvent e){
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onSkillGapDamage(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof LivingEntity v)) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
 
@@ -73,9 +73,15 @@ public class EntityAttackListener implements Listener {
             PowerProfile attackerProfile = ProfileCache.getOrCache(pA, PowerProfile.class);
             if (Math.abs(attackerProfile.getLevel() - victimProfile.getLevel()) > skillGapPvPLevel) {
                 e.setCancelled(true);
-                return;
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onAttack(EntityDamageByEntityEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof LivingEntity v)) return;
+        Entity trueDamager = EntityUtils.getTrueDamager(e);
+
         boolean sweep = e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK;
         if (sweep && trueDamager instanceof LivingEntity a && a.getEquipment() != null && !ItemUtils.isEmpty(a.getEquipment().getItemInMainHand())){
             ItemMeta mainHand = ItemUtils.getItemMeta(a.getEquipment().getItemInMainHand());
@@ -201,7 +207,7 @@ public class EntityAttackListener implements Listener {
                 double finalKnockbackBonus = knockbackBonus;
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                     // finishing off custom knockback mechanics (removing attribute if placed, or changing velocity to comply with increased knockback)
-                    if (knockbackResistance > 0) EntityUtils.removeUniqueAttribute(v, EntityAttributeStats.NEGATIVE_KNOCKBACK, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+                    if (knockbackResistance > 0) EntityUtils.removeUniqueAttribute(v, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
                     else if (finalKnockbackBonus > 0){
                         Vector lookingDirection = e.getDamager() instanceof LivingEntity a ? a.getEyeLocation().getDirection().normalize() : e.getDamager().getVelocity().normalize();
 

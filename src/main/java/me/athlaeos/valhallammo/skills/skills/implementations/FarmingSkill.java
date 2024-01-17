@@ -15,6 +15,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.FarmingProfi
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -146,13 +147,13 @@ public class FarmingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void lootTableDrops(BlockBreakEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlock()) ||
-                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING) ||
+                !blockDropExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
 
-        if (blockDropExpValues.containsKey(e.getBlock().getType())) {
-            FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
-            int experience = e.getExpToDrop() + Utils.randomAverage(profile.getFarmingExperienceRate());
-            e.setExpToDrop(experience);
-        }
+        FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
+        int experience = e.getExpToDrop() + Utils.randomAverage(profile.getFarmingExperienceRate());
+        e.setExpToDrop(experience);
+
         double dropMultiplier = AccumulativeStatManager.getCachedStats("FARMING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
         ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> blockDropExpValues.containsKey(i.getType()));

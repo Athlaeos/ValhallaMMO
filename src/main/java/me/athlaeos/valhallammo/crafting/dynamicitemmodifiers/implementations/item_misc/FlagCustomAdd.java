@@ -49,6 +49,7 @@ public class FlagCustomAdd extends DynamicItemModifier {
             case INFINITY_EXPLOITABLE -> Material.ARROW;
             case UNENCHANTABLE -> Material.ENCHANTING_TABLE;
             case TEMPORARY_POTION_DISPLAY -> Material.GLASS_BOTTLE;
+            case UNMENDABLE -> Material.ANVIL;
         }).get();
     }
 

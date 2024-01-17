@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.CustomItem;
 import me.athlaeos.valhallammo.item.CustomItemRegistry;
@@ -15,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class ItemReplaceByIndexed extends DynamicItemModifier {
+public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultChangingModifier {
     private String item = null;
 
     public ItemReplaceByIndexed(String name) {
@@ -28,6 +29,11 @@ public class ItemReplaceByIndexed extends DynamicItemModifier {
         if (ItemUtils.isEmpty(customItem)) return;
         outputItem.setItem(customItem);
         outputItem.setMeta(ItemUtils.getItemMeta(customItem));
+    }
+
+    @Override
+    public ItemStack getNewResult() {
+        return item == null ? null : CustomItemRegistry.getProcessedItem(item);
     }
 
     @Override

@@ -214,8 +214,8 @@ perks:
       '1':
         position: '2,7'
         locked: GRAY_DYE:1172700
-        unlockable: ORANGE_DYE:1172801
-        unlocked: LIME_DYE:1172901
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
   alchemy_perk_combo:
     icon: IRON_SWORD
     coords: "2,4"
@@ -236,8 +236,8 @@ perks:
     messages:
       - "<lang.alchemy_perk_combo_messages>"
     requireperk_one:
-      - light_weapons_perk_3
-      - heavy_weapons_perk_3
+      - lightweapons_perk_3
+      - heavyweapons_perk_3
     requireperk_all:
       - alchemy_perk_2
     '1':

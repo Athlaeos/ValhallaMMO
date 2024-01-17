@@ -11,13 +11,14 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.playerstats.statsources.*;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class AccumulativeStatManager {
@@ -33,15 +34,15 @@ public class AccumulativeStatManager {
         // armors
         register("ARMOR_TOTAL", new SourceSource("TOTAL_LIGHT_ARMOR"), new SourceSource("TOTAL_HEAVY_ARMOR"), new SourceSource("TOTAL_WEIGHTLESS_ARMOR"));
         register("TOTAL_LIGHT_ARMOR", new TotalLightArmorSource());
-        register("LIGHT_ARMOR", new AttributeDefenderSource("GENERIC_ARMOR").weight(WeightClass.LIGHT).penalty("armor"), new PotionEffectSource("LIGHT_ARMOR"));
+        register("LIGHT_ARMOR", new VanillaAttributeDefenderSource(Attribute.GENERIC_ARMOR, AttributeModifier.Operation.ADD_NUMBER).weight(WeightClass.LIGHT).penalty("armor"), new PotionEffectSource("LIGHT_ARMOR"));
         register("LIGHT_ARMOR_MULTIPLIER");
         register("TOTAL_HEAVY_ARMOR", new TotalHeavyArmorSource());
-        register("HEAVY_ARMOR", new AttributeDefenderSource("GENERIC_ARMOR").weight(WeightClass.HEAVY).penalty("armor"), new PotionEffectSource("HEAVY_ARMOR"));
+        register("HEAVY_ARMOR", new VanillaAttributeDefenderSource(Attribute.GENERIC_ARMOR, AttributeModifier.Operation.ADD_NUMBER).weight(WeightClass.HEAVY).penalty("armor"), new PotionEffectSource("HEAVY_ARMOR"));
         register("HEAVY_ARMOR_MULTIPLIER");
         register("TOTAL_WEIGHTLESS_ARMOR", new SetBonusSource("GENERIC_ARMOR"), new TotalWeightlessArmorSource());
-        register("WEIGHTLESS_ARMOR", new AttributeDefenderSource("GENERIC_ARMOR").weight(WeightClass.WEIGHTLESS).penalty("armor"), new ProfileStatSource(PowerProfile.class, "armorBonus"), new GlobalBuffSource("armor_bonus"), new PotionEffectSource("ARMOR_FLAT"));
-        register("ARMOR_MULTIPLIER_BONUS", new ProfileStatSource(PowerProfile.class, "armorMultiplierBonus"), new GlobalBuffSource("fraction_armor_bonus"), new PotionEffectSource("ARMOR_FRACTION"));
-        register("TOUGHNESS", new AttributeDefenderSource("GENERIC_ARMOR_TOUGHNESS").penalty("armor"), new SourceSource("TOUGHNESS_BONUS"));
+        register("WEIGHTLESS_ARMOR", new VanillaAttributeDefenderSource(Attribute.GENERIC_ARMOR, AttributeModifier.Operation.ADD_NUMBER).weight(WeightClass.WEIGHTLESS).penalty("armor"), new ProfileStatSource(PowerProfile.class, "armorBonus"), new GlobalBuffSource("armor_bonus"), new PotionEffectSource("ARMOR_FLAT"));
+        register("ARMOR_MULTIPLIER_BONUS", new VanillaAttributeDefenderSource(Attribute.GENERIC_ARMOR, AttributeModifier.Operation.ADD_SCALAR), new ProfileStatSource(PowerProfile.class, "armorMultiplierBonus"), new GlobalBuffSource("fraction_armor_bonus"), new PotionEffectSource("ARMOR_FRACTION"));
+        register("TOUGHNESS", new VanillaAttributeDefenderSource(Attribute.GENERIC_ARMOR_TOUGHNESS, AttributeModifier.Operation.ADD_NUMBER).penalty("armor"), new SourceSource("TOUGHNESS_BONUS"));
         registerOffensive("LIGHT_ARMOR_FLAT_IGNORED", new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "penetrationFlatLight", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "penetrationFlatLight", WeightClass.LIGHT), new AttributeAttackerSource("LIGHT_ARMOR_PENETRATION_FLAT").penalty("attribute"), new PotionEffectAttackerSource("LIGHT_ARMOR_PENETRATION_FLAT"));
         registerOffensive("LIGHT_ARMOR_FRACTION_IGNORED", new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "penetrationFractionLight", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "penetrationFractionLight", WeightClass.LIGHT), new AttributeAttackerSource("LIGHT_ARMOR_PENETRATION_FRACTION").penalty("attribute"), new PotionEffectAttackerSource("LIGHT_ARMOR_PENETRATION_FRACTION"));
         registerOffensive("HEAVY_ARMOR_FLAT_IGNORED", new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "penetrationFlatHeavy", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "penetrationFlatHeavy", WeightClass.LIGHT), new AttributeAttackerSource("HEAVY_ARMOR_PENETRATION_FLAT").penalty("attribute"), new PotionEffectAttackerSource("HEAVY_ARMOR_PENETRATION_FLAT"));

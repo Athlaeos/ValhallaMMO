@@ -15,7 +15,7 @@ public class ResourcePack {
      * I copied most of this from thesheepdev's Simple Resourcepack, so code credit for resource pack hosting goes to them
      */
     private static File pack;
-    private static final String defaultPackLink = "https://download.mc-packs.net/pack/276d3aa97038738d989f1a9626472188a0120791.zip";
+    private static final String defaultPackLink = "https://download.mc-packs.net/pack/6d882f4294af3638410c60a718b2a6394423c337.zip";
 
     public static File getPack() {
         return pack;

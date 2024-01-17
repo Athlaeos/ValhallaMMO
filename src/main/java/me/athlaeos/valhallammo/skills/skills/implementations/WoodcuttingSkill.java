@@ -16,6 +16,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.WoodcuttingP
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
@@ -104,7 +105,8 @@ public class WoodcuttingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onBlockBreak(BlockBreakEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !Tag.LOGS.isTagged(e.getBlock().getType()) ||
-                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING)) return;
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING) ||
+                !dropsExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         WoodcuttingProfile profile = ProfileCache.getOrCache(e.getPlayer(), WoodcuttingProfile.class);
 
         double woodCuttingLuck = AccumulativeStatManager.getCachedStats("WOODCUTTING_LUCK", e.getPlayer(), 10000, true);

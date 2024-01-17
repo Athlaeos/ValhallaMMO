@@ -39,8 +39,8 @@ public class MovementListener implements Listener {
             EntityAttributeStats.updateStats(e.getPlayer());
 
             AttributeInstance armorInstance = e.getPlayer().getAttribute(Attribute.GENERIC_ARMOR);
-            EntityUtils.removeUniqueAttribute(e.getPlayer(), EntityAttributeStats.ARMOR_NULLIFIER, "armor_nullifier", Attribute.GENERIC_ARMOR);
-            EntityUtils.removeUniqueAttribute(e.getPlayer(), EntityAttributeStats.ARMOR_DISPLAY, "armor_display", Attribute.GENERIC_ARMOR);
+            EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_nullifier", Attribute.GENERIC_ARMOR);
+            EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_display", Attribute.GENERIC_ARMOR);
             if (armorInstance != null){
                 double totalArmor = AccumulativeStatManager.getCachedStats("ARMOR_TOTAL", e.getPlayer(), 10000, true);
                 int scale = ValhallaMMO.getPluginConfig().getInt("armor_scale", 50);
@@ -65,7 +65,7 @@ public class MovementListener implements Listener {
             double sneakSpeedBonus = AccumulativeStatManager.getCachedStats("SNEAK_MOVEMENT_SPEED_BONUS", e.getPlayer(), 10000, true);
             EntityUtils.addUniqueAttribute(e.getPlayer(), EntityAttributeStats.SNEAK_MOVEMENT, "valhalla_sneak_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED, sneakSpeedBonus, AttributeModifier.Operation.ADD_SCALAR);
         } else {
-            EntityUtils.removeUniqueAttribute(e.getPlayer(), EntityAttributeStats.SNEAK_MOVEMENT, "valhalla_sneak_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
+            EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_sneak_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
         }
     }
 
@@ -77,7 +77,7 @@ public class MovementListener implements Listener {
 
             EntityUtils.addUniqueAttribute(e.getPlayer(), EntityAttributeStats.SPRINT_MOVEMENT, "valhalla_sprint_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED, sneakSpeedBonus, AttributeModifier.Operation.ADD_SCALAR);
         } else {
-            EntityUtils.removeUniqueAttribute(e.getPlayer(), EntityAttributeStats.SPRINT_MOVEMENT, "valhalla_sprint_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
+            EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_sprint_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
         }
     }
 

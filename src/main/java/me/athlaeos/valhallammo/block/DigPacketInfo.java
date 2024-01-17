@@ -94,7 +94,7 @@ public class DigPacketInfo {
         }
 
         PotionEffect haste = digger.getPotionEffect(PotionEffectType.FAST_DIGGING);
-        if (haste != null) multiplier *= 0.2 * (haste.getAmplifier() + 1);
+        if (haste != null) multiplier *= (0.2 * haste.getAmplifier()) + 1;
 
         multiplier *= (1 + AccumulativeStatManager.getCachedStats("DIG_SPEED", digger, 10000, true) + AccumulativeStatManager.getStats("BLOCK_SPECIFIC_DIG_SPEED", digger, true));
 

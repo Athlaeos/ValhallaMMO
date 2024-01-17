@@ -1,6 +1,8 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.event.AdvancedItemModificationEvent;
+import me.athlaeos.valhallammo.event.ItemModificationEvent;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.localization.TranslationManager;
@@ -94,10 +96,12 @@ public abstract class DynamicItemModifier {
      * @param count how many times the recipe is being crafted. mainly applicable for the crafting grid recipes where the player can craft several items instantly
      */
     public static void modify(ItemBuilder i, Player p, List<DynamicItemModifier> modifiers, boolean sort, boolean use, boolean validate, int count){
-        if (sort) sortModifiers(modifiers);
-        for (DynamicItemModifier modifier : modifiers){
+        ItemModificationEvent event = new ItemModificationEvent(p, i, modifiers, sort, use, validate, count);
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (event.sort()) sortModifiers(event.getModifiers());
+        for (DynamicItemModifier modifier : event.getModifiers()){
             if (modifier instanceof RelationalItemModifier) continue;
-            modifier.processItem(p, i, use, validate, count);
+            modifier.processItem(p, i, event.use(), event.validate(), event.getCount());
             if (ItemUtils.isEmpty(i.getItem()) || CustomFlag.hasFlag(i.getMeta(), CustomFlag.UNCRAFTABLE)) break;
         }
         i.translate();
@@ -125,13 +129,15 @@ public abstract class DynamicItemModifier {
      * @param count how many times the recipe is being crafted. mainly applicable for the crafting grid recipes where the player can craft several items instantly
      */
     public static void modify(ItemBuilder i1, ItemBuilder i2, Player p, List<DynamicItemModifier> modifiers, boolean sort, boolean use, boolean validate, int count){
-        RelationalItemModifier.RelationalResult result = new RelationalItemModifier.RelationalResult(i1, i2);
-        if (sort) sortModifiers(modifiers);
-        for (DynamicItemModifier modifier : modifiers){
+        AdvancedItemModificationEvent event = new AdvancedItemModificationEvent(p, i1, i2, modifiers, sort, use, validate, count);
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        RelationalItemModifier.RelationalResult result = new RelationalItemModifier.RelationalResult(event.getItem(), event.getItem2());
+        if (event.sort()) sortModifiers(event.getModifiers());
+        for (DynamicItemModifier modifier : event.getModifiers()){
             if (modifier instanceof RelationalItemModifier relationalItemModifier)
-                relationalItemModifier.processItem(p, result.i1(), result.i2(), use, validate, count);
+                relationalItemModifier.processItem(p, result.i1(), result.i2(), event.use(), event.validate(), event.getCount());
             else {
-                modifier.processItem(p, i1, use, validate, count);
+                modifier.processItem(p, i1, event.use(), event.validate(), event.getCount());
                 result = new RelationalItemModifier.RelationalResult(i1, i2);
                 if (ItemUtils.isEmpty(result.i1().getItem()) || CustomFlag.hasFlag(result.i1().getMeta(), CustomFlag.UNCRAFTABLE) ||
                         ItemUtils.isEmpty(result.i2().getItem()) || CustomFlag.hasFlag(result.i2().getMeta(), CustomFlag.UNCRAFTABLE)) break;

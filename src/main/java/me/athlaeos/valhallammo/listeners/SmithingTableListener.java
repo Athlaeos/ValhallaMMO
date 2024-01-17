@@ -230,6 +230,7 @@ public class SmithingTableListener implements Listener {
                 DynamicSmithingRecipe dynamicRecipe = CustomRecipeRegistry.getSmithingRecipesByKey().get(s.getKey());
                 if (dynamicRecipe != null && dynamicRecipe.getBase().getOption().matches(dynamicRecipe.getBase().getItem(), base) &&
                         dynamicRecipe.getAddition().getOption().matches(dynamicRecipe.getAddition().getItem(), addition)) {
+                    if (isTemplateCompatible && ItemUtils.isEmpty(template)) continue; // 1.20+ recipes need to be template compatible, and so templates cannot be null
                     // templates are considered matching if templates aren't in the game yet, if the dynamic recipe template is null,
                     // or if the dynamic template matches the template item
                     boolean templatesMatch = !isTemplateCompatible || ((dynamicRecipe.getTemplate() == null || dynamicRecipe.getTemplate().getOption() == null || ItemUtils.isEmpty(dynamicRecipe.getTemplate().getItem())) ?

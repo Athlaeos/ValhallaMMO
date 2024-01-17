@@ -68,6 +68,7 @@ public abstract class Skill {
     /**
      * If true, the skill is intended to be interacted with and progressed through. If not, the skill is intended
      * to be hidden from sight and more or less just meant to be used to store extra data and add behavior to ValhallaMMO
+     *
      * @return whether the skill is active or passive
      */
     public abstract boolean isLevelableSkill();
@@ -76,6 +77,7 @@ public abstract class Skill {
 
     /**
      * The order of priority in which this skill should display in the /skill menu
+     *
      * @return the priority on which to sort the skills
      */
     public abstract int getSkillTreeMenuOrderPriority();
@@ -83,14 +85,17 @@ public abstract class Skill {
     /**
      * If true, the experience gained from this skill can be amplified with experience-scaling stats.
      * If false, the experience gained will always be the same regardless of stats.
+     *
      * @return true if the experience should scale with stats, false otherwise.
      */
-    public boolean isExperienceScaling() { return true; }
+    public boolean isExperienceScaling() {
+        return true;
+    }
 
     /**
      * @return The starting X coordinate when the menu is first opened. The top-left corner is X0, Y0.
      * Going right from there is positive X, going down is positive Y.
-     *  0123456X
+     * 0123456X
      * 0_______
      * 1_______
      * 2_______
@@ -106,7 +111,7 @@ public abstract class Skill {
     /**
      * @return The starting Y coordinate when the menu is first opened. The top-left corner is X0, Y0.
      * Going right from there is positive X, going down is positive Y.
-     *  0123456X
+     * 0123456X
      * 0_______
      * 1_______
      * 2_______
@@ -130,25 +135,28 @@ public abstract class Skill {
     public String getExpBarTitle() {
         return expBarTitle;
     }
-    public boolean isNavigable() { return isNavigable; }
+
+    public boolean isNavigable() {
+        return isNavigable;
+    }
 
     public String getExpStatus() {
         return TranslationManager.getTranslation("status_experience_gained");
     }
 
-    public Skill(String type){
+    public Skill(String type) {
         this.type = type;
     }
 
-    private int[] parseCoordinates(String coordinates){
+    private int[] parseCoordinates(String coordinates) {
         if (coordinates == null) return null;
-        int[] coords = new int[] { 0, 0 };
+        int[] coords = new int[]{0, 0};
         try {
             String[] indivCoords = coordinates.split(",");
             if (indivCoords.length != 2) throw new IllegalArgumentException();
             coords[0] = Integer.parseInt(indivCoords[0]);
             coords[1] = Integer.parseInt(indivCoords[1]);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             ValhallaMMO.logWarning("invalid coordinates given for " + getClass().getSimpleName() + ", defaulting to 0,0. Coords are to be given in the format \"x,y\" where X and Y are whole numbers");
             coords[0] = 0;
         }
@@ -156,10 +164,10 @@ public abstract class Skill {
     }
 
     /**
-     * @param baseSkillConfig the intended base skill config, containing simple properties
+     * @param baseSkillConfig   the intended base skill config, containing simple properties
      * @param progressionConfig the intended skill progression config, containing details about the skill's progression
      */
-    public void loadCommonConfig(YamlConfiguration baseSkillConfig, YamlConfiguration progressionConfig){
+    public void loadCommonConfig(YamlConfiguration baseSkillConfig, YamlConfiguration progressionConfig) {
         this.displayName = Utils.chat(TranslationManager.translatePlaceholders(baseSkillConfig.getString("display_name")));
         this.description = Utils.chat(TranslationManager.translatePlaceholders(baseSkillConfig.getString("description")));
         this.icon = ItemUtils.getIconFromConfig(baseSkillConfig, "icon", getClass().getSimpleName() + " skill config", new ItemStack(Material.BARRIER));
@@ -167,9 +175,9 @@ public abstract class Skill {
         this.isNavigable = progressionConfig.getBoolean("navigable", true);
 
         int modelData = baseSkillConfig.getInt("icon_data", -1);
-        if (modelData >= 0){
+        if (modelData >= 0) {
             ItemMeta iconMeta = ItemUtils.getItemMeta(icon);
-            if (iconMeta != null){
+            if (iconMeta != null) {
                 iconMeta.setCustomModelData(modelData);
                 ItemUtils.setItemMeta(this.icon, iconMeta);
             }
@@ -186,10 +194,10 @@ public abstract class Skill {
         this.centerY = coords[1];
 
         ConfigurationSection startingPerksSection = progressionConfig.getConfigurationSection("starting_perks");
-        if (startingPerksSection != null){
-            for (String startPerk : startingPerksSection.getKeys(false)){
+        if (startingPerksSection != null) {
+            for (String startPerk : startingPerksSection.getKeys(false)) {
                 Object arg = progressionConfig.get("starting_perks." + startPerk);
-                if (arg != null){
+                if (arg != null) {
                     PerkReward reward = PerkRewardRegistry.createReward(startPerk, arg);
                     if (reward == null) continue;
                     startingPerks.add(reward);
@@ -198,10 +206,10 @@ public abstract class Skill {
         }
 
         ConfigurationSection levelingPerksSection = progressionConfig.getConfigurationSection("leveling_perks");
-        if (levelingPerksSection != null){
-            for (String levelPerk : levelingPerksSection.getKeys(false)){
+        if (levelingPerksSection != null) {
+            for (String levelPerk : levelingPerksSection.getKeys(false)) {
                 Object arg = progressionConfig.get("leveling_perks." + levelPerk);
-                if (arg != null){
+                if (arg != null) {
                     PerkReward reward = PerkRewardRegistry.createReward(levelPerk, arg);
                     if (reward == null) continue;
                     levelingPerks.add(reward);
@@ -210,8 +218,8 @@ public abstract class Skill {
         }
 
         ConfigurationSection perksSection = progressionConfig.getConfigurationSection("perks");
-        if (perksSection != null){
-            for (String perkName : perksSection.getKeys(false)){
+        if (perksSection != null) {
+            for (String perkName : perksSection.getKeys(false)) {
                 String displayName = TranslationManager.translatePlaceholders(progressionConfig.getString("perks." + perkName + ".name"));
                 String description = TranslationManager.translatePlaceholders(progressionConfig.getString("perks." + perkName + ".description"));
                 ItemStack icon = ItemUtils.getIconFromConfig(progressionConfig, "perks." + perkName + ".icon", getClass().getSimpleName() + " progression config", new ItemStack(Material.PAPER));
@@ -243,10 +251,10 @@ public abstract class Skill {
 
                 List<PerkReward> perkRewards = new ArrayList<>();
                 ConfigurationSection perkRewardSection = progressionConfig.getConfigurationSection("perks." + perkName + ".perk_rewards");
-                if (perkRewardSection != null){
-                    for (String rewardString : perkRewardSection.getKeys(false)){
+                if (perkRewardSection != null) {
+                    for (String rewardString : perkRewardSection.getKeys(false)) {
                         Object arg = progressionConfig.get("perks." + perkName + ".perk_rewards." + rewardString);
-                        if (arg != null){
+                        if (arg != null) {
                             PerkReward reward = PerkRewardRegistry.createReward(rewardString, arg);
                             if (reward == null) continue;
                             perkRewards.add(reward);
@@ -271,7 +279,7 @@ public abstract class Skill {
 
                 Collection<PerkConnectionIcon> connectionLine = new HashSet<>();
                 ConfigurationSection connectionSection = progressionConfig.getConfigurationSection("perks." + perkName + ".connection_line");
-                if (connectionSection != null){
+                if (connectionSection != null) {
                     // Formatted like so:
                     // skill:
                     //   connection_line:
@@ -280,7 +288,7 @@ public abstract class Skill {
                     //       locked: BLACK_STAINED_GLASS_PANE:9999999
                     //       unlockable: YELLOW_STAINED_GLASS_PANE:9999999
                     //       unlocked: GREEN_STAINED_GLASS_PANE:9999999
-                    for (String i : connectionSection.getKeys(false)){
+                    for (String i : connectionSection.getKeys(false)) {
                         int[] position = parseCoordinates(progressionConfig.getString("perks." + perkName + ".connection_line." + i + ".position"));
                         if (position == null) {
                             ValhallaMMO.logWarning("Invalid perk connection piece at " + i + ", no position found.");
@@ -305,12 +313,12 @@ public abstract class Skill {
         perks.sort(Comparator.comparingInt(Perk::getLevelRequirement));
 
         ConfigurationSection specialSection = progressionConfig.getConfigurationSection("special_perks");
-        if (specialSection != null){
-            for (String stringLevel : specialSection.getKeys(false)){
+        if (specialSection != null) {
+            for (String stringLevel : specialSection.getKeys(false)) {
                 int level;
                 try {
                     level = Integer.parseInt(stringLevel);
-                } catch (IllegalArgumentException ignored){
+                } catch (IllegalArgumentException ignored) {
                     ValhallaMMO.logWarning("Invalid special level given at special_perks." + stringLevel + ". Cancelled this special level, it should be a whole number!");
                     continue;
                 }
@@ -321,10 +329,10 @@ public abstract class Skill {
                 List<PerkReward> specialPerkRewards = new ArrayList<>();
 
                 ConfigurationSection perkSection = progressionConfig.getConfigurationSection("special_perks." + stringLevel + ".perk_rewards");
-                if (perkSection != null){
-                    for (String perkName : perkSection.getKeys(false)){
+                if (perkSection != null) {
+                    for (String perkName : perkSection.getKeys(false)) {
                         Object arg = progressionConfig.get("special_perks." + stringLevel + ".perk_rewards." + perkName);
-                        if (arg != null){
+                        if (arg != null) {
                             PerkReward reward = PerkRewardRegistry.createReward(perkName, arg);
                             if (reward == null) continue;
                             specialPerkRewards.add(reward);
@@ -339,25 +347,26 @@ public abstract class Skill {
         this.expBarTitle = TranslationManager.translatePlaceholders(baseSkillConfig.getString("levelbar_title", ""));
         try {
             this.expBarColor = BarColor.valueOf(baseSkillConfig.getString("levelbar_color", "YELLOW"));
-        } catch (IllegalArgumentException ignored){
+        } catch (IllegalArgumentException ignored) {
             this.expBarColor = BarColor.WHITE;
         }
 
         try {
             this.expBarStyle = BarStyle.valueOf(baseSkillConfig.getString("levelbar_style", "SEGMENTED_6"));
-        } catch (IllegalArgumentException ignored){
+        } catch (IllegalArgumentException ignored) {
             this.expBarStyle = BarStyle.SEGMENTED_6;
         }
     }
 
     /**
      * Returns the double amount of experience needed to progress to this level, rounded to 4 decimals
+     *
      * @param level the integer level to get how much EXP it takes to reach it
      * @return the double amount of experience needed to progress to reach this level. If the level exceeds the
      * max level, it returns -1.
      */
-    public double expForLevel(int level){
-        if (isLevelableSkill() && level <= maxLevel){
+    public double expForLevel(int level) {
+        if (isLevelableSkill() && level <= maxLevel) {
             return Utils.round6Decimals(Utils.eval(expCurve.replace("%level%", String.valueOf(level))));
         } else {
             return -1;
@@ -366,11 +375,11 @@ public abstract class Skill {
 
     /**
      * Levels a player up if the levelup conditions are met, if the player has more or equal exp than is required to level
-     * up to the next level. It does this asynchronously, as this method contains a while loop and may execute several
-     * commands depending on configuration.
+     * up to the next level.
+     *
      * @param p the player to level up depending on if the conditions are met.
      */
-    public void updateLevelUpConditions(Player p, boolean silent){
+    public void updateLevelUpConditions(Player p, boolean silent) {
         Profile profile = ProfileRegistry.getPersistentProfile(p, getProfileType());
         if (profile == null) return;
         int currentLevel = profile.getLevel();
@@ -380,7 +389,7 @@ public abstract class Skill {
             // level down
             nextLevel -= 1; // since the player has negative experience, they should level down at least once.
             // loop from current level to 0 because that's the max amount of iterations to check for level downs
-            for (int i = nextLevel; i >= 0; i--){
+            for (int i = nextLevel; i >= 0; i--) {
                 double expForLevel = expForLevel(i);
                 if (-EXP >= expForLevel) {
                     // player has enough negative experience to level down once
@@ -394,7 +403,7 @@ public abstract class Skill {
         } else {
             // level up
             // loop from current level +1 to max level because that's the max amount of iterations to check for level ups
-            for (int i = nextLevel + 1; i <= maxLevel; i++){
+            for (int i = nextLevel + 1; i <= maxLevel; i++) {
                 double expForLevel = expForLevel(i);
                 if (EXP >= expForLevel) {
                     // player has enough experience to level up once
@@ -416,14 +425,14 @@ public abstract class Skill {
         ProfileRegistry.setPersistentProfile(p, profile, getProfileType());
         changePlayerLevel(p, currentLevel, nextLevel, silent);
 
-        if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()){
+        if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()) {
             showBossBar(p, profile, 0);
         }
     }
 
-    public int getLevelFromEXP(double exp){
+    public int getLevelFromEXP(double exp) {
         int level = 0;
-        for (int i = 1; i <= getMaxLevel(); i++){
+        for (int i = 1; i <= getMaxLevel(); i++) {
             double neededExp = expForLevel(i);
             if (exp >= neededExp) {
                 exp -= neededExp;
@@ -436,48 +445,50 @@ public abstract class Skill {
     /**
      * Adds an amount of EXP to the player's profile, and checks if the player should level up
      * If this method is being called on an inactive skill, no exp is added
-     * @param p the player to add EXP to
+     *
+     * @param p      the player to add EXP to
      * @param amount the amount of EXP to add
      */
-    public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason){
+    public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         // non-levelable skills should not gain exp
         if (!isLevelableSkill()) return;
         // creative mode players should not gain skill-acquired exp
-        if (p.getGameMode() == GameMode.CREATIVE && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
+        if (p.getGameMode() == GameMode.CREATIVE && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION)
+            return;
         // only experience-scaling skills should scale with exp multipliers. By default, this only excludes PowerSkill
         if (isExperienceScaling()) amount *= (1 + AccumulativeStatManager.getStats("GLOBAL_EXP_GAIN", p, true));
 
         PlayerSkillExperienceGainEvent event = new PlayerSkillExperienceGainEvent(p, amount, this, reason);
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
-        if (!event.isCancelled()){
+        if (!event.isCancelled()) {
             if (event.getAmount() == 0) return;
 
             Profile profile = ProfileRegistry.getPersistentProfile(p, event.getLeveledSkill().getProfileType());
             profile.setEXP(profile.getEXP() + event.getAmount());
             profile.setTotalEXP(profile.getTotalEXP() + event.getAmount());
 
-            if (!silent){
+            if (!silent) {
                 double statusAmount = accumulateEXP(p, event.getAmount(), event.getLeveledSkill());
-                if (!(this instanceof PowerSkill) && !StringUtils.isEmpty(getExpStatus())){
+                if (!(this instanceof PowerSkill) && !StringUtils.isEmpty(getExpStatus())) {
                     p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Utils.chat(getExpStatus()
                             .replace("%skill%", event.getLeveledSkill().displayName)
                             .replace("%exp%", ((statusAmount >= 0) ? "+" : "") + String.format("%,.2f", statusAmount)))));
                 }
-                if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()){
+                if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()) {
                     showBossBar(p, profile, statusAmount);
                 }
             }
 
             ProfileRegistry.setPersistentProfile(p, profile, profile.getClass());
             // level conditions don't need to be checked if the player's current exp isn't enough to level up, or low enough to level down
-            if (profile.getEXP() >= expForLevel(profile.getLevel() + 1) || profile.getEXP() < 0){
+            if (profile.getEXP() >= expForLevel(profile.getLevel() + 1) || profile.getEXP() < 0) {
                 updateLevelUpConditions(p, silent);
             }
         }
         AccumulativeStatManager.updateStats(p);
     }
 
-    public void addLevels(Player player, int levels, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason){
+    public void addLevels(Player player, int levels, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (levels == 0) return;
         Profile p = ProfileRegistry.getPersistentProfile(player, getProfileType());
         double expToGive = -p.getEXP();
@@ -486,7 +497,7 @@ public abstract class Skill {
                 expToGive -= expForLevel(level);
             }
         } else {
-            for (int level = p.getLevel() + 1; level <= p.getLevel() + levels; level++){
+            for (int level = p.getLevel() + 1; level <= p.getLevel() + levels; level++) {
                 expToGive += expForLevel(level);
             }
         }
@@ -510,9 +521,9 @@ public abstract class Skill {
 
     This method has no influence on the experience obtained, it is purely a visual effect.
      */
-    private double accumulateEXP(Player p, double amount, Skill type){
+    private double accumulateEXP(Player p, double amount, Skill type) {
         EXPStatusStruct struct = expTracker.getOrDefault(p.getUniqueId(), new EXPStatusStruct(type, 0, System.currentTimeMillis()));
-        if (!struct.getType().equals(type) || struct.getTime_since_last() + 3000L <= System.currentTimeMillis() || struct.getExp() > 100000000){
+        if (!struct.getType().equals(type) || struct.getTime_since_last() + 3000L <= System.currentTimeMillis() || struct.getExp() > 100000000) {
             struct = new EXPStatusStruct(type, 0, System.currentTimeMillis());
         }
         struct.setExp(struct.getExp() + amount);
@@ -523,12 +534,12 @@ public abstract class Skill {
         return struct.getExp();
     }
 
-    private static class EXPStatusStruct{
+    private static class EXPStatusStruct {
         private Skill type;
         private Long time_since_last;
         private double exp;
 
-        public EXPStatusStruct(Skill type, double exp, Long time_since_last){
+        public EXPStatusStruct(Skill type, double exp, Long time_since_last) {
             this.type = type;
             this.exp = exp;
             this.time_since_last = time_since_last;
@@ -559,8 +570,8 @@ public abstract class Skill {
         }
     }
 
-    private void showBossBar(Player p, Profile profile, double accumulatedEXP){
-        if (!StringUtils.isEmpty(expBarTitle)){
+    private void showBossBar(Player p, Profile profile, double accumulatedEXP) {
+        if (!StringUtils.isEmpty(expBarTitle)) {
             double expForNextLevel = expForLevel(profile.getLevel() + 1);
 
             String bossBarTitle = Utils.chat(expBarTitle
@@ -582,15 +593,16 @@ public abstract class Skill {
 
     /**
      * Levels a player up once, and applies any rewards within the skill to the player
+     *
      * @param p the player to level up
      */
-    public void changePlayerLevel(Player p, int from, int to, boolean silent){
+    public void changePlayerLevel(Player p, int from, int to, boolean silent) {
         if (!isLevelableSkill()) return;
-        if (to < from){
+        if (to < from) {
             // level down
-            for (int i = from - 1; i >= to; i--){
-                if (specialLevelingUndoCommands.containsKey(i)){
-                    for (String command : specialLevelingUndoCommands.get(i)){
+            for (int i = from - 1; i >= to; i--) {
+                if (specialLevelingUndoCommands.containsKey(i)) {
+                    for (String command : specialLevelingUndoCommands.get(i)) {
                         ValhallaMMO.getInstance().getServer().dispatchCommand(
                                 ValhallaMMO.getInstance().getServer().getConsoleSender(),
                                 command.replace("%player%", p.getName())
@@ -599,22 +611,22 @@ public abstract class Skill {
                 }
             }
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
-                for (int i = from; i > to; i--){
-                    for (PerkReward reward : levelingPerks){
+            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+                for (int i = from; i > to; i--) {
+                    for (PerkReward reward : levelingPerks) {
                         if (reward instanceof MultipliableReward || reward.isPersistent()) continue;
                         reward.remove(p);
                     }
 
-                    if (specialLevelingPerks.containsKey(i)){
-                        for (PerkReward reward : specialLevelingPerks.get(i)){
+                    if (specialLevelingPerks.containsKey(i)) {
+                        for (PerkReward reward : specialLevelingPerks.get(i)) {
                             if (reward.isPersistent()) continue;
                             reward.remove(p);
                         }
                     }
                 }
 
-                for (PerkReward reward : levelingPerks){
+                for (PerkReward reward : levelingPerks) {
                     if (reward instanceof MultipliableReward r) {
                         if (reward.isPersistent()) continue;
                         r.remove(p, to - from);
@@ -622,12 +634,12 @@ public abstract class Skill {
                 }
             });
 
-            if (arePerksForgettable()){
+            if (arePerksForgettable()) {
                 // forgetting perks if the player no longer meets perk requirements
                 List<Perk> sortedPerks = new ArrayList<>(perks);
                 sortedPerks.sort(Comparator.comparingInt(Perk::getLevelRequirement));
                 Collections.reverse(sortedPerks);
-                for (Perk perk : sortedPerks){
+                for (Perk perk : sortedPerks) {
                     if (perk.shouldLock(p)) {
                         perk.remove(p);
                         p.sendMessage(Utils.chat(TranslationManager.getTranslation("perk_forget").replace("%perk%", perk.getDisplayName())));
@@ -635,7 +647,7 @@ public abstract class Skill {
                 }
             }
 
-            for (String command : levelingUndoCommands){
+            for (String command : levelingUndoCommands) {
                 ValhallaMMO.getInstance().getServer().dispatchCommand(
                         ValhallaMMO.getInstance().getServer().getConsoleSender(),
                         command.replace("%player%", p.getName())
@@ -643,17 +655,17 @@ public abstract class Skill {
             }
         } else {
             // level up
-            for (int i = from + 1; i <= to; i++){
+            for (int i = from + 1; i <= to; i++) {
                 // special messages, commands, and perk rewards
-                if (!silent){
-                    if (specialLevelingMessages.containsKey(i)){
-                        for (String message : specialLevelingMessages.get(i)){
+                if (!silent) {
+                    if (specialLevelingMessages.containsKey(i)) {
+                        for (String message : specialLevelingMessages.get(i)) {
                             p.sendMessage(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(Utils.chat(message), p), p));
                         }
                     }
                 }
-                if (specialLevelingCommands.containsKey(i)){
-                    for (String command : specialLevelingCommands.get(i)){
+                if (specialLevelingCommands.containsKey(i)) {
+                    for (String command : specialLevelingCommands.get(i)) {
                         ValhallaMMO.getInstance().getServer().dispatchCommand(
                                 ValhallaMMO.getInstance().getServer().getConsoleSender(),
                                 command.replace("%player%", p.getName())
@@ -662,13 +674,13 @@ public abstract class Skill {
                 }
             }
 
-            if (!silent){
-                for (String message : levelingMessages){
+            if (!silent) {
+                for (String message : levelingMessages) {
                     Utils.sendMessage(p, TranslationManager.translatePlaceholders(message).replace("%level%", String.valueOf(to)));
                 }
             }
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
                 for (int i = from + 1; i <= to; i++) {
                     for (PerkReward reward : levelingPerks) {
                         if (reward instanceof MultipliableReward) continue;
@@ -682,14 +694,14 @@ public abstract class Skill {
                     }
                 }
 
-                for (PerkReward reward : levelingPerks){
+                for (PerkReward reward : levelingPerks) {
                     if (reward instanceof MultipliableReward r) {
                         r.apply(p, to - from);
                     }
                 }
             });
 
-            for (String command : levelingCommands){
+            for (String command : levelingCommands) {
                 ValhallaMMO.getInstance().getServer().dispatchCommand(
                         ValhallaMMO.getInstance().getServer().getConsoleSender(),
                         command.replace("%player%", p.getName())
@@ -700,62 +712,67 @@ public abstract class Skill {
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
     }
 
-    public void updateSkillStats(Player p, boolean runPersistentStartingPerks){
+    public void updateSkillStats(Player p, boolean runPersistentStartingPerks) {
         Profile skillProfile = ProfileRegistry.getBlankProfile(p, getProfileType());
         Profile persistentProfile = ProfileRegistry.getPersistentProfile(p, getProfileType());
         PowerProfile powerProfile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
         ProfileRegistry.setSkillProfile(p, skillProfile, skillProfile.getClass());
         int level = getLevelFromEXP(persistentProfile.getTotalEXP());
-        for (PerkReward r : startingPerks) {
-            if (!runPersistentStartingPerks && r.isPersistent()) continue;
-            r.apply(p);
-        }
-        if (level <= 0) return;
 
-        for (int i = 1; i <= level; i++){
-            for (PerkReward reward : levelingPerks){
-                if (reward instanceof MultipliableReward || reward.isPersistent()) continue; // persistent rewards should not be executed repeatedly
-                reward.apply(p);
+        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+            for (PerkReward r : startingPerks) {
+                if (!runPersistentStartingPerks && r.isPersistent()) continue;
+                r.apply(p);
             }
+            if (level > 0) {
+                for (int i = 1; i <= level; i++) {
+                    for (PerkReward reward : levelingPerks) {
+                        if (reward instanceof MultipliableReward || reward.isPersistent())
+                            continue; // persistent rewards should not be executed repeatedly
+                        reward.apply(p);
+                    }
 
-            // special perk rewards
-            if (specialLevelingPerks.containsKey(i)){
-                for (PerkReward reward : specialLevelingPerks.get(i)){
-                    if (reward.isPersistent()) continue;
-                    reward.apply(p);
+                    // special perk rewards
+                    if (specialLevelingPerks.containsKey(i)) {
+                        for (PerkReward reward : specialLevelingPerks.get(i)) {
+                            if (reward.isPersistent()) continue;
+                            reward.apply(p);
+                        }
+                    }
+                }
+
+                for (PerkReward reward : levelingPerks) {
+                    if (reward instanceof MultipliableReward r && !reward.isPersistent()) {
+                        r.apply(p, level);
+                    }
                 }
             }
-        }
-        for (PerkReward reward : levelingPerks){
-            if (reward instanceof MultipliableReward r && !reward.isPersistent()) {
-                r.apply(p, level);
-            }
-        }
-        Collection<String> unlockedPerks = powerProfile.getUnlockedPerks();
-        Collection<String> fakeUnlockedPerks = powerProfile.getFakeUnlockedPerks();
-        Collection<String> permanentlyLockedPerks = powerProfile.getPermanentlyLockedPerks();
-        for (Perk perk : perks){
-            if (fakeUnlockedPerks.contains(perk.getName()) || permanentlyLockedPerks.contains(perk.getName())) continue;
-            if (unlockedPerks.contains(perk.getName())) { // do not trigger perks again if they've not been unlocked, or if they're fake unlocked or permanently unlocked
-                for (PerkReward reward : perk.getRewards()){
-                    if (reward.isPersistent()) continue;
-                    reward.apply(p);
-                }
-                for (ResourceExpense expense : perk.getExpenses()){
-                    expense.purchase(p, false);
-                }
-            }
-        }
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
-                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p))
-        );
+            Collection<String> unlockedPerks = powerProfile.getUnlockedPerks();
+            Collection<String> fakeUnlockedPerks = powerProfile.getFakeUnlockedPerks();
+            Collection<String> permanentlyLockedPerks = powerProfile.getPermanentlyLockedPerks();
+            for (Perk perk : perks) {
+                if (fakeUnlockedPerks.contains(perk.getName()) || permanentlyLockedPerks.contains(perk.getName())) continue;
+                if (unlockedPerks.contains(perk.getName())) { // do not trigger perks again if they've not been unlocked, or if they're fake unlocked or permanently unlocked
+                    for (PerkReward reward : perk.getRewards()) {
+                        if (reward.isPersistent()) continue;
+                        reward.apply(p);
+                    }
+                    for (ResourceExpense expense : perk.getExpenses()) {
+                        expense.purchase(p, false);
+                    }
+                }
+            }
+
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, skillProfile.getClass()));
+        });
     }
 
     private final boolean perksForgettable = ConfigManager.getConfig("config.yml").reload().get().getBoolean("forgettable_perks");
 
     /**
      * if true, players that level downwards will forget perks if they no longer meet their perk requirements (level & perk dependencies)
+     *
      * @return if perks should be forgettable if leveling below its requirements
      */
     public boolean arePerksForgettable() {

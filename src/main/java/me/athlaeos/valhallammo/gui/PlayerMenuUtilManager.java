@@ -19,4 +19,8 @@ public class PlayerMenuUtilManager {
         playerMenuMap.putIfAbsent(p.getUniqueId(), new PlayerMenuUtility(p));
         return playerMenuMap.get(p.getUniqueId());
     }
+
+    public static void removePlayerMenuUtility(UUID uuid){
+        playerMenuMap.remove(uuid);
+    }
 }

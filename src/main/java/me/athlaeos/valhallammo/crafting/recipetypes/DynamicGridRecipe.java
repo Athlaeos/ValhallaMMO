@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.ToolRequirement;
 import me.athlaeos.valhallammo.crafting.ToolRequirementType;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -149,6 +150,8 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     }
 
     private ItemStack recipeBookIcon(ItemStack i){
+        ResultChangingModifier changer = (ResultChangingModifier) modifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
+        if (changer != null) i = changer.getNewResult();
         List<String> gridDetails = new ArrayList<>();
         if (shapeless){
             String shapelessFormat = TranslationManager.getTranslation("ingredient_format_shapeless");

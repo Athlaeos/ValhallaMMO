@@ -838,7 +838,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
         "DATA": {
-          "customModelData": 8891630,
+          "customModelData": 8892630,
           "name": "custom_model_data",
           "priority": "SOONEST"
         }

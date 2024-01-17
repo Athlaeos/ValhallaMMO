@@ -3,6 +3,7 @@ starting_perks:
   power_critdamage_add: 0.5
   power_bleeddamage_add: 2
   power_bleedduration_add: 80
+  power_radiantresistance_add: 2
   recipes_unlock:
     - planks_oak_4
     - planks_birch_4

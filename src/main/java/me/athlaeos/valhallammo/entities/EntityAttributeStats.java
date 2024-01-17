@@ -46,7 +46,7 @@ public class EntityAttributeStats {
 
     public static void removeStats(LivingEntity e){
         for (AttributeDataHolder holder : attributesToUpdate.values()){
-            EntityUtils.removeUniqueAttribute(e, holder.uuid, holder.name(), holder.type());
+            EntityUtils.removeUniqueAttribute(e, holder.name(), holder.type());
         }
     }
 

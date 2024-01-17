@@ -17,7 +17,7 @@ import me.athlaeos.valhallammo.listeners.*;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.nms.NMS;
-import me.athlaeos.valhallammo.nms.NetworkHandlerImpl;
+import me.athlaeos.valhallammo.nms.BlockBreakNetworkHandlerImpl;
 import me.athlaeos.valhallammo.nms.PacketListener;
 import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.persistence.Database;
@@ -140,7 +140,7 @@ public class ValhallaMMO extends JavaPlugin {
         saveAndUpdateConfig("gui_details.yml");
 
         if (setupNMS()){
-            packetListener = new PacketListener(new NetworkHandlerImpl());
+            packetListener = new PacketListener(new BlockBreakNetworkHandlerImpl());
             packetListener.addAll();
             registerListener(packetListener);
             registerListener(new CustomBreakSpeedListener(), "custom_mining_speeds");
@@ -174,6 +174,7 @@ public class ValhallaMMO extends JavaPlugin {
         }
 
         PlayerJumpEvent.register(this);
+        registerListener(new AnvilListener());
         registerListener(new ArmorSwitchListener());
         registerListener(new BlockListener());
         registerListener(new BrewingStandListener());
