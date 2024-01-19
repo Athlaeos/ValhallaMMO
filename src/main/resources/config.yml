@@ -27,7 +27,6 @@ resource_pack_config_override: true # If true, certain config options are overri
 # This option can be toggled in-game with /val resourcepack <enable/disable>
 
 # GENERAL
-
 selectable_loot_modifiers: false # If true, the loot drops within selectable loot will be modified according to the player opening said loot.
 # If not, the loot displayed will be equal to the raw item drop in the loot table
 

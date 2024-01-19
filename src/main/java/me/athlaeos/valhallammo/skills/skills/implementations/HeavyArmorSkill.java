@@ -15,7 +15,6 @@ import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.HeavyArmorProfile;
-import me.athlaeos.valhallammo.playerstats.profiles.implementations.HeavyWeaponsProfile;
 import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
@@ -158,7 +157,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
 
     @Override
     public Class<? extends Profile> getProfileType() {
-        return HeavyWeaponsProfile.class;
+        return HeavyArmorProfile.class;
     }
 
     @Override

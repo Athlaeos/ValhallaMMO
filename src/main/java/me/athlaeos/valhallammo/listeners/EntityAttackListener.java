@@ -71,9 +71,7 @@ public class EntityAttackListener implements Listener {
         if (v instanceof Player pV && trueDamager instanceof Player pA && skillGapPvPPrevention){
             PowerProfile victimProfile = ProfileCache.getOrCache(pV, PowerProfile.class);
             PowerProfile attackerProfile = ProfileCache.getOrCache(pA, PowerProfile.class);
-            if (Math.abs(attackerProfile.getLevel() - victimProfile.getLevel()) > skillGapPvPLevel) {
-                e.setCancelled(true);
-            }
+            if (Math.abs(attackerProfile.getLevel() - victimProfile.getLevel()) > skillGapPvPLevel) e.setCancelled(true);
         }
     }
 

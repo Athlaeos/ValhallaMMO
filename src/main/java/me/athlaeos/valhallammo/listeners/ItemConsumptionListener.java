@@ -43,6 +43,11 @@ public class ItemConsumptionListener implements Listener {
 
         ItemMeta meta = ItemUtils.getItemMeta(item);
         if (meta == null) return;
+        FoodClass type = FoodPropertyManager.getFoodClass(item, meta);
+        double multiplier = 1 + ((type == null ? 0 : AccumulativeStatManager.getCachedStats("FOOD_BONUS_" + type, e.getPlayer(), 10000, true)));
+
+        int hungerBefore = e.getPlayer().getFoodLevel();
+        float saturationBefore = e.getPlayer().getSaturation();
         if (FoodPropertyManager.isCustomFood(meta)){
             if (FoodPropertyManager.shouldCancelDefaultPotionEffects(meta)) cancelNextFoodEffects.add(e.getPlayer().getUniqueId());
             cancelNextFoodEvent.add(e.getPlayer().getUniqueId());
@@ -50,13 +55,8 @@ public class ItemConsumptionListener implements Listener {
             int foodToReplenish = FoodPropertyManager.getFoodValue(item, meta);
             float saturationToReplenish = FoodPropertyManager.getSaturationValue(item, meta);
 
-            FoodClass type = FoodPropertyManager.getFoodClass(item, meta);
-            double multiplier = 1 + ((type == null ? 0 : AccumulativeStatManager.getCachedStats("FOOD_BONUS_" + type, e.getPlayer(), 10000, true)));
             foodToReplenish = (int) Math.round(multiplier * foodToReplenish);
             saturationToReplenish *= multiplier;
-
-            int hungerBefore = e.getPlayer().getFoodLevel();
-            float saturationBefore = e.getPlayer().getSaturation();
 
             int finalFoodToReplenish = foodToReplenish;
             float finalSaturationToReplenish = saturationBefore + saturationToReplenish;
@@ -68,6 +68,19 @@ public class ItemConsumptionListener implements Listener {
                 if (!event.isCancelled()){
                     e.getPlayer().setFoodLevel(Math.max(0, Math.min(20, event.getFoodLevel())));
                     e.getPlayer().setSaturation(Math.max(0, Math.min(20, finalSaturationToReplenish)));
+                }
+            }, 1L);
+        } else {
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                int hungerDifference = e.getPlayer().getFoodLevel() - hungerBefore;
+                float saturationDifference = e.getPlayer().getSaturation() - saturationBefore;
+                int newFoodLevel = hungerBefore + (int) Math.round(hungerDifference * multiplier);
+                float newSaturationLevel = saturationBefore + (saturationDifference * (float) multiplier);
+                FoodLevelChangeEvent event = new FoodLevelChangeEvent(e.getPlayer(), Math.max(0, Math.min(20, newFoodLevel)), item);
+                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+                if (!event.isCancelled()){
+                    e.getPlayer().setFoodLevel(Math.max(0, Math.min(20, event.getFoodLevel())));
+                    e.getPlayer().setSaturation(Math.max(0, Math.min(20, newSaturationLevel)));
                 }
             }, 1L);
         }

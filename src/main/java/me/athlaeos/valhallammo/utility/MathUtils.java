@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MathUtils {
     public static Collection<Location> getRandomPointsInArea(Location center, double radius, int count){
@@ -221,19 +223,21 @@ public class MathUtils {
     }
 
     public static int[][] getOffsetsBetweenPoints(int[] offset1, int[] offset2){
-        int xOff = offset1[0] - offset2[0];
-        int yOff = offset1[1] - offset2[1];
-        int zOff = offset1[2] - offset2[2];
+        int xOff = Math.abs(offset1[0] - offset2[0]) + 1;
+        int yOff = Math.abs(offset1[1] - offset2[1]) + 1;
+        int zOff = Math.abs(offset1[2] - offset2[2]) + 1;
         int arraySize = Math.abs(xOff) * Math.abs(yOff) * Math.abs(zOff);
-        int[][] offsets = new int[3][arraySize];
+        int[][] offsets = new int[arraySize][3];
         int index = 0;
         for (int x = offset1[0]; x <= offset2[0]; x++){
             for (int y = offset1[1]; y <= offset2[1]; y++){
                 for (int z = offset1[2]; z <= offset2[2]; z++){
                     offsets[index] = new int[]{x, y, z};
+                    index++;
                 }
             }
         }
+
         return offsets;
     }
 }

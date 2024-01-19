@@ -166,7 +166,7 @@ public class ArcherySkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onArrowHit(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
-        if (!(e.getDamager() instanceof AbstractArrow a) || !(a.getShooter() instanceof Player p) || a instanceof Trident ||
+        if (!(e.getDamager() instanceof AbstractArrow a) || !(EntityUtils.getTrueDamager(e) instanceof Player p) || a instanceof Trident ||
                 !(e.getEntity() instanceof LivingEntity v) || EntityClassification.matchesClassification(v.getType(), EntityClassification.UNALIVE)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
 

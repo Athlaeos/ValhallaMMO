@@ -697,6 +697,7 @@ public class ItemUtils {
                                 else clickedItem.setAmount(clickedItem.getAmount() - amountToTransfer);
                             }
                             slotItem.setAmount(slotItem.getAmount() + amountToTransfer);
+                            return;
                         }
                     }
                 }

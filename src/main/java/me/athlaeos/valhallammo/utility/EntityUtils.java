@@ -288,6 +288,7 @@ public class EntityUtils {
     }
 
     public static Entity getTrueDamager(EntityDamageByEntityEvent e){
+        if (e.getDamager() instanceof EnderPearl p && p.getShooter() instanceof Entity) return p;
         if (e.getDamager() instanceof Projectile p && p.getShooter() instanceof Entity t) return t;
         return e.getDamager();
     }

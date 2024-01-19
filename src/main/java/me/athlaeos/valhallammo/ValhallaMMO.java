@@ -46,6 +46,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ValhallaMMO extends JavaPlugin {
 
@@ -140,10 +141,12 @@ public class ValhallaMMO extends JavaPlugin {
         saveAndUpdateConfig("gui_details.yml");
 
         if (setupNMS()){
-            packetListener = new PacketListener(new BlockBreakNetworkHandlerImpl());
-            packetListener.addAll();
-            registerListener(packetListener);
-            registerListener(new CustomBreakSpeedListener(), "custom_mining_speeds");
+            if (pluginConfig.getBoolean("custom_mining_speeds", true)){
+                packetListener = new PacketListener(new BlockBreakNetworkHandlerImpl());
+                packetListener.addAll();
+                registerListener(new CustomBreakSpeedListener());
+                registerListener(packetListener);
+            }
             logInfo("NMS version " + nms.getClass().getSimpleName() + " registered!");
         } else {
             logWarning("No NMS version found for your server version");
