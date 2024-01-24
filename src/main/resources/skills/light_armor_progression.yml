@@ -5,8 +5,8 @@ starting_perks:
 experience: 
   max_level: 100 
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
-  exp_damage_piece: 4 
-  exp_second_piece: 1 
+  exp_damage_piece: 10
+  exp_second_piece: 5
 
 special_perks: []
 

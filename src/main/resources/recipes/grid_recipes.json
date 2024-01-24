@@ -395,7 +395,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 1.8,
+          "value": 4,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -457,23 +457,6 @@
           "attribute": "GENERIC_ATTACK_DAMAGE",
           "icon": "IRON_SWORD",
           "name": "attribute_scale_generic_attack_damage",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
-          "skillRange": 245.0,
-          "rangeOffset": 55.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
           "priority": "NEUTRAL"
         }
       },
@@ -1471,7 +1454,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceKeepingAmount",
         "DATA": {
-          "replaceBy": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAOTElHSFRfQkxVRV9EWUVzcQB+AA8A\r\nAABAc3EAfgAAc3EAfgADdXEAfgAGAAAABnEAfgAIdAAJbWV0YS10eXBldAAEbG9yZXQAE2F0dHJp\r\nYnV0ZS1tb2RpZmllcnN0AAlJdGVtRmxhZ3N0ABJQdWJsaWNCdWtraXRWYWx1ZXN1cQB+AAYAAAAG\r\ndAAISXRlbU1ldGF0AApVTlNQRUNJRklDc3IANmNvbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1t\r\ndXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEv\r\nbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAAEdACUeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxp\r\nYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNj\r\nYXRlZCI6ZmFsc2UsImNvbG9yIjoiZGFya19yZWQiLCJ0ZXh0IjoiVGVycmlibGUifV0sInRleHQi\r\nOiIifXQAwHsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVk\r\nIjpmYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6\r\nIndoaXRlIiwidGV4dCI6Iu65kCAifSx7Iml0YWxpYyI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRl\r\neHQiOiI1LjUgQXJtb3IifV0sInRleHQiOiIifXQAynsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJp\r\ndGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9i\r\nZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6Iu65kiAifSx7Iml0YWxpYyI6\r\nZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiIwLjggQXJtb3IgVG91Z2huZXNzIn1dLCJ0ZXh0\r\nIjoiIn10AJd7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5l\r\nZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3Ii\r\nOiJncmF5IiwidGV4dCI6IkR1cmFiaWxpdHk6IDEvMSJ9XSwidGV4dCI6IiJ9c3IAF2phdmEudXRp\r\nbC5MaW5rZWRIYXNoTWFwNMBOXBBswPsCAAFaAAthY2Nlc3NPcmRlcnhyABFqYXZhLnV0aWwuSGFz\r\naE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVzaG9sZHhwP0AAAAAAAAx3CAAAABAA\r\nAAACdAANR0VORVJJQ19BUk1PUnNyABNqYXZhLnV0aWwuQXJyYXlMaXN0eIHSHZnHYZ0DAAFJAARz\r\naXpleHAAAAABdwQAAAABc3EAfgAAc3EAfgADdXEAfgAGAAAABnEAfgAIcQB+AAt0AARuYW1ldAAE\r\nc2xvdHQABHV1aWR0AAlvcGVyYXRpb251cQB+AAYAAAAGdAAmb3JnLmJ1a2tpdC5hdHRyaWJ1dGUu\r\nQXR0cmlidXRlTW9kaWZpZXJzcgAQamF2YS5sYW5nLkRvdWJsZYCzwkopa/sEAgABRAAFdmFsdWV4\r\ncQB+ABBAFg3WnTAnD3QADWdlbmVyaWMuYXJtb3J0AAVDSEVTVHQAJDJlNzI2ODk4LTg1NjktNDQ5\r\nNS1hNDkwLTJjZjIxMGY0MjkwMHNxAH4ADwAAAAB4dAAXR0VORVJJQ19BUk1PUl9UT1VHSE5FU1Nz\r\ncQB+ACsAAAABdwQAAAABc3EAfgAAc3EAfgADdXEAfgAGAAAABnEAfgAIcQB+AAtxAH4AMHEAfgAx\r\ncQB+ADJxAH4AM3VxAH4ABgAAAAZxAH4ANXNxAH4ANj/oN1p0wJw9dAAXZ2VuZXJpYy5hcm1vcl90\r\nb3VnaG5lc3NxAH4AOXQAJDQyY2EzZTBlLWU1NjQtNGIxZC1iNDdhLWJiOGQxMzE5NjBlZnEAfgA7\r\neHgAc3EAfgArAAAAAXcEAAAAAXQAD0hJREVfQVRUUklCVVRFU3hzcQB+ACg/QAAAAAAADHcIAAAA\r\nEAAAAAd0ABh2YWxoYWxsYW1tbzphY3R1YWxfc3RhdHN0AE1HRU5FUklDX0FSTU9SX1RPVUdITkVT\r\nUzowLjc1Njc1NzpBRERfTlVNQkVSO0dFTkVSSUNfQVJNT1I6NS41MTM1MTQ6QUREX05VTUJFUnQA\r\nHHZhbGhhbGxhbW1vOnF1YWxpdHlfc21pdGhpbmd0AAIwaXQAGXZhbGhhbGxhbW1vOmRlZmF1bHRf\r\nc3RhdHN0AENHRU5FUklDX0FSTU9SOjguMDpBRERfTlVNQkVSO0dFTkVSSUNfQVJNT1JfVE9VR0hO\r\nRVNTOjIuMDpBRERfTlVNQkVSdAAWdmFsaGFsbGFtbW86ZHVyYWJpbGl0eXQAAjFpdAAadmFsaGFs\r\nbGFtbW86bWF4X2R1cmFiaWxpdHl0AAIxaXQAG3ZhbGhhbGxhbW1vOm5ldXRyYWxfcXVhbGl0eXQA\r\nBDE0MGl0ABZ2YWxoYWxsYW1tbzppdGVtX2ZsYWdzdAASRElTUExBWV9BVFRSSUJVVEVTeA==\r\n",
+          "replaceBy": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAOTElHSFRfQkxVRV9EWUVzcQB+AA8A\r\nAAAGc3EAfgAAc3EAfgADdXEAfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1l\r\ndAARY3VzdG9tLW1vZGVsLWRhdGF1cQB+AAYAAAAEdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdACW\r\neyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNl\r\nLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUi\r\nLCJ0ZXh0IjoiRGlhbW9uZCBTaGFyZCJ9XSwidGV4dCI6IiJ9c3EAfgAPAIevjQ==\r\n",
           "name": "replace_keep_amount",
           "priority": "LATER"
         }
@@ -1594,6 +1577,36 @@
           "skillEfficiency": 1.0,
           "name": "smithing_quality_scale",
           "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "FISHING_LUCK",
+          "value": 0.0,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "FISHING_ROD",
+          "name": "attribute_add_fishing_luck",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 2.0,
+          "skillRange": 275.0,
+          "rangeOffset": 25.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "FISHING_LUCK",
+          "icon": "FISHING_ROD",
+          "name": "attribute_scale_fishing_luck",
+          "priority": "LATERISH"
         }
       },
       {
@@ -3726,7 +3739,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 1600.0,
+          "amount": 1200.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -4173,7 +4186,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 1600.0,
+          "amount": 1200.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -4802,7 +4815,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 12800.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -5263,7 +5276,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 6400.0,
+          "amount": 4800.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -6608,7 +6621,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 1.8,
+          "value": 4,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -6654,23 +6667,6 @@
           "icon": "SLIME_BLOCK",
           "name": "attribute_add_knockback",
           "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
-          "skillRange": 275.0,
-          "rangeOffset": 25.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "NEUTRAL"
         }
       },
       {
@@ -7457,7 +7453,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 4800.0,
+          "amount": 3600.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -8907,7 +8903,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 3200.0,
+          "amount": 2400.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -10546,7 +10542,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 6400.0,
+          "amount": 4800.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -15738,7 +15734,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceKeepingAmount",
         "DATA": {
-          "replaceBy": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAOTElHSFRfQkxVRV9EWUVzcQB+AA8A\r\nAABAc3EAfgAAc3EAfgADdXEAfgAGAAAABnEAfgAIdAAJbWV0YS10eXBldAAEbG9yZXQAE2F0dHJp\r\nYnV0ZS1tb2RpZmllcnN0AAlJdGVtRmxhZ3N0ABJQdWJsaWNCdWtraXRWYWx1ZXN1cQB+AAYAAAAG\r\ndAAISXRlbU1ldGF0AApVTlNQRUNJRklDc3IANmNvbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1t\r\ndXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEv\r\nbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAAEdACUeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxp\r\nYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNj\r\nYXRlZCI6ZmFsc2UsImNvbG9yIjoiZGFya19yZWQiLCJ0ZXh0IjoiVGVycmlibGUifV0sInRleHQi\r\nOiIifXQAwHsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVk\r\nIjpmYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6\r\nIndoaXRlIiwidGV4dCI6Iu65kCAifSx7Iml0YWxpYyI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRl\r\neHQiOiI1LjUgQXJtb3IifV0sInRleHQiOiIifXQAynsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJp\r\ndGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9i\r\nZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6Iu65kiAifSx7Iml0YWxpYyI6\r\nZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiIwLjggQXJtb3IgVG91Z2huZXNzIn1dLCJ0ZXh0\r\nIjoiIn10AJd7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5l\r\nZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3Ii\r\nOiJncmF5IiwidGV4dCI6IkR1cmFiaWxpdHk6IDEvMSJ9XSwidGV4dCI6IiJ9c3IAF2phdmEudXRp\r\nbC5MaW5rZWRIYXNoTWFwNMBOXBBswPsCAAFaAAthY2Nlc3NPcmRlcnhyABFqYXZhLnV0aWwuSGFz\r\naE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVzaG9sZHhwP0AAAAAAAAx3CAAAABAA\r\nAAACdAANR0VORVJJQ19BUk1PUnNyABNqYXZhLnV0aWwuQXJyYXlMaXN0eIHSHZnHYZ0DAAFJAARz\r\naXpleHAAAAABdwQAAAABc3EAfgAAc3EAfgADdXEAfgAGAAAABnEAfgAIcQB+AAt0AARuYW1ldAAE\r\nc2xvdHQABHV1aWR0AAlvcGVyYXRpb251cQB+AAYAAAAGdAAmb3JnLmJ1a2tpdC5hdHRyaWJ1dGUu\r\nQXR0cmlidXRlTW9kaWZpZXJzcgAQamF2YS5sYW5nLkRvdWJsZYCzwkopa/sEAgABRAAFdmFsdWV4\r\ncQB+ABBAFg3WnTAnD3QADWdlbmVyaWMuYXJtb3J0AAVDSEVTVHQAJDJlNzI2ODk4LTg1NjktNDQ5\r\nNS1hNDkwLTJjZjIxMGY0MjkwMHNxAH4ADwAAAAB4dAAXR0VORVJJQ19BUk1PUl9UT1VHSE5FU1Nz\r\ncQB+ACsAAAABdwQAAAABc3EAfgAAc3EAfgADdXEAfgAGAAAABnEAfgAIcQB+AAtxAH4AMHEAfgAx\r\ncQB+ADJxAH4AM3VxAH4ABgAAAAZxAH4ANXNxAH4ANj/oN1p0wJw9dAAXZ2VuZXJpYy5hcm1vcl90\r\nb3VnaG5lc3NxAH4AOXQAJDQyY2EzZTBlLWU1NjQtNGIxZC1iNDdhLWJiOGQxMzE5NjBlZnEAfgA7\r\neHgAc3EAfgArAAAAAXcEAAAAAXQAD0hJREVfQVRUUklCVVRFU3hzcQB+ACg/QAAAAAAADHcIAAAA\r\nEAAAAAd0ABh2YWxoYWxsYW1tbzphY3R1YWxfc3RhdHN0AE1HRU5FUklDX0FSTU9SX1RPVUdITkVT\r\nUzowLjc1Njc1NzpBRERfTlVNQkVSO0dFTkVSSUNfQVJNT1I6NS41MTM1MTQ6QUREX05VTUJFUnQA\r\nHHZhbGhhbGxhbW1vOnF1YWxpdHlfc21pdGhpbmd0AAIwaXQAGXZhbGhhbGxhbW1vOmRlZmF1bHRf\r\nc3RhdHN0AENHRU5FUklDX0FSTU9SOjguMDpBRERfTlVNQkVSO0dFTkVSSUNfQVJNT1JfVE9VR0hO\r\nRVNTOjIuMDpBRERfTlVNQkVSdAAWdmFsaGFsbGFtbW86ZHVyYWJpbGl0eXQAAjFpdAAadmFsaGFs\r\nbGFtbW86bWF4X2R1cmFiaWxpdHl0AAIxaXQAG3ZhbGhhbGxhbW1vOm5ldXRyYWxfcXVhbGl0eXQA\r\nBDE0MGl0ABZ2YWxoYWxsYW1tbzppdGVtX2ZsYWdzdAASRElTUExBWV9BVFRSSUJVVEVTeA==\r\n",
+          "replaceBy": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAOTElHSFRfQkxVRV9EWUVzcQB+AA8A\r\nAAAGc3EAfgAAc3EAfgADdXEAfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1l\r\ndAARY3VzdG9tLW1vZGVsLWRhdGF1cQB+AAYAAAAEdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdACW\r\neyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNl\r\nLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUi\r\nLCJ0ZXh0IjoiRGlhbW9uZCBTaGFyZCJ9XSwidGV4dCI6IiJ9c3EAfgAPAIevjQ==\r\n",
           "name": "replace_keep_amount",
           "priority": "LATER"
         }
@@ -18189,7 +18185,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 4800.0,
+          "amount": 3600.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -20179,7 +20175,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 11200.0,
+          "amount": 8400.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -20857,7 +20853,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 1600.0,
+          "amount": 1200.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -21982,7 +21978,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 1.8,
+          "value": 4,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -22041,23 +22037,6 @@
           "icon": "SLIME_BLOCK",
           "name": "attribute_add_knockback",
           "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
-          "skillRange": 215.0,
-          "rangeOffset": 85.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "NEUTRAL"
         }
       },
       {
@@ -23416,7 +23395,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceKeepingAmount",
         "DATA": {
-          "replaceBy": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAOTElHSFRfQkxVRV9EWUVzcQB+AA8A\r\nAABAc3EAfgAAc3EAfgADdXEAfgAGAAAABnEAfgAIdAAJbWV0YS10eXBldAAEbG9yZXQAE2F0dHJp\r\nYnV0ZS1tb2RpZmllcnN0AAlJdGVtRmxhZ3N0ABJQdWJsaWNCdWtraXRWYWx1ZXN1cQB+AAYAAAAG\r\ndAAISXRlbU1ldGF0AApVTlNQRUNJRklDc3IANmNvbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1t\r\ndXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEv\r\nbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAAEdACUeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxp\r\nYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNj\r\nYXRlZCI6ZmFsc2UsImNvbG9yIjoiZGFya19yZWQiLCJ0ZXh0IjoiVGVycmlibGUifV0sInRleHQi\r\nOiIifXQAwHsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVk\r\nIjpmYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6\r\nIndoaXRlIiwidGV4dCI6Iu65kCAifSx7Iml0YWxpYyI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRl\r\neHQiOiI1LjUgQXJtb3IifV0sInRleHQiOiIifXQAynsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJp\r\ndGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9i\r\nZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6Iu65kiAifSx7Iml0YWxpYyI6\r\nZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiIwLjggQXJtb3IgVG91Z2huZXNzIn1dLCJ0ZXh0\r\nIjoiIn10AJd7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5l\r\nZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3Ii\r\nOiJncmF5IiwidGV4dCI6IkR1cmFiaWxpdHk6IDEvMSJ9XSwidGV4dCI6IiJ9c3IAF2phdmEudXRp\r\nbC5MaW5rZWRIYXNoTWFwNMBOXBBswPsCAAFaAAthY2Nlc3NPcmRlcnhyABFqYXZhLnV0aWwuSGFz\r\naE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVzaG9sZHhwP0AAAAAAAAx3CAAAABAA\r\nAAACdAANR0VORVJJQ19BUk1PUnNyABNqYXZhLnV0aWwuQXJyYXlMaXN0eIHSHZnHYZ0DAAFJAARz\r\naXpleHAAAAABdwQAAAABc3EAfgAAc3EAfgADdXEAfgAGAAAABnEAfgAIcQB+AAt0AARuYW1ldAAE\r\nc2xvdHQABHV1aWR0AAlvcGVyYXRpb251cQB+AAYAAAAGdAAmb3JnLmJ1a2tpdC5hdHRyaWJ1dGUu\r\nQXR0cmlidXRlTW9kaWZpZXJzcgAQamF2YS5sYW5nLkRvdWJsZYCzwkopa/sEAgABRAAFdmFsdWV4\r\ncQB+ABBAFg3WnTAnD3QADWdlbmVyaWMuYXJtb3J0AAVDSEVTVHQAJDJlNzI2ODk4LTg1NjktNDQ5\r\nNS1hNDkwLTJjZjIxMGY0MjkwMHNxAH4ADwAAAAB4dAAXR0VORVJJQ19BUk1PUl9UT1VHSE5FU1Nz\r\ncQB+ACsAAAABdwQAAAABc3EAfgAAc3EAfgADdXEAfgAGAAAABnEAfgAIcQB+AAtxAH4AMHEAfgAx\r\ncQB+ADJxAH4AM3VxAH4ABgAAAAZxAH4ANXNxAH4ANj/oN1p0wJw9dAAXZ2VuZXJpYy5hcm1vcl90\r\nb3VnaG5lc3NxAH4AOXQAJDQyY2EzZTBlLWU1NjQtNGIxZC1iNDdhLWJiOGQxMzE5NjBlZnEAfgA7\r\neHgAc3EAfgArAAAAAXcEAAAAAXQAD0hJREVfQVRUUklCVVRFU3hzcQB+ACg/QAAAAAAADHcIAAAA\r\nEAAAAAd0ABh2YWxoYWxsYW1tbzphY3R1YWxfc3RhdHN0AE1HRU5FUklDX0FSTU9SX1RPVUdITkVT\r\nUzowLjc1Njc1NzpBRERfTlVNQkVSO0dFTkVSSUNfQVJNT1I6NS41MTM1MTQ6QUREX05VTUJFUnQA\r\nHHZhbGhhbGxhbW1vOnF1YWxpdHlfc21pdGhpbmd0AAIwaXQAGXZhbGhhbGxhbW1vOmRlZmF1bHRf\r\nc3RhdHN0AENHRU5FUklDX0FSTU9SOjguMDpBRERfTlVNQkVSO0dFTkVSSUNfQVJNT1JfVE9VR0hO\r\nRVNTOjIuMDpBRERfTlVNQkVSdAAWdmFsaGFsbGFtbW86ZHVyYWJpbGl0eXQAAjFpdAAadmFsaGFs\r\nbGFtbW86bWF4X2R1cmFiaWxpdHl0AAIxaXQAG3ZhbGhhbGxhbW1vOm5ldXRyYWxfcXVhbGl0eXQA\r\nBDE0MGl0ABZ2YWxoYWxsYW1tbzppdGVtX2ZsYWdzdAASRElTUExBWV9BVFRSSUJVVEVTeA==\r\n",
+          "replaceBy": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAOTElHSFRfQkxVRV9EWUVzcQB+AA8A\r\nAAAGc3EAfgAAc3EAfgADdXEAfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1l\r\ndAARY3VzdG9tLW1vZGVsLWRhdGF1cQB+AAYAAAAEdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdACW\r\neyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNl\r\nLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUi\r\nLCJ0ZXh0IjoiRGlhbW9uZCBTaGFyZCJ9XSwidGV4dCI6IiJ9c3EAfgAPAIevjQ==\r\n",
           "name": "replace_keep_amount",
           "priority": "LATER"
         }
@@ -23685,7 +23664,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 1.8,
+          "value": 4,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -23731,23 +23710,6 @@
           "icon": "SLIME_BLOCK",
           "name": "attribute_add_knockback",
           "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
-          "skillRange": 215.0,
-          "rangeOffset": 85.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "NEUTRAL"
         }
       },
       {
@@ -24160,7 +24122,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 6400.0,
+          "amount": 4800.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -27843,7 +27805,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 8000.0,
+          "amount": 6000.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -33411,7 +33373,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 4800.0,
+          "amount": 3600.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -33680,7 +33642,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceKeepingAmount",
         "DATA": {
-          "replaceBy": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAOTElHSFRfQkxVRV9EWUVzcQB+AA8A\r\nAABAc3EAfgAAc3EAfgADdXEAfgAGAAAABnEAfgAIdAAJbWV0YS10eXBldAAEbG9yZXQAE2F0dHJp\r\nYnV0ZS1tb2RpZmllcnN0AAlJdGVtRmxhZ3N0ABJQdWJsaWNCdWtraXRWYWx1ZXN1cQB+AAYAAAAG\r\ndAAISXRlbU1ldGF0AApVTlNQRUNJRklDc3IANmNvbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1t\r\ndXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEv\r\nbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAAEdACUeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxp\r\nYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNj\r\nYXRlZCI6ZmFsc2UsImNvbG9yIjoiZGFya19yZWQiLCJ0ZXh0IjoiVGVycmlibGUifV0sInRleHQi\r\nOiIifXQAwHsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVk\r\nIjpmYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6\r\nIndoaXRlIiwidGV4dCI6Iu65kCAifSx7Iml0YWxpYyI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRl\r\neHQiOiI1LjUgQXJtb3IifV0sInRleHQiOiIifXQAynsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJp\r\ndGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9i\r\nZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6Iu65kiAifSx7Iml0YWxpYyI6\r\nZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiIwLjggQXJtb3IgVG91Z2huZXNzIn1dLCJ0ZXh0\r\nIjoiIn10AJd7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5l\r\nZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3Ii\r\nOiJncmF5IiwidGV4dCI6IkR1cmFiaWxpdHk6IDEvMSJ9XSwidGV4dCI6IiJ9c3IAF2phdmEudXRp\r\nbC5MaW5rZWRIYXNoTWFwNMBOXBBswPsCAAFaAAthY2Nlc3NPcmRlcnhyABFqYXZhLnV0aWwuSGFz\r\naE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVzaG9sZHhwP0AAAAAAAAx3CAAAABAA\r\nAAACdAANR0VORVJJQ19BUk1PUnNyABNqYXZhLnV0aWwuQXJyYXlMaXN0eIHSHZnHYZ0DAAFJAARz\r\naXpleHAAAAABdwQAAAABc3EAfgAAc3EAfgADdXEAfgAGAAAABnEAfgAIcQB+AAt0AARuYW1ldAAE\r\nc2xvdHQABHV1aWR0AAlvcGVyYXRpb251cQB+AAYAAAAGdAAmb3JnLmJ1a2tpdC5hdHRyaWJ1dGUu\r\nQXR0cmlidXRlTW9kaWZpZXJzcgAQamF2YS5sYW5nLkRvdWJsZYCzwkopa/sEAgABRAAFdmFsdWV4\r\ncQB+ABBAFg3WnTAnD3QADWdlbmVyaWMuYXJtb3J0AAVDSEVTVHQAJDJlNzI2ODk4LTg1NjktNDQ5\r\nNS1hNDkwLTJjZjIxMGY0MjkwMHNxAH4ADwAAAAB4dAAXR0VORVJJQ19BUk1PUl9UT1VHSE5FU1Nz\r\ncQB+ACsAAAABdwQAAAABc3EAfgAAc3EAfgADdXEAfgAGAAAABnEAfgAIcQB+AAtxAH4AMHEAfgAx\r\ncQB+ADJxAH4AM3VxAH4ABgAAAAZxAH4ANXNxAH4ANj/oN1p0wJw9dAAXZ2VuZXJpYy5hcm1vcl90\r\nb3VnaG5lc3NxAH4AOXQAJDQyY2EzZTBlLWU1NjQtNGIxZC1iNDdhLWJiOGQxMzE5NjBlZnEAfgA7\r\neHgAc3EAfgArAAAAAXcEAAAAAXQAD0hJREVfQVRUUklCVVRFU3hzcQB+ACg/QAAAAAAADHcIAAAA\r\nEAAAAAd0ABh2YWxoYWxsYW1tbzphY3R1YWxfc3RhdHN0AE1HRU5FUklDX0FSTU9SX1RPVUdITkVT\r\nUzowLjc1Njc1NzpBRERfTlVNQkVSO0dFTkVSSUNfQVJNT1I6NS41MTM1MTQ6QUREX05VTUJFUnQA\r\nHHZhbGhhbGxhbW1vOnF1YWxpdHlfc21pdGhpbmd0AAIwaXQAGXZhbGhhbGxhbW1vOmRlZmF1bHRf\r\nc3RhdHN0AENHRU5FUklDX0FSTU9SOjguMDpBRERfTlVNQkVSO0dFTkVSSUNfQVJNT1JfVE9VR0hO\r\nRVNTOjIuMDpBRERfTlVNQkVSdAAWdmFsaGFsbGFtbW86ZHVyYWJpbGl0eXQAAjFpdAAadmFsaGFs\r\nbGFtbW86bWF4X2R1cmFiaWxpdHl0AAIxaXQAG3ZhbGhhbGxhbW1vOm5ldXRyYWxfcXVhbGl0eXQA\r\nBDE0MGl0ABZ2YWxoYWxsYW1tbzppdGVtX2ZsYWdzdAASRElTUExBWV9BVFRSSUJVVEVTeA==\r\n",
+          "replaceBy": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAOTElHSFRfQkxVRV9EWUVzcQB+AA8A\r\nAAAGc3EAfgAAc3EAfgADdXEAfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1l\r\ndAARY3VzdG9tLW1vZGVsLWRhdGF1cQB+AAYAAAAEdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdACW\r\neyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNl\r\nLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUi\r\nLCJ0ZXh0IjoiRGlhbW9uZCBTaGFyZCJ9XSwidGV4dCI6IiJ9c3EAfgAPAIevjQ==\r\n",
           "name": "replace_keep_amount",
           "priority": "LATER"
         }
@@ -34811,7 +34773,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 3200.0,
+          "amount": 2400.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }
@@ -35722,7 +35684,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 1.8,
+          "value": 4,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -35774,23 +35736,6 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
           "amplifier": 2.0,
           "skillRange": 185.0,
           "rangeOffset": 115.0,
@@ -35823,7 +35768,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 3200.0,
+          "amount": 2400.0,
           "name": "reward_smithing_experience",
           "priority": "LAST"
         }

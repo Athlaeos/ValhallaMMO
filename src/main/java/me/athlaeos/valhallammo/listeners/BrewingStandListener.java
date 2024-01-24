@@ -210,6 +210,12 @@ public class BrewingStandListener implements Listener {
             }
             // stand is finished brewing
             stand.setFuelLevel(stand.getFuelLevel() - 1);
+            if (stand.getFuelLevel() <= 0 && !ItemUtils.isEmpty(inventory.getFuel()) && inventory.getFuel().getType() == Material.BLAZE_POWDER){
+                ItemStack powder = inventory.getFuel();
+                if (powder.getAmount() <= 1) inventory.setFuel(null);
+                else powder.setAmount(powder.getAmount() - 1);
+                stand.setFuelLevel(20);
+            }
             stand.update();
 
             ItemStack[] results = new ItemStack[] {null, null, null};

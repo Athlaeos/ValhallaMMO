@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatSource;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
+import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 

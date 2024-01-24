@@ -187,12 +187,22 @@ public class EnchantingSkill extends Skill implements Listener {
         Map<Material, Map<Integer, EnchantmentOffer[]>> existingMaterialOffers = storedEnchantmentOffers.getOrDefault(e.getEnchanter().getUniqueId(), new HashMap<>());
         Map<Integer, EnchantmentOffer[]> existingLevelOffers = existingMaterialOffers.getOrDefault(e.getItem().getType(), new HashMap<>());
         Player enchanter = e.getEnchanter();
+        ItemBuilder item = new ItemBuilder(e.getItem());
+        if (CustomFlag.hasFlag(item.getMeta(), CustomFlag.UNENCHANTABLE)) {
+            e.setCancelled(true);
+            return;
+        }
         if (!existingLevelOffers.containsKey(e.getEnchantmentBonus())){
             int skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", enchanter, 10000, true);
             skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", enchanter, 10000, true)));
             double chance = AccumulativeStatManager.getStats("ENCHANTING_AMPLIFY_CHANCE", e.getEnchanter(), true);
 
             EnchantingItemPropertyManager.scaleEnchantmentOffers(skill, e.getOffers(), chance);
+            EnchantingProfile profile = ProfileCache.getOrCache(enchanter, EnchantingProfile.class);
+            for (EnchantmentOffer offer : e.getOffers()){
+                int enchantmentBonus = profile.getEnchantmentBonus(offer.getEnchantment()) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(offer.getEnchantment()));
+                offer.setEnchantmentLevel(offer.getEnchantmentLevel() + enchantmentBonus);
+            }
 
             existingLevelOffers.put(e.getEnchantmentBonus(), e.getOffers());
             existingMaterialOffers.put(e.getItem().getType(), existingLevelOffers);
@@ -221,10 +231,12 @@ public class EnchantingSkill extends Skill implements Listener {
         skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", enchanter, 10000, true)));
         double chance = AccumulativeStatManager.getCachedStats("ENCHANTING_AMPLIFY_CHANCE", enchanter, 10000, true);
 
+        EnchantingProfile profile = ProfileCache.getOrCache(enchanter, EnchantingProfile.class);
         for (Enchantment en : e.getEnchantsToAdd().keySet()){
+            int enchantmentBonus = profile.getEnchantmentBonus(en) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(en));
             if (Utils.proc(chance, 0, false)) {
-                e.getEnchantsToAdd().put(en, EnchantingItemPropertyManager.getScaledLevel(en, skill, e.getEnchantsToAdd().get(en)));
-            }
+                e.getEnchantsToAdd().put(en, Math.max(1, EnchantingItemPropertyManager.getScaledLevel(en, skill, e.getEnchantsToAdd().get(en)) + enchantmentBonus));
+            } else e.getEnchantsToAdd().put(en, Math.max(1, e.getEnchantsToAdd().get(en) + enchantmentBonus));
         }
 
         Map<Integer, EnchantmentOffer[]> cachedOffers = storedEnchantmentOffers.getOrDefault(enchanter.getUniqueId(), new HashMap<>()).getOrDefault(e.getItem().getType(), new HashMap<>());
@@ -238,13 +250,6 @@ public class EnchantingSkill extends Skill implements Listener {
                     }
                 }
             }
-        }
-
-        EnchantingProfile profile = ProfileCache.getOrCache(enchanter, EnchantingProfile.class);
-        for (Enchantment en : e.getEnchantsToAdd().keySet()){
-            int enchantmentBonus = profile.getEnchantmentBonus(en) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(en));
-            if (enchantmentBonus == 0) continue;
-            e.getEnchantsToAdd().put(en, Math.max(1, e.getEnchantsToAdd().get(en) + enchantmentBonus));
         }
 
         double exp = EXPForEnchantments(enchanter, e.getEnchantsToAdd());
@@ -312,6 +317,7 @@ public class EnchantingSkill extends Skill implements Listener {
         }
     }
 
+    @SuppressWarnings("all")
     @EventHandler(priority = EventPriority.MONITOR)
     public void onHandSwap(PlayerSwapHandItemsEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
@@ -333,6 +339,7 @@ public class EnchantingSkill extends Skill implements Listener {
             if (elementalBladeActivationAnimation != null) elementalBladeActivationAnimation.animate(e.getPlayer(), e.getPlayer().getLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
         }
         e.setCancelled(true);
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> e.getPlayer().updateInventory(), 1L);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

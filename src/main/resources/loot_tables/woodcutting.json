@@ -104,6 +104,20 @@
             {
               "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd",
               "DATA": {
+                "effect": "SMITHING_QUALITY",
+                "value": 50.0,
+                "duration": 600,
+                "charges": -1,
+                "smallIncrement": 1.0,
+                "bigIncrement": 10.0,
+                "icon": "ANVIL",
+                "name": "potion_effect_add_smithing_quality",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd",
+              "DATA": {
                 "effect": "FAST_DIGGING",
                 "value": 1.0,
                 "duration": 4800,

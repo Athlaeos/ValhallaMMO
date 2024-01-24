@@ -453,8 +453,7 @@ public abstract class Skill {
         // non-levelable skills should not gain exp
         if (!isLevelableSkill()) return;
         // creative mode players should not gain skill-acquired exp
-        if (p.getGameMode() == GameMode.CREATIVE && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION)
-            return;
+        if (p.getGameMode() == GameMode.CREATIVE && !(this instanceof PowerSkill) && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
         // only experience-scaling skills should scale with exp multipliers. By default, this only excludes PowerSkill
         if (isExperienceScaling()) amount *= (1 + AccumulativeStatManager.getStats("GLOBAL_EXP_GAIN", p, true));
 
@@ -611,7 +610,14 @@ public abstract class Skill {
                 }
             }
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+            for (String command : levelingUndoCommands) {
+                ValhallaMMO.getInstance().getServer().dispatchCommand(
+                        ValhallaMMO.getInstance().getServer().getConsoleSender(),
+                        command.replace("%player%", p.getName())
+                );
+            }
+
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (int i = from; i > to; i--) {
                     for (PerkReward reward : levelingPerks) {
                         if (reward instanceof MultipliableReward || reward.isPersistent()) continue;
@@ -630,29 +636,22 @@ public abstract class Skill {
                     if (reward instanceof MultipliableReward r) {
                         if (reward.isPersistent()) continue;
                         r.remove(p, to - from);
+                    } else reward.remove(p);
+                }
+
+                if (arePerksForgettable()) {
+                    // forgetting perks if the player no longer meets perk requirements
+                    List<Perk> sortedPerks = new ArrayList<>(perks);
+                    sortedPerks.sort(Comparator.comparingInt(Perk::getLevelRequirement));
+                    Collections.reverse(sortedPerks);
+                    for (Perk perk : sortedPerks) {
+                        if (perk.shouldLock(p)) {
+                            perk.remove(p);
+                            p.sendMessage(Utils.chat(TranslationManager.getTranslation("perk_forget").replace("%perk%", perk.getDisplayName())));
+                        }
                     }
                 }
             });
-
-            if (arePerksForgettable()) {
-                // forgetting perks if the player no longer meets perk requirements
-                List<Perk> sortedPerks = new ArrayList<>(perks);
-                sortedPerks.sort(Comparator.comparingInt(Perk::getLevelRequirement));
-                Collections.reverse(sortedPerks);
-                for (Perk perk : sortedPerks) {
-                    if (perk.shouldLock(p)) {
-                        perk.remove(p);
-                        p.sendMessage(Utils.chat(TranslationManager.getTranslation("perk_forget").replace("%perk%", perk.getDisplayName())));
-                    }
-                }
-            }
-
-            for (String command : levelingUndoCommands) {
-                ValhallaMMO.getInstance().getServer().dispatchCommand(
-                        ValhallaMMO.getInstance().getServer().getConsoleSender(),
-                        command.replace("%player%", p.getName())
-                );
-            }
         } else {
             // level up
             for (int i = from + 1; i <= to; i++) {
@@ -674,13 +673,20 @@ public abstract class Skill {
                 }
             }
 
+            for (String command : levelingCommands) {
+                ValhallaMMO.getInstance().getServer().dispatchCommand(
+                        ValhallaMMO.getInstance().getServer().getConsoleSender(),
+                        command.replace("%player%", p.getName())
+                );
+            }
+
             if (!silent) {
                 for (String message : levelingMessages) {
                     Utils.sendMessage(p, TranslationManager.translatePlaceholders(message).replace("%level%", String.valueOf(to)));
                 }
             }
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (int i = from + 1; i <= to; i++) {
                     for (PerkReward reward : levelingPerks) {
                         if (reward instanceof MultipliableReward) continue;
@@ -697,19 +703,11 @@ public abstract class Skill {
                 for (PerkReward reward : levelingPerks) {
                     if (reward instanceof MultipliableReward r) {
                         r.apply(p, to - from);
-                    }
+                    } else reward.apply(p);
                 }
             });
-
-            for (String command : levelingCommands) {
-                ValhallaMMO.getInstance().getServer().dispatchCommand(
-                        ValhallaMMO.getInstance().getServer().getConsoleSender(),
-                        command.replace("%player%", p.getName())
-                );
-            }
         }
-        PlayerSkillLevelUpEvent event = new PlayerSkillLevelUpEvent(p, this, from, to);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new PlayerSkillLevelUpEvent(p, this, from, to));
     }
 
     public void updateSkillStats(Player p, boolean runPersistentStartingPerks) {
@@ -719,7 +717,7 @@ public abstract class Skill {
         ProfileRegistry.setSkillProfile(p, skillProfile, skillProfile.getClass());
         int level = getLevelFromEXP(persistentProfile.getTotalEXP());
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             for (PerkReward r : startingPerks) {
                 if (!runPersistentStartingPerks && r.isPersistent()) continue;
                 r.apply(p);
@@ -758,13 +756,18 @@ public abstract class Skill {
                         if (reward.isPersistent()) continue;
                         reward.apply(p);
                     }
-                    for (ResourceExpense expense : perk.getExpenses()) {
-                        expense.purchase(p, false);
+                    if (!perk.getExpenses().isEmpty()){
+                        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+                            for (ResourceExpense expense : perk.getExpenses()) {
+                                expense.purchase(p, false);
+                            }
+                        });
                     }
                 }
             }
 
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, skillProfile.getClass()));
+            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
+                    ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, skillProfile.getClass())));
         });
     }
 

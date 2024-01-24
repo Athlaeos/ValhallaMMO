@@ -284,7 +284,7 @@ public class PartyCommand implements TabExecutor {
                         "shareitem", "open", "setrank", "kick", "expsharing", "itemsharing", "description", "rename",
                         "transferleader", "leave", "disband");
                 else return List.of("create", "muteinvites", "info", "join");
-            } else if (args.length == 2 && args[0].equalsIgnoreCase("join")) return new ArrayList<>(PartyManager.getAllParties().keySet());
+            } else if (args.length == 2 && (args[0].equalsIgnoreCase("join") || args[0].equalsIgnoreCase("info"))) return new ArrayList<>(PartyManager.getAllParties().keySet());
             else if (args.length == 3 && args[0].equalsIgnoreCase("setrank")) return new ArrayList<>(PartyManager.getPartyRanks().keySet());
         }
         return null;

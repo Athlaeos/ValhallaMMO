@@ -9,8 +9,8 @@ experience:
   exp_per_damage: 7
   spawner_spawned_multiplier: 0.7
   exp_enemies_nerfed:
-    ENDERMAN: 0.1
-    ZOMBIFIED_PIGLIN: 0.1
+    ENDERMAN: 0.01
+    ZOMBIFIED_PIGLIN: 0.02
 
 special_perks: []
 

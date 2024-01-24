@@ -92,7 +92,7 @@ public class LightArmorSkill extends Skill implements Listener {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onDamageTaken(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);

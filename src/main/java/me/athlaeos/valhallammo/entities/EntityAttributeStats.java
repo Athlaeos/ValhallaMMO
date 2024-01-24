@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.LivingEntity;
 
 import java.util.HashMap;

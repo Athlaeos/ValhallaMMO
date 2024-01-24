@@ -130,7 +130,7 @@ public class PartyManager {
         if (companyRadius == 0 || maxAccompanied == 0) return 0;
         Collection<Player> members = membersInRadius(p, companyRadius);
         int nearby = members.size();
-        return companyStats.get(stat) * (maxAccompanied >= 0 ? Math.max(maxAccompanied, nearby) : maxAccompanied);
+        return companyStats.get(stat) * (maxAccompanied >= 0 ? Math.min(maxAccompanied, nearby) : nearby);
     }
 
     public static Party getParty(Player p){
@@ -626,10 +626,12 @@ public class PartyManager {
         Map<String, Double> companyStats = new HashMap<>(defaultCompanyStats);
         Pair<PartyLevel, Double> partyLevel = getPartyLevel(p);
         if (partyLevel == null) return companyStats;
-        for (int i = 0; i < partyLevel.getOne().level; i++) {
-            for (String stat : partyLevel.getOne().companyStats.keySet()) {
-                if (companyStats.containsKey(stat)) companyStats.put(stat, companyStats.getOrDefault(stat, 0D) + partyLevel.getOne().companyStats.get(stat));
-                else companyStats.put(stat, partyLevel.getOne().companyStats.get(stat));
+        for (int i = 0; i <= partyLevel.getOne().level; i++) {
+            PartyLevel level = partyLevels.get(i);
+            if (level == null) continue;
+            for (String stat : level.companyStats.keySet()) {
+                if (companyStats.containsKey(stat)) companyStats.put(stat, companyStats.getOrDefault(stat, 0D) + level.companyStats.get(stat));
+                else companyStats.put(stat, level.companyStats.get(stat));
             }
         }
         return companyStats;

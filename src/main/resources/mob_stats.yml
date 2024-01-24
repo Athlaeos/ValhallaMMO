@@ -134,11 +134,13 @@ entity:
     FIRE_RESISTANCE: 1
     MAGIC_RESISTANCE: 0.7
     POISON_RESISTANCE: 0.7
+    ARMOR_FRACTION_IGNORED: 0.5
   WARDEN:
     level: "1.25 * %level%"
-    HEALTH_MULTIPLIER_BONUS: "(0.004 * %level%)" # Wardens gain +50% hp at lv125
+    HEALTH_MULTIPLIER_BONUS: "(0.008 * %level%)" # Wardens gain +50% hp at lv125
     PROJECTILE_RESISTANCE: 0.5
     NECROTIC_RESISTANCE: 0.5
+    ARMOR_FRACTION_IGNORED: 0.75
   WITHER:
     level: "1.25 * %level%"
     HEALTH_MULTIPLIER_BONUS: "(0.016 * %level%)" # Withers gain triple hp at lv125
@@ -149,6 +151,8 @@ entity:
     POISON_RESISTANCE: 1
     BLEED_RESISTANCE: 1
     EXPLOSION_RESISTANCE: 1
+    ARMOR_FRACTION_IGNORED: 0.5
   ELDER_GUARDIAN:
     level: "1.25 * %level%"
     HEALTH_MULTIPLIER_BONUS: "(0.008 * %level%)" # Elder Guardians gain double hp at lv125
+    ARMOR_FRACTION_IGNORED: 0.5

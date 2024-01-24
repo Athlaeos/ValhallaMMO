@@ -55,7 +55,6 @@ public class MovementListener implements Listener {
 
     public static void resetAttributeStats(Player p){
         Timer.setCooldown(p.getUniqueId(), 0, "delay_movement_update");
-        EntityAttributeStats.updateStats(p);
     }
 
     @EventHandler

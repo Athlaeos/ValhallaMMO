@@ -1255,7 +1255,7 @@
     "trinket-fury": "&dFuryforged Pendant",
     "trinket-amulet-of-the-avenger": "&eAmulet of the Avenger",
     "trinket-kratos": "&dKratos",
-    "trinket-ring-of-deflection": "&eAmulet of Deflection",
+    "trinket-ring-of-deflection": "&eRing of Deflection",
     "trinket-athena": "&dAthena",
     "trinket-ring-of-obsidian": "&eRing of Obsidian",
     "trinket-narya": "&dNarya",
@@ -1642,17 +1642,17 @@
     "power_perk_3a_name": "&cVitality III",
     "power_perk_3a_description": "&7Max Health &c{power_healthbonus_add}",
     "power_perk_1b_name": "&fIron Skin I",
-    "power_perk_1b_description": "&7Natural Armor &f+{power_armorbonus_add}",
+    "power_perk_1b_description": "&7Natural Armor &f{power_armorbonus_add}",
     "power_perk_2b_name": "&fIron Skin II",
-    "power_perk_2b_description": "&7Natural Armor &f+{power_armorbonus_add}",
+    "power_perk_2b_description": "&7Natural Armor &f{power_armorbonus_add}",
     "power_perk_3b_name": "&fIron Skin III",
-    "power_perk_3b_description": "&7Natural Armor &f+{power_armorbonus_add}",
+    "power_perk_3b_description": "&7Natural Armor &f{power_armorbonus_add}",
     "power_perk_1c_name": "&aDivine Favor I",
-    "power_perk_1c_description": "&7Luck &a+{power_luckbonus_add}",
+    "power_perk_1c_description": "&7Luck &a{power_luckbonus_add}",
     "power_perk_2c_name": "&aDivine Favor II",
-    "power_perk_2c_description": "&7Luck &a+{power_luckbonus_add}",
+    "power_perk_2c_description": "&7Luck &a{power_luckbonus_add}",
     "power_perk_3c_name": "&aDivine Favor III",
-    "power_perk_3c_description": "&7Luck &a+{power_luckbonus_add}",
+    "power_perk_3c_description": "&7Luck &a{power_luckbonus_add}",
     "power_perk_1d_name": "&dRestoration I",
     "power_perk_1d_description": "&7Health Regeneration &d{power_healthregenerationbonus_add}",
     "power_perk_2d_name": "&dRestoration II",
@@ -1672,11 +1672,11 @@
     "power_perk_3f_name": "&eLooter III",
     "power_perk_3f_description": "&7Mob Drops &e{power_entitydropmultiplier_add}",
     "power_perk_1g_name": "&bAmbition I",
-    "power_perk_1g_description": "&7Ability Cooldown Reduction &b+{power_cooldownreduction_add}",
+    "power_perk_1g_description": "&7Ability Cooldown Reduction &b{power_cooldownreduction_add}",
     "power_perk_2g_name": "&bAmbition II",
-    "power_perk_2g_description": "&7Ability Cooldown Reduction &b+{power_cooldownreduction_add}",
+    "power_perk_2g_description": "&7Ability Cooldown Reduction &b{power_cooldownreduction_add}",
     "power_perk_3g_name": "&bAmbition III",
-    "power_perk_3g_description": "&7Ability Cooldown Reduction &b+{power_cooldownreduction_add}"
+    "power_perk_3g_description": "&7Ability Cooldown Reduction &b{power_cooldownreduction_add}"
   },
   "stringListTranslations": {
     "power_perk_1a_messages": [
@@ -1693,27 +1693,27 @@
     ],
     "power_perk_1b_messages": [
       "&f✰ &7Iron Skin I &f✰",
-      "&f+{power_armorbonus_add} &7Natural Armor"
+      "&f{power_armorbonus_add} &7Natural Armor"
     ],
     "power_perk_2b_messages": [
       "&f✰ &7Iron Skin II &f✰",
-      "&f+{power_armorbonus_add} &7Natural Armor"
+      "&f{power_armorbonus_add} &7Natural Armor"
     ],
     "power_perk_3b_messages": [
       "&f✰ &7Iron Skin III &f✰",
-      "&f+{power_armorbonus_add} &7Natural Armor"
+      "&f{power_armorbonus_add} &7Natural Armor"
     ],
     "power_perk_1c_messages": [
       "&a✰ &2Divine Favor I &a✰",
-      "&a+{power_luckbonus_add} &7Luck"
+      "&a{power_luckbonus_add} &7Luck"
     ],
     "power_perk_2c_messages": [
       "&a✰ &2Divine Favor II &a✰",
-      "&a+{power_luckbonus_add} &7Luck"
+      "&a{power_luckbonus_add} &7Luck"
     ],
     "power_perk_3c_messages": [
       "&a✰ &2Divine Favor III &a✰",
-      "&a+{power_luckbonus_add} &7Luck"
+      "&a{power_luckbonus_add} &7Luck"
     ],
     "power_perk_1d_messages": [
       "&d✰ &5Restoration I &d✰",
@@ -1753,15 +1753,15 @@
     ],
     "power_perk_1g_messages": [
       "&b✰ &9Ambition I &b✰",
-      "&b+{power_cooldownreduction_add} &7Cooldown Reduction"
+      "&b{power_cooldownreduction_add} &7Cooldown Reduction"
     ],
     "power_perk_2g_messages": [
       "&b✰ &9Ambition II &b✰",
-      "&b+{power_cooldownreduction_add} &7Cooldown Reduction"
+      "&b{power_cooldownreduction_add} &7Cooldown Reduction"
     ],
     "power_perk_3g_messages": [
       "&b✰ &9Ambition III &b✰",
-      "&b+{power_cooldownreduction_add} &7Cooldown Reduction"
+      "&b{power_cooldownreduction_add} &7Cooldown Reduction"
     ],
     "fishing_perk_1_messages": [
       "&b✰ &9Lucky Fisherman &b✰",
@@ -1794,7 +1794,8 @@
       "&b✰ &9Deep Sea Scavenging &b✰",
       "&bRecipes Unlocked",
       "&7- All salvaging recipes",
-      "&8To salvage an item combine it with a pair of shears in a crafting grid"
+      "&8To salvage an item place it in a crafting grid",
+      "&cVanilla items cannot be salvaged"
     ],
     "farming_perk_1_messages": [
       "&a✰ &2Gentle Touch &a✰",
@@ -1802,18 +1803,18 @@
     ],
     "farming_perk_2_messages": [
       "&a✰ &2Magical Soil &a✰",
-      "&a+{farming_farmingdrops_add} &7Farming Drops",
-      "&a+{farming_farmingexperiencerate_add} &7Essence Dropped"
+      "&a{farming_farmingdrops_add} &7Farming Drops",
+      "&a{farming_farmingexperiencerate_add} &7Essence Dropped"
     ],
     "farming_perk_3_messages": [
       "&a✰ &2Blessed Harvest &a✰",
-      "&a+{farming_instantgrowthrate_add} &7Growth Rate",
-      "&a+{farming_farmingexperiencerate_add} &7Essence Dropped"
+      "&a{farming_instantgrowthrate_add} &7Growth Rate",
+      "&a{farming_farmingexperiencerate_add} &7Essence Dropped"
     ],
     "farming_perk_4_messages": [
       "&a✰ &2Divine Harvest &a✰",
-      "&a+{farming_instantgrowthrate_add} &7Growth Rate",
-      "&a+{farming_farmingexperiencerate_add} &7Essence Dropped"
+      "&a{farming_instantgrowthrate_add} &7Growth Rate",
+      "&a{farming_farmingexperiencerate_add} &7Essence Dropped"
     ],
     "farming_perk_5_messages": [
       "&a✰ &2Automagical Agriculture &a✰",
@@ -1825,20 +1826,20 @@
     ],
     "farming_perk_1a_messages": [
       "&a✰ &2Animal Husbandry &a✰",
-      "&a+{farming_growuptimemultiplier_add} &7Animal Growth Speed",
-      "&a+{farming_butcherydrops_add} &7Animal Drops",
-      "&a+{farming_breedingexperiencemultiplier_add} &7Reproduction Essence"
+      "&a{farming_growuptimemultiplier_add} &7Animal Growth Speed",
+      "&a{farming_butcherydrops_add} &7Animal Drops",
+      "&a{farming_breedingexperiencemultiplier_add} &7Reproduction Essence"
     ],
     "farming_perk_2a_messages": [
       "&a✰ &2Butchery &a✰",
-      "&a+{farming_growuptimemultiplier_add} &7Animal Growth Speed",
-      "&a+{farming_butcherydrops_add} &7Animal Drops",
-      "&a+{farming_breedingexperiencemultiplier_add} &7Reproduction Essence",
+      "&a{farming_growuptimemultiplier_add} &7Animal Growth Speed",
+      "&a{farming_butcherydrops_add} &7Animal Drops",
+      "&a{farming_breedingexperiencemultiplier_add} &7Reproduction Essence",
       "&a+4x Damage Dealt to Animals"
     ],
     "farming_perk_1b_messages": [
       "&a✰ &2Beekeeping &a✰",
-      "&a+{farming_hivehoneysavechance_add} &7Hive Refill Chance",
+      "&a{farming_hivehoneysavechance_add} &7Hive Refill Chance",
       "&a+Bee Aggression Immunity"
     ],
     "farming_perk_1c_messages": [
@@ -1851,12 +1852,12 @@
     ],
     "farming_perk_2c_messages": [
       "&a✰ &2Balanced Diet &a✰",
-      "&a+{power_foodbonusvegetable_add} &7Food Value",
+      "&a{power_foodbonusvegetable_add} &7Food Value",
       "&7You can no longer pick Trash Diet"
     ],
     "heavyarmor_perk_1_messages": [
       "&c✰ &4Fortified Fit &c✰",
-      "&c+{heavyarmor_heavyarmormultiplier_add} &7Heavy Armor"
+      "&c{heavyarmor_heavyarmormultiplier_add} &7Heavy Armor"
     ],
     "heavyarmor_perk_1a_messages": [
       "&c✰ &4Never Skip Leg Day &c✰",
@@ -1869,13 +1870,13 @@
     ],
     "heavyarmor_perk_1b_messages": [
       "&c✰ &4Vital Steel &c✰",
-      "&c+{heavyarmor_heavyarmormultiplier_add} &7Heavy Armor",
+      "&c{heavyarmor_heavyarmormultiplier_add} &7Heavy Armor",
       "&c+Set Bonus",
       "&7- &c{heavyarmor_sethealingbonus_add}&7 Healing"
     ],
     "heavyarmor_perk_2b_messages": [
       "&c✰ &4Spiked Suit &c✰",
-      "&c+{heavyarmor_heavyarmormultiplier_add} &7Heavy Armor",
+      "&c{heavyarmor_heavyarmormultiplier_add} &7Heavy Armor",
       "&c+Set Bonus",
       "&7- &c{heavyarmor_setreflectchance_add}&7 chance for &c{heavyarmor_setreflectfraction_add}&7 Damage Reflect"
     ],
@@ -1907,7 +1908,7 @@
     ],
     "lightarmor_perk_1_messages": [
       "&e✰ &4Iron Studs &e✰",
-      "&e+{lightarmor_lightarmormultiplier_add} &7Light Armor"
+      "&e{lightarmor_lightarmormultiplier_add} &7Light Armor"
     ],
     "lightarmor_perk_1a_messages": [
       "&e✰ &4Unburdened &e✰",
@@ -1920,13 +1921,13 @@
     ],
     "lightarmor_perk_1b_messages": [
       "&e✰ &4Controlled Metabolism &e✰",
-      "&e+{lightarmor_lightarmormultiplier_add} &7Light Armor",
+      "&e{lightarmor_lightarmormultiplier_add} &7Light Armor",
       "&e+Set Bonus",
       "&7- &e{lightarmor_sethungersavechance_add}&7 Reduced Hunger Consumption"
     ],
     "lightarmor_perk_2b_messages": [
       "&e✰ &4Swift Reflexes &e✰",
-      "&e+{lightarmor_lightarmormultiplier_add} &7Light Armor",
+      "&e{lightarmor_lightarmormultiplier_add} &7Light Armor",
       "&e+Set Bonus",
       "&7- &e{lightarmor_setdodgechance_add}&7 Dodge Chance",
       "&8Dodging an attack completely prevents damage. You must be facing the attacker to be able to dodge attacks"
@@ -1959,7 +1960,7 @@
     ],
     "heavyweapons_perk_1_messages": [
       "&c✰ &4Savage &c✰",
-      "&c+{heavyweapons_damagemultiplier_add} &7Heavy Weapons Damage",
+      "&c{heavyweapons_damagemultiplier_add} &7Heavy Weapons Damage",
       "&cRecipes Unlocked",
       "&7- All Warhammers",
       "&8Warhammers benefit from increased stun chance, knockback, and deal high bludgeoning damage, but have low attack speed",
@@ -1967,30 +1968,30 @@
     ],
     "heavyweapons_perk_2_messages": [
       "&c✰ &4Brute &c✰",
-      "&c+{heavyweapons_powerattackdamagemultiplier_add} &7Power Attack Damage",
+      "&c{heavyweapons_powerattackdamagemultiplier_add} &7Power Attack Damage",
       "&8Power Attacks are melee attacks dealt while falling, what vanilla Minecraft considers a 'crit'",
-      "&c+{heavyweapons_critchance_add} &7Crit Chance",
+      "&c{heavyweapons_critchance_add} &7Crit Chance",
       "&cRecipe Unlocked",
       "&7- All Greataxes",
       "&8Greataxes benefit from very high damage and crit chance, but very low attack speed"
     ],
     "heavyweapons_perk_3_messages": [
       "&c✰ &4Barbarian &c✰",
-      "&c+{heavyweapons_damagemultiplier_add} &7Heavy Weapons Damage",
+      "&c{heavyweapons_damagemultiplier_add} &7Heavy Weapons Damage",
       "&cPower Attacks",
       "&7- Now deal &c{heavyweapons_powerattackfraction_add}&7 damage to all enemies in a &c{heavyweapons_powerattackradius_add}&7-block radius"
     ],
     "heavyweapons_perk_4_messages": [
       "&c✰ &4Viking &c✰",
-      "&c+{heavyweapons_powerattackdamagemultiplier_add} &7Power Attack Damage",
-      "&c+{heavyweapons_penetrationflat_add} &7Armor Penetration",
+      "&c{heavyweapons_powerattackdamagemultiplier_add} &7Power Attack Damage",
+      "&c{heavyweapons_penetrationflat_add} &7Armor Penetration",
       "&8Armor penetration reduces the armor value of your attacked targets, increasing damage against them.",
       "&8Targets without armor still take some extra damage"
     ],
     "heavyweapons_perk_5_messages": [
       "&c✰ &4Berserker &c✰",
-      "&c+{heavyweapons_damagemultiplier_add} &7Heavy Weapons Damage",
-      "&c+{heavyweapons_penetrationflat_add} &7Armor Penetration",
+      "&c{heavyweapons_damagemultiplier_add} &7Heavy Weapons Damage",
+      "&c{heavyweapons_penetrationflat_add} &7Armor Penetration",
       "&cPower Attacks",
       "&7- Now deal &c75%&7 damage to all enemies in a &c2&7-block radius",
       "&cRecipe Unlocked",
@@ -1999,10 +2000,10 @@
     ],
     "heavyweapons_perk_6_messages": [
       "&c✰ &4Deathbringer &c✰",
-      "&c+{heavyweapons_critchance_add} &7Crit Chance",
-      "&c+{heavyweapons_critdamage_add} &7Crit Damage",
+      "&c{heavyweapons_critchance_add} &7Crit Chance",
+      "&c{heavyweapons_critdamage_add} &7Crit Damage",
       "&c+Crits inflict Bleeding",
-      "&c+{heavyweapons_bleeddamage_add} &7Bleed Damage"
+      "&c{heavyweapons_bleeddamage_add} &7Bleed Damage"
     ],
     "heavyweapons_perk_a1_messages": [
       "&c✰ &4Weapon Coating &c✰",
@@ -2023,29 +2024,29 @@
     ],
     "heavyweapons_perk_combo_messages": [
       "&c✰ &4Shattering Blows &c✰",
-      "&c+{heavyweapons_penetrationfraction_add} &7Armor Penetration",
-      "&c+{heavyweapons_stunchance_add} &7Stun Chance",
-      "&c+{heavyweapons_damagetolightarmormultiplier_add} &7Light Armor Damage",
+      "&c{heavyweapons_penetrationfraction_add} &7Armor Penetration",
+      "&c{heavyweapons_stunchance_add} &7Stun Chance",
+      "&c{heavyweapons_damagetolightarmormultiplier_add} &7Light Armor Damage",
       "&8Light Armor Damage is extra damage dealt for each piece of light armor the target is wearing"
     ],
     "lightweapons_perk_1_messages": [
       "&e✰ &6Page &e✰",
-      "&e+{lightweapons_damagemultiplier_add} &7Light Weapons Damage",
+      "&e{lightweapons_damagemultiplier_add} &7Light Weapons Damage",
       "&cRecipes Unlocked",
       "&7- All Daggers",
       "&8Daggers benefit from increased crit chance and high attack speed, but have reduced reach"
     ],
     "lightweapons_perk_2_messages": [
       "&e✰ &6Squire &e✰",
-      "&e+{lightweapons_attackspeedmultiplier_add} &7Attack Speed",
-      "&e+{lightweapons_critchance_add} &7Crit Chance",
+      "&e{lightweapons_attackspeedmultiplier_add} &7Attack Speed",
+      "&e{lightweapons_critchance_add} &7Crit Chance",
       "&eRecipe Unlocked",
       "&7- All Rapiers",
       "&8Rapiers benefit from high attack speed, armor penetration, and immunity frame reduction, but do not inflict knockback and have very low damage"
     ],
     "lightweapons_perk_3_messages": [
       "&e✰ &6Knight &e✰",
-      "&e+{lightweapons_damagemultiplier_add} &7Light Weapons Damage",
+      "&e{lightweapons_damagemultiplier_add} &7Light Weapons Damage",
       "&eParry",
       "&7- 0.35s Duration",
       "&7- 5s Cooldown",
@@ -2057,13 +2058,13 @@
     ],
     "lightweapons_perk_4_messages": [
       "&e✰ &6Paladin &e✰",
-      "&e+{lightweapons_attackspeedmultiplier_add} &7Attack Speed",
-      "&e+{lightweapons_immunityreductionfraction_add} &7Immunity Reduction"
+      "&e{lightweapons_attackspeedmultiplier_add} &7Attack Speed",
+      "&e{lightweapons_immunityreductionfraction_add} &7Immunity Reduction"
     ],
     "lightweapons_perk_5_messages": [
       "&e✰ &6Templar &e✰",
-      "&e+{lightweapons_damagemultiplier_add} &7Light Weapons Damage",
-      "&e+{lightweapons_immunityreductionfraction_add} &7Immunity Reduction",
+      "&e{lightweapons_damagemultiplier_add} &7Light Weapons Damage",
+      "&e{lightweapons_immunityreductionfraction_add} &7Immunity Reduction",
       "&eParry",
       "&7- 0.7s Duration",
       "&7- 2s Cooldown",
@@ -2076,10 +2077,10 @@
     ],
     "lightweapons_perk_6_messages": [
       "&e✰ &6Warlord &e✰",
-      "&e+{lightweapons_critchance_add} &7Crit Chance",
-      "&e+{lightweapons_critdamage_add} &7Crit Damage",
+      "&e{lightweapons_critchance_add} &7Crit Chance",
+      "&e{lightweapons_critdamage_add} &7Crit Damage",
       "&e+Crits inflict Bleeding",
-      "&e+{lightweapons_bleeddamage_add} &7Bleed Damage"
+      "&e{lightweapons_bleeddamage_add} &7Bleed Damage"
     ],
     "lightweapons_perk_a1_messages": [
       "&e✰ &6Weapon Coating &e✰",
@@ -2100,34 +2101,34 @@
     ],
     "lightweapons_perk_combo_messages": [
       "&e✰ &6Titan &e✰",
-      "&e+{lightweapons_penetrationflat_add} &7Armor Penetration",
-      "&e+{lightweapons_knockbackmultiplier_add} &7Knockback",
-      "&e+{lightweapons_attackreachbonus_add} &7Attack Reach"
+      "&e{lightweapons_penetrationflat_add} &7Armor Penetration",
+      "&e{lightweapons_knockbackmultiplier_add} &7Knockback",
+      "&e{lightweapons_attackreachbonus_add} &7Attack Reach"
     ],
     "enchanting_perk_1_messages": [
       "&b✰ &9Runic Focus &b✰",
-      "&b+{enchanting_enchantingskill_add} &7Enchanting Power"
+      "&b{enchanting_enchantingskill_add} &7Enchanting Power"
     ],
     "enchanting_perk_a1_messages": [
       "&b✰ &9Stable Conduit &b✰",
-      "&b+{enchanting_essencerefundfraction_add} &7Essence Refunded",
-      "&b+{enchanting_lapissavechance_add} &7Reduced Lapis Consumption"
+      "&b{enchanting_essencerefundfraction_add} &7Essence Refunded",
+      "&b{enchanting_lapissavechance_add} &7Reduced Lapis Consumption"
     ],
     "enchanting_perk_a2_messages": [
       "&b✰ &9Pure Conduit &b✰",
-      "&b+{enchanting_enchantingskill_add} &7Enchanting Power",
-      "&b+{enchanting_essencerefundfraction_add} &7Essence Refunded",
-      "&b+{enchanting_lapissavechance_add} &7Reduced Lapis Consumption"
+      "&b{enchanting_enchantingskill_add} &7Enchanting Power",
+      "&b{enchanting_essencerefundfraction_add} &7Essence Refunded",
+      "&b{enchanting_lapissavechance_add} &7Reduced Lapis Consumption"
     ],
     "enchanting_perk_b1_messages": [
       "&b✰ &9Mental Focus &b✰",
-      "&b+{enchanting_essencemultiplier_add} &7Essence",
-      "&b+{power_allskillexpmultiplier_add} &7Skill EXP"
+      "&b{enchanting_essencemultiplier_add} &7Essence",
+      "&b{power_allskillexpmultiplier_add} &7Skill EXP"
     ],
     "enchanting_perk_b2_messages": [
       "&b✰ &9Hexblade &b✰",
-      "&b+{enchanting_essencemultiplier_add} &7Essence",
-      "&b+{power_allskillexpmultiplier_add} &7Skill EXP",
+      "&b{enchanting_essencemultiplier_add} &7Essence",
+      "&b{power_allskillexpmultiplier_add} &7Skill EXP",
       "&b+Hexblade",
       "&7- Converts &b{enchanting_activeelementaldamageconversion_add}&7 of your damage into &b60%&7 elemental damage",
       "&7- Each hit costs &b{enchanting_essencecostperhit_add}&7 essence",
@@ -2150,8 +2151,8 @@
     ],
     "enchanting_perk_2_messages": [
       "&b✰ &9Arcane Fortitude &b✰",
-      "&b+{enchanting_enchantingskill_add} &7Enchanting Power",
-      "&b+{enchanting_essencerefundfraction_add} &7Essence Refunded",
+      "&b{enchanting_enchantingskill_add} &7Enchanting Power",
+      "&b{enchanting_essencerefundfraction_add} &7Essence Refunded",
       "&7Pick between damage and protection enchantments",
       "&7to boost by &b+1 levels&7. &cChoice is permanent"
     ],
@@ -2167,7 +2168,7 @@
     ],
     "enchanting_perk_3_messages": [
       "&b✰ &9Archmage &b✰",
-      "&b+{enchanting_enchantingskill_add} &7Enchanting Power",
+      "&b{enchanting_enchantingskill_add} &7Enchanting Power",
       "&7Pick between Unbreaking or Looting enchantments",
       "&7to boost by &b+2 levels&7, or Fortune by &b+1 level&7.",
       "&cChoice is permanent"
@@ -2186,7 +2187,7 @@
     ],
     "enchanting_perk_4_messages": [
       "&b✰ &9Divine Nexus &b✰",
-      "&b+{enchanting_enchantingskill_add} &7Enchanting Power",
+      "&b{enchanting_enchantingskill_add} &7Enchanting Power",
       "&7Pick between all offensive, defensive, or utility",
       "&7enchantments to boost by &b+1 levels&7.",
       "&cChoice is permanent"
@@ -2205,11 +2206,11 @@
     ],
     "enchanting_perk_combo_messages": [
       "&b✰ &9Halfling Luck &b✰",
-      "&b+{power_luckbonus_add} &7Luck"
+      "&b{power_luckbonus_add} &7Luck"
     ],
     "digging_perk_1_messages": [
       "&a✰ &2Digger &a✰",
-      "&a+{digging_diggingspeedbonus_add} &7Digging Speed"
+      "&a{digging_diggingspeedbonus_add} &7Digging Speed"
     ],
     "digging_perk_2_messages": [
       "&a✰ &2Filterer &a✰",
@@ -2230,19 +2231,19 @@
     ],
     "digging_perk_a1_messages": [
       "&a✰ &2Archaeologist &a✰",
-      "&a+{digging_archaeologyrepeatchance_add} &7Repeat Brushing Chance",
-      "&a+{digging_archaeologyluck_add} &7Archaeology Luck"
+      "&a{digging_archaeologyrepeatchance_add} &7Repeat Brushing Chance",
+      "&a{digging_archaeologyluck_add} &7Archaeology Luck"
     ],
     "digging_perk_a2_messages": [
       "&a✰ &2Ancient History &a✰",
-      "&a+{digging_archaeologyrepeatchance_add} &7Repeat Brushing Chance",
+      "&a{digging_archaeologyrepeatchance_add} &7Repeat Brushing Chance",
       "&aRare chance to find new suspicious blocks",
       "&awhile digging.",
       "&7Chance increases greatly around structures."
     ],
     "digging_perk_b1_messages": [
       "&a✰ &2Excavator &a✰",
-      "&a+{digging_diggingspeedbonus_add} &7Digging Speed"
+      "&a{digging_diggingspeedbonus_add} &7Digging Speed"
     ],
     "digging_perk_b2_messages": [
       "&a✰ &2Panning &a✰",
@@ -2281,7 +2282,7 @@
     ],
     "archery_perk_1_messages": [
       "&e✰ &6Ranger &e✰",
-      "&e+{archery_bowdamagemultiplier_add} &7Ranged Damage",
+      "&e{archery_bowdamagemultiplier_add} &7Ranged Damage",
       "&e+1 Accuracy"
     ],
     "archery_perk_2_messages": [
@@ -2292,7 +2293,7 @@
     ],
     "archery_perk_3_messages": [
       "&e✰ &6Archer &e✰",
-      "&e+{archery_bowcritchance_add} &7Crit Chance",
+      "&e{archery_bowcritchance_add} &7Crit Chance",
       "&e+1.5 Accuracy",
       "&eRecipes Unlocked",
       "&7- &eCopper Arrows",
@@ -2300,8 +2301,8 @@
     ],
     "archery_perk_4_messages": [
       "&e✰ &6Long-Ranged Infantry &e✰",
-      "&e+{archery_bowdamagemultiplier_add} &7Ranged Damage",
-      "&e+{archery_distancedamagebonus_add} &7Damage/10 blocks distance",
+      "&e{archery_bowdamagemultiplier_add} &7Ranged Damage",
+      "&e{archery_distancedamagebonus_add} &7Damage/10 blocks distance",
       "&e-{archery_ammosavechance_add} &7Ammo Consumption",
       "&eRecipes Unlocked",
       "&7- &eIron Arrows",
@@ -2309,15 +2310,15 @@
     ],
     "archery_perk_5_messages": [
       "&e✰ &6Sniper &e✰",
-      "&e+{archery_bowcritchance_add} &7Crit Chance",
-      "&e+{archery_critdamage_add} &7Crit Damage",
+      "&e{archery_bowcritchance_add} &7Crit Chance",
+      "&e{archery_critdamage_add} &7Crit Damage",
       "&e+2.5 Accuracy",
       "&eRecipe Unlocked",
       "&7- &eDiamond Arrows"
     ],
     "archery_perk_6_messages": [
       "&e✰ &6Necrotic Shots &e✰",
-      "&e+{archery_distancedamagebonus_add} &7Damage/10 blocks distance",
+      "&e{archery_distancedamagebonus_add} &7Damage/10 blocks distance",
       "&e-Infinity damage penalty",
       "&eRecipes Unlocked",
       "&7- &eNetherite Arrows",
@@ -2352,30 +2353,30 @@
       "&e+Guaranteed crit while stealthed",
       "&8Stealth is defined by the target",
       "&8looking away and not being in combat",
-      "&e+{archery_critdamage_add} &7Crit Damage",
+      "&e{archery_critdamage_add} &7Crit Damage",
       "&e+Crits cause bleeding"
     ],
     "mining_perk_1_messages": [
       "&e✰ &6Brittle Rock &e✰",
-      "&e+{mining_miningspeedbonus_add} &7Mining Speed"
+      "&e{mining_miningspeedbonus_add} &7Mining Speed"
     ],
     "mining_perk_2_messages": [
       "&e✰ &6Spelunking &e✰",
-      "&e+{mining_miningdrops_add} &7Mining Drops",
-      "&e+{mining_miningluck_add} &7Mining Luck",
-      "&e+{power_cookingspeedbonus_add} &7Cooking Speed"
+      "&e{mining_miningdrops_add} &7Mining Drops",
+      "&e{mining_miningluck_add} &7Mining Luck",
+      "&e{power_cookingspeedbonus_add} &7Cooking Speed"
     ],
     "mining_perk_a1_messages": [
       "&e✰ &6Demolist &e✰",
-      "&e+{mining_blastingdrops_add} &7Blast Mining Drops",
-      "&e+{mining_tntblastradius_add} &7TNT Power",
-      "&e+{mining_tntdamagereduction_add} &7TNT Resistance"
+      "&e{mining_blastingdrops_add} &7Blast Mining Drops",
+      "&e{mining_tntblastradius_add} &7TNT Power",
+      "&e{mining_tntdamagereduction_add} &7TNT Resistance"
     ],
     "mining_perk_a2_messages": [
       "&e✰ &6Earthshaker &e✰",
-      "&e+{mining_blastingdrops_add} &7Blast Mining Drops",
-      "&e+{mining_tntblastradius_add} &7TNT Power",
-      "&e+{mining_tntdamagereduction_add} &7TNT Resistance",
+      "&e{mining_blastingdrops_add} &7Blast Mining Drops",
+      "&e{mining_tntblastradius_add} &7TNT Power",
+      "&e{mining_tntdamagereduction_add} &7TNT Resistance",
       "&eRecipe Unlocked",
       "&7- &eTriple TNT"
     ],
@@ -2397,8 +2398,8 @@
     ],
     "mining_perk_b1_messages": [
       "&e✰ &6Dwarven Aptitude &e✰",
-      "&e+{mining_miningspeedbonus_add} &7Mining Speed",
-      "&e+{mining_blockexperiencerate_add} &7Essence/block",
+      "&e{mining_miningspeedbonus_add} &7Mining Speed",
+      "&e{mining_blockexperiencerate_add} &7Essence/block",
       "&e+Drilling",
       "&7- 60s Cooldown",
       "&7- 10s Duration",
@@ -2408,9 +2409,9 @@
     ],
     "mining_perk_b2_messages": [
       "&e✰ &6Vein Extraction &e✰",
-      "&e+{mining_miningdrops_add} &7Mining Drops",
-      "&e+{mining_miningluck_add} &7Mining Luck",
-      "&e+{power_cookingspeedbonus_add} &7Cooking Speed",
+      "&e{mining_miningdrops_add} &7Mining Drops",
+      "&e{mining_miningluck_add} &7Mining Luck",
+      "&e{power_cookingspeedbonus_add} &7Cooking Speed",
       "&e+Vein Miner",
       "&7- Ores only",
       "&8Sneak while breaking a block to rapidly",
@@ -2418,55 +2419,55 @@
     ],
     "mining_perk_3_messages": [
       "&e✰ &6Earthsplitter &e✰",
-      "&e+{mining_blockexperiencemultiplier_add} &7Block Essence",
-      "&e+{power_cookingspeedbonus_add} &7Cooking Speed",
+      "&e{mining_blockexperiencemultiplier_add} &7Block Essence",
+      "&e{power_cookingspeedbonus_add} &7Cooking Speed",
       "&eDrilling",
       "&7- 30s Cooldown",
       "&7- &e{mining_drillingspeedbonus_add} Mining Speed"
     ],
     "mining_perk_4_messages": [
       "&e✰ &6Aspect of Kali &e✰",
-      "&e+{power_cookingspeedbonus_add} &7Cooking Speed",
+      "&e{power_cookingspeedbonus_add} &7Cooking Speed",
       "&eVein Miner",
       "&7- Most Stone-type Blocks (not Stone)"
     ],
     "alchemy_perk_1_messages": [
       "&d✰ &5Stable Burn &d✰",
-      "&d+{alchemy_brewingtimereduction_add} &7Brewing Speed"
+      "&d{alchemy_brewingtimereduction_add} &7Brewing Speed"
     ],
     "alchemy_perk_2_messages": [
       "&d✰ &5Potent Ingredients &d✰",
-      "&d+{alchemy_brewingingredientsavechance_add} &7Ingredient Save Chance"
+      "&d{alchemy_brewingingredientsavechance_add} &7Ingredient Save Chance"
     ],
     "alchemy_perk_a1_messages": [
       "&d✰ &5Volatile Poisons &d✰",
-      "&d+{alchemy_debuffbrewingskill_add} &7Poison Quality",
-      "&d+{alchemy_splashintensityminimum_add} &7Splash Intensity"
+      "&d{alchemy_debuffbrewingskill_add} &7Poison Quality",
+      "&d{alchemy_splashintensityminimum_add} &7Splash Intensity"
     ],
     "alchemy_perk_a2_messages": [
       "&d✰ &5Chemical Artillery &d✰",
-      "&d+{alchemy_debuffbrewingskill_add} &7Poison Quality",
-      "&d+{alchemy_splashintensityminimum_add} &7Splash Intensity",
-      "&d+{alchemy_lingeringdurationmultiplier_add} &7Lingering Duration",
-      "&d+{alchemy_lingeringradiusmultiplier_add} &7Lingering Radius",
-      "&d+{alchemy_throwvelocity_add} &7Throwing Force"
+      "&d{alchemy_debuffbrewingskill_add} &7Poison Quality",
+      "&d{alchemy_splashintensityminimum_add} &7Splash Intensity",
+      "&d{alchemy_lingeringdurationmultiplier_add} &7Lingering Duration",
+      "&d{alchemy_lingeringradiusmultiplier_add} &7Lingering Radius",
+      "&d{alchemy_throwvelocity_add} &7Throwing Force"
     ],
     "alchemy_perk_b1_messages": [
       "&d✰ &5Effective Catalysts &d✰",
-      "&d+{alchemy_debuffbrewingskill_add} &7Beneficial Potion Quality",
-      "&d+{alchemy_brewingtimereduction_add} &7Brewing Speed"
+      "&d{alchemy_debuffbrewingskill_add} &7Beneficial Potion Quality",
+      "&d{alchemy_brewingtimereduction_add} &7Brewing Speed"
     ],
     "alchemy_perk_b2_messages": [
       "&d✰ &5Exotic Ingredients &d✰",
-      "&d+{alchemy_buffbrewingskill_add} &7Beneficial Potion Quality",
-      "&d+{alchemy_brewingingredientsavechance_add} &7Ingredient Save Chance",
+      "&d{alchemy_buffbrewingskill_add} &7Beneficial Potion Quality",
+      "&d{alchemy_brewingingredientsavechance_add} &7Ingredient Save Chance",
       "&dPotion Recipes Unlocked:",
       "&7- Haste (Awkward Potion + Nether Quartz)",
       "&7- Health Boost (Awkward Potion + Sweet Berries)"
     ],
     "alchemy_perk_3_messages": [
       "&d✰ &5Mighty Mixtures &d✰",
-      "&d+{alchemy_brewingtimereduction_add} &7Brewing Speed",
+      "&d{alchemy_brewingtimereduction_add} &7Brewing Speed",
       "&d+Potion Mixing",
       "&7- Up to 3x",
       "&7- 20% duration loss",
@@ -2476,13 +2477,13 @@
     ],
     "alchemy_perk_4_messages": [
       "&d✰ &5Prima Materia &d✰",
-      "&d+{alchemy_buffbrewingskill_add} &7Potion Quality",
+      "&d{alchemy_buffbrewingskill_add} &7Potion Quality",
       "&dPotion Recipes Unlocked:",
       "&7- &#0077ffAlchemic Precursor &7(Nether Star)"
     ],
     "alchemy_perk_combo_messages": [
       "&d✰ &5Etching Venom &d✰",
-      "&d+{lightweapons_coatingcharges_add} &7Weapon Coating Charges",
+      "&d{lightweapons_coatingcharges_add} &7Weapon Coating Charges",
       "&dRecipes Unlocked",
       "&7- Empty Vial",
       "&7- Vial 'o' Poison",
@@ -2492,26 +2493,26 @@
     ],
     "smithing_perk_1_messages": [
       "&e✰ &6Craftsman &e✰",
-      "&e+{smithing_woodcraftingskill_add} &7Wood Quality",
-      "&e+{smithing_leathercraftingskill_add} &7Leather Quality"
+      "&e{smithing_woodcraftingskill_add} &7Wood Quality",
+      "&e{smithing_leathercraftingskill_add} &7Leather Quality"
     ],
     "smithing_perk_2_messages": [
       "&e✰ &6Apprentice Blacksmith &e✰",
-      "&e+{smithing_stonecraftingskill_add} &7Stone Quality",
-      "&e+{smithing_chaincraftingskill_add} &7Chainmail Quality"
+      "&e{smithing_stonecraftingskill_add} &7Stone Quality",
+      "&e{smithing_chaincraftingskill_add} &7Chainmail Quality"
     ],
     "smithing_perk_3_messages": [
       "&e✰ &6Blacksmith &e✰",
-      "&e+{smithing_ironcraftingskill_add} &7Iron Quality",
-      "&e+{smithing_goldcraftingskill_add} &7Gold Quality"
+      "&e{smithing_ironcraftingskill_add} &7Iron Quality",
+      "&e{smithing_goldcraftingskill_add} &7Gold Quality"
     ],
     "smithing_perk_4_messages": [
       "&e✰ &6Crystalsmith &e✰",
-      "&e+{smithing_diamondcraftingskill_add} &7Diamond Quality"
+      "&e{smithing_diamondcraftingskill_add} &7Diamond Quality"
     ],
     "smithing_perk_5_messages": [
       "&e✰ &6Hellforge &e✰",
-      "&e+{smithing_netheritecraftingskill_add} &7Netherite Quality"
+      "&e{smithing_netheritecraftingskill_add} &7Netherite Quality"
     ],
     "smithing_perk_6_messages": [
       "&e✰ &6Masterpiece &e✰",
@@ -2533,8 +2534,8 @@
     ],
     "smithing_perk_bows_messages": [
       "&e✰ &6Advanced Fletching &e✰",
-      "&e+{smithing_bowcraftingskill_add} &7Bow Quality",
-      "&e+{smithing_crossbowcraftingskill_add} &7Crossbow Quality"
+      "&e{smithing_bowcraftingskill_add} &7Bow Quality",
+      "&e{smithing_crossbowcraftingskill_add} &7Crossbow Quality"
     ],
     "woodcutting_perk_1_messages": [
       "&a✰ &2Novice Woodcutting &a✰",
@@ -2585,9 +2586,9 @@
     ],
     "woodcutting_perk_combo_messages": [
       "&a✰ &2Active Lifestyle &a✰",
-      "&a+{power_foodbonusseafood_add}&7 Food Nutrition",
-      "&a+{power_hungersavechance_add}&7 Reduced Hunger Consumption",
-      "&a+{power_healthregenerationbonus_add}&7 Health Regeneration"
+      "&a{power_foodbonusseafood_add}&7 Food Nutrition",
+      "&a{power_hungersavechance_add}&7 Reduced Hunger Consumption",
+      "&a{power_healthregenerationbonus_add}&7 Health Regeneration"
     ],
     "party-level-description-1": [
       "&e+5 Party Capacity &7(Now 10)",
