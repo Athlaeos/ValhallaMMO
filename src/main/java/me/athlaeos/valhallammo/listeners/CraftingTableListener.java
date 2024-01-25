@@ -10,7 +10,6 @@ import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.CustomDurabilityManager;
@@ -92,7 +91,7 @@ public class CraftingTableListener implements Listener {
                         if (maxCraftable > slot.getAmount()) maxCraftable = slot.getAmount();
                     }
 
-                    int available = ItemUtils.maxCraftable(crafter, result); // max items available to fit in inventory
+                    int available = ItemUtils.maxInventoryFit(crafter, result); // max items available to fit in inventory
                     amountCrafted = Math.min(available, maxCraftable);
                     if (amountCrafted == 0) {
                         e.setCancelled(true);

@@ -45,24 +45,26 @@ public class EnchantmentListener implements Listener {
         if (e.getEnchanter().getGameMode() != GameMode.CREATIVE){
             double saveChance = AccumulativeStatManager.getCachedStats("ENCHANTING_LAPIS_SAVE_CHANCE", enchanter, 10000, true);
             if (Utils.proc(enchanter, saveChance, false)){
-                ItemStack lapisSlot = e.getInventory().getItem(1);
-                ItemStack newLapis = new ItemStack(Material.LAPIS_LAZULI, lapisConsumed);
-                if (!ItemUtils.isEmpty(lapisSlot)){
-                    if (lapisSlot.isSimilar(newLapis)){
-                        lapisSlot.setAmount(lapisSlot.getAmount() + lapisConsumed);
-                        e.getInventory().setItem(1, lapisSlot);
-                    } else {
-                        Map<Integer, ItemStack> remainingItems = e.getEnchanter().getInventory().addItem(newLapis);
-                        if (!remainingItems.isEmpty()){
-                            for (ItemStack i : remainingItems.values()){
-                                Item drop = e.getEnchanter().getWorld().dropItemNaturally(e.getEnchanter().getEyeLocation(), i);
-                                drop.setOwner(e.getEnchanter().getUniqueId());
+                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                    ItemStack lapisSlot = e.getInventory().getItem(1);
+                    ItemStack newLapis = new ItemStack(Material.LAPIS_LAZULI, lapisConsumed);
+                    if (!ItemUtils.isEmpty(lapisSlot)){
+                        if (lapisSlot.isSimilar(newLapis)){
+                            lapisSlot.setAmount(lapisSlot.getAmount() + lapisConsumed);
+                            e.getInventory().setItem(1, lapisSlot);
+                        } else {
+                            Map<Integer, ItemStack> remainingItems = e.getEnchanter().getInventory().addItem(newLapis);
+                            if (!remainingItems.isEmpty()){
+                                for (ItemStack i : remainingItems.values()){
+                                    Item drop = e.getEnchanter().getWorld().dropItemNaturally(e.getEnchanter().getEyeLocation(), i);
+                                    drop.setOwner(e.getEnchanter().getUniqueId());
+                                }
                             }
                         }
+                    } else {
+                        e.getInventory().setItem(1, newLapis);
                     }
-                } else {
-                    e.getInventory().setItem(1, newLapis);
-                }
+                }, 1L);
             }
         }
 

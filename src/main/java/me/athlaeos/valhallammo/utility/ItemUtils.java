@@ -648,14 +648,20 @@ public class ItemUtils {
         return true;
     }
 
-    public static int maxCraftable(Player p, ItemStack result){
+    /**
+     * Returns how many times the given itemstack can fit in the player's inventory, also considers the item's quantity
+     * @param p the player in which to fit the item
+     * @param item the item to fit
+     * @return the amount of times the item can fit in the player's inventory
+     */
+    public static int maxInventoryFit(Player p, ItemStack item){
         int times = 0;
         for (ItemStack i : p.getInventory().getStorageContents()){
             if (times >= 64) break; // inventory has enough space, no longer need to check
-            if (isEmpty(i)) times += (int) Math.floor(result.getType().getMaxStackSize() / (double) result.getAmount());
-            else if (result.getType().getMaxStackSize() > 1 && i.isSimilar(result) &&
-                    i.getAmount() + result.getAmount() <= result.getType().getMaxStackSize())
-                times += (int) Math.floor((i.getType().getMaxStackSize() - i.getAmount()) / (double) result.getAmount());
+            if (isEmpty(i)) times += (int) Math.floor(item.getType().getMaxStackSize() / (double) item.getAmount());
+            else if (item.getType().getMaxStackSize() > 1 && i.isSimilar(item) &&
+                    i.getAmount() + item.getAmount() <= item.getType().getMaxStackSize())
+                times += (int) Math.floor((i.getType().getMaxStackSize() - i.getAmount()) / (double) item.getAmount());
         }
         return times;
     }

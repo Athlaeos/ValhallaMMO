@@ -416,20 +416,19 @@ public class PartyManager {
         Party party = getParty(p);
         if (party == null) return ErrorStatus.NOT_IN_PARTY;
         if (!party.getLeader().equals(p.getUniqueId())) return ErrorStatus.NO_PERMISSION;
-        for (OfflinePlayer member : Utils.getPlayersFromUUIDs(party.getMembers().keySet()).values()){
-            partiesByMember.remove(member.getUniqueId());
-            if (member.isOnline() && member instanceof Player m) Utils.sendMessage(m, TranslationManager.getTranslation("status_command_party_disbanded"));
-        }
-        allParties.remove(party.getId());
-        return null;
+        return disbandParty(party);
     }
 
     public static ErrorStatus disbandParty(Party party){
         if (!enabledParties) return ErrorStatus.PARTIES_DISABLED;
-        for (OfflinePlayer member : Utils.getPlayersFromUUIDs(party.getMembers().keySet()).values()){
-            partiesByMember.remove(member.getUniqueId());
-            if (member.isOnline() && member instanceof Player m) Utils.sendMessage(m, TranslationManager.getTranslation("status_command_party_disbanded"));
+        for (UUID uuid : party.getMembers().keySet()){
+            partiesByMember.remove(uuid);
+            Player online = ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+            if (online != null) Utils.sendMessage(online, TranslationManager.getTranslation("status_command_party_disbanded"));
         }
+        partiesByMember.remove(party.getLeader());
+        Player online = ValhallaMMO.getInstance().getServer().getPlayer(party.getLeader());
+        if (online != null) Utils.sendMessage(online, TranslationManager.getTranslation("status_command_party_disbanded"));
         allParties.remove(party.getId());
         return null;
     }

@@ -1907,53 +1907,53 @@
       "&7- &c{heavyarmor_setimmunityfractionbonus_add}&7 Immunity"
     ],
     "lightarmor_perk_1_messages": [
-      "&e✰ &4Iron Studs &e✰",
+      "&e✰ &6Iron Studs &e✰",
       "&e{lightarmor_lightarmormultiplier_add} &7Light Armor"
     ],
     "lightarmor_perk_1a_messages": [
-      "&e✰ &4Unburdened &e✰",
+      "&e✰ &6Unburdened &e✰",
       "&eReduced Light Armor Burdening"
     ],
     "lightarmor_perk_2a_messages": [
-      "&e✰ &4Resourceful Scout &e✰",
+      "&e✰ &6Resourceful Scout &e✰",
       "&e-1 &7Pieces required for full set bonus",
       "&eNo Light Armor Burdening"
     ],
     "lightarmor_perk_1b_messages": [
-      "&e✰ &4Controlled Metabolism &e✰",
+      "&e✰ &6Controlled Metabolism &e✰",
       "&e{lightarmor_lightarmormultiplier_add} &7Light Armor",
       "&e+Set Bonus",
       "&7- &e{lightarmor_sethungersavechance_add}&7 Reduced Hunger Consumption"
     ],
     "lightarmor_perk_2b_messages": [
-      "&e✰ &4Swift Reflexes &e✰",
+      "&e✰ &6Swift Reflexes &e✰",
       "&e{lightarmor_lightarmormultiplier_add} &7Light Armor",
       "&e+Set Bonus",
       "&7- &e{lightarmor_setdodgechance_add}&7 Dodge Chance",
       "&8Dodging an attack completely prevents damage. You must be facing the attacker to be able to dodge attacks"
     ],
     "lightarmor_perk_2_messages": [
-      "&e✰ &4Dragonscales &e✰",
+      "&e✰ &6Dragonscales &e✰",
       "&e+Set Bonuses",
       "&7- &e{lightarmor_setmagicresistance_add}&7 Magic Damage Resistance",
       "&7- &ePotion Effect Immunities &7to &ePoison&7, &eBlindness&7, and &eHunger"
     ],
     "lightarmor_perk_1c_messages": [
-      "&e✰ &4Adrenaline &e✰",
+      "&e✰ &6Adrenaline &e✰",
       "&e+Adrenaline",
       "&7- Activates at 30% HP",
       "&7- 10m Cooldown",
       "&7- Grants Speed I, Jump Boost I, and Regeneration I for 10 seconds"
     ],
     "lightarmor_perk_2c_messages": [
-      "&e✰ &4Bolt &e✰",
+      "&e✰ &6Bolt &e✰",
       "&eAdrenaline",
       "&7- Activates at 50% HP",
       "&7- 5m Cooldown",
       "&7- Grants Speed III, Jump Boost III, Regeneration III, and Resistance I for 20 seconds"
     ],
     "lightarmor_perk_combo_messages": [
-      "&e✰ &4Perfect Composure &e✰",
+      "&e✰ &6Perfect Composure &e✰",
       "&e+Set Bonuses",
       "&7- &e{lightarmor_setcritchanceresistance_add}&7 Crit Resistance",
       "&7- &eStun Immunity"
