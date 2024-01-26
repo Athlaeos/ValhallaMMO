@@ -17,7 +17,7 @@ import me.athlaeos.valhallammo.listeners.*;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.nms.NMS;
-import me.athlaeos.valhallammo.nms.BlockBreakNetworkHandlerImpl;
+import me.athlaeos.valhallammo.block.BlockBreakNetworkHandlerImpl;
 import me.athlaeos.valhallammo.nms.PacketListener;
 import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.persistence.Database;
@@ -46,7 +46,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ValhallaMMO extends JavaPlugin {
     private static boolean customMiningSystem = false;

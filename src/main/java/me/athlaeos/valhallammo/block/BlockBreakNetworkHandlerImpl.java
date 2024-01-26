@@ -1,12 +1,13 @@
-package me.athlaeos.valhallammo.nms;
+package me.athlaeos.valhallammo.block;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
+import me.athlaeos.valhallammo.nms.NetworkHandler;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-public class BlockBreakNetworkHandlerImpl implements NetworkHandler{
+public class BlockBreakNetworkHandlerImpl implements NetworkHandler {
     @Override
     public PacketStatus readBefore(Player player, Object packet) {
         if (player.getGameMode() == GameMode.CREATIVE) return PacketStatus.ALLOW;
