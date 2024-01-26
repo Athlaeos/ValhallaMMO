@@ -95,12 +95,17 @@ public class MonsterScalingManager {
     public static double getStatValue(LivingEntity entity, String stat){
         if (!enabled || (monstersOnly && !(entity instanceof Monster)) || entity instanceof Player) return 0;
         int level = getLevel(entity);
-        if (level < 0) return 0;
+        if (level < 0) {
+            if (entity instanceof Enderman) System.out.println("no level");
+            return 0;
+        }
         if (entityStatScaling.containsKey(entity.getType())){
             Map<String, String> entityStats = entityStatScaling.getOrDefault(entity.getType(), new HashMap<>());
             if (!entityStats.containsKey(stat)) return 0;
             return Utils.eval(parseRand(entityStatScaling.get(entity.getType()).get(stat).replace("%level%", String.valueOf(level))));
-        } else if (defaultStatScaling.containsKey(stat)) return (int) Utils.eval(parseRand(defaultStatScaling.get(stat).replace("%level%", String.valueOf(level))));
+        } else if (defaultStatScaling.containsKey(stat)) {
+            return Utils.eval(parseRand(defaultStatScaling.get(stat).replace("%level%", String.valueOf(level))));
+        }
         return 0;
     }
 

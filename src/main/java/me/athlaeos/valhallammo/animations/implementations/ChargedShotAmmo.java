@@ -64,6 +64,7 @@ public class ChargedShotAmmo extends Animation {
                 return;
             }
             circle.forEach(l -> {
+                if (l.getWorld() == null || !l.getWorld().equals(p.getWorld())) l.setWorld(p.getWorld());
                 if (ammo == Particle.REDSTONE) p.getWorld().spawnParticle(ammo, l.clone().add(p.getLocation()).add(0, 0.8, 0), 0, ammoOptions);
                 else p.getWorld().spawnParticle(ammo, l.clone().add(p.getLocation()).add(0, 0.8, 0), 0);
             });

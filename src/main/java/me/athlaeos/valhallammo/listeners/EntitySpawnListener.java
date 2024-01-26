@@ -2,12 +2,11 @@ package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
-import me.athlaeos.valhallammo.entities.EntityAttributeStats;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.entities.MonsterScalingManager;
-import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,22 +27,21 @@ public class EntitySpawnListener implements Listener {
             "EGG", "CURED", "DISPENSE_EGG", "DROWNED", "INFECTION", "JOCKEY", "METAMORPHOSIS", "PIGLIN_ZOMBIFIED", "SLIME_SPLIT"
     );
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onEntitySpawn(CreatureSpawnEvent e){
         if (e.isCancelled() || e.getSpawnReason() != CreatureSpawnEvent.SpawnReason.SPAWNER) return;
         e.getEntity().setMetadata("valhallammo_spawnreason", new FixedMetadataValue(ValhallaMMO.getInstance(), e.getSpawnReason().toString()));
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onLevelledEntitySpawn(CreatureSpawnEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !viableSpawnReasons.contains(e.getSpawnReason().toString()) ||
                 e.isCancelled() || EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE)) return;
         int predictedLevel = MonsterScalingManager.getNewLevel(e.getEntity());
         if (predictedLevel < 0) return;
-        AttributeInstance maxHealth = e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
-
         MonsterScalingManager.setLevel(e.getEntity(), predictedLevel);
 
+        AttributeInstance maxHealth = e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (maxHealth != null) e.getEntity().setHealth(maxHealth.getValue());
     }
 

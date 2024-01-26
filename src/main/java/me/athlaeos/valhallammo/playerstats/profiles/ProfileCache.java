@@ -7,9 +7,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ProfileCache {
-    private static final Map<UUID, Map<Class<? extends Profile>, CacheEntry>> cache = new HashMap<>();
+    private static final Map<UUID, Map<Class<? extends Profile>, CacheEntry>> cache = new ConcurrentHashMap<>();
     private static long cacheDuration = 10000L;
 
     public static void resetCacheDuration(){

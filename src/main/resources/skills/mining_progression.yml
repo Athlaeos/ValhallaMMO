@@ -258,7 +258,7 @@ perks:
         - COPPER_ORE
         - GOLD_ORE
         - REDSTONE_ORE
-        - LAPIS_LAZULI_ORE
+        - LAPIS_ORE
         - DIAMOND_ORE
         - EMERALD_ORE
         - DEEPSLATE_COAL_ORE
@@ -266,7 +266,7 @@ perks:
         - DEEPSLATE_COPPER_ORE
         - DEEPSLATE_GOLD_ORE
         - DEEPSLATE_REDSTONE_ORE
-        - DEEPSLATE_LAPIS_LAZULI_ORE
+        - DEEPSLATE_LAPIS_ORE
         - DEEPSLATE_DIAMOND_ORE
         - DEEPSLATE_EMERALD_ORE
         - NETHER_QUARTZ_ORE

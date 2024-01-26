@@ -460,7 +460,7 @@ public class ItemAttributesRegistry {
         setDefaultStats(meta, defaultStats);
 
         Map<String, AttributeWrapper> actualStats = getStats(meta, false);
-        actualStats.putIfAbsent(wrapper.getAttribute(), wrapper);
+        actualStats.put(wrapper.getAttribute(), wrapper);
 
         setActualStats(meta, actualStats);
     }

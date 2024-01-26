@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.CustomDamageType;
 import me.athlaeos.valhallammo.hooks.DamageIndicator;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -29,6 +30,16 @@ public class EntityDamagedListener implements Listener {
     private static final Map<UUID, UUID> lastDamagedByMap = new HashMap<>();
     private static final Map<UUID, Double> lastDamageTakenMap = new HashMap<>();
 
+    private static final Map<String, Double> physicalDamageTypes = new HashMap<>();
+
+    public EntityDamagedListener(){
+        YamlConfiguration c = ValhallaMMO.getPluginConfig();
+        for (String type : c.getStringList("armor_effective_types")){
+            String[] args = type.split(":");
+            physicalDamageTypes.put(args[0], args.length > 1 ? Catch.catchOrElse(() -> Double.parseDouble(args[1]), 1D) : 1D);
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamageTaken(EntityDamageEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
@@ -51,9 +62,7 @@ public class EntityDamagedListener implements Listener {
                 applyImmunity = true;
             }
             if (e instanceof EntityDamageByEntityEvent d && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking() &&
-                    EntityUtils.isEntityFacing(p, d.getDamager().getLocation(), EntityAttackListener.getFacingAngleCos())) {
-                return;
-            }
+                    EntityUtils.isEntityFacing(p, d.getDamager().getLocation(), EntityAttackListener.getFacingAngleCos())) return; // blocking with shield damage reduction
             final double damage = customDamage;
             if (applyImmunity){
                 // custom damage did not kill entity
@@ -84,9 +93,7 @@ public class EntityDamagedListener implements Listener {
                         l.setHealth(0);
                     }, 1L);
                 } else {
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                        customDamageCauses.remove(l.getUniqueId());
-                    }, 1L);
+                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> customDamageCauses.remove(l.getUniqueId()), 1L);
                 }
             }
         }
@@ -119,16 +126,20 @@ public class EntityDamagedListener implements Listener {
 
         double resistedDamage = e.getDamage();
         YamlConfiguration c = ValhallaMMO.getPluginConfig();
-        if (c.getStringList("armor_effective_types").contains(damageCause)){
+        if (physicalDamageTypes.containsKey(damageCause)){
+            double armorEffectiveness = physicalDamageTypes.get(damageCause);
             double totalArmor = AccumulativeStatManager.getCachedRelationalStats("ARMOR_TOTAL", e.getEntity(), lastDamager, 10000, true);
             double toughness = Math.max(0, AccumulativeStatManager.getCachedRelationalStats("TOUGHNESS", e.getEntity(), lastDamager, 2000, true));
             if (totalArmor < 0){
                 double negativeArmorDamageDebuff = c.getDouble("negative_armor_damage_buff");
                 resistedDamage *= (1 + (-totalArmor * negativeArmorDamageDebuff));
                 totalArmor = 0;
+            } else {
+                totalArmor *= armorEffectiveness;
+                toughness *= armorEffectiveness;
             }
 
-            String scaling = c.getString("damage_formula_physical", "%damage% * (10 / (10 + %armor%)) - (%damage%^2 * 0.00005 * %toughness%)");
+            String scaling = c.getString("damage_formula_physical", "%damage% * (15 / (15 + %armor%)) - (%toughness% * 0.15)");
             boolean mode = c.getString("damage_formula_mode", "SET").equalsIgnoreCase("set");
             double minimumFraction = c.getDouble("damage_reduction_cap");
             double damageResult = Utils.eval(scaling

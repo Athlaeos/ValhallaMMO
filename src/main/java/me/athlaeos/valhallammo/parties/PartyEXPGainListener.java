@@ -20,9 +20,9 @@ public class PartyEXPGainListener implements Listener {
         Party party = PartyManager.getParty(e.getPlayer());
         if (party == null) return;
         boolean expSharingEnabled = party.isExpSharingEnabled() != null ? party.isExpSharingEnabled() : PartyManager.getBoolStat("exp_sharing", party);
-        if (!expSharingEnabled) return;
         double expForParty = e.getAmount() * PartyManager.getPartyEXPConversionRate();
         PartyManager.addEXP(party, expForParty);
+        if (!expSharingEnabled) return;
 
         Collection<Player> nearbyMembers = PartyManager.membersInEXPSharingRadius(e.getPlayer());
         if (nearbyMembers.isEmpty()) return;

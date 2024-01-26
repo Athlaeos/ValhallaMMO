@@ -15,7 +15,6 @@ import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.LightArmorProfile;
-import me.athlaeos.valhallammo.playerstats.profiles.implementations.LightWeaponsProfile;
 import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
@@ -93,7 +92,7 @@ public class LightArmorSkill extends Skill implements Listener {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onDamageTaken(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
@@ -164,7 +163,7 @@ public class LightArmorSkill extends Skill implements Listener {
 
     @Override
     public Class<? extends Profile> getProfileType() {
-        return LightWeaponsProfile.class;
+        return LightArmorProfile.class;
     }
 
     @Override

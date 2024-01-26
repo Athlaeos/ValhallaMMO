@@ -65,7 +65,7 @@ public class ProfileRegistry {
             }
         }
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(ValhallaMMO.getInstance(), () -> {
             ProfileRegistry.saveAll();
             LeaderboardManager.refreshLeaderboards();
         }, delay_profile_saving, delay_profile_saving);

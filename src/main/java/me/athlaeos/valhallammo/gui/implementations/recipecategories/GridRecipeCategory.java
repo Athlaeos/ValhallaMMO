@@ -79,7 +79,7 @@ public class GridRecipeCategory extends RecipeCategory{
             if (recipe.getModifiers().isEmpty()) lore.add("&aNo modifiers executed");
             recipe.getModifiers().forEach(m -> lore.addAll(StringUtils.separateStringIntoLines(m.getActiveDescription(), 40)));
 
-            icons.add(new ItemBuilder(recipe.tinker() ? Objects.requireNonNullElse(recipe.getGridTinkerEquipment().getItem().getType(), Material.BARRIER) : recipe.getResult().getType())
+            icons.add(new ItemBuilder(recipe.tinker() ? Objects.requireNonNullElse(recipe.getGridTinkerEquipment().getItem(), new ItemStack(Material.BARRIER)) : recipe.getResult())
                     .name("&f" + recipe.getName())
                     .lore(lore)
                     .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE)

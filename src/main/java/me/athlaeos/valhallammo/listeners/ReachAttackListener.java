@@ -47,7 +47,7 @@ public class ReachAttackListener implements Listener {
         // if the player is riding a vehicle their eye location will no longer be accurate, so this estimates the new eye height
         if (vehicle instanceof LivingEntity v) vehicle.getLocation().add(0, v.getEyeHeight() + (0.625 * p.getEyeHeight()), 0);
 
-        RayTraceResult rayTrace = p.getWorld().rayTrace(eyes, eyes.getDirection(), reach - 0.1, FluidCollisionMode.NEVER, true, 0.1, entity -> !(entity.equals(p)) || entity.equals(vehicle));
+        RayTraceResult rayTrace = p.getWorld().rayTrace(eyes, eyes.getDirection(), reach - 0.1, FluidCollisionMode.NEVER, true, 0.1, entity -> !(entity.equals(p)) || entity.equals(vehicle) || entity.isDead());
         if (rayTrace != null){
             Entity hit = rayTrace.getHitEntity();
             if (hit == null) return;

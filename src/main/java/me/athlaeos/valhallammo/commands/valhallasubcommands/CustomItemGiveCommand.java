@@ -23,17 +23,19 @@ public class CustomItemGiveCommand implements Command {
 				return true;
 			}
 		}
-		if (args.length >= 3){
+		if (args.length >= 2){
 			if (args.length >= 4){
 				targets.addAll(Utils.selectPlayers(sender, args[3]));
 			}
-			int amount;
+			int amount = 1;
 
-			try {
-				amount = Math.max(1, Integer.parseInt(args[2]));
-			} catch (IllegalArgumentException ignored){
-				Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_number")));
-				return true;
+			if (args.length >= 3){
+				try {
+					amount = Math.max(1, Integer.parseInt(args[2]));
+				} catch (IllegalArgumentException ignored){
+					Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_number")));
+					return true;
+				}
 			}
 
 			if (targets.isEmpty()){

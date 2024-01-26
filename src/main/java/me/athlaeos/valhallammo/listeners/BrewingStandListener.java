@@ -23,6 +23,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BrewingStartEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +44,8 @@ public class BrewingStandListener implements Listener {
 
     @EventHandler
     public void onBrewingInventoryInteract(InventoryClickEvent e){
-        if (e.isCancelled()) return;
+        if (e.isCancelled() || WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ||
+                ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())) return;
 
         if (e.getView().getTopInventory() instanceof BrewerInventory b){
             Player p = (Player) e.getWhoClicked();
@@ -79,7 +82,8 @@ public class BrewingStandListener implements Listener {
 
     @EventHandler
     public void onBrewingInventoryDrag(InventoryDragEvent e){
-        if (e.isCancelled()) return;
+        if (e.isCancelled() || WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ||
+                ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())) return;
         if (e.getView().getTopInventory() instanceof BrewerInventory b){
             Player p = (Player) e.getWhoClicked();
             ItemUtils.calculateDragEvent(e, 1, 0, 1, 2);
@@ -89,8 +93,18 @@ public class BrewingStandListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onStandPlace(BlockPlaceEvent e){
+        if (e.isCancelled() || e.getBlock().getType() != Material.BREWING_STAND) return;
+        BlockUtils.setOwner(e.getBlock(), e.getPlayer().getUniqueId());
+    }
+
     @EventHandler
     public void onBrewingInventoryHopperFeed(InventoryMoveItemEvent e){
+        if (WorldGuardHook.inDisabledRegion(e.getDestination().getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ||
+                e.getDestination().getLocation() == null ||
+                e.getDestination().getLocation().getWorld() == null ||
+                ValhallaMMO.isWorldBlacklisted(e.getDestination().getLocation().getWorld().getName())) return;
         if (e.getDestination() instanceof BrewerInventory b){
             if(b.getLocation() == null) {
                 e.setCancelled(true);
@@ -103,7 +117,21 @@ public class BrewingStandListener implements Listener {
 
     @EventHandler(priority= EventPriority.HIGHEST)
     public void onBrew(BrewEvent e){
+        if (e.isCancelled() || WorldGuardHook.inDisabledRegion(e.getContents().getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ||
+                ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
         e.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onStartBrewing(BrewingStartEvent e){
+        if (WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ||
+                ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
+        e.setTotalBrewTime(Integer.MAX_VALUE);
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            if (e.getBlock().getType() != Material.BREWING_STAND || !(e.getBlock().getState() instanceof BrewingStand stand)) return;
+            stand.setFuelLevel(stand.getFuelLevel() + 1);
+            stand.update();
+        }, 1L);
     }
 
     private void updateStand(BrewerInventory inventory, Player p){
@@ -168,9 +196,7 @@ public class BrewingStandListener implements Listener {
                 if (l != null) activeStands.remove(l);
                 return;
             }
-            if (!activeStands.containsKey(l)){
-                cancel();
-            }
+            if (!activeStands.containsKey(l)) cancel();
             if (visualProgress > 0){
                 if (disabled || recipes.isEmpty()){
                     visualProgress = 10;
@@ -184,6 +210,13 @@ public class BrewingStandListener implements Listener {
             }
             // stand is finished brewing
             stand.setFuelLevel(stand.getFuelLevel() - 1);
+            if (stand.getFuelLevel() <= 0 && !ItemUtils.isEmpty(inventory.getFuel()) && inventory.getFuel().getType() == Material.BLAZE_POWDER){
+                ItemStack powder = inventory.getFuel();
+                if (powder.getAmount() <= 1) inventory.setFuel(null);
+                else powder.setAmount(powder.getAmount() - 1);
+                stand.setFuelLevel(20);
+            }
+            stand.update();
 
             ItemStack[] results = new ItemStack[] {null, null, null};
             for (int slot = 0; slot < 3; slot++){
@@ -258,11 +291,17 @@ public class BrewingStandListener implements Listener {
                 !p.getUnlockedRecipes().contains(r.getName())) return RecipeStatus.SKIP;
 
         for (int i = 0; i < 3; i++) {
-            if (recipes.size() == 3) return RecipeStatus.FINISHED; // If all recipes are already determined, we're done. Can cancel!
-            if (recipes.containsKey(i)) continue; // If this recipe slot is already occupied, skip to next
+            if (recipes.size() == 3) {
+                return RecipeStatus.FINISHED; // If all recipes are already determined, we're done. Can cancel!
+            }
+            if (recipes.containsKey(i)) {
+                continue; // If this recipe slot is already occupied, skip to next
+            }
 
             ItemStack slotItem = inventory.getItem(i);
-            if (ItemUtils.isEmpty(slotItem)) continue; // If the slot is empty, might as well continue to next slot
+            if (ItemUtils.isEmpty(slotItem)) {
+                continue; // If the slot is empty, might as well continue to next slot
+            }
             slotItem = slotItem.clone();
 
             if (!r.getApplyOn().getOption().matches(r.getApplyOn().getItem(), slotItem)) continue;

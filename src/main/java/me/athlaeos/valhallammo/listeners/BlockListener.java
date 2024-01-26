@@ -68,6 +68,7 @@ public class BlockListener implements Listener {
         if (e.getBlock().getBlockData() instanceof Directional d){
             for (Block b : e.getBlocks().stream().map(b -> b.getRelative(d.getFacing())).collect(Collectors.toSet())){
                 BlockStore.setPlaced(b, true);
+                blocksToConsiderBroken.remove(b);
             }
         }
     }
@@ -78,6 +79,7 @@ public class BlockListener implements Listener {
         if (e.getBlock().getBlockData() instanceof Directional d){
             for (Block b : e.getBlocks().stream().map(b -> b.getRelative(d.getFacing().getOppositeFace())).collect(Collectors.toSet())){
                 BlockStore.setPlaced(b, true);
+                blocksToConsiderBroken.remove(b);
             }
         }
     }
@@ -89,9 +91,17 @@ public class BlockListener implements Listener {
             me.getReplacedBlockStates().forEach(b -> BlockStore.setPlaced(b.getBlock(), true));
         } else {
             if (e.getBlock().getBlockData() instanceof Bisected bisected) {
-                if (bisected.getHalf() == Bisected.Half.TOP) BlockStore.setPlaced(e.getBlock().getRelative(BlockFace.DOWN), true);
-                else BlockStore.setPlaced(e.getBlock().getRelative(BlockFace.UP), true);
-            } else BlockStore.setPlaced(e.getBlock(), true);
+                if (bisected.getHalf() == Bisected.Half.TOP) {
+                    BlockStore.setPlaced(e.getBlock().getRelative(BlockFace.DOWN), true);
+                    blocksToConsiderBroken.remove(e.getBlock().getRelative(BlockFace.DOWN));
+                } else {
+                    BlockStore.setPlaced(e.getBlock().getRelative(BlockFace.UP), true);
+                    blocksToConsiderBroken.remove(e.getBlock().getRelative(BlockFace.UP));
+                }
+            } else {
+                BlockStore.setPlaced(e.getBlock(), true);
+                blocksToConsiderBroken.remove(e.getBlock());
+            }
         }
     }
 

@@ -17,7 +17,7 @@ import me.athlaeos.valhallammo.listeners.*;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.nms.NMS;
-import me.athlaeos.valhallammo.nms.BlockBreakNetworkHandlerImpl;
+import me.athlaeos.valhallammo.block.BlockBreakNetworkHandlerImpl;
 import me.athlaeos.valhallammo.nms.PacketListener;
 import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.persistence.Database;
@@ -48,7 +48,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class ValhallaMMO extends JavaPlugin {
-
+    private static boolean customMiningSystem = false;
     private static NMS nms = null;
     private static PacketListener packetListener = null;
     private static ValhallaMMO instance;
@@ -140,15 +140,19 @@ public class ValhallaMMO extends JavaPlugin {
         saveAndUpdateConfig("gui_details.yml");
 
         if (setupNMS()){
-            packetListener = new PacketListener(new BlockBreakNetworkHandlerImpl());
-            packetListener.addAll();
-            registerListener(packetListener);
-            registerListener(new CustomBreakSpeedListener(), "custom_mining_speeds");
+            customMiningSystem = pluginConfig.getBoolean("custom_mining_speeds", true);
+            if (customMiningSystem){
+                packetListener = new PacketListener(new BlockBreakNetworkHandlerImpl());
+                packetListener.addAll();
+                registerListener(new CustomBreakSpeedListener());
+                registerListener(packetListener);
+            }
             logInfo("NMS version " + nms.getClass().getSimpleName() + " registered!");
         } else {
             logWarning("No NMS version found for your server version");
             logWarning("This version may not be compatible with ValhallaMMO (1.17+) yet and may not work properly, and the following features are disabled:");
             logWarning("    > Custom block breaking speeds");
+            logWarning("    > Nearby structure scanning");
         }
 
         ResourcePack.tryStart();
@@ -385,5 +389,9 @@ public class ValhallaMMO extends JavaPlugin {
 
     public static boolean isWorldBlacklisted(String world) {
         return worldBlacklist.contains(world);
+    }
+
+    public static boolean isCustomMiningEnabled() {
+        return customMiningSystem;
     }
 }

@@ -41,6 +41,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -139,7 +140,8 @@ public class LightWeaponsSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onExpAttack(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
-                EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE)) return;
+                EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE) ||
+                e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) return;
         if (e.getDamager() instanceof Player p && e.getEntity() instanceof Monster l){
             if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTWEAPONS)) return;
             ItemBuilder weapon = EntityCache.getAndCacheProperties(p).getMainHand();

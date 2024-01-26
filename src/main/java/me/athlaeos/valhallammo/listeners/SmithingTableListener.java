@@ -72,7 +72,7 @@ public class SmithingTableListener implements Listener {
             }
             DynamicSmithingRecipe r = recipes.getTwo();
 
-            int availableSpace = ItemUtils.maxCraftable(p, r.getResult());
+            int availableSpace = ItemUtils.maxInventoryFit(p, r.getResult());
             int crafted = 1;
             if (e.isShiftClick()){
                 crafted = 64;

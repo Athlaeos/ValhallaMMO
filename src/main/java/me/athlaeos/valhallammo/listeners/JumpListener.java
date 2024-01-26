@@ -6,7 +6,6 @@ import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.event.PlayerJumpEvent;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.MathUtils;
-import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -34,16 +33,14 @@ public class JumpListener implements Listener {
 
     @EventHandler
     public void onPlayerJump(PlayerJumpEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "jump_height_boost")) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
         double jumpHeightBonus = AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getPlayer(), 10000, true);
-        if (jumpHeightBonus > 0) {
-            e.getPlayer().setVelocity(e.getPlayer().getVelocity().add(new Vector(0, (jumpHeightBonus * 0.1), 0)));
-            Timer.setCooldown(e.getPlayer().getUniqueId(), 333, "jump_height_boost");
-        }
+        if (jumpHeightBonus > 0) e.getPlayer().setVelocity(e.getPlayer().getVelocity().add(new Vector(0, (jumpHeightBonus * 0.1), 0)));
 
         if (e.getPlayer().getAllowFlight()) return; // players who already have the permission to fly are not able to multi-jump
         int extraJumps = (int) AccumulativeStatManager.getCachedStats("JUMPS_BONUS", e.getPlayer(), 10000, true);
         if (extraJumps <= 0) return;
+
         jumpsLeft.put(e.getPlayer().getUniqueId(), extraJumps);
         playersGivenFlight.add(e.getPlayer().getUniqueId());
         e.getPlayer().setAllowFlight(true);
@@ -51,8 +48,9 @@ public class JumpListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
-        if (!playersGivenFlight.contains(e.getPlayer().getUniqueId()) && !jumpsLeft.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getFallDistance() > 0){
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.getPlayer().getGameMode() == GameMode.SPECTATOR ||
+                e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+        if (!playersGivenFlight.contains(e.getPlayer().getUniqueId()) && !jumpsLeft.containsKey(e.getPlayer().getUniqueId())){
             int extraJumps = (int) AccumulativeStatManager.getCachedStats("JUMPS_BONUS", e.getPlayer(), 10000, true);
             if (extraJumps > 0) { // still gives the player access to multi jumping if the player falls off of something
                 jumpsLeft.put(e.getPlayer().getUniqueId(), extraJumps);

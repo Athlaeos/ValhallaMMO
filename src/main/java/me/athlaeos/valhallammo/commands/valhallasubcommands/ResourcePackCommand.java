@@ -76,6 +76,13 @@ public class ResourcePackCommand implements Command {
                     ResourcePack.generate();
                     sender.sendMessage(Utils.chat(TranslationManager.getTranslation("status_command_resourcepack_setup")));
                 } else return false;
+            } else if (args[1].equalsIgnoreCase("download")){
+                if (!ResourcePack.downloadDefault()) {
+                    Utils.sendMessage(sender, "&cCould not download default resource pack. View console for more details");
+                    return true;
+                }
+                ResourcePack.generate();
+                sender.sendMessage(Utils.chat(TranslationManager.getTranslation("status_command_resourcepack_setup")));
             } else {
                 boolean enabled;
                 if (args[1].equalsIgnoreCase("enable")) {
@@ -93,7 +100,7 @@ public class ResourcePackCommand implements Command {
 
     @Override
     public String getFailureMessage(String[] args) {
-        return "/valhalla resourcepack <enable/disable/setup/stophost/resetplayer/reload>";
+        return "/valhalla resourcepack <enable/disable/setup/download/stophost/resetplayer/reload>";
     }
 
     @Override
@@ -103,7 +110,7 @@ public class ResourcePackCommand implements Command {
 
     @Override
     public String getCommand() {
-        return "/valhalla resourcepack <enable/disable/setup/stophost/resetplayer/reload>";
+        return "/valhalla resourcepack <enable/disable/setup/download/stophost/resetplayer/reload>";
     }
 
     @Override
@@ -118,7 +125,7 @@ public class ResourcePackCommand implements Command {
 
     @Override
     public List<String> getSubcommandArgs(CommandSender sender, String[] args) {
-        if (args.length == 2) return List.of("enable", "disable", "resetplayer", "reload", "setup", "stophost");
+        if (args.length == 2) return List.of("enable", "disable", "resetplayer", "reload", "setup", "download", "stophost");
         if (args.length == 3 && args[1].equalsIgnoreCase("setup")) return List.of("<your_server_ip>");
         if (args.length == 4 && args[1].equalsIgnoreCase("setup")) return List.of("<available_port>", "30005");
         return null;

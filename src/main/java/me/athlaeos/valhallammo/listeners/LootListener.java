@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.dom.Fetcher;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Weighted;
+import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.event.BlockDestructionEvent;
 import me.athlaeos.valhallammo.event.ValhallaLootPopulateEvent;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
@@ -551,7 +552,7 @@ public class LootListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDrops(EntityDeathEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE)) return;
         LivingEntity entity = e.getEntity();
         Entity killer = entity.getKiller();
         EntityDamageEvent lastDamageSource = entity.getLastDamageCause();
@@ -559,7 +560,7 @@ public class LootListener implements Listener {
             if (event.getDamager() instanceof LivingEntity realKiller) killer = realKiller;
         }
         double dropMultiplier = killer == null ? 0 : AccumulativeStatManager.getCachedStats("ENTITY_DROPS", killer, 10000, true);
-        ItemUtils.multiplyItems(e.getDrops(), 1 + dropMultiplier, false, null);
+        ItemUtils.multiplyItems(e.getDrops(), 1 + dropMultiplier, false, i -> !i.hasItemMeta());
 
         LootTable table = LootTableRegistry.getLootTable(entity);
         if (table == null) return;

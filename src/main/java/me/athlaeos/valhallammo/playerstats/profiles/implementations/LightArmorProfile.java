@@ -44,8 +44,8 @@ public class LightArmorProfile extends Profile {
         floatStat("reflectChancePerPiece", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("reflectFractionPerPiece", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("healingBonusPerPiece", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
-        floatStat("immunityFractionBonusPerPiece", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("immunityFlatBonusPerPiece", new PropertyBuilder().format(StatFormat.DIFFERENCE_INT).perkReward().create());
+        floatStat("immunityFractionBonusPerPiece", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
 
         floatStat("setMovementSpeed", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("setDamageResistance", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());

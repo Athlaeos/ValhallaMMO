@@ -8,42 +8,42 @@ experience:
   max_level: 100
   exp_gain:
     enchantment_base:
-      power: 120
-      efficiency: 120
-      piercing: 120
-      sharpness: 120
-      bane_of_arthropods: 210
-      smite: 210
-      quick_charge: 230
-      impaling: 240
-      protection: 130
-      feather_falling: 220
-      fire_protection: 220
-      projectile_protection: 220
+      power: 180
+      efficiency: 180
+      piercing: 180
+      sharpness: 180
+      bane_of_arthropods: 300
+      smite: 300
+      quick_charge: 330
+      impaling: 360
+      protection: 200
+      feather_falling: 330
+      fire_protection: 330
+      projectile_protection: 330
       blast_protection: 300
-      unbreaking: 250
-      loyalty: 250
-      sweeping: 315
-      fortune: 315
-      looting: 315
-      riptide: 315
-      luck_of_the_sea: 315
-      lure: 315
-      respiration: 315
-      depth_strider: 315
-      thorns: 400
-      soul_speed: 400
-      knockback: 250
-      punch: 375
-      fire_aspect: 375
-      frost_walker: 375
-      mending: 500
-      multishot: 500
-      aqua_affinity: 500
-      flame: 500
-      silk_touch: 700
-      infinity: 700
-      channeling: 700
+      unbreaking: 350
+      loyalty: 350
+      sweeping: 450
+      fortune: 450
+      looting: 450
+      riptide: 450
+      luck_of_the_sea: 450
+      lure: 450
+      respiration: 450
+      depth_strider: 450
+      thorns: 600
+      soul_speed: 600
+      knockback: 350
+      punch: 550
+      fire_aspect: 550
+      frost_walker: 550
+      mending: 750
+      multishot: 750
+      aqua_affinity: 750
+      flame: 750
+      silk_touch: 1000
+      infinity: 1000
+      channeling: 1000
     enchantment_level_multiplier: # The original amount of EXP earned from the potion is further changed depending on what the player does after
       1: 1.0 # Multiplier of the base exp if the enchantment level is just I
       2: 2.2 # Multiplier of the base exp if the enchantment level is II
@@ -289,7 +289,7 @@ perks:
     hidden: true
     perk_rewards:
       enchanting_set_elemental_type: "RADIANT"
-      perks_unlocked_remove:
+      p:perks_unlocked_remove:
         - enchanting_perk_necrotic
     messages:
       - "<lang.enchanting_perk_radiant_messages>"
@@ -303,7 +303,7 @@ perks:
     hidden: true
     perk_rewards:
       enchanting_set_elemental_type: "NECROTIC"
-      perks_unlocked_remove:
+      p:perks_unlocked_remove:
         - enchanting_perk_radiant
     messages:
       - "<lang.enchanting_perk_necrotic_messages>"

@@ -27,7 +27,6 @@ resource_pack_config_override: true # If true, certain config options are overri
 # This option can be toggled in-game with /val resourcepack <enable/disable>
 
 # GENERAL
-
 selectable_loot_modifiers: false # If true, the loot drops within selectable loot will be modified according to the player opening said loot.
 # If not, the loot displayed will be equal to the raw item drop in the loot table
 
@@ -226,23 +225,26 @@ dodge_message: '<lang.status-attack-dodged>'
 # and further reduces heavy damage with toughness. Toughness is not very effective if the player doesn't have
 # a lot of armor or if the player doesn't take very heavy damage. This formula normally breaks at extreme damage numbers,
 # but damage reduction cannot go below a certain fraction to make sure the formula can never go into the negatives
-damage_formula_physical: '%damage% * (10 / (10 + %armor%)) - (%damage%^2 * 0.00005 * %toughness%)'
+damage_formula_physical: '%damage% * (15 / (15 + %armor%)) - (%toughness% * 0.15)'
 damage_formula_mode: SET # Valid modes are SET and MULTIPLY
 # SET sets physical damage to the outcome of this formula. The outcome cannot go below 0
 # MULTIPLY multiplies the original damage and sets that as the final damage. The outcome cannot go below 0
 damage_reduction_cap: 0.1 # The final damage cannot go below this fraction of the original damage due to armor
 # Damage mitigation applies before the armor check, so it can still reduce damage taken
+
+# The types of damage armor is effective against. Formatted like TYPE:ARMOREFFECTIVENESS, where ARMOREFFECTIVENESS represents how effective the armor
+# is against this damage type. 1 being 100% effective, no debuff. 0.5 being half as effective. Can be considered armor penetration native to damage types
 armor_effective_types:
-  - PROJECTILE
-  - FALLING_BLOCK
-  - BLUDGEONING # Custom damage type added by the plugin
-  - ENTITY_ATTACK
-  - ENTITY_SWEEP_ATTACK
-  - ENTITY_EXPLOSION
-  - BLOCK_EXPLOSION
-  - CONTACT
-  - FALLING_BLOCK
-  - LAVA
+  - PROJECTILE:1
+  - FALLING_BLOCK:1
+  - BLUDGEONING:0.7 # Custom damage type added by the plugin, is more effective against armor because it benefits from 30% reduced armor by default
+  - ENTITY_ATTACK:1
+  - ENTITY_SWEEP_ATTACK:1
+  - ENTITY_EXPLOSION:0.7
+  - BLOCK_EXPLOSION:0.7
+  - CONTACT:1
+  - FALL:1
+  - LAVA:0.5 # Lava still reduces physical damage, but only as if the player was wearing half as much armor
 negative_armor_damage_buff: 0.025 # If armor penetration (or negative armor) results in a negative armor value on the damaged target,
 # their damage taken increases by this value for each point of armor they are in the negative. (-10 armor would result in a 25% damage taken increase)
 
@@ -297,7 +299,7 @@ buff_resistance_reduction: 0.2 # Damage reduction per level of the Resistance bu
 light_damage_resistance: 0.00 # All damage reduced per piece of light armor
 light_melee_resistance: 0.00 # Melee damage reduced per piece of light armor
 light_projectile_resistance: 0.00 # Projectile damage reduced per piece of light armor
-light_bludgeoning_resistance: -0.0625 # Bludgeoning damage resistance per piece of light armor
+light_bludgeoning_resistance: 0.00 # Bludgeoning damage resistance per piece of light armor
 light_fire_resistance: 0.00 # Fire damage reduced per piece of light armor
 light_explosion_resistance: 0.00 # Explosion damage resistance reduced per piece of light armor
 light_magic_resistance: 0.00 # Magic damage reduced per piece of light armor
@@ -316,7 +318,7 @@ light_knockback_resistance: 0.00 # Knockback reduced per piece of light armor
 heavy_damage_resistance: 0.00 # All damage reduced per piece of heavy armor
 heavy_melee_resistance: 0.025 # Melee damage reduced per piece of heavy armor (default up to 10%)
 heavy_projectile_resistance: 0.05 # Projectile damage reduced per piece of heavy armor (default up to 20%)
-heavy_bludgeoning_resistance: -0.125 # Bludgeoning damage resistance per piece of heavy armor
+heavy_bludgeoning_resistance: 0.00 # Bludgeoning damage resistance per piece of heavy armor
 heavy_fire_resistance: 0.00 # Fire damage reduced per piece of heavy armor
 heavy_explosion_resistance: 0.05 # Explosion damage resistance reduced per piece of heavy armor
 heavy_magic_resistance: 0.00 # Magic damage reduced per piece of heavy armor

@@ -65,7 +65,7 @@ public class SmithingRecipeCategory extends RecipeCategory{
             else lore.add("&fResult Modifiers");
             recipe.getResultModifiers().forEach(m -> lore.addAll(StringUtils.separateStringIntoLines(m.getActiveDescription(), 40)));
 
-            icons.add(new ItemBuilder(recipe.tinkerBase() ? recipe.getBase().getItem().getType() : recipe.getResult().getType())
+            icons.add(new ItemBuilder(recipe.tinkerBase() ? recipe.getBase().getItem() : recipe.getResult())
                     .name("&f" + recipe.getName())
                     .lore(lore)
                     .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE)

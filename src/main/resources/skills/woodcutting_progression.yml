@@ -99,12 +99,12 @@ perks:
       - woodcutting_perk_1
     connection_line:
       '1':
-        position: '3,7'
+        position: '3,10'
         locked: GRAY_DYE:1172711
         unlockable: ORANGE_DYE:1172811
         unlocked: LIME_DYE:1172911
       '2':
-        position: '3,6'
+        position: '3,9'
         locked: GRAY_DYE:1172710
         unlockable: ORANGE_DYE:1172810
         unlocked: LIME_DYE:1172910
@@ -125,12 +125,12 @@ perks:
       - "<lang.woodcutting_perk_3_messages>"
     connection_line:
       '1':
-        position: '3,10'
+        position: '3,7'
         locked: GRAY_DYE:1172711
         unlockable: ORANGE_DYE:1172811
         unlocked: LIME_DYE:1172911
       '2':
-        position: '3,9'
+        position: '3,6'
         locked: GRAY_DYE:1172710
         unlockable: ORANGE_DYE:1172810
         unlocked: LIME_DYE:1172910

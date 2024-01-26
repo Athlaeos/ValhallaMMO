@@ -142,7 +142,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -278,7 +278,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -403,7 +403,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -605,7 +605,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -775,7 +775,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -883,23 +883,6 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.19999999999999996,
-          "skillRange": 155.0,
-          "rangeOffset": 145.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
           "amplifier": 2.0,
           "skillRange": 155.0,
           "rangeOffset": 145.0,
@@ -917,7 +900,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -1102,7 +1085,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -1255,7 +1238,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -1363,7 +1346,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 0.5000000000000001,
+          "value": 0.9600000000000001,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -1393,7 +1376,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -1537,7 +1520,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -1735,7 +1718,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -1899,7 +1882,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -2084,7 +2067,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -2213,7 +2196,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -2379,7 +2362,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }
@@ -2547,7 +2530,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "SMITHING",
-          "amount": 5000.0,
+          "amount": 9600.0,
           "name": "reward_smithing_experience",
           "priority": "NEUTRAL"
         }

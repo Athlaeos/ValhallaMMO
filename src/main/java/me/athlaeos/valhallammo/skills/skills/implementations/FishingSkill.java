@@ -125,7 +125,7 @@ public class FishingSkill extends Skill implements Listener {
             }
             e.setExpToDrop(Utils.randomAverage(e.getExpToDrop() * (1 + extraCatches) * (1 + profile.getFishingEssenceMultiplier())));
 
-            if (!(e.getCaught() instanceof Item item) || !ItemUtils.isEmpty(item.getItemStack())) return;
+            if (!(e.getCaught() instanceof Item item) || ItemUtils.isEmpty(item.getItemStack())) return;
             double exp = dropsExpValues.getOrDefault(item.getItemStack().getType(), 0D) * item.getItemStack().getAmount();
             for (ItemStack i : LootListener.getPreparedExtraDrops(e.getPlayer())){
                 if (ItemUtils.isEmpty(i)) return;
@@ -142,7 +142,7 @@ public class FishingSkill extends Skill implements Listener {
 
     @Override
     public Class<? extends Profile> getProfileType() {
-        return DiggingProfile.class;
+        return FishingProfile.class;
     }
 
     @Override

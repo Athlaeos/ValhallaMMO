@@ -27,6 +27,8 @@ import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -79,12 +81,26 @@ public class EntityUtils {
         return xp;
     }
 
+    private static Method isOnGroundMethod = null;
     /**
      * Suboptimal solution, but it'll be like this until I figure out a better more reliable method of checking if a player is on the ground
+     * Method by mfnalex (jeff media)
      */
     public static boolean isOnGround(Entity e){
-        if (e instanceof Player p) return p.isOnGround();
-        return e.isOnGround();
+        try {
+            // Use reflection to get the isOnGround method from the Entity class
+            Method method = isOnGroundMethod;
+            if (method == null) {
+                isOnGroundMethod = Entity.class.getDeclaredMethod("isOnGround");
+                method = isOnGroundMethod;
+            }
+
+            // Invoke the method on the Player object
+            return (boolean) method.invoke(e);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     private static boolean downwardsRaytraceBlockSegment(Location l, Vector direction, double length){
@@ -288,6 +304,7 @@ public class EntityUtils {
     }
 
     public static Entity getTrueDamager(EntityDamageByEntityEvent e){
+        if (e.getDamager() instanceof EnderPearl p && p.getShooter() instanceof Entity) return p;
         if (e.getDamager() instanceof Projectile p && p.getShooter() instanceof Entity t) return t;
         return e.getDamager();
     }
