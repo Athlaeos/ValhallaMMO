@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerCustomBrewEvent extends Event implements Cancellable {
-    private static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
     private boolean cancelled = false;
     private final Player brewer;
     private final DynamicBrewingRecipe recipe;
@@ -77,6 +77,9 @@ public class PlayerCustomBrewEvent extends Event implements Cancellable {
 
     @Override
     public @NotNull HandlerList getHandlers() {
-        return HANDLER_LIST;
+        return handlers;
+    }
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 }

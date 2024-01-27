@@ -89,6 +89,9 @@ enabled_skills:
 # plugins that affect block mining speed, they will clash! Turn this off if you're absolutely sure you want to use the other
 # plugin's custom mining speed mechanics, but keep in mind ValhallaMMO's dig speed attributes and mechanics will stop doing anything.
 custom_mining_speeds: true
+block_recovery: true # If true, blocks will gradually recover after being damaged. If false, blocks will instantly recover after being damaged (like in vanilla)
+block_recovery_delay: 60 # The delay (in ticks) until the damage on a block starts recovering
+block_recovery_speed: 0.02 # The amount of health (of max 1, per tick) at which the block recovers after the delay
 
 # GAMEPLAY
 

@@ -20,8 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Much of this was referenced from asangarin's breaker plugin
@@ -50,15 +49,11 @@ public class DigPacketInfo {
         return type;
     }
 
-    public boolean sameLocation(Location l){
-        return this.l.getX() == l.getBlockX() && this.l.getY() == l.getBlockY() && this.l.getZ() == l.getBlockZ();
-    }
-
     public int id(){
         return ((l.getBlockX() & 0xFFF) << 20) | ((l.getBlockZ() & 0xFFF) << 8) | (l.getBlockY() & 0xFF);
     }
 
-    public Block block(){
+    public Block getBlock(){
         return l.getBlock();
     }
 
@@ -66,17 +61,24 @@ public class DigPacketInfo {
         return type == Type.ABORT || type == Type.STOP;
     }
 
-    public int breakTime(){
-        Block b = block();
-        if (digger == null || b == null) return -1;
-        ItemBuilder tool = ItemUtils.isEmpty(digger.getInventory().getItemInMainHand()) ? null : new ItemBuilder(digger.getInventory().getItemInMainHand());
+    private static final Map<UUID, Double> blockSpecificSpeedCache = new HashMap<>();
+    private static final Map<UUID, Float> cachedMultiplier = new HashMap<>();
+    private static final Collection<UUID> cachedSwimmingMiners = new HashSet<>();
+    public static void resetMinerCache(UUID uuid){
+        cachedMultiplier.remove(uuid);
+        cachedSwimmingMiners.remove(uuid);
+    }
+
+    public static float damage(Player digger, Block b){
+        if (digger == null || b == null || b.getType().isAir()) return 0;
+        ItemBuilder tool = EntityCache.getAndCacheProperties(digger).getMainHand();
         if (tool == null) {
             MiningProfile profile = ProfileCache.getOrCache(digger, MiningProfile.class);
             // replace empty hand tool only if tool power of that item would be > 1 (valid tool for block)
             if (profile.getEmptyHandTool() != null && ValhallaMMO.getNms().toolPower(profile.getEmptyHandTool().getItem(), b) > 1) tool = profile.getEmptyHandTool();
         }
         float hardness = tool == null ? BlockUtils.getHardness(b) : MiningSpeed.getHardness(tool.getMeta(), b);
-        if (hardness < 0 || hardness > 100000) return Integer.MAX_VALUE;
+        if (hardness < 0 || hardness > 100000) return 0;
         EntityProperties properties = EntityCache.getAndCacheProperties(digger);
         Map<Material, Material> hardnessTranslations = tool == null ? new HashMap<>() : MiningSpeed.getHardnessTranslations(tool.getMeta());
         // changing tool power to be equal to that if the tool mined a different type of block
@@ -84,45 +86,52 @@ public class DigPacketInfo {
                 ValhallaMMO.getNms().toolPower(tool.getItem(), hardnessTranslations.get(b.getType())) :
                 ValhallaMMO.getNms().toolPower(tool == null ? null : tool.getItem(), b);
 
-        double multiplier = 1;
-        if (toolStrength > 1){
-            // preferred tool for block
-            multiplier = tool == null ? 1 : MiningSpeed.getMultiplier(tool.getMeta(), b.getType());
+        float multiplier = 1;
+        boolean canSwimMine = cachedSwimmingMiners.contains(digger.getUniqueId());
+        if (cachedMultiplier.containsKey(digger.getUniqueId())) multiplier = cachedMultiplier.get(digger.getUniqueId());
+        else {
+            if (toolStrength > 1){
+                // preferred tool for block
+                multiplier = tool == null ? 1F : (float) MiningSpeed.getMultiplier(tool.getMeta(), b.getType());
 
-            int efficiency = tool == null ? 0 : tool.getItem().getEnchantmentLevel(Enchantment.DIG_SPEED);
-            if (efficiency > 0) multiplier += MathUtils.pow(efficiency, 2) + 1;
+                int efficiency = tool == null ? 0 : tool.getItem().getEnchantmentLevel(Enchantment.DIG_SPEED);
+                if (efficiency > 0) multiplier += MathUtils.pow(efficiency, 2) + 1;
+            }
+
+            double blockSpecificBonus = 0;
+            if (blockSpecificSpeedCache.containsKey(digger.getUniqueId())) blockSpecificBonus = blockSpecificSpeedCache.get(digger.getUniqueId());
+            else {
+                double bonus = AccumulativeStatManager.getStats("BLOCK_SPECIFIC_DIG_SPEED", digger, true);
+                blockSpecificSpeedCache.put(digger.getUniqueId(), bonus);
+                blockSpecificBonus = bonus;
+            }
+            multiplier *= (1 + AccumulativeStatManager.getCachedStats("DIG_SPEED", digger, 10000, true) + blockSpecificBonus);
+
+            PotionEffect haste = digger.getPotionEffect(PotionEffectType.FAST_DIGGING);
+            if (haste != null) multiplier *= (0.2 * haste.getAmplifier()) + 1;
+
+            PotionEffect fatigue = digger.getPotionEffect(PotionEffectType.SLOW_DIGGING);
+            if (fatigue != null && fatigue.getAmplifier() != -1) multiplier *= MathUtils.pow(0.3, Math.min(fatigue.getAmplifier() + 1, 4));
+
+            canSwimMine = properties.getCombinedEnchantments().getOrDefault(Enchantment.WATER_WORKER, 0) > 0 ||
+                    digger.hasPotionEffect(PotionEffectType.CONDUIT_POWER);
+
+            cachedMultiplier.put(digger.getUniqueId(), multiplier);
+            if (canSwimMine) cachedSwimmingMiners.add(digger.getUniqueId());
         }
 
-        PotionEffect haste = digger.getPotionEffect(PotionEffectType.FAST_DIGGING);
-        if (haste != null) multiplier *= (0.2 * haste.getAmplifier()) + 1;
+        if (isInWater(digger) && !canSwimMine) multiplier /= 5;
+        if (!EntityUtils.isOnGround(digger)) multiplier /= 5;
 
-        multiplier *= (1 + AccumulativeStatManager.getCachedStats("DIG_SPEED", digger, 10000, true) + AccumulativeStatManager.getStats("BLOCK_SPECIFIC_DIG_SPEED", digger, true));
-
-        PotionEffect fatigue = digger.getPotionEffect(PotionEffectType.SLOW_DIGGING);
-        if (fatigue != null && fatigue.getAmplifier() != -1) multiplier *= MathUtils.pow(0.3, Math.min(fatigue.getAmplifier() + 1, 4));
-
-        if (isInWater(digger) && properties.getCombinedEnchantments().getOrDefault(Enchantment.WATER_WORKER, 0) > 0) multiplier /= 5;
-        //if (!EntityUtils.isOnGround(digger)) multiplier /= 5;
-        if (digger.getFallDistance() > 1) multiplier /= 5;
-
-        double damage = multiplier / hardness;
+        float damage = multiplier / hardness;
 
         if (toolStrength > 1) damage /= 30;
         else damage /= 100;
-        if (damage > 1) return 0;
-        if (damage <= 0) return Integer.MAX_VALUE;
-
-        return (int) Math.ceil(1 / damage);
-
-//        float newBreakTime = (originalBreakTime / 20) * 1.5F;
-//        double damage = multiplier / newBreakTime;
-//
-//
-//        return damage > 1 ? 1 : (int) Math.ceil(1 / damage);
+        return Math.max(0, Math.min(1, damage));
     }
 
-    private boolean isInWater(Player p){
-        return p.getEyeLocation().getBlock().getType() == Material.WATER;
+    private static boolean isInWater(Player p){
+        return p.getEyeLocation().getBlock().getType() == Material.WATER || p.getEyeLocation().getBlock().getType() == Material.LAVA;
     }
 
     public static Type fromName(String name) {

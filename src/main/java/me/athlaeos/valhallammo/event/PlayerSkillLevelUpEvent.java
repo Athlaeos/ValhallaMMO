@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerSkillLevelUpEvent extends PlayerEvent {
-    private static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
     private final Skill leveledSkill;
     private final int levelFrom;
     private final int levelTo;
@@ -22,11 +22,11 @@ public class PlayerSkillLevelUpEvent extends PlayerEvent {
     @Override
     @NotNull
     public HandlerList getHandlers() {
-        return HANDLER_LIST;
+        return handlers;
     }
 
     public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
+        return handlers;
     }
 
     public Skill getSkill() {

@@ -1,16 +1,13 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.block.ActiveBlockDig;
+import me.athlaeos.valhallammo.block.BlockDigProcess;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
-import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfile;
-import me.athlaeos.valhallammo.utility.BlockUtils;
+import me.athlaeos.valhallammo.event.PrepareBlockBreakEvent;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.MathUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,71 +16,133 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityResurrectEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CustomBreakSpeedListener implements Listener {
+    private static final boolean BLOCK_RECOVERY = ValhallaMMO.getPluginConfig().getBoolean("block_recovery", true);
+    private static final int BLOCK_RECOVERY_DELAY = ValhallaMMO.getPluginConfig().getInt("block_recovery_delay", 60);
+    private static final float BLOCK_RECOVERY_SPEED = (float) ValhallaMMO.getPluginConfig().getDouble("block_recovery_speed", 0.02F);
+
     private static boolean disabled = true;
-    private static final Map<UUID, PotionEffect> previousFatigueEffects = new HashMap<>();
-    private static final Map<UUID, Long> previousFatigueEffectRemoved = new HashMap<>();
+    private static final Map<UUID, PotionEffect> previousFatigueEffects = new ConcurrentHashMap<>();
+    private static final Map<UUID, Long> previousFatigueEffectRemoved = new ConcurrentHashMap<>();
     private static final PotionEffect fatigueEffect = new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, -1, true, false, false);
 
-    private static final Map<UUID, ActiveBlockDig> activeBreakingProcesses = new HashMap<>();
-    private static final Collection<Location> instantBlockBreaks = new HashSet<>();
+    private static final Map<Block, BlockDigProcess> blockDigProcesses = new ConcurrentHashMap<>();
+    private static final Map<Block, Collection<UUID>> totalMiningBlocks = new ConcurrentHashMap<>(); // total blocks currently being mined, contents will match all values of diggingPlayers combined
+    private static final Map<UUID, Collection<Block>> miningPlayers = new ConcurrentHashMap<>();
+    private static final Collection<Location> instantBlockBreaks = ConcurrentHashMap.newKeySet();
+
+    @EventHandler
+    public void onPrepareMining(PrepareBlockBreakEvent e){
+        int[][] offsets = MathUtils.getOffsetsBetweenPoints(new int[]{-1, 0, -1}, new int[]{1, 0, 1});
+        for (int[] offset : offsets){
+            Block b = e.getBlock().getLocation().add(offset[0], offset[1], offset[2]).getBlock();
+            if (e.getBlock().equals(b)) continue;
+            e.getAdditionalBlocks().add(b);
+        }
+    }
 
     public CustomBreakSpeedListener(){
         disabled = false;
+
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                for (Block b : new HashSet<>(blockDigProcesses.keySet())){
+                    BlockDigProcess process = blockDigProcesses.get(b);
+                    if (totalMiningBlocks.containsKey(b)){
+                        // block is in the process of being mined
+                        for (UUID uuid : totalMiningBlocks.get(b)){
+                            Player player = ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+                            if (player == null) continue;
+                            process.damage(player, DigPacketInfo.damage(player, b));
+                        }
+                    } else if (BLOCK_RECOVERY) {
+                        if (process.getTicksSinceUpdate() >= BLOCK_RECOVERY_DELAY){
+                            process.heal(BLOCK_RECOVERY_SPEED);
+                            if (process.getHealth() >= 1) blockDigProcesses.remove(b);
+                        } else process.incrementTicksSinceUpdate();
+                    } else {
+                        totalMiningBlocks.remove(b);
+                        blockDigProcesses.remove(b);
+                    }
+                }
+            }
+        }.runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
     }
 
     public static void onStart(DigPacketInfo info){
-        if (info == null || disabled || ItemUtils.breaksInstantly(info.block().getType())) return;
-        if (info.getType() == DigPacketInfo.Type.START){
-            Block b = info.block();
+        if (info == null || disabled || ItemUtils.breaksInstantly(info.getBlock().getType()) || info.getType() != DigPacketInfo.Type.START) return;
+        Block b = info.getBlock();
 
-            int breakTime = info.breakTime();
-            if (breakTime > 0){
-                fatiguePlayer(info.getDigger());
-                ItemStack hand = info.getDigger().getInventory().getItemInMainHand();
-                ItemBuilder minedWith = ItemUtils.isEmpty(hand) ? null : new ItemBuilder(hand);
-                activeBreakingProcesses.put(info.getDigger().getUniqueId(), new ActiveBlockDig(info, minedWith, breakTime));
-            } else {
-                instantBlockBreaks.add(b.getLocation());
-                ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-                    ItemBuilder tool = null;
-                    if (ItemUtils.isEmpty(info.getDigger().getInventory().getItemInMainHand())) {
-                        MiningProfile profile = ProfileCache.getOrCache(info.getDigger(), MiningProfile.class);
-                        if (profile.getEmptyHandTool() != null) tool = profile.getEmptyHandTool();
-                    }
-                    // only prepare custom drops if tool is a valid item for the block
-                    if (tool != null && b.getDrops(new ItemStack(Material.STICK), info.getDigger()).isEmpty() && ValhallaMMO.getNms().toolPower(tool.getItem(), b) > 1) LootListener.prepareBlockDrops(b, new ArrayList<>(b.getDrops(tool.get())));
-                    ValhallaMMO.getNms().breakBlock(info.getDigger(), b);
-                    BlockUtils.removeCustomHardness(b);
-                });
-            }
+        float initialDamage = instantBlockBreaks.contains(b.getLocation()) ? 999 : DigPacketInfo.damage(info.getDigger(), b);
+        PrepareBlockBreakEvent event = new PrepareBlockBreakEvent(b, info.getDigger());
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) initialDamage = 0;
+        if (initialDamage > 1){
+            event.getAdditionalBlocks().add(b);
+            event.getAdditionalBlocks().forEach(bl -> BlockDigProcess.breakBlockInstantly(info.getDigger(), bl));
+            return;
         }
+
+        fatiguePlayer(info.getDigger());
+
+        BlockDigProcess process = blockDigProcesses.get(b);
+        if (process == null) {
+            process = new BlockDigProcess(b);
+            blockDigProcesses.put(b, process);
+        }
+        Collection<UUID> playersMining = totalMiningBlocks.getOrDefault(b, new HashSet<>());
+        playersMining.add(info.getDigger().getUniqueId());
+        totalMiningBlocks.put(b, playersMining);
+        process.damage(info.getDigger(), initialDamage + 0.01F);
+
+        for (Block block : event.getAdditionalBlocks()){
+            float damage = instantBlockBreaks.contains(b.getLocation()) ? 999 : DigPacketInfo.damage(info.getDigger(), b);
+            BlockDigProcess p = blockDigProcesses.get(block);
+            if (p == null) {
+                p = new BlockDigProcess(block);
+                blockDigProcesses.put(block, p);
+            }
+            Collection<UUID> mP = totalMiningBlocks.getOrDefault(block, new HashSet<>());
+            mP.add(info.getDigger().getUniqueId());
+            totalMiningBlocks.put(block, mP);
+            p.damage(info.getDigger(), damage * 1.01F);
+        }
+
+        event.getAdditionalBlocks().add(b);
+        miningPlayers.put(info.getDigger().getUniqueId(), event.getAdditionalBlocks());
     }
 
     public static void onStop(DigPacketInfo info){
         Player p = info.getDigger();
-        if (!info.finished() || p == null || disabled) return;
-        if (info.getType() == DigPacketInfo.Type.ABORT){
-            if (activeBreakingProcesses.containsKey(p.getUniqueId())){
-                activeBreakingProcesses.get(p.getUniqueId()).abort();
-                activeBreakingProcesses.remove(p.getUniqueId());
-            }
-            removeFatiguedPlayer(p);
+        if (!info.finished() || p == null || disabled || info.getType() == DigPacketInfo.Type.START) return;
+        Collection<UUID> playersMining = totalMiningBlocks.getOrDefault(info.getBlock(), new HashSet<>());
+        playersMining.remove(p.getUniqueId());
+        if (playersMining.isEmpty()) totalMiningBlocks.remove(info.getBlock());
+        else totalMiningBlocks.put(info.getBlock(), playersMining);
+        miningPlayers.remove(p.getUniqueId());
+        removeFatiguedPlayer(p);
+
+        if (!BLOCK_RECOVERY){
+            totalMiningBlocks.remove(info.getBlock());
+            blockDigProcesses.remove(info.getBlock());
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBreak(BlockBreakEvent e){
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE || ItemUtils.breaksInstantly(e.getBlock().getType())) return;
-        ActiveBlockDig activeBlock = activeBreakingProcesses.get(e.getPlayer().getUniqueId());
-        if (activeBlock != null){
-            activeBreakingProcesses.remove(e.getPlayer().getUniqueId());
+        BlockDigProcess process = blockDigProcesses.get(e.getBlock());
+        if (process != null){
+            totalMiningBlocks.remove(e.getBlock());
+            blockDigProcesses.remove(e.getBlock());
             return;
         }
         if (instantBlockBreaks.remove(e.getBlock().getLocation())) return;
@@ -118,7 +177,7 @@ public class CustomBreakSpeedListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onResurrect(EntityResurrectEvent e){
         if (e.isCancelled()) return;
-        if (e.getEntity() instanceof Player p && activeBreakingProcesses.containsKey(p.getUniqueId())){
+        if (e.getEntity() instanceof Player p && miningPlayers.containsKey(p.getUniqueId())){
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> fatiguePlayer(p), 1L);
         }
     }
@@ -126,7 +185,7 @@ public class CustomBreakSpeedListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onMilk(PlayerItemConsumeEvent e){
         if (e.isCancelled()) return;
-        if (activeBreakingProcesses.containsKey(e.getPlayer().getUniqueId())){
+        if (miningPlayers.containsKey(e.getPlayer().getUniqueId())){
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> fatiguePlayer(e.getPlayer()), 1L);
         }
     }
@@ -155,5 +214,17 @@ public class CustomBreakSpeedListener implements Listener {
                 previousFatigueEffects.remove(p.getUniqueId());
             }
         });
+    }
+
+    public static Map<Block, BlockDigProcess> getBlockDigProcesses() {
+        return blockDigProcesses;
+    }
+
+    public static Map<Block, Collection<UUID>> getTotalMiningBlocks() {
+        return totalMiningBlocks;
+    }
+
+    public static Map<UUID, Collection<Block>> getMiningPlayers() {
+        return miningPlayers;
     }
 }

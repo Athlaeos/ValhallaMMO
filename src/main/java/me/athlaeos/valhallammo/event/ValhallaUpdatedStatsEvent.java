@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class ValhallaUpdatedStatsEvent extends PlayerEvent {
-    private static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
 
     private final Class<? extends Profile> loadedProfile;
 
@@ -19,11 +19,11 @@ public class ValhallaUpdatedStatsEvent extends PlayerEvent {
     @NotNull
     @Override
     public HandlerList getHandlers() {
-        return HANDLER_LIST;
+        return handlers;
     }
 
     public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
+        return handlers;
     }
 
     public Class<? extends Profile> getLoadedProfile() {
