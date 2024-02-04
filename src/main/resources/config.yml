@@ -176,7 +176,8 @@ damage_indicator_necrotic: "&7💀"
 # This resets on restarts, and is unique per player.
 # This only affects the combat skills, being light weapons, heavy weapons, archery, and martial combat
 chunk_exp_nerf_quantity: 20 # The amount of exp "events" needed for a chunk to start reducing exp gained in it. If -1 this system is disabled
-chunk_exp_nerf_factor: 0.05 # EXP gained in debuffed chunks is multiplied by the given amount, or by default 5%
+chunk_exp_nerf_factor: 0.1 # EXP gained in debuffed chunks is multiplied by the given amount, or by default 10%
+chunk_exp_orbs_nerf_factor: 0.3 # EXP orbs dropped in debuffed chunks are multiplied by the given amount. By default, it is reduced to 30%
 
 # This affects the "velocity damage multiplier" mechanics specifically
 # The given number is what the entity's velocity is being divided by to determine bonus damage

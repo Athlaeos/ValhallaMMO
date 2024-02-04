@@ -10,12 +10,17 @@ import java.util.UUID;
 
 public class ChunkEXPNerf {
     private static final int expEventNerfQuantity = ValhallaMMO.getPluginConfig().getInt("chunk_exp_nerf_quantity", 30);
-    private static final double expEventNerfFactor = ValhallaMMO.getPluginConfig().getDouble("chunk_exp_nerf_factor", 0.05);
+    private static final double expEventNerfFactor = ValhallaMMO.getPluginConfig().getDouble("chunk_exp_nerf_factor", 0.1);
+    private static final double expOrbsNerfFactor = ValhallaMMO.getPluginConfig().getDouble("chunk_exp_orbs_nerf_factor", 0.3);
 
     private static final Map<UUID, Map<Integer, Integer>> chunkEXPEventMap = new HashMap<>();
 
     public static double getChunkEXPNerf(Chunk chunk, Player player){
         if (getCount(chunk, player) >= expEventNerfQuantity) return expEventNerfFactor;
+        return 1;
+    }
+    public static double getChunkEXPOrbsNerf(Chunk chunk, Player player){
+        if (getCount(chunk, player) >= expEventNerfQuantity) return expOrbsNerfFactor;
         return 1;
     }
 
