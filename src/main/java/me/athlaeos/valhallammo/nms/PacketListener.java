@@ -35,7 +35,7 @@ public class PacketListener implements Listener {
     }
 
     public void addChannel(Player p){
-        ChannelDuplexHandler duplexHandler = new ChannelDuplexHandler(){
+         ChannelDuplexHandler duplexHandler = new ChannelDuplexHandler(){
             @Override
             public void channelRead(ChannelHandlerContext ctx, Object packet) throws Exception{
                 if (handler.readBefore(p, packet) == NetworkHandler.PacketStatus.DENY) return;

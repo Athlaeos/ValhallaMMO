@@ -131,12 +131,15 @@ public class PowerProfile extends Profile {
         floatStat("foodBonusMeat", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("foodBonusFats", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         booleanStat("badFoodImmune", new BooleanProperties(true, true));
+        booleanStat("miningAffinityWater", new BooleanProperties(true, true));
+        booleanStat("miningAffinityAir", new BooleanProperties(true, true));
 
         stringSetStat("unlockedPerks");
         stringSetStat("fakeUnlockedPerks"); // if a perk is "fake unlocked" it will be excluded from stat calculation, as if the player hasn't unlocked it at all
         stringSetStat("permanentlyLockedPerks"); // permanently locked perks will be considered unlocked regardless if it's actually in unlockedPerks, essentially permanently preventing it from unlocking
         stringSetStat("unlockedRecipes");
         stringSetStat("unlockedBlockConversions");
+        stringSetStat("permanentPotionEffects");
 
         booleanStat("hidePotionEffectBar");
         booleanStat("hideCraftingEffects");
@@ -181,6 +184,12 @@ public class PowerProfile extends Profile {
             case FATS -> "foodBonusFats";
         }, value);
     }
+
+    public boolean hasAquaAffinity() { return getBoolean("miningAffinityWater"); }
+    public void setAquaAffinity(boolean affinity) { setBoolean("miningAffinityWater", affinity); }
+
+    public boolean hasAerialAffinity() { return getBoolean("miningAffinityAir"); }
+    public void setAerialAffinity(boolean affinity) { setBoolean("miningAffinityAir", affinity); }
 
     public boolean isBadFoodImmune() { return getBoolean("badFoodImmune"); }
     public void setBadFoodImmune(boolean immune) { setBoolean("badFoodImmune", immune); }
@@ -494,6 +503,9 @@ public class PowerProfile extends Profile {
 
     public Collection<String> getUnlockedBlockConversions(){ return getStringSet("unlockedBlockConversions");}
     public void setUnlockedBlockConversions(Collection<String> value){ setStringSet("unlockedBlockConversions", value);}
+
+    public Collection<String> getPermanentPotionEffects(){ return getStringSet("permanentPotionEffects");}
+    public void setPermanentPotionEffects(Collection<String> value){ setStringSet("permanentPotionEffects", value);}
 
     public PowerProfile(Player owner) {
         super(owner);

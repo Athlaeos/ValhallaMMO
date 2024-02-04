@@ -318,3 +318,44 @@ perks:
       - digging_perk_2
     other_levels_required:
       - MINING:50
+  digging_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "2,9"
+    name: "<lang.digging_perk_ng1_name>"
+    description: "<lang.digging_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_digging: 0
+      p:digging_newgameplus_add: 1
+      p:digging_diggingdrops_add: 0.3
+      p:digging_diggingluck_add: 3
+      p:digging_diggingspeedbonus_add: 0.25
+      p:digging_diggingexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - digging_perk_ng1
+    messages:
+      - "<lang.digging_perk_ng1_messages>"
+  digging_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "2,9"
+    name: "<lang.digging_perk_ng2_name>"
+    description: "<lang.digging_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - digging_perk_ng1
+    perk_rewards:
+      reset_skill_digging: 0
+      p:digging_newgameplus_add: 1
+      p:digging_diggingdrops_add: 0.3
+      p:digging_diggingluck_add: 3
+      p:digging_diggingspeedbonus_add: 0.25
+      p:digging_diggingexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - digging_perk_ng1
+        - digging_perk_ng2
+    messages:
+      - "<lang.digging_perk_ng2_messages>"

@@ -1,9 +1,8 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc;
 
-import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
-import me.athlaeos.valhallammo.hooks.DamageIndicator;
+import me.athlaeos.valhallammo.entities.Dummy;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -21,8 +20,7 @@ public class ItemDummyHelmet extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!ValhallaMMO.isHookFunctional(DamageIndicator.class)) return;
-        DamageIndicator.setDummyItem(outputItem.getMeta(), true);
+        Dummy.setDummyItem(outputItem.getMeta(), true);
     }
 
     @Override

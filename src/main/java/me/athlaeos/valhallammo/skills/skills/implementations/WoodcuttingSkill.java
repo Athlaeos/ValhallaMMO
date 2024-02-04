@@ -40,16 +40,20 @@ public class WoodcuttingSkill extends Skill implements Listener {
     private final Map<Material, Double> dropsExpValues = new HashMap<>();
     private final Map<Material, Double> stripExpValues = new HashMap<>();
 
-    private final int treeCapitatorLimit;
-    private final boolean treeCapitatorInstant;
-    private final int treeCapitatorLeavesLimit;
+    private int treeCapitatorLimit = 128;
+    private boolean treeCapitatorInstant = true;
+    private int treeCapitatorLeavesLimit = 256;
 
-    private final int treeScanLimit;
+    private int treeScanLimit = 256;
 
-    private final boolean forgivingDropMultipliers; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
+    private boolean forgivingDropMultipliers = true; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
 
     public WoodcuttingSkill(String type) {
         super(type);
+    }
+
+    @Override
+    public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/woodcutting_progression.yml");
         ValhallaMMO.getInstance().save("skills/woodcutting.yml");
 
@@ -120,7 +124,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
             LootListener.addPreparedLuck(e.getBlock(), woodCuttingLuck);
         }
 
-        if (!treeCapitatingPlayers.contains(e.getPlayer().getUniqueId()) &&
+        if (e.getPlayer().isSneaking() && !treeCapitatingPlayers.contains(e.getPlayer().getUniqueId()) &&
                 profile.isTreeCapitatorUnlocked() &&
                 profile.getTreeCapitatorValidBlocks().contains(e.getBlock().getType().toString()) &&
                 Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "woodcutting_tree_capitator") &&

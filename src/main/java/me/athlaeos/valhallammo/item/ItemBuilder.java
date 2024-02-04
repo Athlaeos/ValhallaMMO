@@ -147,13 +147,13 @@ public class ItemBuilder {
 
     public ItemBuilder disEnchant(Enchantment e){
         if (meta instanceof EnchantmentStorageMeta m) m.removeStoredEnchant(e);
-        else item.removeEnchantment(e);
+        else meta.removeEnchant(e);
         return this;
     }
 
     public ItemBuilder enchant(Enchantment e, int level){
         if (meta instanceof EnchantmentStorageMeta m) m.addStoredEnchant(e, level, true);
-        else item.addUnsafeEnchantment(e, level);
+        else meta.addEnchant(e, level, true);
         return this;
     }
 

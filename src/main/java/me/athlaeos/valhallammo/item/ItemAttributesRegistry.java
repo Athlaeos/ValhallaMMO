@@ -30,7 +30,7 @@ public class ItemAttributesRegistry {
     private static final Map<String, AttributeWrapper> registeredAttributes = new HashMap<>();
 
     public static void registerAttributes() {
-        register(new AttributeHiddenWrapper("CUSTOM_MAX_DURABILITY", StatFormat.INT).addModifier(Material.DIAMOND, 1, 25)); // custom durability is already displayed elsewhere, so this one is hidden
+        register(new AttributeHiddenWrapper("CUSTOM_MAX_DURABILITY", StatFormat.INT)); // custom durability is already displayed elsewhere, so this one is hidden
         ModifierRegistry.register(new DefaultAttributeAdd("custom_durability_set", "CUSTOM_MAX_DURABILITY", 1, 25, Material.DIAMOND));
         ModifierRegistry.register(new DefaultAttributeRemove("custom_durability_remove", "CUSTOM_MAX_DURABILITY", Material.COAL));
 

@@ -22,9 +22,8 @@ public class SideBarUtils {
     public static void showSideBarToPlayer(final Player player, String key, String title, List<String> contents, boolean force){
         Sidebar sideBar = activeSidebars.get(player.getUniqueId());
         if (sideBar == null) sideBar = new Sidebar(player, key, title, contents);
-        else {
-            sideBar.updateContents(contents);
-        }
+        else sideBar.updateContents(contents);
+
         sideBar.showBoard(force);
         activeSidebars.put(player.getUniqueId(), sideBar);
     }
@@ -50,8 +49,9 @@ public class SideBarUtils {
 
         public void updateContents(List<String> newContents){
             if (scoreboard == null) return;
+
             newContents = newContents.subList(0, Math.min(newContents.size(), colors.size()));
-            // scoreboard.getTeams().clear();
+            scoreboard.getTeams().forEach(Team::unregister);
             for (int i = 0; i < newContents.size(); i++){
                 String lineContents = newContents.get(i);
                 String color = Utils.chat("&" + colors.get(i) + "&r");

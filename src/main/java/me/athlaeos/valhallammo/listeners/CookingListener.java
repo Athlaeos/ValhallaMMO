@@ -8,13 +8,11 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.CustomFlag;
-import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
@@ -35,7 +33,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
-import org.bukkit.event.inventory.FurnaceStartSmeltEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -44,7 +41,7 @@ import org.bukkit.inventory.*;
 import java.util.*;
 
 public class CookingListener implements Listener {
-    private final Map<Block, Map<Integer, DynamicCookingRecipe>> campfireRecipes = new HashMap<>();
+    private final Map<Location, Map<Integer, DynamicCookingRecipe>> campfireRecipes = new HashMap<>();
 
     private static final Collection<InventoryType> furnaces = Set.of(InventoryType.FURNACE, InventoryType.BLAST_FURNACE, InventoryType.SMOKER);
 
@@ -116,7 +113,7 @@ public class CookingListener implements Listener {
                     return;
                 }
 
-                Map<Integer, DynamicCookingRecipe> campfireContents = campfireRecipes.getOrDefault(c.getBlock(), new HashMap<>());
+                Map<Integer, DynamicCookingRecipe> campfireContents = campfireRecipes.getOrDefault(c.getLocation(), new HashMap<>());
                 if (recipe.requireValhallaTools()){
                     if (EquipmentClass.getMatchingClass(handItem.getMeta()) != null && !SmithingItemPropertyManager.hasSmithingQuality(handItem.getMeta())){
                         // item needs to be custom, but isn't
@@ -135,7 +132,7 @@ public class CookingListener implements Listener {
                 }
 
                 campfireContents.put(firstEmpty, recipe);
-                campfireRecipes.put(c.getBlock(), campfireContents);
+                campfireRecipes.put(c.getLocation(), campfireContents);
             } else e.setCancelled(true);
         }
     }
@@ -209,7 +206,7 @@ public class CookingListener implements Listener {
         if (b.getState() instanceof Campfire c){
             int finishedSlot = getFinishedCampfireCook(c);
             if (finishedSlot >= 0){
-                Map<Integer, DynamicCookingRecipe> campfireRecipes = this.campfireRecipes.getOrDefault(b, new HashMap<>());
+                Map<Integer, DynamicCookingRecipe> campfireRecipes = this.campfireRecipes.getOrDefault(b.getLocation(), new HashMap<>());
                 DynamicCookingRecipe recipe = campfireRecipes.get(finishedSlot);
                 ItemStack finishedItem = c.getItem(finishedSlot);
                 if (recipe == null || ItemUtils.isEmpty(finishedItem)) return; // vanilla or failed recipe
@@ -252,7 +249,7 @@ public class CookingListener implements Listener {
                 }
 
                 campfireRecipes.remove(finishedSlot);
-                this.campfireRecipes.put(b, campfireRecipes);
+                this.campfireRecipes.put(b.getLocation(), campfireRecipes);
             } else {
                 e.setCancelled(true);
                 ejectCampfire(c);

@@ -167,6 +167,8 @@ public class SkillTreeMenu extends Menu {
 
                                 // remove resources
                                 for (ResourceExpense expense : p.getExpenses()) expense.purchase(target, true);
+
+                                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), this::setMenuItems, 2L);
                             } else perkConfirmation = p.getName();
                         } else {
                             for (ResourceExpense expense : p.getExpenses()){
@@ -176,7 +178,9 @@ public class SkillTreeMenu extends Menu {
                         skillTreeItems.put(selectedSkill, getSkillTree(selectedSkill));
                     }
                 }
-            } else perkConfirmation = null;
+            } else {
+                perkConfirmation = null;
+            }
         }
         setMenuItems();
     }

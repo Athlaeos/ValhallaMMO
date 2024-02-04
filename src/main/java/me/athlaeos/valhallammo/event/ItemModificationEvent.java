@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class ItemModificationEvent extends PlayerEvent {
-    private static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
     private final ItemBuilder item;
     private final List<DynamicItemModifier> modifiers;
     private boolean sort;
@@ -43,10 +43,10 @@ public class ItemModificationEvent extends PlayerEvent {
     @Override
     @NotNull
     public HandlerList getHandlers() {
-        return HANDLER_LIST;
+        return handlers;
     }
 
     public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
+        return handlers;
     }
 }

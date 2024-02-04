@@ -36,13 +36,6 @@ perks:
     required_lv: 0
     perk_rewards:
       lightweapons_damagemultiplier_add: 0.1
-      recipes_unlock:
-        - craft_wooden_dagger
-        - craft_stone_dagger
-        - craft_golden_dagger
-        - craft_iron_dagger
-        - craft_diamond_dagger
-        - craft_netherite_dagger
     messages:
       - "<lang.lightweapons_perk_1_messages>"
     custom_model_data_unlockable: -1
@@ -59,13 +52,6 @@ perks:
     perk_rewards:
       lightweapons_attackspeedmultiplier_add: 0.1
       lightweapons_critchance_add: 0.1
-      recipes_unlock:
-        - craft_wooden_rapier
-        - craft_stone_rapier
-        - craft_golden_rapier
-        - craft_iron_rapier
-        - craft_diamond_rapier
-        - craft_netherite_rapier
     messages:
       - "<lang.lightweapons_perk_2_messages>"
     requireperk_all:
@@ -142,13 +128,6 @@ perks:
       lightweapons_parryselfdebuffduration_add: -10
       lightweapons_parrydamagereduction_add: 0.25
       lightweapons_parrycooldownsuccessreduction_add: 0.5
-      recipes_unlock:
-        - craft_wooden_mace
-        - craft_stone_mace
-        - craft_golden_mace
-        - craft_iron_mace
-        - craft_diamond_mace
-        - craft_netherite_mace
     messages:
       - "<lang.lightweapons_perk_5_messages>"
     requireperk_all:
@@ -253,3 +232,44 @@ perks:
       lightweapons_knockbackmultiplier_add: 0.3
     messages:
       - "<lang.lightweapons_perk_combo_messages>"
+  lightweapons_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "2,12"
+    name: "<lang.lightweapons_perk_ng1_name>"
+    description: "<lang.lightweapons_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_light_weapons: 0
+      p:lightweapons_newgameplus_add: 1
+      p:lightweapons_damagemultiplier_add: 0.15
+      p:lightweapons_attackspeedmultiplier_add: 0.2
+      p:lightweapons_critchance_add: 0.1
+      p:lightweapons_lightweaponsexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - lightweapons_perk_ng1
+    messages:
+      - "<lang.lightweapons_perk_ng1_messages>"
+  lightweapons_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "2,12"
+    name: "<lang.lightweapons_perk_ng2_name>"
+    description: "<lang.lightweapons_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - lightweapons_perk_ng1
+    perk_rewards:
+      reset_skill_light_weapons: 0
+      p:lightweapons_newgameplus_add: 1
+      p:lightweapons_damagemultiplier_add: 0.15
+      p:lightweapons_attackspeedmultiplier_add: 0.2
+      p:lightweapons_critchance_add: 0.1
+      p:lightweapons_lightweaponsexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - lightweapons_perk_ng1
+        - lightweapons_perk_ng2
+    messages:
+      - "<lang.lightweapons_perk_ng2_messages>"

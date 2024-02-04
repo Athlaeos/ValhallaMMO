@@ -3,11 +3,10 @@ package me.athlaeos.valhallammo.listeners;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.CustomDamageType;
-import me.athlaeos.valhallammo.hooks.DamageIndicator;
+import me.athlaeos.valhallammo.entities.damageindicators.DamageIndicatorRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.Utils;
-import org.bukkit.EntityEffect;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -43,11 +42,12 @@ public class EntityDamagedListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamageTaken(EntityDamageEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (e instanceof EntityDamageByEntityEvent eve) EntityDamagedListener.setDamager(e.getEntity(), eve.getDamager());
         if (e.getEntity() instanceof LivingEntity l){
             String damageCause = customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString());
             CustomDamageType type = CustomDamageType.getCustomType(damageCause);
+            double originalDamage = e.getDamage();
             double customDamage = type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
-
             double damageAfterImmunity = overrideImmunityFrames(customDamage, l);
             if (damageAfterImmunity <= 0) {
                 e.setCancelled(true);
@@ -55,25 +55,25 @@ public class EntityDamagedListener implements Listener {
             }
             lastDamageTakenMap.put(l.getUniqueId(), customDamage);
             boolean applyImmunity = l.getHealth() - customDamage > 0;
-            if (customDamage > 0 && ValhallaMMO.isHookFunctional(DamageIndicator.class) && DamageIndicator.isDummy(l)) {
-                l.playEffect(EntityEffect.ARMOR_STAND_HIT);
-                if (DamageIndicator.update(l, type, customDamage)) customDamage = 0;
+
+            if (DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage)) {
+                customDamage = 0;
                 e.setDamage(0);
                 applyImmunity = true;
             }
-            if (e instanceof EntityDamageByEntityEvent d && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking() &&
+            if (e instanceof EntityDamageByEntityEvent d && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking() && d.getDamager() instanceof LivingEntity &&
                     EntityUtils.isEntityFacing(p, d.getDamager().getLocation(), EntityAttackListener.getFacingAngleCos())) return; // blocking with shield damage reduction
             final double damage = customDamage;
             if (applyImmunity){
                 // custom damage did not kill entity
-                Entity lastDamager = getLastDamager(l);
+                Entity lastDamager = e instanceof EntityDamageByEntityEvent eve ? eve.getDamager() : null;
 
                 double iFrameMultiplier = 1 + AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_MULTIPLIER", l, lastDamager, 10000, true);
                 int iFrameBonus = (int) AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_BONUS", l, lastDamager, 10000, true);
                 int iFrames = (int) Math.max(0, iFrameMultiplier * (Math.max(0, 10 + iFrameBonus)));
 
                 double currentHealth = l.getHealth();
-                if (customDamage <= 0) e.setCancelled(true);
+                if ((type == null || type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
                 if (l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0.00001);
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                     l.setNoDamageTicks(iFrames);
@@ -85,7 +85,7 @@ public class EntityDamagedListener implements Listener {
             } else {
                 // custom damage killed entity
                 l.setLastDamageCause(e);
-                if (customDamage > 0 && ValhallaMMO.isHookFunctional(DamageIndicator.class)) DamageIndicator.update(l, type, customDamage);
+                if (customDamage > 0) DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage);
                 if (l.getHealth() > 0) l.setHealth(0.0001); // attempt to ensure that this attack will kill
                 if (e.getFinalDamage() == 0) { // if player wouldn't have died even with this little health, force a death (e.g. with resistance V)
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
@@ -103,7 +103,6 @@ public class EntityDamagedListener implements Listener {
         String damageCause = customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString());
         UUID lastDamagerUUID = entityDamageCauses.contains(e.getCause().toString()) ? lastDamagedByMap.get(e.getEntity().getUniqueId()) : null;
         Entity lastDamager = lastDamagerUUID == null ? null : ValhallaMMO.getInstance().getServer().getEntity(lastDamagerUUID);
-        if (lastDamager == null) lastDamagedByMap.remove(e.getEntity().getUniqueId());
 
         CustomDamageType customDamageType = CustomDamageType.getCustomType(damageCause);
 
@@ -168,6 +167,10 @@ public class EntityDamagedListener implements Listener {
 
     public static double getLastDamageTaken(UUID entity){
         return lastDamageTakenMap.getOrDefault(entity, 0D);
+    }
+
+    public static double getLastDamageTaken(UUID entity, double def){
+        return lastDamageTakenMap.getOrDefault(entity, def);
     }
 
     public static void setDamager(Entity attacked, Entity attacker){

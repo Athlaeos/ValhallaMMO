@@ -50,6 +50,7 @@ public abstract class Profile {
         doubleStat("exp", new PropertyBuilder().format(StatFormat.FLOAT_P2).create());
         doubleStat("exp_total", new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).create());
         intStat("newGamePlus"); // amount of times the player has entered a new skill loop
+        intStat("maxAllowedLevel", Short.MAX_VALUE, new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
     }
 
     public int getLevel(){
@@ -78,6 +79,13 @@ public abstract class Profile {
     }
     public void setNewGamePlus(int newGamePlus){
         setInt("newGamePlus", newGamePlus);
+    }
+
+    public int getMaxAllowedLevel() {
+        return getInt("maxAllowedLevel");
+    }
+    public void setMaxAllowedLevel(int maxAllowedLevel){
+        setInt("maxAllowedLevel", maxAllowedLevel);
     }
 
     public abstract Class<? extends Skill> getSkillType();
@@ -355,26 +363,21 @@ public abstract class Profile {
             if (ints.containsKey(s)) {
                 StatProperties mode = this.ints.get(s).getProperties();
                 merged.ints.get(s).value = (int) mergeNumbers(mode, this.ints.get(s).value, profile.ints.get(s).value, profile.ints.get(s).def);
-            }
-            else if (doubles.containsKey(s)) {
+            } else if (doubles.containsKey(s)) {
                 StatProperties mode = this.doubles.get(s).getProperties();
                 merged.doubles.get(s).value = mergeNumbers(mode, this.doubles.get(s).value, profile.doubles.get(s).value, profile.doubles.get(s).def);
-            }
-            else if (floats.containsKey(s)) {
+            } else if (floats.containsKey(s)) {
                 StatProperties mode = this.floats.get(s).getProperties();
                 merged.floats.get(s).value = (float) mergeNumbers(mode, this.floats.get(s).value, profile.floats.get(s).value, profile.floats.get(s).def);
-            }
-            else if (stringSets.containsKey(s)) {
+            } else if (stringSets.containsKey(s)) {
                 Collection<String> sets = new HashSet<>(profile.stringSets.get(s));
                 sets.addAll(this.stringSets.get(s));
                 merged.stringSets.put(s, sets);
-            }
-            else if (booleans.containsKey(s)) {
+            } else if (booleans.containsKey(s)) {
                 merged.booleans.get(s).setValue(booleans.get(s).getProperties().shouldPrioritizeTrue() ?
                         (profile.booleans.get(s).getValue() || this.booleans.get(s).getValue()) : // if either are true, put true
                         (!(!profile.booleans.get(s).getValue() || !this.booleans.get(s).getValue()))); // if either are false, put false
-            }
-            else ValhallaMMO.logWarning("Stat " + s + " in " + this.getClass().getSimpleName() + " was not associated to datatype");
+            } else ValhallaMMO.logWarning("Stat " + s + " in " + this.getClass().getSimpleName() + " was not associated to datatype");
         }
         return merged;
     }

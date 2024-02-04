@@ -22,8 +22,8 @@
               }
             }
           ],
-          "chance": 4.5E-4,
-          "chanceQuality": 5.0E-4,
+          "chance": 0.5E-4,
+          "chanceQuality": 0.1E-4,
           "weight": 10.0,
           "weightQuality": 10.0,
           "guaranteedPresent": false,
@@ -177,8 +177,8 @@
               }
             }
           ],
-          "chance": 4.9E-4,
-          "chanceQuality": 0.001,
+          "chance": 3.9E-4,
+          "chanceQuality": 0.0002,
           "weight": 10.0,
           "weightQuality": 10.0,
           "guaranteedPresent": false,

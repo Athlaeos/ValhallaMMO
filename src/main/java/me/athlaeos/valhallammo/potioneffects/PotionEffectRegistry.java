@@ -515,10 +515,13 @@ public class PotionEffectRegistry {
 
     private static void setActiveEffects(LivingEntity p, Map<String, CustomPotionEffect> effects){
         if (effects == null || effects.isEmpty()) p.getPersistentDataContainer().remove(POTION_EFFECTS);
-        else p.getPersistentDataContainer().set(POTION_EFFECTS, PersistentDataType.STRING, effects.values().stream()
-                    .filter(e -> e.getEffectiveUntil() != -1 && e.getEffectiveUntil() > System.currentTimeMillis())
+        else {
+            String effect = effects.values().stream()
+                    .filter(e -> e.getEffectiveUntil() == -1 || e.getEffectiveUntil() > System.currentTimeMillis())
                     .map(e -> String.format("%s:%d:%.6f", e.getWrapper().getEffect(), e.getEffectiveUntil(), e.getAmplifier()))
-                    .collect(Collectors.joining(";")));
+                    .collect(Collectors.joining(";"));
+            p.getPersistentDataContainer().set(POTION_EFFECTS, PersistentDataType.STRING, effect);
+        }
         EntityCache.resetPotionEffects(p);
     }
 
@@ -560,9 +563,7 @@ public class PotionEffectRegistry {
                 newEffect.getWrapper().onExpire(e);
             }
             if (currentEffects.isEmpty()) markAsUnaffected(e);
-            else {
-                entitiesWithEffects.add(e.getUniqueId());
-            }
+            else entitiesWithEffects.add(e.getUniqueId());
 
             setActiveEffects(e, currentEffects);
         }

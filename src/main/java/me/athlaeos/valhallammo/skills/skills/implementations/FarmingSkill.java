@@ -39,6 +39,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerHarvestBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
@@ -50,11 +51,12 @@ public class FarmingSkill extends Skill implements Listener {
     private final Map<Material, Double> blockInteractExpValues = new HashMap<>();
     private final Map<Material, Double> entityDropExpValues = new HashMap<>();
     private final Map<EntityType, Double> entityBreedExpValues = new HashMap<>();
+    private final Map<EntityType, Double> entityShearExpValues = new HashMap<>();
 
-    private final int fieldHarvestLimit;
-    private final boolean fieldHarvestInstant;
+    private int fieldHarvestLimit = 256;
+    private boolean fieldHarvestInstant = false;
 
-    private final boolean forgivingDropMultipliers; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
+    private boolean forgivingDropMultipliers; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
 
     private Animation fieldHarvestAnimation = null;
 
@@ -64,6 +66,10 @@ public class FarmingSkill extends Skill implements Listener {
 
     public FarmingSkill(String type) {
         super(type);
+    }
+
+    @Override
+    public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/farming_progression.yml");
         ValhallaMMO.getInstance().save("skills/farming.yml");
 
@@ -112,6 +118,19 @@ public class FarmingSkill extends Skill implements Listener {
                     EntityType entity = EntityType.valueOf(key);
                     double reward = progressionConfig.getDouble("experience.entity_breed." + key);
                     entityBreedExpValues.put(entity, reward);
+                } catch (IllegalArgumentException ignored){
+                    invalidEntities.add(key);
+                }
+            }
+        }
+
+        ConfigurationSection entityShearSection = progressionConfig.getConfigurationSection("experience.entity_shear");
+        if (entityShearSection != null){
+            for (String key : entityShearSection.getKeys(false)){
+                try {
+                    EntityType entity = EntityType.valueOf(key);
+                    double reward = progressionConfig.getDouble("experience.entity_shear." + key);
+                    entityShearExpValues.put(entity, reward);
                 } catch (IllegalArgumentException ignored){
                     invalidEntities.add(key);
                 }
@@ -294,7 +313,7 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBeeAggro(EntityTargetLivingEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof Bee b) ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof Bee) ||
                 !(e.getTarget() instanceof Player p) || e.getReason() != EntityTargetEvent.TargetReason.CLOSEST_PLAYER ||
                 WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_FARMING)) return;
         FarmingProfile profile = ProfileCache.getOrCache(p, FarmingProfile.class);
@@ -349,6 +368,17 @@ public class FarmingSkill extends Skill implements Listener {
 
         double exp = entityBreedExpValues.getOrDefault(e.getEntityType(), 0D);
         if (exp > 0) addEXP(p, exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onAnimalShear(PlayerShearEntityEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
+                !EntityClassification.matchesClassification(e.getEntity().getType(), EntityClassification.ANIMAL) ||
+                !entityShearExpValues.containsKey(e.getEntity().getType())) return;
+        if (WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
+
+        double exp = entityShearExpValues.getOrDefault(e.getEntity().getType(), 0D);
+        if (exp > 0) addEXP(e.getPlayer(), exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
     @Override

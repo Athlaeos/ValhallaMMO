@@ -208,7 +208,7 @@ perks:
     hidden: false
     required_lv: 100
     commands:
-      - "valhallammo:val effect smithing_masterpiece_flat 100 -1"
+      - "valhallammo:val effect smithing_masterpiece_flat 100 -1 %player%"
     perk_rewards:
       p:perks_fake_unlock_add:
         - smithing_perk_6 # Permanently unlocks this perk, preventing the player from getting the reward again.
@@ -300,3 +300,40 @@ perks:
       smithing_crossbowcraftingskill_add: 50
     messages:
       - "<lang.smithing_perk_bows_messages>"
+  smithing_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "4,6"
+    name: "<lang.smithing_perk_ng1_name>"
+    description: "<lang.smithing_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_smithing: 0
+      p:smithing_genericcraftingskill_add: 50
+      p:smithing_newgameplus_add: 1
+      p:smithing_genericexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - smithing_perk_ng1
+    messages:
+      - "<lang.smithing_perk_ng1_messages>"
+  smithing_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "4,6"
+    name: "<lang.smithing_perk_ng2_name>"
+    description: "<lang.smithing_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - smithing_perk_ng1
+    perk_rewards:
+      reset_skill_smithing: 0
+      p:smithing_genericcraftingskill_add: 50
+      p:smithing_newgameplus_add: 1
+      p:smithing_genericexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - smithing_perk_ng1
+        - smithing_perk_ng2
+    messages:
+      - "<lang.smithing_perk_ng2_messages>"

@@ -157,9 +157,12 @@ public class SmithingTableListener implements Listener {
             return; // no recipe was found at all, so do nothing
         }
         if (recipes.getTwo() == null) {
-            if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) e.setResult(null);
-            if (SmithingItemPropertyManager.hasSmithingQuality(base.getMeta())) e.setResult(null);
-            return;// vanilla recipe found, cancel if recipe is disabled or if resulting item is custom
+            if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) {
+                e.setResult(null);
+            }
+            if (e.getResult() != null && SmithingItemPropertyManager.hasSmithingQuality(base.getMeta()) &&
+                    base.getItem().getType() != e.getResult().getType()) e.setResult(null);
+            return;// vanilla recipe found, cancel if recipe is disabled or if resulting item is custom and different from result item
         }
         DynamicSmithingRecipe recipe = recipes.getTwo();
         ItemStack originalAddition = rawAddition.clone();

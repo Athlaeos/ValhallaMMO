@@ -3,8 +3,8 @@ item_sharing: true # If disabled, item sharing will not be possible
 exp_sharing: true # If disabled, exp sharing will not be possible
 
 party_company_radius: 30 # The default radius in which party members will be considered "in your vicinity"
-party_exp_rate: 0.01 # The fraction of exp earned with at least 1 party member in your vicinity that goes towards your party.
-# Example: if you earn 1000 exp with a party member nearby, your party will progress by 10 exp. Only exp gained by skills is considered (not exp sharing or commands)
+party_exp_rate: 0.001 # The fraction of exp earned with at least 1 party member in your vicinity that goes towards your party.
+# Example: if you earn 1000 exp with a party member nearby, your party will progress by 1 exp. Only exp gained by skills is considered (not exp sharing or commands)
 
 party_creation_cooldown: 86400000 # Cooldown to create a party, so it can't be spammed (default 1d)
 item_share_cooldown: 3600000 # Cooldown between item shares (default 1hr)

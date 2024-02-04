@@ -4,7 +4,6 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.BlockInteractConversions;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.recipetypes.ValhallaKeyedRecipe;
-import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.BiAction;
 import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
@@ -53,21 +52,16 @@ public class PerkRewardRegistry {
             register(new ProgressReset("reset_" + type.toString().toLowerCase(), type));
         }
 
-        BiAction<String, Player> forget = (s, p) -> {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-                ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
-                if (recipe == null) return;
-                p.undiscoverRecipe(recipe.getKey());
-            });
-        };
-        BiAction<String, Player> discover = (s, p) -> {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-
-                ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
-                if (recipe == null) return;
-                p.discoverRecipe(recipe.getKey());
-            });
-        };
+        BiAction<String, Player> forget = (s, p) -> ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+            ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
+            if (recipe == null) return;
+            p.undiscoverRecipe(recipe.getKey());
+        });
+        BiAction<String, Player> discover = (s, p) -> ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+            ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
+            if (recipe == null) return;
+            p.discoverRecipe(recipe.getKey());
+        });
 
         register(new ProfileStringListAdd("perks_unlocked_add", "unlockedPerks", PowerProfile.class));
         register(new ProfileStringListRemove("perks_unlocked_remove", "unlockedPerks", PowerProfile.class));
@@ -111,6 +105,9 @@ public class PerkRewardRegistry {
         register(new ProfileStringListFill("block_conversions_unlock_all", "unlockedBlockConversions", PowerProfile.class, () -> BlockInteractConversions.getConversions().keySet()));
         register(new ProfileStringListRemove("block_conversions_lock", "unlockedBlockConversions", PowerProfile.class));
         register(new ProfileStringListClear("block_conversions_lock_all", "unlockedBlockConversions", PowerProfile.class));
+        register(new ProfileStringListAdd("permanent_effects_add", "permanentPotionEffects", PowerProfile.class));
+        register(new ProfileStringListRemove("permanent_effects_remove", "permanentPotionEffects", PowerProfile.class));
+        register(new ProfileStringListClear("permanent_effects_clear", "permanentPotionEffects", PowerProfile.class));
     }
 
     public static void register(PerkReward reward){

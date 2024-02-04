@@ -32,9 +32,9 @@ public class BlockListener implements Listener {
 
     public BlockListener(){
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
-            for (Block b : blocksToConsiderBroken) {
-                BlockStore.setPlaced(b, false);
-                BlockStore.setBreakReason(b, BlockStore.BreakReason.MINED);
+            for (Location b : blocksToConsiderBroken) {
+                BlockStore.setPlaced(b.getBlock(), false);
+                BlockStore.setBreakReason(b.getBlock(), BlockStore.BreakReason.MINED);
             }
             blocksToConsiderBroken.clear();
         }, 0L, 5L);
@@ -68,7 +68,7 @@ public class BlockListener implements Listener {
         if (e.getBlock().getBlockData() instanceof Directional d){
             for (Block b : e.getBlocks().stream().map(b -> b.getRelative(d.getFacing())).collect(Collectors.toSet())){
                 BlockStore.setPlaced(b, true);
-                blocksToConsiderBroken.remove(b);
+                blocksToConsiderBroken.remove(b.getLocation());
             }
         }
     }
@@ -79,7 +79,7 @@ public class BlockListener implements Listener {
         if (e.getBlock().getBlockData() instanceof Directional d){
             for (Block b : e.getBlocks().stream().map(b -> b.getRelative(d.getFacing().getOppositeFace())).collect(Collectors.toSet())){
                 BlockStore.setPlaced(b, true);
-                blocksToConsiderBroken.remove(b);
+                blocksToConsiderBroken.remove(b.getLocation());
             }
         }
     }
@@ -93,19 +93,19 @@ public class BlockListener implements Listener {
             if (e.getBlock().getBlockData() instanceof Bisected bisected) {
                 if (bisected.getHalf() == Bisected.Half.TOP) {
                     BlockStore.setPlaced(e.getBlock().getRelative(BlockFace.DOWN), true);
-                    blocksToConsiderBroken.remove(e.getBlock().getRelative(BlockFace.DOWN));
+                    blocksToConsiderBroken.remove(e.getBlock().getRelative(BlockFace.DOWN).getLocation());
                 } else {
                     BlockStore.setPlaced(e.getBlock().getRelative(BlockFace.UP), true);
-                    blocksToConsiderBroken.remove(e.getBlock().getRelative(BlockFace.UP));
+                    blocksToConsiderBroken.remove(e.getBlock().getRelative(BlockFace.UP).getLocation());
                 }
             } else {
                 BlockStore.setPlaced(e.getBlock(), true);
-                blocksToConsiderBroken.remove(e.getBlock());
+                blocksToConsiderBroken.remove(e.getBlock().getLocation());
             }
         }
     }
 
-    private static final Collection<Block> blocksToConsiderBroken = new HashSet<>();
+    private static final Collection<Location> blocksToConsiderBroken = new HashSet<>();
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent e){
@@ -113,13 +113,13 @@ public class BlockListener implements Listener {
         if (e.getBlock().getBlockData() instanceof Bisected bisected) {
             if (bisected.getHalf() == Bisected.Half.TOP) {
                 Block down = e.getBlock().getRelative(BlockFace.DOWN);
-                blocksToConsiderBroken.add(down);
+                blocksToConsiderBroken.add(down.getLocation());
             } else {
                 Block up = e.getBlock().getRelative(BlockFace.UP);
-                blocksToConsiderBroken.add(up);
+                blocksToConsiderBroken.add(up.getLocation());
             }
         } else {
-            blocksToConsiderBroken.add(e.getBlock());
+            blocksToConsiderBroken.add(e.getBlock().getLocation());
         }
     }
 

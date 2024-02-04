@@ -42,8 +42,9 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class LightArmorSkill extends Skill implements Listener {
-    private final double expPerDamage;
-    private final double expPerCombatSecond;
+    private double expPerDamage = 0;
+    private double expPerCombatSecond = 0;
+    private double expBonusPerPoint = 0;
 
     private Animation adrenalineActivation;
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
@@ -51,6 +52,10 @@ public class LightArmorSkill extends Skill implements Listener {
 
     public LightArmorSkill(String type) {
         super(type);
+    }
+
+    @Override
+    public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/light_armor_progression.yml");
         ValhallaMMO.getInstance().save("skills/light_armor.yml");
 
@@ -61,6 +66,7 @@ public class LightArmorSkill extends Skill implements Listener {
 
         expPerDamage = progressionConfig.getDouble("experience.exp_damage_piece");
         expPerCombatSecond = progressionConfig.getDouble("experience.exp_second_piece");
+        expBonusPerPoint = progressionConfig.getDouble("experience.exp_multiplier_point");
 
         ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.entity_exp_multipliers");
         if (entitySection != null){
@@ -103,9 +109,10 @@ public class LightArmorSkill extends Skill implements Listener {
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             int count = EntityCache.getAndCacheProperties(p).getLightArmorCount();
+            double totalLightArmor = AccumulativeStatManager.getCachedStats("TOTAL_LIGHT_ARMOR", p, 10000, false);
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(trueDamager.getType(), 1D);
-            double lastDamageTaken = EntityDamagedListener.getLastDamageTaken(p.getUniqueId());
-            double exp = expPerDamage * lastDamageTaken * entityExpMultiplier;
+            double lastDamageTaken = e.getDamage();
+            double exp = expPerDamage * lastDamageTaken * entityExpMultiplier * (1 + (totalLightArmor * expBonusPerPoint));
             addEXP(p, count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
             if (profile.isAdrenalineUnlocked() && profile.getAdrenalineLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_light_armor_adrenaline") &&

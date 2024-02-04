@@ -9,14 +9,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class AnvilListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onAnvilRepair(PrepareAnvilEvent e){
-        if (e.getInventory().getLocation() != null || e.getInventory().getLocation().getWorld() != null ||
+        if (e.getInventory().getLocation() == null || e.getInventory().getLocation().getWorld() == null ||
                 ValhallaMMO.isWorldBlacklisted(e.getInventory().getLocation().getWorld().getName())) return;
+
         ItemStack item1 = e.getInventory().getItem(0);
         ItemStack item2 = e.getInventory().getItem(1);
         ItemStack result = e.getResult();
@@ -25,26 +27,20 @@ public class AnvilListener implements Listener {
         ItemMeta item2Meta = ItemUtils.getItemMeta(item2);
         ItemMeta resultMeta = ItemUtils.getItemMeta(result);
         if (!CustomDurabilityManager.hasCustomDurability(item1Meta) || !CustomDurabilityManager.hasCustomDurability(resultMeta)) return;
-        double repairFraction = 0;
-        int item1Durability = CustomDurabilityManager.getDurability(item1Meta, false);
-        int item1MaxDurability = CustomDurabilityManager.getDurability(item1Meta, true);
-        int item2Durability = CustomDurabilityManager.getDurability(item2Meta, false);
-        int item2MaxDurability = CustomDurabilityManager.getDurability(item2Meta, true);
         if (item1.getType() == item2.getType()){
             Integer i1id = CustomID.getID(item1Meta);
             Integer i2id = CustomID.getID(item2Meta);
             if ((i1id == null) != (i2id == null) || (i1id != null && !i1id.equals(i2id))) {
                 e.setResult(null); // items are the same type, but have different weapon ids, and are therefore considered different
                 return;
-            } else {
-                double fraction1 = (double) item1Durability / item1MaxDurability;
-                double fraction2 = (double) item2Durability / item2MaxDurability;
-                repairFraction = Math.min(1, fraction1 + fraction2 + 0.1);
             }
         }
+        if (!(resultMeta instanceof Damageable d) || result.getType().getMaxDurability() <= 0) return;
+        double fraction = (((int) result.getType().getMaxDurability() - d.getDamage()) / (double) result.getType().getMaxDurability());
+
         int maxDurability = CustomDurabilityManager.getDurability(resultMeta, true);
-        if (repairFraction >= 1) CustomDurabilityManager.setDurability(resultMeta, maxDurability, maxDurability);
-        else CustomDurabilityManager.setDurability(resultMeta, repairFraction);
+        if (fraction >= 0.97) CustomDurabilityManager.setDurability(resultMeta, maxDurability, maxDurability);
+        else CustomDurabilityManager.setDurability(resultMeta, fraction);
         ItemUtils.setItemMeta(result, resultMeta);
 
         e.setResult(result);

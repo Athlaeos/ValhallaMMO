@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class ValhallaLootPopulateEvent extends Event implements Cancellable {
-    private static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
     private final LootTable table;
     private final LootContext context;
     private final List<ItemStack> drops;
@@ -47,7 +47,7 @@ public class ValhallaLootPopulateEvent extends Event implements Cancellable {
     @NotNull
     @Override
     public HandlerList getHandlers() {
-        return HANDLER_LIST;
+        return handlers;
     }
 
     @Override
@@ -61,6 +61,6 @@ public class ValhallaLootPopulateEvent extends Event implements Cancellable {
     }
 
     public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
+        return handlers;
     }
 }

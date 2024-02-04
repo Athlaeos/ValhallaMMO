@@ -16,6 +16,7 @@ public class AttributeDefenderSource implements AccumulativeStatSource, EvEAccum
     private final String attribute;
     private WeightClass weightClass = null;
     private String statPenalty = null;
+    private boolean negative = false;
 
     public AttributeDefenderSource(String attribute){
         this.attribute = attribute;
@@ -28,6 +29,10 @@ public class AttributeDefenderSource implements AccumulativeStatSource, EvEAccum
         this.weightClass = weightClass;
         return this;
     }
+    public AttributeDefenderSource negative(){
+        this.negative = true;
+        return this;
+    }
 
     @Override
     public double fetch(Entity victim, Entity attackedBy, boolean use) {
@@ -38,7 +43,7 @@ public class AttributeDefenderSource implements AccumulativeStatSource, EvEAccum
             for (ArmorSet set : activeSets){
                 value += set.getSetBonus().getOrDefault(attribute, 0D);
             }
-            return value;
+            return (negative ? -1 : 1) * value;
         }
         return 0;
     }
@@ -52,7 +57,7 @@ public class AttributeDefenderSource implements AccumulativeStatSource, EvEAccum
             for (ArmorSet set : activeSets){
                 value += set.getSetBonus().getOrDefault(attribute, 0D);
             }
-            return value;
+            return (negative ? -1 : 1) * value;
         }
         return 0;
     }

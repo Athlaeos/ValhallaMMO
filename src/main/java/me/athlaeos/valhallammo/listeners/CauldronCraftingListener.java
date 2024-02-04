@@ -46,8 +46,8 @@ import java.util.stream.Collectors;
 public class CauldronCraftingListener implements Listener {
     private static final NamespacedKey CAULDRON_STORAGE = new NamespacedKey(ValhallaMMO.getInstance(), "cauldron_storage");
     private static final Map<UUID, CauldronInputTick> entityThrowItemLimiter = new HashMap<>();
-    private static final Map<Block, CauldronInputTick> blockThrowItemLimiter = new HashMap<>();
-    private static final Map<Block, CauldronCookingTask> activeCauldrons = new HashMap<>();
+    private static final Map<Location, CauldronInputTick> blockThrowItemLimiter = new HashMap<>();
+    private static final Map<Location, CauldronCookingTask> activeCauldrons = new HashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onItemThrow(PlayerDropItemEvent e){
@@ -68,18 +68,18 @@ public class CauldronCraftingListener implements Listener {
         Block b = e.getBlock();
         if (ValhallaMMO.isWorldBlacklisted(b.getWorld().getName())) return;
         if (e.isCancelled() || !(e.getBlock().getBlockData() instanceof Directional d)) return;
-        if (!blockThrowItemLimiter.containsKey(b)){
+        if (!blockThrowItemLimiter.containsKey(b.getLocation())){
             Collection<Entity> entitiesBefore = b.getWorld().getNearbyEntities(b.getRelative(d.getFacing()).getLocation().add(0.5, 0.5, 0.5), 0.5, 0.5, 0.5, (i) -> i instanceof Item);
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 Collection<Entity> newEntities = b.getWorld().getNearbyEntities(b.getRelative(d.getFacing()).getLocation().add(0.5, 0.5, 0.5), 0.5, 0.5, 0.5, (i) -> i instanceof Item && !entitiesBefore.contains(i));
                 Item i = (Item) newEntities.stream().findAny().orElse(null);
                 if (i == null) return;
                 CauldronInputTick runnable = new CauldronInputTick(b, i);
-                blockThrowItemLimiter.put(b, runnable);
+                blockThrowItemLimiter.put(b.getLocation(), runnable);
                 runnable.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
             }, 1L);
         } else {
-            blockThrowItemLimiter.get(b).resetTicks();
+            blockThrowItemLimiter.get(b.getLocation()).resetTicks();
         }
     }
 
@@ -133,7 +133,7 @@ public class CauldronCraftingListener implements Listener {
      * @param cauldron the cauldron to drop all its contents of
      */
     public static void dumpCauldronContents(Block cauldron){
-        if (activeCauldrons.containsKey(cauldron)) activeCauldrons.get(cauldron).stop();
+        if (activeCauldrons.containsKey(cauldron.getLocation())) activeCauldrons.get(cauldron.getLocation()).stop();
         List<ItemStack> items = getCauldronContents(cauldron);
         if (items.isEmpty()) return;
         for (ItemStack i : items){
@@ -162,7 +162,7 @@ public class CauldronCraftingListener implements Listener {
         int count = r.getTwo();
         if (recipe.isTimedRecipe()){
             CauldronCookingTask task = new CauldronCookingTask(responsible, cauldron, recipe, count);
-            activeCauldrons.put(cauldron, task);
+            activeCauldrons.put(cauldron.getLocation(), task);
             task.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
         } else if (!ItemUtils.isEmpty(catalyst)){
             ItemBuilder result = new ItemBuilder(recipe.tinkerCatalyst() ? catalyst : recipe.getResult());
@@ -204,7 +204,7 @@ public class CauldronCraftingListener implements Listener {
     }
 
     private static void onCauldronAbsorbItem(Player thrower, Block cauldron, Item item){
-        if (activeCauldrons.containsKey(cauldron)) return;
+        if (activeCauldrons.containsKey(cauldron.getLocation())) return;
         List<ItemStack> contents = getCauldronContents(cauldron);
         Pair<DynamicCauldronRecipe, Integer> r = updateCauldronRecipes(thrower, cauldron, item.getItemStack(), contents);
         if (r == null) { // recipe is null after thrown item, meaning it's not a catalyst. Add the thrown item to the cauldron
@@ -229,7 +229,7 @@ public class CauldronCraftingListener implements Listener {
     }
 
     private static void onCauldronClickedItem(Player clicker, Block cauldron){
-        if (activeCauldrons.containsKey(cauldron)) return;
+        if (activeCauldrons.containsKey(cauldron.getLocation())) return;
         ItemStack item = clicker.getInventory().getItemInMainHand();
         if (ItemUtils.isEmpty(item)) return;
         List<ItemStack> contents = getCauldronContents(cauldron);
@@ -434,7 +434,7 @@ public class CauldronCraftingListener implements Listener {
         }
 
         private void stop(){
-            activeCauldrons.remove(cauldron);
+            activeCauldrons.remove(cauldron.getLocation());
             cancel();
         }
     }
@@ -482,7 +482,7 @@ public class CauldronCraftingListener implements Listener {
 
         private void remove(){
             if (thrower != null) entityThrowItemLimiter.remove(thrower.getUniqueId());
-            else blockThrowItemLimiter.remove(block);
+            else blockThrowItemLimiter.remove(block.getLocation());
         }
 
         public void resetTicks(){

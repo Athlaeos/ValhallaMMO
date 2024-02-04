@@ -10,10 +10,10 @@ public class TotalHeavyArmorSource implements AccumulativeStatSource, EvEAccumul
     @Override
     public double fetch(Entity statPossessor, boolean use) {
         if (statPossessor instanceof LivingEntity v){
-            double heavyArmor = Math.max(0, AccumulativeStatManager.getCachedStats("HEAVY_ARMOR", v, 10000, true));
+            double heavyArmor = AccumulativeStatManager.getCachedStats("HEAVY_ARMOR", v, 10000, true);
 
-            double heavyArmorMultiplier = 1 + Math.max(0, AccumulativeStatManager.getCachedStats("HEAVY_ARMOR_MULTIPLIER", v, 10000, true));
-            double armorMultiplierBonus = 1 + Math.max(0, AccumulativeStatManager.getCachedStats("ARMOR_MULTIPLIER_BONUS", v, 10000, true));
+            double heavyArmorMultiplier = 1 + AccumulativeStatManager.getCachedStats("HEAVY_ARMOR_MULTIPLIER", v, 10000, true);
+            double armorMultiplierBonus = 1 + AccumulativeStatManager.getCachedStats("ARMOR_MULTIPLIER_BONUS", v, 10000, true);
 
             double totalHeavyArmor = heavyArmor * heavyArmorMultiplier;
 

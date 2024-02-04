@@ -396,3 +396,44 @@ perks:
         locked: GRAY_DYE:1172711
         unlockable: ORANGE_DYE:1172811
         unlocked: LIME_DYE:1172911
+  mining_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "4,10"
+    name: "<lang.mining_perk_ng1_name>"
+    description: "<lang.mining_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_mining: 0
+      p:mining_newgameplus_add: 1
+      p:mining_miningspeedbonus_add: 0.25
+      p:mining_blastingdrops_add: 0.25
+      p:mining_miningdrops_add: 0.25
+      p:mining_miningexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - mining_perk_ng1
+    messages:
+      - "<lang.mining_perk_ng1_messages>"
+  mining_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "4,10"
+    name: "<lang.mining_perk_ng2_name>"
+    description: "<lang.mining_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - mining_perk_ng1
+    perk_rewards:
+      reset_skill_mining: 0
+      p:mining_newgameplus_add: 1
+      p:mining_miningspeedbonus_add: 0.25
+      p:mining_blastingdrops_add: 0.25
+      p:mining_miningdrops_add: 0.25
+      p:mining_miningexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - mining_perk_ng1
+        - mining_perk_ng2
+    messages:
+      - "<lang.mining_perk_ng2_messages>"

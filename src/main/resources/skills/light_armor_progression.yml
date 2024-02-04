@@ -5,8 +5,9 @@ starting_perks:
 experience: 
   max_level: 100 
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
-  exp_damage_piece: 10
-  exp_second_piece: 5
+  exp_damage_piece: 10 # Exp per damage dealt
+  exp_second_piece: 5 # Exp per second spent in combat, per piece of light armor. Players enter combat when hit, or when hitting entities, for a specified duration in config.yml
+  exp_multiplier_point: 0.05 # Exp multiplier bonus for each point of armor the player has. With 0.05 and 40 armor points the player gains +200% exp
 
 special_perks: []
 
@@ -267,3 +268,42 @@ perks:
       - lightarmor_perk_1
     other_levels_required:
       - HEAVY_WEAPONS:50
+  lightarmor_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "3,7"
+    name: "<lang.lightarmor_perk_ng1_name>"
+    description: "<lang.lightarmor_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_light_armor: 0
+      p:lightarmor_newgameplus_add: 1
+      p:lightarmor_damageresistanceperpiece_add: 0.0125
+      p:lightarmor_movementspeedperpiece_add: 0.025
+      p:lightarmor_lightarmorexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - lightarmor_perk_ng1
+    messages:
+      - "<lang.lightarmor_perk_ng1_messages>"
+  lightarmor_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "3,7"
+    name: "<lang.lightarmor_perk_ng2_name>"
+    description: "<lang.lightarmor_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - lightarmor_perk_ng1
+    perk_rewards:
+      reset_skill_light_armor: 0
+      p:lightarmor_newgameplus_add: 1
+      p:lightarmor_damageresistanceperpiece_add: 0.0125
+      p:lightarmor_movementspeedperpiece_add: 0.025
+      p:lightarmor_lightarmorexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - lightarmor_perk_ng1
+        - lightarmor_perk_ng2
+    messages:
+      - "<lang.lightarmor_perk_ng2_messages>"

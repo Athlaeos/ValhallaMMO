@@ -55,21 +55,22 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LootListener implements Listener {
 
-    private static final Map<Block, List<ItemStack>> preparedBlockDrops = new HashMap<>();
-    private static final Map<Block, Double> preparedLuckBuffs = new HashMap<>();
-    private static final Map<Block, UUID> transferToInventory = new HashMap<>();
+    private static final Map<Location, List<ItemStack>> preparedBlockDrops = new HashMap<>();
+    private static final Map<Location, Double> preparedLuckBuffs = new HashMap<>();
+    private static final Map<Location, UUID> transferToInventory = new HashMap<>();
     private static final Map<UUID, Double> preparedFishingLuckBuffs = new HashMap<>();
-    private static final Map<Block, UUID> blockBreakerMap = new HashMap<>();
+    private static final Map<Location, UUID> blockBreakerMap = new HashMap<>();
 
     public LootListener(){
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20)) ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new ArchaeologyListener(), ValhallaMMO.getInstance());
     }
 
     public static void setResponsibleBreaker(Block block, Player breaker){
-        blockBreakerMap.put(block, breaker.getUniqueId());
+        blockBreakerMap.put(block.getLocation(), breaker.getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -93,14 +94,14 @@ public class LootListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPlayerBreakFinal(BlockBreakEvent e){
         if (e.isCancelled() || ArchaeologyListener.isBrushable(e.getBlock().getType())){
-            preparedBlockDrops.remove(e.getBlock());
+            preparedBlockDrops.remove(e.getBlock().getLocation());
             return;
         }
-        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
-            if (transferToInventory.containsKey(e.getBlock()) && transferToInventory.get(e.getBlock()).equals(e.getPlayer().getUniqueId())) ItemUtils.addItem(e.getPlayer(), i, false);
+        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock().getLocation(), new ArrayList<>())){
+            if (transferToInventory.containsKey(e.getBlock().getLocation()) && transferToInventory.get(e.getBlock().getLocation()).equals(e.getPlayer().getUniqueId())) ItemUtils.addItem(e.getPlayer(), i, false);
             else e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
         }
-        preparedBlockDrops.remove(e.getBlock());
+        preparedBlockDrops.remove(e.getBlock().getLocation());
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -124,25 +125,25 @@ public class LootListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockHarvestFinal(PlayerHarvestBlockEvent e){
         if (e.isCancelled() || ArchaeologyListener.isBrushable(e.getHarvestedBlock().getType())){
-            preparedBlockDrops.remove(e.getHarvestedBlock());
+            preparedBlockDrops.remove(e.getHarvestedBlock().getLocation());
             return;
         }
-        List<ItemStack> drops = preparedBlockDrops.getOrDefault(e.getHarvestedBlock(), new ArrayList<>());
+        List<ItemStack> drops = preparedBlockDrops.getOrDefault(e.getHarvestedBlock().getLocation(), new ArrayList<>());
         drops.addAll(e.getItemsHarvested());
         e.getItemsHarvested().clear();
         for (ItemStack i : drops){
-            if (transferToInventory.containsKey(e.getHarvestedBlock()) && transferToInventory.get(e.getHarvestedBlock()).equals(e.getPlayer().getUniqueId())) ItemUtils.addItem(e.getPlayer(), i, false);
+            if (transferToInventory.containsKey(e.getHarvestedBlock().getLocation()) && transferToInventory.get(e.getHarvestedBlock().getLocation()).equals(e.getPlayer().getUniqueId())) ItemUtils.addItem(e.getPlayer(), i, false);
             else e.getHarvestedBlock().getWorld().dropItemNaturally(e.getHarvestedBlock().getLocation(), i);
         }
-        preparedBlockDrops.remove(e.getHarvestedBlock());
+        preparedBlockDrops.remove(e.getHarvestedBlock().getLocation());
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBurnBreak(BlockBurnEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
 
-        UUID uuid = blockBreakerMap.get(e.getBlock());
-        blockBreakerMap.remove(e.getBlock());
+        UUID uuid = blockBreakerMap.get(e.getBlock().getLocation());
+        blockBreakerMap.remove(e.getBlock().getLocation());
         Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
@@ -159,21 +160,21 @@ public class LootListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBurnBreakFinal(BlockBurnEvent e){
         if (e.isCancelled() || ArchaeologyListener.isBrushable(e.getBlock().getType())){
-            preparedBlockDrops.remove(e.getBlock());
+            preparedBlockDrops.remove(e.getBlock().getLocation());
             return;
         }
-        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
+        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock().getLocation(), new ArrayList<>())){
             e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
         }
-        preparedBlockDrops.remove(e.getBlock());
+        preparedBlockDrops.remove(e.getBlock().getLocation());
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockFadeBreak(BlockFadeEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
 
-        UUID uuid = blockBreakerMap.get(e.getBlock());
-        blockBreakerMap.remove(e.getBlock());
+        UUID uuid = blockBreakerMap.get(e.getBlock().getLocation());
+        blockBreakerMap.remove(e.getBlock().getLocation());
         Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
@@ -193,21 +194,21 @@ public class LootListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockFadeBreakFinal(BlockFadeEvent e){
         if (e.isCancelled() || ArchaeologyListener.isBrushable(e.getBlock().getType())){
-            preparedBlockDrops.remove(e.getBlock());
+            preparedBlockDrops.remove(e.getBlock().getLocation());
             return;
         }
-        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
+        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock().getLocation(), new ArrayList<>())){
             e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
         }
-        preparedBlockDrops.remove(e.getBlock());
+        preparedBlockDrops.remove(e.getBlock().getLocation());
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockDecay(LeavesDecayEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
 
-        UUID uuid = blockBreakerMap.get(e.getBlock());
-        blockBreakerMap.remove(e.getBlock());
+        UUID uuid = blockBreakerMap.get(e.getBlock().getLocation());
+        blockBreakerMap.remove(e.getBlock().getLocation());
         Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
@@ -227,13 +228,13 @@ public class LootListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockDecayFinal(LeavesDecayEvent e){
         if (e.isCancelled() || ArchaeologyListener.isBrushable(e.getBlock().getType())){
-            preparedBlockDrops.remove(e.getBlock());
+            preparedBlockDrops.remove(e.getBlock().getLocation());
             return;
         }
-        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
+        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock().getLocation(), new ArrayList<>())){
             e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
         }
-        preparedBlockDrops.remove(e.getBlock());
+        preparedBlockDrops.remove(e.getBlock().getLocation());
     }
 
     private Pair<Double, Integer> getFortuneAndLuck(Player p, Block b){
@@ -242,7 +243,7 @@ public class LootListener implements Listener {
         if (p != null){
             AttributeInstance luckInstance = p.getAttribute(Attribute.GENERIC_LUCK);
             luck = luckInstance == null ? 0 : luckInstance.getValue();
-            luck += preparedLuckBuffs.getOrDefault(b, 0D);
+            luck += preparedLuckBuffs.getOrDefault(b.getLocation(), 0D);
             ItemStack hand = p.getInventory().getItemInMainHand();
             if (!ItemUtils.isEmpty(hand)){
                 if (hand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) fortune = hand.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
@@ -256,8 +257,8 @@ public class LootListener implements Listener {
     public void onBlockReplaceBreak(BlockFromToEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
 
-        UUID uuid = blockBreakerMap.get(e.getBlock());
-        blockBreakerMap.remove(e.getBlock());
+        UUID uuid = blockBreakerMap.get(e.getBlock().getLocation());
+        blockBreakerMap.remove(e.getBlock().getLocation());
         Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
@@ -275,16 +276,16 @@ public class LootListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockReplaceBreakFinal(BlockFromToEvent e){
         if (e.isCancelled() || ArchaeologyListener.isBrushable(e.getBlock().getType())){
-            preparedBlockDrops.remove(e.getBlock());
+            preparedBlockDrops.remove(e.getBlock().getLocation());
             return;
         }
-        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
+        for (ItemStack i : preparedBlockDrops.getOrDefault(e.getBlock().getLocation(), new ArrayList<>())){
             e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), i);
         }
-        preparedBlockDrops.remove(e.getBlock());
+        preparedBlockDrops.remove(e.getBlock().getLocation());
     }
 
-    private static final Map<Block, Material> explodedBlocks = new HashMap<>();
+    private static final Map<Location, Material> explodedBlocks = new HashMap<>();
 
     /**
      * Marks a block as having been exploded. When a block is marked as such, regardless of if it's now air or not,
@@ -292,7 +293,7 @@ public class LootListener implements Listener {
      * @param b the block to mark as being exploded. It's important this block is still its original material pre-explosion or this method will do nothing
      */
     public static void markExploded(Block b){
-        explodedBlocks.put(b, b.getType());
+        explodedBlocks.put(b.getLocation(), b.getType());
     }
 
     public static void setFortuneLevel(Entity e, int level){
@@ -310,10 +311,10 @@ public class LootListener implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
 
         List<Block> blocks = new ArrayList<>(e.blockList());
-        blocks.addAll(explodedBlocks.keySet());
+        blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).collect(Collectors.toList()));
         for (Block b : blocks){
             exploded.add(b);
-            double extraLuck = preparedLuckBuffs.getOrDefault(b, 0D);
+            double extraLuck = preparedLuckBuffs.getOrDefault(b.getLocation(), 0D);
             if (onBlockDestruction(b,
                     new LootContext.Builder(b.getLocation()).lootedEntity(null).killer(null).lootingModifier(0).luck((float) extraLuck).build(),
                     new BlockExplodeBlockDestructionInfo(b, e),
@@ -329,19 +330,19 @@ public class LootListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBlockExplodeBreakFinal(BlockExplodeEvent e){
         if (e.isCancelled() || ArchaeologyListener.isBrushable(e.getBlock().getType())){
-            preparedBlockDrops.remove(e.getBlock());
+            preparedBlockDrops.remove(e.getBlock().getLocation());
             return;
         }
 
         List<Block> blocks = new ArrayList<>(e.blockList());
-        blocks.addAll(explodedBlocks.keySet());
+        blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).collect(Collectors.toList()));
         for (Block b : blocks){
             if (!ArchaeologyListener.isBrushable(b.getType())) {
-                for (ItemStack i : preparedBlockDrops.getOrDefault(b, new ArrayList<>())){
+                for (ItemStack i : preparedBlockDrops.getOrDefault(b.getLocation(), new ArrayList<>())){
                     b.getWorld().dropItemNaturally(b.getLocation(), i);
                 }
             }
-            preparedBlockDrops.remove(b);
+            preparedBlockDrops.remove(b.getLocation());
         }
     }
 
@@ -361,11 +362,11 @@ public class LootListener implements Listener {
         double luck = luckInstance == null ? 0 : luckInstance.getValue();
 
         List<Block> blocks = new ArrayList<>(e.blockList());
-        blocks.addAll(explodedBlocks.keySet());
+        blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).collect(Collectors.toList()));
         for (Block b : blocks){
             if (ArchaeologyListener.isBrushable(b.getType())) continue;
             exploded.add(b);
-            double extraLuck = preparedLuckBuffs.getOrDefault(b, 0D);
+            double extraLuck = preparedLuckBuffs.getOrDefault(b.getLocation(), 0D);
             if (onBlockDestruction(b,
                     new LootContext.Builder(b.getLocation()).lootedEntity(owner != null ? owner : e.getEntity()).killer(null).lootingModifier(getFortuneLevel(e.getEntity())).luck((float) (luck + extraLuck)).build(),
                     new EntityExplodeBlockDestructionInfo(b, e),
@@ -386,15 +387,15 @@ public class LootListener implements Listener {
         Entity owner = uuid == null ? null : ValhallaMMO.getInstance().getServer().getEntity(uuid);
 
         List<Block> blocks = new ArrayList<>(e.blockList());
-        blocks.addAll(explodedBlocks.keySet());
+        blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).collect(Collectors.toList()));
         for (Block b : blocks){
             if (!ArchaeologyListener.isBrushable(b.getType())){
-                for (ItemStack i : preparedBlockDrops.getOrDefault(b, new ArrayList<>())){
-                    if (owner instanceof Player p && transferToInventory.containsKey(b) && transferToInventory.get(b).equals(p.getUniqueId())) ItemUtils.addItem(p, i, false);
+                for (ItemStack i : preparedBlockDrops.getOrDefault(b.getLocation(), new ArrayList<>())){
+                    if (owner instanceof Player p && transferToInventory.containsKey(b.getLocation()) && transferToInventory.get(b.getLocation()).equals(p.getUniqueId())) ItemUtils.addItem(p, i, false);
                     else b.getWorld().dropItemNaturally(b.getLocation(), i);
                 }
             }
-            preparedBlockDrops.remove(b);
+            preparedBlockDrops.remove(b.getLocation());
         }
     }
 
@@ -414,8 +415,8 @@ public class LootListener implements Listener {
     private boolean onBlockDestruction(Block b, LootContext context, BlockDestructionInfo info, BlockDestructionEvent.BlockDestructionReason reason){
         BlockDestructionEvent destroyEvent = new BlockDestructionEvent(b, info, reason);
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(destroyEvent);
-        Material originalMaterial = explodedBlocks.getOrDefault(b, b.getType());
-        explodedBlocks.remove(b);
+        Material originalMaterial = explodedBlocks.getOrDefault(b.getLocation(), b.getType());
+        explodedBlocks.remove(b.getLocation());
         if (!destroyEvent.getInfo().isCancelled(info.getEvent())){
             LootTable table = LootTableRegistry.getLootTable(b, originalMaterial);
             if (table == null || !BlockUtils.canReward(b) || ArchaeologyListener.isBrushable(b.getType())) return false;
@@ -605,16 +606,16 @@ public class LootListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockDrops(BlockDropItemEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !transferToInventory.containsKey(e.getBlock())){
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !transferToInventory.containsKey(e.getBlock().getLocation())){
             clear(e.getBlock());
             return;
         }
-        boolean transfer = transferToInventory.containsKey(e.getBlock()) && transferToInventory.get(e.getBlock()).equals(e.getPlayer().getUniqueId());
-        for (ItemStack item : preparedBlockDrops.getOrDefault(e.getBlock(), new ArrayList<>())){
+        boolean transfer = transferToInventory.containsKey(e.getBlock().getLocation()) && transferToInventory.get(e.getBlock().getLocation()).equals(e.getPlayer().getUniqueId());
+        for (ItemStack item : preparedBlockDrops.getOrDefault(e.getBlock().getLocation(), new ArrayList<>())){
             if (transfer) ItemUtils.addItem(e.getPlayer(), item, false);
             else e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
         }
-        preparedBlockDrops.remove(e.getBlock());
+        preparedBlockDrops.remove(e.getBlock().getLocation());
         if (transfer){
             for (Item i : e.getItems()) ItemUtils.addItem(e.getPlayer(), i.getItemStack(), false);
             e.getItems().clear();
@@ -624,10 +625,10 @@ public class LootListener implements Listener {
 
     public static void clear(Block b){
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            transferToInventory.remove(b);
-            preparedBlockDrops.remove(b);
-            preparedLuckBuffs.remove(b);
-            explodedBlocks.remove(b);
+            transferToInventory.remove(b.getLocation());
+            preparedBlockDrops.remove(b.getLocation());
+            preparedLuckBuffs.remove(b.getLocation());
+            explodedBlocks.remove(b.getLocation());
             exploded.remove(b);
         }, 1L);
     }
@@ -764,8 +765,8 @@ public class LootListener implements Listener {
     }
 
     public static void addPreparedLuck(Block b, double luck){
-        double existing = preparedLuckBuffs.getOrDefault(b, 0D);
-        preparedLuckBuffs.put(b, existing + luck);
+        double existing = preparedLuckBuffs.getOrDefault(b.getLocation(), 0D);
+        preparedLuckBuffs.put(b.getLocation(), existing + luck);
     }
 
     public static void addPreparedLuck(Player p, double luck){
@@ -778,7 +779,7 @@ public class LootListener implements Listener {
     }
 
     public static double getPreparedLuck(Block b){
-        return preparedLuckBuffs.getOrDefault(b, 0D);
+        return preparedLuckBuffs.getOrDefault(b.getLocation(), 0D);
     }
 
     /**
@@ -789,7 +790,7 @@ public class LootListener implements Listener {
      * @return the list of extra items that will drop from the block, or an empty list if none.
      */
     public static List<ItemStack> getPreparedExtraDrops(Block b){
-        return preparedBlockDrops.getOrDefault(b, new ArrayList<>());
+        return preparedBlockDrops.getOrDefault(b.getLocation(), new ArrayList<>());
     }
 
     /**
@@ -802,7 +803,7 @@ public class LootListener implements Listener {
     }
 
     public static void setInstantPickup(Block b, Player who){
-        transferToInventory.put(b, who.getUniqueId());
+        transferToInventory.put(b.getLocation(), who.getUniqueId());
     }
 
     public static void prepareFishingDrops(UUID fisher, ItemStack... items){
@@ -820,16 +821,16 @@ public class LootListener implements Listener {
     }
 
     public static void prepareBlockDrops(Block b, List<ItemStack> items){
-        List<ItemStack> preparedDrops = preparedBlockDrops.getOrDefault(b, new ArrayList<>());
+        List<ItemStack> preparedDrops = preparedBlockDrops.getOrDefault(b.getLocation(), new ArrayList<>());
         preparedDrops.addAll(items);
-        preparedBlockDrops.put(b, preparedDrops);
+        preparedBlockDrops.put(b.getLocation(), preparedDrops);
     }
 
     public static Map<UUID, List<ItemStack>> getPreparedFishingDrops() {
         return preparedFishingDrops;
     }
 
-    public static Map<Block, List<ItemStack>> getPreparedBlockDrops() {
+    public static Map<Location, List<ItemStack>> getPreparedBlockDrops() {
         return preparedBlockDrops;
     }
 }

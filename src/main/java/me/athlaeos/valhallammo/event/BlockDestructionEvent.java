@@ -29,6 +29,9 @@ public class BlockDestructionEvent extends BlockEvent {
     public HandlerList getHandlers() {
         return handlers;
     }
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
     public enum BlockDestructionReason{
         PLAYER_BREAK,

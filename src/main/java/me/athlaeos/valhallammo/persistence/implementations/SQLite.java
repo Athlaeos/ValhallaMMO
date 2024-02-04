@@ -1,7 +1,6 @@
 package me.athlaeos.valhallammo.persistence.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.playerstats.LeaderboardCompatible;

@@ -36,13 +36,6 @@ perks:
     required_lv: 0
     perk_rewards:
       heavyweapons_damagemultiplier_add: 0.1
-      recipes_unlock:
-        - craft_wooden_warhammer
-        - craft_stone_warhammer
-        - craft_golden_warhammer
-        - craft_iron_warhammer
-        - craft_diamond_warhammer
-        - craft_netherite_warhammer
     messages:
       - "<lang.heavyweapons_perk_1_messages>"
     custom_model_data_unlockable: -1
@@ -59,13 +52,6 @@ perks:
     perk_rewards:
       heavyweapons_powerattackdamagemultiplier_add: 0.1
       heavyweapons_critchance_add: 0.1
-      recipes_unlock:
-        - craft_wooden_greataxe
-        - craft_stone_greataxe
-        - craft_golden_greataxe
-        - craft_iron_greataxe
-        - craft_diamond_greataxe
-        - craft_netherite_greataxe
     messages:
       - "<lang.heavyweapons_perk_2_messages>"
     requireperk_all:
@@ -162,13 +148,6 @@ perks:
       heavyweapons_powerattackfraction_add: 0.25
       heavyweapons_powerattackradius_add: 0.5
       heavyweapons_penetrationflat_add: 10
-      recipes_unlock:
-        - craft_wooden_spear
-        - craft_stone_spear
-        - craft_golden_spear
-        - craft_iron_spear
-        - craft_diamond_spear
-        - craft_netherite_spear
     messages:
       - "<lang.heavyweapons_perk_5_messages>"
     requireperk_all:
@@ -278,3 +257,44 @@ perks:
       heavyweapons_damagetolightarmormultiplier_add: 0.05
     messages:
       - "<lang.heavyweapons_perk_combo_messages>"
+  heavyweapons_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "3,11"
+    name: "<lang.heavyweapons_perk_ng1_name>"
+    description: "<lang.heavyweapons_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_heavy_weapons: 0
+      p:heavyweapons_newgameplus_add: 1
+      p:heavyweapons_damagemultiplier_add: 0.15
+      p:heavyweapons_powerattackfraction_add: 0.2
+      p:heavyweapons_critchance_add: 0.1
+      p:heavyweapons_heavyweaponsexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - heavyweapons_perk_ng1
+    messages:
+      - "<lang.heavyweapons_perk_ng1_messages>"
+  heavyweapons_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "3,11"
+    name: "<lang.heavyweapons_perk_ng2_name>"
+    description: "<lang.heavyweapons_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - heavyweapons_perk_ng1
+    perk_rewards:
+      reset_skill_heavy_weapons: 0
+      p:heavyweapons_newgameplus_add: 1
+      p:heavyweapons_damagemultiplier_add: 0.15
+      p:heavyweapons_powerattackfraction_add: 0.2
+      p:heavyweapons_critchance_add: 0.1
+      p:heavyweapons_heavyweaponsexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - heavyweapons_perk_ng1
+        - heavyweapons_perk_ng2
+    messages:
+      - "<lang.heavyweapons_perk_ng2_messages>"

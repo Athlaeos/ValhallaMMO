@@ -1,7 +1,6 @@
 package me.athlaeos.valhallammo.block;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import me.athlaeos.valhallammo.nms.NetworkHandler;
 import org.bukkit.GameMode;
@@ -13,7 +12,6 @@ public class BlockBreakNetworkHandlerImpl implements NetworkHandler {
         if (player.getGameMode() == GameMode.CREATIVE) return PacketStatus.ALLOW;
         DigPacketInfo info = ValhallaMMO.getNms().readDiggingPacket(player, packet);
         if (info == null || info.getType() == DigPacketInfo.Type.INVALID) return PacketStatus.ALLOW;
-        CustomBreakSpeedListener.onStart(info);
         return PacketStatus.ALLOW;
     }
 
@@ -23,6 +21,9 @@ public class BlockBreakNetworkHandlerImpl implements NetworkHandler {
         DigPacketInfo info = ValhallaMMO.getNms().readDiggingPacket(player, packet);
         if (info == null || info.getType() == DigPacketInfo.Type.INVALID) return;
 
-        CustomBreakSpeedListener.onStop(info);
+        switch (info.getType()){
+            case ABORT, STOP, INVALID -> CustomBreakSpeedListener.onStop(info);
+            case START -> CustomBreakSpeedListener.onStart(info);
+        }
     }
 }

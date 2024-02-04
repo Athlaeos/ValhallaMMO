@@ -13,6 +13,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -21,7 +22,7 @@ import org.bukkit.persistence.PersistentDataType;
 public class JoinLeaveListener implements Listener {
     private final NamespacedKey HEALTH = new NamespacedKey(ValhallaMMO.getInstance(), "cached_health");
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e) {
         ProfileRegistry.getPersistence().loadProfile(e.getPlayer());
         EntityCache.getAndCacheProperties(e.getPlayer());
@@ -40,7 +41,7 @@ public class JoinLeaveListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent e){
         // the following code is to remove valhallammo's attribute modifiers off players when they log off
         // this is to prevent, in the case valhallammo is being uninstalled, no unintended attributes remain

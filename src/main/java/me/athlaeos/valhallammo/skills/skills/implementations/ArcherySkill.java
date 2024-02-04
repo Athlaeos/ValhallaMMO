@@ -22,6 +22,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.ArcheryProfile;
 import me.athlaeos.valhallammo.potioneffects.implementations.Stun;
+import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.Bleeder;
 import me.athlaeos.valhallammo.utility.*;
@@ -52,29 +53,33 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class ArcherySkill extends Skill implements Listener {
-    private final double expBaseBow;
-    private final double expBaseCrossbow;
-    private final double expDamageBonus;
-    private final double expDistanceMultiplierBase;
-    private final double expDistanceMultiplierBonus;
-    private final int expDistanceLimit;
-    private final int damageDistanceLimit;
-    private final double expInfinityMultiplier;
-    private final double expSpawnerMultiplier;
-    private final double damageDiminishingReturnsLimit;
-    private final double damageDiminishingReturnsMultiplier;
+    private double expBaseBow = 0;
+    private double expBaseCrossbow = 0;
+    private double expDamageBonus = 0;
+    private double expDistanceMultiplierBase = 0;
+    private double expDistanceMultiplierBonus = 0;
+    private int expDistanceLimit = 0;
+    private int damageDistanceLimit = 0;
+    private double expInfinityMultiplier = 0;
+    private double expSpawnerMultiplier = 0;
+    private double damageDiminishingReturnsLimit = 0;
+    private double damageDiminishingReturnsMultiplier = 0;
     private Animation chargedShotActivationAnimation;
     private Animation chargedShotFireAnimation;
     private Animation chargedShotSonicBoomAnimation;
     private Animation chargedShotAmmoAnimation;
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
 
-    private final Particle trail;
-    private final Particle.DustOptions trailOptions;
-    private final double sonicBoomRequiredVelocity;
+    private Particle trail = null;
+    private Particle.DustOptions trailOptions = null;
+    private double sonicBoomRequiredVelocity = 0;
 
     public ArcherySkill(String type) {
         super(type);
+    }
+
+    @Override
+    public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/archery_progression.yml");
         ValhallaMMO.getInstance().save("skills/archery.yml");
 
@@ -196,15 +201,17 @@ public class ArcherySkill extends Skill implements Listener {
         e.setDamage(damage);
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(v.getLocation().getChunk(), p);
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(v.getType(), 1D);
-            double exp = ((expDistanceMultiplierBase * baseExp) + (baseExp * expDistanceMultiplierBonus * expDistance)) * entityExpMultiplier;
+            double exp = ((expDistanceMultiplierBase * baseExp) + (baseExp * expDistanceMultiplierBonus * expDistance)) * entityExpMultiplier * chunkNerf;
             if (hasInfinity) exp *= expInfinityMultiplier;
             addEXP(p,
-                    (1 + (expDamageBonus * EntityDamagedListener.getLastDamageTaken(v.getUniqueId()))) * exp *
+                    (1 + (expDamageBonus * Math.min(EntityUtils.getMaxHP(v), EntityDamagedListener.getLastDamageTaken(v.getUniqueId(), e.getFinalDamage())))) * exp *
                             entityExpMultiplier *
                             (EntitySpawnListener.getSpawnReason(v) == CreatureSpawnEvent.SpawnReason.SPAWNER ? expSpawnerMultiplier : 1),
                     false,
                     PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+            ChunkEXPNerf.increment(v.getLocation().getChunk(), p);
         }, 2L);
     }
 

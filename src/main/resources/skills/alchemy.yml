@@ -29,13 +29,13 @@ combined_potion_display_name: '<lang.combined_potion_name>'
 quality_lore: # Cosmetic quality placed on the item as lore once its quality rating exceeds one of these.
   # If left empty, they won't appear.
   0: '<lang.alchemy-quality-rancid>'
-  50: '<lang.alchemy-quality-tainted>'
-  100: '<lang.alchemy-quality-dirty>'
-  150: '<lang.alchemy-quality-cloudy>'
-  200: '<lang.alchemy-quality-clear>'
-  250: '<lang.alchemy-quality-refined>'
-  300: '<lang.alchemy-quality-pure>'
-  350: '<lang.alchemy-quality-shimmering>'
+  30: '<lang.alchemy-quality-tainted>'
+  60: '<lang.alchemy-quality-dirty>'
+  90: '<lang.alchemy-quality-cloudy>'
+  120: '<lang.alchemy-quality-clear>'
+  150: '<lang.alchemy-quality-refined>'
+  200: '<lang.alchemy-quality-pure>'
+  300: '<lang.alchemy-quality-shimmering>'
 
 effects_inverted: # Specific for the potion modifier "invert effects", essentially the equivalent to using a fermented
   # spider eye to invert a potion's effects. If this modifier is applied to a potion effect, these potion effects are inverted.

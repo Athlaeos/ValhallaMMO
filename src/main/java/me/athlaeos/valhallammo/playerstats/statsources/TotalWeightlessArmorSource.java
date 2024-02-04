@@ -10,9 +10,9 @@ public class TotalWeightlessArmorSource implements AccumulativeStatSource, EvEAc
     @Override
     public double fetch(Entity statPossessor, boolean use) {
         if (statPossessor instanceof LivingEntity v){
-            double nonEquipmentArmor = Math.max(0, AccumulativeStatManager.getCachedStats("WEIGHTLESS_ARMOR", v, 10000, true));
+            double nonEquipmentArmor = AccumulativeStatManager.getCachedStats("WEIGHTLESS_ARMOR", v, 10000, true);
 
-            double armorMultiplierBonus = 1 + Math.max(0, AccumulativeStatManager.getCachedStats("ARMOR_MULTIPLIER_BONUS", v, 10000, true));
+            double armorMultiplierBonus = 1 + AccumulativeStatManager.getCachedStats("ARMOR_MULTIPLIER_BONUS", v, 10000, true);
 
             return nonEquipmentArmor * armorMultiplierBonus;
         }

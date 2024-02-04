@@ -1,9 +1,11 @@
 package me.athlaeos.valhallammo.listeners;
 
+import me.athlaeos.valhallammo.entities.MonsterScalingManager;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.utility.Bleeder;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -34,6 +36,13 @@ public class DeathListener implements Listener {
                 .replace("%player%", e.getEntity().getName())
                 .replace("%killer%", lastDamager != null ? lastDamager.getName() : ""))
         );
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onEntityExpDrops(EntityDeathEvent e){
+        double multiplier = (1 + MonsterScalingManager.getExpOrbMultiplier(e.getEntity()));
+        if (e.getEntity().getKiller() != null) multiplier *= ChunkEXPNerf.getChunkEXPOrbsNerf(e.getEntity().getLocation().getChunk(), e.getEntity().getKiller());
+        e.setDroppedExp(Utils.randomAverage(e.getDroppedExp() * multiplier));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

@@ -7,7 +7,7 @@ import org.bukkit.event.entity.EntityEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class EntityStunEvent extends EntityEvent implements Cancellable {
-    private static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
     private boolean cancelled = false;
     private int duration;
     private final Entity causedBy;
@@ -18,8 +18,8 @@ public class EntityStunEvent extends EntityEvent implements Cancellable {
         this.duration = duration;
     }
 
-    @Override public @NotNull HandlerList getHandlers() { return HANDLER_LIST; }
-    public static HandlerList getHandlerList() { return HANDLER_LIST; }
+    @Override public @NotNull HandlerList getHandlers() { return handlers; }
+    public static HandlerList getHandlerList() { return handlers; }
     @Override public boolean isCancelled() { return cancelled; }
     public Entity getCausedBy() { return causedBy; }
     public int getDuration() { return duration; }

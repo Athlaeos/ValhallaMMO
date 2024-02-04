@@ -7,6 +7,7 @@ experience:
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   max_level: 100
   exp_gain:
+    experience_spent_conversion: 2 # The fraction of spent experience during enchanting that's converted into additional enchanting skill experience
     enchantment_base:
       power: 180
       efficiency: 180
@@ -555,3 +556,44 @@ perks:
       - enchanting_perk_2
     other_levels_required:
       - FARMING:50
+  enchanting_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "4,9"
+    name: "<lang.enchanting_perk_ng1_name>"
+    description: "<lang.enchanting_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_enchanting: 0
+      p:enchanting_newgameplus_add: 1
+      p:enchanting_enchantingskill_add: 50
+      p:enchanting_anvilskill_add: 50
+      p:enchanting_essencemultiplier_add: 0.5
+      p:enchanting_enchantingexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - enchanting_perk_ng1
+    messages:
+      - "<lang.enchanting_perk_ng1_messages>"
+  enchanting_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "4,9"
+    name: "<lang.enchanting_perk_ng2_name>"
+    description: "<lang.enchanting_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - enchanting_perk_ng1
+    perk_rewards:
+      reset_skill_enchanting: 0
+      p:enchanting_newgameplus_add: 1
+      p:enchanting_enchantingskill_add: 50
+      p:enchanting_anvilskill_add: 50
+      p:enchanting_essencemultiplier_add: 0.5
+      p:enchanting_enchantingexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - enchanting_perk_ng1
+        - enchanting_perk_ng2
+    messages:
+      - "<lang.enchanting_perk_ng2_messages>"

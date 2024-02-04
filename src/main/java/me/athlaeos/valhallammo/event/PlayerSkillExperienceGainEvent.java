@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerSkillExperienceGainEvent extends PlayerEvent implements Cancellable {
-    private static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
     private boolean isCancelled;
     private double amount;
     private Skill leveledSkill;
@@ -50,7 +50,7 @@ public class PlayerSkillExperienceGainEvent extends PlayerEvent implements Cance
     @Override
     @NotNull
     public HandlerList getHandlers() {
-        return HANDLER_LIST;
+        return handlers;
     }
 
     public ExperienceGainReason getReason() {
@@ -62,7 +62,7 @@ public class PlayerSkillExperienceGainEvent extends PlayerEvent implements Cance
     }
 
     public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
+        return handlers;
     }
 
     public enum ExperienceGainReason{

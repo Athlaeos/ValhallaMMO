@@ -13,10 +13,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 public class PowerSkill extends Skill implements Listener {
-    private final double expPerLevelUp;
+    private double expPerLevelUp = 0;
 
     public PowerSkill(String type) {
         super(type);
+    }
+
+    @Override
+    public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/power_progression.yml");
         ValhallaMMO.getInstance().save("skills/power.yml");
 
