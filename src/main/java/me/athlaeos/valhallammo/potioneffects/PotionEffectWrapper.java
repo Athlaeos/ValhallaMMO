@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.potioneffects;
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PermanentPotionEffectAdd;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd;
 import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.localization.TranslationManager;
@@ -36,6 +37,9 @@ public abstract class PotionEffectWrapper {
 
     public PotionEffectWrapper addModifier(Material icon, double smallIncrement, double bigIncrement){
         ModifierRegistry.register(new PotionEffectAdd("potion_effect_add_" + effect.toLowerCase(), effect, smallIncrement, bigIncrement, icon));
+        if (isVanilla) {
+            ModifierRegistry.register(new PermanentPotionEffectAdd("permanent_effect_add_" + vanillaEffect.getKey().getKey().replace("-", "_"), effect, icon));
+        }
         return this;
     }
 

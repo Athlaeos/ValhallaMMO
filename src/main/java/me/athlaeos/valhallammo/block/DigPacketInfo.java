@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -61,12 +62,17 @@ public class DigPacketInfo {
         return type == Type.ABORT || type == Type.STOP;
     }
 
-    private static final Map<UUID, Double> blockSpecificSpeedCache = new HashMap<>();
+    private static final Map<UUID, BlockCache> blockSpecificSpeedCache = new HashMap<>();
     private static final Map<UUID, Float> cachedMultiplier = new HashMap<>();
     private static final Collection<UUID> cachedSwimmingMiners = new HashSet<>();
+    private static final Collection<UUID> cachedAirMiners = new HashSet<>();
     public static void resetMinerCache(UUID uuid){
         cachedMultiplier.remove(uuid);
         cachedSwimmingMiners.remove(uuid);
+        cachedAirMiners.remove(uuid);
+    }
+    public static void resetBlockSpecificCache(UUID uuid){
+        blockSpecificSpeedCache.remove(uuid);
     }
 
     public static float damage(Player digger, Block b){
@@ -86,44 +92,53 @@ public class DigPacketInfo {
                 ValhallaMMO.getNms().toolPower(tool.getItem(), hardnessTranslations.get(b.getType())) :
                 ValhallaMMO.getNms().toolPower(tool == null ? null : tool.getItem(), b);
 
-        float multiplier = 1;
-        boolean canSwimMine = cachedSwimmingMiners.contains(digger.getUniqueId());
-        if (cachedMultiplier.containsKey(digger.getUniqueId())) multiplier = cachedMultiplier.get(digger.getUniqueId());
-        else {
-            if (toolStrength > 1){
-                // preferred tool for block
-                multiplier = tool == null ? 1F : (float) MiningSpeed.getMultiplier(tool.getMeta(), b.getType());
+        float baseMultiplier = 1;
+        if (toolStrength > 1){
+            // preferred tool for block
+            baseMultiplier = tool == null ? 1F : (float) MiningSpeed.getMultiplier(tool.getMeta(), b.getType());
 
-                int efficiency = tool == null ? 0 : tool.getItem().getEnchantmentLevel(Enchantment.DIG_SPEED);
-                if (efficiency > 0) multiplier += MathUtils.pow(efficiency, 2) + 1;
+            int efficiency = tool == null ? 0 : tool.getItem().getEnchantmentLevel(Enchantment.DIG_SPEED);
+            if (efficiency > 0) {
+                baseMultiplier += MathUtils.pow(efficiency, 2) + 1;
             }
-
-            double blockSpecificBonus = 0;
-            if (blockSpecificSpeedCache.containsKey(digger.getUniqueId())) blockSpecificBonus = blockSpecificSpeedCache.get(digger.getUniqueId());
-            else {
-                double bonus = AccumulativeStatManager.getStats("BLOCK_SPECIFIC_DIG_SPEED", digger, true);
-                blockSpecificSpeedCache.put(digger.getUniqueId(), bonus);
-                blockSpecificBonus = bonus;
-            }
-            multiplier *= (1 + AccumulativeStatManager.getCachedStats("DIG_SPEED", digger, 10000, true) + blockSpecificBonus);
-
-            PotionEffect haste = digger.getPotionEffect(PotionEffectType.FAST_DIGGING);
-            if (haste != null) multiplier *= (0.2 * haste.getAmplifier()) + 1;
-
-            PotionEffect fatigue = digger.getPotionEffect(PotionEffectType.SLOW_DIGGING);
-            if (fatigue != null && fatigue.getAmplifier() != -1) multiplier *= MathUtils.pow(0.3, Math.min(fatigue.getAmplifier() + 1, 4));
-
-            canSwimMine = properties.getCombinedEnchantments().getOrDefault(Enchantment.WATER_WORKER, 0) > 0 ||
-                    digger.hasPotionEffect(PotionEffectType.CONDUIT_POWER);
-
-            cachedMultiplier.put(digger.getUniqueId(), multiplier);
-            if (canSwimMine) cachedSwimmingMiners.add(digger.getUniqueId());
         }
 
-        if (isInWater(digger) && !canSwimMine) multiplier /= 5;
-        if (!EntityUtils.isOnGround(digger)) multiplier /= 5;
+        boolean canSwimMine = cachedSwimmingMiners.contains(digger.getUniqueId());
+        boolean canAirMine = cachedAirMiners.contains(digger.getUniqueId());
+        float additionalMultiplier = 1;
+        if (cachedMultiplier.containsKey(digger.getUniqueId())) {
+            additionalMultiplier = cachedMultiplier.get(digger.getUniqueId());
+        } else {
+            additionalMultiplier += AccumulativeStatManager.getCachedStats("DIG_SPEED", digger, 10000, true);
 
-        float damage = multiplier / hardness;
+            PotionEffect haste = digger.getPotionEffect(PotionEffectType.FAST_DIGGING);
+            if (haste != null) additionalMultiplier += (0.2 * haste.getAmplifier());
+
+            PotionEffect fatigue = digger.getPotionEffect(PotionEffectType.SLOW_DIGGING);
+            if (fatigue != null && fatigue.getAmplifier() != -1 && fatigue.getAmplifier() < 5) additionalMultiplier *= MathUtils.pow(0.3, Math.min(fatigue.getAmplifier() + 1, 4));
+
+            PowerProfile profile = ProfileCache.getOrCache(digger, PowerProfile.class);
+
+            canSwimMine = properties.getCombinedEnchantments().getOrDefault(Enchantment.WATER_WORKER, 0) > 0 ||
+                    digger.hasPotionEffect(PotionEffectType.CONDUIT_POWER) || profile.hasAquaAffinity();
+
+            cachedMultiplier.put(digger.getUniqueId(), additionalMultiplier);
+            if (canSwimMine) cachedSwimmingMiners.add(digger.getUniqueId());
+            if (profile.hasAerialAffinity()) cachedAirMiners.add(digger.getUniqueId());
+        }
+        baseMultiplier *= additionalMultiplier;
+
+        BlockCache cachedBlockBonus = blockSpecificSpeedCache.get(digger.getUniqueId());
+        if (cachedBlockBonus == null || !sameLocation(b, cachedBlockBonus.block)) {
+            cachedBlockBonus = new BlockCache(b, AccumulativeStatManager.getStats("BLOCK_SPECIFIC_DIG_SPEED", digger, true));
+            blockSpecificSpeedCache.put(digger.getUniqueId(), cachedBlockBonus);
+        }
+        baseMultiplier += cachedBlockBonus.value;
+
+        if (isInWater(digger) && !canSwimMine) baseMultiplier /= 5;
+        if (!EntityUtils.isOnGround(digger) && !canAirMine) baseMultiplier /= 5;
+
+        float damage = baseMultiplier / hardness;
 
         if (toolStrength > 1) damage /= 30;
         else damage /= 100;
@@ -147,4 +162,10 @@ public class DigPacketInfo {
     public enum Type{
         START, STOP, ABORT, INVALID
     }
+
+    private static boolean sameLocation(Block b1, Block b2){
+        return b1.getWorld().getName().equals(b2.getWorld().getName()) && b1.getX() == b2.getX() && b1.getY() == b2.getY() && b1.getZ() == b2.getZ();
+    }
+
+    private static record BlockCache(Block block, double value){}
 }

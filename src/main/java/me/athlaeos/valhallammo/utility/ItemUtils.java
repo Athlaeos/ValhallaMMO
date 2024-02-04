@@ -1000,7 +1000,7 @@ public class ItemUtils {
     }
 
     private static final Collection<Material> instantlyBreakingItems = getMaterialSet(
-            "AIR", "GRASS", "TALL_GRASS", "END_ROD", "BARRIER", "BRAIN_CORAL",
+            "AIR", "GRASS", "TALL_GRASS", "SHORT_GRASS", "END_ROD", "BARRIER", "BRAIN_CORAL",
             "BRAIN_CORAL_FAN", "BUBBLE_CORAL", "BUBBLE_CORAL_FAN", "FIRE_CORAL", "FIRE_CORAL_FAN", "HORN_CORAL",
             "HORN_CORAL_FAN", "TUBE_CORAL", "TUBE_CORAL_FAN", "DEAD_BRAIN_CORAL", "DEAD_BRAIN_CORAL_FAN",
             "DEAD_BUBBLE_CORAL", "DEAD_BUBBLE_CORAL_FAN", "DEAD_FIRE_CORAL", "DEAD_FIRE_CORAL_FAN", "DEAD_HORN_CORAL",

@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.playerstats.LeaderboardEntry;
 import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
+import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
 import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
@@ -100,12 +101,22 @@ public abstract class ProfilePersistence {
         setPersistentProfile(p, profile, associatedSkill.getProfileType());
 
         Collection<String> unlockedPerks = powerProfile.getUnlockedPerks();
+        Collection<String> unlockedPerksCopy = new HashSet<>(powerProfile.getUnlockedPerks());
         unlockedPerks.removeAll(associatedSkill.getPerks().stream().map(Perk::getName).collect(Collectors.toSet()));
         powerProfile.setUnlockedPerks(unlockedPerks);
+        setPersistentProfile(p, powerProfile, PowerProfile.class);
+
+        List<Perk> invertedPerks = new ArrayList<>(associatedSkill.getPerks());
+        Collections.reverse(invertedPerks);
+        invertedPerks.forEach(perk -> {
+            if (!unlockedPerksCopy.contains(perk.getName())) return;
+            for (ResourceExpense expense : perk.getExpenses()){
+                if (!expense.isRefundable()) continue;
+                expense.refund(p);
+            }
+        });
 
         setSkillProfile(p, profile.getBlankProfile(p), associatedSkill.getProfileType());
-
-        setPersistentProfile(p, powerProfile, PowerProfile.class);
         SkillRegistry.updateSkillProgression(p, false);
     }
 

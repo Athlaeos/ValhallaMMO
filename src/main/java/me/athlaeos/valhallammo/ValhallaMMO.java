@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.configuration.ConfigUpdater;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierScalingPresets;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
+import me.athlaeos.valhallammo.entities.Dummy;
 import me.athlaeos.valhallammo.entities.EntityAttributeStats;
 import me.athlaeos.valhallammo.entities.MonsterScalingManager;
 import me.athlaeos.valhallammo.event.PlayerJumpEvent;
@@ -131,7 +132,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerHook(new VaultHook());
         registerHook(new PAPIHook());
         registerHook(new WorldGuardHook());
-        registerHook(new DamageIndicator());
+        registerHook(new DecentHologramsHook());
     }
 
     @Override
@@ -177,6 +178,7 @@ public class ValhallaMMO extends JavaPlugin {
             new Metrics(this, 14942).addCustomChart(new Metrics.SimplePie("using_database_for_player_data", () -> connection instanceof Database db && db.getConnection() != null ? "Yes" : "No"));
         }
 
+        registerListener(new Dummy());
         PlayerJumpEvent.register(this);
         registerListener(new AnvilListener());
         registerListener(new ArmorSwitchListener());
@@ -252,6 +254,7 @@ public class ValhallaMMO extends JavaPlugin {
         if (PotionEffectRegistry.getCustomEffectDisplay() != null) PotionEffectRegistry.getCustomEffectDisplay().start();
         ItemUtils.startProjectileRunnableCache();
         GlobalEffect.initializeRunnable();
+        PermanentPotionEffects.initializeRunnable();
     }
 
     @Override
@@ -264,7 +267,10 @@ public class ValhallaMMO extends JavaPlugin {
                 logSevere("Could not close connection");
             }
         }
-        for (Player p : getServer().getOnlinePlayers()) EntityAttributeStats.removeStats(p);
+        for (Player p : getServer().getOnlinePlayers()) {
+            EntityAttributeStats.removeStats(p);
+            CustomBreakSpeedListener.removeFatiguedPlayer(p);
+        }
 
         CustomRecipeRegistry.saveRecipes(false);
         LootTableRegistry.saveLootTables();
@@ -385,6 +391,10 @@ public class ValhallaMMO extends JavaPlugin {
 
     public static boolean isResourcePackConfigForced() {
         return resourcePackConfigForced;
+    }
+
+    public static void setResourcePackConfigForced(boolean resourcePackConfigForced) {
+        ValhallaMMO.resourcePackConfigForced = resourcePackConfigForced;
     }
 
     public static boolean isWorldBlacklisted(String world) {

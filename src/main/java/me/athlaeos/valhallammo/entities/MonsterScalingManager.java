@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.entities;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.event.EntityUpdateLevelEvent;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
@@ -29,8 +30,12 @@ public class MonsterScalingManager {
     private static String regionalPlayerLevel = null;
     private static final Map<String, String> defaultStatScaling = new HashMap<>();
     private static String defaultLevelScaling = null;
+    private static String defaultExpOrbScaling = null;
     private static final Map<EntityType, Map<String, String>> entityStatScaling = new HashMap<>();
     private static final Map<EntityType, String> entityLevelScaling = new HashMap<>();
+    private static final Map<EntityType, String> entityExpOrbScaling = new HashMap<>();
+    private static boolean wolfLeveling = false;
+    private static String defaultWolfLevelScaling = null;
 
     public static void loadMonsterScalings(){
         YamlConfiguration config = ConfigManager.getConfig("mob_stats.yml").reload().get();
@@ -39,11 +44,14 @@ public class MonsterScalingManager {
         if (!enabled) return;
         monstersOnly = config.getBoolean("monsters_only", true);
         regionalPlayerLevel = config.getString("regional_player_level");
+        wolfLeveling = config.getBoolean("wolf_leveling");
+        defaultWolfLevelScaling = config.getString("default_wolf_leveling");
 
         ConfigurationSection defaultStats = config.getConfigurationSection("default");
         if (defaultStats != null){
             for (String stat : defaultStats.getKeys(false)){
                 if (stat.equals("level")) defaultLevelScaling = config.getString("default.level");
+                else if (stat.equals("exp_orb_bonus")) defaultExpOrbScaling = config.getString("default.exp_orb_bonus");
                 else {
                     if (!AccumulativeStatManager.getSources().containsKey(stat)){
                         ValhallaMMO.logWarning("Invalid default stat " + stat + " referenced in mob_stats.yml");
@@ -62,6 +70,7 @@ public class MonsterScalingManager {
                 if (stats != null){
                     for (String stat : stats.getKeys(false)){
                         if (stat.equals("level")) entityLevelScaling.put(e, config.getString("entity." + entity + ".level"));
+                        else if (stat.equals("exp_orb_bonus")) entityExpOrbScaling.put(e, config.getString("entity." + entity + ".exp_orb_bonus"));
                         else {
                             if (!AccumulativeStatManager.getSources().containsKey(stat)){
                                 ValhallaMMO.logWarning("Invalid " + entity + " stat " + stat + " referenced in mob_stats.yml");
@@ -87,18 +96,34 @@ public class MonsterScalingManager {
     }
 
     /**
+     * Returns the exp orb bonus based on mob level
+     * @param entity the entity to get their bonus exp from
+     * @return the exp orb bonus, or 0 if the entity is lv <0 or invalid or if no scaling has been defined
+     */
+    public static double getExpOrbMultiplier(LivingEntity entity){
+        if (!enabled || (monstersOnly && !(entity instanceof Monster)) || entity instanceof Player) return 0;
+        int level = getLevel(entity);
+        if (level < 0) return 0;
+        if (entityExpOrbScaling.containsKey(entity.getType())){
+            String expScaling = entityExpOrbScaling.get(entity.getType());
+            if (expScaling == null) return 0;
+            return Utils.eval(parseRand(expScaling.replace("%level%", String.valueOf(level))));
+        } else if (defaultExpOrbScaling != null) {
+            return Utils.eval(parseRand(defaultExpOrbScaling.replace("%level%", String.valueOf(level))));
+        }
+        return 0;
+    }
+
+    /**
      * Returns the entity's stats for the given stat value. If the entity has no level, or is a player, they are treated as an unaffected entity and get no stat adjustments.
      * @param entity the entity to get their stats from
      * @param stat the stat to get from the entity
      * @return the entity's stat, or 0 if the entity is a player, or is not a monster when only monsters are allowed.
      */
     public static double getStatValue(LivingEntity entity, String stat){
-        if (!enabled || (monstersOnly && !(entity instanceof Monster)) || entity instanceof Player) return 0;
+        if (!enabled || !((monstersOnly && entity instanceof Monster) || (wolfLeveling && entity instanceof Wolf)) || entity instanceof Player) return 0;
         int level = getLevel(entity);
-        if (level < 0) {
-            if (entity instanceof Enderman) System.out.println("no level");
-            return 0;
-        }
+        if (level < 0) return 0;
         if (entityStatScaling.containsKey(entity.getType())){
             Map<String, String> entityStats = entityStatScaling.getOrDefault(entity.getType(), new HashMap<>());
             if (!entityStats.containsKey(stat)) return 0;
@@ -125,6 +150,10 @@ public class MonsterScalingManager {
      */
     public static void setLevel(LivingEntity entity, int level){
         if (entity instanceof Player) return;
+        EntityUpdateLevelEvent event = new EntityUpdateLevelEvent(entity, level);
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) return;
+        level = event.getLevel();
         if (level >= 0) entity.getPersistentDataContainer().set(ENTITY_LEVEL, PersistentDataType.INTEGER, level);
         else entity.getPersistentDataContainer().remove(ENTITY_LEVEL);
         EntityAttributeStats.updateStats(entity);
@@ -142,6 +171,31 @@ public class MonsterScalingManager {
             return Math.max(0, (int) Utils.eval(parseRand(entityLevelScaling.get(entity.getType()).replace("%level%", String.valueOf(powerLevel)))));
         } else if (defaultLevelScaling != null) return Math.max(0, (int) Utils.eval(parseRand(defaultLevelScaling.replace("%level%", String.valueOf(powerLevel)))));
         else return -1;
+    }
+
+    /**
+     * Updates a wolf's level and stats according to its owner's level. Nothing happens if the given player is not the wolf's owner
+     * @param wolf the wolf
+     * @param tamer the owner
+     */
+    public static boolean updateWolfLevel(Wolf wolf, AnimalTamer tamer){
+        if (!(tamer instanceof Player player) || !tamer.getUniqueId().equals(player.getUniqueId()) || !wolfLeveling) return false;
+        int levelBefore = getLevel(wolf);
+        PowerProfile profile = ProfileCache.getOrCache(player, PowerProfile.class);
+        int level;
+        if (entityLevelScaling.containsKey(EntityType.WOLF))
+            level = Math.max(0, (int) Utils.eval(entityLevelScaling.get(EntityType.WOLF).replace("%level%", String.valueOf(profile.getLevel()))));
+        else if (defaultWolfLevelScaling != null) level = Math.max(0, (int) Utils.eval(defaultWolfLevelScaling.replace("%level%", String.valueOf(profile.getLevel()))));
+        else return false;
+        EntityUpdateLevelEvent event = new EntityUpdateLevelEvent(wolf, level);
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) return false;
+        level = event.getLevel();
+        if (level == levelBefore) return false;
+        if (level >= 0) wolf.getPersistentDataContainer().set(ENTITY_LEVEL, PersistentDataType.INTEGER, level);
+        else wolf.getPersistentDataContainer().remove(ENTITY_LEVEL);
+        EntityAttributeStats.updateStats(wolf);
+        return true;
     }
 
     /**

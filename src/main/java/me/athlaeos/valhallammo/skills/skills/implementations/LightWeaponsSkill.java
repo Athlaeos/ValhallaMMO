@@ -23,6 +23,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.LightWeapons
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.potioneffects.implementations.Stun;
+import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.Bleeder;
 import me.athlaeos.valhallammo.utility.EntityUtils;
@@ -53,11 +54,15 @@ import java.util.Map;
 public class LightWeaponsSkill extends Skill implements Listener {
     private final Collection<Material> validCoatingItems = new HashSet<>();
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
-    private final double expPerDamage;
-    private final double spawnerMultiplier;
+    private double expPerDamage = 0;
+    private double spawnerMultiplier = 0;
 
     public LightWeaponsSkill(String type) {
         super(type);
+    }
+
+    @Override
+    public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/light_weapons_progression.yml");
         ValhallaMMO.getInstance().save("skills/light_weapons.yml");
 
@@ -68,7 +73,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
 
         validCoatingItems.addAll(ItemUtils.getMaterialSet(skillConfig.getStringList("valid_coating_items")));
 
-        ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.entity_exp_multipliers");
+        ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.exp_enemies_nerfed");
         if (entitySection != null){
             entitySection.getKeys(false).forEach(s -> {
                 EntityType e = Catch.catchOrElse(() -> EntityType.valueOf(s), null, "Invalid entity type given in skills/light_weapons_progression.yml experience.entity_exp_multipliers." + s);
@@ -148,14 +153,17 @@ public class LightWeaponsSkill extends Skill implements Listener {
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.LIGHT) return;
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p);
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);
                 addEXP(p,
-                        EntityDamagedListener.getLastDamageTaken(l.getUniqueId()) *
+                        Math.min(EntityUtils.getMaxHP(l), EntityDamagedListener.getLastDamageTaken(l.getUniqueId(), e.getFinalDamage())) *
                                 expPerDamage *
                                 entityExpMultiplier *
+                                chunkNerf *
                                 (EntitySpawnListener.getSpawnReason(l) == CreatureSpawnEvent.SpawnReason.SPAWNER ? spawnerMultiplier : 1),
                         false,
                         PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+                ChunkEXPNerf.increment(l.getLocation().getChunk(), p);
             }, 2L);
         }
     }

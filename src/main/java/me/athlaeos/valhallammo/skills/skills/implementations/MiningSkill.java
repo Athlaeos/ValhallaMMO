@@ -44,18 +44,18 @@ import java.util.*;
 
 public class MiningSkill extends Skill implements Listener {
     private final Map<Material, Double> dropsExpValues = new HashMap<>();
-    private final double miningExpMultiplier;
-    private final double blastingExpMultiplier;
+    private double miningExpMultiplier = 1;
+    private double blastingExpMultiplier = 1;
 
-    private final int veinMiningLimit;
-    private final boolean veinMiningInstant;
+    private int veinMiningLimit = 64;
+    private boolean veinMiningInstant = true;
 
-    private final boolean forgivingDropMultipliers; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
-    private final boolean tntPreventChaining;
+    private boolean forgivingDropMultipliers = true; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
+    private boolean tntPreventChaining = true;
 
     private Animation drillingAnimation = AnimationRegistry.DRILLING_ACTIVE;
-    private final String drillingOn;
-    private final Sound drillingActivationSound;
+    private String drillingOn = null;
+    private Sound drillingActivationSound = null;
 
     public void setDrillingAnimation(Animation drillingAnimation) {
         this.drillingAnimation = drillingAnimation;
@@ -63,6 +63,10 @@ public class MiningSkill extends Skill implements Listener {
 
     public MiningSkill(String type) {
         super(type);
+    }
+
+    @Override
+    public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/mining_progression.yml");
         ValhallaMMO.getInstance().save("skills/mining.yml");
 
@@ -132,8 +136,8 @@ public class MiningSkill extends Skill implements Listener {
         }
         LootListener.addPreparedLuck(e.getBlock(), AccumulativeStatManager.getCachedStats("MINING_LUCK", e.getPlayer(), 10000, true));
 
-        if (!veinMiningPlayers.contains(e.getPlayer().getUniqueId()) && profile.isVeinMiningUnlocked() &&
-                profile.getVeinMinerValidBlocks().contains(e.getBlock().getType().toString()) &&
+        if (e.getPlayer().isSneaking() && !veinMiningPlayers.contains(e.getPlayer().getUniqueId()) &&
+                profile.isVeinMiningUnlocked() && profile.getVeinMinerValidBlocks().contains(e.getBlock().getType().toString()) &&
                 Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_vein_miner") &&
                 !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_VEINMINER)){
             Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), veinMiningLimit, b -> b.getType() == e.getBlock().getType(), veinMiningScanArea);

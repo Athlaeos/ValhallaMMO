@@ -20,10 +20,12 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
     public static final CustomDamageType FIRE = new CustomDamageType("FIRE", "FIRE", "LAVA", "MELTING", "FIRE_TICK", "HOT_FLOOR", "DRYOUT")
             .additiveDamage("FIRE_DAMAGE_BONUS").multiplicativeDamage("FIRE_DAMAGE_DEALT")
             .resistance("FIRE_RESISTANCE")
+            .immuneable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_fire")).i("&f\uEE6B&c").register();
     public static final CustomDamageType MAGIC = new CustomDamageType("MAGIC", "MAGIC", "THORNS", "DRAGON_BREATH")
             .additiveDamage("MAGIC_DAMAGE_BONUS").multiplicativeDamage("MAGIC_DAMAGE_DEALT")
             .resistance("MAGIC_RESISTANCE")
+            .immuneable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_magic")).i("&f\uEE6C&d").register();
     public static final CustomDamageType PROJECTILE = new CustomDamageType("PROJECTILE", "PROJECTILE")
             .multiplicativeDamage("RANGED_DAMAGE_DEALT")
@@ -36,6 +38,7 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
     public static final CustomDamageType POISON = new CustomDamageType("POISON", "POISON")
             .additiveDamage("POISON_DAMAGE_BONUS").multiplicativeDamage("POISON_DAMAGE_DEALT").setFatal(false)
             .resistance("POISON_RESISTANCE")
+            .immuneable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_poison")).i("&f\uEE6D&2").register();
     public static final CustomDamageType FALLING = new CustomDamageType("FALLING", "FALL", "FLY_INTO_WALL")
             .resistance("FALLING_RESISTANCE")
@@ -46,14 +49,17 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_melee")).i("&f\uEE54&c").register();
     public static final CustomDamageType BLEED = new CustomDamageType("BLEED", "BLEED")
             .resistance("BLEED_RESISTANCE")
+            .immuneable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_bleeding")).i("&f\uEE09&4").register();
     public static final CustomDamageType FREEZING = new CustomDamageType("FREEZING", "FREEZE")
             .additiveDamage("FREEZING_DAMAGE_BONUS").multiplicativeDamage("FREEZING_DAMAGE_DEALT")
             .resistance("FREEZING_RESISTANCE")
+            .immuneable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_freezing")).i("&f\uEE70&b").register();
     public static final CustomDamageType LIGHTNING = new CustomDamageType("LIGHTNING", "LIGHTNING")
             .additiveDamage("LIGHTNING_DAMAGE_BONUS").multiplicativeDamage("LIGHTNING_DAMAGE_DEALT")
             .resistance("LIGHTNING_RESISTANCE")
+            .immuneable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_lightning")).i("&f\uEE6F&e").register();
     public static final CustomDamageType BLUDGEONING = new CustomDamageType("BLUDGEONING", "FALLING_BLOCK", "BLUDGEONING")
             .additiveDamage("BLUDGEONING_DAMAGE_BONUS").multiplicativeDamage("BLUDGEONING_DAMAGE_DEALT").powerAttacks(true)
@@ -62,10 +68,12 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
     public static final CustomDamageType RADIANT = new CustomDamageType("RADIANT", "RADIANT")
             .additiveDamage("RADIANT_DAMAGE_BONUS").multiplicativeDamage("RADIANT_DAMAGE_DEALT")
             .resistance("RADIANT_RESISTANCE")
+            .immuneable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_radiant")).i("&f\uEE71&f").register();
     public static final CustomDamageType NECROTIC = new CustomDamageType("NECROTIC", "NECROTIC", "WITHER")
             .additiveDamage("NECROTIC_DAMAGE_BONUS").multiplicativeDamage("NECROTIC_DAMAGE_DEALT")
             .resistance("NECROTIC_RESISTANCE")
+            .immuneable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_necrotic")).i("&f\uEE72&7").register();
 
     public static Map<String, CustomDamageType> getRegisteredTypes() {
@@ -82,6 +90,7 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
     private String hardCodedIndicatorIcon = null;
     private boolean benefitsFromPowerAttacks = false;
     private boolean fatal = true;
+    private boolean immuneable = false; // determines if damage events can be cancelled for this damage type with 100% resistance to it
 
     public CustomDamageType(String type, String... subTypes){
         this.type = type;
@@ -136,6 +145,11 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
         return this;
     }
 
+    public CustomDamageType immuneable() {
+        this.immuneable = true;
+        return this;
+    }
+
     public CustomDamageType additiveDamage(String additiveDamageStatSource) {
         this.additiveDamageStatSource = additiveDamageStatSource;
         return this;
@@ -168,6 +182,10 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
 
     public boolean isFatal() {
         return fatal;
+    }
+
+    public boolean isImmuneable() {
+        return immuneable;
     }
 
     public boolean benefitsFromPowerAttacks() {

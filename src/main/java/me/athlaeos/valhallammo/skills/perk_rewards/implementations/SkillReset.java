@@ -44,4 +44,9 @@ public class SkillReset extends PerkReward {
     public PerkRewardArgumentType getRequiredType() {
         return PerkRewardArgumentType.NONE;
     }
+
+    @Override
+    public boolean isPersistent() {
+        return true;
+    }
 }

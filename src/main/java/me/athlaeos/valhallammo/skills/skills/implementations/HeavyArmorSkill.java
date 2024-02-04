@@ -36,8 +36,9 @@ import org.bukkit.potion.PotionEffect;
 import java.util.*;
 
 public class HeavyArmorSkill extends Skill implements Listener {
-    private final double expPerDamage;
-    private final double expPerCombatSecond;
+    private double expPerDamage = 0;
+    private double expPerCombatSecond = 0;
+    private double expBonusPerPoint = 0;
 
     private Animation rageActivation;
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
@@ -45,6 +46,10 @@ public class HeavyArmorSkill extends Skill implements Listener {
 
     public HeavyArmorSkill(String type) {
         super(type);
+    }
+
+    @Override
+    public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/heavy_armor_progression.yml");
         ValhallaMMO.getInstance().save("skills/heavy_armor.yml");
 
@@ -55,6 +60,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
 
         expPerDamage = progressionConfig.getDouble("experience.exp_damage_piece");
         expPerCombatSecond = progressionConfig.getDouble("experience.exp_second_piece");
+        expBonusPerPoint = progressionConfig.getDouble("experience.exp_multiplier_point");
 
         ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.entity_exp_multipliers");
         if (entitySection != null){
@@ -97,9 +103,10 @@ public class HeavyArmorSkill extends Skill implements Listener {
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             int count = EntityCache.getAndCacheProperties(p).getHeavyArmorCount();
+            double totalHeavyArmor = AccumulativeStatManager.getCachedStats("TOTAL_HEAVY_ARMOR", p, 10000, false);
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(trueDamager.getType(), 1D);
-            double lastDamageTaken = EntityDamagedListener.getLastDamageTaken(p.getUniqueId());
-            double exp = expPerDamage * lastDamageTaken * entityExpMultiplier;
+            double lastDamageTaken = e.getDamage();
+            double exp = expPerDamage * lastDamageTaken * entityExpMultiplier * (1 + (totalHeavyArmor * expBonusPerPoint));
             addEXP(p, count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
             if (profile.isRageUnlocked() && profile.getRageLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_heavy_armor_rage") &&

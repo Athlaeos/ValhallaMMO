@@ -65,6 +65,8 @@ public abstract class Skill {
     protected String expBarTitle;
     protected boolean isNavigable;
 
+    public abstract void loadConfiguration();
+
     /**
      * If true, the skill is intended to be interacted with and progressed through. If not, the skill is intended
      * to be hidden from sight and more or less just meant to be used to store extra data and add behavior to ValhallaMMO
@@ -401,6 +403,12 @@ public abstract class Skill {
                 }
             }
         } else {
+            if (profile.getLevel() >= maxLevel || profile.getLevel() >= profile.getMaxAllowedLevel()) {
+                if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()) {
+                    showBossBar(p, profile, 0);
+                }
+                return;
+            }
             // level up
             // loop from current level +1 to max level because that's the max amount of iterations to check for level ups
             for (int i = nextLevel + 1; i <= maxLevel; i++) {
@@ -409,7 +417,8 @@ public abstract class Skill {
                     // player has enough experience to level up once
                     nextLevel++;
                     EXP -= expForLevel;
-                } else break; // player does not have enough experience to level up
+                    if (nextLevel >= profile.getMaxAllowedLevel()) EXP = 0;
+                } else break; // player does not have enough experience to level up further
             }
         }
         // if the level doesn't change, nothing further needs to happen
@@ -463,6 +472,9 @@ public abstract class Skill {
             if (event.getAmount() == 0) return;
 
             Profile profile = ProfileRegistry.getPersistentProfile(p, event.getLeveledSkill().getProfileType());
+            if (profile.getLevel() >= profile.getMaxAllowedLevel() &&
+                    (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION ||
+                            reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE)) return; // player has already reached max allowed level, do not proceed
             profile.setEXP(profile.getEXP() + event.getAmount());
             profile.setTotalEXP(profile.getTotalEXP() + event.getAmount());
 
@@ -716,7 +728,6 @@ public abstract class Skill {
         PowerProfile powerProfile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
         ProfileRegistry.setSkillProfile(p, skillProfile, skillProfile.getClass());
         int level = getLevelFromEXP(persistentProfile.getTotalEXP());
-
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             for (PerkReward r : startingPerks) {
                 if (!runPersistentStartingPerks && r.isPersistent()) continue;
@@ -767,7 +778,7 @@ public abstract class Skill {
             }
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
-                    ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, skillProfile.getClass())));
+                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, skillProfile.getClass())));
         });
     }
 

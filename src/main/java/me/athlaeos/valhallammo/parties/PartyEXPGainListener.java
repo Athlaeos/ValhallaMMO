@@ -19,12 +19,12 @@ public class PartyEXPGainListener implements Listener {
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_PARTY_EXPSHARING)) return;
         Party party = PartyManager.getParty(e.getPlayer());
         if (party == null) return;
+        Collection<Player> nearbyMembers = PartyManager.membersInEXPSharingRadius(e.getPlayer());
         boolean expSharingEnabled = party.isExpSharingEnabled() != null ? party.isExpSharingEnabled() : PartyManager.getBoolStat("exp_sharing", party);
         double expForParty = e.getAmount() * PartyManager.getPartyEXPConversionRate();
-        PartyManager.addEXP(party, expForParty);
+        if (!nearbyMembers.isEmpty()) PartyManager.addEXP(party, expForParty);
         if (!expSharingEnabled) return;
 
-        Collection<Player> nearbyMembers = PartyManager.membersInEXPSharingRadius(e.getPlayer());
         if (nearbyMembers.isEmpty()) return;
         nearbyMembers.add(e.getPlayer());
         double expSharingMultiplier = PartyManager.getTotalFloatStat("exp_sharing_multiplier", party);

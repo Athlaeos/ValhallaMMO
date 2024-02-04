@@ -1,7 +1,6 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
@@ -16,6 +15,7 @@ import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -39,7 +39,7 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 public class ProjectileListener implements Listener {
-    private final Map<Block, ItemStack> dispensedItems = new HashMap<>();
+    private final Map<Location, ItemStack> dispensedItems = new HashMap<>();
     private final double infinityAmmoConsumption = ValhallaMMO.getPluginConfig().getDouble("infinity_ammo_consumption_reduction");
 
     private static final Map<UUID, ItemBuilder> projectileShotByMap = new HashMap<>();
@@ -52,7 +52,7 @@ public class ProjectileListener implements Listener {
             projectile = new ItemBuilder(t.getItem().clone());
             ItemUtils.storeItem(e.getEntity(), projectile.getItem());
         } else if (e.getEntity().getShooter() instanceof BlockProjectileSource b){
-            projectile = new ItemBuilder(dispensedItems.get(b.getBlock()));
+            projectile = new ItemBuilder(dispensedItems.get(b.getBlock().getLocation()));
             ItemUtils.storeItem(e.getEntity(), projectile.getItem());
         } else projectile = ItemUtils.getStoredItem(e.getEntity());
 
@@ -61,21 +61,23 @@ public class ProjectileListener implements Listener {
 
         if (e.getEntity() instanceof AbstractArrow a && !(a instanceof Trident)) {
             // inaccuracy mechanics only applied to arrows
-            Vector direction;
-            double inaccuracy = 0;
-            if (a.getShooter() instanceof BlockProjectileSource b && b.getBlock().getBlockData() instanceof Directional d){
-                inaccuracy = ValhallaMMO.getPluginConfig().getDouble("dispenser_inaccuracy", 7);
-                direction = d.getFacing().getDirection();
-            } else if (a.getShooter() instanceof LivingEntity l) {
-                inaccuracy = AccumulativeStatManager.getCachedStats("RANGED_INACCURACY", l, 10000, true);
-                direction = l.getEyeLocation().getDirection();
-            } else direction = a.getVelocity();
+            if (a.getShooter() instanceof Player){
+                Vector direction;
+                double inaccuracy = 0;
+                if (a.getShooter() instanceof BlockProjectileSource b && b.getBlock().getBlockData() instanceof Directional d){
+                    inaccuracy = ValhallaMMO.getPluginConfig().getDouble("dispenser_inaccuracy", 7);
+                    direction = d.getFacing().getDirection();
+                } else if (a.getShooter() instanceof LivingEntity l) {
+                    inaccuracy = AccumulativeStatManager.getCachedStats("RANGED_INACCURACY", l, 10000, true);
+                    direction = l.getEyeLocation().getDirection();
+                } else direction = a.getVelocity();
 
-            if (!isShotFromMultishot(a)){
-                AttributeWrapper accuracy = ItemAttributesRegistry.getAttribute(meta, "ARROW_ACCURACY", false);
-                if (accuracy != null) inaccuracy = Math.max(0, inaccuracy - accuracy.getValue());
+                if (!isShotFromMultishot(a)){
+                    AttributeWrapper accuracy = ItemAttributesRegistry.getAttribute(meta, "ARROW_ACCURACY", false);
+                    if (accuracy != null) inaccuracy = Math.max(0, inaccuracy - accuracy.getValue());
 
-                EntityUtils.applyInaccuracy(a, direction, inaccuracy);
+                    EntityUtils.applyInaccuracy(a, direction, inaccuracy);
+                }
             }
 
             setProjectileProperties(e.getEntity(), meta);
@@ -115,7 +117,7 @@ public class ProjectileListener implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(b.getWorld().getName()) || ItemUtils.isEmpty(e.getItem()) || e.isCancelled()) return;
         ItemStack storedItem = e.getItem().clone();
         storedItem.setAmount(1);
-        dispensedItems.put(e.getBlock(), storedItem);
+        dispensedItems.put(e.getBlock().getLocation(), storedItem);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -186,11 +188,15 @@ public class ProjectileListener implements Listener {
                         }
                         return;
                     } else if (e.getProjectile() instanceof AbstractArrow a && !(a instanceof Trident)){
-                        // arrows may be preserved with infinity if they resemble a vanilla arrow, or if they have the infinityExploitable flag
-                        e.setConsumeItem(!shouldSave);
-                        if (e.shouldConsumeItem()) a.setPickupStatus(AbstractArrow.PickupStatus.ALLOWED);
-                        else a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+                        shouldSave = true;
                     }
+                }
+
+                if (e.getProjectile() instanceof AbstractArrow a && !(a instanceof Trident)){
+                    // arrows may be preserved with infinity if they resemble a vanilla arrow, or if they have the infinityExploitable flag
+                    e.setConsumeItem(!shouldSave);
+                    if (e.shouldConsumeItem()) a.setPickupStatus(AbstractArrow.PickupStatus.ALLOWED);
+                    else a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
                 }
             }
 

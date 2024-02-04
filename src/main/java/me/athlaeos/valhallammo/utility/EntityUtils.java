@@ -1,16 +1,14 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.dom.BiFetcher;
-import me.athlaeos.valhallammo.item.WeightClass;
-import me.athlaeos.valhallammo.item.EquipmentClass;
-import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
-import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.item.ItemSkillRequirements;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -23,6 +21,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
@@ -55,6 +54,11 @@ public class EntityUtils {
         projectileVelocity.setZ(projectileVelocity.getZ() + Utils.getRandom().nextGaussian() * inaccuracyConstant * inaccuracy);
 
         projectile.setVelocity(projectileVelocity);
+    }
+
+    public static double getMaxHP(LivingEntity l){
+        AttributeInstance instance = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        return instance == null ? -1 : instance.getValue();
     }
 
     public static BlockFace getSelectedBlockFace(Player player) {
@@ -228,7 +232,14 @@ public class EntityUtils {
 
     public static EntityProperties updateProperties(EntityProperties properties, LivingEntity e, boolean equipment, boolean hands, boolean getPotionEffects){
         if (e.getEquipment() != null) {
+            properties.getPermanentPotionEffects().clear();
+            List<List<PotionEffect>> permanentEffects = new ArrayList<>();
             if (equipment){
+                if (e instanceof Player p) {
+                    PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
+                    permanentEffects.add(PermanentPotionEffects.fromString(String.join(";", profile.getPermanentPotionEffects())));
+                }
+
                 properties.getCombinedEnchantments().clear();
                 properties.setHelmet(e.getEquipment().getHelmet());
                 properties.setChestplate(e.getEquipment().getChestplate());
@@ -243,16 +254,29 @@ public class EntityUtils {
                 properties.setLightArmorCount(WeightClass.getArmorWeightClassCount(e, WeightClass.LIGHT));
                 properties.setWeightlessArmorCount(WeightClass.getArmorWeightClassCount(e, WeightClass.WEIGHTLESS));
 
-                if (properties.getHelmet() != null) properties.setHelmetAttributes(ItemAttributesRegistry.getStats(properties.getHelmet().getMeta(), false));
-                if (properties.getChestplate() != null) properties.setChestPlateAttributes(ItemAttributesRegistry.getStats(properties.getChestplate().getMeta(), false));
-                if (properties.getLeggings() != null) properties.setLeggingsAttributes(ItemAttributesRegistry.getStats(properties.getLeggings().getMeta(), false));
-                if (properties.getBoots() != null) properties.setBootsAttributes(ItemAttributesRegistry.getStats(properties.getBoots().getMeta(), false));
+                if (properties.getHelmet() != null) {
+                    properties.setHelmetAttributes(ItemAttributesRegistry.getStats(properties.getHelmet().getMeta(), false));
+                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getHelmet().getMeta()));
+                }
+                if (properties.getChestplate() != null) {
+                    properties.setChestPlateAttributes(ItemAttributesRegistry.getStats(properties.getChestplate().getMeta(), false));
+                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getChestplate().getMeta()));
+                }
+                if (properties.getLeggings() != null) {
+                    properties.setLeggingsAttributes(ItemAttributesRegistry.getStats(properties.getLeggings().getMeta(), false));
+                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getLeggings().getMeta()));
+                }
+                if (properties.getBoots() != null) {
+                    properties.setBootsAttributes(ItemAttributesRegistry.getStats(properties.getBoots().getMeta(), false));
+                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getBoots().getMeta()));
+                }
                 for (BiFetcher<List<ItemStack>, LivingEntity> fetcher : otherEquipmentFetchers){
                     List<ItemBuilder> otherEquipment = fetcher.get(e).stream().map(ItemBuilder::new).collect(Collectors.toList());
                     properties.getMiscEquipment().addAll(otherEquipment);
                     otherEquipment.forEach(i -> {
                         properties.getMiscEquipmentAttributes().put(i, ItemAttributesRegistry.getStats(i.getMeta(), false));
                         properties.addCombinedEnchantments(i);
+                        permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(i.getMeta()));
                     });
                 }
             }
@@ -264,13 +288,23 @@ public class EntityUtils {
                 if (properties.getMainHand() != null &&
                         !EquipmentClass.isArmor(properties.getMainHand().getMeta()) &&
                         EquipmentClass.getMatchingClass(properties.getMainHand().getMeta()) != EquipmentClass.TRINKET
-                ) properties.setMainHandAttributes(ItemAttributesRegistry.getStats(properties.getMainHand().getMeta(), false));
+                ) {
+                    properties.setMainHandAttributes(ItemAttributesRegistry.getStats(properties.getMainHand().getMeta(), false));
+                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getMainHand().getMeta()));
+                }
 
                 if (properties.getOffHand() != null &&
                         !EquipmentClass.isArmor(properties.getOffHand().getMeta()) &&
                         EquipmentClass.getMatchingClass(properties.getOffHand().getMeta()) != EquipmentClass.TRINKET
-                ) properties.setOffHandAttributes(ItemAttributesRegistry.getStats(properties.getOffHand().getMeta(), false));
+                ) {
+                    properties.setOffHandAttributes(ItemAttributesRegistry.getStats(properties.getOffHand().getMeta(), false));
+                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getOffHand().getMeta()));
+                }
             }
+            List<PotionEffect> combinedPermanentEffects = PermanentPotionEffects.getCombinedEffects(permanentEffects);
+            if (!combinedPermanentEffects.isEmpty()) PermanentPotionEffects.setHasPermanentEffects(e);
+            else PermanentPotionEffects.setHasNoPermanentEffects(e);
+            properties.getPermanentPotionEffects().addAll(combinedPermanentEffects);
         }
         if (getPotionEffects) {
             properties.getActivePotionEffects().clear();
@@ -287,8 +321,8 @@ public class EntityUtils {
      * @param cooldown the attack cooldown, a float between 0 and 1
      * @return the approximate damage multiplier of the attack
      */
-    public static float cooldownDamageMultiplier(float cooldown){
-        return Math.min(1F, (((4.525F * cooldown * (4.525F * cooldown + 1)) / 2) * 6.4F + 20F) / 100F);
+    public static double cooldownDamageMultiplier(float cooldown){
+        return Math.min(1, 0.2 + MathUtils.pow((cooldown + 0.05F), 2) * 0.8);
     }
 
     public static void damage(LivingEntity entity, double amount, String type){

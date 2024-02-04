@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.playerstats.statsources;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatSource;
@@ -14,6 +15,10 @@ public class PotionEffectSingleUseSource implements AccumulativeStatSource {
     private final String potionEffect;
     private final boolean negative;
 
+    public PotionEffectSingleUseSource(String potionEffect){
+        this.potionEffect = potionEffect;
+        this.negative = false;
+    }
     public PotionEffectSingleUseSource(String potionEffect, boolean negative){
         this.potionEffect = potionEffect;
         this.negative = negative;
@@ -24,13 +29,13 @@ public class PotionEffectSingleUseSource implements AccumulativeStatSource {
         if (statPossessor instanceof LivingEntity l){
             EntityProperties properties = EntityCache.getAndCacheProperties(l);
             CustomPotionEffect effect = properties.getActivePotionEffects().get(potionEffect);
-            if (effect == null) return 0;
+            if (effect == null || (effect.getEffectiveUntil() != -1 && effect.getEffectiveUntil() <= System.currentTimeMillis())) return 0;
             double amplifier = negative ? -effect.getAmplifier() : effect.getAmplifier();
             if (use) {
                 effect.setEffectiveUntil(0);
                 PotionEffectRegistry.addEffect(l, null, effect, true, 1, EntityPotionEffectEvent.Cause.EXPIRATION, EntityPotionEffectEvent.Action.REMOVED);
-                AccumulativeStatManager.resetCache(l);
             }
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> AccumulativeStatManager.resetCache(l), 1L);
             return amplifier;
         }
         return 0;

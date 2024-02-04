@@ -102,14 +102,17 @@ experience:
     BEE: 50
     CHICKEN: 30
   entity_drops:
-    BEEF: 50
-    PORKCHOP: 50
-    CHICKEN: 40
-    RABBIT: 80
-    MUTTON: 50
-    LEATHER: 30
-    FEATHER: 10
+    BEEF: 30
+    PORKCHOP: 30
+    CHICKEN: 20
+    RABBIT: 50
+    MUTTON: 30
+    LEATHER: 20
+    FEATHER: 7
     WHITE_WOOL: 20
+  entity_shear:
+    SHEEP: 100
+    MUSHROOM_COW: 500
 
 special_perks: []
 
@@ -349,3 +352,42 @@ perks:
       - "<lang.farming_perk_2c_messages>"
     requireperk_all:
       - farming_perk_1
+  farming_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "3,8"
+    name: "<lang.farming_perk_ng1_name>"
+    description: "<lang.farming_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_farming: 0
+      p:farming_newgameplus_add: 1
+      p:farming_farmingdrops_add: 0.3
+      p:farming_butcherydrops_add: 0.3
+      p:farming_farmingexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - farming_perk_ng1
+    messages:
+      - "<lang.farming_perk_ng1_messages>"
+  farming_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "3,8"
+    name: "<lang.farming_perk_ng2_name>"
+    description: "<lang.farming_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - farming_perk_ng1
+    perk_rewards:
+      reset_skill_farming: 0
+      p:farming_newgameplus_add: 1
+      p:farming_farmingdrops_add: 0.3
+      p:farming_butcherydrops_add: 0.3
+      p:farming_farmingexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - farming_perk_ng1
+        - farming_perk_ng2
+    messages:
+      - "<lang.farming_perk_ng2_messages>"

@@ -27,6 +27,13 @@ resource_pack_config_override: true # If true, certain config options are overri
 # This option can be toggled in-game with /val resourcepack <enable/disable>
 
 # GENERAL
+# The plugin features item and player stat properties that give the player permanent potion effects, this is how said effects are stacked
+# to each-other if multiple of the same type are present.
+# Valid modes are
+# HIGHEST : only the highest amplifier of all effects is considered
+# ADD : all effect amplifiers are added to each-other. For example, having 2x REGENERATION II results in REGENERATION IV
+permanent_effect_stacking: HIGHEST
+
 selectable_loot_modifiers: false # If true, the loot drops within selectable loot will be modified according to the player opening said loot.
 # If not, the loot displayed will be equal to the raw item drop in the loot table
 
@@ -89,9 +96,11 @@ enabled_skills:
 # plugins that affect block mining speed, they will clash! Turn this off if you're absolutely sure you want to use the other
 # plugin's custom mining speed mechanics, but keep in mind ValhallaMMO's dig speed attributes and mechanics will stop doing anything.
 custom_mining_speeds: true
+block_break_delay: true # If true, after not instantly breaking a block a 6-tick delay will be applied to the player in which they can't break a block.
+# Having this enabled is more true to vanilla, which also has this mechanic, but the option to disable it is here regardless.
 block_recovery: true # If true, blocks will gradually recover after being damaged. If false, blocks will instantly recover after being damaged (like in vanilla)
 block_recovery_delay: 60 # The delay (in ticks) until the damage on a block starts recovering
-block_recovery_speed: 0.02 # The amount of health (of max 1, per tick) at which the block recovers after the delay
+block_recovery_speed: 0.015 # The amount of health (of max 1, per tick) at which the block recovers after the delay
 
 # GAMEPLAY
 
@@ -143,9 +152,10 @@ item_skill_requirement_warning_delay: 600000 # Players are warned of their equip
 
 # COMBAT & DAMAGE
 
-damage_indicator_format: "&c%icon%%dps%%crit%"
-damage_indicator_crit: " &4CRIT!" #
+damage_indicator_format: "&c%icon%%dps%%mitigated%%crit%"
+damage_indicator_crit: " <lang.damage_indicator_crit>" # The placeholder for
 dummies_only: true # If true, damage indicators will only appear over armor stands marked by the plugin as dummies. If you want no damage indicators at all, empty the format.
+damage_indicator_actionbar_format: "&c%icon%%dps%%mitigated%%crit%" # The action bar display format. Since action bars can only have 1 line of text, they do not work with multiple damage types
 
 damage_indicator_fire: "&c🔥"
 damage_indicator_magic: "&d🎆"
@@ -160,6 +170,13 @@ damage_indicator_lightning: "&e⚡"
 damage_indicator_bludgeoning: "&c🔨"
 damage_indicator_radiant: "&f✝"
 damage_indicator_necrotic: "&7💀"
+
+# ValhallaMMO features a diminishing returns system aimed to counter mob grinders.
+# After x number of exp "events" in a single chunk, any exp gained is reduced
+# This resets on restarts, and is unique per player.
+# This only affects the combat skills, being light weapons, heavy weapons, archery, and martial combat
+chunk_exp_nerf_quantity: 20 # The amount of exp "events" needed for a chunk to start reducing exp gained in it. If -1 this system is disabled
+chunk_exp_nerf_factor: 0.05 # EXP gained in debuffed chunks is multiplied by the given amount, or by default 5%
 
 # This affects the "velocity damage multiplier" mechanics specifically
 # The given number is what the entity's velocity is being divided by to determine bonus damage

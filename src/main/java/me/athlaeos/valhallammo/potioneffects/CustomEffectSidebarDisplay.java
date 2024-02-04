@@ -29,7 +29,7 @@ public class CustomEffectSidebarDisplay implements CustomEffectDisplay{
                 if (profile.hidePotionEffectBar()) continue;
 
                 Map<String, CustomPotionEffect> activeEffects = EntityCache.getAndCacheProperties(p).getActivePotionEffects()
-                        .entrySet().stream().filter((ef) -> ef.getValue().getEffectiveUntil() != -1 && ef.getValue().getRemainingDuration() > 0)
+                        .entrySet().stream().filter((ef) -> ef.getValue().getEffectiveUntil() == -1 || ef.getValue().getRemainingDuration() > 0)
                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
                 if (activeEffects.isEmpty()) {
                     PotionEffectRegistry.affectedEntityTracker().remove(e.getUniqueId());

@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class EntityProperties {
     private int weightlessArmorCount = 0;
     private final Map<String, CustomPotionEffect> activePotionEffects = new HashMap<>();
     private final Map<Enchantment, Integer> combinedEnchantments = new HashMap<>();
+    private final List<PotionEffect> permanentPotionEffects = new ArrayList<>();
 
     public EntityProperties(){}
 
@@ -76,6 +78,7 @@ public class EntityProperties {
     public ItemBuilder getOffHand() { return offHand; }
     public void setOffHand(ItemStack offHand) { this.offHand = ItemUtils.isEmpty(offHand) ? null : new ItemBuilder(offHand); }
     public Map<Enchantment, Integer> getCombinedEnchantments() { return combinedEnchantments; }
+    public List<PotionEffect> getPermanentPotionEffects() { return permanentPotionEffects; }
 
     /**
      * Returns a list containing all of the entity's equipment.

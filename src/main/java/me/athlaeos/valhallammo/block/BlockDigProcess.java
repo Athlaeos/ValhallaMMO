@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfile;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -25,20 +26,26 @@ public class BlockDigProcess {
 
     private int lastStage = 0;
 
-    public void damage(Player by, float damage){
+    public void damage(Player by, float damage, boolean force){
+        // if block is forcefully damaged, the breaking cooldown is ignored
+        if (!force && !Timer.isCooldownPassed(by.getUniqueId(), "delay_block_breaking_allowed")) return;
         health -= damage;
         ticksSinceUpdate = 0;
         if (health <= 0F) {
-            breakBlockInstantly(by, block);
-        } else {
-            int cracks = getCracks();
-            if (lastStage == cracks) return;
-            lastStage = cracks;
+            // if block is not forcefully damaged and the damage was not enough to instantly break the block,
+            // a cooldown is applied in which the player can not break the next block
+            if (!force && damage <= 1F && CustomBreakSpeedListener.isVanillaBlockBreakDelay()) Timer.setCooldown(by.getUniqueId(), 300, "delay_block_breaking_allowed");
             ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-                for (Entity p : block.getWorld().getNearbyEntities(block.getLocation(), 20, 20, 20, (e) -> e instanceof Player))
-                    ValhallaMMO.getNms().blockBreakAnimation((Player) p, block, getID(), cracks);
+                breakBlockInstantly(by, block);
             });
+        } else {
+            lastStage = getCracks();
+            sendCracks(block, lastStage);
         }
+    }
+
+    public void damage(Player by, float damage){
+        damage(by, damage, false);
     }
 
     public static void breakBlockInstantly(Player by, Block block){
@@ -53,14 +60,23 @@ public class BlockDigProcess {
         CustomBreakSpeedListener.getBlockDigProcesses().remove(block);
         for (UUID uuid : CustomBreakSpeedListener.getTotalMiningBlocks().getOrDefault(block, new HashSet<>())) CustomBreakSpeedListener.getMiningPlayers().remove(uuid);
         CustomBreakSpeedListener.getTotalMiningBlocks().remove(block);
+        DigPacketInfo.resetBlockSpecificCache(by.getUniqueId());
         BlockUtils.removeCustomHardness(block);
+        sendCracks(block, -1);
     }
 
     public int getTicksSinceUpdate() {
         return ticksSinceUpdate;
     }
 
-    private int getID(){
+    public static void sendCracks(Block block, int cracks){
+        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+            for (Entity p : block.getWorld().getNearbyEntities(block.getLocation(), 20, 20, 20, (e) -> e instanceof Player))
+                ValhallaMMO.getNms().blockBreakAnimation((Player) p, block, getID(block), cracks);
+        });
+    }
+
+    private static int getID(Block block){
         return ((block.getX() & 0xFFF) << 20) | ((block.getZ() & 0xFFF) << 8) | (block.getY() & 0xFF);
     }
 
@@ -68,7 +84,8 @@ public class BlockDigProcess {
         this.block = b;
     }
 
-    private int getCracks(){
+    public int getCracks(){
+        if (health <= 0 || health >= 1F) return -1;
         return (int) Math.floor((1F - health) * 10F);
     }
     public void incrementTicksSinceUpdate(){
@@ -79,10 +96,7 @@ public class BlockDigProcess {
         int cracks = getCracks();
         if (lastStage == cracks) return;
         lastStage = cracks;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-            for (Entity p : block.getWorld().getNearbyEntities(block.getLocation(), 20, 20, 20, (e) -> e instanceof Player))
-                ValhallaMMO.getNms().blockBreakAnimation((Player) p, block, getID(), cracks);
-        });
+        sendCracks(block, cracks);
     }
 
     public float getHealth() {

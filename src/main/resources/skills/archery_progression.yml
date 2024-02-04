@@ -309,3 +309,48 @@ perks:
       - "<lang.archery_perk_stealth_messages>"
     requireperk_one:
       - archery_perk_3
+  archery_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "0,6"
+    name: "<lang.archery_perk_ng1_name>"
+    description: "<lang.archery_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_archery: 0
+      p:archery_newgameplus_add: 1
+      p:archery_bowdamagemultiplier_add: 0.15
+      p:archery_crossbowdamagemultiplier_add: 0.15
+      p:archery_inaccuracy_add: -3
+      p:archery_bowcritchance_add: 0.1
+      p:archery_crossbowcritchance_add: 0.1
+      p:archery_archeryexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - archery_perk_ng1
+    messages:
+      - "<lang.archery_perk_ng1_messages>"
+  archery_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "0,6"
+    name: "<lang.archery_perk_ng2_name>"
+    description: "<lang.archery_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - archery_perk_ng1
+    perk_rewards:
+      reset_skill_archery: 0
+      p:archery_newgameplus_add: 1
+      p:archery_bowdamagemultiplier_add: 0.15
+      p:archery_crossbowdamagemultiplier_add: 0.15
+      p:archery_inaccuracy_add: -3
+      p:archery_bowcritchance_add: 0.1
+      p:archery_crossbowcritchance_add: 0.1
+      p:archery_archeryexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - archery_perk_ng1
+        - archery_perk_ng2
+    messages:
+      - "<lang.archery_perk_ng2_messages>"

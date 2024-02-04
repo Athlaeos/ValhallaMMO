@@ -28,7 +28,7 @@ public class CustomPotionEffect {
      */
     public CustomPotionEffect(PotionEffectWrapper effect, long effectiveUntil, double amplifier){
         this.effect = effect;
-        this.originalDuration = (int) Math.floor(Math.max(0, effectiveUntil - System.currentTimeMillis()) / 50D);
+        this.originalDuration = effectiveUntil == -1 ? -1 : (int) Math.floor(Math.max(0, effectiveUntil - System.currentTimeMillis()) / 50D);
         this.effectiveUntil = effectiveUntil;
         this.amplifier = amplifier;
     }
@@ -37,7 +37,7 @@ public class CustomPotionEffect {
     public double getAmplifier() { return amplifier; }
     public long getEffectiveUntil() { return effectiveUntil; }
     public long getRemainingDuration() {
-        return Math.max(0, effectiveUntil - System.currentTimeMillis());
+        return effectiveUntil == -1 ? -1 : Math.max(0, effectiveUntil - System.currentTimeMillis());
     }
     public int getOriginalDuration() { return originalDuration; }
 

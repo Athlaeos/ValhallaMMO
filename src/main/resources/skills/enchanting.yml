@@ -40,7 +40,7 @@ scalings:
   blast_protection: '(1/120) * %rating% - 1,ADD_ON_DEFAULT,none,none'
   fire_protection: '(1/120) * %rating% - 1,ADD_ON_DEFAULT,none,none'
   feather_falling: '(1/120) * %rating% - 1,ADD_ON_DEFAULT,none,none'
-  quick_charge: '(1/120) * %rating% - 1,ADD_ON_DEFAULT,none,none'
+  quick_charge: '(1/120) * %rating% - 1,ADD_ON_DEFAULT,none,2' # Quick charge can be gotten up to lv3, amplified up to 5 by this scaling, because quick charge 6 causes crossbows to not load at all
   riptide: '(2/120) * %rating% - 2,ADD_ON_DEFAULT,none,none'
   soul_speed: '(1/120) * %rating% - 1,ADD_ON_DEFAULT,none,none'
   sweeping: '(1/120) * %rating% - 1,ADD_ON_DEFAULT,none,none'

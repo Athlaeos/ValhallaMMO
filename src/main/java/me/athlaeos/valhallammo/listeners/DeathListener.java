@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.listeners;
 
+import me.athlaeos.valhallammo.entities.MonsterScalingManager;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
@@ -34,6 +35,12 @@ public class DeathListener implements Listener {
                 .replace("%player%", e.getEntity().getName())
                 .replace("%killer%", lastDamager != null ? lastDamager.getName() : ""))
         );
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onEntityExpDrops(EntityDeathEvent e){
+        double multiplier = 1 + MonsterScalingManager.getExpOrbMultiplier(e.getEntity());
+        e.setDroppedExp(Utils.randomAverage(e.getDroppedExp() * multiplier));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

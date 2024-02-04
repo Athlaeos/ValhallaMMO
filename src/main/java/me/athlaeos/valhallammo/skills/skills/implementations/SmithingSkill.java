@@ -15,6 +15,10 @@ import org.bukkit.entity.Player;
 public class SmithingSkill extends Skill {
     public SmithingSkill(String type) {
         super(type);
+    }
+
+    @Override
+    public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/smithing_progression.yml");
         ValhallaMMO.getInstance().save("skills/smithing.yml");
 

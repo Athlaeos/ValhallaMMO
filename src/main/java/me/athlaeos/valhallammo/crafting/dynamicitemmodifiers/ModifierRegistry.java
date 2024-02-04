@@ -121,6 +121,7 @@ public class ModifierRegistry {
         register(new DurabilityRepairNumeric("repair_number"));
         register(new DurabilityRepairScale("repair_scale"));
         register(new DurabilityScale("durability_scale"));
+        register(new DurabilityDefaultSet("durability_max_set"));
         register(new EquipmentClassSet("equipment_type"));
         Arrays.stream(CustomFlag.values()).forEach(f -> register(new FlagCustomAdd("flag_" + f.toString().toLowerCase(), f)));
         Arrays.stream(ItemFlag.values()).forEach(f -> register(new FlagVanillaAdd("flag_" + f.toString().toLowerCase(), f)));

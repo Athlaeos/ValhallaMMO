@@ -63,11 +63,11 @@ public class PotionEffectCommand implements Command {
 			else
 				targets.forEach(p -> PotionEffectRegistry.addEffect(p, null, new CustomPotionEffect(wrapper, duration, amplifier), true, 1, EntityPotionEffectEvent.Cause.COMMAND));
 
-			Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_durable_effect_applied".replace("%effect%", wrapper.getEffectName()
+			Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_durable_effect_applied").replace("%effect%", wrapper.getEffectName()
 					.replace("%icon%", wrapper.getEffectIcon())
 					.replace("%value%", wrapper.getFormat().format(wrapper.getAmplifier()))
 					.replace("%duration%", String.format("(%s)", StringUtils.toTimeStamp(wrapper.getDuration(), 20)))
-					.trim())));
+					.trim()));
 
 			return true;
 		}

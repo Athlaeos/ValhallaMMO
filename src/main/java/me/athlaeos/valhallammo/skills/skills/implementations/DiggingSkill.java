@@ -40,10 +40,14 @@ import java.util.*;
 public class DiggingSkill extends Skill implements Listener {
     private final Map<Material, Double> dropsExpValues = new HashMap<>();
 
-    private final boolean forgivingDropMultipliers; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
+    private boolean forgivingDropMultipliers = true; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
 
     public DiggingSkill(String type) {
         super(type);
+    }
+
+    @Override
+    public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/digging_progression.yml");
         ValhallaMMO.getInstance().save("skills/digging.yml");
 

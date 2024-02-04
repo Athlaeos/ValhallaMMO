@@ -64,12 +64,14 @@ public class SkillRegistry {
         skillsByType.put(skill.getType(), skill);
         allSkillsByType = Collections.unmodifiableMap(skillsByType);
 
-        skill.perks.forEach(PerkRegistry::registerPerk);
         PerkRewardRegistry.register(new SkillReset("reset_skill_" + skill.getType().toLowerCase(), skill.getType()));
         PerkRewardRegistry.register(new SkillRefund("refund_skill_" + skill.getType().toLowerCase()));
         PerkRewardRegistry.register(new SkillLevelsAdd("skill_levels_add_" + skill.getType().toLowerCase(), skill));
         PerkRewardRegistry.register(new SkillEXPAdd("skill_exp_add_" + skill.getType().toLowerCase(), skill));
         ModifierRegistry.register(new SkillExperience("reward_" + skill.getType().toLowerCase() + "_experience", skill.getType()));
+
+        skill.loadConfiguration();
+        skill.perks.forEach(PerkRegistry::registerPerk);
     }
 
     public static boolean isRegistered(Class<? extends Skill> skill){

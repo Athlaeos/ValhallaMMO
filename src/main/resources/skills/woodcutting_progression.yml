@@ -2,55 +2,55 @@ starting_perks:
   woodcutting_woodcuttingspeedbonus_add: -0.3
 
 experience: # Everything about leveling and experience progression for Landscaping
-  max_level: 100 # Max level for landscaping, players can still gain exp after reaching 100
+  max_level: 100 # Max level for landscaping, players can still gain exp after reaching 200
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300' # Here the x-axis represents level and the y-axis is the exp required to
   # progress to that level.
   # The area under this graph from point a to point b represents the total amount of experience needed to get from level
   # a to b. You don't have to work with this, it's only for those who really want to make this progression their own.
-  # By default, it takes about 4300 exp to get from 0 to 20, 27,000 to get from 20 to 40, 164,000 from 40 to 60,
-  # 1,000,000 from 60 to 80, and 6,300,000 from 80 to 100- or 7,500,000 from 0 to 100.
+  # By default, it takes about 4300 exp to get from 0 to 40, 27,000 to get from 40 to 80, 164,000 from 80 to 60,
+  # 1,000,000 from 60 to 80, and 6,300,000 from 80 to 200- or 7,500,000 from 0 to 200.
   woodcutting_strip:
-    STRIPPED_OAK_LOG: 10
-    STRIPPED_SPRUCE_LOG: 10
-    STRIPPED_BIRCH_LOG: 10
-    STRIPPED_JUNGLE_LOG: 10
-    STRIPPED_ACACIA_LOG: 10
-    STRIPPED_DARK_OAK_LOG: 10
-    STRIPPED_MANGROVE_LOG: 10
-    STRIPPED_WARPED_STEM: 14
-    STRIPPED_CRIMSON_STEM: 14
-    STRIPPED_OAK_WOOD: 14
-    STRIPPED_SPRUCE_WOOD: 14
-    STRIPPED_BIRCH_WOOD: 14
-    STRIPPED_JUNGLE_WOOD: 14
-    STRIPPED_ACACIA_WOOD: 14
-    STRIPPED_DARK_OAK_WOOD: 14
-    STRIPPED_MANGROVE_WOOD: 14
-    STRIPPED_CHERRY_WOOD: 14
-    STRIPPED_WARPED_HYPHAE: 20
-    STRIPPED_CRIMSON_HYPHAE: 20
+    STRIPPED_OAK_LOG: 20
+    STRIPPED_SPRUCE_LOG: 20
+    STRIPPED_BIRCH_LOG: 20
+    STRIPPED_JUNGLE_LOG: 20
+    STRIPPED_ACACIA_LOG: 20
+    STRIPPED_DARK_OAK_LOG: 20
+    STRIPPED_MANGROVE_LOG: 20
+    STRIPPED_WARPED_STEM: 30
+    STRIPPED_CRIMSON_STEM: 30
+    STRIPPED_OAK_WOOD: 30
+    STRIPPED_SPRUCE_WOOD: 30
+    STRIPPED_BIRCH_WOOD: 30
+    STRIPPED_JUNGLE_WOOD: 30
+    STRIPPED_ACACIA_WOOD: 30
+    STRIPPED_DARK_OAK_WOOD: 30
+    STRIPPED_MANGROVE_WOOD: 30
+    STRIPPED_CHERRY_WOOD: 30
+    STRIPPED_WARPED_HYPHAE: 40
+    STRIPPED_CRIMSON_HYPHAE: 40
   woodcutting_break:
-    OAK_LOG: 20
-    SPRUCE_LOG: 20
-    BIRCH_LOG: 20
-    JUNGLE_LOG: 20
-    ACACIA_LOG: 20
-    DARK_OAK_LOG: 20
-    MANGROVE_LOG: 20
-    CHERRY_LOG: 20
-    WARPED_STEM: 28
-    CRIMSON_STEM: 28
-    OAK_WOOD: 28
-    SPRUCE_WOOD: 28
-    BIRCH_WOOD: 28
-    JUNGLE_WOOD: 28
-    ACACIA_WOOD: 28
-    DARK_OAK_WOOD: 28
-    MANGROVE_ROOTS: 28
-    CHERRY_WOOD: 28
-    MANGROVE_WOOD: 28
-    WARPED_HYPHAE: 40
-    CRIMSON_HYPHAE: 40
+    OAK_LOG: 40
+    SPRUCE_LOG: 40
+    BIRCH_LOG: 40
+    JUNGLE_LOG: 40
+    ACACIA_LOG: 40
+    DARK_OAK_LOG: 40
+    MANGROVE_LOG: 40
+    CHERRY_LOG: 40
+    WARPED_STEM: 60
+    CRIMSON_STEM: 60
+    OAK_WOOD: 60
+    SPRUCE_WOOD: 60
+    BIRCH_WOOD: 60
+    JUNGLE_WOOD: 60
+    ACACIA_WOOD: 60
+    DARK_OAK_WOOD: 60
+    MANGROVE_ROOTS: 60
+    CHERRY_WOOD: 60
+    MANGROVE_WOOD: 60
+    WARPED_HYPHAE: 80
+    CRIMSON_HYPHAE: 80
 
 special_perks: []
 
@@ -409,3 +409,42 @@ perks:
         unlocked: LIME_DYE:1172910
     requireperk_all:
       - woodcutting_perk_2
+  woodcutting_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "3,12"
+    name: "<lang.woodcutting_perk_ng1_name>"
+    description: "<lang.woodcutting_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_woodcutting: 0
+      p:woodcutting_newgameplus_add: 1
+      p:woodcutting_woodcuttingdrops_add: 0.3
+      p:woodcutting_woodcuttingspeedbonus_add: 0.25
+      p:woodcutting_woodcuttingexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - woodcutting_perk_ng1
+    messages:
+      - "<lang.woodcutting_perk_ng1_messages>"
+  woodcutting_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "3,12"
+    name: "<lang.woodcutting_perk_ng2_name>"
+    description: "<lang.woodcutting_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - woodcutting_perk_ng1
+    perk_rewards:
+      reset_skill_woodcutting: 0
+      p:woodcutting_newgameplus_add: 1
+      p:woodcutting_woodcuttingdrops_add: 0.3
+      p:woodcutting_woodcuttingspeedbonus_add: 0.25
+      p:woodcutting_woodcuttingexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - woodcutting_perk_ng1
+        - woodcutting_perk_ng2
+    messages:
+      - "<lang.woodcutting_perk_ng2_messages>"

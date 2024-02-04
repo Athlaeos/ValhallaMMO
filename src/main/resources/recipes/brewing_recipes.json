@@ -57,7 +57,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -182,7 +182,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -312,7 +312,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 200.0,
+          "amount": 300.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -378,7 +378,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -460,7 +460,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -575,7 +575,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 300.0,
+          "amount": 450.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -673,7 +673,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 1000.0,
+          "amount": 1500.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -755,7 +755,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -837,7 +837,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -934,7 +934,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -1064,7 +1064,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 300.0,
+          "amount": 450.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -1152,7 +1152,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 200.0,
+          "amount": 300.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -1249,7 +1249,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -1363,7 +1363,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 200.0,
+          "amount": 300.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -1460,7 +1460,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -1557,7 +1557,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -1712,7 +1712,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 200.0,
+          "amount": 300.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -1841,7 +1841,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 150.0,
+          "amount": 225.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -1907,7 +1907,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -2022,7 +2022,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 300.0,
+          "amount": 450.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -2106,7 +2106,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 200.0,
+          "amount": 300.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -2251,7 +2251,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -2318,7 +2318,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -2433,7 +2433,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 300.0,
+          "amount": 450.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -2500,7 +2500,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -2597,7 +2597,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -2694,7 +2694,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -2776,7 +2776,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -2873,7 +2873,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -2991,7 +2991,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 200.0,
+          "amount": 300.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -3072,7 +3072,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -3214,7 +3214,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 200.0,
+          "amount": 300.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -3359,7 +3359,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 200.0,
+          "amount": 300.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -3425,7 +3425,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -3555,7 +3555,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 400.0,
+          "amount": 600.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -3716,7 +3716,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -3842,7 +3842,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -3923,7 +3923,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -4005,7 +4005,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -4087,7 +4087,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -4168,7 +4168,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -4250,7 +4250,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -4365,7 +4365,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 300.0,
+          "amount": 450.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }
@@ -4446,7 +4446,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
         "DATA": {
           "skill": "ALCHEMY",
-          "amount": 100.0,
+          "amount": 150.0,
           "name": "reward_alchemy_experience",
           "priority": "LATER"
         }

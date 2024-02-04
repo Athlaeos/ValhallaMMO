@@ -51,9 +51,10 @@ public class EnchantingSkill extends Skill implements Listener {
     private final Map<Enchantment, Double> enchantmentBaseValues = new HashMap<>();
     private final Map<Integer, Double> enchantmentLevelMultipliers = new HashMap<>();
 
-    private final double diminishingReturnsMultiplier;
-    private final int diminishingReturnsCount;
-    private final boolean anvilDowngrading;
+    private double experienceSpentConversion = 0;
+    private double diminishingReturnsMultiplier = 0;
+    private int diminishingReturnsCount = 0;
+    private boolean anvilDowngrading = false;
     private final Collection<EntityType> diminishingReturnsEntities = new HashSet<>();
     private final Map<EntityType, Double> entityEXPMultipliers = new HashMap<>();
     private final Map<UUID, Integer> diminishingReturnTallyCounter = new HashMap<>();
@@ -71,6 +72,10 @@ public class EnchantingSkill extends Skill implements Listener {
 
     public EnchantingSkill(String type) {
         super(type);
+    }
+
+    @Override
+    public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/enchanting_progression.yml");
         ValhallaMMO.getInstance().save("skills/enchanting.yml");
 
@@ -79,6 +84,7 @@ public class EnchantingSkill extends Skill implements Listener {
 
         loadCommonConfig(skillConfig, progressionConfig);
 
+        this.experienceSpentConversion = progressionConfig.getDouble("experience.exp_gain.experience_spent_conversion", 2);
         this.anvilDowngrading = skillConfig.getBoolean("anvil_downgrading");
         this.diminishingReturnsMultiplier = progressionConfig.getDouble("experience.diminishing_returns.multiplier");
         this.diminishingReturnsCount = progressionConfig.getInt("experience.diminishing_returns.amount");
@@ -252,7 +258,8 @@ public class EnchantingSkill extends Skill implements Listener {
             }
         }
 
-        double exp = EXPForEnchantments(enchanter, e.getEnchantsToAdd());
+        int expSpent = EntityUtils.getTotalExperience(enchanter.getLevel()) - EntityUtils.getTotalExperience(enchanter.getLevel() - (e.whichButton() + 1));
+        double exp = EXPForEnchantments(enchanter, e.getEnchantsToAdd()) + (experienceSpentConversion * expSpent);
         if (doDiminishingReturnsApply(enchanter)){
             exp *= diminishingReturnsMultiplier;
             reduceTallyCounter(enchanter);

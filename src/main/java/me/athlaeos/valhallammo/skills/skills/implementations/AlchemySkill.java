@@ -43,19 +43,23 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class AlchemySkill extends Skill implements Listener {
-    private final boolean quickEmptyPotions;
+    private boolean quickEmptyPotions = true;
     private final Collection<Material> validCombiningItems = new HashSet<>();
     private final NamespacedKey COMBINATIONS_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "alchemy_combinations");
 
     private static final Map<String, Transmutation> transmutations = new HashMap<>();
     private final Map<Material, Transmutation> transmutationsByMaterial = new HashMap<>();
-    private final boolean transmutationFlash;
-    private final Sound transmutationSound;
+    private boolean transmutationFlash = true;
+    private Sound transmutationSound = null;
     private static List<String> transmutationPotionLore = new ArrayList<>();
     private static String transmutationPotionName = null;
 
     public AlchemySkill(String type) {
         super(type);
+    }
+
+    @Override
+    public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/alchemy_transmutations.yml");
         ValhallaMMO.getInstance().save("skills/alchemy_progression.yml");
         ValhallaMMO.getInstance().save("skills/alchemy.yml");

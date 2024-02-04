@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.commands.valhallasubcommands;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.localization.TranslationManager;
@@ -92,7 +93,9 @@ public class ResourcePackCommand implements Command {
                 } else return false;
                 ConfigManager.getConfig("config.yml").set("resource_pack_config_override", enabled);
                 ConfigManager.getConfig("config.yml").save();
+                ValhallaMMO.setResourcePackConfigForced(enabled);
                 sender.sendMessage(Utils.chat(enabled ? TranslationManager.getTranslation("status_command_resourcepack_enabled") : TranslationManager.getTranslation("status_command_resourcepack_disabled")));
+
             }
         }
         return true;

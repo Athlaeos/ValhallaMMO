@@ -9,15 +9,20 @@ regional_player_level: "(%combined_player_level% * 1.2 - 0.2) / %nearby_player_c
 # Other valid placeholders are %min_player_level% for the lowest surrounding player level, and %max_player_level% for the higher surrounding player level
 # rand() cannot be used here
 
+wolf_leveling: true # If true, wolves level along with players which buffs their stats
+default_wolf_leveling: "%level%" # Wolf scalings cannot use the rand() function
+
 default: # Mob stats for all entities. Mobs specified in the `entity` section can also be given stats, which overwrite the default stats when present.
   # For example, zombies receive -100% radiant resistance. This overwrites the default 100% radiant resistance.
   # By default mobs get 50% crit damage, this is added to the zombie's stats unless the zombie has crit damage specified also.
   level: "%level% + rand(-5,5)" # %level% here refers to the average player power level at the location. Elsewhere it refers to the entity's level
+  exp_orb_bonus: "0.02 * %level%" # Exp orb buffs
   RADIANT_RESISTANCE: 1 # Almost all mobs aren't undead, so they shouldn't take radiant damage
   HEALTH_MULTIPLIER_BONUS: "-0.3 + (0.013 * %level%)" # Lowers mob hp by 30% initially, increases up to doubled hp at level 100
   WEIGHTLESS_ARMOR: "0.1 * %level%" # Gives mobs up to 10 base armor at level 100
   DAMAGE_DEALT: "-0.3 + (0.013 * %level%)" # Lowers mob damage by 30% initially, increases up to double damage at level 100
-  CRIT_CHANCE: "0.003 * %level%" # Gives mobs up to 20% crit chance at level 100
+  ARMOR_FRACTION_IGNORED: "0.005 * %level%" # Gives mobs up to 50% armor penetration at level 100
+  CRIT_CHANCE: "0.005 * %level%" # Gives mobs up to 50% crit chance at level 100
   CRIT_DAMAGE: "0.5" # Gives mobs +50% crit damage
 
 entity:
@@ -71,7 +76,6 @@ entity:
     NECROTIC_RESISTANCE: 1
     POISON_RESISTANCE: 1
     BLEED_RESISTANCE: 1
-    INACCURACY: -20
   STRAY:
     RADIANT_RESISTANCE: -1
     FIRE_RESISTANCE: -1
@@ -82,7 +86,6 @@ entity:
     NECROTIC_RESISTANCE: 1
     POISON_RESISTANCE: 1
     BLEED_RESISTANCE: 1
-    INACCURACY: -20
   WITHER_SKELETON:
     RADIANT_RESISTANCE: -1
     FIRE_RESISTANCE: 1
