@@ -25,7 +25,7 @@ Features include
 - New potion effects with an effect indicator
 - Enemy progression, gaining increased stats as you level up
 - Global effect boosters, which you may sell in your server shops as EULA-friendly server perks
-- Likewise, the plugin by default includes damage indicators to tell you how much damage you're doing (Requires "Decent Holograms" to be installed)
+- Likewise, the plugin by default includes damage indicators to tell you how much damage you're doing (Requires "Decent Holograms" to be installed on 1.19, 1.20+ uses TextDisplay)
   - By default only enabled on "dummies", which are armor stands wearing an item marked with the "dummy" tag
   - Display the damage type that is dealt
   - Display DPS (Damage Per Second) as well as critical hits
@@ -41,16 +41,5 @@ The plugin works on Spigot and its forks, on version 1.19 and above.
 
 # Maven
 ```
-<repositories>
-  <repository>
-    <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
-  </repository>
-</repositories>
-
-<dependency>
-  <groupId>com.github.Athlaeos</groupId>
-  <artifactId>ValhallaMMO</artifactId>
-  <version>Tag</version>
-</dependency>
+not implemented yet
 ```
