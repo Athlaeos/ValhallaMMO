@@ -15,7 +15,8 @@ public class ResourcePack {
      * I copied most of this from thesheepdev's Simple Resourcepack, so code credit for resource pack hosting goes to them
      */
     private static File pack;
-    private static final String defaultPackLink = "https://download.mc-packs.net/pack/6d882f4294af3638410c60a718b2a6394423c337.zip";
+    private static final String defaultPackLink = "https://github.com/Athlaeos/ValhallaMMO/files/14145840/ValhallaMMO.zip";
+    private static final String defaultSha1 = "c7692b06c5a5402bb7a1199a546a4022874656f8";
 
     public static File getPack() {
         return pack;
@@ -93,5 +94,13 @@ public class ResourcePack {
             return false;
         }
         return true;
+    }
+
+    public static String getDefaultPackLink() {
+        return defaultPackLink;
+    }
+
+    public static String getDefaultSha1() {
+        return defaultSha1;
     }
 }
