@@ -11,8 +11,16 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 
 public class ResourcePackCommand implements Command {
 
@@ -76,7 +84,21 @@ public class ResourcePackCommand implements Command {
                     ConfigManager.getConfig("config.yml").save();
                     ResourcePack.generate();
                     sender.sendMessage(Utils.chat(TranslationManager.getTranslation("status_command_resourcepack_setup")));
-                } else return false;
+                } else {
+                    if (!modify("resource-pack-sha1", ResourcePack.getDefaultSha1())) {
+                        ValhallaMMO.logSevere("Could not set resource pack sha1 to server.properties");
+                        Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_resourcepack"));
+                        return true;
+                    }
+
+                    if (!modify("resource-pack", ResourcePack.getDefaultPackLink())) {
+                        ValhallaMMO.logSevere("Could not set resource pack link to server.properties");
+                        Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_resourcepack"));
+                        return true;
+                    }
+                    sender.sendMessage(Utils.chat(TranslationManager.getTranslation("status_command_resourcepack_setup")));
+                    return true;
+                }
             } else if (args[1].equalsIgnoreCase("download")){
                 if (!ResourcePack.downloadDefault()) {
                     Utils.sendMessage(sender, "&cCould not download default resource pack. View console for more details");
@@ -132,5 +154,57 @@ public class ResourcePackCommand implements Command {
         if (args.length == 3 && args[1].equalsIgnoreCase("setup")) return List.of("<your_server_ip>");
         if (args.length == 4 && args[1].equalsIgnoreCase("setup")) return List.of("<available_port>", "30005");
         return null;
+    }
+
+    private String sha1Code(File file) throws IOException, NoSuchAlgorithmException {
+        FileInputStream fileInputStream = new FileInputStream(file);
+        MessageDigest digest = MessageDigest.getInstance("SHA-1");
+        DigestInputStream digestInputStream = new DigestInputStream(fileInputStream, digest);
+        byte[] bytes = new byte[1024];
+        // read all file content
+        while (digestInputStream.read(bytes) > 0) digest = digestInputStream.getMessageDigest();
+        byte[] resultByteArray = digest.digest();
+        return bytesToHexString(resultByteArray);
+    }
+
+    private String bytesToHexString(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            int value = b & 0xFF;
+            if (value < 16) sb.append("0");
+            sb.append(Integer.toHexString(value).toUpperCase());
+        }
+        return sb.toString();
+    }
+
+    @SuppressWarnings("all")
+    private boolean modify(String configKey, String configSetting) {
+        File serverProperties;
+        try {
+            serverProperties = new File(Paths.get(ValhallaMMO.getInstance().getDataFolder().getParentFile().getCanonicalFile().getParentFile().toString() + File.separatorChar + "server.properties").toString());
+            if (!serverProperties.exists()) {
+                ValhallaMMO.logSevere("Could not find server.properties");
+                return false;
+            }
+        } catch (Exception exception) {
+            ValhallaMMO.logSevere("Could not access server.properties");
+            exception.printStackTrace();
+            return false;
+        }
+        try {
+            FileInputStream in = new FileInputStream(serverProperties);
+            Properties props = new Properties();
+            props.load(in);
+            in.close();
+
+            java.io.FileOutputStream out = new java.io.FileOutputStream(serverProperties);
+            props.setProperty(configKey, configSetting);
+            props.store(out, null);
+            out.close();
+        } catch (Exception ex) {
+            ValhallaMMO.logSevere("Could not write to server.properties");
+            return false;
+        }
+        return true;
     }
 }
