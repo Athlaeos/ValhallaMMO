@@ -18,6 +18,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.HeavyArmorPr
 import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
+import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.*;
@@ -96,17 +97,18 @@ public class HeavyArmorSkill extends Skill implements Listener {
     public void onDamageTaken(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
-        if (!(trueDamager instanceof LivingEntity) || !(e.getEntity() instanceof Player p)) return;
+        if (!(trueDamager instanceof LivingEntity) || !(e.getEntity() instanceof Player p) || p.isBlocking()) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_HEAVYARMOR)) return;
 
         HeavyArmorProfile profile = ProfileCache.getOrCache(p, HeavyArmorProfile.class);
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(p.getLocation().getChunk(), p, "armors");
             int count = EntityCache.getAndCacheProperties(p).getHeavyArmorCount();
             double totalHeavyArmor = AccumulativeStatManager.getCachedStats("TOTAL_HEAVY_ARMOR", p, 10000, false);
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(trueDamager.getType(), 1D);
             double lastDamageTaken = e.getDamage();
-            double exp = expPerDamage * lastDamageTaken * entityExpMultiplier * (1 + (totalHeavyArmor * expBonusPerPoint));
+            double exp = expPerDamage * lastDamageTaken * entityExpMultiplier * (1 + (totalHeavyArmor * expBonusPerPoint)) * chunkNerf;
             addEXP(p, count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
             if (profile.isRageUnlocked() && profile.getRageLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_heavy_armor_rage") &&
@@ -120,6 +122,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
                 if (rageActivation != null) rageActivation.animate(p, p.getLocation(), p.getEyeLocation().getDirection(), 0);
                 Timer.setCooldownIgnoreIfPermission(p, profile.getRageCooldown() * 50, "cooldown_heavy_armor_rage");
             }
+            ChunkEXPNerf.increment(p.getLocation().getChunk(), p, "armors");
         }, 2L);
     }
 

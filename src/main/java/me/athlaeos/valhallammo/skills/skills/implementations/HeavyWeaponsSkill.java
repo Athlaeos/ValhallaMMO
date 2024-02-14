@@ -153,7 +153,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.HEAVY) return;
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p);
+                double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);
                 addEXP(p,
                         Math.min(EntityUtils.getMaxHP(l), EntityDamagedListener.getLastDamageTaken(l.getUniqueId(), e.getFinalDamage())) *
@@ -163,7 +163,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
                                 (EntitySpawnListener.getSpawnReason(l) == CreatureSpawnEvent.SpawnReason.SPAWNER ? spawnerMultiplier : 1),
                         false,
                         PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
-                ChunkEXPNerf.increment(l.getLocation().getChunk(), p);
+                ChunkEXPNerf.increment(l.getLocation().getChunk(), p, "weapons");
             }, 2L);
         }
     }

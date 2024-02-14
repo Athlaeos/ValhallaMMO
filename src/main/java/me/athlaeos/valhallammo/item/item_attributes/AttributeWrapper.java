@@ -14,13 +14,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public abstract class AttributeWrapper {
     protected final String attribute;
+    protected String convertTo = null;
     protected Double min = Double.NEGATIVE_INFINITY;
     protected Double max = Double.MAX_VALUE;
     protected double value;
+    protected boolean isHidden = false;
     protected final StatFormat format;
     protected AttributeModifier.Operation operation;
-    protected final boolean isVanilla;
-    protected final Attribute vanillaAttribute;
+    protected boolean isVanilla;
+    protected Attribute vanillaAttribute;
 
     public AttributeWrapper(String attribute, StatFormat format){
         this.attribute = attribute;
@@ -67,9 +69,30 @@ public abstract class AttributeWrapper {
         return addModifier(icon, 0.01, 0.1);
     }
 
+    /**
+     * Used when Minecraft has an attribute added that already existed within ValhallaMMO to convert an old custom attribute to the new vanilla one.
+     * Whenever such an attributewrapper is used, it uses the new name instead of the old one.
+     * @param newName the new attribute which should be used
+     * @return this, for ease of registration
+     */
+    public AttributeWrapper convertTo(String newName){
+        this.convertTo = newName;
+        if (newName == null) return this;
+        try {
+            this.vanillaAttribute = Attribute.valueOf(newName);
+            isVanilla = true;
+        } catch (IllegalArgumentException ignored){
+            this.vanillaAttribute = null;
+            isVanilla = false;
+        }
+        return this;
+    }
+
     public Material getIcon() { return icon; }
     public double getSmallIncrement() { return smallIncrement; }
     public double getBigIncrement() { return bigIncrement; }
+    public boolean isHidden() { return isHidden; }
+    public String getConvertTo() { return convertTo; }
 
     public boolean isCompatible(ItemStack i){
         return true;
@@ -104,8 +127,7 @@ public abstract class AttributeWrapper {
 
     public AttributeWrapper setValue(double value) { this.value = value; return this; }
     public AttributeWrapper setOperation(AttributeModifier.Operation operation) { this.operation = operation; return this; }
-
-
+    public void setHidden(boolean hidden) { isHidden = hidden; }
 
     public String getLoreDisplay(){
         return null;

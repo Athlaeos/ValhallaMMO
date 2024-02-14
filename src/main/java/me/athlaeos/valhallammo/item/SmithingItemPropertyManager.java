@@ -281,6 +281,6 @@ public class SmithingItemPropertyManager {
                 )
         );
         result = Math.max(minimumFraction * result, result);
-        ItemAttributesRegistry.setStat(meta, attribute, result, false);
+        ItemAttributesRegistry.setStat(meta, attribute, result, defaultAttribute.isHidden(), false);
     }
 }

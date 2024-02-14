@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.playerstats.statsources;
 
 import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
+import me.athlaeos.valhallammo.listeners.InteractListener;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatSource;
 import me.athlaeos.valhallammo.playerstats.EvEAccumulativeStatSource;
 import me.athlaeos.valhallammo.utility.EntityUtils;
@@ -57,7 +58,9 @@ public class AttributeAttackerSource implements AccumulativeStatSource, EvEAccum
         if (trueAttacker == null) return value;
 
         // gather stats from real attacker, and include only main hand if it was a melee attack (not a projectile)
-        value += (negative ? -1 : 1) * EntityUtils.combinedAttributeValue(trueAttacker, attribute, weightClass, statPenalty, !(attackedBy instanceof Projectile));
+        value += (negative ? -1 : 1) * (!(trueAttacker instanceof Projectile) ?
+                EntityUtils.combinedAttackerAttributeValue(trueAttacker, attribute, weightClass, statPenalty, !InteractListener.attackedWithOffhand(attackedBy)) :
+                EntityUtils.combinedAttributeValue(trueAttacker, attribute, weightClass, statPenalty, false));
 
         if (!ignoreProjectiles && attackedBy instanceof Projectile p){
             ItemBuilder item = ItemUtils.getStoredItem(p);

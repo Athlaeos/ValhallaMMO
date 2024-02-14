@@ -453,6 +453,14 @@
     "attribute_durability_multiplier": "%icon%%value% Durability",
     "attribute_crossbow_magazine": "",
     "attribute_attack_reach_multiplier": "%icon%%value% Attack Reach",
+    "attribute_generic_scale": "%icon%%value% Size",
+    "attribute_generic_block_interaction_range": "%icon%%value% Block Reach",
+    "attribute_generic_step_height": "%icon%%value% Step Height",
+    "attribute_shield_disarming": "%icon%%value% Shield Disarming",
+    "attribute_life_steal": "%icon%%value% Life Steal",
+    "attribute_generic_gravity": "%icon%%value% Gravity",
+    "attribute_generic_safe_fall_distance": "%icon%%value% Fall Capacity",
+    "attribute_generic_fall_damage_multiplier": "%icon%%value% Fall Damage",
     "stat_attribute_negative_prefix": "&c",
     "stat_attribute_positive_prefix": "&7",
 
@@ -643,8 +651,16 @@
     "potion_name_splash_intensity_minimum": "Alchemy",
     "potion_name_entity_rare_drops": "Looting",
     "potion_name_dig_speed": "Drilling",
-    "potion_name_crossbow_magazine": "",
+    "potion_name_crossbow_magazine": "Archery",
     "potion_name_attack_reach_multiplier": "Reach",
+    "potion_name_generic_scale": "Giants",
+    "potion_name_generic_block_interaction_range": "Reach",
+    "potion_name_generic_step_height": "Stepping",
+    "potion_name_shield_disarming": "Shattering",
+    "potion_name_life_steal": "Vampirism",
+    "potion_name_generic_gravity": "Mass",
+    "potion_name_generic_safe_fall_distance": " Capacity",
+    "potion_name_generic_fall_damage_multiplier": " Damage",
     "potion_name_chocolate_milk": "Chocolate Milk",
     "potion_name_milk": "Milk",
 
@@ -834,6 +850,14 @@
     "effect_name_dig_speed": "%icon% Mining Speed %value% %duration%",
     "effect_name_crossbow_magazine": "%icon% Magazine Size %value% %duration%",
     "effect_name_attack_reach_multiplier": "%icon% Attack Reach %value% %duration%",
+    "effect_name_generic_scale": "%icon% Size %value% %duration%",
+    "effect_name_generic_block_interaction_range": "%icon% Block Reach %value% %duration%",
+    "effect_name_generic_step_height": "%icon% Step Height %value% %duration%",
+    "effect_name_shield_disarming": "%icon% Shield Disarming %value% %duration%",
+    "effect_name_life_steal": "%icon% Life Steal %value% %duration%",
+    "effect_name_generic_gravity": "%icon% Gravity %value% %duration%",
+    "effect_name_generic_safe_fall_distance": "%icon% Fall Capacity %value% %duration%",
+    "effect_name_generic_fall_damage_multiplier": "%icon% Fall Damage %value% %duration%",
     "stat_potion_positive_prefix": "&a",
     "stat_potion_negative_prefix": "&c",
 
@@ -1020,6 +1044,14 @@
     "stat_icon_mining_speed": "",
     "stat_icon_crossbow_magazine": "",
     "stat_icon_attack_reach_multiplier": "",
+    "stat_icon_generic_scale": "",
+    "stat_icon_generic_block_interaction_range": "",
+    "stat_icon_generic_step_height": "",
+    "stat_icon_shield_disarming": "",
+    "stat_icon_life_steal": "",
+    "stat_icon_generic_gravity": "",
+    "stat_icon_generic_safe_fall_distance": "",
+    "stat_icon_generic_fall_damage_multiplier": "",
 
     "translation_next_page": "&7&lNext Page",
     "translation_previous_page": "&7&lPrevious Page",
@@ -1200,6 +1232,7 @@
     "skill-archery-description": "&8Practice Archery to increase your ranged damage, improve your accuracy, and kill targets consistently at a safe distance. Practicing archery takes a long time, but it's arguably the strongest of all the combat skills",
     "skill-archery-displayname": "&7Archery",
     "skill-archery-level-bar": "&7Archery &eLV %lv_current% &6%exp_current%&7/&6%exp_next% &7(&e%exp%&7)",
+    "heavy-weapons-warning-dual-wielding": "TITLE(&cToo Heavy! Attack speed reduced;&7Can't wield two items with heavy weaponry;40;5)",
     "alchemy-quality-rancid": "&cRancid",
     "alchemy-quality-tainted": "&7Tainted",
     "alchemy-quality-dirty": "&7Dirty",
@@ -1408,8 +1441,8 @@
     "smithing_perk_4_description": "&7Greatly buffs the quality of your &eDiamond&7 items.",
     "smithing_perk_5_name": "&eHellforge",
     "smithing_perk_5_description": "&7Greatly buffs the quality of your &eNetherite&7 items.",
-    "smithing_perk_6_name": "&eMasterpiece",
-    "smithing_perk_6_description": "&7The gods bless your efforts, and grant only your next creation a massive boost in quality.",
+    "smithing_perk_6_name": "&eDurin's Blessing",
+    "smithing_perk_6_description": "&7Having truly mastered your craft, all your creations benefit from a &e{smithing_genericcraftingskill_add} &7bonus in quality",
     "smithing_perk_prismarine_name": "&9Marine Smithing",
     "smithing_perk_prismarine_description": "&7Grants you the ability to craft tridents",
     "smithing_perk_enderic_name": "&dExotic Smithing",
@@ -2651,7 +2684,7 @@
     ],
     "alchemy_perk_b1_messages": [
       "&d✰ &5Effective Catalysts &d✰",
-      "&d{alchemy_debuffbrewingskill_add} &7Beneficial Potion Quality",
+      "&d{alchemy_buffbrewingskill_add} &7Beneficial Potion Quality",
       "&d{alchemy_brewingtimereduction_add} &7Brewing Speed"
     ],
     "alchemy_perk_b2_messages": [
@@ -2674,7 +2707,7 @@
     ],
     "alchemy_perk_4_messages": [
       "&d✰ &5Prima Materia &d✰",
-      "&d{alchemy_buffbrewingskill_add} &7Potion Quality",
+      "&d{alchemy_genericbrewingskill_add} &7Potion Quality",
       "&dPotion Recipes Unlocked:",
       "&7- &#0077ffAlchemic Precursor &7(Nether Star)"
     ],
@@ -2712,11 +2745,8 @@
       "&e{smithing_netheritecraftingskill_add} &7Netherite Quality"
     ],
     "smithing_perk_6_messages": [
-      "&e✰ &6Masterpiece &e✰",
-      "&7The gods bless your efforts, and",
-      "&7you gain &e+100 &7quality on your",
-      "&7next creation. Try as you might, you",
-      "&7will not be able to repeat this feat"
+      "&e✰ &6Durin's Blessing &e✰",
+      "&e{smithing_genericcraftingskill_add} &7Universal Quality"
     ],
     "smithing_perk_prismarine_messages": [
       "&e✰ &6Marine Smithing &e✰",

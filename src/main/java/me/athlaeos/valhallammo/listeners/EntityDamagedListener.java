@@ -49,7 +49,7 @@ public class EntityDamagedListener implements Listener {
             double originalDamage = e.getDamage();
             double customDamage = type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
             double damageAfterImmunity = overrideImmunityFrames(customDamage, l);
-            if (damageAfterImmunity <= 0) {
+            if (damageAfterImmunity <= 0 && type != null && type.isImmuneable()) {
                 e.setCancelled(true);
                 return; // entity is immune, and so damage doesn't need to be calculated further
             }

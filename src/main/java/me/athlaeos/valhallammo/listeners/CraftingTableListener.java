@@ -76,7 +76,12 @@ public class CraftingTableListener implements Listener {
 
             boolean verifyClicks = false;
             switch (clickType){
-                case DROP, CONTROL_DROP -> {} // do nothing special because these actions do not require empty inventory space
+                case DROP, CONTROL_DROP -> {
+                    if (!ItemUtils.isEmpty(e.getCursor())){
+                        e.setCancelled(true);
+                        return; // TODO hotfix, dont yet know why crafting with the drop key while holding an item on the cursor doesnt actually spit out an item and doesnt consume ingredients while still rewarding exp
+                    }
+                } // do nothing special because these actions do not require empty inventory space
                 case LEFT, RIGHT -> verifyClicks = true;
                 case SHIFT_LEFT, SHIFT_RIGHT -> {
                     // calculate how many items can be crafted

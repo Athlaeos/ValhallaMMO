@@ -125,6 +125,8 @@ public class DigPacketInfo {
             cachedMultiplier.put(digger.getUniqueId(), additionalMultiplier);
             if (canSwimMine) cachedSwimmingMiners.add(digger.getUniqueId());
             if (profile.hasAerialAffinity()) cachedAirMiners.add(digger.getUniqueId());
+
+            additionalMultiplier += EntityUtils.getPlayerMiningSpeed(digger) - 1;
         }
         baseMultiplier *= additionalMultiplier;
 

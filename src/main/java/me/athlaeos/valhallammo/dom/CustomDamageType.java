@@ -26,10 +26,12 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
             .additiveDamage("MAGIC_DAMAGE_BONUS").multiplicativeDamage("MAGIC_DAMAGE_DEALT")
             .resistance("MAGIC_RESISTANCE")
             .immuneable()
+            .lifeStealable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_magic")).i("&f\uEE6C&d").register();
     public static final CustomDamageType PROJECTILE = new CustomDamageType("PROJECTILE", "PROJECTILE")
             .multiplicativeDamage("RANGED_DAMAGE_DEALT")
             .resistance("PROJECTILE_RESISTANCE")
+            .lifeStealable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_projectile")).i("&f\uEE05&c").register();
     public static final CustomDamageType EXPLOSION = new CustomDamageType("EXPLOSION", "ENTITY_EXPLOSION", "BLOCK_EXPLOSION")
             .additiveDamage("EXPLOSION_DAMAGE_BONUS").multiplicativeDamage("EXPLOSION_DAMAGE_DEALT")
@@ -46,10 +48,12 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
     public static final CustomDamageType MELEE = new CustomDamageType("MELEE", "CONTACT", "ENTITY_ATTACK", "ENTITY_SWEEP_ATTACK")
             .multiplicativeDamage("MELEE_DAMAGE_DEALT")
             .resistance("MELEE_RESISTANCE")
+            .lifeStealable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_melee")).i("&f\uEE54&c").register();
     public static final CustomDamageType BLEED = new CustomDamageType("BLEED", "BLEED")
             .resistance("BLEED_RESISTANCE")
             .immuneable()
+            .lifeStealable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_bleeding")).i("&f\uEE09&4").register();
     public static final CustomDamageType FREEZING = new CustomDamageType("FREEZING", "FREEZE")
             .additiveDamage("FREEZING_DAMAGE_BONUS").multiplicativeDamage("FREEZING_DAMAGE_DEALT")
@@ -64,16 +68,19 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
     public static final CustomDamageType BLUDGEONING = new CustomDamageType("BLUDGEONING", "FALLING_BLOCK", "BLUDGEONING")
             .additiveDamage("BLUDGEONING_DAMAGE_BONUS").multiplicativeDamage("BLUDGEONING_DAMAGE_DEALT").powerAttacks(true)
             .resistance("BLUDGEONING_RESISTANCE")
+            .lifeStealable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_bludgeoning")).i("&f\uEE6E&c").register();
     public static final CustomDamageType RADIANT = new CustomDamageType("RADIANT", "RADIANT")
             .additiveDamage("RADIANT_DAMAGE_BONUS").multiplicativeDamage("RADIANT_DAMAGE_DEALT")
             .resistance("RADIANT_RESISTANCE")
             .immuneable()
+            .lifeStealable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_radiant")).i("&f\uEE71&f").register();
     public static final CustomDamageType NECROTIC = new CustomDamageType("NECROTIC", "NECROTIC", "WITHER")
             .additiveDamage("NECROTIC_DAMAGE_BONUS").multiplicativeDamage("NECROTIC_DAMAGE_DEALT")
             .resistance("NECROTIC_RESISTANCE")
             .immuneable()
+            .lifeStealable()
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_necrotic")).i("&f\uEE72&7").register();
 
     public static Map<String, CustomDamageType> getRegisteredTypes() {
@@ -91,6 +98,7 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
     private boolean benefitsFromPowerAttacks = false;
     private boolean fatal = true;
     private boolean immuneable = false; // determines if damage events can be cancelled for this damage type with 100% resistance to it
+    private boolean canLifeSteal = false;
 
     public CustomDamageType(String type, String... subTypes){
         this.type = type;
@@ -150,6 +158,11 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
         return this;
     }
 
+    public CustomDamageType lifeStealable() {
+        this.canLifeSteal = true;
+        return this;
+    }
+
     public CustomDamageType additiveDamage(String additiveDamageStatSource) {
         this.additiveDamageStatSource = additiveDamageStatSource;
         return this;
@@ -190,6 +203,9 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
 
     public boolean benefitsFromPowerAttacks() {
         return benefitsFromPowerAttacks;
+    }
+    public boolean canLifeSteal() {
+        return canLifeSteal;
     }
 
     public CustomDamageType register(){

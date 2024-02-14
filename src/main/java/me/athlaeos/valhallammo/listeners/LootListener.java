@@ -45,6 +45,7 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerHarvestBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
@@ -551,6 +552,8 @@ public class LootListener implements Listener {
         }
     }
 
+    private final Collection<Material> itemDuplicationWhitelist = new HashSet<>(ItemUtils.getMaterialSet(ValhallaMMO.getPluginConfig().getStringList("item_duplication_whitelist")));
+
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDrops(EntityDeathEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE)) return;
@@ -560,8 +563,19 @@ public class LootListener implements Listener {
         if (killer == null && lastDamageSource instanceof EntityDamageByEntityEvent event){
             if (event.getDamager() instanceof LivingEntity realKiller) killer = realKiller;
         }
+
+        Collection<Material> droppedHandTypes = new HashSet<>();
+        EntityEquipment equipment = entity.getEquipment();
+        if (equipment != null){
+            if (!ItemUtils.isEmpty(equipment.getItemInMainHand())) droppedHandTypes.add(equipment.getItemInMainHand().getType());
+            if (!ItemUtils.isEmpty(equipment.getItemInOffHand())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
+            if (!ItemUtils.isEmpty(equipment.getHelmet())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
+            if (!ItemUtils.isEmpty(equipment.getChestplate())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
+            if (!ItemUtils.isEmpty(equipment.getLeggings())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
+            if (!ItemUtils.isEmpty(equipment.getBoots())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
+        }
         double dropMultiplier = killer == null ? 0 : AccumulativeStatManager.getCachedStats("ENTITY_DROPS", killer, 10000, true);
-        ItemUtils.multiplyItems(e.getDrops(), 1 + dropMultiplier, false, i -> !i.hasItemMeta());
+        ItemUtils.multiplyItems(e.getDrops(), 1 + dropMultiplier, false, i -> !i.hasItemMeta() && itemDuplicationWhitelist.contains(i.getType()) && !droppedHandTypes.contains(i.getType()));
 
         LootTable table = LootTableRegistry.getLootTable(entity);
         if (table == null) return;

@@ -39,6 +39,8 @@ public class LightWeaponsProfile extends Profile {
         floatStat("coatingAmplifierMultiplier", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
         floatStat("dropsMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("rareDropsMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("shieldDisarming", new PropertyBuilder().format(StatFormat.DIFFERENCE_TIME_SECONDS_BASE_20_P1).perkReward().create());
+        floatStat("lifeSteal", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P2).perkReward().create());
 
         floatStat("parryDamageReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("parryCooldownSuccessReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
@@ -60,6 +62,12 @@ public class LightWeaponsProfile extends Profile {
 
         doubleStat("lightWeaponsEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).perkReward().create());
     }
+
+    public float getShieldDisarming() { return getFloat("shieldDisarming"); }
+    public void setShieldDiarming(float value) { setFloat("shieldDisarming", value); }
+
+    public float getLifeSteal() { return getFloat("lifeSteal"); }
+    public void setLifeSteal(float value) { setFloat("lifeSteal", value); }
 
     public boolean doesBleedOnCrit() { return getBoolean("bleedOnCrit"); }
     public void setBleedOnCrit(boolean value) { setBoolean("bleedOnCrit", value); }

@@ -43,7 +43,7 @@ public class AttributeHiddenWrapper extends AttributeWrapper {
 
     @Override
     public AttributeWrapper copy() {
-        return new AttributeHiddenWrapper(attribute, format, compatibleWith.toArray(new Material[0]));
+        return new AttributeHiddenWrapper(attribute, format, compatibleWith.toArray(new Material[0])).convertTo(convertTo);
     }
 
     @Override

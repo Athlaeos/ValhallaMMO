@@ -39,6 +39,8 @@ public class PowerProfile extends Profile {
         floatStat("blockReachBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
         floatStat("stepHeightBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
         floatStat("scaleMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("gravity", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("safeFallingDistance", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
         floatStat("attackDamageBonus", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
         floatStat("fireDamageBonus", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
         floatStat("explosionDamageBonus", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
@@ -115,6 +117,8 @@ public class PowerProfile extends Profile {
         intStat("parryCooldown", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).min(0).perkReward().create());
         floatStat("parryCooldownSuccessReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("parryDamageReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("shieldDisarming", new PropertyBuilder().format(StatFormat.DIFFERENCE_TIME_SECONDS_BASE_20_P1).perkReward().create());
+        floatStat("lifeSteal", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P2).perkReward().create());
         floatStat("dismountChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("foodBonusVegetable", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("foodBonusSeasoning", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
@@ -147,6 +151,12 @@ public class PowerProfile extends Profile {
         booleanStat("hideGlobalBuffs");
         floatStat("craftingEffectVolume", 1F, new PropertyBuilder().min(0).max(10).create());
     } // TODO an annotation to automate getters and setters for all these properties?
+
+    public float getShieldDisarming() { return getFloat("shieldDisarming"); }
+    public void setShieldDiarming(float value) { setFloat("shieldDisarming", value); }
+
+    public float getLifeSteal() { return getFloat("lifeSteal"); }
+    public void setLifeSteal(float value) { setFloat("lifeSteal", value); }
 
     public float getFoodBonus(FoodClass foodClass){
         return getFloat(switch (foodClass){

@@ -62,7 +62,7 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("DAMAGE_MELEE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE19", (i) -> i >= 0).addModifier(Material.DIAMOND_SWORD));
         register(new AttributeDisplayWrapper("DAMAGE_RANGED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE1A", (i) -> i >= 0).addModifier(Material.BOW));
         register(new AttributeDisplayWrapper("DAMAGE_ALL", StatFormat.PERCENTILE_BASE_1_P1, "\uEE1B", (i) -> i >= 0).addModifier(Material.BLAZE_ROD));
-        register(new AttributeDisplayWrapper("ATTACK_REACH", StatFormat.FLOAT_P2, "\uEE1C", (i) -> i >= 0).addModifier(Material.ENDER_PEARL, 0.1, 1));
+        register(new AttributeDisplayWrapper("ATTACK_REACH", StatFormat.DIFFERENCE_FLOAT_P2, "\uEE1C", (i) -> i >= 0).addModifier(Material.ENDER_PEARL, 0.1, 1).convertTo("GENERIC_ENTITY_INTERACTION_RANGE"));
         register(new AttributeDisplayWrapper("VELOCITY_DAMAGE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE1D", (i) -> i >= 0).addModifier(Material.DIAMOND_HORSE_ARMOR));
         register(new AttributeDisplayWrapper("DISMOUNT_CHANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE1E", (i) -> i >= 0).addModifier(Material.SADDLE));
         register(new AttributeDisplayWrapper("DAMAGE_RESISTANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE1F", (i) -> i >= 0).addModifier(Material.IRON_INGOT));
@@ -131,7 +131,7 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("DAMAGE_RADIANT", StatFormat.PERCENTILE_BASE_1_P1, "\uEE65", (i) -> i >= 0).addModifier(Material.GOLD_INGOT));
         register(new AttributeDisplayWrapper("DAMAGE_NECROTIC", StatFormat.PERCENTILE_BASE_1_P1, "\uEE66", (i) -> i >= 0).addModifier(Material.BONE));
         register(new AttributeDisplayWrapper("COOKING_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE67", (i) -> i >= 0).addModifier(Material.BLAST_FURNACE));
-        register(new AttributeDisplayWrapper("JUMP_HEIGHT", StatFormat.PERCENTILE_BASE_1_P1, "\uEE68", (i) -> i >= 0).addModifier(Material.SLIME_BLOCK));
+        register(new AttributeDisplayWrapper("JUMP_HEIGHT", StatFormat.PERCENTILE_BASE_1_P1, "\uEE68", (i) -> i >= 0).addModifier(Material.SLIME_BLOCK).convertTo("GENERIC_JUMP_STRENGTH"));
         register(new AttributeDisplayWrapper("JUMPS", StatFormat.INT, "\uEE69", (i) -> i >= 0).addModifier(Material.STICKY_PISTON, 1, 3));
         register(new AttributeDisplayWrapper("EXTRA_EXPLOSION_DAMAGE", StatFormat.FLOAT_P1, "\uEE6A", (i) -> i >= 0).addModifier(Material.TNT, 0.1, 1));
         register(new AttributeDisplayWrapper("EXTRA_FIRE_DAMAGE", StatFormat.FLOAT_P1, "\uEE6B", (i) -> i >= 0).addModifier(Material.FIRE_CHARGE, 0.1, 1));
@@ -164,7 +164,7 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("LINGERING_RADIUS_MULTIPLIER", StatFormat.PERCENTILE_BASE_1_P1, "\uEE93", (i) -> i >= 0).addModifier(Material.LINGERING_POTION));
         register(new AttributeDisplayWrapper("SPLASH_INTENSITY_MINIMUM", StatFormat.PERCENTILE_BASE_1_P1, "\uEE94", (i) -> i >= 0).addModifier(Material.SPLASH_POTION));
         register(new AttributeDisplayWrapper("ENTITY_RARE_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE95", (i) -> i >= 0).addModifier(Material.CHEST));
-        register(new AttributeDisplayWrapper("DIG_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE96", (i) -> i >= 0).addModifier(Material.DIAMOND_PICKAXE));
+        register(new AttributeDisplayWrapper("DIG_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE96", (i) -> i >= 0).addModifier(Material.DIAMOND_PICKAXE).convertTo("GENERIC_BLOCK_BREAK_SPEED"));
         register(new AttributeDisplayWrapper("MINING_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE97", (i) -> i >= 0).addModifier(Material.GOLDEN_PICKAXE));
         // \uEE98 is occupied by fall damage icon
         register(new AttributeDisplayWrapper("CROSSBOW_MAGAZINE", StatFormat.INT, "\uEE99", (i) -> i >= 0).addModifier(Material.CROSSBOW, 1, 5));
@@ -175,7 +175,13 @@ public class ItemAttributesRegistry {
             register(new AttributeDisplayWrapper("GENERIC_STEP_HEIGHT", "\uEE9C", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.RABBIT_FOOT, 0.01, 0.1));
         }
         register(new AttributeDisplayWrapper("ATTACK_REACH_MULTIPLIER", StatFormat.PERCENTILE_BASE_1_P1, "\uEE9D", (i) -> i >= 0).addModifier(Material.ENDER_PEARL, 0.1, 1));
-
+        register(new AttributeDisplayWrapper("SHIELD_DISARMING", StatFormat.DIFFERENCE_TIME_SECONDS_BASE_20_P1, "\uEE9E", (i) -> i >= 0).addModifier(Material.NETHERITE_AXE, 1, 10));
+        register(new AttributeDisplayWrapper("LIFE_STEAL", StatFormat.PERCENTILE_BASE_1_P2, "\uEE9F", (i) -> i >= 0).addModifier(Material.GHAST_TEAR, 0.001, 0.01));
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21)){
+            register(new AttributeDisplayWrapper("GENERIC_GRAVITY", "\uEEA0", (i) -> i <= 0, StatFormat.DIFFERENCE_FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.BEDROCK, 0.01, 0.1));
+            register(new AttributeDisplayWrapper("GENERIC_SAFE_FALL_DISTANCE", "\uEEA1", (i) -> i >= 0, StatFormat.DIFFERENCE_FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.LEATHER_BOOTS, 0.01, 0.1));
+            register(new AttributeDisplayWrapper("GENERIC_FALL_DAMAGE_MULTIPLIER", "\uEEA2", (i) -> i <= 0, StatFormat.DIFFERENCE_FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.NETHERITE_BOOTS, 0.01, 0.1));
+        }
 
         addVanillaStat(Material.WOODEN_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
         addVanillaStat(Material.WOODEN_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2));
@@ -278,7 +284,7 @@ public class ItemAttributesRegistry {
             clean(meta);
         } else {
             meta.getPersistentDataContainer().set(DEFAULT_STATS, PersistentDataType.STRING,
-                    stats.values().stream().map(s -> s.getAttribute() + ":" + s.getValue() + ":" + s.getOperation())
+                    stats.values().stream().map(s -> s.getAttribute() + ":" + s.getValue() + ":" + s.getOperation() + ":" + s.isHidden())
                             .collect(Collectors.joining(";")));
         }
     }
@@ -313,11 +319,13 @@ public class ItemAttributesRegistry {
                     String attribute = args[0];
                     double value = Double.parseDouble(args[1]);
                     AttributeModifier.Operation operation = args.length > 2 ? AttributeModifier.Operation.valueOf(args[2]) : AttributeModifier.Operation.ADD_NUMBER;
+                    boolean hidden = args.length > 3 && args[3].equals("true");
 
                     AttributeWrapper wrapper = registeredAttributes.get(attribute);
                     if (wrapper == null) continue;
                     wrapper = wrapper.copy();
                     wrapper.setValue(value);
+                    wrapper.setHidden(hidden);
                     wrapper.setOperation(operation);
                     attributes.put(attribute, wrapper);
                 } catch (IllegalArgumentException ignored){}
@@ -398,7 +406,7 @@ public class ItemAttributesRegistry {
             meta.getPersistentDataContainer().set(ACTUAL_STATS, PersistentDataType.STRING,
                     stats.values().stream()
                             .filter(s -> !exclude.contains(s.getAttribute()))
-                            .map(s -> s.getAttribute() + ":" + s.getValue() + ":" + s.getOperation())
+                            .map(s -> s.getAttribute() + ":" + s.getValue() + ":" + s.getOperation() + ":" + s.isHidden())
                             .collect(Collectors.joining(";"))
             );
         }
@@ -485,12 +493,13 @@ public class ItemAttributesRegistry {
      * @param value the value to set it to
      * @param def if the default stat should be changed (true) or the actualized stat (false)
      */
-    public static void setStat(ItemMeta meta, String attribute, double value, boolean def){
+    public static void setStat(ItemMeta meta, String attribute, double value, boolean hidden, boolean def){
         Map<String, AttributeWrapper> stats = getStats(meta, def);
         AttributeWrapper wrapper = stats.get(attribute);
         if (wrapper == null) return;
         wrapper = wrapper.copy();
         wrapper.setValue(value);
+        wrapper.setHidden(hidden);
         stats.put(wrapper.getAttribute(), wrapper);
         if (def) setDefaultStats(meta, stats);
         setActualStats(meta, stats);

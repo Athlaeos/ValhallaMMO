@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.potioneffects;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.CustomFlag;
+import me.athlaeos.valhallammo.item.item_attributes.implementations.AttributeDisplayWrapper;
 import me.athlaeos.valhallammo.potioneffects.implementations.*;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.event.EntityCustomPotionEffectEvent;
@@ -240,6 +241,13 @@ public class PotionEffectRegistry {
             registerNewEffect(new GenericWrapper("GENERIC_STEP_HEIGHT", (i) -> i >= 0, "\uEE9C", StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.RABBIT_FOOT, 0.01, 0.1));
         }
         registerNewEffect(new GenericWrapper("ATTACK_REACH_MULTIPLIER", (i) -> i >= 0, "\uEE9D", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.ENDER_PEARL));
+        registerNewEffect(new GenericWrapper("SHIELD_DISARMING", (i) -> i >= 0, "\uEE9E", StatFormat.DIFFERENCE_TIME_SECONDS_BASE_20_P1).addModifier(Material.NETHERITE_AXE));
+        registerNewEffect(new GenericWrapper("LIFE_STEAL", (i) -> i >= 0, "\uEE9F", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.GHAST_TEAR));
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21)){
+            registerNewEffect(new GenericWrapper("GENERIC_GRAVITY", (i) -> i <= 0, "\uEEA0",  StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.BEDROCK, 0.01, 0.1));
+            registerNewEffect(new GenericWrapper("GENERIC_SAFE_FALL_DISTANCE", (i) -> i >= 0, "\uEEA1",  StatFormat.DIFFERENCE_FLOAT_P1).addModifier(Material.LEATHER_BOOTS, 0.01, 0.1));
+            registerNewEffect(new GenericWrapper("GENERIC_FALL_DAMAGE_MULTIPLIER", (i) -> i <= 0, "\uEEA2",  StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.NETHERITE_BOOTS, 0.01, 0.1));
+        }
     }
 
     public static void reload(){

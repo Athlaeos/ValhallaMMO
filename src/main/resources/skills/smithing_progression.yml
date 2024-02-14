@@ -207,11 +207,8 @@ perks:
     cost: 1
     hidden: false
     required_lv: 100
-    commands:
-      - "valhallammo:val effect smithing_masterpiece_flat 100 -1 %player%"
     perk_rewards:
-      p:perks_fake_unlock_add:
-        - smithing_perk_6 # Permanently unlocks this perk, preventing the player from getting the reward again.
+      smithing_genericcraftingskill_add: 50
     messages:
       - "<lang.smithing_perk_6_messages>"
     requireperk_all:

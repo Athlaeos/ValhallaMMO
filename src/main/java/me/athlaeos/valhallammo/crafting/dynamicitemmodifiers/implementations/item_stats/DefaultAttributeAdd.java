@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class DefaultAttributeAdd extends DynamicItemModifier {
     private final String attribute;
     private double value = 0;
+    private boolean hidden = false;
     private AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_NUMBER;
     private final double smallIncrement;
     private final double bigIncrement;
@@ -39,6 +40,7 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
         attribute.setValue(value);
         attribute.setOperation(operation);
+        attribute.setHidden(hidden);
         ItemAttributesRegistry.addDefaultStat(outputItem.getMeta(), attribute);
     }
 
@@ -59,7 +61,7 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
                 else currentOperation--;
             }
             operation = AttributeModifier.Operation.values()[currentOperation];
-        }
+        } else if (button == 17) hidden = !hidden;
     }
 
     @Override
@@ -83,6 +85,17 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
                             .get()
             ));
         }
+        extraButtons.add(new Pair<>(17,
+                new ItemBuilder(Material.PAPER)
+                        .name("&dShould this stat be hidden?")
+                        .lore("&f" + hidden,
+                                "&fVanilla attributes cannot be",
+                                "&fhidden unless the HIDE_ATTRIBUTES",
+                                "&fand DISPLAY_ATTRIBUTES flags are",
+                                "&fon the item as well",
+                                "&6Click to toggle ")
+                        .get()
+        ));
         return new Pair<>(11,
                 new ItemBuilder(Material.PAPER)
                         .name("&dHow strong should this base stat be?")
@@ -129,25 +142,31 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
         this.value = value;
     }
 
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
     @Override
     public DynamicItemModifier copy() {
         DefaultAttributeAdd m = new DefaultAttributeAdd(getName(), attribute, smallIncrement, bigIncrement, icon);
         m.setOperation(this.operation);
         m.setValue(this.value);
+        m.setHidden(this.hidden);
         m.setPriority(this.getPriority());
         return m;
     }
 
     @Override
     public String parseCommand(CommandSender executor, String[] args) {
-        if (args.length != 2) return "Two arguments expected: a number and an operation";
+        if (args.length != 3) return "Three arguments expected: a number, an operation, and a boolean";
         try {
             value = Double.parseDouble(args[0]);
             operation = AttributeModifier.Operation.valueOf(args[1]);
+            hidden = Boolean.parseBoolean(args[2]);
         } catch (NumberFormatException ignored){
-            return "Two arguments expected: a number and an operation. Invalid number";
+            return "Three arguments expected: a number, an operation, and a boolean. Invalid number";
         } catch (IllegalArgumentException ignored){
-            return "Two arguments expected: a number and an operation. Invalid operation given";
+            return "Three arguments expected: a number, an operation, and a boolean. Invalid operation or booleangiven";
         }
         return null;
     }
@@ -156,11 +175,12 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
     public List<String> commandSuggestions(CommandSender executor, int currentArg) {
         if (currentArg == 0) return List.of("<value>");
         if (currentArg == 1) return Arrays.stream(AttributeModifier.Operation.values()).map(Object::toString).collect(Collectors.toList());
+        if (currentArg == 2) return List.of("<hidden>", "true", "false");
         return Command.noSubcommandArgs();
     }
 
     @Override
     public int commandArgsRequired() {
-        return 2;
+        return 3;
     }
 }

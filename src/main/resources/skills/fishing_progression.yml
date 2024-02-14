@@ -4,28 +4,28 @@ experience:
   max_level: 100
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   fishing_catch:
-    COD: 150
-    SALMON: 225
-    PUFFERFISH: 450
-    TROPICAL_FISH: 750
-    BOW: 600
-    ENCHANTED_BOOK: 600
-    FISHING_ROD: 600
-    NAME_TAG: 450
-    NAUTILUS_SHELL: 450
-    SADDLE: 450
-    LILY_PAD: 150
-    BOWL: 150
-    LEATHER: 150
-    LEATHER_BOOTS: 150
-    ROTTEN_FLESH: 75
-    STICK: 75
-    STRING: 75
-    POTION: 150 # water bottle
-    BONE: 75
-    INK_SAC: 75
-    TRIPWIRE_HOOK: 75
-    BAMBOO: 150
+    COD: 100
+    SALMON: 150
+    PUFFERFISH: 300
+    TROPICAL_FISH: 500
+    BOW: 400
+    ENCHANTED_BOOK: 400
+    FISHING_ROD: 400
+    NAME_TAG: 300
+    NAUTILUS_SHELL: 300
+    SADDLE: 300
+    LILY_PAD: 100
+    BOWL: 100
+    LEATHER: 100
+    LEATHER_BOOTS: 100
+    ROTTEN_FLESH: 50
+    STICK: 50
+    STRING: 50
+    POTION: 100 # water bottle
+    BONE: 50
+    INK_SAC: 50
+    TRIPWIRE_HOOK: 50
+    BAMBOO: 100
 
 
 special_perks: []
@@ -140,7 +140,7 @@ perks:
     description: "<lang.fishing_perk_5_description>"
     cost: 1
     hidden: false
-    required_lv: 80
+    required_lv: 60
     perk_rewards:
       fishing_fishingspeedbonus_add: 0.6
       fishing_fishingluck_add: 2.5
@@ -181,7 +181,7 @@ perks:
     description: "<lang.fishing_perk_6_description>"
     cost: 1
     hidden: false
-    required_lv: 100
+    required_lv: 60
     perk_rewards:
       fishing_fishingdrops_add: 0.25
       fishing_fishingessencemultiplier_add: 1
@@ -207,7 +207,7 @@ perks:
     description: "<lang.fishing_perk_combo_description>"
     cost: 1
     hidden: false
-    required_lv: 50
+    required_lv: 90
     perk_rewards:
       recipes_unlock:
         - salvage_leather_helmet
@@ -260,10 +260,10 @@ perks:
     requireperk_all:
       - fishing_perk_1
     other_levels_required:
-      - SMITHING:50
+      - SMITHING:90
   fishing_perk_ng1:
     icon: TOTEM_OF_UNDYING
-    coords: "0,7"
+    coords: "1,6"
     name: "<lang.fishing_perk_ng1_name>"
     description: "<lang.fishing_perk_ng1_description>"
     cost: 0
@@ -271,7 +271,6 @@ perks:
     required_lv: 100
     perk_rewards:
       reset_skill_fishing: 0
-      p:fishing_newgameplus_add: 1
       p:fishing_fishingdrops_add: 0.5
       p:fishing_fishingluck_add: 2.5
       p:fishing_fishingspeedbonus_add: 0.25
@@ -282,7 +281,7 @@ perks:
       - "<lang.fishing_perk_ng1_messages>"
   fishing_perk_ng2:
     icon: TOTEM_OF_UNDYING
-    coords: "0,7"
+    coords: "1,6"
     name: "<lang.fishing_perk_ng2_name>"
     description: "<lang.fishing_perk_ng2_description>"
     cost: 0
@@ -292,7 +291,6 @@ perks:
       - fishing_perk_ng1
     perk_rewards:
       reset_skill_fishing: 0
-      p:fishing_newgameplus_add: 1
       p:fishing_fishingdrops_add: 0.5
       p:fishing_fishingluck_add: 2.5
       p:fishing_fishingspeedbonus_add: 0.25

@@ -36,6 +36,11 @@ public class EntityAttributeStats {
             registerAttributeToUpdate(new AttributeDataHolder("valhalla_step_height_modifier", UUID.fromString("9cd03525-21c9-4d32-be70-0ec076cca3cb"), "STEP_HEIGHT", Attribute.valueOf("GENERIC_STEP_HEIGHT"), AttributeModifier.Operation.ADD_NUMBER));
             registerAttributeToUpdate(new AttributeDataHolder("valhalla_scale_modifier", UUID.fromString("0099240a-a267-47ec-90bc-4c7b5210069d"), "SCALE", Attribute.valueOf("GENERIC_SCALE"), AttributeModifier.Operation.ADD_SCALAR));
         }
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21)){
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_gravity_modifier", UUID.fromString("6ba2cb2b-55e8-4830-9487-85a5e40e2639"), "GRAVITY", Attribute.valueOf("GENERIC_GRAVITY"), AttributeModifier.Operation.ADD_SCALAR));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_safe_fall_distance_modifier", UUID.fromString("2805f0d6-9830-4c3c-82c9-88cce6ae1919"), "SAFE_FALLING_DISTANCE", Attribute.valueOf("GENERIC_SAFE_FALL_DISTANCE"), AttributeModifier.Operation.ADD_NUMBER));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_fall_damage_multiplier_modifier", UUID.fromString("b55d80e9-2762-4688-8ae3-d8c71467d670"), "FALL_DAMAGE_MULTIPLIER", Attribute.valueOf("GENERIC_FALL_DAMAGE_MULTIPLIER"), AttributeModifier.Operation.ADD_SCALAR));
+        }
     }
 
     public static void updateStats(LivingEntity e){

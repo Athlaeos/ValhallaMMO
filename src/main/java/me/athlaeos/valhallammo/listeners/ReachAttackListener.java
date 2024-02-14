@@ -1,7 +1,12 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.WeightClass;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.playerstats.EntityCache;
+import me.athlaeos.valhallammo.playerstats.EntityProperties;
+import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -33,6 +38,10 @@ public class ReachAttackListener implements Listener {
                 e.isCancelled() ||
                 e.getAnimationType() != PlayerAnimationType.ARM_SWING ||
                 lastArmSwingReasons.getOrDefault(e.getPlayer().getUniqueId(), ArmSwingReason.ATTACK) != ArmSwingReason.ATTACK) return;
+        EntityProperties properties = EntityCache.getAndCacheProperties(e.getPlayer());
+        if (properties.getMainHand() == null || WeightClass.getWeightClass(properties.getMainHand().getMeta()) == WeightClass.WEIGHTLESS)
+            return;  // only items with a weight class, or empty fist, can reach attack
+
         Player p = e.getPlayer();
         if (cancelNextReachAttack.remove(p.getUniqueId())) return;
 
@@ -41,13 +50,13 @@ public class ReachAttackListener implements Listener {
         Timer.setCooldown(e.getPlayer().getUniqueId(), 0, "parry_vulnerable");
         Timer.setCooldown(e.getPlayer().getUniqueId(), 0, "parry_effective"); // swinging your weapon should also cancel parry attempts
         if (reach <= 0 || multiplier <= 0) return;
-        reach = (3 + reach) * multiplier; // TODO Magic number 3, should be replaced with attack reach once Minecraft has it implemented
+        reach = (EntityUtils.getPlayerReach(e.getPlayer()) + reach) * multiplier;
         Location eyes = p.getEyeLocation();
         Entity vehicle = p.getVehicle();
         // if the player is riding a vehicle their eye location will no longer be accurate, so this estimates the new eye height
         if (vehicle instanceof LivingEntity v) vehicle.getLocation().add(0, v.getEyeHeight() + (0.625 * p.getEyeHeight()), 0);
 
-        RayTraceResult rayTrace = p.getWorld().rayTrace(eyes, eyes.getDirection(), reach - 0.1, FluidCollisionMode.NEVER, true, 0.1, entity -> !(entity.equals(p)) || entity.equals(vehicle) || entity.isDead());
+        RayTraceResult rayTrace = p.getWorld().rayTrace(eyes, eyes.getDirection(), reach - 0.1, FluidCollisionMode.NEVER, true, 0.1, entity -> !(entity.equals(p)) || e.getPlayer().getPassengers().contains(entity) || entity.equals(vehicle) || entity.isDead());
         if (rayTrace != null){
             Entity hit = rayTrace.getHitEntity();
             if (hit == null) return;

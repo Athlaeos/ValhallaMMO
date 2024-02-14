@@ -11,6 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -31,6 +32,7 @@ public interface NMS extends Listener {
     float toolPower(ItemStack tool, Material b);
     void breakBlock(Player p, Block b);
     Sound blockSound(Block b);
+    void resetAttackCooldown(Player p);
 
     void setBookContents(ItemStack book, List<BaseComponent[]> pages);
 

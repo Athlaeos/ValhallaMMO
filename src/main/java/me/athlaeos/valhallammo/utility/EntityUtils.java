@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.dom.BiFetcher;
@@ -197,6 +198,45 @@ public class EntityUtils {
             total += getValue(entity, equipmentPenalty, extra.getMeta(), properties.getMiscEquipmentAttributes().get(extra), attribute, null);
         }
         return total;
+    }
+
+    public static double combinedAttackerAttributeValue(LivingEntity entity, String attribute, WeightClass weightFilter, String equipmentPenalty, boolean mainHand){
+        double total = 0;
+        EntityProperties properties = EntityCache.getAndCacheProperties(entity);
+        if (properties.getHelmet() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter))
+            total += getValue(entity, equipmentPenalty, properties.getHelmet().getMeta(), properties.getHelmetAttributes(), attribute, null);
+        if (properties.getChestplate() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter))
+            total += getValue(entity, equipmentPenalty, properties.getChestplate().getMeta(), properties.getChestPlateAttributes(), attribute, null);
+        if (properties.getLeggings() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter))
+            total += getValue(entity, equipmentPenalty, properties.getLeggings().getMeta(), properties.getLeggingsAttributes(), attribute, null);
+        if (properties.getBoots() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter))
+            total += getValue(entity, equipmentPenalty, properties.getBoots().getMeta(), properties.getBootsAttributes(), attribute, null);
+
+        if (mainHand && properties.getMainHand() != null)
+            total += getValue(entity, equipmentPenalty, properties.getMainHand().getMeta(), properties.getMainHandAttributes(), attribute, null);
+        if (!mainHand && properties.getOffHand() != null)
+            total += getValue(entity, equipmentPenalty, properties.getOffHand().getMeta(), properties.getOffHandAttributes(), attribute, null);
+
+        for (ItemBuilder extra : properties.getMiscEquipment()){
+            total += getValue(entity, equipmentPenalty, extra.getMeta(), properties.getMiscEquipmentAttributes().get(extra), attribute, null);
+        }
+        return total;
+    }
+
+    private static final Attribute attackReachAttribute = Catch.catchOrElse(() -> Attribute.valueOf("GENERIC_ENTITY_INTERACTION_RANGE"), null);
+    public static double getPlayerReach(Player p){
+        if (attackReachAttribute == null) return 3.0;
+        AttributeInstance reach = p.getAttribute(attackReachAttribute);
+        if (reach != null) return reach.getBaseValue();
+        return 3.0;
+    }
+
+    private static final Attribute miningSpeedAttribute = Catch.catchOrElse(() -> Attribute.valueOf("GENERIC_BLOCK_BREAK_SPEED"), null);
+    public static double getPlayerMiningSpeed(Player p){
+        if (miningSpeedAttribute == null) return 1.0;
+        AttributeInstance speed = p.getAttribute(miningSpeedAttribute);
+        if (speed != null) return speed.getBaseValue();
+        return 1.0;
     }
 
     public static double combinedAttributeValue(LivingEntity entity, Attribute attribute, AttributeModifier.Operation operation, WeightClass weightFilter, String equipmentPenalty, boolean mainHandOnly){

@@ -104,6 +104,48 @@ block_recovery_speed: 0.015 # The amount of health (of max 1, per tick) at which
 
 # GAMEPLAY
 
+item_duplication_whitelist: # The plugin features a "drop rate bonus" stat which duplicates enemy drops on death. Any item listed here will be be affected by this stat
+  - STRING
+  - RAW_CHICKEN
+  - COOKED_CHICKEN
+  - FEATHER
+  - RAW_COD
+  - COOKED_COD
+  - LEATHER
+  - RAW_BEEF
+  - COOKED_BEEF
+  - GLOW_INK_SAC
+  - RAW_RABBIT
+  - COOKED_RABBIT
+  - RABBIT_HIDE
+  - RAW_MUTTON
+  - COOKED_MUTTON
+  - BONE
+  - INK_SAC
+  - ROTTEN_FLESH
+  - SPIDER_EYE
+  - ENDER_PEARL
+  - IRON_INGOT
+  - GOLD_NUGGET
+  - GOLD_INGOT
+  - BLAZE_ROD
+  - GUNPOWDER
+  - ARROW
+  - PRISMARINE_SHARD
+  - PRISMARINE_CRYSTALS
+  - EMERALD
+  - GHAST_TEAR
+  - MAGMA_CREAM
+  - PHANTOM_MEMBRANE
+  - SHULKER_SHELL
+  - SLIMEBALL
+  - GLASS_BOTTLE
+  - GLOWSTONE_DUST
+  - REDSTONE
+  - STICK
+  - SUGAR
+  - COAL
+
 skill_gap_pvp_prevention: true # If true, if two players fought each-other and their power levels are too far apart, they will not be able to fight
 skill_gap_pvp_level: 20 # The maximum level difference allowed until players are able to fight each-other again
 
@@ -151,6 +193,8 @@ item_skill_requirement_warning: 'CHAT' # valid choices are ACTION_BAR, CHAT, or 
 item_skill_requirement_warning_delay: 600000 # Players are warned of their equipment being overleveled every 10 minutes
 
 # COMBAT & DAMAGE
+
+dual_wielding: true # If true, players can attack with the item in their offhand in addition to main hand
 
 damage_indicator_format: "&c%icon%%dps%%mitigated%%crit%"
 damage_indicator_crit: " <lang.damage_indicator_crit>" # The placeholder for

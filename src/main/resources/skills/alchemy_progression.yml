@@ -202,6 +202,7 @@ perks:
     hidden: false
     required_lv: 100
     perk_rewards:
+      alchemy_genericbrewingskill_add: 50
       alchemy_transmutationradius_add: 2
       alchemy_transmutations_unlock_all: 0
       recipes_unlock:

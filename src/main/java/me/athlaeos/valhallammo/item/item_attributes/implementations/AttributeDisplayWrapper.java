@@ -116,7 +116,7 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
         // HIDE_ATTRIBUTES will hide vanilla attributes regardless, but if DISPLAY_ATTRIBUTES is also present these vanilla attributes will be displayed as lore instead
         boolean customFlag = CustomFlag.hasFlag(i, CustomFlag.DISPLAY_ATTRIBUTES);
         boolean vanillaFlag = i.hasItemFlag(ItemFlag.HIDE_ATTRIBUTES);
-        if ((isVanilla && (!customFlag || !vanillaFlag)) || (!isVanilla && (vanillaFlag && !customFlag))) onRemove(i);
+        if (isHidden || ((isVanilla && (!customFlag || !vanillaFlag)) || (!isVanilla && (vanillaFlag && !customFlag)))) onRemove(i);
         else {
             String translation = getAttributeName();
             if (StringUtils.isEmpty(translation)) return;
@@ -159,8 +159,8 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
 
     @Override
     public AttributeWrapper copy() {
-        if (format == null) return new AttributeDisplayWrapper(attribute, defaultIcon, isPositive, add_number, add_scalar, multiply_scalar_1).offset(displayStatOffset).setOperation(operation).setValue(value);
-        else return new AttributeDisplayWrapper(attribute, format, defaultIcon, isPositive, compatibleWith.toArray(new Material[0])).offset(displayStatOffset).setOperation(operation).setValue(value);
+        if (format == null) return new AttributeDisplayWrapper(attribute, defaultIcon, isPositive, add_number, add_scalar, multiply_scalar_1).offset(displayStatOffset).setOperation(operation).setValue(value).convertTo(convertTo);
+        else return new AttributeDisplayWrapper(attribute, format, defaultIcon, isPositive, compatibleWith.toArray(new Material[0])).offset(displayStatOffset).setOperation(operation).setValue(value).convertTo(convertTo);
     }
 
     private String prefix(boolean positive){

@@ -27,6 +27,7 @@ import me.athlaeos.valhallammo.utility.Parryer;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.EntityEffect;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
@@ -40,6 +41,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -98,6 +100,13 @@ public class EntityAttackListener implements Listener {
         AttributeInstance vL = v.getAttribute(Attribute.GENERIC_LUCK);
         double victimLuck = vL != null ? vL.getValue() : 0;
 
+        if (v instanceof Player p && p.getCooldown(Material.SHIELD) <= 0 && p.isBlocking() && e.getFinalDamage() == 0 &&
+                (!(e.getDamager() instanceof Player a) || a.getAttackCooldown() >= 0.9)){ // Shield disabling may only occur if the shield is being held up
+            int shieldDisabling = (int) Math.round(AccumulativeStatManager.getCachedAttackerRelationalStats("SHIELD_DISARMING", p, trueDamager, 10000, true));
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
+                p.setCooldown(Material.SHIELD, p.getCooldown(Material.SHIELD) + shieldDisabling)
+            , 1L);
+        }
         if (!sweep){
             boolean facing = EntityUtils.isEntityFacing(v, e.getDamager().getLocation(), facingAngleCos);
 
@@ -106,7 +115,7 @@ public class EntityAttackListener implements Listener {
             // due to the amount of stats being fetched.
             // the dodge is also considered first, as dodging an attack voids all following effects
             if (facing || !requireFacingForDodge){
-                if (Utils.proc(AccumulativeStatManager.getCachedRelationalStats("DODGE_CHANCE", v, e.getDamager(), 10000, true), victimLuck - damagerLuck, false)){
+                if (Utils.proc(AccumulativeStatManager.getCachedRelationalStats("DODGE_CHANCE", v, e.getDamager(), 10000, true), 0, false)){
                     if (dodgeParticle != null) e.getEntity().getWorld().spawnParticle(dodgeParticle, e.getEntity().getLocation().add(0, 1, 0), 10, 0.2, 0.5, 0.2);
                     if (e.getEntity() instanceof Player p) Utils.sendActionBar(p, dodgeMessage);
                     e.setCancelled(true);
@@ -256,6 +265,9 @@ public class EntityAttackListener implements Listener {
                     }
                 }
 
+                double lifeSteal = AccumulativeStatManager.getCachedAttackerRelationalStats("LIFE_STEAL", v, trueDamager, 10000, true);
+                double lifeStealValue = e.getDamage() * lifeSteal;
+
                 // custom damage types mechanics
                 EntityDamageEvent.DamageCause originalCause = e.getCause();
                 double cooldownDamageMultiplier = EntityUtils.cooldownDamageMultiplier(e.getDamager() instanceof Player p ? p.getAttackCooldown() : 1);
@@ -266,9 +278,19 @@ public class EntityAttackListener implements Listener {
                     if (elementalDamage > 0) {
                         EntityUtils.damage(v, e.getDamager(), elementalDamage, damageType.getType());
                         v.setNoDamageTicks(0); // the entity should not receive immunity frames for these types of damage, as this will reduce or even nullify the entity attack damage taken afterwards
+                        lifeStealValue += elementalDamage * lifeSteal;
                     }
                 }
                 EntityDamagedListener.setCustomDamageCause(v.getUniqueId(), originalCause.toString());
+
+                if (lifeStealValue > 0){
+                    EntityRegainHealthEvent healEvent = new EntityRegainHealthEvent(trueDamager, lifeStealValue, EntityRegainHealthEvent.RegainReason.CUSTOM);
+                    ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(healEvent);
+                    if (!healEvent.isCancelled()){
+                        AttributeInstance maxHealth = v.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+                        if (maxHealth != null) v.setHealth(Math.min(maxHealth.getValue(), v.getHealth() + lifeStealValue));
+                    }
+                }
             }
         }
 
