@@ -11,8 +11,10 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.CaveVines;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.LeavesDecayEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -197,6 +199,7 @@ public class BlockUtils {
         return a.getAge() >= a.getMaximumAge();
     }
 
+    @SuppressWarnings("all")
     public static boolean canReward(BlockState b){
         BlockData data = b.getBlockData();
         if (data instanceof CaveVines c) return c.isBerries();
@@ -210,5 +213,10 @@ public class BlockUtils {
         if (decayEvent.isCancelled()) return;
 
         block.breakNaturally();
+    }
+
+    private static final ItemStack stic = new ItemStack(Material.STICK);
+    public static boolean hasDrops(Block b, Entity e){
+        return !b.getDrops(stic, e).isEmpty();
     }
 }

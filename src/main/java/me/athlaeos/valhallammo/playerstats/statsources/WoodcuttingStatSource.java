@@ -12,7 +12,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class WoodcuttingStatSource implements AccumulativeStatSource {
-    private final WoodcuttingSkill woodcuttingSkill;
     private final String stat;
     private final Class<? extends Number> numberType;
     private final double def;
@@ -21,7 +20,6 @@ public class WoodcuttingStatSource implements AccumulativeStatSource {
      * Grants stats only if the player is directly looking at a block the MiningSkill can grant exp for
      */
     public WoodcuttingStatSource(String stat){
-        woodcuttingSkill = SkillRegistry.isRegistered(WoodcuttingSkill.class) ? (WoodcuttingSkill) SkillRegistry.getSkill(WoodcuttingSkill.class) : null;
         this.stat = stat;
 
         Profile baseProfile = ProfileRegistry.getBlankProfile(null, WoodcuttingProfile.class);
@@ -47,9 +45,11 @@ public class WoodcuttingStatSource implements AccumulativeStatSource {
 
     @Override
     public double fetch(Entity statPossessor, boolean use) {
+        WoodcuttingSkill woodcuttingSkill = SkillRegistry.isRegistered(WoodcuttingSkill.class) ? (WoodcuttingSkill) SkillRegistry.getSkill(WoodcuttingSkill.class) : null;
         if (statPossessor instanceof Player p && woodcuttingSkill != null){
             Block b = p.getTargetBlockExact(8);
             if (b == null || !woodcuttingSkill.getDropsExpValues().containsKey(b.getType())) return def;
+
             WoodcuttingProfile profile = ProfileCache.getOrCache(p, WoodcuttingProfile.class);
             if (numberType.equals(Integer.class)) return profile.getInt(stat);
             if (numberType.equals(Float.class)) return profile.getFloat(stat);

@@ -12,7 +12,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class MiningStatSource implements AccumulativeStatSource {
-    private final MiningSkill miningSkill;
     private final String stat;
     private final Class<? extends Number> numberType;
     private final double def;
@@ -21,7 +20,6 @@ public class MiningStatSource implements AccumulativeStatSource {
      * Grants stats only if the player is directly looking at a block the MiningSkill can grant exp for
      */
     public MiningStatSource(String stat){
-        miningSkill = SkillRegistry.isRegistered(MiningSkill.class) ? (MiningSkill) SkillRegistry.getSkill(MiningSkill.class) : null;
         this.stat = stat;
 
         Profile baseProfile = ProfileRegistry.getBlankProfile(null, MiningProfile.class);
@@ -47,6 +45,7 @@ public class MiningStatSource implements AccumulativeStatSource {
 
     @Override
     public double fetch(Entity statPossessor, boolean use) {
+        MiningSkill miningSkill = SkillRegistry.isRegistered(MiningSkill.class) ? (MiningSkill) SkillRegistry.getSkill(MiningSkill.class) : null;
         if (statPossessor instanceof Player p && miningSkill != null){
             Block b = p.getTargetBlockExact(8);
             if (b == null || !miningSkill.getDropsExpValues().containsKey(b.getType())) return def;

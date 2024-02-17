@@ -4,28 +4,28 @@ experience:
   max_level: 100
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   fishing_catch:
-    COD: 100
-    SALMON: 150
-    PUFFERFISH: 300
-    TROPICAL_FISH: 500
-    BOW: 400
-    ENCHANTED_BOOK: 400
-    FISHING_ROD: 400
-    NAME_TAG: 300
-    NAUTILUS_SHELL: 300
-    SADDLE: 300
-    LILY_PAD: 100
-    BOWL: 100
-    LEATHER: 100
-    LEATHER_BOOTS: 100
-    ROTTEN_FLESH: 50
-    STICK: 50
-    STRING: 50
-    POTION: 100 # water bottle
-    BONE: 50
-    INK_SAC: 50
-    TRIPWIRE_HOOK: 50
-    BAMBOO: 100
+    COD: 50
+    SALMON: 65
+    PUFFERFISH: 130
+    TROPICAL_FISH: 200
+    BOW: 150
+    ENCHANTED_BOOK: 150
+    FISHING_ROD: 150
+    NAME_TAG: 130
+    NAUTILUS_SHELL: 130
+    SADDLE: 130
+    LILY_PAD: 40
+    BOWL: 40
+    LEATHER: 40
+    LEATHER_BOOTS: 40
+    ROTTEN_FLESH: 20
+    STICK: 20
+    STRING: 20
+    POTION: 40 # water bottle
+    BONE: 20
+    INK_SAC: 20
+    TRIPWIRE_HOOK: 20
+    BAMBOO: 40
 
 
 special_perks: []
@@ -36,8 +36,8 @@ messages:
   - '<lang.skill-level-up-fishing>'
 
 leveling_perks:
-  fishing_fishingspeedbonus_add: 0.01
-  fishing_fishingdrops_add: 0.05
+  fishing_fishingspeedbonus_add: 0.02
+  fishing_fishingdrops_add: 0.02
 
 starting_coordinates: '0,6'
 

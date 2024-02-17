@@ -85,6 +85,9 @@ public class ResourcePackCommand implements Command {
                     ResourcePack.generate();
                     sender.sendMessage(Utils.chat(TranslationManager.getTranslation("status_command_resourcepack_setup")));
                 } else {
+                    ConfigManager.getConfig("config.yml").set("resource_pack_config_override", true);
+                    ConfigManager.getConfig("config.yml").save();
+                    ValhallaMMO.setResourcePackConfigForced(true);
                     if (!modify("resource-pack-sha1", ResourcePack.getDefaultSha1())) {
                         ValhallaMMO.logSevere("Could not set resource pack sha1 to server.properties");
                         Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_resourcepack"));

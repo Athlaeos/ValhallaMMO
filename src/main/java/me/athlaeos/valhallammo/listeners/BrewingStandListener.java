@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicBrewingRecipe;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.PlayerCustomBrewEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.CustomFlag;
@@ -14,17 +15,15 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.BrewingPreventionListener;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.BrewingStartEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.ItemStack;
@@ -41,6 +40,11 @@ public class BrewingStandListener implements Listener {
             InventoryAction.DROP_ALL_CURSOR, InventoryAction.DROP_ALL_SLOT, InventoryAction.DROP_ONE_CURSOR, InventoryAction.DROP_ONE_SLOT,
             InventoryAction.PICKUP_ONE, InventoryAction.PICKUP_SOME, InventoryAction.PICKUP_ALL, InventoryAction.PICKUP_HALF
     );
+
+    public BrewingStandListener(){
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20))
+            ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new BrewingPreventionListener(), ValhallaMMO.getInstance());
+    }
 
     @EventHandler
     public void onBrewingInventoryInteract(InventoryClickEvent e){
@@ -120,18 +124,6 @@ public class BrewingStandListener implements Listener {
         if (e.isCancelled() || WorldGuardHook.inDisabledRegion(e.getContents().getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ||
                 ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
         e.setCancelled(true);
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onStartBrewing(BrewingStartEvent e){
-        if (WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ||
-                ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
-        e.setTotalBrewTime(Integer.MAX_VALUE);
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            if (e.getBlock().getType() != Material.BREWING_STAND || !(e.getBlock().getState() instanceof BrewingStand stand)) return;
-            stand.setFuelLevel(stand.getFuelLevel() + 1);
-            stand.update();
-        }, 1L);
     }
 
     private void updateStand(BrewerInventory inventory, Player p){
@@ -218,7 +210,7 @@ public class BrewingStandListener implements Listener {
             }
             stand.update();
 
-            ItemStack[] results = new ItemStack[] {null, null, null};
+            ItemStack[] results = new ItemStack[] { null, null, null };
             for (int slot = 0; slot < 3; slot++){
                 DynamicBrewingRecipe recipe = recipes.get(slot);
                 ItemStack slotItem = inventory.getItem(slot);
@@ -239,23 +231,21 @@ public class BrewingStandListener implements Listener {
                 ItemStack ingredient = inventory.getIngredient().clone();
                 // one of the recipes was successful, so consider operation a success
                 boolean saveIngredient = false;
-                if (p != null){
-                    AttributeInstance luckAttribute = p.getAttribute(Attribute.GENERIC_LUCK);
-                    saveIngredient = Utils.proc(AccumulativeStatManager.getCachedStats("BREWING_INGREDIENT_SAVE_CHANCE", p, 10000, true), luckAttribute != null ? luckAttribute.getValue() : 0, false);
-                }
+                if (p != null) saveIngredient = Utils.proc(p, AccumulativeStatManager.getCachedStats("BREWING_INGREDIENT_SAVE_CHANCE", p, 10000, true), false);
 
                 if (saveIngredient){
                     ingredient.setAmount(1);
                     stand.getWorld().dropItem(stand.getLocation().add(0.5, 0.8, 0.5), ingredient);
                 }
-                if (ingredient.getAmount() <= 1){
+
+                if (inventory.getIngredient().getAmount() <= 1){
                     if (!saveIngredient && ItemUtils.getSimilarMaterials(Material.WATER_BUCKET).contains(ingredient.getType())){
                         inventory.setIngredient(new ItemStack(Material.BUCKET));
                     } else {
                         inventory.setIngredient(null);
                     }
                 } else {
-                    inventory.getIngredient().setAmount(ingredient.getAmount() - 1);
+                    inventory.getIngredient().setAmount(inventory.getIngredient().getAmount() - 1);
                 }
             }
             activeStands.remove(stand.getLocation());

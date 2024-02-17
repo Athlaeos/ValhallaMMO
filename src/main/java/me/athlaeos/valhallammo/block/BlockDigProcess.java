@@ -35,9 +35,9 @@ public class BlockDigProcess {
             // if block is not forcefully damaged and the damage was not enough to instantly break the block,
             // a cooldown is applied in which the player can not break the next block
             if (!force && damage <= 1F && CustomBreakSpeedListener.isVanillaBlockBreakDelay()) Timer.setCooldown(by.getUniqueId(), 300, "delay_block_breaking_allowed");
-            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-                breakBlockInstantly(by, block);
-            });
+            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
+                breakBlockInstantly(by, block)
+            );
         } else {
             lastStage = getCracks();
             sendCracks(block, lastStage);
@@ -54,12 +54,12 @@ public class BlockDigProcess {
             MiningProfile profile = ProfileCache.getOrCache(by, MiningProfile.class);
             if (profile.getEmptyHandTool() != null) tool = profile.getEmptyHandTool();
         }
-        if (tool != null && block.getDrops(new ItemStack(Material.STICK), by).isEmpty() && ValhallaMMO.getNms().toolPower(tool.getItem(), block) > 1)
+        if (tool != null && !BlockUtils.hasDrops(block, by) && ValhallaMMO.getNms().toolPower(tool.getItem(), block) > 1)
             LootListener.prepareBlockDrops(block, new ArrayList<>(block.getDrops(tool.get())));
         ValhallaMMO.getNms().breakBlock(by, block);
-        CustomBreakSpeedListener.getBlockDigProcesses().remove(block);
-        for (UUID uuid : CustomBreakSpeedListener.getTotalMiningBlocks().getOrDefault(block, new HashSet<>())) CustomBreakSpeedListener.getMiningPlayers().remove(uuid);
-        CustomBreakSpeedListener.getTotalMiningBlocks().remove(block);
+        CustomBreakSpeedListener.getBlockDigProcesses().remove(block.getLocation());
+        for (UUID uuid : CustomBreakSpeedListener.getTotalMiningBlocks().getOrDefault(block.getLocation(), new HashSet<>())) CustomBreakSpeedListener.getMiningPlayers().remove(uuid);
+        CustomBreakSpeedListener.getTotalMiningBlocks().remove(block.getLocation());
         DigPacketInfo.resetBlockSpecificCache(by.getUniqueId());
         BlockUtils.removeCustomHardness(block);
         sendCracks(block, -1);

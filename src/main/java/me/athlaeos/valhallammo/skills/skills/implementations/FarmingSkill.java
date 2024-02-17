@@ -211,16 +211,16 @@ public class FarmingSkill extends Skill implements Listener {
                 if (fieldHarvestInstant)
                     BlockUtils.processBlocks(e.getPlayer(), vein, p -> true, b -> {
                         if (profile.isFieldHarvestInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
-                        instantHarvest(e.getPlayer(), b);
+                        instantHarvest(e.getPlayer(), b, profile);
                     }, (b) -> fieldHarvestingPlayers.remove(b.getUniqueId()));
                 else
                     BlockUtils.processBlocksPulse(e.getPlayer(), clickedBlock, vein, p -> true, b -> {
                         if (profile.isFieldHarvestInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
-                        instantHarvest(e.getPlayer(), b);
+                        instantHarvest(e.getPlayer(), b, profile);
                     }, (b) -> fieldHarvestingPlayers.remove(b.getUniqueId()));
                 Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getFieldHarvestCooldown(), "farming_field_harvest");
             } else if (profile.isInstantHarvesting()) {
-                instantHarvest(e.getPlayer(), clickedBlock);
+                instantHarvest(e.getPlayer(), clickedBlock, profile);
                 e.getPlayer().swingMainHand();
             }
         }
@@ -253,9 +253,12 @@ public class FarmingSkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !harvestableCrops.contains(e.getBlock().getType()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
         Block b = e.getBlock();
+        growBlock(b, ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class));
+    }
+
+    private void growBlock(Block b, FarmingProfile p){
         if (b.getBlockData() instanceof Ageable a) {
-            FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
-            int stages = Utils.randomAverage(profile.getInstantGrowthRate());
+            int stages = Utils.randomAverage(p.getInstantGrowthRate());
             if (stages <= 0) return;
             a.setAge(Math.min(a.getAge() + stages, a.getMaximumAge() - 1));
             b.setBlockData(a);
@@ -321,7 +324,7 @@ public class FarmingSkill extends Skill implements Listener {
         e.setCancelled(true);
     }
 
-    private void instantHarvest(Player p, Block b) {
+    private void instantHarvest(Player p, Block b, FarmingProfile profile) {
         if (!(b.getBlockData() instanceof Ageable a) || a.getAge() < a.getMaximumAge() || !blockDropExpValues.containsKey(b.getType())) return;
         Material previousType = b.getType();
         CustomBreakSpeedListener.markInstantBreak(b);
@@ -329,6 +332,7 @@ public class FarmingSkill extends Skill implements Listener {
         b.getWorld().playSound(b.getLocation().add(0.4, 0.4, 0.4), Sound.BLOCK_CROP_BREAK, 0.3F, 1F);
         p.breakBlock(b);
         b.setType(previousType);
+        growBlock(b, profile);
     }
 
     private final int[][] fieldHarvestScanArea = new int[][]{

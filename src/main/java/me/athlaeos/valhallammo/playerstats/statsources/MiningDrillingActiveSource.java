@@ -11,17 +11,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class MiningDrillingActiveSource implements AccumulativeStatSource {
-    private final MiningSkill miningSkill;
-
-    /**
-     * Grants stats only if the player is directly looking at a block the MiningSkill can grant exp for
-     */
-    public MiningDrillingActiveSource(){
-        miningSkill = SkillRegistry.isRegistered(MiningSkill.class) ? (MiningSkill) SkillRegistry.getSkill(MiningSkill.class) : null;
-    }
-
     @Override
     public double fetch(Entity statPossessor, boolean use) {
+        MiningSkill miningSkill = SkillRegistry.isRegistered(MiningSkill.class) ? (MiningSkill) SkillRegistry.getSkill(MiningSkill.class) : null;
         if (statPossessor instanceof Player p && miningSkill != null && !Timer.isCooldownPassed(statPossessor.getUniqueId(), "mining_drilling_duration")){
             Block b = p.getTargetBlockExact(8);
             if (b == null || !miningSkill.getDropsExpValues().containsKey(b.getType())) return 0;

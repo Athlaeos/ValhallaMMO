@@ -36,6 +36,7 @@ import me.athlaeos.valhallammo.tools.BlockHardnessStick;
 import me.athlaeos.valhallammo.utility.GlobalEffect;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.AlphaToBetaConversionHandler;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -91,6 +92,7 @@ public class ValhallaMMO extends JavaPlugin {
         saveConfig("parties.yml");
         saveConfig("block_conversions.yml");
         saveConfig("scaling_presets.yml");
+        saveConfig("alpha_conversion.yml");
 
         // skill configs
         saveConfig("skills/alchemy.yml");
@@ -255,6 +257,11 @@ public class ValhallaMMO extends JavaPlugin {
         ItemUtils.startProjectileRunnableCache();
         GlobalEffect.initializeRunnable();
         PermanentPotionEffects.initializeRunnable();
+
+        if (AlphaToBetaConversionHandler.shouldConvert()) {
+            logInfo("Alpha files found and conversion enabled! Enabling data transfer from Alpha to Beta");
+            registerListener(new AlphaToBetaConversionHandler());
+        }
     }
 
     @Override

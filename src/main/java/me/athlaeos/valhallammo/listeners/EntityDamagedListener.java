@@ -22,6 +22,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import java.util.*;
 
 public class EntityDamagedListener implements Listener {
+    private static final boolean customDamageEnabled = ValhallaMMO.getPluginConfig().getBoolean("custom_damage_system", true);
     private static final Collection<String> entityDamageCauses = new HashSet<>(Set.of("THORNS", "ENTITY_ATTACK", "ENTITY_SWEEP_ATTACK", "PROJECTILE", "ENTITY_EXPLOSION", "SONIC_BOOM"));
     private static final Collection<String> trueDamage = new HashSet<>(Set.of("VOID", "SONIC_BOOM", "STARVATION", "SUICIDE", "WORLD_BORDER"));
 
@@ -47,9 +48,9 @@ public class EntityDamagedListener implements Listener {
             String damageCause = customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString());
             CustomDamageType type = CustomDamageType.getCustomType(damageCause);
             double originalDamage = e.getDamage();
-            double customDamage = type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
-            double damageAfterImmunity = overrideImmunityFrames(customDamage, l);
-            if (damageAfterImmunity <= 0 && type != null && type.isImmuneable()) {
+            double customDamage = !customDamageEnabled ? e.getDamage() : type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
+            double damageAfterImmunity = !customDamageEnabled ? e.getDamage() : overrideImmunityFrames(customDamage, l);
+            if (damageAfterImmunity <= 0 && type != null) {
                 e.setCancelled(true);
                 return; // entity is immune, and so damage doesn't need to be calculated further
             }
@@ -74,15 +75,17 @@ public class EntityDamagedListener implements Listener {
 
                 double currentHealth = l.getHealth();
                 if ((type == null || type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
-                if (l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0.00001);
+                if (!customDamageEnabled && l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0.00001);
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                     l.setNoDamageTicks(iFrames);
-                    AttributeInstance health = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-                    double maxHealth = health != null ? health.getValue() : -1;
-                    if (l.getHealth() > 0) l.setHealth(Math.max(damageCause.equals("POISON") ? 1 : 0, Math.min(maxHealth, currentHealth - damage)));
+                    if (customDamageEnabled){
+                        AttributeInstance health = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+                        double maxHealth = health != null ? health.getValue() : -1;
+                        if (l.getHealth() > 0) l.setHealth(Math.max(damageCause.equals("POISON") ? 1 : 0, Math.min(maxHealth, currentHealth - damage)));
+                    }
                     customDamageCauses.remove(l.getUniqueId());
                 }, 1L);
-            } else {
+            } else if (customDamageEnabled) {
                 // custom damage killed entity
                 l.setLastDamageCause(e);
                 if (customDamage > 0) DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage);

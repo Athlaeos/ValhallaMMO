@@ -283,6 +283,7 @@ parry_sparks: true # If true, sparks will fly off parried attacks
 dodge_effect: SWEEP_ATTACK
 dodge_message: '<lang.status-attack-dodged>'
 
+custom_damage_system: true # If false, there is no custom damage system
 # Damage calculation for armor and armor toughness. Armor is effective only against the given damage sources,
 # everything else is not mitigated by how many armor points you have.
 # Valid arguments are %damage%, %toughness%, and %armor%

@@ -70,6 +70,7 @@ public class DigPacketInfo {
         cachedMultiplier.remove(uuid);
         cachedSwimmingMiners.remove(uuid);
         cachedAirMiners.remove(uuid);
+        blockSpecificSpeedCache.remove(uuid);
     }
     public static void resetBlockSpecificCache(UUID uuid){
         blockSpecificSpeedCache.remove(uuid);
@@ -92,15 +93,14 @@ public class DigPacketInfo {
                 ValhallaMMO.getNms().toolPower(tool.getItem(), hardnessTranslations.get(b.getType())) :
                 ValhallaMMO.getNms().toolPower(tool == null ? null : tool.getItem(), b);
 
+        boolean canHarvest = BlockUtils.hasDrops(b, digger);
         float baseMultiplier = 1;
         if (toolStrength > 1){
             // preferred tool for block
             baseMultiplier = tool == null ? 1F : (float) MiningSpeed.getMultiplier(tool.getMeta(), b.getType());
 
             int efficiency = tool == null ? 0 : tool.getItem().getEnchantmentLevel(Enchantment.DIG_SPEED);
-            if (efficiency > 0) {
-                baseMultiplier += MathUtils.pow(efficiency, 2) + 1;
-            }
+            if (efficiency > 0) baseMultiplier += MathUtils.pow(efficiency, 2) + 1;
         }
 
         boolean canSwimMine = cachedSwimmingMiners.contains(digger.getUniqueId());
@@ -115,7 +115,9 @@ public class DigPacketInfo {
             if (haste != null) additionalMultiplier += (0.2 * haste.getAmplifier());
 
             PotionEffect fatigue = digger.getPotionEffect(PotionEffectType.SLOW_DIGGING);
-            if (fatigue != null && fatigue.getAmplifier() != -1 && fatigue.getAmplifier() < 5) additionalMultiplier *= MathUtils.pow(0.3, Math.min(fatigue.getAmplifier() + 1, 4));
+            if (fatigue != null && fatigue.getAmplifier() != -1 && fatigue.getAmplifier() < 5) {
+                additionalMultiplier *= MathUtils.pow(0.3, Math.min(fatigue.getAmplifier() + 1, 4));
+            }
 
             PowerProfile profile = ProfileCache.getOrCache(digger, PowerProfile.class);
 
@@ -126,7 +128,7 @@ public class DigPacketInfo {
             if (canSwimMine) cachedSwimmingMiners.add(digger.getUniqueId());
             if (profile.hasAerialAffinity()) cachedAirMiners.add(digger.getUniqueId());
 
-            additionalMultiplier += EntityUtils.getPlayerMiningSpeed(digger) - 1;
+            additionalMultiplier *= EntityUtils.getPlayerMiningSpeed(digger);
         }
         baseMultiplier *= additionalMultiplier;
 
@@ -142,7 +144,7 @@ public class DigPacketInfo {
 
         float damage = baseMultiplier / hardness;
 
-        if (toolStrength > 1) damage /= 30;
+        if (canHarvest) damage /= 30;
         else damage /= 100;
         return Math.max(0, Math.min(1, damage));
     }

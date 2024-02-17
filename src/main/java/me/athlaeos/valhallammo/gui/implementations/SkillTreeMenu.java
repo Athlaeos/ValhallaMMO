@@ -146,10 +146,6 @@ public class SkillTreeMenu extends Menu {
                     }
                     Perk p = PerkRegistry.getPerk(id);
                     if (p != null){
-                        if (p.getSkill().isNavigable()){
-                            this.x = p.getX() + 4;
-                            this.y = p.getY() + 2;
-                        }
                         if (p.canUnlock(target)){
                             if (perkConfirmation != null && perkConfirmation.equals(p.getName())){
                                 perkConfirmation = null;
