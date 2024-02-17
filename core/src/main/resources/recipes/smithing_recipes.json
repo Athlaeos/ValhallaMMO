@@ -1,0 +1,2543 @@
+[
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_pickaxe"
+    },
+    "name": "upgrade_diamond_pickaxe",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ESUFNT05EX1BJQ0tBWEU=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 4.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "icon": "IRON_SWORD",
+          "name": "attribute_scale_generic_attack_damage",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.19999999999999996,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_scale_generic_attack_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.25,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "DIG_SPEED",
+          "icon": "DIAMOND_PICKAXE",
+          "name": "attribute_scale_dig_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_sword"
+    },
+    "name": "upgrade_diamond_sword",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA1ESUFNT05EX1NXT1JE\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 4.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "icon": "IRON_SWORD",
+          "name": "attribute_scale_generic_attack_damage",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.19999999999999996,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_scale_generic_attack_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_spear"
+    },
+    "name": "upgrade_diamond_spear",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAANxAH4ACHQACW1ldGEtdHlwZXQAElB1YmxpY0J1a2tpdFZhbHVlc3VxAH4ABgAAAAN0AAhJ\r\ndGVtTWV0YXQAClVOU1BFQ0lGSUNzcgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxv\r\nYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAMdwgAAAAQAAAAAXQADnZhbGhhbGxhbW1vOmlk\r\ndAAEMTA2aXg=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithIDChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAANxAH4ACHQACW1ldGEtdHlwZXQAEWN1c3RvbS1tb2RlbC1kYXRhdXEAfgAGAAAAA3QACEl0\r\nZW1NZXRhdAAKVU5TUEVDSUZJQ3NxAH4ADgAePXw=\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
+        "DATA": {
+          "displayName": "<lang.material-netherite-spear>",
+          "name": "rename",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "value": 1.1,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_add_generic_attack_speed",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.19999999999999996,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_scale_generic_attack_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 4.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "icon": "IRON_SWORD",
+          "name": "attribute_scale_generic_attack_damage",
+          "priority": "LATERISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_chestplate"
+    },
+    "name": "upgrade_diamond_chestplate",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0ABJESUFNT05EX0NIRVNUUExBVEU=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.25,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "DIG_SPEED",
+          "icon": "DIAMOND_PICKAXE",
+          "name": "attribute_scale_dig_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 0.5,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ARMOR",
+          "icon": "IRON_CHESTPLATE",
+          "name": "attribute_scale_generic_armor",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 1.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ARMOR_TOUGHNESS",
+          "icon": "DIAMOND_CHESTPLATE",
+          "name": "attribute_scale_generic_armor_toughness",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 1.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_KNOCKBACK_RESISTANCE",
+          "icon": "NETHERITE_CHESTPLATE",
+          "name": "attribute_scale_generic_knockback_resistance",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_boots"
+    },
+    "name": "upgrade_diamond_boots",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA1ESUFNT05EX0JPT1RT\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.25,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "DIG_SPEED",
+          "icon": "DIAMOND_PICKAXE",
+          "name": "attribute_scale_dig_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 0.5,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ARMOR",
+          "icon": "IRON_CHESTPLATE",
+          "name": "attribute_scale_generic_armor",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 1.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ARMOR_TOUGHNESS",
+          "icon": "DIAMOND_CHESTPLATE",
+          "name": "attribute_scale_generic_armor_toughness",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 1.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_KNOCKBACK_RESISTANCE",
+          "icon": "NETHERITE_CHESTPLATE",
+          "name": "attribute_scale_generic_knockback_resistance",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_rapier"
+    },
+    "name": "upgrade_diamond_rapier",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAANxAH4ACHQACW1ldGEtdHlwZXQAElB1YmxpY0J1a2tpdFZhbHVlc3VxAH4ABgAAAAN0AAhJ\r\ndGVtTWV0YXQAClVOU1BFQ0lGSUNzcgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxv\r\nYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAMdwgAAAAQAAAAAXQADnZhbGhhbGxhbW1vOmlk\r\ndAAEMTAyaXg=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithIDChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAANxAH4ACHQACW1ldGEtdHlwZXQAEWN1c3RvbS1tb2RlbC1kYXRhdXEAfgAGAAAAA3QACEl0\r\nZW1NZXRhdAAKVU5TUEVDSUZJQ3NxAH4ADgAePXw=\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
+        "DATA": {
+          "displayName": "<lang.material-netherite-rapier>",
+          "name": "rename",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "value": 4.0,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "IRON_SWORD",
+          "name": "attribute_add_generic_attack_damage",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "icon": "IRON_SWORD",
+          "name": "attribute_scale_generic_attack_damage",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_helmet"
+    },
+    "name": "upgrade_diamond_helmet",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5ESUFNT05EX0hFTE1FVA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.25,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "DIG_SPEED",
+          "icon": "DIAMOND_PICKAXE",
+          "name": "attribute_scale_dig_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 0.5,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ARMOR",
+          "icon": "IRON_CHESTPLATE",
+          "name": "attribute_scale_generic_armor",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 1.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ARMOR_TOUGHNESS",
+          "icon": "DIAMOND_CHESTPLATE",
+          "name": "attribute_scale_generic_armor_toughness",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 1.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_KNOCKBACK_RESISTANCE",
+          "icon": "NETHERITE_CHESTPLATE",
+          "name": "attribute_scale_generic_knockback_resistance",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_hoe"
+    },
+    "name": "upgrade_diamond_hoe",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAtESUFNT05EX0hPRQ==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 4.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "icon": "IRON_SWORD",
+          "name": "attribute_scale_generic_attack_damage",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.19999999999999996,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_scale_generic_attack_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.25,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "DIG_SPEED",
+          "icon": "DIAMOND_PICKAXE",
+          "name": "attribute_scale_dig_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_greataxe"
+    },
+    "name": "upgrade_diamond_greataxe",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAANxAH4ACHQACW1ldGEtdHlwZXQAElB1YmxpY0J1a2tpdFZhbHVlc3VxAH4ABgAAAAN0AAhJ\r\ndGVtTWV0YXQAClVOU1BFQ0lGSUNzcgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxv\r\nYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAMdwgAAAAQAAAAAXQADnZhbGhhbGxhbW1vOmlk\r\ndAAEMTA3aXg=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithIDChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAANxAH4ACHQACW1ldGEtdHlwZXQAEWN1c3RvbS1tb2RlbC1kYXRhdXEAfgAGAAAAA3QACEl0\r\nZW1NZXRhdAAKVU5TUEVDSUZJQ3NxAH4ADgAePXw=\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
+        "DATA": {
+          "displayName": "<lang.material-netherite-greataxe>",
+          "name": "rename",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "value": 15.0,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "IRON_SWORD",
+          "name": "attribute_add_generic_attack_damage",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "value": 0.9600000000000001,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_add_generic_attack_speed",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.19999999999999996,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_scale_generic_attack_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 6.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "icon": "IRON_SWORD",
+          "name": "attribute_scale_generic_attack_damage",
+          "priority": "LATERISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_elytra"
+    },
+    "name": "upgrade_elytra",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAZFTFlUUkE=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.crafting_conditionals.SmithingTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            0
+          ],
+          "tag": 0,
+          "name": "smithing_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ARMOR",
+          "value": 6.0,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "IRON_CHESTPLATE",
+          "name": "attribute_add_generic_armor",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ARMOR_TOUGHNESS",
+          "value": 2.0,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "DIAMOND_CHESTPLATE",
+          "name": "attribute_add_generic_armor_toughness",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_MOVEMENT_SPEED",
+          "value": -0.1,
+          "operation": "ADD_SCALAR",
+          "smallIncrement": 0.01,
+          "bigIncrement": 0.1,
+          "icon": "SUGAR",
+          "name": "attribute_add_generic_movement_speed",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 0.5,
+          "skillRange": 170.0,
+          "rangeOffset": 130.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ARMOR",
+          "icon": "IRON_CHESTPLATE",
+          "name": "attribute_scale_generic_armor",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 1.0,
+          "skillRange": 170.0,
+          "rangeOffset": 130.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ARMOR_TOUGHNESS",
+          "icon": "DIAMOND_CHESTPLATE",
+          "name": "attribute_scale_generic_armor_toughness",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.crafting_conditionals.SmithingTagsAdd",
+        "DATA": {
+          "tags": [
+            0
+          ],
+          "tag": 0,
+          "name": "smithing_tags_add",
+          "priority": "LAST"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_shovel"
+    },
+    "name": "upgrade_diamond_shovel",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5ESUFNT05EX1NIT1ZFTA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 4.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "icon": "IRON_SWORD",
+          "name": "attribute_scale_generic_attack_damage",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.19999999999999996,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_scale_generic_attack_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.25,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "DIG_SPEED",
+          "icon": "DIAMOND_PICKAXE",
+          "name": "attribute_scale_dig_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_warhammer"
+    },
+    "name": "upgrade_diamond_warhammer",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAANxAH4ACHQACW1ldGEtdHlwZXQAElB1YmxpY0J1a2tpdFZhbHVlc3VxAH4ABgAAAAN0AAhJ\r\ndGVtTWV0YXQAClVOU1BFQ0lGSUNzcgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxv\r\nYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAMdwgAAAAQAAAAAXQADnZhbGhhbGxhbW1vOmlk\r\ndAAEMTA1aXg=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithIDChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAANxAH4ACHQACW1ldGEtdHlwZXQAEWN1c3RvbS1tb2RlbC1kYXRhdXEAfgAGAAAAA3QACEl0\r\nZW1NZXRhdAAKVU5TUEVDSUZJQ3NxAH4ADgAePXw=\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
+        "DATA": {
+          "displayName": "<lang.material-netherite-warhammer>",
+          "name": "rename",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "EXTRA_BLUDGEONING_DAMAGE",
+          "value": 8.999999999999996,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "COBBLESTONE",
+          "name": "attribute_add_extra_bludgeoning_damage",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "value": 1.0,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_add_generic_attack_speed",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.19999999999999996,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_scale_generic_attack_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeRemove",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "icon": "IRON_SWORD",
+          "name": "attribute_remove_generic_attack_damage",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 4.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "EXTRA_BLUDGEONING_DAMAGE",
+          "icon": "COBBLESTONE",
+          "name": "attribute_scale_extra_bludgeoning_damage",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_leggings"
+    },
+    "name": "upgrade_diamond_leggings",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0ABBESUFNT05EX0xFR0dJTkdT\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.25,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "DIG_SPEED",
+          "icon": "DIAMOND_PICKAXE",
+          "name": "attribute_scale_dig_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 0.5,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ARMOR",
+          "icon": "IRON_CHESTPLATE",
+          "name": "attribute_scale_generic_armor",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 1.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ARMOR_TOUGHNESS",
+          "icon": "DIAMOND_CHESTPLATE",
+          "name": "attribute_scale_generic_armor_toughness",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 1.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_KNOCKBACK_RESISTANCE",
+          "icon": "NETHERITE_CHESTPLATE",
+          "name": "attribute_scale_generic_knockback_resistance",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_dagger"
+    },
+    "name": "upgrade_diamond_dagger",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAANxAH4ACHQACW1ldGEtdHlwZXQAElB1YmxpY0J1a2tpdFZhbHVlc3VxAH4ABgAAAAN0AAhJ\r\ndGVtTWV0YXQAClVOU1BFQ0lGSUNzcgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxv\r\nYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAMdwgAAAAQAAAAAXQADnZhbGhhbGxhbW1vOmlk\r\ndAAEMTAwaXg=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithIDChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAANxAH4ACHQACW1ldGEtdHlwZXQAEWN1c3RvbS1tb2RlbC1kYXRhdXEAfgAGAAAAA3QACEl0\r\nZW1NZXRhdAAKVU5TUEVDSUZJQ3NxAH4ADgAePXw=\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
+        "DATA": {
+          "displayName": "<lang.material-netherite-dagger>",
+          "name": "rename",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.19999999999999996,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_scale_generic_attack_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 4.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "icon": "IRON_SWORD",
+          "name": "attribute_scale_generic_attack_damage",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_mace"
+    },
+    "name": "upgrade_diamond_mace",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAANxAH4ACHQACW1ldGEtdHlwZXQAElB1YmxpY0J1a2tpdFZhbHVlc3VxAH4ABgAAAAN0AAhJ\r\ndGVtTWV0YXQAClVOU1BFQ0lGSUNzcgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxv\r\nYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAMdwgAAAAQAAAAAXQADnZhbGhhbGxhbW1vOmlk\r\ndAAEMTAxaXg=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithIDChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAANxAH4ACHQACW1ldGEtdHlwZXQAEWN1c3RvbS1tb2RlbC1kYXRhdXEAfgAGAAAAA3QACEl0\r\nZW1NZXRhdAAKVU5TUEVDSUZJQ3NxAH4ADgAePXw=\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
+        "DATA": {
+          "displayName": "<lang.material-netherite-mace>",
+          "name": "rename",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "EXTRA_BLUDGEONING_DAMAGE",
+          "value": 6.499999999999998,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "COBBLESTONE",
+          "name": "attribute_add_extra_bludgeoning_damage",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeRemove",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "icon": "IRON_SWORD",
+          "name": "attribute_remove_generic_attack_damage",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.19999999999999996,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_scale_generic_attack_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 3.5,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "EXTRA_BLUDGEONING_DAMAGE",
+          "icon": "COBBLESTONE",
+          "name": "attribute_scale_extra_bludgeoning_damage",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_diamond_axe"
+    },
+    "name": "upgrade_diamond_axe",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAtESUFNT05EX0FYRQ==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": true,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+        "DATA": {
+          "neutral": 170,
+          "name": "smithing_neutral_quality_set",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "name": "smithing_quality_scale",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 4.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "icon": "IRON_SWORD",
+          "name": "attribute_scale_generic_attack_damage",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.19999999999999996,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_scale_generic_attack_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "DATA": {
+          "mode": "MULTIPLIER",
+          "amplifier": 2.0,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 1.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "durability_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.25,
+          "skillRange": 155.0,
+          "rangeOffset": 145.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "SMITHING",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "attribute": "DIG_SPEED",
+          "icon": "DIAMOND_PICKAXE",
+          "name": "attribute_scale_dig_speed",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  }
+]

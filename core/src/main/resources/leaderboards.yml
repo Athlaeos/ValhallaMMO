@@ -1,0 +1,150 @@
+page_limit: 10 # How many entries each page of the leaderboard is allowed
+placement_prefixes: # The prefixes (usually colors, but can be emojis or whatever) that can be used in the leaderboards to give the top players special colors over the others
+  # Ranks not in the list will not have a prefix
+  1: "&6"
+  2: "&e"
+  3: "&#753713"
+
+personal_entry_prefix: "<lang.leaderboard_personal_prefix>"
+
+leaderboards:
+  power:
+    display_name: "<lang.leaderboard_power_level>" # The display name of the leaderboard when displayed in chat from the /valtop command
+    entry_display: "&7#&c%rank% &8: &7%prefix%%player% &7|&cNG %main_stat% &7- &cLV %level%&7| &8(%exp_total% EXP)" # The format for each entry
+    placeholder_display: "&cNG%main_stat% LV%level% &7%player%"
+    profile: PowerProfile # The profile from which to gather the given stat(s)
+    lower_limit: 0 # The minimum of the main_stat to achieve before you're allowed on the leaderboard (in this example, players who haven't reached lv1 yet won't appear)
+    main_stat: newGamePlus # The main stat player's ranks will be based off. 
+    extra_stats: # (optional) Additional stats you can place in the entry_display property, names should not match other placeholders
+      exp_total: exp_total # In this case we're wanting to get another stat, the total exp, and we name it 'exp_total' so we can use it as %exp_total%
+      level: level 
+  smithing:
+    display_name: "<lang.leaderboard_smithing_level>"
+    entry_display: "&7#&e%rank% &8: &7%prefix%%player% &7|&eNG %main_stat% &7- &eLV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&eNG%main_stat% LV%level% &7%player%"
+    profile: SmithingProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  alchemy:
+    display_name: "<lang.leaderboard_alchemy_level>"
+    entry_display: "&7#&d%rank% &8: &7%prefix%%player% &7|&dNG %main_stat% &7- &dLV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&dNG%main_stat% LV%level% &7%player%"
+    profile: AlchemyProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  enchanting:
+    display_name: "<lang.leaderboard_enchanting_level>"
+    entry_display: "&7#&b%rank% &8: &7%prefix%%player% &7|&bNG %main_stat% &7- &bLV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&bNG%main_stat% LV%level% &7%player%"
+    profile: EnchantingProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  mining:
+    display_name: "<lang.leaderboard_mining_level>"
+    entry_display: "&7#&c%rank% &8: &7%prefix%%player% &7|&cNG %main_stat% &7- &cLV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&cNG%main_stat% LV%level% &7%player%"
+    profile: MiningProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  farming:
+    display_name: "<lang.leaderboard_farming_level>"
+    entry_display: "&7#&a%rank% &8: &7%prefix%%player% &7|&aNG %main_stat% &7- &aLV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&aNG%main_stat% LV%level% &7%player%"
+    profile: FarmingProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  fishing:
+    display_name: "<lang.leaderboard_fishing_level>"
+    entry_display: "&7#&9%rank% &8: &7%prefix%%player% &7|&9NG %main_stat% &7- &9LV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&9NG%main_stat% LV%level% &7%player%"
+    profile: FishingProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  woodcutting:
+    display_name: "<lang.leaderboard_woodcutting_level>"
+    entry_display: "&7#&a%rank% &8: &7%prefix%%player% &7|&aNG %main_stat% &7- &aLV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&aNG%main_stat% LV%level% &7%player%"
+    profile: WoodcuttingProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  digging:
+    display_name: "<lang.leaderboard_digging_level>"
+    entry_display: "&7#&e%rank% &8: &7%prefix%%player% &7|&eNG %main_stat% &7- &eLV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&eNG%main_stat% LV%level% &7%player%"
+    profile: DiggingProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  archery:
+    display_name: "<lang.leaderboard_archery_level>"
+    entry_display: "&7#&#00ffaa%rank% &8: &7%prefix%%player% &7|&#00ffaaNG %main_stat% &7- &#00ffaaLV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&#00ffaaNG%main_stat% LV%level% &7%player%"
+    profile: ArcheryProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  lightweapons:
+    display_name: "<lang.leaderboard_light_weapons_level>"
+    entry_display: "&7#&#ffac40%rank% &8: &7%prefix%%player% &7|&#ffac40NG %main_stat% &7- &#ffac40LV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&#ffac40NG%main_stat% LV%level% &7%player%"
+    profile: LightWeaponsProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  heavyweapons:
+    display_name: "<lang.leaderboard_heavy_weapons_level>"
+    entry_display: "&7#&#ff7640%rank% &8: &7%prefix%%player% &7|&#ff7640NG %main_stat% &7- &#ff7640LV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&#ff7640NG%main_stat% LV%level% &7%player%"
+    profile: HeavyWeaponsProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  lightarmor:
+    display_name: "<lang.leaderboard_light_armor_level>"
+    entry_display: "&7#&#ffac40%rank% &8: &7%prefix%%player% &7|&#ffac40NG %main_stat% &7- &#ffac40LV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&#ffac40NG%main_stat% LV%level% &7%player%"
+    profile: LightArmorProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  heavyarmor:
+    display_name: "<lang.leaderboard_heavy_armor_level>"
+    entry_display: "&7#&#ff7640%rank% &8: &7%prefix%%player% &7|&#ff7640NG %main_stat% &7- &#ff7640LV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&#ff7640NG%main_stat% LV%level% &7%player%"
+    profile: HeavyArmorProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level

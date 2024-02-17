@@ -1,0 +1,300 @@
+starting_perks:
+  heavyweapons_attackspeedmultiplier_add: -0.3
+  heavyweapons_damagemultiplier_add: -0.3
+  heavyweapons_knockbackmultiplier_add: -0.3
+
+experience: 
+  max_level: 100 
+  exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
+  exp_per_damage: 10
+  spawner_spawned_multiplier: 0.7
+  exp_enemies_nerfed: 
+    ENDERMAN: 0.01
+    ZOMBIFIED_PIGLIN: 0.02
+
+special_perks: []
+
+commands: []
+
+messages: 
+  - '<lang.skill-level-up-heavy-weapons>'
+
+leveling_perks:
+  heavyweapons_attackspeedmultiplier_add: 0.005
+  heavyweapons_damagemultiplier_add: 0.005
+
+starting_coordinates: '3,10' 
+
+perks:
+  heavyweapons_perk_1:
+    icon: WOODEN_AXE
+    coords: "3,10"
+    name: "<lang.heavyweapons_perk_1_name>"
+    description: "<lang.heavyweapons_perk_1_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      heavyweapons_damagemultiplier_add: 0.1
+    messages:
+      - "<lang.heavyweapons_perk_1_messages>"
+    custom_model_data_unlockable: -1
+    custom_model_data_unlocked: -1
+    custom_model_data_visible: -1
+  heavyweapons_perk_2:
+    icon: STONE_AXE
+    coords: "3,6"
+    name: "<lang.heavyweapons_perk_2_name>"
+    description: "<lang.heavyweapons_perk_2_description>"
+    cost: 1
+    hidden: false
+    required_lv: 20
+    perk_rewards:
+      heavyweapons_powerattackdamagemultiplier_add: 0.1
+      heavyweapons_critchance_add: 0.1
+    messages:
+      - "<lang.heavyweapons_perk_2_messages>"
+    requireperk_all:
+      - heavyweapons_perk_1
+    connection_line:
+      '1':
+        position: '3,9'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+      '2':
+        position: '3,8'
+        locked: GRAY_DYE:1172706
+        unlockable: ORANGE_DYE:1172806
+        unlocked: LIME_DYE:1172906
+      '3':
+        position: '3,7'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
+  heavyweapons_perk_3:
+    icon: GOLDEN_AXE
+    coords: "3,2"
+    name: "<lang.heavyweapons_perk_3_name>"
+    description: "<lang.heavyweapons_perk_3_description>"
+    cost: 1
+    hidden: false
+    required_lv: 40
+    perk_rewards:
+      heavyweapons_damagemultiplier_add: 0.1
+      heavyweapons_powerattackfraction_add: 0.5
+      heavyweapons_powerattackradius_add: 1.5
+    messages:
+      - "<lang.heavyweapons_perk_3_messages>"
+    requireperk_all:
+      - heavyweapons_perk_2
+    connection_line:
+      '1':
+        position: '3,5'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+      '2':
+        position: '3,4'
+        locked: GRAY_DYE:1172706
+        unlockable: ORANGE_DYE:1172806
+        unlocked: LIME_DYE:1172906
+      '3':
+        position: '3,3'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
+  heavyweapons_perk_4:
+    icon: IRON_AXE
+    coords: "5,4"
+    name: "<lang.heavyweapons_perk_4_name>"
+    description: "<lang.heavyweapons_perk_4_description>"
+    cost: 1
+    hidden: false
+    required_lv: 60
+    perk_rewards:
+      heavyweapons_powerattackdamagemultiplier_add: 0.15
+      heavyweapons_penetrationflat_add: 5
+    messages:
+      - "<lang.heavyweapons_perk_4_messages>"
+    requireperk_all:
+      - heavyweapons_perk_3
+    connection_line:
+      '1':
+        position: '4,2'
+        locked: GRAY_DYE:1172715
+        unlockable: ORANGE_DYE:1172815
+        unlocked: LIME_DYE:1172915
+      '2':
+        position: '4,3'
+        locked: GRAY_DYE:1172706
+        unlockable: ORANGE_DYE:1172806
+        unlocked: LIME_DYE:1172906
+      '3':
+        position: '4,4'
+        locked: GRAY_DYE:1172712
+        unlockable: ORANGE_DYE:1172812
+        unlocked: LIME_DYE:1172912
+  heavyweapons_perk_5:
+    icon: DIAMOND_AXE
+    coords: "6,2"
+    name: "<lang.heavyweapons_perk_5_name>"
+    description: "<lang.heavyweapons_perk_5_description>"
+    cost: 1
+    hidden: false
+    required_lv: 80
+    perk_rewards:
+      heavyweapons_damagemultiplier_add: 0.1
+      heavyweapons_powerattackfraction_add: 0.25
+      heavyweapons_powerattackradius_add: 0.5
+      heavyweapons_penetrationflat_add: 10
+    messages:
+      - "<lang.heavyweapons_perk_5_messages>"
+    requireperk_all:
+      - heavyweapons_perk_4
+    connection_line:
+      '1':
+        position: '6,3'
+        locked: GRAY_DYE:1172718
+        unlockable: ORANGE_DYE:1172818
+        unlocked: LIME_DYE:1172918
+      '2':
+        position: '5,3'
+        locked: GRAY_DYE:1172717
+        unlockable: ORANGE_DYE:1172817
+        unlocked: LIME_DYE:1172917
+  heavyweapons_perk_6:
+    icon: NETHERITE_AXE
+    coords: "5,0"
+    name: "<lang.heavyweapons_perk_6_name>"
+    description: "<lang.heavyweapons_perk_6_description>"
+    cost: 1
+    hidden: false
+    required_lv: 100
+    perk_rewards:
+      heavyweapons_critchance_add: 0.1
+      heavyweapons_critdamage_add: 0.3
+      heavyweapons_bleedoncrit_toggle: 0
+      heavyweapons_bleeddamage_add: 1
+    messages:
+      - "<lang.heavyweapons_perk_6_messages>"
+    requireperk_all:
+      - heavyweapons_perk_5
+    connection_line:
+      '1':
+        position: '5,1'
+        locked: GRAY_DYE:1172716
+        unlockable: ORANGE_DYE:1172816
+        unlocked: LIME_DYE:1172916
+      '2':
+        position: '6,1'
+        locked: GRAY_DYE:1172719
+        unlockable: ORANGE_DYE:1172819
+        unlocked: LIME_DYE:1172919
+  heavyweapons_perk_a1:
+    icon: BLAZE_POWDER
+    coords: "1,3"
+    name: "<lang.heavyweapons_perk_a1_name>"
+    description: "<lang.heavyweapons_perk_a1_description>"
+    cost: 1
+    hidden: false
+    required_lv: 50
+    perk_rewards:
+      heavyweapons_coatingunlocked_toggle: 0
+      heavyweapons_coatingcharges_add: 2
+      heavyweapons_coatingdurationmultiplier_add: -0.8
+      heavyweapons_coatingamplifiermultiplier_add: -0.25
+    messages:
+      - "<lang.heavyweapons_perk_a1_messages>"
+    requireperk_all:
+      - heavyweapons_perk_3
+    connection_line:
+      '1':
+        position: '2,3'
+        locked: GRAY_DYE:1172714
+        unlockable: ORANGE_DYE:1172814
+        unlocked: LIME_DYE:1172914
+      '2':
+        position: '2,2'
+        locked: GRAY_DYE:1172713
+        unlockable: ORANGE_DYE:1172813
+        unlocked: LIME_DYE:1172913
+  heavyweapons_perk_a2:
+    icon: BLAZE_ROD
+    coords: "1,1"
+    name: "<lang.heavyweapons_perk_a2_name>"
+    description: "<lang.heavyweapons_perk_a2_description>"
+    cost: 1
+    hidden: false
+    required_lv: 70
+    perk_rewards:
+      heavyweapons_coatingcharges_add: 2
+      heavyweapons_coatingdurationmultiplier_add: 0.1
+      heavyweapons_coatingamplifiermultiplier_add: 0.25
+    messages:
+      - "<lang.heavyweapons_perk_a2_messages>"
+    requireperk_all:
+      - heavyweapons_perk_a1
+    connection_line:
+      '1':
+        position: '1,2'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  heavyweapons_perk_combo:
+    icon: NETHERITE_CHESTPLATE
+    coords: "3,1"
+    name: "<lang.heavyweapons_perk_combo_name>"
+    description: "<lang.heavyweapons_perk_combo_description>"
+    cost: 1
+    hidden: false
+    required_lv: 70
+    other_levels_required:
+      - WOODCUTTING:70
+    perk_rewards:
+      heavyweapons_stunchance_add: 0.2
+      heavyweapons_penetrationfraction_add: 0.2
+      heavyweapons_damagetolightarmormultiplier_add: 0.05
+    messages:
+      - "<lang.heavyweapons_perk_combo_messages>"
+  heavyweapons_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "3,11"
+    name: "<lang.heavyweapons_perk_ng1_name>"
+    description: "<lang.heavyweapons_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_heavy_weapons: 0
+      p:heavyweapons_newgameplus_add: 1
+      p:heavyweapons_damagemultiplier_add: 0.15
+      p:heavyweapons_powerattackfraction_add: 0.2
+      p:heavyweapons_critchance_add: 0.1
+      p:heavyweapons_heavyweaponsexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - heavyweapons_perk_ng1
+    messages:
+      - "<lang.heavyweapons_perk_ng1_messages>"
+  heavyweapons_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "3,11"
+    name: "<lang.heavyweapons_perk_ng2_name>"
+    description: "<lang.heavyweapons_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - heavyweapons_perk_ng1
+    perk_rewards:
+      reset_skill_heavy_weapons: 0
+      p:heavyweapons_newgameplus_add: 1
+      p:heavyweapons_damagemultiplier_add: 0.15
+      p:heavyweapons_powerattackfraction_add: 0.2
+      p:heavyweapons_critchance_add: 0.1
+      p:heavyweapons_heavyweaponsexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - heavyweapons_perk_ng1
+        - heavyweapons_perk_ng2
+    messages:
+      - "<lang.heavyweapons_perk_ng2_messages>"

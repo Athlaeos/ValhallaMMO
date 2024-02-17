@@ -1,0 +1,15 @@
+display_name: '<lang.skill-heavy-armor-displayname>'
+icon: IRON_CHESTPLATE
+icon_data: 3510001
+description: '<lang.skill-heavy-armor-description>'
+
+levelbar_title: '<lang.skill-heavy-armor-level-bar>'
+levelbar_color: RED # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
+levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID
+
+rage_effects: # is to be formatted by EFFECT;AMPLIFIER;DURATION;AMPLIFIERPERLEVEL;DURATIONPERLEVEL
+  # amplifiers are rounded down, so SPEED 0.5 would not give any speed effect
+  - INCREASE_DAMAGE;1;200;0.5;50 # gives STRENGTH I for 10s where the amplifier increases by 0.5 and duration by 2.5s per extra level
+  - FAST_DIGGING;1;200;0.5;50
+  - ABSORPTION;1;200;0.5;50
+  - DAMAGE_RESISTANCE;0;200;0.25;50

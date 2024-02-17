@@ -1,0 +1,169 @@
+enabled: true # If disabled, all party functionality is disabled
+item_sharing: true # If disabled, item sharing will not be possible
+exp_sharing: true # If disabled, exp sharing will not be possible
+
+party_company_radius: 30 # The default radius in which party members will be considered "in your vicinity"
+party_exp_rate: 0.001 # The fraction of exp earned with at least 1 party member in your vicinity that goes towards your party.
+# Example: if you earn 1000 exp with a party member nearby, your party will progress by 1 exp. Only exp gained by skills is considered (not exp sharing or commands)
+
+party_creation_cooldown: 86400000 # Cooldown to create a party, so it can't be spammed (default 1d)
+item_share_cooldown: 3600000 # Cooldown between item shares (default 1hr)
+party_rename_cooldown: 86400000 # Cooldown between party renamings, so it can't be spammed by a single player (default 1d)
+party_description_change_cooldown: 3600000 # Cooldown between description changes, so it can't be spammed by a single player (default 1h)
+
+legal_characters_regex: "^[ a-zA-Z0-9&]+$" # Defines the permitted characters in names and descriptions.
+  # Requires you to know regex if you want to customize it, but by default this just means letters, numbers, spaces, and the & symbol
+name_character_minimum: 2
+name_character_maximum: 32 # Name limit of party names
+description_character_maximum: 256 # Description limit of party descriptions
+ # If true, party creators may add colors to their party name
+ # If true, party creators may add colors to their description
+
+party_chat_format: '&2[PC] &a[%rank%&a] %s &f> %s'
+party_spy_format: '&4[PS] &c[%party%] %s &7> %s'
+party_info_format:
+  - "<lang.party-info-format>"
+
+party_levelup_format: '&6%party% &ehas leveled up to &6%level%&e!' # Other valid placeholders are %level_numeric% and %level_roman%
+
+defaults:
+  party_capacity: 5 # Default member capacity of a party
+  party_chat: true # If false, parties cannot access party chat by default
+  exp_sharing: false # If false, party exp sharing will be disabled by default
+  exp_sharing_radius: 25 # Default exp sharing radius
+  exp_sharing_multiplier: 0.8 # Default exp sharing fraction. Exp gained with sharing will be further multiplied by the given value
+  item_sharing: false # If false, party item sharing will be disabled by default
+  item_sharing_radius: 50 # If -1, radius will be considered infinite and can cross dimensions.
+  company_radius: 20 # The default radius in which you are considered "in company" with your party members
+  company_member_cap: 5 # The max amount of members the "in company" stats can benefit from. By default this means a +25% healing bonus at maximum
+  name_colors: false
+  description_colors: false
+  rename_party: false
+
+default_company_stats: # The default stat buffs granted to each party member "in company" with another party member, *for* each party member nearby.
+  # For example, with 3 party members nearby you benefit from +15% healing
+  HEALTH_REGENERATION_BONUS: 0.05
+
+levels: # These must be in order, start at 0, and not have any gaps in levels (3-2-1-0 is bad, 3-1-2-0 is bad, 0-1-3 is bad, 0-1-2-3 is good)
+  0: # Level 0 will always cost 0 exp and have the default stats, no matter what is put.
+    name: "<lang.party-level-0>"
+  1:
+    name: "<lang.party-level-1>"
+    exp_required: 500 # The amount of EXP needed to progress from lv0 to lv1. Since 1% of skill EXP is converted to party EXP, 50,000 total EXP is needed to reach this level.
+    party_capacity: 5 # Rewards are added on *top* of the previous levels, or in this case default, so in this case the party capacity is raised to 10 once lv1 has been reached
+    exp_sharing: true # Starts off at 80% efficiency
+    stats:
+      LUCK_BONUS: 0.1 # 0.1-0.5 luck
+    levelup_description:
+      - "<lang.party-level-description-1>"
+  2:
+    name: "<lang.party-level-2>"
+    exp_required: 2000 # 250,000 EXP
+    party_capacity: 5 # 15 member cap
+    exp_sharing_multiplier: 0.2 # Back to 100% efficiency
+    rename_party: true
+    stats:
+      KNOCKBACK_RESISTANCE: 0.05 # 5-25% knockback resistance
+    levelup_description:
+      - "<lang.party-level-description-2>"
+  3:
+    name: "<lang.party-level-3>"
+    exp_required: 6000 # 850,000 EXP
+    party_capacity: 10 # 25 member cap
+    item_sharing: true # Starts off at 50 block reach
+    name_colors: true
+    stats:
+      DAMAGE_RESISTANCE: 0.02 # 2-10% damage resistance
+    levelup_description:
+      - "<lang.party-level-description-3>"
+  4:
+    name: "<lang.party-level-4>"
+    exp_required: 24000 # 3,250,000 EXP
+    party_capacity: 20 # 45 member cap
+    item_sharing_radius: 100 # 150 block reach
+    description_colors: true
+    exp_sharing_multiplier: 0.2 # 120% efficiency
+    company_member_cap: 2 # 7 nearby party party members for buffs
+    company_radius: 10 # 30 block radius for "in company" buffs
+    stats:
+      DIG_SPEED: 0.5 # 5-35% dig speed
+      MOVEMENT_SPEED_BONUS: 0.04 # 4-28% movement speed
+    levelup_description:
+      - "<lang.party-level-description-4>"
+  5:
+    name: "<lang.party-level-5>"
+    exp_required: 96000 # 12,850,000 EXP
+    party_capacity: 45 # 80 member cap
+    item_sharing_radius: -99999 # Infinite reach (negative numbers will make reach infinite)
+    company_member_cap: 3 # 10 nearby party party members for buffs
+    company_radius: 20 # 50 block radius for "in company" buffs
+    stats:
+      DAMAGE_DEALT: 0.03 # 3-30% damage dealt
+      CRIT_CHANCE_RESISTANCE: 0.05 # 5-50% crit chance resistance
+      HEALTH_MULTIPLIER_BONUS: 0.03 # 3-30% health
+    levelup_description:
+      - "<lang.party-level-description-5>"
+
+
+# The default rank each member will get upon joining
+default_rank: rookie # The rank here must be present in the below "ranks", if not the party system will be disabled
+leader_title: '<lang.party-rank-leader>'
+ranks: # Ranks may be distributed by the party leader, each rank has a title and may have additional permissions
+  rookie:
+    rating: 0
+    title: '<lang.party-rank-rookie>'
+    permissions: # Valid permissions are
+      # party_chat, item_share, exp_share, open_party, invite_member, kick_members, manage_roles, manage_description
+      - party_chat
+  member:
+    rating: 1
+    title: '<lang.party-rank-member>'
+    permissions:
+      - item_sharing
+      - party_chat
+  trusted:
+    rating: 2
+    title: '<lang.party-rank-trusted>'
+    permissions:
+      - invite_member
+      - item_sharing
+      - party_chat
+  officer:
+    rating: 3
+    title: '<lang.party-rank-officer>'
+    permissions:
+      - party_chat
+      - item_share
+      - open_party
+      - invite_member
+      - kick_members
+  inner_circle:
+    rating: 4
+    title: '<lang.party-rank-inner-circle>'
+    permissions:
+      - party_chat
+      - item_share
+      - open_party
+      - toggle_exp_share
+      - toggle_item_share
+      - toggle_friendly_fire
+      - invite_member
+      - manage_roles
+      - kick_members
+      - manage_description
+      - manage_name
+# party_chat: access to party chat
+# item_share: ability to share items with other party members
+# open_party: ability to open party or to have party invite only (closed = invite only, open = free join + invite)
+# toggle_exp_share: ability to toggle exp share on and off for the party
+# toggle_item_share: ability to toggle item sharing
+# toggle_friendly_fire: ability to toggle friendly fire (server pvp rules are applied regardless of this setting)
+# invite_members: ability to invite other people to the party
+# manage_roles: ability to take and give roles that are below the member's own rank to people with rankings lower than that of their own
+# kick_members: ability to remove members from the party with rankings lower than that of their own
+# manage_description: ability to change the party's description
+# manage_name: ability to change the party's name
+# The leader by default has all permissions and is the only one who can transfer leadership
+
+party_info: # This information is displayed in the command /party info, and mostly intended for the creator of the party
+  - '<lang.party-info-format>'

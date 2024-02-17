@@ -1,0 +1,138 @@
+# This config purely defines the various buttons used in ValhallaMMO menus
+# Buttons are defined with MATERIAL:CUSTOMMODELDATA
+# Realistically, you will probably never need to change these values unless you're looking to modify some GUI content more indepth
+skilltree_direction_n: ARROW:3511002
+skilltree_direction_ne: ARROW:3511003
+skilltree_direction_e: ARROW:3511004
+skilltree_direction_se: ARROW:3511005
+skilltree_direction_s: ARROW:3511006
+skilltree_direction_sw: ARROW:3511007
+skilltree_direction_w: ARROW:3511008
+skilltree_direction_nw: ARROW:3511001
+
+recipeselection_immersive_pageup: ARROW:3511002
+recipeselection_immersive_pagedown: ARROW:3511006
+recipeselection_immersive_favourites: NETHER_STAR:1829130
+recipeselection_immersive_tinkeronly: ANVIL:-1
+recipeselection_immersive_craftonly: CRAFTING_TABLE:-1
+
+lootselection_unpicked: RED_DYE:1829131
+lootselection_picked: LIME_DYE:1829131
+lootselection_confirm: STRUCTURE_VOID:1829131
+
+editor_recipe_grid_valhallatoolrequirement: DIAMOND_PICKAXE:1829130
+editor_recipe_grid_toggletinker: ANVIL:1829130
+editor_recipe_grid_selecttinkeritem: ANVIL:1829131
+editor_recipe_grid_selecttoolitem: IRON_HOE:1829130
+editor_recipe_grid_selectvalidation: BARRIER:1829130
+editor_recipe_grid_toggleshapeless: SLIME_BALL:1829130
+editor_recipe_grid_modifiers: WRITABLE_BOOK:1829130
+editor_recipe_grid_recipeoptions: WRITABLE_BOOK:1829131
+editor_recipe_grid_unlockedforeveryone: PAPER:1829130
+editor_recipe_grid_settoolrequirement: PAPER:1829131
+editor_recipe_grid_setdisplayname: NAME_TAG:-1
+editor_recipe_grid_setdescription: WRITABLE_BOOK:-1
+editor_recipe_grid_togglehidden: REDSTONE_LAMP:-1
+
+editor_recipe_cooking_valhallatoolrequirement: DIAMOND_PICKAXE:1829130
+editor_recipe_cooking_toggletinker: ANVIL:1829130
+editor_recipe_cooking_selectvalidation: BARRIER:1829130
+editor_recipe_cooking_cooktime: CLOCK:1829130
+editor_recipe_cooking_experience: EXPERIENCE_BOTTLE:1829130
+editor_recipe_cooking_modifiers: WRITABLE_BOOK:1829130
+editor_recipe_cooking_recipeoptions: WRITABLE_BOOK:1829131
+editor_recipe_cooking_unlockedforeveryone: PAPER:1829130
+editor_recipe_cooking_setdisplayname: NAME_TAG:-1
+editor_recipe_cooking_setdescription: WRITABLE_BOOK:-1
+editor_recipe_cooking_togglehidden: REDSTONE_LAMP:-1
+
+editor_recipe_smithing_valhallatoolrequirement: DIAMOND_PICKAXE:1829130
+editor_recipe_smithing_toggletinker: ANVIL:1829130
+editor_recipe_smithing_toggleconsumeaddition: GOLDEN_APPLE:1829130
+editor_recipe_smithing_selectvalidation: BARRIER:1829130
+editor_recipe_smithing_additionmodifiers: WRITABLE_BOOK:1829130
+editor_recipe_smithing_resultmodifiers: WRITABLE_BOOK:1829130
+editor_recipe_smithing_recipeoptions: WRITABLE_BOOK:1829131
+editor_recipe_smithing_unlockedforeveryone: PAPER:1829130
+editor_recipe_smithing_setdisplayname: NAME_TAG:-1
+editor_recipe_smithing_setdescription: WRITABLE_BOOK:-1
+
+editor_recipe_brewing_valhallatoolrequirement: DIAMOND_PICKAXE:1829130
+editor_recipe_brewing_toggletinker: ANVIL:1829130
+editor_recipe_brewing_toggleconsumeingredient: GOLDEN_APPLE:1829130
+editor_recipe_brewing_modifiers: WRITABLE_BOOK:1829130
+editor_recipe_brewing_recipeoptions: WRITABLE_BOOK:1829131
+editor_recipe_brewing_brewtime: CLOCK:1829130
+editor_recipe_brewing_unlockedforeveryone: PAPER:1829130
+editor_recipe_brewing_setdisplayname: NAME_TAG:-1
+editor_recipe_brewing_setdescription: WRITABLE_BOOK:-1
+
+editor_recipe_immersive_valhallatoolrequirement: DIAMOND_PICKAXE:1829130
+editor_recipe_immersive_settoolrequirement: PAPER:1829133
+editor_recipe_immersive_toggletinker: ANVIL:1829130
+editor_recipe_immersive_setcraftingblock: CRAFTING_TABLE:1829130
+editor_recipe_immersive_selectvalidation: BARRIER:1829130
+editor_recipe_immersive_modifiers: WRITABLE_BOOK:1829130
+editor_recipe_immersive_ingredients: WRITABLE_BOOK:-1
+editor_recipe_immersive_recipeoptions: WRITABLE_BOOK:1829131
+editor_recipe_immersive_crafttime: CLOCK:1829130
+editor_recipe_immersive_repeatcrafts: REPEATER:1829130
+editor_recipe_immersive_toggledestroystation: LAVA_BUCKET:1829130
+editor_recipe_immersive_toggleexactmeta: PAPER:1829132
+editor_recipe_immersive_unlockedforeveryone: PAPER:1829130
+editor_recipe_immersive_setdisplayname: NAME_TAG:-1
+editor_recipe_immersive_setdescription: WRITABLE_BOOK:-1
+
+editor_recipe_cauldron_valhallatoolrequirement: DIAMOND_PICKAXE:1829130
+editor_recipe_cauldron_toggletinker: ANVIL:1829130
+editor_recipe_cauldron_selectvalidation: BARRIER:1829130
+editor_recipe_cauldron_cooktime: CLOCK:1829130
+editor_recipe_cauldron_toggletimedrecipe: BREWING_STAND:1829130
+editor_recipe_cauldron_modifiers: WRITABLE_BOOK:1829130
+editor_recipe_cauldron_ingredients: WRITABLE_BOOK:-1
+editor_recipe_cauldron_recipeoptions: WRITABLE_BOOK:1829131
+editor_recipe_cauldron_toggleexactmeta: PAPER:1829132
+editor_recipe_cauldron_unlockedforeveryone: PAPER:1829130
+editor_recipe_cauldron_setdisplayname: NAME_TAG:-1
+editor_recipe_cauldron_setdescription: WRITABLE_BOOK:-1
+
+editor_ingredient_selection_save: STRUCTURE_VOID:1829130
+editor_ingredient_selection_return: BOOK:1829130
+
+editor_validation_selection_save: STRUCTURE_VOID:1829130
+editor_validation_selection_return: BOOK:1829130
+
+editor_newrecipe: LIME_DYE:1829130
+editor_nextpage: ARROW:1829130
+editor_prevpage: ARROW:1829131
+editor_backtomenu: BOOK:1829130
+editor_save: STRUCTURE_VOID:1829130
+editor_delete: BARRIER:1829131
+editor_deleteconfirm: BARRIER:1829132
+
+editor_loottable_edit: WRITABLE_BOOK:-1
+
+editor_armorset_newentry: LIME_DYE:1829130
+editor_armorset_setname: NAME_TAG:-1
+editor_armorset_setstats: PAPER:-1
+editor_armorset_setlore: WRITABLE_BOOK:-1
+editor_armorset_setrequired: DIAMOND_CHESTPLATE:-1
+
+editor_loottable_preservationmode: COMPARATOR:-1
+editor_loottable_newpool: LIME_DYE:1829130
+editor_loottable_newentry: LIME_DYE:1829130
+editor_loottable_predicatemode: COMPARATOR:-1
+editor_loottable_toggleweighted: IRON_BLOCK:-1
+editor_loottable_weightedbaserolls: COMPASS:-1
+editor_loottable_weightedbonusrolls: LAPIS_LAZULI:-1
+editor_loottable_setweight: IRON_BLOCK:-1
+editor_loottable_setchance: LAPIS_LAZULI:-1
+editor_loottable_basequantity: CHEST:-1
+editor_loottable_luckquantity: SHULKER_BOX:-1
+editor_loottable_guaranteeddroptoggle: GOLD_BLOCK:-1
+editor_loottable_setluckweight: LAPIS_LAZULI:-1
+editor_loottable_setluckchance: LAPIS_LAZULI:-1
+editor_loottable_entry_modifiers: WRITABLE_BOOK:1829130
+editor_loottable_pool_predicates: HOPPER:-1
+editor_loottable_entry_predicates: HOPPER:-1
+editor_loottable_descriptionlabel: PAPER:-1

@@ -1,0 +1,1752 @@
+{
+  "key": "fishing",
+  "pools": {
+    "treasure": {
+      "parentTable": "fishing",
+      "key": "treasure",
+      "entries": {
+        "948cc2e1-cce7-473c-838c-304ec1ce6a9b": {
+          "uuid": "948cc2e1-cce7-473c-838c-304ec1ce6a9b",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0ABFHT0xERU5fQ0hFU1RQTEFURQ==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 4,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.002,
+          "chanceQuality": 5.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 110,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 135,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        },
+        "d88e83d4-6080-436e-8c4e-a69ab0820aa6": {
+          "uuid": "d88e83d4-6080-436e-8c4e-a69ab0820aa6",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAtJUk9OX0hFTE1FVA==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 4,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.002,
+          "chanceQuality": 5.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 110,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 135,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        },
+        "07104946-a124-4eba-9816-b130f631b4da": {
+          "uuid": "07104946-a124-4eba-9816-b130f631b4da",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA1ESUFNT05EX0JPT1RT\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 8,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.001,
+          "chanceQuality": 2.5E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 140,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 165,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 1.0,
+                "skillRange": 185.0,
+                "rangeOffset": 115.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR_TOUGHNESS",
+                "icon": "DIAMOND_CHESTPLATE",
+                "name": "attribute_scale_generic_armor_toughness",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 185.0,
+                "rangeOffset": 115.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 185.0,
+                "rangeOffset": 115.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        },
+        "143f8b75-371c-4dc9-bad8-645a915c7a27": {
+          "uuid": "143f8b75-371c-4dc9-bad8-645a915c7a27",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA1MRUFUSEVSX0JPT1RT\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [],
+          "chance": 0.004,
+          "chanceQuality": 0.001,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 50,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 75,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 275.0,
+                "rangeOffset": 25.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 275.0,
+                "rangeOffset": 25.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ANY"
+        },
+        "ee049efe-43bd-41d0-b21b-e6eddf4df44b": {
+          "uuid": "ee049efe-43bd-41d0-b21b-e6eddf4df44b",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0ABJMRUFUSEVSX0NIRVNUUExBVEU=\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [],
+          "chance": 0.004,
+          "chanceQuality": 0.001,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 50,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 75,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 275.0,
+                "rangeOffset": 25.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 275.0,
+                "rangeOffset": 25.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ANY"
+        },
+        "5fa1d8b2-32d8-4470-bb67-64c501abb91b": {
+          "uuid": "5fa1d8b2-32d8-4470-bb67-64c501abb91b",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA1JUk9OX0xFR0dJTkdT\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 4,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.002,
+          "chanceQuality": 5.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 110,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 135,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        },
+        "ebea67b6-6526-47ef-94a4-48757718b1f7": {
+          "uuid": "ebea67b6-6526-47ef-94a4-48757718b1f7",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA1HT0xERU5fSEVMTUVU\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 4,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.002,
+          "chanceQuality": 5.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 110,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 135,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        },
+        "89eb6c43-4a4f-4810-b27b-b0931ad83288": {
+          "uuid": "89eb6c43-4a4f-4810-b27b-b0931ad83288",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0ABBESUFNT05EX0xFR0dJTkdT\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 8,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.001,
+          "chanceQuality": 2.5E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 140,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 165,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 185.0,
+                "rangeOffset": 115.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 1.0,
+                "skillRange": 185.0,
+                "rangeOffset": 115.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR_TOUGHNESS",
+                "icon": "DIAMOND_CHESTPLATE",
+                "name": "attribute_scale_generic_armor_toughness",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 185.0,
+                "rangeOffset": 115.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        },
+        "a028d648-e6ab-48a5-9a3e-08064f00b863": {
+          "uuid": "a028d648-e6ab-48a5-9a3e-08064f00b863",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9HT0xERU5fTEVHR0lOR1M=\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 4,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.002,
+          "chanceQuality": 5.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 110,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 135,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        },
+        "74ea1d5b-a016-409e-beff-e8e5e571710b": {
+          "uuid": "74ea1d5b-a016-409e-beff-e8e5e571710b",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAxHT0xERU5fQk9PVFM=\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 4,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.002,
+          "chanceQuality": 5.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 110,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 135,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        },
+        "fe09432b-0cd1-4b24-8d4e-f4b515362d41": {
+          "uuid": "fe09432b-0cd1-4b24-8d4e-f4b515362d41",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5ESUFNT05EX0hFTE1FVA==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 8,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.001,
+          "chanceQuality": 2.5E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 140,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 165,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 185.0,
+                "rangeOffset": 115.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 1.0,
+                "skillRange": 185.0,
+                "rangeOffset": 115.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR_TOUGHNESS",
+                "icon": "DIAMOND_CHESTPLATE",
+                "name": "attribute_scale_generic_armor_toughness",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 185.0,
+                "rangeOffset": 115.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        },
+        "a3485f9d-d76d-444e-a371-8c2b71b8b28f": {
+          "uuid": "a3485f9d-d76d-444e-a371-8c2b71b8b28f",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0ABBMRUFUSEVSX0xFR0dJTkdT\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [],
+          "chance": 0.004,
+          "chanceQuality": 0.001,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 50,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 75,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 275.0,
+                "rangeOffset": 25.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 275.0,
+                "rangeOffset": 25.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ANY"
+        },
+        "dbf2a148-4f93-47fa-8e1d-0f3d741efb70": {
+          "uuid": "dbf2a148-4f93-47fa-8e1d-0f3d741efb70",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AApJUk9OX0JPT1RT\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 4,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.002,
+          "chanceQuality": 5.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 110,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 135,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        },
+        "1f565337-4afd-4423-b880-aca42e6f5fc9": {
+          "uuid": "1f565337-4afd-4423-b880-aca42e6f5fc9",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5MRUFUSEVSX0hFTE1FVA==\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [],
+          "chance": 0.004,
+          "chanceQuality": 0.001,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 50,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 75,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 275.0,
+                "rangeOffset": 25.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 275.0,
+                "rangeOffset": 25.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ANY"
+        },
+        "a0c4391b-6d1c-4503-a048-ec0c3d55a88f": {
+          "uuid": "a0c4391b-6d1c-4503-a048-ec0c3d55a88f",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9JUk9OX0NIRVNUUExBVEU=\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 4,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.002,
+          "chanceQuality": 5.0E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 110,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 135,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 215.0,
+                "rangeOffset": 85.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        },
+        "b1c0f160-6793-4340-9282-664f7ebc3edd": {
+          "uuid": "b1c0f160-6793-4340-9282-664f7ebc3edd",
+          "parentPool": "treasure",
+          "drop": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0ABJESUFNT05EX0NIRVNUUExBVEU=\r\n",
+          "baseQuantityMin": 1,
+          "baseQuantityMax": 1,
+          "quantityMinFortuneBase": 0.0,
+          "quantityMaxFortuneBase": 0.0,
+          "predicates": [
+            {
+              "PRED_TYPE": "me.athlaeos.valhallammo.loot.predicates.implementations.LuckFilter",
+              "DATA": {
+                "from": 8,
+                "inverted": false
+              }
+            }
+          ],
+          "chance": 0.001,
+          "chanceQuality": 2.5E-4,
+          "weight": 10.0,
+          "weightQuality": 10.0,
+          "guaranteedPresent": false,
+          "modifiers": [
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagCustomAdd",
+              "DATA": {
+                "flag": "DISPLAY_ATTRIBUTES",
+                "name": "flag_display_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
+              "DATA": {
+                "flag": "HIDE_ATTRIBUTES",
+                "name": "flag_hide_attributes",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
+              "DATA": {
+                "neutral": 140,
+                "name": "smithing_neutral_quality_set",
+                "priority": "SOONEST"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualitySet",
+              "DATA": {
+                "quality": 165,
+                "name": "smithing_quality_set",
+                "priority": "SOON"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityRandomized",
+              "DATA": {
+                "lowerBound": -0.2,
+                "upperBound": 0.2,
+                "name": "smithing_quality_randomize",
+                "priority": "SOONISH"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 0.5,
+                "skillRange": 185.0,
+                "rangeOffset": 115.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR",
+                "icon": "IRON_CHESTPLATE",
+                "name": "attribute_scale_generic_armor",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 1.0,
+                "skillRange": 185.0,
+                "rangeOffset": 115.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "attribute": "GENERIC_ARMOR_TOUGHNESS",
+                "icon": "DIAMOND_CHESTPLATE",
+                "name": "attribute_scale_generic_armor_toughness",
+                "priority": "NEUTRAL"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+              "DATA": {
+                "mode": "MULTIPLIER",
+                "amplifier": 2.0,
+                "skillRange": 185.0,
+                "rangeOffset": 115.0,
+                "minimum": 1.0,
+                "skillToScaleWith": "SMITHING",
+                "skillEfficiency": 1.0,
+                "minimumValue": 0.0,
+                "name": "durability_scale",
+                "priority": "LATER"
+              }
+            },
+            {
+              "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRandomized",
+              "DATA": {
+                "name": "durability_randomize",
+                "priority": "LAST"
+              }
+            }
+          ],
+          "predicateSelection": "ALL"
+        }
+      },
+      "predicates": [],
+      "weighted": false,
+      "weightedRolls": 1,
+      "bonusLuckRolls": 0.5,
+      "dropChance": 1.0,
+      "dropLuckChance": 0.0,
+      "predicateSelection": "ANY"
+    }
+  },
+  "icon": "CHEST",
+  "vanillaLootPreservationType": "CLEAR_UNLESS_EMPTY"
+}

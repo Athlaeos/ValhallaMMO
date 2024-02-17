@@ -1,0 +1,175 @@
+transmutations:
+  log_1:
+    from: OAK_LOG
+    to: BIRCH_LOG
+  log_2:
+    from: BIRCH_LOG
+    to: SPRUCE_LOG
+  log_3:
+    from: SPRUCE_LOG
+    to: DARK_OAK_LOG
+  log_4:
+    from: DARK_OAK_LOG
+    to: JUNGLE_LOG
+  log_5:
+    from: JUNGLE_LOG
+    to: ACACIA_LOG
+  log_6:
+    from: ACACIA_LOG
+    to: OAK_LOG
+  stem_1:
+    from: CRIMSON_STEM
+    to: WARPED_STEM
+  stem_2:
+    from: WARPED_STEM
+    to: CRIMSON_STEM
+  ore_1:
+    from: STONE
+    to: COPPER_ORE
+  ore_2:
+    from: COPPER_ORE
+    to: IRON_ORE
+  ore_3:
+    from: REDSTONE_BLOCK
+    to: LAPIS_BLOCK
+  ore_4:
+    from: LAPIS_BLOCK
+    to: REDSTONE_BLOCK
+  planks_1:
+    from: OAK_PLANKS
+    to: BIRCH_PLANKS
+  planks_2:
+    from: BIRCH_PLANKS
+    to: SPRUCE_LOG
+  planks_3:
+    from: SPRUCE_PLANKS
+    to: DARK_OAK_PLANKS
+  planks_4:
+    from: DARK_OAK_PLANKS
+    to: JUNGLE_PLANKS
+  planks_5:
+    from: JUNGLE_PLANKS
+    to: ACACIA_PLANKS
+  planks_6:
+    from: ACACIA_PLANKS
+    to: OAK_PLANKS
+  netherplanks_1:
+    from: CRIMSON_PLANKS
+    to: WARPED_PLANKS
+  netherplanks_2:
+    from: WARPED_PLANKS
+    to: CRIMSON_PLANKS
+  mushroom_1:
+    from: RED_MUSHROOM
+    to: BROWN_MUSHROOM
+  mushroom_2:
+    from: BROWN_MUSHROOM
+    to: RED_MUSHROOM
+  mushroom_3:
+    from: CRIMSON_FUNGUS
+    to: WARPED_FUNGUS
+  mushroom_4:
+    from: WARPED_FUNGUS
+    to: CRIMSON_FUNGUS
+  crop_1:
+    from: WHEAT
+    to: POTATOES
+  crop_2:
+    from: POTATOES
+    to: CARROTS
+  crop_3:
+    from: CARROTS
+    to: BEETROOTS
+  crop_4:
+    from: BEETROOTS
+    to: WHEAT
+  crop_5:
+    from: MELON
+    to: PUMPKIN
+  crop_6:
+    from: PUMPKIN
+    to: MELON
+  dirt_1:
+    from: DIRT
+    to: SAND
+  dirt_2:
+    from: SAND
+    to: RED_SAND
+  dirt_3:
+    from: RED_SAND
+    to: GRAVEL
+  dirt_4:
+    from: GRAVEL
+    to: CLAY
+  dirt_5:
+    from: CLAY
+    to: DIRT
+  grass_1:
+    from: GRASS_BLOCK
+    to: MYCELIUM
+  grass_2:
+    from: MYCELIUM
+    to: GRASS_BLOCK
+  grass_3:
+    from: GRASS
+    to: WARPED_ROOTS
+  grass_4:
+    from: WARPED_ROOTS
+    to: CRIMSON_ROOTS
+  grass_5:
+    from: CRIMSON_ROOTS
+    to: GRASS
+  netherrack_1:
+    from: NETHERRACK
+    to: COARSE_DIRT
+  netherrack_2:
+    from: COARSE_DIRT
+    to: NETHERRACK
+  cobble_1:
+    from: COBBLESTONE
+    to: MOSSY_COBBLESTONE
+  cobble_2:
+    from: MOSSY_COBBLESTONE
+    to: COBBLESTONE
+  obsidian_1:
+    from: OBSIDIAN
+    to: CRYING_OBSIDIAN
+  obsidian_2:
+    from: CRYING_OBSIDIAN
+    to: OBSIDIAN
+  torch_1:
+    from: TORCH
+    to: SOUL_TORCH
+  torch_2:
+    from: SOUL_TORCH
+    to: TORCH
+  midas_1:
+    from: IRON_BLOCK
+    to: GOLD_BLOCK
+  midas_2:
+    from: COPPER_BLOCK
+    to: IRON_BLOCK
+  midas_3:
+    from: EMERALD_BLOCK
+    to: DIAMOND_BLOCK
+  midas_4:
+    from: DIAMOND_BLOCK
+    to: EMERALD_BLOCK
+  midas_5:
+    from: RAW_IRON_BLOCK
+    to: RAW_GOLD_BLOCK
+  midas_6:
+    from: RAW_COPPER_BLOCK
+    to: RAW_IRON_BLOCK
+  midas_7:
+    from: IRON_ORE
+    to: GOLD_ORE
+  midas_8:
+    from: COPPER_ORE
+    to: IRON_ORE
+  midas_9:
+    from: EMERALD_ORE
+    to: DIAMOND_ORE
+  midas_10:
+    from: DIAMOND_ORE
+    to: EMERALD_ORE

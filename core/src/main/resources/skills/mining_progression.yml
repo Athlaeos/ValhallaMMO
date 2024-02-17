@@ -1,0 +1,439 @@
+starting_perks: 
+  mining_miningdrops_add: -0.3
+  mining_miningspeedbonus_add: -0.3
+
+experience: 
+  max_level: 100 
+  exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
+  exp_multiplier_mine: 1 
+  exp_multiplier_blast: 1.5 
+  exp_per_break: false 
+  mining_break: # Blocks mined or exploded will grant the player the amount of experience noted based on the amount of items it dropped,
+    # if the block was placed beforehand it will not reward any EXP or skill benefits.
+    # Only the items in this list will benefit from drop multiplication
+    # Items will only reward experience if both the mined block and the associated drop exist in this list (I.E. IRON_ORE and RAW_IRON)
+    NETHERRACK: 1
+    NETHER_QUARTZ_ORE: 20
+    QUARTZ: 10
+    NETHER_GOLD_ORE: 15
+    GOLD_NUGGET: 2
+    OBSIDIAN: 20
+    END_STONE: 6
+    COBBLESTONE: 4
+    COBBLED_DEEPSLATE: 6
+    STONE: 4
+    DEEPSLATE: 6
+    GRANITE: 4
+    ANDESITE: 4
+    DIORITE: 4
+    CALCITE: 4
+    TUFF: 4
+    DRIPSTONE_BLOCK: 6
+    AMETHYST_BLOCK: 8
+    BLACKSTONE: 6
+    BASALT: 6
+    SMOOTH_BASALT: 6
+    COAL_ORE: 20
+    COAL: 10
+    IRON_ORE: 40
+    RAW_IRON: 20
+    COPPER_ORE: 28
+    RAW_COPPER: 14
+    GOLD_ORE: 80
+    RAW_GOLD: 40
+    LAPIS_ORE: 160
+    LAPIS_LAZULI: 10
+    REDSTONE_ORE: 40
+    REDSTONE: 6
+    DIAMOND_ORE: 200
+    DIAMOND: 100
+    EMERALD_ORE: 200
+    EMERALD: 100
+    DEEPSLATE_COAL_ORE: 30
+    DEEPSLATE_IRON_ORE: 60
+    DEEPSLATE_COPPER_ORE: 42
+    DEEPSLATE_GOLD_ORE: 120
+    DEEPSLATE_LAPIS_ORE: 120
+    DEEPSLATE_REDSTONE_ORE: 60
+    DEEPSLATE_DIAMOND_ORE: 300
+    DEEPSLATE_EMERALD_ORE: 300
+    ANCIENT_DEBRIS: 800
+    NETHERITE_SCRAP: 400
+
+special_perks: []
+
+commands: []
+
+messages:
+  - '<lang.skill-level-up-mining>'
+
+leveling_perks:
+  mining_miningdrops_add: 0.01
+  mining_blastingdrops_add: 0.01
+  mining_miningspeedbonus_add: 0.005
+
+starting_coordinates: '4,9' # The coordinates in the skill tree the player sees first when switching to the skill tree
+
+perks:
+  mining_perk_1:
+    icon: WOODEN_PICKAXE
+    coords: "4,9"
+    name: "<lang.mining_perk_1_name>"
+    description: "<lang.mining_perk_1_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      mining_miningspeedbonus_add: 0.1
+      mining_blockexperiencerate_add: 0.1
+    messages:
+      - "<lang.mining_perk_1_messages>"
+    custom_model_data_unlockable: -1
+    custom_model_data_unlocked: -1
+    custom_model_data_visible: -1
+  mining_perk_2:
+    icon: STONE_PICKAXE
+    coords: "4,7"
+    name: "<lang.mining_perk_2_name>"
+    description: "<lang.mining_perk_2_description>"
+    cost: 1
+    hidden: false
+    required_lv: 20
+    perk_rewards:
+      mining_miningdrops_add: 0.1
+      mining_miningluck_add: 1
+      power_cookingspeedbonus_add: 0.25
+    messages:
+      - "<lang.mining_perk_2_messages>"
+    requireperk_all:
+      - mining_perk_1
+    connection_line:
+      '1':
+        position: '4,8'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  mining_perk_a1:
+    icon: TNT
+    coords: "5,5"
+    name: "<lang.mining_perk_a1_name>"
+    description: "<lang.mining_perk_a1_description>"
+    cost: 1
+    hidden: false
+    required_lv: 40
+    perk_rewards:
+      mining_tntblastradius_add: 0.5
+      mining_tntdamagereduction_add: 0.5
+      mining_blastingdrops_add: 0.2
+    messages:
+      - "<lang.mining_perk_a1_messages>"
+    requireperk_all:
+      - mining_perk_2
+    connection_line:
+      '1':
+        position: '5,6'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
+      '2':
+        position: '5,7'
+        locked: GRAY_DYE:1172714
+        unlockable: ORANGE_DYE:1172814
+        unlocked: LIME_DYE:1172914
+  mining_perk_a2:
+    icon: TNT_MINECART
+    coords: "5,3"
+    name: "<lang.mining_perk_a2_name>"
+    description: "<lang.mining_perk_a2_description>"
+    cost: 1
+    hidden: false
+    required_lv: 60
+    perk_rewards:
+      mining_tntblastradius_add: 0.5
+      mining_tntdamagereduction_add: 0.5
+      mining_blastingdrops_add: 0.3
+      recipes_unlock:
+        - tnt_triple
+    messages:
+      - "<lang.mining_perk_a2_messages>"
+    requireperk_all:
+      - mining_perk_a1
+    connection_line:
+      '1':
+        position: '5,4'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  mining_perk_a3:
+    icon: NETHER_STAR
+    coords: "4,2"
+    name: "<lang.mining_perk_a3_name>"
+    description: "<lang.mining_perk_a3_description>"
+    cost: 1
+    hidden: false
+    required_lv: 70
+    other_levels_required:
+      - ENCHANTING:70
+    messages:
+      - "<lang.mining_perk_a3_messages>"
+    requireperk_all:
+      - mining_perk_a2
+    connection_line:
+      '1':
+        position: '5,4'
+        locked: GRAY_DYE:1172702
+        unlockable: ORANGE_DYE:1172802
+        unlocked: LIME_DYE:1172902
+  mining_perk_a3silktouch:
+    icon: FEATHER
+    coords: "2,2"
+    name: "<lang.mining_perk_a3silktouch_name>"
+    description: "<lang.mining_perk_a3silktouch_description>"
+    cost: 0
+    hidden: true
+    perk_rewards:
+      mining_blastfortunelevel_set: -1
+      perks_unlocked_remove:
+        - mining_perk_a3fortune
+    messages:
+      - "<lang.mining_perk_a3silktouch_messages>"
+    requireperk_all:
+      - mining_perk_a3
+  mining_perk_a3fortune:
+    icon: LAPIS_LAZULI
+    coords: "6,2"
+    name: "<lang.mining_perk_a3fortune_name>"
+    description: "<lang.mining_perk_a3fortune_description>"
+    cost: 0
+    hidden: true
+    perk_rewards:
+      mining_blastfortunelevel_set: 2
+      perks_unlocked_remove:
+        - mining_perk_a3silktouch
+    messages:
+      - "<lang.mining_perk_a3fortune_messages>"
+    requireperk_all:
+      - mining_perk_a3
+  mining_perk_b1:
+    icon: GOLDEN_PICKAXE
+    coords: "3,6"
+    name: "<lang.mining_perk_b1_name>"
+    description: "<lang.mining_perk_b1_description>"
+    cost: 1
+    hidden: false
+    required_lv: 40
+    perk_rewards:
+      mining_miningspeedbonus_add: 0.2
+      mining_blockexperiencerate_add: 0.2
+      mining_drillingunlocked_toggle: 0
+      mining_drillingspeedbonus_add: 2
+      mining_drillingcooldown_add: 1200
+      mining_drillingduration_add: 200
+    messages:
+      - "<lang.mining_perk_b1_messages>"
+    requireperk_all:
+      - mining_perk_2
+    connection_line:
+      '1':
+        position: '3,7'
+        locked: GRAY_DYE:1172702
+        unlockable: ORANGE_DYE:1172802
+        unlocked: LIME_DYE:1172902
+  mining_perk_b2:
+    icon: IRON_PICKAXE
+    coords: "3,4"
+    name: "<lang.mining_perk_b2_name>"
+    description: "<lang.mining_perk_b2_description>"
+    cost: 1
+    hidden: false
+    required_lv: 60
+    perk_rewards:
+      mining_miningdrops_add: 0.2
+      mining_miningluck_add: 3
+      mining_veinminingunlocked_toggle: 0
+      power_cookingspeedbonus_add: 0.25
+      mining_veinminerblocks_add:
+        - COAL_ORE
+        - IRON_ORE
+        - COPPER_ORE
+        - GOLD_ORE
+        - REDSTONE_ORE
+        - LAPIS_ORE
+        - DIAMOND_ORE
+        - EMERALD_ORE
+        - DEEPSLATE_COAL_ORE
+        - DEEPSLATE_IRON_ORE
+        - DEEPSLATE_COPPER_ORE
+        - DEEPSLATE_GOLD_ORE
+        - DEEPSLATE_REDSTONE_ORE
+        - DEEPSLATE_LAPIS_ORE
+        - DEEPSLATE_DIAMOND_ORE
+        - DEEPSLATE_EMERALD_ORE
+        - NETHER_QUARTZ_ORE
+        - NETHER_GOLD_ORE
+        - ANCIENT_DEBRIS
+    messages:
+      - "<lang.mining_perk_b2_messages>"
+    requireperk_all:
+      - mining_perk_b1
+    connection_line:
+      '1':
+        position: '3,5'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  mining_perk_3:
+    icon: DIAMOND_PICKAXE
+    coords: "0,2"
+    name: "<lang.mining_perk_3_name>"
+    description: "<lang.mining_perk_3_description>"
+    cost: 1
+    hidden: false
+    required_lv: 80
+    perk_rewards:
+      mining_drillingspeedbonus_add: 3
+      mining_drillingcooldown_add: -600
+      mining_blockexperiencemultiplier_add: 1
+      power_cookingspeedbonus_add: 0.25
+    messages:
+      - "<lang.mining_perk_3_messages>"
+    requireperk_one:
+      - mining_perk_a2
+      - mining_perk_b2
+    connection_line:
+      '1':
+        position: '1,2'
+        locked: GRAY_DYE:1172714
+        unlockable: ORANGE_DYE:1172814
+        unlocked: LIME_DYE:1172914
+      '2':
+        position: '1,1'
+        locked: GRAY_DYE:1172721
+        unlockable: ORANGE_DYE:1172821
+        unlocked: LIME_DYE:1172921
+      '3':
+        position: '2,1'
+        locked: GRAY_DYE:1172707
+        unlockable: ORANGE_DYE:1172807
+        unlocked: LIME_DYE:1172907
+      '4':
+        position: '3,1'
+        locked: GRAY_DYE:1172723
+        unlockable: ORANGE_DYE:1172823
+        unlocked: LIME_DYE:1172923
+      '5':
+        position: '3,2'
+        locked: GRAY_DYE:1172706
+        unlockable: ORANGE_DYE:1172806
+        unlocked: LIME_DYE:1172906
+      '6':
+        position: '3,3'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+  mining_perk_4:
+    icon: NETHERITE_PICKAXE
+    coords: "8,2"
+    name: "<lang.mining_perk_4_name>"
+    description: "<lang.mining_perk_4_description>"
+    cost: 1
+    hidden: false
+    required_lv: 100
+    perk_rewards:
+      mining_veinmininginstantpickup_toggle: 0
+      power_cookingspeedbonus_add: 0.25
+      mining_veinminerblocks_add:
+        - GRANITE
+        - ANDESITE
+        - DIORITE
+        - CALCITE
+        - TUFF
+        - BLACKSTONE
+        - BASALT
+        - AMETHYST_BLOCK
+    messages:
+      - "<lang.mining_perk_4_messages>"
+    requireperk_one:
+      - mining_perk_3
+    connection_line:
+      '1':
+        position: '7,2'
+        locked: GRAY_DYE:1172712
+        unlockable: ORANGE_DYE:1172812
+        unlocked: LIME_DYE:1172912
+      '2':
+        position: '7,1'
+        locked: GRAY_DYE:1172723
+        unlockable: ORANGE_DYE:1172823
+        unlocked: LIME_DYE:1172923
+      '3':
+        position: '6,1'
+        locked: GRAY_DYE:1172707
+        unlockable: ORANGE_DYE:1172807
+        unlocked: LIME_DYE:1172907
+      '4':
+        position: '5,1'
+        locked: GRAY_DYE:1172721
+        unlockable: ORANGE_DYE:1172821
+        unlocked: LIME_DYE:1172921
+      '5':
+        position: '5,2'
+        locked: GRAY_DYE:1172706
+        unlockable: ORANGE_DYE:1172806
+        unlocked: LIME_DYE:1172906
+      '6':
+        position: '5,3'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+      '7':
+        position: '4,0'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
+      '8':
+        position: '4,1'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+  mining_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "4,10"
+    name: "<lang.mining_perk_ng1_name>"
+    description: "<lang.mining_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_mining: 0
+      p:mining_newgameplus_add: 1
+      p:mining_miningspeedbonus_add: 0.25
+      p:mining_blastingdrops_add: 0.25
+      p:mining_miningdrops_add: 0.25
+      p:mining_miningexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - mining_perk_ng1
+    messages:
+      - "<lang.mining_perk_ng1_messages>"
+  mining_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "4,10"
+    name: "<lang.mining_perk_ng2_name>"
+    description: "<lang.mining_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - mining_perk_ng1
+    perk_rewards:
+      reset_skill_mining: 0
+      p:mining_newgameplus_add: 1
+      p:mining_miningspeedbonus_add: 0.25
+      p:mining_blastingdrops_add: 0.25
+      p:mining_miningdrops_add: 0.25
+      p:mining_miningexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - mining_perk_ng1
+        - mining_perk_ng2
+    messages:
+      - "<lang.mining_perk_ng2_messages>"

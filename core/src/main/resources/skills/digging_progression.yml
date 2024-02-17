@@ -1,0 +1,361 @@
+starting_perks:
+  digging_diggingspeedbonus_add: -0.3
+
+experience:
+  max_level: 100
+  exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
+  digging_break:
+    SNOW: 0.2
+    FARMLAND: 4
+    DIRT: 4
+    SAND: 4
+    RED_SAND: 4
+    COARSE_DIRT: 8
+    SNOW_BLOCK: 4
+    SOUL_SAND: 8
+    SOUL_SOIL: 8
+    GRASS_BLOCK: 8
+    DIRT_PATH: 8
+    MYCELIUM: 8
+    GRAVEL: 8
+    PODZOL: 8
+    CLAY: 12
+    CLAY_BALL: 3
+    MUD: 12
+  archaeology_brush:
+    SUSPICIOUS_STEW: 50
+    EMERALD: 100
+    GUNPOWDER: 30
+    TNT: 50
+    DIAMOND: 150
+    SNIFFER_EGG: 100
+    WHEAT: 10
+    WOODEN_HOE: 10
+    COAL: 30
+    GOLD_NUGGET: 10
+    IRON_AXE: 50
+    SHEAF_POTTERY_SHERD: 50
+    SHELTER_POTTERY_SHERD: 50
+    ANGLER_POTTERY_SHERD: 50
+    ARCHER_POTTERY_SHERD: 50
+    ARMS_UP_POTTERY_SHERD: 50
+    BLADE_POTTERY_SHERD: 50
+    BREWER_POTTERY_SHERD: 50
+    BURN_POTTERY_SHERD: 50
+    DANGER_POTTERY_SHERD: 50
+    EXPLORER_POTTERY_SHERD: 50
+    FRIEND_POTTERY_SHERD: 50
+    HEART_POTTERY_SHERD: 50
+    SNORT_POTTERY_SHERD: 50
+    SKULL_POTTERY_SHERD: 50
+    PRIZE_POTTERY_SHERD: 50
+    PLENTY_POTTERY_SHERD: 50
+    MOURNER_POTTERY_SHERD: 50
+    MINER_POTTERY_SHERD: 50
+    HOWL_POTTERY_SHERD: 50
+    HEARTBREAK_POTTERY_SHERD: 50
+
+special_perks: []
+
+commands: []
+
+messages:
+  - '<lang.skill-level-up-digging>'
+
+leveling_perks:
+  digging_diggingdrops_add: 0.01
+  digging_diggingspeedbonus_add: 0.005
+
+starting_coordinates: '2,8'
+
+perks:
+  digging_perk_1:
+    icon: WOODEN_SHOVEL
+    coords: "2,8"
+    name: "<lang.digging_perk_1_name>"
+    description: "<lang.digging_perk_1_description>"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      digging_diggingspeedbonus_add: 0.3
+      digging_blockexperiencerate_add: 0.1
+    messages:
+      - "<lang.digging_perk_1_messages>"
+    custom_model_data_unlockable: -1
+    custom_model_data_unlocked: -1
+    custom_model_data_visible: -1
+  digging_perk_2:
+    icon: STONE_SHOVEL
+    coords: "2,6"
+    name: "<lang.digging_perk_2_name>"
+    description: "<lang.digging_perk_2_description>"
+    cost: 1
+    hidden: false
+    required_lv: 20
+    perk_rewards:
+      digging_diggingluck_add: 3
+      digging_blockexperiencerate_add: 0.2
+    messages:
+      - "<lang.digging_perk_2_messages>"
+    requireperk_all:
+      - digging_perk_1
+    connection_line:
+      '1':
+        position: '2,7'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  digging_perk_3:
+    icon: GOLDEN_SHOVEL
+    coords: "2,4"
+    name: "<lang.digging_perk_3_name>"
+    description: "<lang.digging_perk_3_description>"
+    cost: 1
+    hidden: false
+    required_lv: 40
+    perk_rewards:
+      recipes_unlock:
+        - craft_podzol
+        - craft_mycelium
+        - craft_flint
+        - craft_clay
+        - craft_mud
+        - craft_concrete_white
+        - craft_concrete_orange
+        - craft_concrete_magenta
+        - craft_concrete_light_blue
+        - craft_concrete_yellow
+        - craft_concrete_lime
+        - craft_concrete_pink
+        - craft_concrete_grey
+        - craft_concrete_light_grey
+        - craft_concrete_cyan
+        - craft_concrete_purple
+        - craft_concrete_blue
+        - craft_concrete_brown
+        - craft_concrete_green
+        - craft_concrete_red
+        - craft_concrete_black
+    messages:
+      - "<lang.digging_perk_3_messages>"
+    requireperk_all:
+      - digging_perk_2
+    connection_line:
+      '1':
+        position: '2,5'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  digging_perk_a1:
+    icon: FEATHER
+    coords: "0,3"
+    name: "<lang.digging_perk_a1_name>"
+    description: "<lang.digging_perk_a1_description>"
+    cost: 1
+    hidden: false
+    required_lv: 60
+    perk_rewards:
+      digging_archaeologyrepeatchance_add: 0.2
+      digging_archaeologyluck_add: 3
+    messages:
+      - "<lang.digging_perk_a1_messages>"
+    requireperk_all:
+      - digging_perk_3
+    version_at_least: MINECRAFT_1_20
+    connection_line:
+      '1':
+        position: '1,4'
+        locked: GRAY_DYE:1172708
+        unlockable: ORANGE_DYE:1172808
+        unlocked: LIME_DYE:1172908
+      '2':
+        position: '0,4'
+        locked: GRAY_DYE:1172716
+        unlockable: ORANGE_DYE:1172816
+        unlocked: LIME_DYE:1172916
+  digging_perk_a2:
+    icon: CHEST
+    coords: "1,1"
+    name: "<lang.digging_perk_a2_name>"
+    description: "<lang.digging_perk_a2_description>"
+    cost: 1
+    hidden: false
+    required_lv: 80
+    perk_rewards:
+      digging_archaeologyrepeatchance_add: 0.3
+      digging_archaeologysandgenerationchance_add: 0.0001
+      digging_archaeologysandnearstructuregenerationchance_add: 0.001
+      digging_archaeologygravelgenerationchance_add: 0.0001
+      digging_archaeologygravelnearstructuregenerationchance_add: 0.001
+    messages:
+      - "<lang.digging_perk_a2_messages>"
+    requireperk_all:
+      - digging_perk_a1
+    version_at_least: MINECRAFT_1_20
+    connection_line:
+      '1':
+        position: '0,1'
+        locked: GRAY_DYE:1172713
+        unlockable: ORANGE_DYE:1172813
+        unlocked: LIME_DYE:1172913
+      '2':
+        position: '0,2'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+  digging_perk_b1:
+    icon: IRON_SHOVEL
+    coords: "4,3"
+    name: "<lang.digging_perk_b1_name>"
+    description: "<lang.digging_perk_b1_description>"
+    cost: 1
+    hidden: false
+    required_lv: 60
+    perk_rewards:
+      digging_diggingspeedbonus_add: 0.5
+    messages:
+      - "<lang.digging_perk_b1_messages>"
+    requireperk_all:
+      - digging_perk_3
+    connection_line:
+      '1':
+        position: '3,4'
+        locked: GRAY_DYE:1172709
+        unlockable: ORANGE_DYE:1172809
+        unlocked: LIME_DYE:1172909
+      '2':
+        position: '4,4'
+        locked: GRAY_DYE:1172718
+        unlockable: ORANGE_DYE:1172818
+        unlocked: LIME_DYE:1172918
+  digging_perk_b2:
+    icon: DIAMOND_SHOVEL
+    coords: "3,1"
+    name: "<lang.digging_perk_b2_name>"
+    description: "<lang.digging_perk_b2_description>"
+    cost: 1
+    hidden: false
+    required_lv: 80
+    perk_rewards:
+      digging_diggingluck_add: 3
+    messages:
+      - "<lang.digging_perk_b2_messages>"
+    requireperk_all:
+      - digging_perk_b1
+    connection_line:
+      '1':
+        position: '4,1'
+        locked: GRAY_DYE:1172715
+        unlockable: ORANGE_DYE:1172815
+        unlocked: LIME_DYE:1172915
+      '2':
+        position: '4,2'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+  digging_perk_4:
+    icon: NETHERITE_SHOVEL
+    coords: "2,0"
+    name: "<lang.digging_perk_4_name>"
+    description: "<lang.digging_perk_4_description>"
+    cost: 1
+    hidden: false
+    required_lv: 100
+    perk_rewards:
+      digging_diggingluck_add: 3
+    messages:
+      - "<lang.digging_perk_4_messages>"
+    requireperk_one:
+      - digging_perk_a2
+      - digging_perk_b2
+    connection_line:
+      '1':
+        position: '1,0'
+        locked: GRAY_DYE:1172703
+        unlockable: ORANGE_DYE:1172803
+        unlocked: LIME_DYE:1172903
+      '2':
+        position: '3,0'
+        locked: GRAY_DYE:1172705
+        unlockable: ORANGE_DYE:1172805
+        unlocked: LIME_DYE:1172905
+  digging_perk_combo:
+    icon: IRON_PICKAXE
+    coords: "2,2"
+    name: "<lang.digging_perk_combo_name>"
+    description: "<lang.digging_perk_combo_description>"
+    cost: 1
+    hidden: false
+    required_lv: 50
+    perk_rewards:
+      block_conversions_unlock:
+        - mossify_cobble
+        - mossify_stone
+        - grow_grass
+        - mossify_bricks
+        - damage_bricks
+        - damage_cracked_bricks
+        - damage_stone
+        - damage_cobble
+        - damage_polished_andesite
+        - damage_polished_granite
+        - damage_polished_diorite
+        - damage_polished_blackstone
+        - damage_polished_basalt
+        - damage_end_stone_bricks
+        - damage_blackstone_bricks
+        - melt_netherrack
+        - melt_sand
+        - melt_raw_iron_from
+        - melt_raw_gold_from
+        - melt_raw_copper_from
+        - melt_quartz_from
+        - melt_clay
+    messages:
+      - "<lang.digging_perk_combo_messages>"
+    requireperk_one:
+      - digging_perk_2
+    other_levels_required:
+      - MINING:50
+  digging_perk_ng1:
+    icon: TOTEM_OF_UNDYING
+    coords: "2,9"
+    name: "<lang.digging_perk_ng1_name>"
+    description: "<lang.digging_perk_ng1_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_digging: 0
+      p:digging_newgameplus_add: 1
+      p:digging_diggingdrops_add: 0.3
+      p:digging_diggingluck_add: 3
+      p:digging_diggingspeedbonus_add: 0.25
+      p:digging_diggingexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - digging_perk_ng1
+    messages:
+      - "<lang.digging_perk_ng1_messages>"
+  digging_perk_ng2:
+    icon: TOTEM_OF_UNDYING
+    coords: "2,9"
+    name: "<lang.digging_perk_ng2_name>"
+    description: "<lang.digging_perk_ng2_description>"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - digging_perk_ng1
+    perk_rewards:
+      reset_skill_digging: 0
+      p:digging_newgameplus_add: 1
+      p:digging_diggingdrops_add: 0.3
+      p:digging_diggingluck_add: 3
+      p:digging_diggingspeedbonus_add: 0.25
+      p:digging_diggingexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - digging_perk_ng1
+        - digging_perk_ng2
+    messages:
+      - "<lang.digging_perk_ng2_messages>"

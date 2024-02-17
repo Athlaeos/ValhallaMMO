@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="minecraft" name="Minecraft">
+      <configuration>
+        <autoDetectTypes>
+          <platformType>BUKKIT</platformType>
+          <platformType>SPIGOT</platformType>
+        </autoDetectTypes>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_X">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-transport:4.1.82.Final" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-common:4.1.82.Final" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-buffer:4.1.82.Final" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-resolver:4.1.82.Final" level="project" />
+  </component>
+</module>

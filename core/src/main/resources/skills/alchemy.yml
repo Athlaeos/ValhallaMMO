@@ -1,0 +1,102 @@
+display_name: '<lang.skill-alchemy-displayname>'
+icon: BREWING_STAND
+icon_data: 3510001
+description: '<lang.skill-alchemy-description>'
+
+levelbar_title: '<lang.skill-alchemy-level-bar>'
+levelbar_color: PURPLE # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
+levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID
+
+transmutation_liquid_flash: true
+transmutation_sound: BLOCK_ENCHANTMENT_TABLE_USE
+transmutation_name: '<lang.transmutation_potion>'
+transmutation_lore:
+  - '<lang.transmutation_potion_lore>'
+
+# If true, players are able to instantly empty potions when clicking them on a cauldron
+quick_empty_potions: true
+
+# The item types which can be combined to merge potion effects. Should generally only be potions, but heck, if you wanna make
+# food items applicable you can do that too. In any case, the two items combined must be of the same type.
+valid_combining_items:
+  - POTION
+  - SPLASH_POTION
+  - LINGERING_POTION
+
+combined_potion_display_name: '<lang.combined_potion_name>'
+
+# Treatments
+quality_lore: # Cosmetic quality placed on the item as lore once its quality rating exceeds one of these.
+  # If left empty, they won't appear.
+  0: '<lang.alchemy-quality-rancid>'
+  30: '<lang.alchemy-quality-tainted>'
+  60: '<lang.alchemy-quality-dirty>'
+  90: '<lang.alchemy-quality-cloudy>'
+  120: '<lang.alchemy-quality-clear>'
+  150: '<lang.alchemy-quality-refined>'
+  200: '<lang.alchemy-quality-pure>'
+  300: '<lang.alchemy-quality-shimmering>'
+
+effects_inverted: # Specific for the potion modifier "invert effects", essentially the equivalent to using a fermented
+  # spider eye to invert a potion's effects. If this modifier is applied to a potion effect, these potion effects are inverted.
+  HEAL:
+    inverted_effect: HARM
+    color: '#220045'
+    duration: 1
+    amplifier: 0
+  SPEED:
+    inverted_effect: SLOW
+    color: '#6a869e'
+    duration: 1800
+    amplifier: 0
+  NIGHT_VISION:
+    inverted_effect: INVISIBILITY
+    color: '#78d6bd'
+    duration: 3600
+    amplifier: 0
+  POISON:
+    inverted_effect: HARM
+    color: '#220045'
+    duration: 1
+    amplifier: 0
+  FIRE_RESISTANCE:
+    inverted_effect: SLOW
+    color: '#6a869e'
+    duration: 1800
+    amplifier: 0
+  INCREASE_DAMAGE:
+    inverted_effect: WEAKNESS
+    color: '#86aac2'
+    duration: 1800
+    amplifier: 0
+
+# These treatments include TEMPERING, SHARPENING_FINE, ENGRAVING, and LEATHER_BINDING. As well as ARMOR_FITTING for armor,
+# WAX_COATING for wooden and stone tools,
+tag_lore: # The treatment lores displayed on the item if hide_treatment_lore is false. If one is left empty, it does not appear.
+  1: '<lang.alchemy-treatment-concentrated>'
+  2: '<lang.alchemy-treatment-diluted>'
+  3: '<lang.alchemy-treatment-filtered>'
+  4: '<lang.alchemy-treatment-empowered>'
+  5: '<lang.alchemy-treatment-imbued>'
+  6: '<lang.alchemy-treatment-enchanted>'
+  7: '<lang.alchemy-treatment-polluted>'
+
+# Error messages that are notified to the player if their item has a tag it's not allowed to have
+tag_error_disallowed:
+  1: '<lang.alchemy-treatment-disallowed-concentrated>'
+  2: '<lang.alchemy-treatment-disallowed-diluted>'
+  3: '<lang.alchemy-treatment-disallowed-filtered>'
+  4: '<lang.alchemy-treatment-disallowed-empowered>'
+  5: '<lang.alchemy-treatment-disallowed-imbued>'
+  6: '<lang.alchemy-treatment-disallowed-enchanted>'
+  7: '<lang.alchemy-treatment-disallowed-polluted>'
+
+# Error messages that are notified to the player if their item doesn't have a tag it needs to have
+tag_error_required:
+  1: '<lang.alchemy-treatment-required-concentrated>'
+  2: '<lang.alchemy-treatment-required-diluted>'
+  3: '<lang.alchemy-treatment-required-filtered>'
+  4: '<lang.alchemy-treatment-required-empowered>'
+  5: '<lang.alchemy-treatment-required-imbued>'
+  6: '<lang.alchemy-treatment-required-enchanted>'
+  7: '<lang.alchemy-treatment-required-polluted>'

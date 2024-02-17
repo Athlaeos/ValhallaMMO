@@ -1,0 +1,161 @@
+enabled: true # If false, mobs will not level or get stats according to the surrounding player power levels
+monsters_only: true # If true, only monsters can receive levels and stats. If false, animals can get them also (kinda weird though, not recommended)
+
+# Calculates how much the player difficulty level of the area is. By default, a singular player will have a regional difficult the same as
+# their power level, but with multiple players it will be a bit higher than the average.
+# Example, a level 10 and 50 player: their true average would be 30, but with the formula 60*1.2-0.2 = 72, 72/2 = 36 their area level will be about 36
+# If undefined, the true average will be used.
+regional_player_level: "(%combined_player_level% * 1.2 - 0.2) / %nearby_player_count%"
+# Other valid placeholders are %min_player_level% for the lowest surrounding player level, and %max_player_level% for the higher surrounding player level
+# rand() cannot be used here
+
+wolf_leveling: true # If true, wolves level along with players which buffs their stats
+default_wolf_leveling: "%level%" # Wolf scalings cannot use the rand() function
+
+default: # Mob stats for all entities. Mobs specified in the `entity` section can also be given stats, which overwrite the default stats when present.
+  # For example, zombies receive -100% radiant resistance. This overwrites the default 100% radiant resistance.
+  # By default mobs get 50% crit damage, this is added to the zombie's stats unless the zombie has crit damage specified also.
+  level: "%level% + rand(-5,5)" # %level% here refers to the average player power level at the location. Elsewhere it refers to the entity's level
+  exp_orb_bonus: "0.02 * %level%" # Exp orb buffs
+  RADIANT_RESISTANCE: 1 # Almost all mobs aren't undead, so they shouldn't take radiant damage
+  HEALTH_MULTIPLIER_BONUS: "-0.3 + (0.033 * %level%)" # Lowers mob hp by 30% initially, increases up to quadruple hp at level 100
+  WEIGHTLESS_ARMOR: "0.2 * %level%" # Gives mobs up to 20 base armor at level 100
+  DAMAGE_DEALT: "-0.3 + (0.023 * %level%)" # Lowers mob damage by 30% initially, increases up to triple damage at level 100
+  ARMOR_FRACTION_IGNORED: "0.005 * %level%" # Gives mobs up to 50% armor penetration at level 100
+  CRIT_CHANCE: "0.005 * %level%" # Gives mobs up to 50% crit chance at level 100
+  CRIT_DAMAGE: "0.5" # Gives mobs +50% crit damage
+
+entity:
+  ZOMBIE: # All undead monsters are configured to take double radiant damage
+    RADIANT_RESISTANCE: -1 # Zombies take double radiant damage
+    FIRE_RESISTANCE: -0.5 # Zombies take +50% fire damage
+    NECROTIC_RESISTANCE: 1 # Zombies are immune to necrotic damage
+    POISON_RESISTANCE: 0.5 # Zombies take -50% poison damage
+    BLEED_RESISTANCE: 0.5 # Zombies take -50% bleeding damage
+  DROWNED:
+    RADIANT_RESISTANCE: -1
+    NECROTIC_RESISTANCE: 1
+    POISON_RESISTANCE: 0.5
+    BLEED_RESISTANCE: 0.5
+  HUSK:
+    RADIANT_RESISTANCE: -1
+    FIRE_RESISTANCE: 0.3
+    NECROTIC_RESISTANCE: 1
+    POISON_RESISTANCE: 0.5
+    BLEED_RESISTANCE: 0.5
+  ZOMBIE_HORSE:
+    RADIANT_RESISTANCE: -1
+    FIRE_RESISTANCE: -0.5
+    NECROTIC_RESISTANCE: 1
+    POISON_RESISTANCE: 0.5
+    BLEED_RESISTANCE: 0.5
+  ZOMBIE_VILLAGER:
+    RADIANT_RESISTANCE: -1
+    FIRE_RESISTANCE: -0.5
+    NECROTIC_RESISTANCE: 1
+    POISON_RESISTANCE: 0.5
+    BLEED_RESISTANCE: 0.5
+  ZOMBIFIED_PIGLIN:
+    RADIANT_RESISTANCE: -1
+    FIRE_RESISTANCE: 1
+    NECROTIC_RESISTANCE: 1
+    POISON_RESISTANCE: 0.5
+    BLEED_RESISTANCE: 0.5
+  ZOGLIN:
+    RADIANT_RESISTANCE: -1
+    FIRE_RESISTANCE: -0.5
+    NECROTIC_RESISTANCE: 1
+    POISON_RESISTANCE: 0.5
+    BLEED_RESISTANCE: 0.5
+  SKELETON:
+    RADIANT_RESISTANCE: -1
+    FIRE_RESISTANCE: -1
+    MELEE_RESISTANCE: -0.5
+    EXPLOSION_RESISTANCE: -1
+    FALLING_RESISTANCE: -1
+    NECROTIC_RESISTANCE: 1
+    POISON_RESISTANCE: 1
+    BLEED_RESISTANCE: 1
+  STRAY:
+    RADIANT_RESISTANCE: -1
+    FIRE_RESISTANCE: -1
+    MELEE_RESISTANCE: -0.5
+    EXPLOSION_RESISTANCE: -1
+    FALLING_RESISTANCE: -1
+    FREEZING_RESISTANCE: 1
+    NECROTIC_RESISTANCE: 1
+    POISON_RESISTANCE: 1
+    BLEED_RESISTANCE: 1
+  WITHER_SKELETON:
+    RADIANT_RESISTANCE: -1
+    FIRE_RESISTANCE: 1
+    NECROTIC_RESISTANCE: 1
+    POISON_RESISTANCE: 1
+    BLEED_RESISTANCE: 1
+  SKELETON_HORSE:
+    RADIANT_RESISTANCE: -1
+    FIRE_RESISTANCE: -1
+    MELEE_RESISTANCE: -0.5
+    EXPLOSION_RESISTANCE: -1
+    FALLING_RESISTANCE: -1
+    NECROTIC_RESISTANCE: 1
+    POISON_RESISTANCE: 1
+    BLEED_RESISTANCE: 1
+  PHANTOM:
+    RADIANT_RESISTANCE: -1
+    FIRE_RESISTANCE: -1
+    NECROTIC_RESISTANCE: 1
+  BLAZE:
+    RADIANT_RESISTANCE: 0 # Nether mobs do not receive radiant resistance
+    FIRE_RESISTANCE: 1
+    NECROTIC_RESISTANCE: 0.5
+  GHAST:
+    RADIANT_RESISTANCE: 0
+    NECROTIC_RESISTANCE: 0.5
+  HOGLIN:
+    RADIANT_RESISTANCE: 0
+    NECROTIC_RESISTANCE: 0.5
+  MAGMA_CUBE:
+    RADIANT_RESISTANCE: 0
+    NECROTIC_RESISTANCE: 0.5
+  PIGLIN:
+    RADIANT_RESISTANCE: 0
+    NECROTIC_RESISTANCE: 0.5
+  PIGLIN_BRUTE:
+    RADIANT_RESISTANCE: 0
+    NECROTIC_RESISTANCE: 0.5
+  CAVE_SPIDER:
+    POISON_RESISTANCE: 1
+    MELEE_RESISTANCE: -0.5
+  SPIDER:
+    POISON_RESISTANCE: 1
+  # (mini)Bosses do not suffer from reduced hp at level 0 and get increased player level scaling
+  ENDER_DRAGON:
+    level: "2 * %level%"
+    HEALTH_MULTIPLIER_BONUS: "(0.015 * %level%)" # Ender dragons gain quadruple hp at lv200
+    PROJECTILE_RESISTANCE: 0.5
+    FIRE_RESISTANCE: 1
+    MAGIC_RESISTANCE: 0.7
+    POISON_RESISTANCE: 0.7
+    ARMOR_FRACTION_IGNORED: 0.5
+  WARDEN:
+    level: "1.25 * %level%"
+    HEALTH_MULTIPLIER_BONUS: "(0.008 * %level%)" # Wardens gain +50% hp at lv125
+    PROJECTILE_RESISTANCE: 0.5
+    NECROTIC_RESISTANCE: 0.5
+    ARMOR_FRACTION_IGNORED: 0.75
+  WITHER:
+    level: "1.25 * %level%"
+    HEALTH_MULTIPLIER_BONUS: "(0.016 * %level%)" # Withers gain triple hp at lv125
+    PROJECTILE_RESISTANCE: 0.5
+    RADIANT_RESISTANCE: -1
+    FIRE_RESISTANCE: 1
+    NECROTIC_RESISTANCE: 1
+    POISON_RESISTANCE: 1
+    BLEED_RESISTANCE: 1
+    EXPLOSION_RESISTANCE: 1
+    ARMOR_FRACTION_IGNORED: 0.5
+  ELDER_GUARDIAN:
+    level: "1.25 * %level%"
+    HEALTH_MULTIPLIER_BONUS: "(0.008 * %level%)" # Elder Guardians gain double hp at lv125
+    ARMOR_FRACTION_IGNORED: 0.5
