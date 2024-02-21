@@ -465,9 +465,17 @@ public class LootListener implements Listener {
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
         if (!loottableEvent.isCancelled()){
             switch (loottableEvent.getPreservationType()){
-                case CLEAR -> l.setLootTable(null);
+                case CLEAR -> {
+                    l.setLootTable(null);
+                    b.getState().update();
+                    c.getInventory().clear();
+                }
                 case CLEAR_UNLESS_EMPTY -> {
-                    if (!loottableEvent.getDrops().isEmpty()) l.setLootTable(null);
+                    if (!loottableEvent.getDrops().isEmpty()) {
+                        l.setLootTable(null);
+                        b.getState().update();
+                        c.getInventory().clear();
+                    }
                 }
                 case KEEP -> {
                     if (loottableEvent.getDrops().isEmpty()) return;

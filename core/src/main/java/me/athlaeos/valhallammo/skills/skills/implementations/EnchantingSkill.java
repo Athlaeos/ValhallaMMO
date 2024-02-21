@@ -206,6 +206,7 @@ public class EnchantingSkill extends Skill implements Listener {
             EnchantingItemPropertyManager.scaleEnchantmentOffers(skill, e.getOffers(), chance);
             EnchantingProfile profile = ProfileCache.getOrCache(enchanter, EnchantingProfile.class);
             for (EnchantmentOffer offer : e.getOffers()){
+                if (offer == null) continue;
                 int enchantmentBonus = profile.getEnchantmentBonus(offer.getEnchantment()) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(offer.getEnchantment()));
                 offer.setEnchantmentLevel(offer.getEnchantmentLevel() + enchantmentBonus);
             }
