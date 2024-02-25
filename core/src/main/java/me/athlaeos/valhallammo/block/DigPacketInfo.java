@@ -93,7 +93,7 @@ public class DigPacketInfo {
                 ValhallaMMO.getNms().toolPower(tool.getItem(), hardnessTranslations.get(b.getType())) :
                 ValhallaMMO.getNms().toolPower(tool == null ? null : tool.getItem(), b);
 
-        boolean canHarvest = BlockUtils.hasDrops(b, digger);
+        boolean canHarvest = BlockUtils.hasDrops(b, digger, tool == null ? null : tool.getItem());
         float baseMultiplier = 1;
         if (toolStrength > 1){
             // preferred tool for block

@@ -9,11 +9,9 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfil
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,7 +52,7 @@ public class BlockDigProcess {
             MiningProfile profile = ProfileCache.getOrCache(by, MiningProfile.class);
             if (profile.getEmptyHandTool() != null) tool = profile.getEmptyHandTool();
         }
-        if (tool != null && !BlockUtils.hasDrops(block, by) && ValhallaMMO.getNms().toolPower(tool.getItem(), block) > 1)
+        if (tool != null && !BlockUtils.hasDrops(block, by, tool.getItem()) && ValhallaMMO.getNms().toolPower(tool.getItem(), block) > 1)
             LootListener.prepareBlockDrops(block, new ArrayList<>(block.getDrops(tool.get())));
         ValhallaMMO.getNms().breakBlock(by, block);
         CustomBreakSpeedListener.getBlockDigProcesses().remove(block.getLocation());

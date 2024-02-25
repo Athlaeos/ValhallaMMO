@@ -1,5 +1,4 @@
-starting_perks:
-  woodcutting_woodcuttingspeedbonus_add: -0.3
+starting_perks: []
 
 experience: # Everything about leveling and experience progression for Landscaping
   max_level: 100 # Max level for landscaping, players can still gain exp after reaching 200

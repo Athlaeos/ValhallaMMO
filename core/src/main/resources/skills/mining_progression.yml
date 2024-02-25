@@ -1,6 +1,5 @@
 starting_perks: 
   mining_miningdrops_add: -0.3
-  mining_miningspeedbonus_add: -0.3
 
 experience: 
   max_level: 100 

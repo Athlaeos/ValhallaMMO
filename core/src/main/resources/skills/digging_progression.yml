@@ -1,5 +1,4 @@
-starting_perks:
-  digging_diggingspeedbonus_add: -0.3
+starting_perks: []
 
 experience:
   max_level: 100

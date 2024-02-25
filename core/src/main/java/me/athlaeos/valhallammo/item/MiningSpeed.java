@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -175,6 +176,7 @@ public class MiningSpeed {
     }
 
     public static float getHardness(ItemMeta m, Block block){
+        if (BlockUtils.hasCustomHardness(block)) return BlockUtils.getHardness(block);
         Map<Material, Material> hardnessTranslations = getHardnessTranslations(m);
         if (hardnessTranslations.containsKey(block.getType())) return hardnessTranslations.get(block.getType()).getHardness();
         else return BlockUtils.getHardness(block);

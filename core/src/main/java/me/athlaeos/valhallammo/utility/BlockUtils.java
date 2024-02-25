@@ -38,6 +38,11 @@ public class BlockUtils {
         return customBlockData.getOrDefault(CUSTOM_HARDNESS, PersistentDataType.FLOAT, b.getType().getHardness());
     }
 
+    public static boolean hasCustomHardness(Block b){
+        PersistentDataContainer customBlockData = new CustomBlockData(b, ValhallaMMO.getInstance());
+        return customBlockData.has(CUSTOM_HARDNESS, PersistentDataType.FLOAT);
+    }
+
     public static void removeCustomHardness(Block b){
         PersistentDataContainer customBlockData = new CustomBlockData(b, ValhallaMMO.getInstance());
         customBlockData.remove(CUSTOM_HARDNESS);
@@ -216,7 +221,7 @@ public class BlockUtils {
     }
 
     private static final ItemStack stic = new ItemStack(Material.STICK);
-    public static boolean hasDrops(Block b, Entity e){
-        return !b.getDrops(stic, e).isEmpty();
+    public static boolean hasDrops(Block b, Entity e, ItemStack item){
+        return !b.getDrops(item == null ? stic : item, e).isEmpty();
     }
 }
