@@ -12,14 +12,3 @@ exp_conversion_farming: 0.9 # The following fraction of farming exp will go to t
 exp_conversion_woodcutting: 0.7 # The following fraction of landscaping exp will go to the new woodcutting skill
 exp_conversion_digging: 0.7 # The following fraction of landscaping exp will go to the new digging skill
 
-# This is a tricky one
-# Items in alpha are much different from beta
-# Having item conversion be enabled will attempt to convert all crafted items with a smithing quality by
-# matching them to a recipe currently registered, and also by custom model data if present.
-# When an item matches a recipe's output, the modifiers of said recipe (minus quality modifiers) will be executed on that item
-# THIS WILL CHANGE ITS STATS, and likely reduce some as alpha scalings are a bit stronger than beta's.
-# Any alpha data is then removed off of the item
-item_conversion: false
-item_conversion_attributes: false # If true, any excess attributes that weren't present on the item before will be added anyway. If false, they will be removed
-
-

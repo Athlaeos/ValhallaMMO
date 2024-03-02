@@ -9,13 +9,13 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfil
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 
 public class BlockDigProcess {
     private final Block block;
@@ -32,7 +32,7 @@ public class BlockDigProcess {
         if (health <= 0F) {
             // if block is not forcefully damaged and the damage was not enough to instantly break the block,
             // a cooldown is applied in which the player can not break the next block
-            if (!force && damage <= 1F && CustomBreakSpeedListener.isVanillaBlockBreakDelay()) Timer.setCooldown(by.getUniqueId(), 300, "delay_block_breaking_allowed");
+            if (!force && damage < 1F && CustomBreakSpeedListener.isVanillaBlockBreakDelay()) Timer.setCooldown(by.getUniqueId(), 300, "delay_block_breaking_allowed");
             ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
                 breakBlockInstantly(by, block)
             );
@@ -47,21 +47,41 @@ public class BlockDigProcess {
     }
 
     public static void breakBlockInstantly(Player by, Block block){
-        ItemBuilder tool = null;
-        if (ItemUtils.isEmpty(by.getInventory().getItemInMainHand())) {
-            MiningProfile profile = ProfileCache.getOrCache(by, MiningProfile.class);
-            if (profile.getEmptyHandTool() != null) tool = profile.getEmptyHandTool();
-        }
-        if (tool != null && !BlockUtils.hasDrops(block, by, tool.getItem()) && ValhallaMMO.getNms().toolPower(tool.getItem(), block) > 1)
-            LootListener.prepareBlockDrops(block, new ArrayList<>(block.getDrops(tool.get())));
-        ValhallaMMO.getNms().breakBlock(by, block);
-        CustomBreakSpeedListener.getBlockDigProcesses().remove(block.getLocation());
-        for (UUID uuid : CustomBreakSpeedListener.getTotalMiningBlocks().getOrDefault(block.getLocation(), new HashSet<>())) CustomBreakSpeedListener.getMiningPlayers().remove(uuid);
-        CustomBreakSpeedListener.getTotalMiningBlocks().remove(block.getLocation());
-        DigPacketInfo.resetBlockSpecificCache(by.getUniqueId());
-        BlockUtils.removeCustomHardness(block);
-        sendCracks(block, -1);
+        blocksToBreakInstantly.put(by.getUniqueId(), block.getLocation());
+        if (instantBlockBreakerTask != null && !done) return;
+        done = false;
+        instantBlockBreakerTask = ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+            blocksToBreakInstantly.forEach((u, l) -> {
+                Player p = ValhallaMMO.getInstance().getServer().getPlayer(u);
+                if (p == null || !p.isOnline()){
+                    blocksToBreakInstantly.remove(u);
+                    return;
+                }
+                Block b = l.getBlock();
+
+                ItemBuilder tool = null;
+                if (ItemUtils.isEmpty(p.getInventory().getItemInMainHand())) {
+                    MiningProfile profile = ProfileCache.getOrCache(p, MiningProfile.class);
+                    if (profile.getEmptyHandTool() != null) tool = profile.getEmptyHandTool();
+                }
+                if (tool != null && !BlockUtils.hasDrops(b, p, tool.getItem()) && ValhallaMMO.getNms().toolPower(tool.getItem(), b) > 1)
+                    LootListener.prepareBlockDrops(b, new ArrayList<>(b.getDrops(tool.get())));
+                ValhallaMMO.getNms().breakBlock(p, b);
+                CustomBreakSpeedListener.getBlockDigProcesses().remove(b.getLocation());
+                for (UUID uuid : CustomBreakSpeedListener.getTotalMiningBlocks().getOrDefault(b.getLocation(), new HashSet<>())) CustomBreakSpeedListener.getMiningPlayers().remove(uuid);
+                CustomBreakSpeedListener.getTotalMiningBlocks().remove(b.getLocation());
+                DigPacketInfo.resetBlockSpecificCache(p.getUniqueId());
+                BlockUtils.removeCustomHardness(b);
+                sendCracks(b, -1);
+            });
+            blocksToBreakInstantly.clear();
+            done = true;
+        });
     }
+
+    private static boolean done = false;
+    private static BukkitTask instantBlockBreakerTask = null;
+    private static final Map<UUID, Location> blocksToBreakInstantly = new HashMap<>();
 
     public int getTicksSinceUpdate() {
         return ticksSinceUpdate;

@@ -31,7 +31,7 @@ public class ResourcePack {
             if (ResourcePack.generate()){
                 ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new ResourcePackListener(), ValhallaMMO.getInstance());
             }
-        } else {
+        } else if (!ValhallaMMO.isResourcePackConfigForced()) {
             ValhallaMMO.logWarning("No valid host for the resource pack configured! You may ignore this warning if you've not set up the resource pack.");
         }
     }

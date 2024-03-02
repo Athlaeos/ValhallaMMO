@@ -146,7 +146,7 @@ public class DigPacketInfo {
 
         if (canHarvest) damage /= 30;
         else damage /= 100;
-        return Math.max(0, Math.min(1, damage));
+        return Math.max(0, damage);
     }
 
     private static boolean isInWater(Player p){

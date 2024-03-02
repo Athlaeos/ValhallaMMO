@@ -28,8 +28,6 @@ public class AlphaToBetaConversionHandler implements Listener {
     private static final double expConversionFarming = ConfigManager.getConfig("alpha_conversion.yml").get().getDouble("exp_conversion_farming");
     private static final double expConversionWoodcutting = ConfigManager.getConfig("alpha_conversion.yml").get().getDouble("exp_conversion_woodcutting");
     private static final double expConversionDigging = ConfigManager.getConfig("alpha_conversion.yml").get().getDouble("exp_conversion_digging");
-    private static final boolean convertItems = ConfigManager.getConfig("alpha_conversion.yml").get().getBoolean("item_conversion");
-    private static final boolean convertUnusualAttributes = ConfigManager.getConfig("alpha_conversion.yml").get().getBoolean("item_conversion_attributes");
     private final AlphaDatabaseAdapter adapter = new AlphaDatabaseAdapter(new DatabaseConnection(), new AlphaPDCAdapter());
 
     private final Map<String, NamespacedKey> alphaKeyMappings = new HashMap<>();

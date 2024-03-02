@@ -11,13 +11,12 @@ leaderboards:
   power:
     display_name: "<lang.leaderboard_power_level>" # The display name of the leaderboard when displayed in chat from the /valtop command
     entry_display: "&7#&c%rank% &8: &7%prefix%%player% &7|&cNG %main_stat% &7- &cLV %level%&7| &8(%exp_total% EXP)" # The format for each entry
-    placeholder_display: "&cNG%main_stat% LV%level% &7%player%"
+    placeholder_display: "&cLV%level% &7%player%"
     profile: PowerProfile # The profile from which to gather the given stat(s)
     lower_limit: 0 # The minimum of the main_stat to achieve before you're allowed on the leaderboard (in this example, players who haven't reached lv1 yet won't appear)
-    main_stat: newGamePlus # The main stat player's ranks will be based off. 
+    main_stat: exp_total # The main stat player's ranks will be based off.
     extra_stats: # (optional) Additional stats you can place in the entry_display property, names should not match other placeholders
-      exp_total: exp_total # In this case we're wanting to get another stat, the total exp, and we name it 'exp_total' so we can use it as %exp_total%
-      level: level 
+      level: level # In this case we're wanting to get another stat, the level, and we name it 'level' so we can use it as %level%
   smithing:
     display_name: "<lang.leaderboard_smithing_level>"
     entry_display: "&7#&e%rank% &8: &7%prefix%%player% &7|&eNG %main_stat% &7- &eLV %level%&7| &8(%exp_total% EXP)"

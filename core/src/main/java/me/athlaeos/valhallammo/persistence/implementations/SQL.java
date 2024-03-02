@@ -89,7 +89,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
 
     @Override
     public void setPersistentProfile(Player p, Profile profile, Class<? extends Profile> type) {
-        Map<Class<? extends Profile>, Profile> profiles = persistentProfiles.get(p.getUniqueId());
+        Map<Class<? extends Profile>, Profile> profiles = persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>());
         profiles.put(type, profile);
         persistentProfiles.put(p.getUniqueId(), profiles);
         ProfilePersistence.scheduleProfilePersisting(p, type);
@@ -97,7 +97,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
 
     @Override
     public void setSkillProfile(Player p, Profile profile, Class<? extends Profile> type) {
-        Map<Class<? extends Profile>, Profile> profiles = skillProfiles.get(p.getUniqueId());
+        Map<Class<? extends Profile>, Profile> profiles = skillProfiles.getOrDefault(p.getUniqueId(), new HashMap<>());
         profiles.put(type, profile);
         skillProfiles.put(p.getUniqueId(), profiles);
     }

@@ -90,35 +90,35 @@ public class CustomBreakSpeedListener implements Listener {
         PrepareBlockBreakEvent event = new PrepareBlockBreakEvent(b, info.getDigger());
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) initialDamage = 0;
-        if (initialDamage > 1){
-            event.getAdditionalBlocks().add(b);
-            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
-                    event.getAdditionalBlocks().forEach(bl -> BlockDigProcess.breakBlockInstantly(info.getDigger(), bl))
-            );
-            return;
+        if (initialDamage >= 1) {
+            BlockDigProcess.breakBlockInstantly(info.getDigger(), b);
+            if (event.getAdditionalBlocks().isEmpty()) return;
+        } else {
+            BlockDigProcess process = blockDigProcesses.get(b.getLocation());
+            if (process == null) {
+                process = new BlockDigProcess(b);
+                blockDigProcesses.put(b.getLocation(), process);
+            }
+            Collection<UUID> playersMining = totalMiningBlocks.getOrDefault(b.getLocation(), new HashSet<>());
+            playersMining.add(info.getDigger().getUniqueId());
+            totalMiningBlocks.put(b.getLocation(), playersMining);
+            process.damage(info.getDigger(), initialDamage);
         }
-
-        BlockDigProcess process = blockDigProcesses.get(b.getLocation());
-        if (process == null) {
-            process = new BlockDigProcess(b);
-            blockDigProcesses.put(b.getLocation(), process);
-        }
-        Collection<UUID> playersMining = totalMiningBlocks.getOrDefault(b.getLocation(), new HashSet<>());
-        playersMining.add(info.getDigger().getUniqueId());
-        totalMiningBlocks.put(b.getLocation(), playersMining);
-        process.damage(info.getDigger(), initialDamage);
 
         for (Block block : event.getAdditionalBlocks()){
             float damage = instantBlockBreaks.contains(b.getLocation()) ? 999 : DigPacketInfo.damage(info.getDigger(), b);
-            BlockDigProcess p = blockDigProcesses.get(block.getLocation());
-            if (p == null) {
-                p = new BlockDigProcess(block);
-                blockDigProcesses.put(block.getLocation(), p);
+            if (damage >= 1) BlockDigProcess.breakBlockInstantly(info.getDigger(), block);
+            else {
+                BlockDigProcess p = blockDigProcesses.get(block.getLocation());
+                if (p == null) {
+                    p = new BlockDigProcess(block);
+                    blockDigProcesses.put(block.getLocation(), p);
+                }
+                Collection<UUID> mP = totalMiningBlocks.getOrDefault(block.getLocation(), new HashSet<>());
+                mP.add(info.getDigger().getUniqueId());
+                totalMiningBlocks.put(block.getLocation(), mP);
+                p.damage(info.getDigger(), damage * 1.01F);
             }
-            Collection<UUID> mP = totalMiningBlocks.getOrDefault(block.getLocation(), new HashSet<>());
-            mP.add(info.getDigger().getUniqueId());
-            totalMiningBlocks.put(block.getLocation(), mP);
-            p.damage(info.getDigger(), damage * 1.01F);
         }
 
         event.getAdditionalBlocks().add(b);

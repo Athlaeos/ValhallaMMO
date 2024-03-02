@@ -271,6 +271,7 @@ perks:
     required_lv: 100
     perk_rewards:
       reset_skill_fishing: 0
+      p:fishing_newgameplus_add: 1
       p:fishing_fishingdrops_add: 0.5
       p:fishing_fishingluck_add: 2.5
       p:fishing_fishingspeedbonus_add: 0.25
@@ -291,6 +292,7 @@ perks:
       - fishing_perk_ng1
     perk_rewards:
       reset_skill_fishing: 0
+      p:fishing_newgameplus_add: 1
       p:fishing_fishingdrops_add: 0.5
       p:fishing_fishingluck_add: 2.5
       p:fishing_fishingspeedbonus_add: 0.25
