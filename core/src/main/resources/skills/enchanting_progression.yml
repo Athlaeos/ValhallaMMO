@@ -7,7 +7,7 @@ experience:
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   max_level: 100
   exp_gain:
-    experience_spent_conversion: 2 # The fraction of spent experience during enchanting that's converted into additional enchanting skill experience
+    experience_spent_conversion: 0.5 # The fraction of spent experience during enchanting that's converted into additional enchanting skill experience
     enchantment_base:
       power: 180
       efficiency: 180

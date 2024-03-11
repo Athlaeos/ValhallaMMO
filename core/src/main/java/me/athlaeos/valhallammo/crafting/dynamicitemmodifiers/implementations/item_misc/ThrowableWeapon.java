@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.throwable_weapon_animations.ThrowableItemStats;
 import me.athlaeos.valhallammo.item.throwable_weapon_animations.ThrowableWeaponAnimationRegistry;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -199,10 +200,10 @@ public class ThrowableWeapon extends DynamicItemModifier {
         try {
             animationType = args[0];
             cooldown = Integer.parseInt(args[1]);
-            damageMultiplier = Double.parseDouble(args[2]);
-            defaultVelocity = Double.parseDouble(args[3]);
-            gravityStrength = Double.parseDouble(args[4]);
-            velocityDamageMultiplier = Double.parseDouble(args[5]);
+            damageMultiplier = StringUtils.parseDouble(args[2]);
+            defaultVelocity = StringUtils.parseDouble(args[3]);
+            gravityStrength = StringUtils.parseDouble(args[4]);
+            velocityDamageMultiplier = StringUtils.parseDouble(args[5]);
             infinity = Boolean.parseBoolean(args[6]);
             returnsNaturally = Boolean.parseBoolean(args[7]);
         } catch (IllegalArgumentException ignored){

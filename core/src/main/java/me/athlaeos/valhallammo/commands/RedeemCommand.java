@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.skills.skills.implementations.PowerSkill;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -53,7 +54,7 @@ public class RedeemCommand implements TabExecutor {
 					profile.setRedeemableLevelTokens(profile.getRedeemableLevelTokens() - amountToRedeem);
 					Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_levels_redeemed"));
 				} else {
-					double amountToRedeem = Math.max(0, Double.parseDouble(args[2]));
+					double amountToRedeem = Math.max(0, StringUtils.parseDouble(args[2]));
 					if (profile.getRedeemableExperiencePoints() < amountToRedeem){
 						Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_insufficient_exp_tokens"));
 						return true;

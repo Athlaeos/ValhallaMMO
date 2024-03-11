@@ -232,6 +232,7 @@ perks:
     perk_rewards:
       heavyarmor_rageunlocked_toggle: 0
       heavyarmor_ragelevel_add: 1
+      heavyarmor_ragethreshold_add: 0.3
       heavyarmor_ragecooldown_add: 12000
     messages:
       - "<lang.heavyarmor_perk_1c_messages>"
@@ -247,6 +248,7 @@ perks:
     required_lv: 90
     perk_rewards:
       heavyarmor_ragelevel_add: 4
+      heavyarmor_ragethreshold_add: 0.2
       heavyarmor_ragecooldown_add: -6000
     messages:
       - "<lang.heavyarmor_perk_2c_messages>"

@@ -317,7 +317,7 @@ public class ItemAttributesRegistry {
                 if (args.length < 2) continue;
                 try {
                     String attribute = args[0];
-                    double value = Double.parseDouble(args[1]);
+                    double value = StringUtils.parseDouble(args[1]);
                     AttributeModifier.Operation operation = args.length > 2 ? AttributeModifier.Operation.valueOf(args[2]) : AttributeModifier.Operation.ADD_NUMBER;
                     boolean hidden = args.length > 3 && args[3].equals("true");
 

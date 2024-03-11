@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.MaterialClass;
 import me.athlaeos.valhallammo.skills.skills.implementations.SmithingSkill;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
@@ -126,7 +127,7 @@ public class SkillExperience extends DynamicItemModifier {
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 1) return "One argument is expected: a double";
         try {
-            amount = Double.parseDouble(args[0]);
+            amount = StringUtils.parseDouble(args[0]);
         } catch (NumberFormatException ignored){
             return "One argument is expected: a double. It was not a number";
         }

@@ -129,7 +129,7 @@ public class ArrowBehaviorIncendiary extends DynamicItemModifier {
         try {
             duration = Integer.parseInt(args[0]);
             radius = Integer.parseInt(args[1]);
-            density = Double.parseDouble(args[2]);
+            density = StringUtils.parseDouble(args[2]);
         } catch (NumberFormatException ignored){
             return "Three arguments are expected: the first and second an integer, the second a double. At least one was not a number";
         }

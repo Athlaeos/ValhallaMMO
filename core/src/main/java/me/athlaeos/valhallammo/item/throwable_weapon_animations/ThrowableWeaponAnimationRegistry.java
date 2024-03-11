@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.item.throwable_weapon_animations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.throwable_weapon_animations.implementations.VerticalSpin;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -55,10 +56,10 @@ public class ThrowableWeaponAnimationRegistry {
         String type = args[0];
         if (!animations.containsKey(type)) return null;
         try {
-            double gravityMultiplier = Double.parseDouble(args[1]);
-            double velocityDamageMultiplier = Double.parseDouble(args[2]);
-            double defaultVelocity = Double.parseDouble(args[3]);
-            double damageMultiplier = Double.parseDouble(args[4]);
+            double gravityMultiplier = StringUtils.parseDouble(args[1]);
+            double velocityDamageMultiplier = StringUtils.parseDouble(args[2]);
+            double defaultVelocity = StringUtils.parseDouble(args[3]);
+            double damageMultiplier = StringUtils.parseDouble(args[4]);
             boolean infinity = Boolean.parseBoolean(args[5]);
             boolean returnsNaturally = Boolean.parseBoolean(args[6]);
             int cooldown = Integer.parseInt(args[7]);

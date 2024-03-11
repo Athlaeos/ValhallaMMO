@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.VaultHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.hooks.VaultTransaction;
 import org.bukkit.Material;
@@ -173,7 +174,7 @@ public class Money extends DynamicItemModifier {
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 1) return "One argument is expected: a double";
         try {
-            amount = Double.parseDouble(args[0]);
+            amount = StringUtils.parseDouble(args[0]);
         } catch (NumberFormatException ignored){
             return "One argument is expected: a double. It was not a number";
         }

@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -116,8 +117,8 @@ public class AlchemyQualityRandomized extends DynamicItemModifier {
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 2) return "Two numbers are expected: both doubles.";
         try {
-            lowerBound = Double.parseDouble(args[0]);
-            upperBound = Double.parseDouble(args[1]);
+            lowerBound = StringUtils.parseDouble(args[0]);
+            upperBound = StringUtils.parseDouble(args[1]);
         } catch (NumberFormatException ignored){
             return "Two numbers are expected: both doubles. At least one was not a number";
         }

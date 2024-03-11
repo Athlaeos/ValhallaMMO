@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.item.MaterialClass;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -102,7 +103,7 @@ public class SmithingQualityScale extends DynamicItemModifier {
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 1) return "One number is expected: a double.";
         try {
-            skillEfficiency = Double.parseDouble(args[0]);
+            skillEfficiency = StringUtils.parseDouble(args[0]);
         } catch (NumberFormatException ignored){
             return "One number is expected: a double. It was not a number";
         }

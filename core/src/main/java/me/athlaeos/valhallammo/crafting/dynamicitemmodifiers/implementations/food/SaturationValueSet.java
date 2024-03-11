@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.FoodPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -84,7 +85,7 @@ public class SaturationValueSet extends DynamicItemModifier {
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 1) return "One argument is expected: a double";
         try {
-            saturation = Float.parseFloat(args[0]);
+            saturation = StringUtils.parseFloat(args[0]);
         } catch (NumberFormatException ignored){
             return "One argument is expected: an integer. It was not a number";
         }

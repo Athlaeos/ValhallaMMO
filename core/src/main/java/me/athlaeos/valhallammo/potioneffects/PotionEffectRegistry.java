@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.potioneffects;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.CustomFlag;
-import me.athlaeos.valhallammo.item.item_attributes.implementations.AttributeDisplayWrapper;
 import me.athlaeos.valhallammo.potioneffects.implementations.*;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.event.EntityCustomPotionEffectEvent;
@@ -289,7 +288,7 @@ public class PotionEffectRegistry {
                 if (args.length < 3) continue;
                 try {
                     String effect = args[0];
-                    double amplifier = Double.parseDouble(args[1]);
+                    double amplifier = StringUtils.parseDouble(args[1]);
                     long duration =  Long.parseLong(args[2]);
                     int charges = args.length > 3 ? Integer.parseInt(args[3]) : -1;
                     if (charges == 0) continue;
@@ -489,7 +488,7 @@ public class PotionEffectRegistry {
                     if (customEffect == null || customEffect.isVanilla()) continue;
 
                     long effectiveUntil = Long.parseLong(args[1]);
-                    double amplifier = Double.parseDouble(args[2]);
+                    double amplifier = StringUtils.parseDouble(args[2].replace(",", "."));
                     if (effectiveUntil != -1 && effectiveUntil < System.currentTimeMillis()) continue; // expired
 
                     effects.put(effect, new CustomPotionEffect(customEffect, effectiveUntil, amplifier));

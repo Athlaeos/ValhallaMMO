@@ -12,6 +12,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.DiggingProfi
 import me.athlaeos.valhallammo.skills.skills.implementations.DiggingSkill;
 import me.athlaeos.valhallammo.utility.BlockStore;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -66,14 +67,14 @@ public class DiggingArchaeologyExtension implements Listener {
         Collection<String> invalidMaterials = new HashSet<>();
         for (String m : skillConfig.getStringList("archaeology_convertable_gravel")){
             String[] args = m.split(":");
-            double multiplier = args.length > 1 ? Catch.catchOrElse(() -> Double.parseDouble(args[1]), 1D) : 1;
+            double multiplier = args.length > 1 ? Catch.catchOrElse(() -> StringUtils.parseDouble(args[1]), 1D) : 1;
             Material material = Catch.catchOrElse(() -> Material.valueOf(args[0]), null);
             if (material == null) invalidMaterials.add(args[0]);
             else gravelConversionBlocks.put(material, multiplier);
         }
         for (String m : skillConfig.getStringList("archaeology_convertable_sand")){
             String[] args = m.split(":");
-            double multiplier = args.length > 1 ? Catch.catchOrElse(() -> Double.parseDouble(args[1]), 1D) : 1;
+            double multiplier = args.length > 1 ? Catch.catchOrElse(() -> StringUtils.parseDouble(args[1]), 1D) : 1;
             Material material = Catch.catchOrElse(() -> Material.valueOf(args[0]), null);
             if (material == null) invalidMaterials.add(args[0]);
             else sandConversionBlocks.put(material, multiplier);

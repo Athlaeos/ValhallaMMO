@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -29,7 +30,7 @@ public class PotionAttributeCommand implements Command {
 			int defaultDuration;
 			int charges = -1;
 			try {
-				defaultValue = Double.parseDouble(args[2]);
+				defaultValue = StringUtils.parseDouble(args[2]);
 				defaultDuration = Integer.parseInt(args[3]);
 				if (args.length == 5) charges = Integer.parseInt(args[4]);
 			} catch (NumberFormatException ignored){

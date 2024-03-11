@@ -80,9 +80,9 @@ public class HeavyArmorSkill extends Skill implements Listener {
                 continue;
             }
             try {
-                double baseAmplifier = Double.parseDouble(args[1]);
+                double baseAmplifier = StringUtils.parseDouble(args[1]);
                 int baseDuration = Integer.parseInt(args[2]);
-                double lvAmplifier = Double.parseDouble(args[3]);
+                double lvAmplifier = StringUtils.parseDouble(args[3]);
                 int lvDuration = Integer.parseInt(args[4]);
                 ragePotionEffects.add(new RagePotionEffect(args[0], baseAmplifier, baseDuration, lvAmplifier, lvDuration));
             } catch (NumberFormatException e){

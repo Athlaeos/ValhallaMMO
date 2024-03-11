@@ -22,6 +22,7 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
     private final String attribute;
     private double value = 0;
     private boolean hidden = false;
+    private boolean add = false;
     private AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_NUMBER;
     private final double smallIncrement;
     private final double bigIncrement;
@@ -38,7 +39,16 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        attribute.setValue(value);
+
+        double extraValue = 0;
+        if (add){
+            AttributeWrapper existingAttribute = ItemAttributesRegistry.getStats(outputItem.getMeta(), true).get(this.attribute);
+            if (existingAttribute != null && (!existingAttribute.isVanilla() || existingAttribute.getOperation() == operation)){
+                extraValue = existingAttribute.getValue();
+            }
+        }
+
+        attribute.setValue(value + extraValue);
         attribute.setOperation(operation);
         attribute.setHidden(hidden);
         ItemAttributesRegistry.addDefaultStat(outputItem.getMeta(), attribute);
@@ -47,7 +57,9 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        if (button == 11) {
+        if (button == 7) {
+            add = !add;
+        } else if (button == 11) {
             value = Math.min(attribute.getMax(), Math.max(attribute.getMin(), value + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? bigIncrement : smallIncrement))));
         } else if (button == (attribute.isVanilla() ? 12 : 13)) {
             value = Math.min(attribute.getMax(), Math.max(attribute.getMin(), value + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? bigIncrement * 10 : smallIncrement * 5))));
@@ -68,6 +80,16 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
     public Map<Integer, ItemStack> getButtons() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
         Set<Pair<Integer, ItemStack>> extraButtons = new HashSet<>();
+        extraButtons.add(new Pair<>(7,
+                new ItemBuilder(Material.REDSTONE_TORCH)
+                        .name("&dShould this stat be added to existing stats?")
+                        .lore("&fKeep in mind this also sets the actualized",
+                                "&fstat on the item, so any scalings should be",
+                                "&fapplied again.",
+                                "&e" + (add ? "yes" : "no"),
+                                "&6Click to toggle")
+                        .get()
+        ));
         extraButtons.add(new Pair<>(attribute.isVanilla() ? 12 : 13,
                 new ItemBuilder(Material.PAPER)
                         .name("&dHow strong should this base stat be?")
@@ -160,7 +182,7 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 3) return "Three arguments expected: a number, an operation, and a boolean";
         try {
-            value = Double.parseDouble(args[0]);
+            value = StringUtils.parseDouble(args[0]);
             operation = AttributeModifier.Operation.valueOf(args[1]);
             hidden = Boolean.parseBoolean(args[2]);
         } catch (NumberFormatException ignored){

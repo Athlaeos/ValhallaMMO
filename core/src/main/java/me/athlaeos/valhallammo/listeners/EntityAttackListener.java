@@ -278,17 +278,17 @@ public class EntityAttackListener implements Listener {
                     if (elementalDamage > 0) {
                         EntityUtils.damage(v, e.getDamager(), elementalDamage, damageType.getType());
                         v.setNoDamageTicks(0); // the entity should not receive immunity frames for these types of damage, as this will reduce or even nullify the entity attack damage taken afterwards
-                        lifeStealValue += elementalDamage * lifeSteal;
+                        if (damageType.canLifeSteal()) lifeStealValue += elementalDamage * lifeSteal;
                     }
                 }
                 EntityDamagedListener.setCustomDamageCause(v.getUniqueId(), originalCause.toString());
 
-                if (lifeStealValue > 0){
-                    EntityRegainHealthEvent healEvent = new EntityRegainHealthEvent(trueDamager, lifeStealValue, EntityRegainHealthEvent.RegainReason.CUSTOM);
+                if (lifeStealValue > 0 && trueDamager instanceof LivingEntity td && !EntityClassification.matchesClassification(v.getType(), EntityClassification.UNALIVE)){
+                    EntityRegainHealthEvent healEvent = new EntityRegainHealthEvent(td, lifeStealValue, EntityRegainHealthEvent.RegainReason.CUSTOM);
                     ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(healEvent);
                     if (!healEvent.isCancelled()){
-                        AttributeInstance maxHealth = v.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-                        if (maxHealth != null) v.setHealth(Math.min(maxHealth.getValue(), v.getHealth() + lifeStealValue));
+                        AttributeInstance maxHealth = td.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+                        if (maxHealth != null) td.setHealth(Math.min(maxHealth.getValue(), td.getHealth() + lifeStealValue));
                     }
                 }
             }

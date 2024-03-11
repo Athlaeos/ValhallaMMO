@@ -21,6 +21,7 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.EntityUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -86,9 +87,9 @@ public class LightArmorSkill extends Skill implements Listener {
                 continue;
             }
             try {
-                double baseAmplifier = Double.parseDouble(args[1]);
+                double baseAmplifier = StringUtils.parseDouble(args[1]);
                 int baseDuration = Integer.parseInt(args[2]);
-                double lvAmplifier = Double.parseDouble(args[3]);
+                double lvAmplifier = StringUtils.parseDouble(args[3]);
                 int lvDuration = Integer.parseInt(args[4]);
                 adrenalinePotionEffects.add(new AdrenalinePotionEffect(args[0], baseAmplifier, baseDuration, lvAmplifier, lvDuration));
             } catch (NumberFormatException e){
@@ -119,6 +120,7 @@ public class LightArmorSkill extends Skill implements Listener {
 
             if (profile.isAdrenalineUnlocked() && profile.getAdrenalineLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_light_armor_adrenaline") &&
                     !WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_ADRENALINE)){
+
                 EntityProperties properties = EntityCache.getAndCacheProperties(p);
                 if (properties.getLightArmorCount() < profile.getSetCount()) return;
                 AttributeInstance healthInstance = p.getAttribute(Attribute.GENERIC_MAX_HEALTH);

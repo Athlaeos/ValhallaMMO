@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.MiningSpeed;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -85,7 +86,7 @@ public class MiningSpeedSet extends DynamicItemModifier {
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 1) return "One argument expected: a number";
         try {
-            value = Double.parseDouble(args[0]);
+            value = StringUtils.parseDouble(args[0]);
         } catch (IllegalArgumentException ignored){
             return "One argument expected: a number. Invalid number given";
         }

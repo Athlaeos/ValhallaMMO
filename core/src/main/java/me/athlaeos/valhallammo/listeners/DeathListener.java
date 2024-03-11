@@ -1,6 +1,5 @@
 package me.athlaeos.valhallammo.listeners;
 
-import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.entities.MonsterScalingManager;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -8,10 +7,8 @@ import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.utility.Bleeder;
-import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,6 +25,7 @@ public class DeathListener implements Listener {
         PotionEffectRegistry.removePotionEffects(e.getEntity(), EntityPotionEffectEvent.Cause.DEATH, eff -> eff.getWrapper().isRemovable());
 
         String cause = EntityDamagedListener.getLastDamageCause(e.getEntity());
+        if (cause == null) return;
         Entity lastDamager = EntityDamagedListener.getLastDamager(e.getEntity());
 
         List<String> deathMessages = lastDamager != null ?

@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.item.MaterialClass;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -160,8 +161,8 @@ public class AmountScale extends DynamicItemModifier {
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 3) return "Three arguments are expected: the first two doubles, the third a yes/no answer";
         try {
-            skillEfficiency = Double.parseDouble(args[0]);
-            minimumFraction = Double.parseDouble(args[1]);
+            skillEfficiency = StringUtils.parseDouble(args[0]);
+            minimumFraction = StringUtils.parseDouble(args[1]);
             damagePenalty = args[2].equalsIgnoreCase("yes");
         } catch (NumberFormatException ignored){
             return "Three arguments are expected: the first two doubles, the third a yes/no answer. At least one was not a number";

@@ -92,7 +92,7 @@ public class ArrowBehaviorRegistry {
                 double[] doubleArgs = new double[args.length - 1];
                 for (int i = 0; i < args.length - 1; i++){
                     try {
-                        doubleArgs[i] = Double.parseDouble(args[i + 1]);
+                        doubleArgs[i] = StringUtils.parseDouble(args[i + 1]);
                     } catch (NumberFormatException ignored){}
                 }
                 attributes.put(args[0], new BehaviorDetails(args[0], doubleArgs));

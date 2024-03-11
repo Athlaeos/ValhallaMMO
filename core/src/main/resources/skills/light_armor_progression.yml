@@ -230,6 +230,7 @@ perks:
     required_lv: 50
     perk_rewards:
       lightarmor_adrenalineunlocked_toggle: 0
+      lightarmor_adrenalinethreshold_add: 0.3
       lightarmor_adrenalinelevel_add: 1
       lightarmor_adrenalinecooldown_add: 12000
     messages:
@@ -246,6 +247,7 @@ perks:
     required_lv: 90
     perk_rewards:
       lightarmor_adrenalinelevel_add: 4
+      lightarmor_adrenalinethreshold_add: 0.2
       lightarmor_adrenalinecooldown_add: -6000
     messages:
       - "<lang.lightarmor_perk_2c_messages>"

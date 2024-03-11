@@ -37,6 +37,7 @@ public class CommandManager implements TabExecutor {
 		commands.put("globalbuff", new GlobalEffectCommand());
 		commands.put("resourcepack", new ResourcePackCommand());
 		commands.put("saveall", new SaveAllCommand());
+		commands.put("hardness", new BlockHardnessCommand());
 //		commands.put("reload", new ReloadCommand());
 //		commands.put("import", new ImportCommand());
 //		commands.put("toggleexp", new HideBossBarsCommand());

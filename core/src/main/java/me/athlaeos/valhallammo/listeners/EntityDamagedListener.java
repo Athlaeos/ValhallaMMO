@@ -6,11 +6,13 @@ import me.athlaeos.valhallammo.dom.CustomDamageType;
 import me.athlaeos.valhallammo.entities.damageindicators.DamageIndicatorRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,7 +38,7 @@ public class EntityDamagedListener implements Listener {
         YamlConfiguration c = ValhallaMMO.getPluginConfig();
         for (String type : c.getStringList("armor_effective_types")){
             String[] args = type.split(":");
-            physicalDamageTypes.put(args[0], args.length > 1 ? Catch.catchOrElse(() -> Double.parseDouble(args[1]), 1D) : 1D);
+            physicalDamageTypes.put(args[0], args.length > 1 ? Catch.catchOrElse(() -> StringUtils.parseDouble(args[1]), 1D) : 1D);
         }
     }
 
@@ -50,7 +52,7 @@ public class EntityDamagedListener implements Listener {
             double originalDamage = e.getDamage();
             double customDamage = !customDamageEnabled ? e.getDamage() : type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
             double damageAfterImmunity = !customDamageEnabled ? e.getDamage() : overrideImmunityFrames(customDamage, l);
-            if (damageAfterImmunity <= 0 && type != null) {
+            if (damageAfterImmunity <= 0 && type != null && e.getEntityType() != EntityType.ARMOR_STAND) {
                 e.setCancelled(true);
                 return; // entity is immune, and so damage doesn't need to be calculated further
             }

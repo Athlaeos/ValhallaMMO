@@ -93,6 +93,7 @@ public class ValhallaMMO extends JavaPlugin {
         saveConfig("block_conversions.yml");
         saveConfig("scaling_presets.yml");
         saveConfig("alpha_conversion.yml");
+        saveConfig("default_block_hardnesses.yml");
 
         // skill configs
         saveConfig("skills/alchemy.yml");

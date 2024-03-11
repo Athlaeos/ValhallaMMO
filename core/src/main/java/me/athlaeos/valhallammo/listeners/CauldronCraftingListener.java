@@ -271,6 +271,7 @@ public class CauldronCraftingListener implements Listener {
                         return false;
                     })
             ) continue;
+            int count = 1;
             if (!r.isTimedRecipe()){
                 // if the recipe is a catalyst-triggered recipe, skip if the catalyst is empty or if the catalyst
                 // doesn't match the required catalyst, or if there isn't enough of the catalyst
@@ -278,11 +279,13 @@ public class CauldronCraftingListener implements Listener {
                 if (!r.getCatalyst().getOption().matches(r.getCatalyst().getItem(), catalyst)) continue;
                 if (r.getCatalyst().getItem().getAmount() > catalyst.getAmount()) continue;
 
-                int count = (int) Math.floor((double) catalyst.getAmount() / (double) r.getCatalyst().getItem().getAmount());
+                count = (int) Math.floor((double) catalyst.getAmount() / (double) r.getCatalyst().getItem().getAmount());
                 if (r.getIngredients().isEmpty()) return new Pair<>(r, count); // catalyst recipes may have no ingredients, timed recipes MUST have ingredients
+                else count = Math.min(count, ItemUtils.timesContained(contents, r.getIngredients(), r.getMetaRequirement().getChoice()));
+            } else {
+                // check if all ingredients are present in cauldron
+                count = ItemUtils.timesContained(contents, r.getIngredients(), r.getMetaRequirement().getChoice());
             }
-            // check if all ingredients are present in cauldron
-            int count = ItemUtils.timesContained(contents, r.getIngredients(), r.getMetaRequirement().getChoice());
             if (count > 0){
                 return new Pair<>(r, count);
             }
@@ -384,14 +387,14 @@ public class CauldronCraftingListener implements Listener {
 
     private static class CauldronCookingTask extends BukkitRunnable{
         private int duration;
-        private final Player cooker;
-        private final Block cauldron;
+        private final UUID cooker;
+        private final Location cauldron;
         private final DynamicCauldronRecipe recipe;
         private final int quantity;
 
         public CauldronCookingTask(@Nullable Player cooker, @NotNull Block cauldron, @NotNull DynamicCauldronRecipe recipe, int quantity){
-            this.cooker = cooker;
-            this.cauldron = cauldron;
+            this.cooker = cooker == null ? null : cooker.getUniqueId();
+            this.cauldron = cauldron.getLocation();
             this.recipe = recipe;
             this.quantity = quantity;
             this.duration = recipe.getCookTime();
@@ -399,33 +402,35 @@ public class CauldronCraftingListener implements Listener {
 
         @Override
         public void run() {
+            Player p = cooker == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(cooker);
             if (duration > 0){
                 Animation animation = AnimationRegistry.getAnimation(AnimationRegistry.BLOCK_BUBBLES.id());
-                if (animation != null) animation.animate(cooker, cauldron.getLocation(), cooker.getEyeLocation().getDirection(), duration);
+                if (animation != null && p != null) animation.animate(p, cauldron, null, duration);
             } else {
+                Block b = cauldron.getBlock();
                 ItemBuilder result = new ItemBuilder(recipe.getResult());
-                List<ItemStack> contents = getCauldronContents(cauldron);
+                List<ItemStack> contents = getCauldronContents(b);
                 if (ItemUtils.removeItems(contents, recipe.getIngredients(), quantity, recipe.getMetaRequirement().getChoice())){
                     // catalyst-triggered recipes are crafted instantly and so "use" can be true. Timed recipes should execute on completion
-                    DynamicItemModifier.modify(result, cooker, recipe.getModifiers(), false, true, true, quantity);
+                    DynamicItemModifier.modify(result, p, recipe.getModifiers(), false, true, true, quantity);
                     if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) {
-                        cauldron.getWorld().playEffect(cauldron.getLocation().add(0.5, 0.2, 0.5), Effect.EXTINGUISH, 0);
-                        dumpCauldronContents(cauldron);
+                        b.getWorld().playEffect(cauldron.add(0.5, 0.2, 0.5), Effect.EXTINGUISH, 0);
+                        dumpCauldronContents(b);
                         stop();
                         return;
                     }
-                    setCauldronContents(cauldron, contents);
+                    setCauldronContents(b, contents);
 
-                    CauldronCompleteRecipeEvent completionEvent = new CauldronCompleteRecipeEvent(cauldron, recipe, cooker, result.get());
+                    CauldronCompleteRecipeEvent completionEvent = new CauldronCompleteRecipeEvent(b, recipe, p, result.get());
                     ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(completionEvent);
                     for (int i = 0; i < quantity; i++)
-                        cauldron.getWorld().dropItem(cauldron.getLocation().add(0.5, 0.5, 0.5), completionEvent.getResult());
+                        b.getWorld().dropItem(cauldron.add(0.5, 0.5, 0.5), completionEvent.getResult());
                     Animation animation = AnimationRegistry.getAnimation(AnimationRegistry.BLOCK_SPARKS_EXTINGUISH.id());
-                    animation.animate(cooker, cauldron.getLocation(), cooker.getEyeLocation().getDirection(), duration);
+                    animation.animate(p, cauldron, null, duration);
 
                     recipe.getValidations().forEach(v -> {
                         Validation validation = ValidationRegistry.getValidation(v);
-                        if (validation != null) validation.execute(cauldron);
+                        if (validation != null) validation.execute(b);
                     });
                 }
                 stop();
@@ -434,34 +439,36 @@ public class CauldronCraftingListener implements Listener {
         }
 
         private void stop(){
-            activeCauldrons.remove(cauldron.getLocation());
+            activeCauldrons.remove(cauldron);
             cancel();
         }
     }
 
     private static class CauldronInputTick extends BukkitRunnable{
         private int ticks = ValhallaMMO.getPluginConfig().getInt("cauldron_item_duration");
-        private final Player thrower;
-        private final Block block;
-        private final Item item;
+        private final UUID thrower;
+        private final Location block;
+        private final UUID item;
 
         public CauldronInputTick(Player thrower, Item item){
-            this.thrower = thrower;
-            this.item = item;
+            this.thrower = thrower.getUniqueId();
+            this.item = item.getUniqueId();
             this.block = null;
         }
 
         public CauldronInputTick(Block block, Item item){
             this.thrower = null;
-            this.item = item;
-            this.block = block;
+            this.item = item.getUniqueId();
+            this.block = block.getLocation();
         }
 
         @Override
         public void run() {
-            if (ticks > 0 && item.isValid()){
-                Block b = item.getLocation().getBlock();
-                if (!b.getType().toString().contains("CAULDRON")) b = item.getLocation().add(0, -0.9, 0).getBlock();
+            Item i = (ValhallaMMO.getInstance().getServer().getEntity(item) instanceof Item it) ? it : null;
+            Player p = ValhallaMMO.getInstance().getServer().getPlayer(thrower);
+            if (ticks > 0 && i != null && i.isValid() && p != null){
+                Block b = i.getLocation().getBlock();
+                if (!b.getType().toString().contains("CAULDRON")) b = i.getLocation().add(0, -0.9, 0).getBlock();
                 if (b.getType().toString().contains("CAULDRON")){
                     if (!(b.getBlockData() instanceof Levelled l) || l.getLevel() <= 0){
                         remove(); // if it's not a cauldron with some liquid, cancel item drop detection
@@ -469,7 +476,7 @@ public class CauldronCraftingListener implements Listener {
                         return;
                     }
 
-                    onCauldronAbsorbItem(thrower, b, item);
+                    onCauldronAbsorbItem(p, b, i);
                     remove();
                     cancel();
                 }
@@ -481,8 +488,8 @@ public class CauldronCraftingListener implements Listener {
         }
 
         private void remove(){
-            if (thrower != null) entityThrowItemLimiter.remove(thrower.getUniqueId());
-            else blockThrowItemLimiter.remove(block.getLocation());
+            if (thrower != null) entityThrowItemLimiter.remove(thrower);
+            else blockThrowItemLimiter.remove(block);
         }
 
         public void resetTicks(){

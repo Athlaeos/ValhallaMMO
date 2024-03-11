@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -26,7 +27,7 @@ public class AttributeCommand implements Command {
 			Double defaultValue = null;
 			if (!args[2].equalsIgnoreCase("same")){
 				try {
-					defaultValue = Double.parseDouble(args[2]);
+					defaultValue = StringUtils.parseDouble(args[2]);
 				} catch (NumberFormatException ignored){
 					Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_number")));
 					return true;

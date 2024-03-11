@@ -441,6 +441,7 @@ public class LootListener implements Listener {
     public void onContainerPlace(BlockPlaceEvent e){
         if (e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
         ItemStack placed = e.getItemInHand();
+        if (ItemUtils.isEmpty(placed)) return;
         ItemBuilder item = new ItemBuilder(placed);
         LootTable table = LootTableRegistry.getLootTable(item.getMeta());
         if (table == null) return;

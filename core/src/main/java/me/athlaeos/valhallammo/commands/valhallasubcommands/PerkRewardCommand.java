@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -41,8 +42,8 @@ public class PerkRewardCommand implements Command {
 				try {
 					arg = switch (expectedType){
 						case NONE -> null;
-						case DOUBLE -> Double.parseDouble(args[2]);
-						case FLOAT -> Float.parseFloat(args[2]);
+						case DOUBLE -> StringUtils.parseDouble(args[2]);
+						case FLOAT -> StringUtils.parseDouble(args[2]);
 						case INTEGER -> Integer.parseInt(args[2]);
 						case STRING -> args[2];
 						case STRING_LIST -> List.of(args[2].split(";"));

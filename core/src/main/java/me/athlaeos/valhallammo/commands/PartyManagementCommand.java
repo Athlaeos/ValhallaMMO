@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.parties.Party;
 import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -212,7 +213,7 @@ public class PartyManagementCommand implements TabExecutor {
                 }
                 if (args[3].equalsIgnoreCase("default")) party.getFloats().remove(args[2]);
                 else {
-                    Float value = Catch.catchOrElse(() -> Float.parseFloat(args[3]), null);
+                    Float value = Catch.catchOrElse(() -> StringUtils.parseFloat(args[3]), null);
                     if (value == null){
                         Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_party_invalid_number").replace("%arg%", args[3]));
                         return true;
@@ -230,7 +231,7 @@ public class PartyManagementCommand implements TabExecutor {
                     return true;
                 }
 
-                Float value = Catch.catchOrElse(() -> Float.parseFloat(args[2]), null);
+                Float value = Catch.catchOrElse(() -> StringUtils.parseFloat(args[2]), null);
                 if (value == null){
                     Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_party_invalid_number").replace("%arg%", args[2]));
                     return true;
@@ -251,7 +252,7 @@ public class PartyManagementCommand implements TabExecutor {
                     return true;
                 }
 
-                Double value = Catch.catchOrElse(() -> Double.parseDouble(args[3]), null);
+                Double value = Catch.catchOrElse(() -> StringUtils.parseDouble(args[3]), null);
                 if (value == null){
                     Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_party_invalid_number").replace("%arg%", args[2]));
                     return true;

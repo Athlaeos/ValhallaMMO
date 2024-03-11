@@ -66,6 +66,9 @@ permissions:
   valhalla.ignorenoobprotection:
     default: op
     description: "Allows the attacking of players even if their level is much lower than your own"
+  valhalla.hardness:
+    default: op
+    description: "Access to the /val hardness command, which allows the user to change the default hardness of specific block types"
   valhalla.saveall:
     default: op
     description: "Access to the /val saveall command, which allows the user to force the plugin to save all profile progress and recipe changes made"

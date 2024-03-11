@@ -145,7 +145,7 @@ public class PotionEffectAdd extends DynamicItemModifier {
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 3) return "Three arguments expected: a double and two integers";
         try {
-            value = Double.parseDouble(args[0]);
+            value = StringUtils.parseDouble(args[0]);
             duration = Long.parseLong(args[1]);
             charges = Integer.parseInt(args[2]);
         } catch (NumberFormatException ignored){

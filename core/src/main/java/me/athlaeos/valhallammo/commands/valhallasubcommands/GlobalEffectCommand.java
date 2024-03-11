@@ -33,7 +33,7 @@ public class GlobalEffectCommand implements Command {
 					try {
 						duration = Long.parseLong(args[3].replace("w", "").replace("d", "").replace("h", "")
 								.replace("m", "").replace("s", ""));
-						amplifier = Double.parseDouble(args[4]);
+						amplifier = StringUtils.parseDouble(args[4]);
 					} catch (IllegalArgumentException ignored){
 						Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_number")));
 						return true;

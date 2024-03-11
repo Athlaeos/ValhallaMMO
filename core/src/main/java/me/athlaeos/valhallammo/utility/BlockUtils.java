@@ -2,7 +2,9 @@ package me.athlaeos.valhallammo.utility;
 
 import com.jeff_media.customblockdata.CustomBlockData;
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Action;
+import me.athlaeos.valhallammo.dom.Catch;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -11,6 +13,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.CaveVines;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.LeavesDecayEvent;
@@ -25,6 +29,18 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BlockUtils {
+    private static final Map<Material, Float> customBlockHardnesses = new HashMap<>();
+    static {
+        YamlConfiguration config = ConfigManager.getConfig("default_block_hardnesses.yml").get();
+        ConfigurationSection section = config.getConfigurationSection("");
+        if (section != null){
+            for (String material : section.getKeys(false)){
+                Material block = Catch.catchOrElse(() -> Material.valueOf(material), null);
+                if (block == null) ValhallaMMO.logWarning("Material in default_block_hardnesses.yml is invalid: " + material);
+                else customBlockHardnesses.put(block, (float) config.getDouble(material));
+            }
+        }
+    }
     private static final NamespacedKey BLOCK_OWNER = new NamespacedKey(ValhallaMMO.getInstance(), "block_owner");
     private static final NamespacedKey CUSTOM_HARDNESS = new NamespacedKey(ValhallaMMO.getInstance(), "custom_hardness");
 
@@ -33,9 +49,14 @@ public class BlockUtils {
         customBlockData.set(CUSTOM_HARDNESS, PersistentDataType.FLOAT, hardness);
     }
 
+    public static void setDefaultHardness(Material m, Float hardness){
+        if (hardness == null) customBlockHardnesses.remove(m);
+        else customBlockHardnesses.put(m, hardness);
+    }
+
     public static float getHardness(Block b){
         PersistentDataContainer customBlockData = new CustomBlockData(b, ValhallaMMO.getInstance());
-        return customBlockData.getOrDefault(CUSTOM_HARDNESS, PersistentDataType.FLOAT, b.getType().getHardness());
+        return customBlockData.getOrDefault(CUSTOM_HARDNESS, PersistentDataType.FLOAT, customBlockHardnesses.getOrDefault(b.getType(), b.getType().getHardness()));
     }
 
     public static boolean hasCustomHardness(Block b){

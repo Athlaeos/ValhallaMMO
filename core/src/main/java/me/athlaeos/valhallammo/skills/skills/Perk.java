@@ -101,7 +101,7 @@ public class Perk {
     }
 
     public boolean canUnlock(Player p){
-        PowerProfile profile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
+        PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class); // ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
         if (profile.getUnlockedPerks().contains(this.name) ||
                 profile.getPermanentlyLockedPerks().contains(this.name) ||
                 profile.getFakeUnlockedPerks().contains(this.name)) return false;

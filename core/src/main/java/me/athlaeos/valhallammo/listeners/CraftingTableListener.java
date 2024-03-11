@@ -215,6 +215,7 @@ public class CraftingTableListener implements Listener {
             inventory.setResult(null);
             return;
         }
+        if (crafted instanceof Keyed k && !CustomRecipeRegistry.getGridRecipesByKey().containsKey(k.getKey())) return;
         Player crafter = (Player) e.getViewers().get(0);
 
         Map<Integer, ItemMeta> matrixMeta = new HashMap<>();

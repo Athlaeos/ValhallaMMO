@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
@@ -90,7 +91,7 @@ public class AlchemyQualityMultiply extends DynamicItemModifier {
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 1) return "One argument is expected: an integer";
         try {
-            multiplyBy = Double.parseDouble(args[0]);
+            multiplyBy = StringUtils.parseDouble(args[0]);
         } catch (NumberFormatException ignored){
             return "One argument is expected: an integer. It was not a number";
         }

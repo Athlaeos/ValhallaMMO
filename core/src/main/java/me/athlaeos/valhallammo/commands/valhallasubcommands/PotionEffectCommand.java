@@ -37,7 +37,7 @@ public class PotionEffectCommand implements Command {
 			double amplifier;
 			int duration;
 			try {
-				amplifier = Double.parseDouble(args[2]);
+				amplifier = StringUtils.parseDouble(args[2]);
 				duration = Integer.parseInt(args[3]);
 			} catch (NumberFormatException ignored){
 				Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_number")));

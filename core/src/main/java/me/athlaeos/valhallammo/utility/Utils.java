@@ -187,6 +187,7 @@ public class Utils {
     private static final Map<String, Double> evalCache = new HashMap<>();
     private static final MathEval math = new MathEval();
     public static double eval(String expression) {
+        expression = expression.replaceAll(",", ".");
         if (evalCache.containsKey(expression)) {
             return evalCache.get(expression);
         }

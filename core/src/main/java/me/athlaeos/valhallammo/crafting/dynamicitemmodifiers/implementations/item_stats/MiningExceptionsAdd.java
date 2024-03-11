@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.MiningSpeed;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -125,7 +126,7 @@ public class MiningExceptionsAdd extends DynamicItemModifier {
         if (args.length != 2) return "Two argument are expected: a material and a double";
         try {
             Material m = Material.valueOf(args[0]);
-            double value = Double.parseDouble(args[1]);
+            double value = StringUtils.parseDouble(args[1]);
             exceptions.put(m, value);
         } catch (IllegalArgumentException ignored){
             return "Two argument are expected: a material and a double. At least one was not a valid argument";

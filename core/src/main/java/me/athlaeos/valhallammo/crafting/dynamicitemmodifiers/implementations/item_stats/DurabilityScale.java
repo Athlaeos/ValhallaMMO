@@ -353,12 +353,12 @@ public class DurabilityScale extends DynamicItemModifier {
     public String parseCommand(CommandSender executor, String[] args) {
         if (args.length != 6) return "Six arguments are expected: two doubles, a formula, a mode, and a lower- and upper bound";
         try {
-            skillEfficiency = Double.parseDouble(args[0]);
-            minimumValue = Double.parseDouble(args[1]);
+            skillEfficiency = StringUtils.parseDouble(args[0]);
+            minimumValue = StringUtils.parseDouble(args[1]);
             commandScaling = args[2];
             mode = Scaling.ScalingMode.valueOf(args[3]);
-            lowerBound = Catch.catchOrElse(() -> Double.parseDouble(args[4]), null);
-            upperBound = Catch.catchOrElse(() -> Double.parseDouble(args[5]), null);
+            lowerBound = Catch.catchOrElse(() -> StringUtils.parseDouble(args[4]), null);
+            upperBound = Catch.catchOrElse(() -> StringUtils.parseDouble(args[5]), null);
         } catch (IllegalArgumentException ignored){
             return "Six arguments are expected: two doubles, a formula, a mode, and a lower- and upper bound. At least one was not a number, or the mode could be incorrect";
         }

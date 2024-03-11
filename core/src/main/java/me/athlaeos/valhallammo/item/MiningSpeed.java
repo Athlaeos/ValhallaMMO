@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -151,7 +152,7 @@ public class MiningSpeed {
                 String[] args = exceptionString.split(":");
                 try {
                     Material b = Material.valueOf(args[0]);
-                    double multiplier = Double.parseDouble(args[1]);
+                    double multiplier = StringUtils.parseDouble(args[1]);
                     exceptions.put(b, multiplier);
                 } catch (IllegalArgumentException ignored){}
             }

@@ -43,6 +43,14 @@ public class StringUtils {
         return romanNumeralsMap.get(l) + toRoman(number - l);
     }
 
+    public static Double parseDouble(String s) throws NumberFormatException {
+        return Double.parseDouble(s.replace(",", "."));
+    }
+
+    public static Float parseFloat(String s) throws NumberFormatException {
+        return Float.parseFloat(s.replace(",", "."));
+    }
+
     /**
      * returns a timestamp based on the base amount of x in a second
      * @param ticks ticks
