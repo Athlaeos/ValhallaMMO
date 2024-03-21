@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.item;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.localization.TranslationManager;
@@ -107,31 +108,32 @@ public class SmithingItemPropertyManager {
     }
     
     public static boolean hasTag(ItemMeta i, int treatment){
-        return getTags(i).contains(treatment);
+        return getTags(i).containsKey(treatment);
     }
 
-    public static Collection<Integer> getTags(ItemMeta i){
-        Collection<Integer> tags = new HashSet<>();
+    public static Map<Integer, Integer> getTags(ItemMeta i){
+        Map<Integer, Integer> tags = new HashMap<>();
         String value = ItemUtils.getPDCString(NUMBER_TAGS, i, null);
         if (StringUtils.isEmpty(value)) return tags;
         for (String tag : value.split(",")){
-            try {
-                tags.add(Integer.parseInt(tag));
-            } catch (NumberFormatException ignored){
-            }
+            String[] args = tag.split(":");
+            Integer id = Catch.catchOrElse(() -> Integer.parseInt(args[0]), null);
+            if (id == null) continue;
+            Integer level = Catch.catchOrElse(() -> Integer.parseInt(args[1]), null);
+            tags.put(id, level == null ? 1 : level);
         }
         return tags;
     }
 
-    public static void addTag(ItemMeta i, Integer... tag){
-        Collection<Integer> tags = getTags(i);
-        tags.addAll(Set.of(tag));
+    public static void addTag(ItemMeta i, Integer tag, Integer level){
+        Map<Integer, Integer> tags = getTags(i);
+        tags.put(tag, level);
         setTags(i, tags);
     }
 
-    public static void removeTag(ItemMeta i, Integer... tag){
-        Collection<Integer> tags = getTags(i);
-        tags.removeAll(Set.of(tag));
+    public static void removeTag(ItemMeta i, Integer tag){
+        Map<Integer, Integer> tags = getTags(i);
+        tags.remove(tag);
         setTags(i, tags);
     }
 
@@ -145,10 +147,13 @@ public class SmithingItemPropertyManager {
                 if (tagIndex < 0) tagIndex = currentLore.indexOf(l);
             } else newLore.add(l);
         }
-        Collection<Integer> tags = CustomFlag.hasFlag(meta, CustomFlag.HIDE_TAGS) ? new HashSet<>() : getTags(meta);
-        for (Integer tag : tags.stream().filter(tagLore::containsKey).collect(Collectors.toSet())){
-            if (tagIndex <= 0) newLore.add(tagLore.get(tag));
-            else newLore.add(tagIndex, tagLore.get(tag));
+        Map<Integer, Integer> tags = CustomFlag.hasFlag(meta, CustomFlag.HIDE_TAGS) ? new HashMap<>() : getTags(meta);
+        for (Integer tag : tags.keySet().stream().filter(tagLore::containsKey).collect(Collectors.toSet())){
+            String lore = tagLore.get(tag)
+                    .replace("%lv_roman%", StringUtils.toRoman(Math.max(1, tags.get(tag))))
+                    .replace("%lv_normal%", String.valueOf(tags.get(tag)));
+            if (tagIndex <= 0) newLore.add(lore);
+            else newLore.add(tagIndex, lore);
         }
         meta.setLore(newLore);
     }
@@ -219,12 +224,12 @@ public class SmithingItemPropertyManager {
         return meta.getPersistentDataContainer().has(QUALITY_SMITHING, PersistentDataType.INTEGER);
     }
 
-    public static void setTags(ItemMeta meta, Collection<Integer> tags){
+    public static void setTags(ItemMeta meta, Map<Integer, Integer> tags){
         if (meta == null) return;
 
         if (tags == null || tags.isEmpty()) meta.getPersistentDataContainer().remove(NUMBER_TAGS);
         else meta.getPersistentDataContainer().set(NUMBER_TAGS, PersistentDataType.STRING,
-                tags.stream().map(String::valueOf).collect(Collectors.joining(",")));
+                tags.entrySet().stream().map((e) -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(",")));
 
         setTagLore(meta);
     }

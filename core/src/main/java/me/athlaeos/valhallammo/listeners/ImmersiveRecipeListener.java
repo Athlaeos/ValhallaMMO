@@ -86,12 +86,12 @@ public class ImmersiveRecipeListener implements Listener {
                 // if the player hasn't interacted for more than 0.5 seconds, reset "button held" timer
                 Timer.startTimer(p.getUniqueId(), "time_held_immersive_interact");
             }
-            ItemBuilder held = new ItemBuilder(heldItem);
+            ItemBuilder held = ItemUtils.isEmpty(heldItem) ? null : new ItemBuilder(heldItem);
             // if the player isn't holding the right item any more, unselect recipe entirely and do nothing more
             boolean properItemHeld = recipe.tinker() ?
-                    recipe.getTinkerInput().getOption().matches(recipe.getTinkerInput().getItem(), heldItem) &&
-                            (!recipe.requiresValhallaTools() || SmithingItemPropertyManager.hasSmithingQuality(held.getMeta())) :
-                    recipe.getToolRequirement().canCraft(ToolRequirementType.getToolID(held.getMeta()));
+                    (held != null && recipe.getTinkerInput().getOption().matches(recipe.getTinkerInput().getItem(), heldItem) &&
+                            (!recipe.requiresValhallaTools() || SmithingItemPropertyManager.hasSmithingQuality(held.getMeta()))) :
+                    recipe.getToolRequirement().canCraft(held == null ? -1 : ToolRequirementType.getToolID(held.getMeta()));
             if (!ItemUtils.isSimilarMaterial(recipe.getBlock(), clicked.getType()) || !canPlayerCraft(e, recipe) || !properItemHeld) {
                 selectedImmersiveRecipe.remove(p.getUniqueId());
                 return;
@@ -126,8 +126,8 @@ public class ImmersiveRecipeListener implements Listener {
                     if (ItemUtils.timesContained(Arrays.asList(p.getInventory().getStorageContents()), recipe.getIngredients(), recipe.getMetaRequirement().getChoice()) > 0){
                         if (ItemUtils.removeItems(p.getInventory(), recipe.getIngredients(), 1, recipe.getMetaRequirement().getChoice())){
                             ItemBuilder result = recipe.tinker() ? held : new ItemBuilder(recipe.getResult());
-                            DynamicItemModifier.modify(held, p, recipe.getModifiers(), false, true, true);
-                            if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(held.getMeta(), CustomFlag.UNCRAFTABLE)){
+                            DynamicItemModifier.modify(result, p, recipe.getModifiers(), false, true, true);
+                            if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                                 Utils.sendMessage(p, ItemUtils.getPDCString(DynamicItemModifier.ERROR_MESSAGE, heldItem, ""));
                                 selectedImmersiveRecipe.remove(p.getUniqueId());
                             } else {

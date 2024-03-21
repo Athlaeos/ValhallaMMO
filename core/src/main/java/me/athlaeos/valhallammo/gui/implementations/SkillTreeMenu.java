@@ -168,7 +168,7 @@ public class SkillTreeMenu extends Menu {
                             } else perkConfirmation = p.getName();
                         } else {
                             for (ResourceExpense expense : p.getExpenses()){
-                                if (!expense.canPurchase(target)) playerMenuUtility.getOwner().sendMessage(Utils.chat(expense.getInsufficientFundsMessage()));
+                                if (!expense.canPurchase(target)) Utils.sendMessage(playerMenuUtility.getOwner(), expense.getInsufficientFundsMessage());
                             }
                         }
                         skillTreeItems.put(selectedSkill, getSkillTree(selectedSkill));

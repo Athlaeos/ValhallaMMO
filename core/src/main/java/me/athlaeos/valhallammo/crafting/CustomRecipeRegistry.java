@@ -9,8 +9,10 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.recipetypes.*;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.*;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
 import me.athlaeos.valhallammo.listeners.CookingListener;
@@ -20,6 +22,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -211,6 +214,13 @@ public class CustomRecipeRegistry {
         }
     }
     public static void register(DynamicSmithingRecipe recipe, boolean overwrite){
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20) &&
+                (recipe.getTemplate() == null ||
+                        recipe.getTemplate().getOption() == null ||
+                        ItemUtils.isEmpty(recipe.getTemplate().getItem()) ||
+                        recipe.getTemplate().getOption().getChoice(recipe.getTemplate().getItem()) == null
+                )
+        ) recipe.setTemplate(new SlotEntry(new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE), new MaterialChoice()));
         if (overwrite || !smithingRecipes.containsKey(recipe.getName().toLowerCase())) {
             smithingRecipes.put(recipe.getName().toLowerCase(), recipe);
             smithingRecipesByKey.put(recipe.getKey(), recipe);

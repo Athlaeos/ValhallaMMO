@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import java.util.*;
@@ -33,6 +34,27 @@ public class PotionEffectRegistry {
     private static final Map<String, PotionEffectWrapper> registeredEffects = new HashMap<>();
     private static final Collection<UUID> entitiesWithEffects = new HashSet<>();
     private static CustomEffectDisplay customEffectDisplay = ValhallaMMO.getPluginConfig().getBoolean("custom_effect_display", true) ? new CustomEffectSidebarDisplay() : null;
+    private static final Map<PotionType, Map<String, PotionTypeEffectWrapper>> typeToEffectWrappings = new HashMap<>();
+
+    static {
+        typeToEffectWrappings.put(PotionType.FIRE_RESISTANCE, Map.of("FIRE_RESISTANCE", new PotionTypeEffectWrapper("FIRE_RESISTANCE").dB(180).dEx(480)));
+        typeToEffectWrappings.put(PotionType.INSTANT_DAMAGE, Map.of("HARM", new PotionTypeEffectWrapper("HARM").aB(0).aU(1)));
+        typeToEffectWrappings.put(PotionType.INSTANT_HEAL, Map.of("HEAL", new PotionTypeEffectWrapper("HEAL").aB(0).aU(1)));
+        typeToEffectWrappings.put(PotionType.INVISIBILITY, Map.of("INVISIBILITY", new PotionTypeEffectWrapper("INVISIBILITY").dB(180).dEx(480)));
+        typeToEffectWrappings.put(PotionType.JUMP, Map.of("JUMP", new PotionTypeEffectWrapper("JUMP").dB(180).dEx(480).dUp(180).aB(0).aU(1)));
+        typeToEffectWrappings.put(PotionType.LUCK, Map.of("LUCK", new PotionTypeEffectWrapper("LUCK").dB(300)));
+        typeToEffectWrappings.put(PotionType.NIGHT_VISION, Map.of("NIGHT_VISION", new PotionTypeEffectWrapper("NIGHT_VISION").dB(180).dEx(480)));
+        typeToEffectWrappings.put(PotionType.POISON, Map.of("POISON", new PotionTypeEffectWrapper("POISON").dB(45).dEx(90).dUp(22).aB(0).aU(1)));
+        typeToEffectWrappings.put(PotionType.REGEN, Map.of("REGENERATION", new PotionTypeEffectWrapper("REGENERATION").dB(45).dEx(90).dUp(22).aB(0).aU(1)));
+        typeToEffectWrappings.put(PotionType.SLOW_FALLING, Map.of("SLOW_FALLING", new PotionTypeEffectWrapper("SLOW_FALLING").dB(90).dEx(240)));
+        typeToEffectWrappings.put(PotionType.SLOWNESS, Map.of("SLOW", new PotionTypeEffectWrapper("SLOW").dB(90).dEx(240).dUp(20).aB(0).aU(4)));
+        typeToEffectWrappings.put(PotionType.SPEED, Map.of("SPEED", new PotionTypeEffectWrapper("SPEED").dB(180).dEx(480).dUp(180).aB(0).aU(1)));
+        typeToEffectWrappings.put(PotionType.STRENGTH, Map.of("INCREASE_DAMAGE", new PotionTypeEffectWrapper("INCREASE_DAMAGE").dB(180).dEx(480).dUp(180).aB(0).aU(1)));
+        typeToEffectWrappings.put(PotionType.TURTLE_MASTER, Map.of("SLOW", new PotionTypeEffectWrapper("SLOW").dB(20).dEx(40).dUp(20).aB(3).aU(5),
+                "DAMAGE_RESISTANCE", new PotionTypeEffectWrapper("DAMAGE_RESISTANCE").dB(20).dEx(40).dUp(20).aB(2).aU(3)));
+        typeToEffectWrappings.put(PotionType.WATER_BREATHING, Map.of("WATER_BREATHING", new PotionTypeEffectWrapper("WATER_BREATHING").dB(180).dEx(480)));
+        typeToEffectWrappings.put(PotionType.WEAKNESS, Map.of("WEAKNESS", new PotionTypeEffectWrapper("WEAKNESS").dB(90).dEx(240)));
+    }
 
     private static void markAsUnaffected(LivingEntity entity){
         entitiesWithEffects.remove(entity.getUniqueId());
@@ -272,7 +294,13 @@ public class PotionEffectRegistry {
      * @return the item's effects
      */
     public static Map<String, PotionEffectWrapper> getStoredEffects(ItemMeta meta, boolean def){
-        return parseRawData(getRawData(meta, def));
+        if (meta.getPersistentDataContainer().has(def ? DEFAULT_STORED_EFFECTS : ACTUAL_STORED_EFFECTS, PersistentDataType.STRING)) return parseRawData(getRawData(meta, def));
+        else if (meta instanceof PotionMeta p){
+            Map<String, PotionTypeEffectWrapper> wrapper = typeToEffectWrappings.get(p.getBasePotionData().getType());
+            if (wrapper == null) return new HashMap<>();
+            return wrapper.values().stream().map(e -> e.get(p.getBasePotionData())).collect(Collectors.toMap(PotionEffectWrapper::getEffect, e -> e));
+        }
+        return new HashMap<>();
     }
 
     public static String getRawData(ItemMeta meta, boolean def){
@@ -723,6 +751,48 @@ public class PotionEffectRegistry {
             PotionEffectWrapper effectForName = effects.values().stream().findAny().orElse(null);
             String effectName = effectForName.getPotionName();
             meta.setDisplayName(Utils.chat(format.replace("%icon%", effectForName.getEffectIcon()).replace("%effect%", effectName).replace("%item%", ItemUtils.getItemName(meta))));
+        }
+    }
+
+    private static class PotionTypeEffectWrapper {
+        private final String potionEffectType;
+        private int durationBase = 0;
+        private int durationUpgraded = 0;
+        private int durationExtended = 0;
+        private int amplifierBase = 0;
+        private int amplifierUpgraded = 0;
+
+        public PotionTypeEffectWrapper(String type){
+            this.potionEffectType = type;
+        }
+
+        public PotionTypeEffectWrapper dB(int duration){
+            this.durationBase = duration * 20;
+            return this;
+        }
+
+        public PotionTypeEffectWrapper dUp(int duration){
+            this.durationUpgraded = duration * 20;
+            return this;
+        }
+
+        public PotionTypeEffectWrapper dEx(int duration){
+            this.durationExtended = duration * 20;
+            return this;
+        }
+
+        public PotionTypeEffectWrapper aB(int amplifier){
+            this.amplifierBase = amplifier * 20;
+            return this;
+        }
+
+        public PotionTypeEffectWrapper aU(int amplifier){
+            this.amplifierUpgraded = amplifier * 20;
+            return this;
+        }
+
+        public PotionEffectWrapper get(PotionData data){
+            return getEffect(potionEffectType).setAmplifier(data.isUpgraded() ? amplifierUpgraded : amplifierBase).setDuration(data.isExtended() ? durationExtended : data.isUpgraded() ? durationUpgraded : durationBase);
         }
     }
 }

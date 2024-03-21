@@ -5,7 +5,6 @@ import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
-import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.EnchantmentClassification;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
@@ -88,7 +87,7 @@ public class EnchantingSkill extends Skill implements Listener {
         this.anvilDowngrading = skillConfig.getBoolean("anvil_downgrading");
         this.diminishingReturnsMultiplier = progressionConfig.getDouble("experience.diminishing_returns.multiplier");
         this.diminishingReturnsCount = progressionConfig.getInt("experience.diminishing_returns.amount");
-        progressionConfig.getStringList("experience.diminishing_returns.on").forEach(s -> {
+        progressionConfig.getStringList("experience.diminishing_returns.mobs").forEach(s -> {
             EntityType e = Catch.catchOrElse(() -> EntityType.valueOf(s), null, "Invalid entity type given in skills/enchanting_progression.yml experience.diminishing_returns.on." + s);
             if (e == null) return;
             this.diminishingReturnsEntities.add(e);

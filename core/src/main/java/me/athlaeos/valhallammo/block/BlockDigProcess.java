@@ -51,7 +51,7 @@ public class BlockDigProcess {
         if (instantBlockBreakerTask != null && !done) return;
         done = false;
         instantBlockBreakerTask = ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-            blocksToBreakInstantly.forEach((u, l) -> {
+            new HashMap<>(blocksToBreakInstantly).forEach((u, l) -> {
                 Player p = ValhallaMMO.getInstance().getServer().getPlayer(u);
                 if (p == null || !p.isOnline()){
                     blocksToBreakInstantly.remove(u);

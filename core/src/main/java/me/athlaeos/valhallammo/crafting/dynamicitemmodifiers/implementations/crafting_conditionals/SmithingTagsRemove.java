@@ -24,7 +24,7 @@ public class SmithingTagsRemove extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        SmithingItemPropertyManager.removeTag(outputItem.getMeta(), tags.toArray(new Integer[0]));
+        tags.forEach(i -> SmithingItemPropertyManager.removeTag(outputItem.getMeta(), i));
     }
 
     @Override

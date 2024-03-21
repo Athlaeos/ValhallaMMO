@@ -52,7 +52,7 @@ public class ModifyCommand implements Command {
                         return true;
                     }
                 } else {
-                    sender.sendMessage(Utils.chat("&cOnly players may perform this command."));
+                    Utils.sendMessage(sender, "&cOnly players may perform this command.");
                     return true;
                 }
 

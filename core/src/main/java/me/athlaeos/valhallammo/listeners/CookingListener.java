@@ -83,10 +83,7 @@ public class CookingListener implements Listener {
                     handItem = new ItemBuilder(p.getInventory().getItemInOffHand());
                     recipes = getCampfireRecipe(handItem.getItem());
                 }
-                if (recipes.getOne() == null) {
-                    e.setCancelled(true);
-                    return; // no recipe was found at all, so do nothing
-                }
+                if (recipes.getOne() == null) return; // no recipe was found at all, so do nothing
                 if (recipes.getTwo() == null) {
                     if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) e.setCancelled(true);
                     return;// vanilla recipe found, cancel if recipe is disabled

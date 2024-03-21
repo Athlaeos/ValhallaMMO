@@ -465,7 +465,7 @@ public class CauldronCraftingListener implements Listener {
         @Override
         public void run() {
             Item i = (ValhallaMMO.getInstance().getServer().getEntity(item) instanceof Item it) ? it : null;
-            Player p = ValhallaMMO.getInstance().getServer().getPlayer(thrower);
+            Player p = thrower == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(thrower);
             if (ticks > 0 && i != null && i.isValid() && p != null){
                 Block b = i.getLocation().getBlock();
                 if (!b.getType().toString().contains("CAULDRON")) b = i.getLocation().add(0, -0.9, 0).getBlock();

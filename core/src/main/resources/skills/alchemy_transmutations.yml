@@ -40,7 +40,7 @@ transmutations:
     to: BIRCH_PLANKS
   planks_2:
     from: BIRCH_PLANKS
-    to: SPRUCE_LOG
+    to: SPRUCE_PLANKS
   planks_3:
     from: SPRUCE_PLANKS
     to: DARK_OAK_PLANKS

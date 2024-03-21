@@ -25,9 +25,9 @@ public class SmithingTagsCancelIfAbsent extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        Collection<Integer> tagsToCheck = SmithingItemPropertyManager.getTags(outputItem.getMeta());
+        Map<Integer, Integer> tagsToCheck = SmithingItemPropertyManager.getTags(outputItem.getMeta());
         for (Integer tag : tags){
-            if (!tagsToCheck.contains(tag)) {
+            if (!tagsToCheck.containsKey(tag)) {
                 String message = SmithingItemPropertyManager.getTagRequiredErrors().get(tag);
                 if (tag != null) failedRecipe(outputItem, message);
                 else failedRecipe(outputItem, TranslationManager.getTranslation("modifier_warning_required_smithing_tag"));

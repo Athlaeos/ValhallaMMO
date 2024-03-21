@@ -100,8 +100,13 @@ public class FishingSkill extends Skill implements Listener {
         FishingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FishingProfile.class);
         if (e.getState() == PlayerFishEvent.State.FISHING) {
             double multiplier = (1 / (1 + Math.max(-0.999, profile.getFishingSpeedBonus())));
-            e.getHook().setMinWaitTime(Math.max(0, Utils.randomAverage(e.getHook().getMinWaitTime() * multiplier)));
-            e.getHook().setMaxWaitTime(Utils.randomAverage(e.getHook().getMaxWaitTime() * multiplier));
+//            ItemStack rod = e.getPlayer().getInventory().getItem(e.getHand() == null ? EquipmentSlot.HAND : e.getHand());
+//            if (ItemUtils.isEmpty(rod)) return;
+//            int lureLevel = rod.getEnchantmentLevel(Enchantment.LURE);
+//            int minWaitTime = Math.max(1, e.getHook().getMinWaitTime() - (lureLevel * 100));
+//            int maxWaitTime = Math.max(1, e.getHook().getMaxWaitTime() - (lureLevel * 100));
+            e.getHook().setWaitTime(Math.max(1, Utils.randomAverage(e.getHook().getMinWaitTime() * multiplier)), Math.max(1, Utils.randomAverage(e.getHook().getMaxWaitTime() * multiplier)));
+
         } else if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             int extraCatches = Utils.randomAverage(profile.getFishingDrops());
             if (!forgivingDropMultipliers && extraCatches < 0) {

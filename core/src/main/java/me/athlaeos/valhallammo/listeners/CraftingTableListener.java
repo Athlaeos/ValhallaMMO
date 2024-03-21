@@ -215,7 +215,6 @@ public class CraftingTableListener implements Listener {
             inventory.setResult(null);
             return;
         }
-        if (crafted instanceof Keyed k && !CustomRecipeRegistry.getGridRecipesByKey().containsKey(k.getKey())) return;
         Player crafter = (Player) e.getViewers().get(0);
 
         Map<Integer, ItemMeta> matrixMeta = new HashMap<>();
@@ -281,6 +280,8 @@ public class CraftingTableListener implements Listener {
             }
             return;
         }
+
+        if (crafted instanceof Keyed k && !CustomRecipeRegistry.getGridRecipesByKey().containsKey(k.getKey())) return;
 
         if ((crafted instanceof ShapedRecipe || crafted instanceof ShapelessRecipe) && !e.getViewers().isEmpty()){
             DynamicGridRecipe recipe = CustomRecipeRegistry.getGridRecipesByKey().get(((Keyed) crafted).getKey());

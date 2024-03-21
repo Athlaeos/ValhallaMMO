@@ -181,7 +181,7 @@ perks:
     description: "<lang.fishing_perk_6_description>"
     cost: 1
     hidden: false
-    required_lv: 60
+    required_lv: 80
     perk_rewards:
       fishing_fishingdrops_add: 0.25
       fishing_fishingessencemultiplier_add: 1

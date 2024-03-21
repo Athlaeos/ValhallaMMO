@@ -94,9 +94,10 @@ experience:
     # is reduced to only 20% (multiplier of 0.2). Now their tally counter is 5 instead of 55, so their experience isn't reduced.
     multiplier: 0.2
     amount: 10
-    on:
+    mobs:
       - ENDERMAN
       - ZOMBIFIED_PIGLIN
+      - GUARDIAN
     mob_experience: # Alternatively, you may also choose to directly reduce (or buff!) the enchanting experience rewarded from these
       # entities. In case you want to nerf popular experience farms such as Endermen or Zombie Piglin grinders.
       # By default these multipliers are 1.0 so they don't do anything, they are just there as examples.

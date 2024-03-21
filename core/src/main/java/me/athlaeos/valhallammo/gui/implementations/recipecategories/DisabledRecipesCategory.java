@@ -43,7 +43,7 @@ public class DisabledRecipesCategory extends RecipeCategory{
         while (recipes.hasNext()){
             Recipe recipe = recipes.next();
             if (!(recipe instanceof Keyed k) || ItemUtils.isEmpty(recipe.getResult())) continue;
-            if (CustomRecipeRegistry.getAllKeyedRecipes().containsKey(k.getKey())) continue;
+            if (CustomRecipeRegistry.getAllKeyedRecipes().containsKey(k.getKey()) || !k.getKey().getNamespace().equalsIgnoreCase(NamespacedKey.MINECRAFT)) continue;
             int priority;
             String prefix;
             List<String> lore = new ArrayList<>();

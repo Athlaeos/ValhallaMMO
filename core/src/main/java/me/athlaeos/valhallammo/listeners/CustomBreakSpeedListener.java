@@ -198,7 +198,7 @@ public class CustomBreakSpeedListener implements Listener {
             // change in mining fatigue effect
             e.setOverride(true);
         } else if ((e.getAction() == EntityPotionEffectEvent.Action.REMOVED || e.getAction() == EntityPotionEffectEvent.Action.CLEARED) &&
-                e.getOldEffect() != null && e.getOldEffect().getType() == PotionEffectType.SLOW_DIGGING && e.getOldEffect().getAmplifier() >= 0) {
+                e.getOldEffect() != null && e.getOldEffect().getType() == PotionEffectType.SLOW_DIGGING && (e.getOldEffect().getAmplifier() < 0 || e.getOldEffect().getAmplifier() > 4)) {
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> fatiguePlayer(p), 2L);
         }
     }

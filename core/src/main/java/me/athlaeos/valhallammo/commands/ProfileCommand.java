@@ -30,7 +30,7 @@ public class ProfileCommand implements CommandExecutor {
         } else if (sender instanceof Player){
             target = (Player) sender;
         } else {
-            sender.sendMessage(Utils.chat("&cOnly players can do this"));
+            Utils.sendMessage(sender, "&cOnly players can do this");
             return true;
         }
 

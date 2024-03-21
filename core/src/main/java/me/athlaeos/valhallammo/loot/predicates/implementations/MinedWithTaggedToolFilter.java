@@ -101,7 +101,7 @@ public class MinedWithTaggedToolFilter extends LootPredicate {
         ItemMeta meta = ItemUtils.getItemMeta(tool);
         if (meta == null) return inverted;
 
-        return SmithingItemPropertyManager.getTags(meta).containsAll(tags) != inverted;
+        return SmithingItemPropertyManager.getTags(meta).keySet().containsAll(tags) != inverted;
     }
 
     @Override

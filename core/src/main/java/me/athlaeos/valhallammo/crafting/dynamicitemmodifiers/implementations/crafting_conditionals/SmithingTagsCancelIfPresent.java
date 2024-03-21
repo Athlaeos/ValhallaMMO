@@ -25,7 +25,7 @@ public class SmithingTagsCancelIfPresent extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        for (Integer tag : SmithingItemPropertyManager.getTags(outputItem.getMeta())){
+        for (Integer tag : SmithingItemPropertyManager.getTags(outputItem.getMeta()).keySet()){
             if (tags.contains(tag)) {
                 String message = SmithingItemPropertyManager.getTagForbiddenErrors().get(tag);
                 if (tag != null) failedRecipe(outputItem, message);

@@ -30,15 +30,6 @@ public class SmithingTableListener implements Listener {
 
     private final Map<UUID, SmithingAdditionInfo> smithingAdditionInfoMap = new HashMap<>();
 
-//    @EventHandler
-//    public void onSmithingDrag(InventoryDragEvent e){
-//        if (e.getView().getTopInventory() instanceof SmithingInventory) {
-//            boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
-//            if (isTemplateCompatible) ItemUtils.calculateDragEvent(e, 1, 0, 1, 2);
-//            else ItemUtils.calculateDragEvent(e, 1, 0, 1);
-//        }
-//    }
-
     @EventHandler
     public void onSmithingInteract(InventoryClickEvent e){
         boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
@@ -57,21 +48,18 @@ public class SmithingTableListener implements Listener {
             if (base == null || addition == null) return;
             if (!ItemUtils.isEmpty(template)) template = template.clone();
 
-            Pair<SmithingRecipe, DynamicSmithingRecipe> recipes = getSmithingRecipe(template, base.getItem(), addition.getItem());
+            Pair<SmithingRecipe, DynamicSmithingRecipe> recipes = getSmithingRecipe(template, base, addition);
             if (recipes == null){
                 e.setCancelled(true);
                 s.setResult(null);
                 return;
             }
-            if (recipes.getOne() == null) {
-                return; // no recipe was found at all, so do nothing
-            }
+            if (recipes.getOne() == null) return; // no recipe was found at all, so do nothing
             if (recipes.getTwo() == null) {
                 if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) s.setResult(null);
                 return;// vanilla recipe found, cancel if recipe is disabled
             }
             DynamicSmithingRecipe r = recipes.getTwo();
-
             int availableSpace = ItemUtils.maxInventoryFit(p, r.getResult());
             int crafted = 1;
             if (e.isShiftClick()){
@@ -133,109 +121,109 @@ public class SmithingTableListener implements Listener {
         }
     }
 
+    @SuppressWarnings("all")
     @EventHandler
     public void onPrepareSmithing(PrepareSmithingEvent e){
-        boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
 
-        int baseIndex = isTemplateCompatible ? 1 : 0;
-        int templateIndex = baseIndex - 1;
-        int additionIndex = baseIndex + 1;
-        SmithingInventory s = e.getInventory();
-        ItemStack template = isTemplateCompatible ? s.getItem(templateIndex) : null;
-        ItemStack rawBase = s.getItem(baseIndex);
-        ItemBuilder base = ItemUtils.isEmpty(rawBase) ? null : new ItemBuilder(rawBase);
-        ItemStack rawAddition = s.getItem(additionIndex);
-        ItemBuilder addition = ItemUtils.isEmpty(rawAddition) ? null : new ItemBuilder(rawAddition);
-        if (base == null || addition == null) return;
-        Pair<SmithingRecipe, DynamicSmithingRecipe> recipes = getSmithingRecipe(template, base.getItem(), addition.getItem());
-        if (recipes == null){
-            e.setResult(null);
-            return;
-        }
-        if (recipes.getOne() == null) {
-            e.setResult(null);
-            return; // no recipe was found at all, so do nothing
-        }
-        if (recipes.getTwo() == null) {
-            if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) {
-                e.setResult(null);
-            }
-            if (e.getResult() != null && SmithingItemPropertyManager.hasSmithingQuality(base.getMeta()) &&
-                    base.getItem().getType() != e.getResult().getType()) e.setResult(null);
-            return;// vanilla recipe found, cancel if recipe is disabled or if resulting item is custom and different from result item
-        }
-        DynamicSmithingRecipe recipe = recipes.getTwo();
-        ItemStack originalAddition = rawAddition.clone();
-        Player p = (Player) e.getView().getPlayer();
-        PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
-        if (profile == null ||
-                (recipe.getValidations().stream().anyMatch(v -> {
-                    Validation validation = ValidationRegistry.getValidation(v);
-                    if (validation != null && s.getLocation() != null) {
-                        boolean invalid = !validation.validate(s.getLocation().getBlock());
-                        if (invalid) Utils.sendActionBar(p, validation.validationError());
-                        return invalid;
-                    }
-                    return false;
-                })) ||
-                (ValhallaMMO.isWorldBlacklisted(p.getWorld().getName())) ||
-                (WorldGuardHook.inDisabledRegion(p.getLocation(), WorldGuardHook.VMMO_CRAFTING_SMITHING)) ||
-                (!p.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName()))) {
-            // If the the player's profile is null, the player hasn't unlocked the recipe,
-            // the world is blacklisted, any of the validations failed, or the location is in a region
-            // which blocks custom recipes, cancel campfire interaction
-            e.setResult(null);
-            return;
-        }
-        if (recipe.requireValhallaTools()){
-            if (EquipmentClass.getMatchingClass(base.getMeta()) != null && !SmithingItemPropertyManager.hasSmithingQuality(base.getMeta()) ||
-                    EquipmentClass.getMatchingClass(addition.getMeta()) != null && !SmithingItemPropertyManager.hasSmithingQuality(addition.getMeta())){
+            int baseIndex = isTemplateCompatible ? 1 : 0;
+            int templateIndex = baseIndex - 1;
+            int additionIndex = baseIndex + 1;
+            SmithingInventory s = e.getInventory();
+            ItemStack template = isTemplateCompatible ? s.getItem(templateIndex) : null;
+            ItemStack rawBase = s.getItem(baseIndex);
+            ItemBuilder base = ItemUtils.isEmpty(rawBase) ? null : new ItemBuilder(rawBase);
+            ItemStack rawAddition = s.getItem(additionIndex);
+            ItemBuilder addition = ItemUtils.isEmpty(rawAddition) ? null : new ItemBuilder(rawAddition);
+            if (base == null || addition == null) return;
+            Pair<SmithingRecipe, DynamicSmithingRecipe> recipes = getSmithingRecipe(template, base, addition);
+            if (recipes == null){
                 e.setResult(null);
                 return;
             }
-        }
+            if (recipes.getOne() == null) {
+                e.setResult(null);
+                return; // no recipe was found at all, so do nothing
+            }
+            if (recipes.getTwo() == null) {
+                if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) {
+                    e.setResult(null);
+                }
+                if (e.getResult() != null && SmithingItemPropertyManager.hasSmithingQuality(base.getMeta()) &&
+                        base.getItem().getType() != e.getResult().getType()) e.setResult(null);
+                return;// vanilla recipe found, cancel if recipe is disabled or if resulting item is custom and different from result item
+            }
+            DynamicSmithingRecipe recipe = recipes.getTwo();
+            ItemStack originalAddition = rawAddition.clone();
+            Player p = (Player) e.getView().getPlayer();
+            PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
+            if (profile == null ||
+                    (recipe.getValidations().stream().anyMatch(v -> {
+                        Validation validation = ValidationRegistry.getValidation(v);
+                        if (validation != null && s.getLocation() != null) {
+                            boolean invalid = !validation.validate(s.getLocation().getBlock());
+                            if (invalid) Utils.sendActionBar(p, validation.validationError());
+                            return invalid;
+                        }
+                        return false;
+                    })) ||
+                    (ValhallaMMO.isWorldBlacklisted(p.getWorld().getName())) ||
+                    (WorldGuardHook.inDisabledRegion(p.getLocation(), WorldGuardHook.VMMO_CRAFTING_SMITHING)) ||
+                    (!p.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName()))) {
+                // If the the player's profile is null, the player hasn't unlocked the recipe,
+                // the world is blacklisted, any of the validations failed, or the location is in a region
+                // which blocks custom recipes, cancel campfire interaction
+                e.setResult(null);
+                return;
+            }
 
-        ItemBuilder result = new ItemBuilder(recipe.tinkerBase() ? base.getItem() : recipe.getResult());
-        DynamicItemModifier.modify(result, addition, p, recipe.getResultModifiers(), false, false, true);
-        if (ItemUtils.isEmpty(result.getItem()) || ItemUtils.isEmpty(addition.getItem())) {
-            s.setResult(null);
-            return;
-        }
-        if (!recipe.consumeAddition()){
-            // the addition may be modified, but we can't modify the addition directly as this would allow
-            // modification without crafting. The addition must therefore be cached along with the other
-            // recipe specifications, we then later check if during the recipe execution the specifications
-            // match or otherwise we cancel
-            DynamicItemModifier.modify(addition, result, p, recipe.getAdditionModifiers(), false, false, true);
+            ItemBuilder result = new ItemBuilder(recipe.tinkerBase() ? base.getItem() : recipe.getResult());
+            DynamicItemModifier.modify(result, addition, p, recipe.getResultModifiers(), false, false, true);
             if (ItemUtils.isEmpty(result.getItem()) || ItemUtils.isEmpty(addition.getItem())) {
                 s.setResult(null);
                 return;
             }
-        }
-        if (CustomDurabilityManager.getDurability(result.getMeta(), true) > 0 && CustomDurabilityManager.getDurability(result.getMeta(), false) <= 0) result = null;
-        if (CustomDurabilityManager.getDurability(addition.getMeta(), true) > 0 && CustomDurabilityManager.getDurability(addition.getMeta(), false) <= 0) result = null;
-        smithingAdditionInfoMap.put(p.getUniqueId(), new SmithingAdditionInfo(recipe, base.get(), originalAddition, addition.get()));
-        e.setResult(result == null ? null : result.get());
+            if (!recipe.consumeAddition()){
+                // the addition may be modified, but we can't modify the addition directly as this would allow
+                // modification without crafting. The addition must therefore be cached along with the other
+                // recipe specifications, we then later check if during the recipe execution the specifications
+                // match or otherwise we cancel
+                DynamicItemModifier.modify(addition, result, p, recipe.getAdditionModifiers(), false, false, true);
+                if (ItemUtils.isEmpty(result.getItem()) || ItemUtils.isEmpty(addition.getItem())) {
+                    s.setResult(null);
+                    return;
+                }
+            }
+            if (CustomDurabilityManager.getDurability(result.getMeta(), true) > 0 && CustomDurabilityManager.getDurability(result.getMeta(), false) <= 0) result = null;
+            if (CustomDurabilityManager.getDurability(addition.getMeta(), true) > 0 && CustomDurabilityManager.getDurability(addition.getMeta(), false) <= 0) result = null;
+            smithingAdditionInfoMap.put(p.getUniqueId(), new SmithingAdditionInfo(recipe, base.get(), originalAddition, addition.get()));
+            s.setResult(result == null ? null : result.get());
+        }, 1L);
     }
 
     public static final Map<String, Pair<SmithingRecipe, DynamicSmithingRecipe>> smithingRecipeCache = new HashMap<>();
 
-    private Pair<SmithingRecipe, DynamicSmithingRecipe> getSmithingRecipe(ItemStack template, ItemStack base, ItemStack addition){
-        if (ItemUtils.isEmpty(base) || ItemUtils.isEmpty(addition)) return new Pair<>(null, null);
-        String key = key(template, base, addition);
+    private Pair<SmithingRecipe, DynamicSmithingRecipe> getSmithingRecipe(ItemStack template, ItemBuilder base, ItemBuilder addition){
+        if (base == null || addition == null) return new Pair<>(null, null);
+        String key = key(template, base.getItem(), addition.getItem());
         if (smithingRecipeCache.containsKey(key)) return smithingRecipeCache.get(key);
         boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
         Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
         SmithingRecipe found = null;
         while (iterator.hasNext()){
-            if (iterator.next() instanceof SmithingRecipe s && s.getBase().test(base) && s.getAddition().test(addition)){
+            if (iterator.next() instanceof SmithingRecipe s && s.getBase().test(base.getItem()) && s.getAddition().test(addition.getItem())){
                 found = s;
                 DynamicSmithingRecipe dynamicRecipe = CustomRecipeRegistry.getSmithingRecipesByKey().get(s.getKey());
-                if (dynamicRecipe != null && dynamicRecipe.getBase().getOption().matches(dynamicRecipe.getBase().getItem(), base) &&
-                        dynamicRecipe.getAddition().getOption().matches(dynamicRecipe.getAddition().getItem(), addition)) {
+                if (dynamicRecipe != null && dynamicRecipe.getBase().getOption().matches(dynamicRecipe.getBase().getItem(), base.getItem()) &&
+                        dynamicRecipe.getAddition().getOption().matches(dynamicRecipe.getAddition().getItem(), addition.getItem())) {
                     if (isTemplateCompatible && ItemUtils.isEmpty(template)) continue; // 1.20+ recipes need to be template compatible, and so templates cannot be null
                     // templates are considered matching if templates aren't in the game yet, if the dynamic recipe template is null,
                     // or if the dynamic template matches the template item
+                    if (dynamicRecipe.requireValhallaTools() && (EquipmentClass.getMatchingClass(base.getMeta()) != null && !SmithingItemPropertyManager.hasSmithingQuality(base.getMeta()) ||
+                            EquipmentClass.getMatchingClass(addition.getMeta()) != null && !SmithingItemPropertyManager.hasSmithingQuality(addition.getMeta()))){
+                        continue;
+                    }
                     boolean templatesMatch = !isTemplateCompatible || ((dynamicRecipe.getTemplate() == null || dynamicRecipe.getTemplate().getOption() == null || ItemUtils.isEmpty(dynamicRecipe.getTemplate().getItem())) ?
                             ItemUtils.isEmpty(template) :
                             dynamicRecipe.getTemplate().getOption().matches(dynamicRecipe.getTemplate().getItem(), template));

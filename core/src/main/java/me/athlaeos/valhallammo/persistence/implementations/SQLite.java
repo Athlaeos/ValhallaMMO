@@ -120,7 +120,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
                     }
                 }
                 persistentProfiles.put(p.getUniqueId(), profs);
-                p.sendMessage(Utils.chat(TranslationManager.getTranslation("status_profiles_loaded")));
+                Utils.sendMessage(p, TranslationManager.getTranslation("status_profiles_loaded"));
 
                 SkillRegistry.updateSkillProgression(p, runPersistentStartingPerks);
             }
