@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class SmithingTagsAdd extends DynamicItemModifier {
     private final Collection<Integer> tags = new HashSet<>();
-    private final Map<Integer, Integer> newTags = new HashMap<>();
+    private Map<Integer, Integer> newTags = new HashMap<>();
     private int tag = 0;
     private int level = 1;
 
@@ -28,6 +28,7 @@ public class SmithingTagsAdd extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+        if (newTags == null) newTags = new HashMap<>();
         if (!tags.isEmpty()) {
             tags.forEach(t -> newTags.put(t, 1));
             tags.clear();
@@ -111,6 +112,11 @@ public class SmithingTagsAdd extends DynamicItemModifier {
 
     @Override
     public String getActiveDescription() {
+        if (newTags == null) newTags = new HashMap<>();
+        if (!tags.isEmpty()) {
+            tags.forEach(t -> newTags.put(t, 1));
+            tags.clear();
+        }
         return "&fAdds the following tags to the item: /n&e" + (newTags.isEmpty() ? List.of("&cNone") : newTags.keySet().stream().map(t ->
                 "&e" + Objects.requireNonNullElse(
                         SmithingItemPropertyManager.getTagLore(t) + " " + StringUtils.toRoman(Math.max(1, newTags.get(t))),
@@ -124,6 +130,11 @@ public class SmithingTagsAdd extends DynamicItemModifier {
     }
 
     public Map<Integer, Integer> getNewTags() {
+        if (newTags == null) newTags = new HashMap<>();
+        if (!tags.isEmpty()) {
+            tags.forEach(t -> newTags.put(t, 1));
+            tags.clear();
+        }
         return newTags;
     }
 

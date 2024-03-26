@@ -136,7 +136,7 @@ public class BrewingStandListener implements Listener {
                 activeStands.remove(inventory.getLocation());
                 return;
             }
-            Map<Integer, DynamicBrewingRecipe> recipes = getBrewingRecipes(inventory, p);
+            Map<Integer, DynamicBrewingRecipe> recipes = WorldGuardHook.inDisabledRegion(inventory.getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ? new HashMap<>() : getBrewingRecipes(inventory, p);
             BrewingStand brewingStand = inventory.getHolder();
             if (brewingStand == null) return;
             if (recipes.isEmpty() || (activeStand != null && activeStand.visualProgress <= 0)){
@@ -258,8 +258,7 @@ public class BrewingStandListener implements Listener {
         boolean allowedAllRecipes = brewer != null && brewer.hasPermission("valhalla.allrecipes");
         Map<Integer, DynamicBrewingRecipe> recipes = new HashMap<>();
 
-        if (inventory.getLocation() != null && inventory.getLocation().getWorld() != null && (ValhallaMMO.isWorldBlacklisted(inventory.getLocation().getWorld().getName()) ||
-                WorldGuardHook.inDisabledRegion(inventory.getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING))) {
+        if (inventory.getLocation() != null && inventory.getLocation().getWorld() != null && (ValhallaMMO.isWorldBlacklisted(inventory.getLocation().getWorld().getName()))) {
             return recipes; // no recipes returned if profile is null, world is disabled, or in blocking region
         }
         ItemStack ingredient = inventory.getIngredient();

@@ -6,10 +6,8 @@ import me.athlaeos.valhallammo.block.BlockExplodeBlockDestructionInfo;
 import me.athlaeos.valhallammo.block.EntityExplodeBlockDestructionInfo;
 import me.athlaeos.valhallammo.block.GenericBlockDestructionInfo;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.dom.Fetcher;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
-import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.event.BlockDestructionEvent;
 import me.athlaeos.valhallammo.event.ValhallaLootPopulateEvent;
@@ -26,6 +24,7 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.ArchaeologyListener;
+import me.athlaeos.valhallammo.version.PaperLootRefillHandler;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -454,6 +453,7 @@ public class LootListener implements Listener {
                 e.useInteractedBlock() == Event.Result.DENY || e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getHand() == EquipmentSlot.OFF_HAND) return;
         Block b = e.getClickedBlock();
         if (!(b.getState() instanceof Lootable l) || !(b.getState() instanceof Container c) || ArchaeologyListener.isBrushable(b.getState())) return;
+        if (ValhallaMMO.isUsingPaperMC() && !PaperLootRefillHandler.canGenerateLoot(b.getState(), e.getPlayer())) return;
         LootTable table = LootTableRegistry.getLootTable(b, b.getType());
         if (table == null && l.getLootTable() != null) table = LootTableRegistry.getLootTable(l.getLootTable().getKey());
         if (table == null) return;
@@ -656,80 +656,6 @@ public class LootListener implements Listener {
         }, 1L);
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onFish(PlayerFishEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() ||
-                e.getState() != PlayerFishEvent.State.CAUGHT_FISH || !(e.getCaught() instanceof Item i)) return;
-        Player p = e.getPlayer();
-        AttributeInstance luckAttribute = p.getAttribute(Attribute.GENERIC_LUCK);
-        double luck = AccumulativeStatManager.getCachedStats("FISHING_LUCK", p, 10000, true) + LootListener.getPreparedLuck(p);
-        if (luckAttribute != null) luck += luckAttribute.getValue();
-
-        FishingTableEntry pickedEntry = Utils.weightedSelection(fishingTables, 1, luck).stream().findFirst().orElse(null);
-        if (pickedEntry == null) return; // somehow, no entry. bail out
-        LootContext context = new LootContext.Builder(p.getLocation()).luck((float) luck).lootingModifier(0).killer(p).lootedEntity(p).build();
-
-        List<ItemStack> vanillaLoot = new ArrayList<>(pickedEntry.vanillaTable.getLootTable().populateLoot(Utils.getRandom(), context));
-        if (!vanillaLoot.isEmpty()) { // re-setting new vanilla loot to hook
-            i.setItemStack(vanillaLoot.get(0));
-            vanillaLoot.remove(0);
-        }
-        if (pickedEntry.valhallaTable.get() != null){
-            LootTable table = pickedEntry.valhallaTable.get();
-            List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.FISH);
-
-            ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
-            if (!loottableEvent.isCancelled()){
-                LootListener.prepareFishingDrops(p.getUniqueId(), loottableEvent.getDrops());
-                boolean clearVanilla = switch (loottableEvent.getPreservationType()){
-                    case CLEAR -> true;
-                    case CLEAR_UNLESS_EMPTY -> !loottableEvent.getDrops().isEmpty();
-                    case KEEP -> false;
-                };
-                if (clearVanilla) {
-                    if (loottableEvent.getDrops().isEmpty()) {
-                        e.setCancelled(true); // custom table returned no drops and is configured to clear vanilla loot, so event should be cancelled
-                        return;
-                    } else {
-                        i.setItemStack(loottableEvent.getDrops().get(0)); // overwriting vanilla drop with custom one
-                        loottableEvent.getDrops().remove(0);
-                    }
-                } else prepareFishingDrops(p.getUniqueId(), vanillaLoot);
-                prepareFishingDrops(p.getUniqueId(), loottableEvent.getDrops());
-            }
-        }
-    }
-
-    public static void simulateFishingEvent(Player p){
-        AttributeInstance luckAttribute = p.getAttribute(Attribute.GENERIC_LUCK);
-        double luck = AccumulativeStatManager.getCachedStats("FISHING_LUCK", p, 10000, true) + LootListener.getPreparedLuck(p);
-        if (luckAttribute != null) luck += luckAttribute.getValue();
-
-        FishingTableEntry pickedEntry = Utils.weightedSelection(fishingTables, 1, luck).stream().findFirst().orElse(null);
-        if (pickedEntry == null) return; // somehow, no entry. bail out
-        LootContext context = new LootContext.Builder(p.getLocation()).luck((float) luck).lootingModifier(0).killer(p).lootedEntity(p).build();
-
-        List<ItemStack> vanillaLoot = new ArrayList<>(pickedEntry.vanillaTable.getLootTable().populateLoot(Utils.getRandom(), context));
-        if (pickedEntry.valhallaTable.get() != null){
-            LootTable table = pickedEntry.valhallaTable.get();
-            List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.FISH);
-
-            ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
-            if (!loottableEvent.isCancelled()){
-                LootListener.prepareFishingDrops(p.getUniqueId(), loottableEvent.getDrops());
-                boolean clearVanilla = switch (loottableEvent.getPreservationType()){
-                    case CLEAR -> true;
-                    case CLEAR_UNLESS_EMPTY -> !loottableEvent.getDrops().isEmpty();
-                    case KEEP -> false;
-                };
-                if (!clearVanilla) prepareFishingDrops(p.getUniqueId(), vanillaLoot);
-                prepareFishingDrops(p.getUniqueId(), loottableEvent.getDrops());
-            }
-        } else prepareFishingDrops(p.getUniqueId(), vanillaLoot);
-    }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void onFishFinal(PlayerFishEvent e){
         preparedFishingLuckBuffs.remove(e.getPlayer().getUniqueId());
@@ -739,17 +665,6 @@ public class LootListener implements Listener {
             item.setVelocity(fishingItemVelocity(e.getHook().getLocation(), e.getPlayer().getLocation().add(0, e.getPlayer().getBoundingBox().getHeight() / 2, 0)));
         });
         preparedFishingDrops.remove(e.getPlayer().getUniqueId());
-    }
-
-    private static final Collection<FishingTableEntry> fishingTables = Set.of(
-            new FishingTableEntry(LootTables.FISHING_FISH, LootTableRegistry::getFishingFishLootTable, 1700, -3),
-            new FishingTableEntry(LootTables.FISHING_JUNK, LootTableRegistry::getFishingJunkLootTable, 200, -39),
-            new FishingTableEntry(LootTables.FISHING_TREASURE, LootTableRegistry::getFishingTreasureLootTable, 100, 42)
-    );
-
-    private record FishingTableEntry(LootTables vanillaTable, Fetcher<LootTable> valhallaTable, double baseWeight, double bonusWeightPerLuck) implements Weighted {
-        @Override public double getWeight() { return baseWeight; }
-        @Override public double getWeight(double luck) { return Math.max(0, baseWeight + (luck * bonusWeightPerLuck)); }
     }
 
     private Vector fishingItemVelocity(Location hook, Location player){

@@ -257,9 +257,9 @@ combat_time_frame: 5000
 # Various abilities can cause targets to bleed, how long should the delay between bleed damage ticks be (in minecraft ticks) with 1 stack of bleeding
 bleed_delay: 40
 # For each additional stack of bleeding, the delay between ticks is reduced and so bleeding becomes faster. By default, 5 stacks of bleed will reduce the time between
-# damage ticks from 40 to 20, and so the bleeding is doubled.
+# damage ticks from 40 to 20, and so the bleeding is doubled. 40-35-30-25-20
 bleed_stacked_delay: -5
-bleed_max_stacks: 5 # The maximum amount of stacks of bleed entities can take
+bleed_max_stacks: 4 # The maximum amount of stacks of bleed entities can take
 
 # ValhallaMMO features a parry system, where a successful parry heavily debuffs the parried enemy and reduces the damage
 # taken from the attack, while a failed one puts the parrier at a temporary vulnerability

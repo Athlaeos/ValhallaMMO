@@ -64,7 +64,7 @@ public class EntityDamagedListener implements Listener {
                 e.setDamage(0);
                 applyImmunity = true;
             }
-            if (e instanceof EntityDamageByEntityEvent d && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking() && d.getDamager() instanceof LivingEntity &&
+            if (e instanceof EntityDamageByEntityEvent d && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking() &&
                     EntityUtils.isEntityFacing(p, d.getDamager().getLocation(), EntityAttackListener.getFacingAngleCos())) return; // blocking with shield damage reduction
             final double damage = customDamage;
             if (applyImmunity){

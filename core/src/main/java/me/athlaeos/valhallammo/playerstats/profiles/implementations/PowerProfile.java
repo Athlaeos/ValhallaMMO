@@ -32,6 +32,7 @@ public class PowerProfile extends Profile {
         floatStat("sprintMovementSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("knockbackResistanceBonus", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("armorBonus", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create());
+        floatStat("armorlessArmor", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create());
         floatStat("armorMultiplierBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("toughnessBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
         floatStat("attackReachBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
@@ -219,6 +220,9 @@ public class PowerProfile extends Profile {
 
     public float getCraftingSoundVolume() { return getFloat("craftingEffectVolume"); }
     public void setCraftingSoundVolume(float volume) { setFloat("craftingEffectVolume", volume); }
+
+    public float getArmorlessArmor() { return getFloat("armorlessArmor"); }
+    public void setArmorlessArmor(float volume) { setFloat("armorlessArmor", volume); }
 
     public int getSpendableSkillPoints(){ return getInt("spendableSkillPoints");}
     public void setSpendableSkillPoints(int value){ setInt("spendableSkillPoints", value);}

@@ -369,6 +369,7 @@ public class Utils {
         // weighted selection
         double totalWeight = 0;
         List<T> selectedEntries = new ArrayList<>();
+        if (entries.isEmpty()) return selectedEntries;
         List<Pair<T, Double>> totalEntries = new ArrayList<>();
         for (T entry : entries){
             totalWeight += entry.getWeight(luck);

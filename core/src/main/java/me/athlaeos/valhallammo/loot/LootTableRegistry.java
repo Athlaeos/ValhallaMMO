@@ -140,10 +140,10 @@ public class LootTableRegistry {
                 int quantityMin = Utils.randomAverage(selectedEntry.getBaseQuantityMin() + (Math.max(0, context.getLootingModifier()) * selectedEntry.getQuantityMinFortuneBase()));
                 int quantityMax = Utils.randomAverage(selectedEntry.getBaseQuantityMax() + (Math.max(0, context.getLootingModifier()) * selectedEntry.getQuantityMaxFortuneBase()));
                 if (quantityMax < quantityMin) quantityMax = quantityMin;
-                int quantity = Utils.getRandom().nextInt(Math.max(1, quantityMax - quantityMin)) + quantityMin;
+                int quantity = Utils.getRandom().nextInt(Math.min(1, quantityMax - quantityMin + 1)) + quantityMin;
 
                 int trueQuantity = selectedEntry.getDrop().getAmount() * quantity;
-                if (trueQuantity > 0 ) loot.addAll(ItemUtils.decompressStacks(Map.of(item, trueQuantity)));
+                if (trueQuantity > 0) loot.addAll(ItemUtils.decompressStacks(Map.of(item, trueQuantity)));
                 else loot.add(item);
             }
         }

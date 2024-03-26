@@ -42,7 +42,7 @@ public class FoodPropertyManager {
         setDefaultProperties(Material.BEETROOT_SOUP, FoodClass.VEGETABLE, 6, 7.2F);
         setDefaultProperties(Material.CARROT, FoodClass.VEGETABLE, 3, 3.6F);
         setDefaultProperties(Material.DRIED_KELP, FoodClass.VEGETABLE, 1, 0.6F);
-        setDefaultProperties(Material.MUSHROOM_STEM, FoodClass.VEGETABLE, 6, 7.2F);
+        setDefaultProperties(Material.MUSHROOM_STEW, FoodClass.VEGETABLE, 6, 7.2F);
         setDefaultProperties(Material.POTATO, FoodClass.VEGETABLE, 1, 0.6F);
         setDefaultProperties(Material.SUSPICIOUS_STEW, FoodClass.VEGETABLE, 6, 7.2F);
 

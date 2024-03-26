@@ -227,8 +227,8 @@ public class MiningSkill extends Skill implements Listener {
     public void onEntityExplode(EntityExplodeEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof TNTPrimed tnt) || tnt.getSource() == null) return;
         Player responsible = null;
-        if (tnt.getSource() instanceof Player p) responsible = p;
-        else if (tnt.getSource() instanceof AbstractArrow a && a.getShooter() instanceof Player p) responsible = p;
+        if (tnt.getSource() instanceof Player p && p.isOnline()) responsible = p;
+        else if (tnt.getSource() instanceof AbstractArrow a && a.getShooter() instanceof Player p && p.isOnline()) responsible = p;
         if (responsible == null) return;
         if (WorldGuardHook.inDisabledRegion(responsible.getLocation(), responsible, WorldGuardHook.VMMO_SKILL_MINING)) return;
 
