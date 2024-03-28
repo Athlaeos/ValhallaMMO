@@ -54,6 +54,8 @@ public class CommandManager implements TabExecutor {
 			Utils.sendMessage(sender, Utils.chat(String.format("&eValhallaMMO v%s by Athlaeos", ValhallaMMO.getInstance().getDescription().getVersion())));
 			Utils.sendMessage(sender, Utils.chat("&7/val help"));
 			Utils.sendMessage(sender, Utils.chat("&7/skills"));
+			Utils.sendMessage(sender, "&r");
+			Utils.sendMessage(sender, "&7Wiki: &ehttps://github.com/Athlaeos/ValhallaMMO/wiki");
 			return true;
 		}
 

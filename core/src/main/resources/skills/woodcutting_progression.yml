@@ -217,6 +217,7 @@ perks:
         - planks_jungle_6
         - planks_dark_oak_6
         - planks_cherry_6
+        - planks_mangrove_6
         - planks_crimson_6
         - planks_warped_6
         - sticks_planks_8
@@ -228,6 +229,7 @@ perks:
         - stairs_jungle_8
         - stairs_dark_oak_8
         - stairs_cherry_8
+        - stairs_mangrove_8
         - stairs_crimson_8
         - stairs_warped_8
         - fences_oak_8
@@ -237,6 +239,7 @@ perks:
         - fences_jungle_8
         - fences_dark_oak_8
         - fences_cherry_8
+        - fences_mangrove_8
         - fences_crimson_8
         - fences_warped_8
         - fence_gates_oak_4
@@ -246,6 +249,7 @@ perks:
         - fence_gates_jungle_4
         - fence_gates_dark_oak_4
         - fence_gates_cherry_4
+        - fence_gates_mangrove_4
         - fence_gates_crimson_4
         - fence_gates_warped_4
         - doors_oak_6
@@ -255,6 +259,7 @@ perks:
         - doors_jungle_6
         - doors_dark_oak_6
         - doors_cherry_6
+        - doors_mangrove_6
         - doors_crimson_6
         - doors_warped_6
         - trap_doors_oak_8
@@ -264,6 +269,7 @@ perks:
         - trap_doors_jungle_8
         - trap_doors_dark_oak_8
         - trap_doors_cherry_8
+        - trap_doors_mangrove_8
         - trap_doors_crimson_8
         - trap_doors_warped_8
         - signs_oak_8
@@ -273,6 +279,7 @@ perks:
         - signs_jungle_8
         - signs_dark_oak_8
         - signs_cherry_8
+        - signs_mangrove_8
         - signs_crimson_8
         - signs_warped_8
     messages:

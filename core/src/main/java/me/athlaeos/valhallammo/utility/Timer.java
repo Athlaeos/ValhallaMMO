@@ -59,9 +59,9 @@ public class Timer {
      * @return true if passed, false if not
      */
     public static boolean isCooldownPassed(UUID entity, String cooldownKey){
-        if (!allCooldowns.containsKey(cooldownKey)) allCooldowns.put(cooldownKey, new HashMap<>());
-        if (allCooldowns.get(cooldownKey).containsKey(entity)){
-            return allCooldowns.get(cooldownKey).get(entity) <= System.currentTimeMillis();
+        allCooldowns.computeIfAbsent(cooldownKey, k -> new HashMap<>());
+        if (allCooldowns.getOrDefault(cooldownKey, new HashMap<>()).containsKey(entity)){
+            return allCooldowns.getOrDefault(cooldownKey, new HashMap<>()).get(entity) <= System.currentTimeMillis();
         }
         return true;
     }

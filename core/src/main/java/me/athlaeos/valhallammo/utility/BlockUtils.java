@@ -13,6 +13,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.CaveVines;
+import org.bukkit.block.data.type.Sapling;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
@@ -221,7 +222,7 @@ public class BlockUtils {
     public static boolean canReward(Block b){
         BlockData data = b.getBlockData();
         if (data instanceof CaveVines c) return c.isBerries();
-        if (!(data instanceof Ageable a) || ageableExceptions.contains(b.getType())) return !BlockStore.isPlaced(b);
+        if (data instanceof Sapling || (!(data instanceof Ageable a) || ageableExceptions.contains(b.getType()))) return !BlockStore.isPlaced(b);
         return a.getAge() >= a.getMaximumAge();
     }
 

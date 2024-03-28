@@ -12,6 +12,7 @@ starting_perks:
     - planks_jungle_4
     - planks_dark_oak_4
     - planks_cherry_4
+    - planks_mangrove_4
     - planks_crimson_4
     - planks_warped_4
     - sticks_planks_4
@@ -23,6 +24,7 @@ starting_perks:
     - stairs_jungle_4
     - stairs_dark_oak_4
     - stairs_cherry_4
+    - stairs_mangrove_4
     - stairs_crimson_4
     - stairs_warped_4
     - fences_oak_3
@@ -32,6 +34,7 @@ starting_perks:
     - fences_jungle_3
     - fences_dark_oak_3
     - fences_cherry_3
+    - fences_mangrove_3
     - fences_crimson_3
     - fences_warped_3
     - fence_gates_oak_1
@@ -41,6 +44,7 @@ starting_perks:
     - fence_gates_jungle_1
     - fence_gates_dark_oak_1
     - fence_gates_cherry_1
+    - fence_gates_mangrove_1
     - fence_gates_crimson_1
     - fence_gates_warped_1
     - doors_oak_3
@@ -50,6 +54,7 @@ starting_perks:
     - doors_jungle_3
     - doors_dark_oak_3
     - doors_cherry_3
+    - doors_mangrove_3
     - doors_crimson_3
     - doors_warped_3
     - trap_doors_oak_2
@@ -59,6 +64,7 @@ starting_perks:
     - trap_doors_jungle_2
     - trap_doors_dark_oak_2
     - trap_doors_cherry_2
+    - trap_doors_mangrove_2
     - trap_doors_crimson_2
     - trap_doors_warped_2
     - signs_oak_3
@@ -68,6 +74,7 @@ starting_perks:
     - signs_jungle_3
     - signs_dark_oak_3
     - signs_cherry_3
+    - signs_mangrove_3
     - signs_crimson_3
     - signs_warped_3
 

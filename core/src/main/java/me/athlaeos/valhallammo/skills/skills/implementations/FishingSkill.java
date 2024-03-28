@@ -114,7 +114,8 @@ public class FishingSkill extends Skill implements Listener {
 //            int lureLevel = rod.getEnchantmentLevel(Enchantment.LURE);
 //            int minWaitTime = Math.max(1, e.getHook().getMinWaitTime() - (lureLevel * 100));
 //            int maxWaitTime = Math.max(1, e.getHook().getMaxWaitTime() - (lureLevel * 100));
-            e.getHook().setWaitTime(Math.max(1, Utils.randomAverage(e.getHook().getMinWaitTime() * multiplier)), Math.max(1, Utils.randomAverage(e.getHook().getMaxWaitTime() * multiplier)));
+            e.getHook().setMinWaitTime(Math.max(1, Utils.randomAverage(e.getHook().getMinWaitTime() * multiplier)));
+            e.getHook().setMaxWaitTime(Math.max(1, Utils.randomAverage(e.getHook().getMaxWaitTime() * multiplier)));
 
         } else if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             int extraCatches = Utils.randomAverage(profile.getFishingDrops());
