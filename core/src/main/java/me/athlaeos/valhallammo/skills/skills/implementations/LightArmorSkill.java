@@ -110,6 +110,7 @@ public class LightArmorSkill extends Skill implements Listener {
         LightArmorProfile profile = ProfileCache.getOrCache(p, LightArmorProfile.class);
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            if (e.isCancelled() || !p.isOnline()) return;
             double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(p.getLocation().getChunk(), p, "armors");
             int count = EntityCache.getAndCacheProperties(p).getLightArmorCount();
             double totalLightArmor = AccumulativeStatManager.getCachedStats("TOTAL_LIGHT_ARMOR", p, 10000, false);

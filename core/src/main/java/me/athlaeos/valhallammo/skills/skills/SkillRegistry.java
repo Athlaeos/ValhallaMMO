@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.skills.skills;
 
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SkillRequirementAdd;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
 import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
@@ -69,6 +70,7 @@ public class SkillRegistry {
         PerkRewardRegistry.register(new SkillLevelsAdd("skill_levels_add_" + skill.getType().toLowerCase(), skill));
         PerkRewardRegistry.register(new SkillEXPAdd("skill_exp_add_" + skill.getType().toLowerCase(), skill));
         ModifierRegistry.register(new SkillExperience("reward_" + skill.getType().toLowerCase() + "_experience", skill.getType()));
+        ModifierRegistry.register(new SkillRequirementAdd("requirement_add_" + skill.getType().toLowerCase(), skill.getType()));
 
         skill.loadConfiguration();
         skill.perks.forEach(PerkRegistry::registerPerk);

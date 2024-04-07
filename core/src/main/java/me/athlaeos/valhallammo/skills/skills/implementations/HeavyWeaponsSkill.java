@@ -33,10 +33,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -143,20 +140,22 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onExpAttack(EntityDamageByEntityEvent e){
+    public void onExpAttack(EntityDamageEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
                 EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE) ||
-                e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) return;
-        if (e.getDamager() instanceof Player p && e.getEntity() instanceof Monster l){
+                e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK || !(e.getEntity() instanceof Monster l)) return;
+        Entity damager = EntityDamagedListener.getLastDamager(l);
+        if (damager instanceof Player p){
             if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_HEAVYWEAPONS)) return;
             ItemBuilder weapon = EntityCache.getAndCacheProperties(p).getMainHand();
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.HEAVY) return;
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                if (e.isCancelled() || !p.isOnline()) return;
                 double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);
                 addEXP(p,
-                        Math.min(EntityUtils.getMaxHP(l), EntityDamagedListener.getLastDamageTaken(l.getUniqueId(), e.getFinalDamage())) *
+                        Math.min(EntityUtils.getMaxHP(l), e.getDamage()) *
                                 expPerDamage *
                                 entityExpMultiplier *
                                 chunkNerf *

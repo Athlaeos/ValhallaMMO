@@ -19,8 +19,17 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.UUID;
+
 public class JoinLeaveListener implements Listener {
     private final NamespacedKey HEALTH = new NamespacedKey(ValhallaMMO.getInstance(), "cached_health");
+    private static final Collection<UUID> loadedProfiles = new HashSet<>();
+
+    public static Collection<UUID> getLoadedProfiles() {
+        return loadedProfiles;
+    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e) {
@@ -56,6 +65,9 @@ public class JoinLeaveListener implements Listener {
         EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_nullifier", Attribute.GENERIC_ARMOR);
         EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_display", Attribute.GENERIC_ARMOR);
 
-        ProfileRegistry.getPersistence().saveProfile(e.getPlayer());
+        if (loadedProfiles.contains(e.getPlayer().getUniqueId())) {
+            ProfileRegistry.getPersistence().saveProfile(e.getPlayer());
+            loadedProfiles.remove(e.getPlayer().getUniqueId());
+        }
     }
 }

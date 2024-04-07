@@ -12,10 +12,7 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.potion.PotionEffect;
@@ -115,7 +112,7 @@ public class Parryer {
                         else a.addPotionEffect(new PotionEffect(copy.getVanillaEffect(), debuffDuration, (int) copy.getAmplifier()));
                     }
                     e.setDamage(e.getDamage() * (1 - damageReduction));
-                } else if (parryProjectilesReflect) {
+                } else if (parryProjectilesReflect && !(d instanceof Trident)) {
                     Projectile p = (Projectile) d;
                     p.setVelocity(p.getVelocity().multiply(-1));
                     p.setShooter(v);

@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.persistence.implementations;
 
 import com.google.gson.Gson;
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.listeners.JoinLeaveListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
@@ -67,6 +68,7 @@ public class PDC extends ProfilePersistence {
             p.sendMessage(Utils.chat(TranslationManager.getTranslation("status_profiles_loaded")));
 
             SkillRegistry.updateSkillProgression(p, false);
+            JoinLeaveListener.getLoadedProfiles().add(p.getUniqueId());
         });
     }
 

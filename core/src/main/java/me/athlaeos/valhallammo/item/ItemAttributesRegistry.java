@@ -93,13 +93,13 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("THROWING_VELOCITY", StatFormat.PERCENTILE_BASE_1_P1, "\uEE38", (i) -> i >= 0).addModifier(Material.SNOWBALL));
         register(new AttributeDisplayWrapper("SMITHING_QUALITY", StatFormat.INT, "\uEE39", (i) -> i >= 0).addModifier(Material.ANVIL, 1, 10));
         register(new AttributeDisplayWrapper("SMITHING_QUALITY_FRACTION", StatFormat.PERCENTILE_BASE_1_P1, "\uEE3A", (i) -> i >= 0).addModifier(Material.ANVIL));
-        register(new AttributeDisplayWrapper("MINING_RARE_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE3B", (i) -> i >= 0).addModifier(Material.GOLDEN_PICKAXE));
+        register(new AttributeDisplayWrapper("MINING_RARE_DROPS", StatFormat.FLOAT_P1, "\uEE3B", (i) -> i >= 0).addModifier(Material.GOLDEN_PICKAXE));
         register(new AttributeDisplayWrapper("MINING_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE3C", (i) -> i >= 0).addModifier(Material.IRON_PICKAXE));
-        register(new AttributeDisplayWrapper("WOODCUTTING_RARE_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE3D", (i) -> i >= 0).addModifier(Material.GOLDEN_AXE));
+        register(new AttributeDisplayWrapper("WOODCUTTING_RARE_DROPS", StatFormat.FLOAT_P1, "\uEE3D", (i) -> i >= 0).addModifier(Material.GOLDEN_AXE));
         register(new AttributeDisplayWrapper("WOODCUTTING_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE3E", (i) -> i >= 0).addModifier(Material.IRON_AXE));
-        register(new AttributeDisplayWrapper("DIGGING_RARE_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE3F", (i) -> i >= 0).addModifier(Material.GOLDEN_SHOVEL));
+        register(new AttributeDisplayWrapper("DIGGING_RARE_DROPS", StatFormat.FLOAT_P1, "\uEE3F", (i) -> i >= 0).addModifier(Material.GOLDEN_SHOVEL));
         register(new AttributeDisplayWrapper("DIGGING_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE40", (i) -> i >= 0).addModifier(Material.IRON_SHOVEL));
-        register(new AttributeDisplayWrapper("FARMING_RARE_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE41", (i) -> i >= 0).addModifier(Material.GOLDEN_HOE));
+        register(new AttributeDisplayWrapper("FARMING_RARE_DROPS", StatFormat.FLOAT_P1, "\uEE41", (i) -> i >= 0).addModifier(Material.GOLDEN_HOE));
         register(new AttributeDisplayWrapper("FARMING_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE42", (i) -> i >= 0).addModifier(Material.IRON_HOE));
         register(new AttributeDisplayWrapper("FISHING_LUCK", StatFormat.FLOAT_P1, "\uEE43", (i) -> i >= 0).addModifier(Material.FISHING_ROD, 0.1, 1));
         register(new AttributeDisplayWrapper("SKILL_EXP_GAIN", StatFormat.PERCENTILE_BASE_1_P1, "\uEE44", (i) -> i >= 0).addModifier(Material.BOOK));

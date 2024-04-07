@@ -48,8 +48,7 @@ public class BrewingStandListener implements Listener {
 
     @EventHandler
     public void onBrewingInventoryInteract(InventoryClickEvent e){
-        if (e.isCancelled() || WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ||
-                ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())) return;
+        if (e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())) return;
 
         if (e.getView().getTopInventory() instanceof BrewerInventory b){
             Player p = (Player) e.getWhoClicked();
@@ -86,8 +85,7 @@ public class BrewingStandListener implements Listener {
 
     @EventHandler
     public void onBrewingInventoryDrag(InventoryDragEvent e){
-        if (e.isCancelled() || WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ||
-                ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())) return;
+        if (e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())) return;
         if (e.getView().getTopInventory() instanceof BrewerInventory b){
             Player p = (Player) e.getWhoClicked();
             ItemUtils.calculateDragEvent(e, 1, 0, 1, 2);
@@ -105,8 +103,7 @@ public class BrewingStandListener implements Listener {
 
     @EventHandler
     public void onBrewingInventoryHopperFeed(InventoryMoveItemEvent e){
-        if (WorldGuardHook.inDisabledRegion(e.getDestination().getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ||
-                e.getDestination().getLocation() == null ||
+        if (e.getDestination().getLocation() == null ||
                 e.getDestination().getLocation().getWorld() == null ||
                 ValhallaMMO.isWorldBlacklisted(e.getDestination().getLocation().getWorld().getName())) return;
         if (e.getDestination() instanceof BrewerInventory b){
@@ -121,8 +118,7 @@ public class BrewingStandListener implements Listener {
 
     @EventHandler(priority= EventPriority.HIGHEST)
     public void onBrew(BrewEvent e){
-        if (e.isCancelled() || WorldGuardHook.inDisabledRegion(e.getContents().getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ||
-                ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
+        if (e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
         e.setCancelled(true);
     }
 
@@ -136,7 +132,7 @@ public class BrewingStandListener implements Listener {
                 activeStands.remove(inventory.getLocation());
                 return;
             }
-            Map<Integer, DynamicBrewingRecipe> recipes = WorldGuardHook.inDisabledRegion(inventory.getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ? new HashMap<>() : getBrewingRecipes(inventory, p);
+            Map<Integer, DynamicBrewingRecipe> recipes = getBrewingRecipes(inventory, p);
             BrewingStand brewingStand = inventory.getHolder();
             if (brewingStand == null) return;
             if (recipes.isEmpty() || (activeStand != null && activeStand.visualProgress <= 0)){

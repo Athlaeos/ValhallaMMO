@@ -53,7 +53,7 @@ public class CustomBreakSpeedListener implements Listener {
                     BlockDigProcess process = blockDigProcesses.get(l);
                     if (totalMiningBlocks.containsKey(l)){
                         // block is in the process of being mined
-                        for (UUID uuid : totalMiningBlocks.get(l)){
+                        for (UUID uuid : new HashMap<>(totalMiningBlocks).get(l)){
                             Player player = ValhallaMMO.getInstance().getServer().getPlayer(uuid);
                             if (player == null) continue;
                             float dmg = DigPacketInfo.damage(player, b);

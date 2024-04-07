@@ -145,7 +145,6 @@ public class ModifierRegistry {
         register(new TransformItemMaterial("transform_gold", Material.GOLDEN_CHESTPLATE, "GOLDEN"));
         register(new TransformItemMaterial("transform_chainmail", Material.CHAINMAIL_CHESTPLATE, "CHAINMAIL"));
         register(new TransformItemMaterial("transform_leather", Material.LEATHER_CHESTPLATE, "LEATHER"));
-        SkillRegistry.getAllSkills().values().forEach(s -> register(new SkillRequirementAdd("requirement_add_" + s.getType().toLowerCase(), s.getType())));
 
         register(new AlchemyTagsAdd("alchemy_tags_add"));
         register(new AlchemyTagsCancelIfAbsent("alchemy_tags_require"));
@@ -165,7 +164,6 @@ public class ModifierRegistry {
         register(new AlchemyQualityRandomized("alchemy_quality_randomize"));
         register(new AlchemyQualityScale("alchemy_quality_scale"));
         register(new AlchemyQualitySet("alchemy_quality_set"));
-        register(new ConversionEffect("invert_potion_effects"));
         register(new ConversionMilkToChocolateMilk("chocolate_milk_from_milk"));
 
         // All the potion effects are registered in the effect registry

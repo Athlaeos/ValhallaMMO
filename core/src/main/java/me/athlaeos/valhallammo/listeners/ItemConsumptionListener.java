@@ -100,10 +100,10 @@ public class ItemConsumptionListener implements Listener {
             if (chance >= 0){
                 if (Utils.proc(e.getEntity(), chance, false)) e.setCancelled(true);
             } else {
-                int foodLost = e.getEntity().getFoodLevel() - e.getFoodLevel();
-                // food lost is a positive integer
+                int foodLost = e.getFoodLevel() - e.getEntity().getFoodLevel();
+                // food lost is a negative integer
                 foodLost = Utils.randomAverage((double) foodLost * -(1-chance));
-                e.setFoodLevel(e.getEntity().getFoodLevel() - foodLost);
+                e.setFoodLevel(Math.max(0, Math.min(20, e.getEntity().getFoodLevel() - foodLost)));
             }
         }
     }

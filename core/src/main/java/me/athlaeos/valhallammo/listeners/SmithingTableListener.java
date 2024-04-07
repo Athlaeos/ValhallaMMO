@@ -126,7 +126,6 @@ public class SmithingTableListener implements Listener {
     public void onPrepareSmithing(PrepareSmithingEvent e){
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
-
             int baseIndex = isTemplateCompatible ? 1 : 0;
             int templateIndex = baseIndex - 1;
             int additionIndex = baseIndex + 1;
@@ -139,20 +138,18 @@ public class SmithingTableListener implements Listener {
             if (base == null || addition == null) return;
             Pair<SmithingRecipe, DynamicSmithingRecipe> recipes = getSmithingRecipe(template, base, addition);
             if (recipes == null){
-                e.setResult(null);
+                s.setResult(null);
                 return;
             }
             if (recipes.getOne() == null) {
-                e.setResult(null);
+                s.setResult(null);
                 return; // no recipe was found at all, so do nothing
             }
             if (recipes.getTwo() == null) {
-                if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) {
-                    e.setResult(null);
-                }
-                if (e.getResult() != null && SmithingItemPropertyManager.hasSmithingQuality(base.getMeta()) &&
-                        base.getItem().getType() != e.getResult().getType()) e.setResult(null);
-                return;// vanilla recipe found, cancel if recipe is disabled or if resulting item is custom and different from result item
+                if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) s.setResult(null);
+                if (!ItemUtils.isEmpty(e.getResult()) && SmithingItemPropertyManager.hasSmithingQuality(base.getMeta()) &&
+                        base.getItem().getType() != e.getResult().getType()) s.setResult(null);
+                return;// vanilla recipe found, cancel if recipe is disabled or if resulting item is custom and different from base item
             }
             DynamicSmithingRecipe recipe = recipes.getTwo();
             ItemStack originalAddition = rawAddition.clone();
@@ -174,7 +171,7 @@ public class SmithingTableListener implements Listener {
                 // If the the player's profile is null, the player hasn't unlocked the recipe,
                 // the world is blacklisted, any of the validations failed, or the location is in a region
                 // which blocks custom recipes, cancel campfire interaction
-                e.setResult(null);
+                s.setResult(null);
                 return;
             }
 

@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.persistence.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.listeners.JoinLeaveListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.playerstats.LeaderboardCompatible;
@@ -139,6 +140,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
             p.sendMessage(Utils.chat(TranslationManager.getTranslation("status_profiles_loaded")));
 
             SkillRegistry.updateSkillProgression(p, runPersistentStartingPerks);
+            JoinLeaveListener.getLoadedProfiles().add(p.getUniqueId());
         });
     }
 

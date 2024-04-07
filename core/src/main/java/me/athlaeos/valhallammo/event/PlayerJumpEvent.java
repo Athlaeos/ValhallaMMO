@@ -1,10 +1,9 @@
 package me.athlaeos.valhallammo.event;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.*;
-import org.bukkit.event.player.*;
+import org.bukkit.event.entity.EntityExhaustionEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerJumpEvent extends Event {
@@ -33,9 +32,9 @@ public class PlayerJumpEvent extends Event {
 
     private static class PlayerJumpEventListener implements Listener {
         @EventHandler
-        public void onStatisticJump(PlayerStatisticIncrementEvent e){
-            if (e.getStatistic() != Statistic.JUMP) return;
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new PlayerJumpEvent(e.getPlayer()));
+        public void onStatisticJump(EntityExhaustionEvent e){
+            if (e.getExhaustionReason() != EntityExhaustionEvent.ExhaustionReason.JUMP || !(e.getEntity() instanceof Player p)) return;
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new PlayerJumpEvent(p));
         }
     }
     public static void register(ValhallaMMO plugin) {

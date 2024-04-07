@@ -74,8 +74,11 @@ public abstract class ProfilePersistence {
                 runPersistentStartingPerks = true;
             }
             case SKILLS_REFUND_EXP -> {
+                setPersistentProfile(p, ProfileRegistry.getRegisteredProfiles().get(PowerProfile.class).getBlankProfile(p), PowerProfile.class);
+                setSkillProfile(p, ProfileRegistry.getRegisteredProfiles().get(PowerProfile.class).getBlankProfile(p), PowerProfile.class);
                 // resets both skill and persistent progress, but refunds exp
                 for (Profile profileType : ProfileRegistry.getRegisteredProfiles().values()) {
+                    if (profileType instanceof PowerProfile) continue;
                     Profile profile = getPersistentProfile(p, profileType.getClass());
                     double totalEXP = profile.getTotalEXP();
 

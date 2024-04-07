@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.persistence.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.listeners.JoinLeaveListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.playerstats.LeaderboardCompatible;
@@ -123,6 +124,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
                 Utils.sendMessage(p, TranslationManager.getTranslation("status_profiles_loaded"));
 
                 SkillRegistry.updateSkillProgression(p, runPersistentStartingPerks);
+                JoinLeaveListener.getLoadedProfiles().add(p.getUniqueId());
             }
         }.runTaskAsynchronously(ValhallaMMO.getInstance());
     }

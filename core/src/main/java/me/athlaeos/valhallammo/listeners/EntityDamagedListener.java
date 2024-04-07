@@ -42,10 +42,15 @@ public class EntityDamagedListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onDamageRecord(EntityDamageEvent e){
+        if (e.isCancelled()) return;
+        if (e instanceof EntityDamageByEntityEvent eve) EntityDamagedListener.setDamager(e.getEntity(), eve.getDamager());
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamageTaken(EntityDamageEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
-        if (e instanceof EntityDamageByEntityEvent eve) EntityDamagedListener.setDamager(e.getEntity(), eve.getDamager());
         if (e.getEntity() instanceof LivingEntity l){
             String damageCause = customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString());
             CustomDamageType type = CustomDamageType.getCustomType(damageCause);

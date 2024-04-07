@@ -237,6 +237,7 @@ public class CustomRecipeRegistry {
     }
 
     public static void unregister(String recipe){
+        setChangesMade();
         allRecipes.remove(recipe);
         if (brewingRecipes.containsKey(recipe)) brewingRecipes.remove(recipe);
         else if (cauldronRecipes.containsKey(recipe)) cauldronRecipes.remove(recipe);

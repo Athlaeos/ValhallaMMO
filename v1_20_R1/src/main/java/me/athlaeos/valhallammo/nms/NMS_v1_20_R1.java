@@ -66,6 +66,7 @@ public final class NMS_v1_20_R1 implements NMS {
 
                 StructureStart start = structures.get(s);
                 int distance = Utils.getManhattanDistance(cX, cZ, chunk.getOne(), chunk.getTwo());
+                if (!structuresToFind.containsKey(structure)) continue;
                 int maxDistance = structuresToFind.get(structure);
                 if (distance > maxDistance || distance > closest) continue;
 

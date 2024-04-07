@@ -65,12 +65,6 @@ public abstract class PotionEffectWrapper {
     public StatFormat getFormat() { return format; }
     public int getCharges() { return charges; }
 
-    public Scaling getAmplifierScaling(){
-        return Scaling.fromConfig("skills/alchemy.yml", "scaling_amplifier." + effect.toLowerCase());
-    }
-    public Scaling getDurationScaling() {
-        return Scaling.fromConfig("skills/alchemy.yml", "scaling_duration." + effect.toLowerCase());
-    }
     public String getPotionName(){
         return TranslationManager.getTranslation("potion_name_" + effect.toLowerCase());
     }

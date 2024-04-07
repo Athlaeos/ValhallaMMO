@@ -124,6 +124,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
             LootListener.addPreparedLuck(e.getBlock(), woodCuttingLuck);
         }
 
+        if (ItemUtils.isEmpty(e.getPlayer().getInventory().getItemInMainHand()) || !e.getPlayer().getInventory().getItemInMainHand().getType().toString().contains("_AXE")) return;
         if (e.getPlayer().isSneaking() && !treeCapitatingPlayers.contains(e.getPlayer().getUniqueId()) &&
                 profile.isTreeCapitatorUnlocked() &&
                 profile.getTreeCapitatorValidBlocks().contains(e.getBlock().getType().toString()) &&

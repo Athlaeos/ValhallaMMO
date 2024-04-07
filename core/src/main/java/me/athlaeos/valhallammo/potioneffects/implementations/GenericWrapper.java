@@ -48,7 +48,7 @@ public class GenericWrapper extends PotionEffectWrapper {
         // if vanilla, hide if either custom or vanilla flags are missing
         // if not vanilla, hide if vanilla flag is present unless custom flag is also present
         if ((isVanilla && i instanceof PotionMeta && (!customFlag || !vanillaFlag)) ||
-                (isVanilla && !(i instanceof PotionMeta) && !customFlag) ||
+                (isVanilla && !(i instanceof PotionMeta) && !customFlag && (!temporaryCoatingDisplay || charges == 0)) ||
                 (!isVanilla && (!temporaryCoatingDisplay || charges == 0) && (vanillaFlag && !customFlag))) onRemove(i);
         else {
             String translation = getEffectName();

@@ -330,7 +330,8 @@ public class EnchantingSkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
         if (WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_hand_swap")) return; // to prevent spam, a cooldown of 0.5 seconds is applied
-        if (EquipmentClass.isHandHeld(ItemUtils.getItemMeta(e.getMainHandItem()))) return; // if the item has no attack damage attribute, it is not considered a handheld weapo
+        if (ItemUtils.isEmpty(e.getOffHandItem())) return;
+        if (!EquipmentClass.isHandHeld(ItemUtils.getItemMeta(e.getMainHandItem()))) return;
         EnchantingProfile profile = ProfileCache.getOrCache(e.getPlayer(), EnchantingProfile.class);
         if (profile.getActiveElementalDamageMultiplier() == 0 && profile.getActiveElementalDamageConversion() == 0) return;
         // if the player gains no benefit from enhanced attacks, it is considered not unlocked

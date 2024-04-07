@@ -82,6 +82,7 @@ public class ArrowBehaviorRegistry {
 
     public static Map<String, BehaviorDetails> getBehaviors(ItemMeta arrow){
         Map<String, BehaviorDetails> attributes = new HashMap<>();
+        if (arrow == null) return attributes;
         String value = ItemUtils.getPDCString(BEHAVIOR, arrow, null);
         if (StringUtils.isEmpty(value)) return attributes;
         for (String s : value.split(";")){

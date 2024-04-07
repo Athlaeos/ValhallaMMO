@@ -210,6 +210,7 @@ public class LootListener implements Listener {
         UUID uuid = blockBreakerMap.get(e.getBlock().getLocation());
         blockBreakerMap.remove(e.getBlock().getLocation());
         Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+        if (p == null) p = (Player) e.getBlock().getWorld().getNearbyEntities(e.getBlock().getLocation(), 20, 20, 20, en -> en instanceof Player).stream().findFirst().orElse(null);
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
         double luck = details.getOne();
@@ -583,7 +584,7 @@ public class LootListener implements Listener {
             if (!ItemUtils.isEmpty(equipment.getLeggings())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
             if (!ItemUtils.isEmpty(equipment.getBoots())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
         }
-        double dropMultiplier = killer == null ? 0 : AccumulativeStatManager.getCachedStats("ENTITY_DROPS", killer, 10000, true);
+        double dropMultiplier = killer == null || entity instanceof Player ? 0 : AccumulativeStatManager.getCachedStats("ENTITY_DROPS", killer, 10000, true);
         ItemUtils.multiplyItems(e.getDrops(), 1 + dropMultiplier, false, i -> !i.hasItemMeta() && itemDuplicationWhitelist.contains(i.getType()) && !droppedHandTypes.contains(i.getType()));
 
         LootTable table = LootTableRegistry.getLootTable(entity);

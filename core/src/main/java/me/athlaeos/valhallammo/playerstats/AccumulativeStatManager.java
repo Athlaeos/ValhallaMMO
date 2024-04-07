@@ -470,11 +470,10 @@ public class AccumulativeStatManager {
         ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
             if (lastMapCleanup + 120000 < System.currentTimeMillis()){
                 // cleaning up map every 2 minutes
-                Map<UUID, Map<String, Map.Entry<Long, Double>>> clone = new HashMap<>(statCache);
-                for (UUID uuid : clone.keySet()){
-                    Entity entity = ValhallaMMO.getInstance().getServer().getEntity(uuid);
-                    if (entity != null && !entity.isValid()) statCache.remove(entity.getUniqueId()); // remove invalid entities from the map
-                }
+                statCache.keySet().removeIf(u -> {
+                    Entity entity = ValhallaMMO.getInstance().getServer().getEntity(u);
+                    return entity != null && !entity.isValid();
+                });
                 lastMapCleanup = System.currentTimeMillis();
             }
         });
