@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.dom.Catch;
@@ -8,13 +9,13 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import java.util.*;
@@ -22,36 +23,36 @@ import java.util.stream.Collectors;
 
 public class PotionMatchEffectsChoice extends RecipeOption implements IngredientChoice {
 
-    private static final Map<PotionType, Collection<PotionEffectType>> typeMapping = new HashMap<>();
+    private static final Map<PotionType, Collection<PotionEffectMappings>> typeMapping = new HashMap<>();
     static {
         map(Set.of("AWKWARD"), new HashSet<>());
-        map(Set.of("FIRE_RESISTANCE", "LONG_FIRE_RESISTANCE"), Set.of(PotionEffectType.FIRE_RESISTANCE));
-        map(Set.of("INSTANT_DAMAGE", "STRONG_HARMING"), Set.of(PotionEffectType.HARM));
-        map(Set.of("INSTANT_HEALTH", "STRONG_HEALING"), Set.of(PotionEffectType.HEAL));
-        map(Set.of("INVISIBILITY", "LONG_INVISIBILITY"), Set.of(PotionEffectType.INVISIBILITY));
-        map(Set.of("JUMP", "LEAPING", "LONG_LEAPING", "STRONG_LEAPING"), Set.of(PotionEffectType.JUMP));
-        map(Set.of("LUCK"), Set.of(PotionEffectType.LUCK));
+        map(Set.of("FIRE_RESISTANCE", "LONG_FIRE_RESISTANCE"), Set.of(PotionEffectMappings.FIRE_RESISTANCE));
+        map(Set.of("INSTANT_DAMAGE", "HARMING", "STRONG_HARMING"), Set.of(PotionEffectMappings.INSTANT_DAMAGE));
+        map(Set.of("INSTANT_HEALTH", "HEALING", "STRONG_HEALING"), Set.of(PotionEffectMappings.INSTANT_HEALTH));
+        map(Set.of("INVISIBILITY", "LONG_INVISIBILITY"), Set.of(PotionEffectMappings.INVISIBILITY));
+        map(Set.of("JUMP", "LEAPING", "LONG_LEAPING", "STRONG_LEAPING"), Set.of(PotionEffectMappings.JUMP_BOOST));
+        map(Set.of("LUCK"), Set.of(PotionEffectMappings.LUCK));
         map(Set.of("MUNDANE"), new HashSet<>());
-        map(Set.of("NIGHT_VISION", "LONG_NIGHT_VISION"), Set.of(PotionEffectType.NIGHT_VISION));
-        map(Set.of("POISON", "LONG_POISON", "STRONG_POISON"), Set.of(PotionEffectType.POISON));
-        map(Set.of("REGEN", "LONG_REGENERATION", "STRONG_REGENERATION"), Set.of(PotionEffectType.REGENERATION));
-        map(Set.of("SLOW_FALLING", "LONG_SLOW_FALLING"), Set.of(PotionEffectType.SLOW_FALLING));
-        map(Set.of("SLOW", "LONG_SLOWNESS", "STRONG_SLOWNESS"), Set.of(PotionEffectType.SLOW));
-        map(Set.of("SPEED", "LONG_SWIFTNESS", "STRONG_SWIFTNESS"), Set.of(PotionEffectType.SPEED));
-        map(Set.of("STRENGTH", "LONG_STRENGTH", "STRONG_STRENGTH"), Set.of(PotionEffectType.INCREASE_DAMAGE));
+        map(Set.of("NIGHT_VISION", "LONG_NIGHT_VISION"), Set.of(PotionEffectMappings.NIGHT_VISION));
+        map(Set.of("POISON", "LONG_POISON", "STRONG_POISON"), Set.of(PotionEffectMappings.POISON));
+        map(Set.of("REGEN", "REGENERATION", "LONG_REGENERATION", "STRONG_REGENERATION"), Set.of(PotionEffectMappings.REGENERATION));
+        map(Set.of("SLOW_FALLING", "LONG_SLOW_FALLING"), Set.of(PotionEffectMappings.SLOW_FALLING));
+        map(Set.of("SLOW", "SLOWNESS", "LONG_SLOWNESS", "STRONG_SLOWNESS"), Set.of(PotionEffectMappings.SLOWNESS));
+        map(Set.of("SPEED", "SWIFTNESS", "LONG_SWIFTNESS", "STRONG_SWIFTNESS"), Set.of(PotionEffectMappings.SPEED));
+        map(Set.of("STRENGTH", "LONG_STRENGTH", "STRONG_STRENGTH"), Set.of(PotionEffectMappings.STRENGTH));
         map(Set.of("THICK"), new HashSet<>());
-        map(Set.of("TURTLE_MASTER", "LONG_TURTLE_MASTER", "STRONG_TURTLE_MASTER"), Set.of(PotionEffectType.SLOW, PotionEffectType.DAMAGE_RESISTANCE));
+        map(Set.of("TURTLE_MASTER", "LONG_TURTLE_MASTER", "STRONG_TURTLE_MASTER"), Set.of(PotionEffectMappings.SLOWNESS, PotionEffectMappings.RESISTANCE));
         map(Set.of("UNCRAFTABLE"), new HashSet<>());
         map(Set.of("WATER"), new HashSet<>());
-        map(Set.of("WATER_BREATHING", "LONG_WATER_BREATHING"), Set.of(PotionEffectType.WATER_BREATHING));
-        map(Set.of("WEAKNESS", "LONG_WEAKNESS"), Set.of(PotionEffectType.WEAKNESS));
+        map(Set.of("WATER_BREATHING", "LONG_WATER_BREATHING"), Set.of(PotionEffectMappings.WATER_BREATHING));
+        map(Set.of("WEAKNESS", "LONG_WEAKNESS"), Set.of(PotionEffectMappings.WEAKNESS));
 
     }
-    private static void map(Collection<String> potionTypes, Collection<PotionEffectType> effects){
+    private static void map(Collection<String> potionTypes, Collection<PotionEffectMappings> effects){
         for (String t : potionTypes){
             PotionType type = Catch.catchOrElse(() -> PotionType.valueOf(t), null);
             if (type == null) continue;
-            Collection<PotionEffectType> existingTypes = typeMapping.getOrDefault(type, new HashSet<>());
+            Collection<PotionEffectMappings> existingTypes = typeMapping.getOrDefault(type, new HashSet<>());
             existingTypes.addAll(effects);
             typeMapping.put(type, existingTypes);
         }
@@ -117,12 +118,12 @@ public class PotionMatchEffectsChoice extends RecipeOption implements Ingredient
             if (p1.getCustomEffects().isEmpty() != p2.getCustomEffects().isEmpty() ||
                     p1.getCustomEffects().size() != p2.getCustomEffects().size()) return false; // return false if one potion has more effects than the other
             if (p1.getCustomEffects().isEmpty()){
-                if (p1.getBasePotionData().getType() == p2.getBasePotionData().getType()) return true;
-                Collection<PotionEffectType> p1Types = typeMapping.getOrDefault(p1.getBasePotionData().getType(), new HashSet<>());
-                Collection<PotionEffectType> p2Types = typeMapping.getOrDefault(p2.getBasePotionData().getType(), new HashSet<>());
+                if (ValhallaMMO.getNms().getPotionType(p1) == ValhallaMMO.getNms().getPotionType(p2)) return true;
+                Collection<PotionEffectMappings> p1Types = typeMapping.getOrDefault(ValhallaMMO.getNms().getPotionType(p1), new HashSet<>());
+                Collection<PotionEffectMappings> p2Types = typeMapping.getOrDefault(ValhallaMMO.getNms().getPotionType(p2), new HashSet<>());
                 if (p1Types.isEmpty() != p2Types.isEmpty() || p1Types.size() != p2Types.size()) return false;
-                if (p1Types.isEmpty()) return p1.getBasePotionData().getType() == p2.getBasePotionData().getType();
-                for (PotionEffectType t : p1Types){
+                if (p1Types.isEmpty()) return ValhallaMMO.getNms().getPotionType(p1) == ValhallaMMO.getNms().getPotionType(p2);
+                for (PotionEffectMappings t : p1Types){
                     if (!p2Types.contains(t)) return false;
                 }
             } else {

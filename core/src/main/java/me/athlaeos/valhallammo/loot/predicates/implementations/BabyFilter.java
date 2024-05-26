@@ -6,7 +6,6 @@ import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import org.bukkit.Material;
 import org.bukkit.entity.Ageable;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;

@@ -121,11 +121,6 @@ public class BlockSurroundedMaterialFilter extends LootPredicate {
         return found >= quantity != this.inverted;
     }
 
-    @Override
-    public boolean isCompatibleWithLootType(LootTable.LootType type) {
-        return true;
-    }
-
     private enum AreaType{
         TOUCHING(new int[]{ 1, 0, 0}, new int[]{ -1, 0, 0}, new int[]{ 0, 1, 0}, new int[]{ 0, -1, 0}, new int[]{ 0, 0, 1}, new int[]{ 0, 0, -1}),
         CUBE3X3(MathUtils.getOffsetsBetweenPoints(new int[]{-1, -1, -1}, new int[]{1, 1, 1})),

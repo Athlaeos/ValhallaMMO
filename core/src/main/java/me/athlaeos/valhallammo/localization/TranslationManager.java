@@ -7,13 +7,9 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,7 +56,7 @@ public class TranslationManager {
 
     public static String getMaterialTranslation(Material m){
         return materialTranslations.getMaterialTranslations().getOrDefault(
-                m, me.athlaeos.valhallammo.utility.StringUtils.toPascalCase(m.toString().replace("_", " "))
+                m.toString(), me.athlaeos.valhallammo.utility.StringUtils.toPascalCase(m.toString().replace("_", " "))
         );
     }
 

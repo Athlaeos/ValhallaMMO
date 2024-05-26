@@ -5,7 +5,6 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.throwable_weapon_animations.ThrowableItemStats;
 import me.athlaeos.valhallammo.item.throwable_weapon_animations.ThrowableWeaponAnimation;
 import me.athlaeos.valhallammo.item.throwable_weapon_animations.ThrowableWeaponAnimationRegistry;
-import me.athlaeos.valhallammo.item.throwable_weapon_animations.ThrownItem;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.event.Event;

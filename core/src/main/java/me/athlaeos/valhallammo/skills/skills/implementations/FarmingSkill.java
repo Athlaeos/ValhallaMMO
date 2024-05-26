@@ -46,6 +46,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.List;
 
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
+
 public class FarmingSkill extends Skill implements Listener {
     private final Map<Material, Double> blockDropExpValues = new HashMap<>();
     private final Map<Material, Double> blockInteractExpValues = new HashMap<>();
@@ -163,16 +165,23 @@ public class FarmingSkill extends Skill implements Listener {
 
     private final Collection<UUID> fieldHarvestingPlayers = new HashSet<>();
 
+    @EventHandler(priority = EventPriority.LOW)
+    public void onBlockBreak(BlockBreakEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlock()) ||
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING) ||
+                !blockDropExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+        FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
+        int experience = e.getExpToDrop() + Utils.randomAverage(profile.getFarmingExperienceRate());
+        e.setExpToDrop(experience);
+
+        LootListener.addPreparedLuck(e.getBlock(), AccumulativeStatManager.getCachedStats("FARMING_LUCK", e.getPlayer(), 10000, true));
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void lootTableDrops(BlockBreakEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING) ||
                 !blockDropExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
-
-        FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
-        int experience = e.getExpToDrop() + Utils.randomAverage(profile.getFarmingExperienceRate());
-        e.setExpToDrop(experience);
-
         double dropMultiplier = AccumulativeStatManager.getCachedStats("FARMING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
         ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> blockDropExpValues.containsKey(i.getType()));
@@ -218,7 +227,7 @@ public class FarmingSkill extends Skill implements Listener {
                         if (profile.isFieldHarvestInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
                         instantHarvest(e.getPlayer(), b, profile);
                     }, (b) -> fieldHarvestingPlayers.remove(b.getUniqueId()));
-                Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getFieldHarvestCooldown(), "farming_field_harvest");
+                Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getFieldHarvestCooldown() * 50, "farming_field_harvest");
             } else if (profile.isInstantHarvesting()) {
                 instantHarvest(e.getPlayer(), clickedBlock, profile);
                 e.getPlayer().swingMainHand();
@@ -328,7 +337,7 @@ public class FarmingSkill extends Skill implements Listener {
         if (!(b.getBlockData() instanceof Ageable a) || a.getAge() < a.getMaximumAge() || !blockDropExpValues.containsKey(b.getType())) return;
         Material previousType = b.getType();
         CustomBreakSpeedListener.markInstantBreak(b);
-        b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5, 0.5, 0.5), 100, 0.1, 0.1, 0.1, 4, b.getBlockData());
+        b.getWorld().spawnParticle(Particle.valueOf(oldOrNew("BLOCK_CRACK", "BLOCK")), b.getLocation().add(0.5, 0.5, 0.5), 100, 0.1, 0.1, 0.1, 4, b.getBlockData());
         b.getWorld().playSound(b.getLocation().add(0.4, 0.4, 0.4), Sound.BLOCK_CROP_BREAK, 0.3F, 1F);
         p.breakBlock(b);
         b.setType(previousType);
@@ -398,11 +407,6 @@ public class FarmingSkill extends Skill implements Listener {
     @Override
     public int getSkillTreeMenuOrderPriority() {
         return 35;
-    }
-
-    @Override
-    public boolean isExperienceScaling() {
-        return true;
     }
 
     @Override

@@ -536,23 +536,6 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.25,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DIG_SPEED",
-          "icon": "DIAMOND_PICKAXE",
-          "name": "attribute_scale_dig_speed",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
           "mode": "MULTIPLIER",
           "amplifier": 0.5,
           "skillRange": 185.0,
@@ -701,23 +684,6 @@
           "minimumValue": 0.0,
           "name": "durability_scale",
           "priority": "LATER"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.25,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DIG_SPEED",
-          "icon": "DIAMOND_PICKAXE",
-          "name": "attribute_scale_dig_speed",
-          "priority": "SOONISH"
         }
       },
       {
@@ -1011,23 +977,6 @@
           "minimumValue": 0.0,
           "name": "durability_scale",
           "priority": "LATER"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.25,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DIG_SPEED",
-          "icon": "DIAMOND_PICKAXE",
-          "name": "attribute_scale_dig_speed",
-          "priority": "SOONISH"
         }
       },
       {
@@ -1993,23 +1942,6 @@
           "minimumValue": 0.0,
           "name": "durability_scale",
           "priority": "LATER"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.25,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DIG_SPEED",
-          "icon": "DIAMOND_PICKAXE",
-          "name": "attribute_scale_dig_speed",
-          "priority": "SOONISH"
         }
       },
       {

@@ -1,7 +1,6 @@
 package me.athlaeos.valhallammo.persistence;
 
 import com.google.gson.*;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 
 import java.lang.reflect.Type;
 

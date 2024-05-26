@@ -9,7 +9,6 @@ import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.event.EntityCustomPotionEffectEvent;
 import me.athlaeos.valhallammo.event.PlayerLeaveCombatEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
-import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
@@ -182,11 +181,6 @@ public class LightArmorSkill extends Skill implements Listener {
     @Override
     public int getSkillTreeMenuOrderPriority() {
         return 60;
-    }
-
-    @Override
-    public boolean isExperienceScaling() {
-        return true;
     }
 
     @Override

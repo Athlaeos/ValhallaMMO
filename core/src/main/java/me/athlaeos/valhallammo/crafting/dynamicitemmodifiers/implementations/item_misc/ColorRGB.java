@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -11,7 +12,6 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Colorable;
@@ -71,7 +71,7 @@ public class ColorRGB extends DynamicItemModifier {
                                 "&6Click to add/subtract 1000000",
                                 "&6Shift-Click to add/subtract 100000")
                         .color(Color.fromRGB(red, green, blue))
-                        .flag(ItemFlag.HIDE_POTION_EFFECTS)
+                        .flag(ConventionUtils.getHidePotionEffectsFlag())
                         .get()).map(Set.of(
                 new Pair<>(12,
                         new ItemBuilder(Material.POTION)
@@ -83,7 +83,7 @@ public class ColorRGB extends DynamicItemModifier {
                                         "&6Click to add/subtract 10000",
                                         "&6Shift-Click to add/subtract 1000")
                                 .color(Color.fromRGB(red, green, blue))
-                                .flag(ItemFlag.HIDE_POTION_EFFECTS)
+                                .flag(ConventionUtils.getHidePotionEffectsFlag())
                                 .get()),
                 new Pair<>(13,
                         new ItemBuilder(Material.POTION)
@@ -95,14 +95,14 @@ public class ColorRGB extends DynamicItemModifier {
                                         "&6Click to add/subtract 25",
                                         "&6Shift-Click to add/subtract 1")
                                 .color(Color.fromRGB(red, green, blue))
-                                .flag(ItemFlag.HIDE_POTION_EFFECTS)
+                                .flag(ConventionUtils.getHidePotionEffectsFlag())
                                 .get())
         ));
     }
 
     @Override
     public ItemStack getModifierIcon() {
-        return new ItemBuilder(Material.POTION).flag(ItemFlag.HIDE_POTION_EFFECTS).get();
+        return new ItemBuilder(Material.POTION).flag(ConventionUtils.getHidePotionEffectsFlag()).get();
     }
 
     @Override

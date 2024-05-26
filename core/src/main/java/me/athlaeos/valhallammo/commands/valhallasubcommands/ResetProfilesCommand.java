@@ -69,7 +69,7 @@ public class ResetProfilesCommand implements Command {
 				}
 
 				if (type == null) {
-					Skill skillToReset = SkillRegistry.getSkill(args[2]);
+					Skill skillToReset = SkillRegistry.getSkill(args[2].toUpperCase());
 					if (skillToReset == null) {
 						Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_invalid_skill"));
 						return true;

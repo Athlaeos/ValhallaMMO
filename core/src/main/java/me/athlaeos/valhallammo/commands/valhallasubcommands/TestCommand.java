@@ -1,31 +1,16 @@
 package me.athlaeos.valhallammo.commands.valhallasubcommands;
 
-import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.commands.Command;
-import me.athlaeos.valhallammo.commands.ProfileCommand;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
-import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TestCommand implements Command {
-//    private final Map<Skill, List<String>> profileFormats = new HashMap<>();
-
-//    public void reload(){
-//        registerSkillProfileFormats();
-//    }
-
-//    public ProfileStatsCommand(){
-//        registerSkillProfileFormats();
-//    }
-
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (sender instanceof Player p){

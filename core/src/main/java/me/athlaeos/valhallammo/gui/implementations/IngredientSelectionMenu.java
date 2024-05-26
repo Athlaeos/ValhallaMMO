@@ -119,7 +119,7 @@ public class IngredientSelectionMenu extends Menu {
             if (i < stackCap) inventory.setItem(i, null);
             else inventory.setItem(i, new ItemStack(Material.RED_STAINED_GLASS_PANE));
         }
-        for (ItemStack ingredient : listedIngredients.stream().limit(stackCap).collect(Collectors.toList())){
+        for (ItemStack ingredient : listedIngredients.stream().limit(stackCap).toList()){
             inventory.addItem(ingredient);
         }
         inventory.setItem(45, cancelButton);

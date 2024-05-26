@@ -72,11 +72,6 @@ public class SkillRequirementAdd extends DynamicItemModifier {
     }
 
     @Override
-    public boolean requiresPlayer() {
-        return false;
-    }
-
-    @Override
     public ItemStack getModifierIcon() {
         Skill s = SkillRegistry.getSkill(skill);
         if (s == null) return null;

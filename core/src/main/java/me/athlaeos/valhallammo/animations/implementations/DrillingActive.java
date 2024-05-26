@@ -21,6 +21,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
+
 public class DrillingActive extends Animation {
     private static final Particle particle;
     private static final Particle.DustOptions options;
@@ -64,9 +66,9 @@ public class DrillingActive extends Animation {
             if (result == null) return;
             Block hit = result.getHitBlock();
             if (hit == null) return;
-            if (particle == Particle.REDSTONE)
+            if (particle == Particle.valueOf(oldOrNew("REDSTONE", "DUST")))
                 p.spawnParticle(particle, result.getHitPosition().toLocation(p.getWorld()), 0, options);
-            else if (particle == Particle.BLOCK_DUST)
+            else if (particle == Particle.valueOf(oldOrNew("BLOCK_DUST", "BLOCK")))
                 p.spawnParticle(particle, result.getHitPosition().toLocation(p.getWorld()), 0, hit.getBlockData());
             else p.spawnParticle(particle, result.getHitPosition().toLocation(p.getWorld()), 0);
             p.playSound(p, drillingActiveSound, .1F, 1F);

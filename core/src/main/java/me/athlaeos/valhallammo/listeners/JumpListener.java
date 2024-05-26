@@ -3,9 +3,11 @@ package me.athlaeos.valhallammo.listeners;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.PlayerJumpEvent;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.MathUtils;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,7 +19,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -34,8 +35,10 @@ public class JumpListener implements Listener {
     @EventHandler
     public void onPlayerJump(PlayerJumpEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
-        double jumpHeightBonus = AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getPlayer(), 10000, true);
-        if (jumpHeightBonus > 0) e.getPlayer().setVelocity(e.getPlayer().getVelocity().add(new Vector(0, (jumpHeightBonus * 0.1), 0)));
+        if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
+            double jumpHeightBonus = AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getPlayer(), 10000, true);
+            if (jumpHeightBonus > 0) e.getPlayer().setVelocity(e.getPlayer().getVelocity().add(new Vector(0, (jumpHeightBonus * 0.1), 0)));
+        }
 
         if (e.getPlayer().getAllowFlight()) return; // players who already have the permission to fly are not able to multi-jump
         int extraJumps = (int) AccumulativeStatManager.getCachedStats("JUMPS_BONUS", e.getPlayer(), 10000, true);
@@ -80,9 +83,9 @@ public class JumpListener implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !playersGivenFlight.contains(e.getPlayer().getUniqueId()) ||
         e.getPlayer().getGameMode() == GameMode.CREATIVE || e.getPlayer().getGameMode() == GameMode.SPECTATOR) return;
         e.setCancelled(true);
-        double jumpHeightBonus = AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getPlayer(), 10000, true);
+        double jumpHeightBonus = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? 0 : AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getPlayer(), 10000, true);
 
-        PotionEffect jumpEffect = e.getPlayer().getPotionEffect(PotionEffectType.JUMP);
+        PotionEffect jumpEffect = e.getPlayer().getPotionEffect(PotionEffectMappings.JUMP_BOOST.getPotionEffectType());
         int jumpLevel = 0;
         if (jumpEffect != null) jumpLevel = jumpEffect.getAmplifier() + 1;
         float f = e.getPlayer().getEyeLocation().getYaw() * 0.017453292F;

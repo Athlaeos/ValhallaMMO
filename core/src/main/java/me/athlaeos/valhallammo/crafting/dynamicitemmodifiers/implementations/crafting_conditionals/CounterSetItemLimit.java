@@ -43,11 +43,6 @@ public class CounterSetItemLimit extends DynamicItemModifier {
     }
 
     @Override
-    public boolean requiresPlayer() {
-        return false;
-    }
-
-    @Override
     public ItemStack getModifierIcon() {
         return new ItemBuilder(Material.CLOCK).get();
     }

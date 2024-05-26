@@ -3,14 +3,18 @@ package me.athlaeos.valhallammo.potioneffects;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PermanentPotionEffectAdd;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd;
-import me.athlaeos.valhallammo.dom.Scaling;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class PotionEffectWrapper {
     protected final StatFormat format;
@@ -29,16 +33,16 @@ public abstract class PotionEffectWrapper {
         this.duration = 0;
         this.charges = -1;
         this.removable = removable;
-        this.vanillaEffect = PotionEffectType.getByName(effect);
+        this.vanillaEffect = Catch.catchOrElse(() -> PotionEffectMappings.getEffect(effect).getPotionEffectType(), null);
         this.isVanilla = vanillaEffect != null;
         this.isInstant = instant;
         this.format = format;
     }
 
     public PotionEffectWrapper addModifier(Material icon, double smallIncrement, double bigIncrement){
-        ModifierRegistry.register(new PotionEffectAdd("potion_effect_add_" + effect.toLowerCase(), effect, smallIncrement, bigIncrement, icon));
+        ModifierRegistry.register(new PotionEffectAdd("potion_effect_add_" + newToOldEffectMappings.getOrDefault(effect, effect).toLowerCase(), effect, smallIncrement, bigIncrement, icon));
         if (isVanilla) {
-            ModifierRegistry.register(new PermanentPotionEffectAdd("permanent_effect_add_" + vanillaEffect.getKey().getKey().replace("-", "_"), effect, icon));
+            ModifierRegistry.register(new PermanentPotionEffectAdd("permanent_effect_add_" + newToOldEffectMappings.getOrDefault(effect, effect).toLowerCase(), effect, icon));
         }
         return this;
     }
@@ -95,5 +99,21 @@ public abstract class PotionEffectWrapper {
                 .replace("%value%", format == null ? "" :  format.format(value + (isVanilla ? 1 : 0)))
                 .replace("%duration%", String.format("(%s)", StringUtils.toTimeStamp(duration, 20)))
                 .trim();
+    }
+
+    // in 1.20.5 many effects were renamed to have a more consistent naming convention. This map records the exceptions so that old
+    // modifiers may still work on newer versions
+    private static final Map<String, String> newToOldEffectMappings = new HashMap<>();
+    static {
+        newToOldEffectMappings.put("SWIFTNESS", "SPEED");
+        newToOldEffectMappings.put("SLOWNESS", "SLOW");
+        newToOldEffectMappings.put("HASTE", "FAST_DIGGING");
+        newToOldEffectMappings.put("MINING_FATIGUE", "SLOW_DIGGING");
+        newToOldEffectMappings.put("STRENGTH", "INCREASE_DAMAGE");
+        newToOldEffectMappings.put("INSTANT_HEALTH", "HEAL");
+        newToOldEffectMappings.put("INSTANT_DAMAGE", "HARM");
+        newToOldEffectMappings.put("JUMP_BOOST", "JUMP");
+        newToOldEffectMappings.put("NAUSEA", "CONFUSION");
+        newToOldEffectMappings.put("RESISTANCE", "DAMAGE_RESISTANCE");
     }
 }

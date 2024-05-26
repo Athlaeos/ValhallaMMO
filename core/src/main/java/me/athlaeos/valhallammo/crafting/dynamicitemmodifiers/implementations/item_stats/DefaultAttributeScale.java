@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierPriority;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierScalingPresets;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
@@ -57,8 +56,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         Scaling scaling;
         if (presetScaling != null) scaling = ModifierScalingPresets.getScalings().get(presetScaling);
-        else if (commandScaling != null) scaling = new Scaling(commandScaling, mode, lowerBound, upperBound);
-        else scaling = new Scaling(buildScaling(), mode, lowerBound, upperBound);
+        else scaling = new Scaling(Objects.requireNonNullElseGet(commandScaling, this::buildScaling), mode, lowerBound, upperBound);
         if (scaling == null) {
             failedRecipe(outputItem, "&cRecipe scaling wrongly configured, contact admin");
             return;

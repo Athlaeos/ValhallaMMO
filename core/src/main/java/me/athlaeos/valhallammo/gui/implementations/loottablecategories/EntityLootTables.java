@@ -65,10 +65,10 @@ public class EntityLootTables extends LootTableCategory{
         EntityType en = Catch.catchOrElse(() -> EntityType.valueOf(storedValue), null);
         if (en == null) return;
         if (!e.isShiftClick()) new LootTableSelectionMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), openedFrom, (LootTable table) -> {
-            LootTableRegistry.getEntityLootTables().put(en, table.getKey());
+            LootTableRegistry.getEntityLootTables().put(en.toString(), table.getKey());
             new LootTableOverviewMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), LootTableOverviewMenu.ENTITIES.getId()).open();
         }).open();
-        else LootTableRegistry.getEntityLootTables().remove(en);
+        else LootTableRegistry.getEntityLootTables().remove(en.toString());
     }
 
     private static String getEntityIcon(String type){

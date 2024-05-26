@@ -13,11 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.nio.file.Paths;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
@@ -157,27 +153,6 @@ public class ResourcePackCommand implements Command {
         if (args.length == 3 && args[1].equalsIgnoreCase("setup")) return List.of("<your_server_ip>");
         if (args.length == 4 && args[1].equalsIgnoreCase("setup")) return List.of("<available_port>", "30005");
         return null;
-    }
-
-    private String sha1Code(File file) throws IOException, NoSuchAlgorithmException {
-        FileInputStream fileInputStream = new FileInputStream(file);
-        MessageDigest digest = MessageDigest.getInstance("SHA-1");
-        DigestInputStream digestInputStream = new DigestInputStream(fileInputStream, digest);
-        byte[] bytes = new byte[1024];
-        // read all file content
-        while (digestInputStream.read(bytes) > 0) digest = digestInputStream.getMessageDigest();
-        byte[] resultByteArray = digest.digest();
-        return bytesToHexString(resultByteArray);
-    }
-
-    private String bytesToHexString(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            int value = b & 0xFF;
-            if (value < 16) sb.append("0");
-            sb.append(Integer.toHexString(value).toUpperCase());
-        }
-        return sb.toString();
     }
 
     @SuppressWarnings("all")

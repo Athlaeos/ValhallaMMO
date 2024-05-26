@@ -3,10 +3,15 @@ package me.athlaeos.valhallammo.listeners;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.BlockDigProcess;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.PrepareBlockBreakEvent;
+import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,7 +22,6 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -35,7 +39,8 @@ public class CustomBreakSpeedListener implements Listener {
     public static boolean isVanillaBlockBreakDelay() { return VANILLA_BLOCK_BREAK_DELAY; }
 
     private static boolean disabled = true;
-    private static final PotionEffect fatigueEffect = new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, -1, false, false, false);
+    private static final PotionEffect fatigueEffect = new PotionEffect(PotionEffectMappings.MINING_FATIGUE.getPotionEffectType(), Integer.MAX_VALUE, -1, false, false, false);
+    public static final UUID FATIGUE_MODIFIER_UUID = UUID.fromString("40e606a7-8401-4f13-a539-7dfcd0c3c8a2");
 
     private static final Map<Location, BlockDigProcess> blockDigProcesses = new ConcurrentHashMap<>();
     private static final Map<Location, Collection<UUID>> totalMiningBlocks = new ConcurrentHashMap<>(); // total blocks currently being mined, contents will match all values of diggingPlayers combined
@@ -75,14 +80,16 @@ public class CustomBreakSpeedListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onStart(BlockDamageEvent e){
-        if (ItemUtils.breaksInstantly(e.getBlock().getType()) ||
+        if ((!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) && ItemUtils.breaksInstantly(e.getBlock().getType())) ||
                 ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
         e.setCancelled(true);
     }
 
     public static void onStart(DigPacketInfo info){
-        if (info == null || disabled || ItemUtils.breaksInstantly(info.getBlock().getType()) || info.getType() != DigPacketInfo.Type.START ||
-                ValhallaMMO.isWorldBlacklisted(info.getBlock().getWorld().getName())) return;
+        if (info == null || disabled ||
+                (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) && ItemUtils.breaksInstantly(info.getBlock().getType())) ||
+                info.getType() != DigPacketInfo.Type.START || ValhallaMMO.isWorldBlacklisted(info.getBlock().getWorld().getName())) return;
+
         Block b = info.getBlock();
         DigPacketInfo.resetBlockSpecificCache(info.getDigger().getUniqueId());
 
@@ -94,11 +101,7 @@ public class CustomBreakSpeedListener implements Listener {
             BlockDigProcess.breakBlockInstantly(info.getDigger(), b);
             if (event.getAdditionalBlocks().isEmpty()) return;
         } else {
-            BlockDigProcess process = blockDigProcesses.get(b.getLocation());
-            if (process == null) {
-                process = new BlockDigProcess(b);
-                blockDigProcesses.put(b.getLocation(), process);
-            }
+            BlockDigProcess process = blockDigProcesses.computeIfAbsent(b.getLocation(), k -> new BlockDigProcess(b));
             Collection<UUID> playersMining = totalMiningBlocks.getOrDefault(b.getLocation(), new HashSet<>());
             playersMining.add(info.getDigger().getUniqueId());
             totalMiningBlocks.put(b.getLocation(), playersMining);
@@ -109,11 +112,7 @@ public class CustomBreakSpeedListener implements Listener {
             float damage = instantBlockBreaks.contains(b.getLocation()) ? 999 : DigPacketInfo.damage(info.getDigger(), b);
             if (damage >= 1) BlockDigProcess.breakBlockInstantly(info.getDigger(), block);
             else {
-                BlockDigProcess p = blockDigProcesses.get(block.getLocation());
-                if (p == null) {
-                    p = new BlockDigProcess(block);
-                    blockDigProcesses.put(block.getLocation(), p);
-                }
+                BlockDigProcess p = blockDigProcesses.computeIfAbsent(block.getLocation(), k -> new BlockDigProcess(block));
                 Collection<UUID> mP = totalMiningBlocks.getOrDefault(block.getLocation(), new HashSet<>());
                 mP.add(info.getDigger().getUniqueId());
                 totalMiningBlocks.put(block.getLocation(), mP);
@@ -151,7 +150,7 @@ public class CustomBreakSpeedListener implements Listener {
     public void onBreak(BlockBreakEvent e){
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE || ItemUtils.breaksInstantly(e.getBlock().getType()) ||
                 ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
-        if (!e.getPlayer().hasPotionEffect(PotionEffectType.SLOW_DIGGING)){
+        if (!isFatigued(e.getPlayer())){
             e.setCancelled(true);
             return;
         }
@@ -178,39 +177,52 @@ public class CustomBreakSpeedListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e){
-        fatiguePlayer(e.getPlayer());
+        fatiguePlayer(e.getPlayer(), true);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent e){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> fatiguePlayer(e.getPlayer()), 2L);
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> fatiguePlayer(e.getPlayer(), true), 2L);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPotionEffect(EntityPotionEffectEvent e){
-        if (e.isCancelled() || e.getCause() == EntityPotionEffectEvent.Cause.PLUGIN || !(e.getEntity() instanceof Player p)) return;
-        if (e.getOldEffect() != null && (e.getOldEffect().getType() == PotionEffectType.FAST_DIGGING || e.getOldEffect().getType() == PotionEffectType.SLOW_DIGGING))
+        if (e.isCancelled() || e.getCause() == EntityPotionEffectEvent.Cause.PLUGIN || !(e.getEntity() instanceof Player p) || MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) return;
+        if (e.getOldEffect() != null && (e.getOldEffect().getType() == PotionEffectMappings.HASTE.getPotionEffectType() || e.getOldEffect().getType() == PotionEffectMappings.MINING_FATIGUE.getPotionEffectType()))
             DigPacketInfo.resetMinerCache(e.getEntity().getUniqueId());
-        if (e.getNewEffect() != null && (e.getNewEffect().getType() == PotionEffectType.FAST_DIGGING || e.getNewEffect().getType() == PotionEffectType.SLOW_DIGGING))
+        if (e.getNewEffect() != null && (e.getNewEffect().getType() == PotionEffectMappings.HASTE.getPotionEffectType() || e.getNewEffect().getType() == PotionEffectMappings.MINING_FATIGUE.getPotionEffectType()))
             DigPacketInfo.resetMinerCache(e.getEntity().getUniqueId());
         if ((e.getAction() == EntityPotionEffectEvent.Action.ADDED || e.getAction() == EntityPotionEffectEvent.Action.CHANGED) &&
-                e.getNewEffect() != null && e.getNewEffect().getType() == PotionEffectType.SLOW_DIGGING && e.getNewEffect().getAmplifier() >= 0) {
+                e.getNewEffect() != null && e.getNewEffect().getType() == PotionEffectMappings.MINING_FATIGUE.getPotionEffectType() && e.getNewEffect().getAmplifier() >= 0) {
             // change in mining fatigue effect
             e.setOverride(true);
         } else if ((e.getAction() == EntityPotionEffectEvent.Action.REMOVED || e.getAction() == EntityPotionEffectEvent.Action.CLEARED) &&
-                e.getOldEffect() != null && e.getOldEffect().getType() == PotionEffectType.SLOW_DIGGING && (e.getOldEffect().getAmplifier() < 0 || e.getOldEffect().getAmplifier() > 4)) {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> fatiguePlayer(p), 2L);
+                e.getOldEffect() != null && e.getOldEffect().getType() == PotionEffectMappings.MINING_FATIGUE.getPotionEffectType() && (e.getOldEffect().getAmplifier() < 0 || e.getOldEffect().getAmplifier() > 4)) {
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> fatiguePlayer(p, true), 2L);
         }
     }
 
-    private static void fatiguePlayer(Player p){
-        p.addPotionEffect(fatigueEffect);
+    public static void fatiguePlayer(Player p, boolean force){
+        if (isFatigued(p) && !force) return;
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) {
+            double miningSpeed = EntityUtils.getPlayerMiningSpeed(p);
+            EntityUtils.addUniqueAttribute(p, FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"), -miningSpeed, AttributeModifier.Operation.ADD_NUMBER);
+        } else p.addPotionEffect(fatigueEffect);
     }
 
     public static void removeFatiguedPlayer(Player p){
-        PotionEffect effect = p.getPotionEffect(PotionEffectType.SLOW_DIGGING);
-        if (effect != null && effect.getAmplifier() >= 0 && effect.getAmplifier() < 5) return;
-        p.removePotionEffect(PotionEffectType.SLOW_DIGGING);
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) EntityUtils.removeUniqueAttribute(p, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"));
+        else {
+            PotionEffect effect = p.getPotionEffect(PotionEffectMappings.MINING_FATIGUE.getPotionEffectType());
+            if (effect != null && effect.getAmplifier() >= 0 && effect.getAmplifier() < 5) return;
+            p.removePotionEffect(PotionEffectMappings.MINING_FATIGUE.getPotionEffectType());
+        }
+    }
+
+    public static boolean isFatigued(Player p){
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) {
+            return EntityUtils.hasUniqueAttribute(p, FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"));
+        } else return p.hasPotionEffect(PotionEffectMappings.MINING_FATIGUE.getPotionEffectType());
     }
 
     public static Map<Location, BlockDigProcess> getBlockDigProcesses() {

@@ -122,7 +122,7 @@ public class ArrowBehaviorRegistry {
         details.forEach(b -> getBehavior(b.name).onShoot(e, b.args));
     }
 
-    private record BehaviorDetails(String name, double[] args) {
+    public record BehaviorDetails(String name, double[] args) {
         public String getName() {
             return name;
         }

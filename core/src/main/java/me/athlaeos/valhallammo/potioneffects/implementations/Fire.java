@@ -9,8 +9,8 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 
@@ -25,7 +25,7 @@ public class Fire extends PotionEffectWrapper {
     @Override
     public void onApply(ItemMeta i) {
         boolean customFlag = CustomFlag.hasFlag(i, CustomFlag.DISPLAY_ATTRIBUTES);
-        boolean vanillaFlag = i.hasItemFlag(ItemFlag.HIDE_POTION_EFFECTS);
+        boolean vanillaFlag = i.hasItemFlag(ConventionUtils.getHidePotionEffectsFlag());
         boolean temporaryCoatingDisplay = CustomFlag.hasFlag(i, CustomFlag.TEMPORARY_POTION_DISPLAY);
         // if vanilla, hide if either custom or vanilla flags are missing
         // if not vanilla, hide if vanilla flag is present unless custom flag is also present
@@ -92,7 +92,7 @@ public class Fire extends PotionEffectWrapper {
 
     @Override
     public PotionEffectWrapper copy() {
-        return new Fire(getEffect(), defaultIcon);
+        return new Fire(getEffect(), defaultIcon).setCharges(charges).setDuration(duration);
     }
 
     private String prefix(){

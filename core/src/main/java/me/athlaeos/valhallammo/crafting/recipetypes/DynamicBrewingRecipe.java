@@ -4,9 +4,9 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class DynamicBrewingRecipe implements ValhallaRecipe {
             new MaterialChoice());
     private ItemStack result = new ItemBuilder(Material.DIAMOND).name("&r&fReplace me!").lore("&7I'm just a placeholder result!").get();
     private SlotEntry applyOn = new SlotEntry(
-            new ItemBuilder(Material.POTION).flag(ItemFlag.HIDE_POTION_EFFECTS).color(Color.fromRGB(0, 170, 230)).name("&r&fReplace me!").lore("&7I'm just a placeholder ingredient!").get(),
+            new ItemBuilder(Material.POTION).flag(ConventionUtils.getHidePotionEffectsFlag()).color(Color.fromRGB(0, 170, 230)).name("&r&fReplace me!").lore("&7I'm just a placeholder ingredient!").get(),
             new MaterialChoice());
     private boolean tinker = true;
     private boolean requireValhallaTools = false;

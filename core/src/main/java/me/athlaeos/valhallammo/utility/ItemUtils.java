@@ -4,15 +4,12 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
-import me.athlaeos.valhallammo.item.CustomDurabilityManager;
-import me.athlaeos.valhallammo.item.EquipmentClass;
-import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.item.MaterialClass;
+import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -425,8 +422,7 @@ public class ItemUtils {
         Material base = getStoredType(meta);
         if (base == null) return "null";
         if (meta.hasDisplayName()) name = Utils.chat(meta.getDisplayName());
-        else if (TranslationManager.getMaterialTranslations().getMaterialTranslations().containsKey(base)) name = Utils.chat(TranslationManager.getMaterialTranslation(base));
-        else if (meta.hasLocalizedName()) name = Utils.chat(meta.getLocalizedName());
+        else if (TranslationManager.getMaterialTranslations().getMaterialTranslations().containsKey(base.toString())) name = Utils.chat(TranslationManager.getMaterialTranslation(base));
         else name = me.athlaeos.valhallammo.utility.StringUtils.toPascalCase("&r" + base.toString().replace("_", " "));
         return Utils.chat(name);
     }
@@ -601,7 +597,7 @@ public class ItemUtils {
         if (meta instanceof Damageable && item.getType().getMaxDurability() > 0){
             if (respectAttributes){
                 if (meta.isUnbreakable()) return false;
-                int unbreakableLevel = item.getEnchantmentLevel(Enchantment.DURABILITY);
+                int unbreakableLevel = item.getEnchantmentLevel(EnchantmentMappings.UNBREAKING.getEnchantment());
                 if (unbreakableLevel > 0){
                     double damageChance = 1D / (unbreakableLevel + 1D);
                     damage = Utils.randomAverage(damage * damageChance);
@@ -948,7 +944,7 @@ public class ItemUtils {
             if (filter != null && !filter.test(i)) continue;
             ItemStack item = i.getItemStack();
             int newAmount = Math.max(forgiving ? 1 : 0, Utils.randomAverage(multiplier * item.getAmount()));
-            if (newAmount <= 0) items.remove(i);
+            if (newAmount == 0) items.remove(i);
             else {
                 if (newAmount > item.getMaxStackSize()){
                     while(newAmount > item.getMaxStackSize()){
@@ -976,7 +972,7 @@ public class ItemUtils {
         for (ItemStack item : new ArrayList<>(items)) {
             if (filter != null && !filter.test(item)) continue;
             int newAmount = Math.max(forgiving ? 1 : 0, Utils.randomAverage(multiplier * item.getAmount()));
-            if (newAmount <= 0) items.remove(item);
+            if (newAmount == 0) items.remove(item);
             else {
                 if (newAmount > item.getMaxStackSize()) {
                     while (newAmount > item.getMaxStackSize()) {

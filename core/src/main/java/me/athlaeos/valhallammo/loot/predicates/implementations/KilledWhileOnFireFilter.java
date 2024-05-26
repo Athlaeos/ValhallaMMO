@@ -4,7 +4,6 @@ import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
-import me.athlaeos.valhallammo.utility.Parryer;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;

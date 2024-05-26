@@ -43,9 +43,7 @@ public class MinedWithTaggedToolFilter extends LootPredicate {
 
     @Override
     public String getActiveDescription() {
-        return "&fRequires the block to " + (isInverted() ? "&cNOT&f " : "") + "be mined with a tool having all of &e" + tags.stream().map(t -> t + Objects.requireNonNullElse(
-                "(" + SmithingItemPropertyManager.getTagLore(t) + ")",
-                "")).collect(Collectors.joining(", "));
+        return "&fRequires the block to " + (isInverted() ? "&cNOT&f " : "") + "be mined with a tool having all of &e" + tags.stream().map(t -> t + "(" + SmithingItemPropertyManager.getTagLore(t) + ")").collect(Collectors.joining(", "));
     }
 
     @Override
@@ -71,9 +69,7 @@ public class MinedWithTaggedToolFilter extends LootPredicate {
                                                         "&6Shift-Click to add to selection",
                                                         "&cMiddle-Click to clear selection",
                                                         "&fCurrently: ")
-                                                .appendLore(tags.isEmpty() ? List.of("&cNone, condition always passes") : tags.stream().map(t -> "&f>" + t + Objects.requireNonNullElse(
-                                                        "(" + SmithingItemPropertyManager.getTagLore(t) + ")",
-                                                        "")).toList())
+                                                .appendLore(tags.isEmpty() ? List.of("&cNone, condition always passes") : tags.stream().map(t -> "&f>" + t + "(" + SmithingItemPropertyManager.getTagLore(t) + ")").toList())
                                                 .get()))
         );
     }

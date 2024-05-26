@@ -4,7 +4,6 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
@@ -105,10 +104,5 @@ public class RegionFilter extends LootPredicate {
         if (!ValhallaMMO.isHookFunctional(WorldGuardHook.class)) return true;
         if (regions.isEmpty()) return true;
         return regions.stream().anyMatch(r -> WorldGuardHook.isInRegion(context.getLocation(), r)) != inverted;
-    }
-
-    @Override
-    public boolean isCompatibleWithLootType(LootTable.LootType type) {
-        return true;
     }
 }

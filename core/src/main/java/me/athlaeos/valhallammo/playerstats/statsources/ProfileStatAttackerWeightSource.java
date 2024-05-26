@@ -67,6 +67,7 @@ public class ProfileStatAttackerWeightSource implements AccumulativeStatSource, 
             EntityProperties properties = EntityCache.getAndCacheProperties(pl);
             if (properties.getMainHand() == null || WeightClass.getWeightClass(properties.getMainHand().getMeta()) != weightClass) return def;
             Profile profile = ProfileCache.getOrCache(pl, type);
+
             if (numberType.equals(Integer.class)) return (negative ? -1 : 1) * profile.getInt(stat);
             if (numberType.equals(Float.class)) return (negative ? -1 : 1) * profile.getFloat(stat);
             return (negative ? -1 : 1) * profile.getDouble(stat);

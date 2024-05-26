@@ -1,9 +1,12 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,14 +14,18 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
 import java.util.*;
 
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
+
 public class PotionTypeSet extends DynamicItemModifier {
-    private static final List<PotionType> legalTypes = List.of(PotionType.UNCRAFTABLE, PotionType.AWKWARD, PotionType.MUNDANE, PotionType.THICK);
-    private PotionType potionType = PotionType.UNCRAFTABLE;
+    public static final List<PotionType> legalTypes = new ArrayList<>(List.of(PotionType.AWKWARD, PotionType.MUNDANE, PotionType.THICK));
+    static {
+        if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) legalTypes.add(PotionType.valueOf("UNCRAFTABLE"));
+    }
+    private PotionType potionType = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? null : PotionType.valueOf("UNCRAFTABLE");
 
     public PotionTypeSet(String name) {
         super(name);
@@ -27,7 +34,7 @@ public class PotionTypeSet extends DynamicItemModifier {
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         if (outputItem.getMeta() instanceof PotionMeta meta){
-            meta.setBasePotionData(new PotionData(potionType, false, false));
+            ValhallaMMO.getNms().setPotionType(meta, potionType);
         }
     }
 
@@ -59,7 +66,7 @@ public class PotionTypeSet extends DynamicItemModifier {
 
     @Override
     public ItemStack getModifierIcon() {
-        return new ItemBuilder(Material.POTION).flag(ItemFlag.HIDE_POTION_EFFECTS).get();
+        return new ItemBuilder(Material.POTION).flag(ConventionUtils.getHidePotionEffectsFlag()).get();
     }
 
     @Override

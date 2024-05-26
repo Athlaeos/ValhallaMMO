@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.potioneffects.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
@@ -10,6 +11,8 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -35,20 +38,22 @@ public class GenericWrapper extends PotionEffectWrapper {
         this.singleUse = false;
         this.defaultIcon = defaultIcon;
     }
+
+    @SuppressWarnings("deprecation")
     private static PotionEffectType getOrDefault(String effect){
-        PotionEffectType type = PotionEffectType.getByName(effect);
+        PotionEffectType type = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? Registry.EFFECT.get(NamespacedKey.minecraft(effect.toLowerCase())) : PotionEffectType.getByName(effect);
         return (type == null) ? PotionEffectType.REGENERATION : type;
     }
 
     @Override
     public void onApply(ItemMeta i) {
         boolean customFlag = CustomFlag.hasFlag(i, CustomFlag.DISPLAY_ATTRIBUTES);
-        boolean vanillaFlag = i.hasItemFlag(ItemFlag.HIDE_POTION_EFFECTS);
+        boolean vanillaFlag = i.hasItemFlag(MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? ItemFlag.valueOf("HIDE_ADDITIONAL_TOOLTIP") : ItemFlag.valueOf("HIDE_POTION_EFFECTS"));
         boolean temporaryCoatingDisplay = CustomFlag.hasFlag(i, CustomFlag.TEMPORARY_POTION_DISPLAY);
         // if vanilla, hide if either custom or vanilla flags are missing
         // if not vanilla, hide if vanilla flag is present unless custom flag is also present
         if ((isVanilla && i instanceof PotionMeta && (!customFlag || !vanillaFlag)) ||
-                (isVanilla && !(i instanceof PotionMeta) && !customFlag && (!temporaryCoatingDisplay || charges == 0)) ||
+                (isVanilla && !(i instanceof PotionMeta) && (!customFlag && (!temporaryCoatingDisplay || charges == 0))) ||
                 (!isVanilla && (!temporaryCoatingDisplay || charges == 0) && (vanillaFlag && !customFlag))) onRemove(i);
         else {
             String translation = getEffectName();

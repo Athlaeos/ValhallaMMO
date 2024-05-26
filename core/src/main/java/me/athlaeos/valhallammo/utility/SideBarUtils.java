@@ -41,7 +41,7 @@ public class SideBarUtils {
             this.p = p;
             if (scoreboard != null){
                 this.objective = scoreboard.getObjective(key);
-                if (this.objective == null) this.objective = scoreboard.registerNewObjective(key, "dummy", Utils.chat(title));
+                if (this.objective == null) this.objective = scoreboard.registerNewObjective(key, Criteria.DUMMY, Utils.chat(title));
                 this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
                 updateContents(entries);
             }

@@ -99,7 +99,7 @@ public class ArmorSetRegistry {
         List<String> lore = ItemUtils.getLore(meta);
         List<String> itemSetLore = Utils.chat(itemSet.getLore());
         if (remove) lore.removeAll(itemSetLore);
-        else if (!itemSetLore.isEmpty() && !lore.containsAll(itemSetLore)){
+        else if (!itemSetLore.isEmpty() && !new HashSet<>(lore).containsAll(itemSetLore)){
             if (itemSet.getName() != null && lore.contains(Utils.chat(itemSet.getName()))){
                 int index = lore.indexOf(Utils.chat(itemSet.getName()));
                 if (index == lore.size() - 1) lore.addAll(itemSetLore);

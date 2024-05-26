@@ -88,10 +88,10 @@ public class LightWeaponsSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCoatingApply(InventoryClickEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() ||
-                !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_coating_attempts") ||
+                !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_light_coating_attempts") ||
                 WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_LIGHTWEAPONS)) return;
         if (!(e.getClickedInventory() instanceof PlayerInventory) || !e.isRightClick()) return; // player inventory must be right-clicked
-        Timer.setCooldown(e.getWhoClicked().getUniqueId(), 500, "delay_coating_attempts"); // setting cooldown between attempts so this can't be spammed with some macro
+        Timer.setCooldown(e.getWhoClicked().getUniqueId(), 500, "delay_light_coating_attempts"); // setting cooldown between attempts so this can't be spammed with some macro
         if (ItemUtils.isEmpty(e.getCurrentItem()) || ItemUtils.isEmpty(e.getCursor())) return; // neither items must be empty
         if (!validCoatingItems.contains(e.getCursor().getType())) return; // must be a valid item for coating
         LightWeaponsProfile profile = ProfileCache.getOrCache((Player) e.getWhoClicked(), LightWeaponsProfile.class);
@@ -110,9 +110,9 @@ public class LightWeaponsSkill extends Skill implements Listener {
                     .setCharges(profile.getCoatingCharges())
             );
         }
+        clicked.flag(CustomFlag.TEMPORARY_POTION_DISPLAY);
         PotionEffectRegistry.setDefaultStoredEffects(clicked.getMeta(), newEffects);
         PotionEffectRegistry.setActualStoredEffects(clicked.getMeta(), newEffects);
-        clicked.flag(CustomFlag.TEMPORARY_POTION_DISPLAY);
         e.setCurrentItem(clicked.get());
         e.setCancelled(true);
         e.getWhoClicked().getWorld().playSound(e.getWhoClicked().getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1F, 1F);
@@ -125,9 +125,10 @@ public class LightWeaponsSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onAttack(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
-        if (e.getDamager() instanceof Player p && e.getEntity() instanceof LivingEntity l){
+        Entity trueDamager = EntityUtils.getTrueDamager(e);
+        if (trueDamager instanceof Player p && (!(e.getDamager() instanceof AbstractArrow) || e.getDamager() instanceof Trident) && e.getEntity() instanceof LivingEntity l){
             if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTWEAPONS)) return;
-            ItemBuilder weapon = EntityCache.getAndCacheProperties(p).getMainHand();
+            ItemBuilder weapon = e.getDamager() instanceof Trident t && !ItemUtils.isEmpty(t.getItem()) ? new ItemBuilder(t.getItem()) : EntityCache.getAndCacheProperties(p).getMainHand();
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.LIGHT) return;
             LightWeaponsProfile profile = ProfileCache.getOrCache(p, LightWeaponsProfile.class);
             if (profile.doesCritOnBleed() && Bleeder.getBleedingEntities().containsKey(l.getUniqueId())) EntityAttackListener.critNextAttack(p);
@@ -145,9 +146,10 @@ public class LightWeaponsSkill extends Skill implements Listener {
                 EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE) ||
                 e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK || !(e.getEntity() instanceof Monster l)) return;
         Entity damager = EntityDamagedListener.getLastDamager(l);
-        if (damager instanceof Player p){
+        Player p = damager instanceof Player pl ? pl : damager instanceof Trident t && t.getShooter() instanceof Player pl ? pl : null;
+        if (p != null){
             if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTWEAPONS)) return;
-            ItemBuilder weapon = EntityCache.getAndCacheProperties(p).getMainHand();
+            ItemBuilder weapon = damager instanceof Trident t ? new ItemBuilder(t.getItem()) : EntityCache.getAndCacheProperties(p).getMainHand();
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.LIGHT) return;
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
@@ -193,11 +195,6 @@ public class LightWeaponsSkill extends Skill implements Listener {
     @Override
     public int getSkillTreeMenuOrderPriority() {
         return 40;
-    }
-
-    @Override
-    public boolean isExperienceScaling() {
-        return true;
     }
 
     @Override

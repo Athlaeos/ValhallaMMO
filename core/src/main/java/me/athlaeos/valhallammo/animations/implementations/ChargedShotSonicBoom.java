@@ -4,19 +4,18 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
-import me.athlaeos.valhallammo.utility.AnimationUtils;
 import me.athlaeos.valhallammo.utility.MathUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;
-import java.util.List;
+
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class ChargedShotSonicBoom extends Animation {
     private final Particle sonicBoom;
@@ -56,7 +55,7 @@ public class ChargedShotSonicBoom extends Animation {
 
     private void pulse(World w, Location location, Location particleLocation, Location center, double intensity){
         if (particleLocation.equals(center)) return;
-        if (sonicBoom == Particle.REDSTONE)
+        if (sonicBoom == Particle.valueOf(oldOrNew("REDSTONE", "DUST")))
             w.spawnParticle(sonicBoom, location.add(particleLocation), 0, sonicBoomOptions);
         else w.spawnParticle(sonicBoom, location.add(particleLocation), 0,
                 (particleLocation.getX() - center.getX()) * intensity,

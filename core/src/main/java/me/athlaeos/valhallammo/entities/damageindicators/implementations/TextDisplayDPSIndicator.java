@@ -161,6 +161,7 @@ public class TextDisplayDPSIndicator implements DamageIndicatorStrategy {
         public void run() {
             if (format == null || !damaged.isValid() || damaged.isDead()){
                 damageIndicatorMap.remove(damaged.getUniqueId());
+                display.remove();
                 cancel();
                 return;
             }

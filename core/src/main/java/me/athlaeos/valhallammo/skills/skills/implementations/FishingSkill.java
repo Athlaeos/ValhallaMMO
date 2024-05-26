@@ -161,11 +161,6 @@ public class FishingSkill extends Skill implements Listener {
     }
 
     @Override
-    public boolean isExperienceScaling() {
-        return true;
-    }
-
-    @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_FISHING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {

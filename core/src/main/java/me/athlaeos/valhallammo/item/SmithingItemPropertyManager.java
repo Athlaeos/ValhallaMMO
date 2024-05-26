@@ -12,7 +12,6 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -101,7 +100,7 @@ public class SmithingItemPropertyManager {
         loadConfig();
     }
     
-    public static Scaling getScaling(ItemStack i, ItemMeta meta, String type){
+    public static Scaling getScaling(ItemMeta meta, String type){
         MaterialClass match = MaterialClass.getMatchingClass(meta);
         if (match == null) match = MaterialClass.OTHER;
         return materialScalings.getOrDefault(type, new HashMap<>()).get(match);

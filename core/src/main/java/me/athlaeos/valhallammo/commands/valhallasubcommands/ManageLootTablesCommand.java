@@ -1,8 +1,6 @@
 package me.athlaeos.valhallammo.commands.valhallasubcommands;
 
 import me.athlaeos.valhallammo.commands.Command;
-import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
-import me.athlaeos.valhallammo.crafting.recipetypes.*;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.gui.implementations.*;
 import me.athlaeos.valhallammo.localization.TranslationManager;
@@ -10,8 +8,6 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ManageLootTablesCommand implements Command {

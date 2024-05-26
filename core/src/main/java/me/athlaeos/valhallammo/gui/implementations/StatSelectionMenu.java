@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.*;
@@ -19,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class StatSelectionMenu extends Menu {
     private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
@@ -175,7 +175,7 @@ public class StatSelectionMenu extends Menu {
 
             ItemStack icon = new ItemBuilder(stat.getIcon() == null ? Material.NAME_TAG : stat.getIcon())
                     .name("&f" + stat.getAttributeName().replace("%icon%", "").replace("%value%", "").trim())
-                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_ENCHANTS)
+                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_ENCHANTS)
                     .stringTag(KEY_ATTRIBUTE_ID, stat.getAttribute()).get();
 
             totalStatButtons.add(icon);
@@ -199,7 +199,7 @@ public class StatSelectionMenu extends Menu {
         for (int i = 0; i < 45; i++){
             inventory.setItem(i, null);
         }
-        List<String> stats = currentAttributes.keySet().stream().limit(45).collect(Collectors.toList());
+        List<String> stats = currentAttributes.keySet().stream().limit(45).toList();
         for (String stat : stats){
             AttributeWrapper wrapper = ItemAttributesRegistry.getCopy(stat);
             if (wrapper == null || wrapper.getAttributeName() == null) continue;
@@ -208,7 +208,7 @@ public class StatSelectionMenu extends Menu {
                     .lore(wrapper.getLoreDisplay())
                     .name("&f" + wrapper.getAttributeName().replace("%icon%", "").replace("%value%", "").trim())
                     .stringTag(KEY_ATTRIBUTE_ID, wrapper.getAttribute())
-                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_ENCHANTS)
+                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_ENCHANTS)
                     .get();
             inventory.addItem(icon);
         }

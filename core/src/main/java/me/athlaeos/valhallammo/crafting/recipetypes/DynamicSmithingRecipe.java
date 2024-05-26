@@ -49,6 +49,7 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
 
     @Override
     public void registerRecipe() {
+        if (hasEquivalentVanillaSmithingRecipe(template.getItem(), base.getItem(), addition.getItem())) return; // does not need to be registered because an identical vanilla recipe already exists
         Recipe recipe = generateRecipe();
         if (ValhallaMMO.getInstance().getServer().getRecipe(key) != null) ValhallaMMO.getInstance().getServer().removeRecipe(key);
         if (recipe != null) ValhallaMMO.getInstance().getServer().addRecipe(recipe);
@@ -116,6 +117,7 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
     public void setConsumeAddition(boolean consumeAddition) { this.consumeAddition = consumeAddition; }
     public void setHiddenFromBook(boolean hiddenFromBook) { this.hiddenFromBook = hiddenFromBook; }
 
+    @SuppressWarnings("deprecation")
     public SmithingRecipe generateRecipe() {
         RecipeChoice t = null;
         if (template != null) t = template.getOption() == null ?
@@ -136,5 +138,20 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20) && t != null){
             return SmithingTransformRecipeWrapper.get(key, translate(i), t, b, a); // using a SmithingTransformRecipe directly results in a ClassNotFoundException on versions lower than 1.20
         } else return new SmithingRecipe(key, translate(i), b, a);
+    }
+
+    private boolean hasEquivalentVanillaSmithingRecipe(ItemStack template, ItemStack base, ItemStack addition){
+        if (base == null || addition == null) return false;
+        boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
+        Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
+        while (iterator.hasNext()){
+            if (iterator.next() instanceof SmithingRecipe s && s.getBase().test(base) && s.getAddition().test(addition)){
+                if (s.getBase().test(base) && s.getAddition().test(addition)) {
+                    if (isTemplateCompatible && (!SmithingTransformRecipeWrapper.templatesMatch(s, template))) continue;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

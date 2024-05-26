@@ -5,7 +5,6 @@ import me.athlaeos.valhallammo.animations.Animation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.Comparator;
 
 public class CustomDamageType implements Comparable<CustomDamageType>{
     private static final Map<String, CustomDamageType> damageToCustomTypeMapping = new HashMap<>();

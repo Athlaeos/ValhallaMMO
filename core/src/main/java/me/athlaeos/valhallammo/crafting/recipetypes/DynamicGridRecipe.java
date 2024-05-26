@@ -151,7 +151,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
 
     private ItemStack recipeBookIcon(ItemStack i){
         ResultChangingModifier changer = (ResultChangingModifier) modifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
-        if (changer != null) i = changer.getNewResult();
+        if (changer != null && changer.getNewResult() != null) i = changer.getNewResult();
         List<String> gridDetails = new ArrayList<>();
         if (shapeless){
             String shapelessFormat = TranslationManager.getTranslation("ingredient_format_shapeless");
@@ -248,10 +248,10 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
         if (shape.size() == 3 && shape.get(shape.size() - 1).equalsIgnoreCase("   ") && shape.get(shape.size() - 2).equalsIgnoreCase("   ")) { shape.remove(shape.size() - 1); shape.remove(shape.size() - 1); } // if bottom two rows are empty, remove them
         else if (shape.get(shape.size() - 1).equalsIgnoreCase("   ")) shape.remove(shape.size() - 1); // if only bottom row is empty, remove it
 
-        if (shape.stream().allMatch(s -> s.endsWith("  "))) shape = shape.stream().map(s -> s = s.substring(0, s.length() - 2)).collect(Collectors.toList()); // if last 2 characters of each line is empty, remove them
-        if (shape.stream().allMatch(s -> s.endsWith(" "))) shape = shape.stream().map(s -> s = s.substring(0, s.length() - 1)).collect(Collectors.toList()); // if last character of each line is empty, remove it
-        if (shape.stream().allMatch(s -> s.startsWith("  "))) shape = shape.stream().map(s -> s = s.substring(2)).collect(Collectors.toList()); // if first 2 characters of each line is empty, remove them
-        if (shape.stream().allMatch(s -> s.startsWith(" "))) shape = shape.stream().map(s -> s = s.substring(1)).collect(Collectors.toList()); // if first character of each line is empty, remove it
+        if (shape.stream().allMatch(s -> s.endsWith("  "))) shape = shape.stream().map(s -> s.substring(0, s.length() - 2)).collect(Collectors.toList()); // if last 2 characters of each line is empty, remove them
+        if (shape.stream().allMatch(s -> s.endsWith(" "))) shape = shape.stream().map(s -> s.substring(0, s.length() - 1)).collect(Collectors.toList()); // if last character of each line is empty, remove it
+        if (shape.stream().allMatch(s -> s.startsWith("  "))) shape = shape.stream().map(s -> s.substring(2)).collect(Collectors.toList()); // if first 2 characters of each line is empty, remove them
+        if (shape.stream().allMatch(s -> s.startsWith(" "))) shape = shape.stream().map(s -> s.substring(1)).collect(Collectors.toList()); // if first character of each line is empty, remove it
         return shape;
     }
 

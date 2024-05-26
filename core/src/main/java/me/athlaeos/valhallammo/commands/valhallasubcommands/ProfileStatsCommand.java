@@ -14,16 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProfileStatsCommand implements Command {
-//    private final Map<Skill, List<String>> profileFormats = new HashMap<>();
-
-//    public void reload(){
-//        registerSkillProfileFormats();
-//    }
-
-//    public ProfileStatsCommand(){
-//        registerSkillProfileFormats();
-//    }
-
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         Player target;
@@ -89,12 +79,4 @@ public class ProfileStatsCommand implements Command {
         }
         return null;
     }
-
-//    private void registerSkillProfileFormats(){
-//        for (Skill s : SkillRegistry.getAllSkills().values()){
-//            List<String> format = TranslationManager.getListTranslation("profile_format_" + s.getType().toLowerCase());
-//            if (format == null) format = new ArrayList<>();
-//            profileFormats.put(s, format);
-//        }
-//    }
 }

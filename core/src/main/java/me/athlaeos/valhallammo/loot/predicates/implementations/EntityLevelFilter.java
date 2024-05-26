@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.loot.predicates.implementations;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.entities.MonsterScalingManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -77,10 +76,5 @@ public class EntityLevelFilter extends LootPredicate {
     public boolean test(LootContext context) {
         if (context.getLootedEntity() == null || !(context.getLootedEntity() instanceof LivingEntity e)) return inverted;
         return MonsterScalingManager.getLevel(e) >= from != inverted;
-    }
-
-    @Override
-    public boolean isCompatibleWithLootType(LootTable.LootType type) {
-        return true;
     }
 }

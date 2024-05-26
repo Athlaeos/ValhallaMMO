@@ -174,7 +174,7 @@ public class ConfigUpdater {
         } else if (obj instanceof Character) {
             writer.write(prefixSpaces + actualKey + ": '" + obj + "'\n");
         } else if (obj instanceof List) {
-            writeList((List) obj, actualKey, prefixSpaces, yaml, writer);
+            writeList((List<?>) obj, actualKey, prefixSpaces, yaml, writer);
         } else {
             writer.write(prefixSpaces + actualKey + ": " + yaml.dump(obj));
         }
@@ -192,11 +192,11 @@ public class ConfigUpdater {
     }
 
     //Writes a list of any object
-    private static void writeList(List list, String actualKey, String prefixSpaces, Yaml yaml, BufferedWriter writer) throws IOException {
+    private static void writeList(List<?> list, String actualKey, String prefixSpaces, Yaml yaml, BufferedWriter writer) throws IOException {
         writer.write(getListAsString(list, actualKey, prefixSpaces, yaml));
     }
 
-    private static String getListAsString(List list, String actualKey, String prefixSpaces, Yaml yaml) {
+    private static String getListAsString(List<?> list, String actualKey, String prefixSpaces, Yaml yaml) {
         StringBuilder builder = new StringBuilder(prefixSpaces).append(actualKey).append(":");
 
         if (list.isEmpty()) {
@@ -209,8 +209,7 @@ public class ConfigUpdater {
         for (int i = 0; i < list.size(); i++) {
             Object o = list.get(i);
 
-            if (o instanceof String) {
-                String value = (String) o;
+            if (o instanceof String value) {
                 builder.append(prefixSpaces).append("- ").append(formatStringValue(value));
             } else if (o instanceof Character) {
                 builder.append(prefixSpaces).append("- '").append(o).append("'");
@@ -240,7 +239,7 @@ public class ConfigUpdater {
             if (line != null && line.trim().startsWith("-"))
                 continue;
 
-            if (line == null || line.trim().equals("") || line.trim().startsWith("#")) {
+            if (line == null || line.trim().isEmpty() || line.trim().startsWith("#")) {
                 builder.append(line).append("\n");
             } else {
                 lastLineIndentCount = setFullKey(keyBuilder, line, lastLineIndentCount);
@@ -256,14 +255,14 @@ public class ConfigUpdater {
                     }
                 }
 
-                if (keyBuilder.length() > 0) {
+                if (!keyBuilder.isEmpty()) {
                     comments.put(keyBuilder.toString(), builder.toString());
                     builder.setLength(0);
                 }
             }
         }
 
-        if (builder.length() > 0) {
+        if (!builder.isEmpty()) {
             comments.put(null, builder.toString());
         }
 
@@ -290,7 +289,7 @@ public class ConfigUpdater {
                 appendSection(builder, (ConfigurationSection) value, prefixSpaces, yaml);
                 prefixSpaces.setLength(prefixSpaces.length() - 2);
             } else if (value instanceof List) {
-                builder.append(getListAsString((List) value, actualKey, prefixSpaces.toString(), yaml));
+                builder.append(getListAsString((List<?>) value, actualKey, prefixSpaces.toString(), yaml));
             } else {
                 builder.append(prefixSpaces.toString()).append(actualKey).append(": ").append(yaml.dump(value));
             }
@@ -336,13 +335,13 @@ public class ConfigUpdater {
         int currentIndents = countIndents(configLine);
         String key = configLine.trim().split(":")[0];
 
-        if (keyBuilder.length() == 0) {
+        if (keyBuilder.isEmpty()) {
             keyBuilder.append(key);
         } else if (currentIndents == lastLineIndentCount) {
             //Replace the last part of the key with current key
             removeLastKey(keyBuilder);
 
-            if (keyBuilder.length() > 0) {
+            if (!keyBuilder.isEmpty()) {
                 keyBuilder.append(".");
             }
 
@@ -357,7 +356,7 @@ public class ConfigUpdater {
                 removeLastKey(keyBuilder);
             }
 
-            if (keyBuilder.length() > 0) {
+            if (!keyBuilder.isEmpty()) {
                 keyBuilder.append(".");
             }
 
@@ -368,13 +367,7 @@ public class ConfigUpdater {
     }
 
     private static String getPrefixSpaces(int indents) {
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 0; i < indents; i++) {
-            builder.append("  ");
-        }
-
-        return builder.toString();
+        return "  ".repeat(Math.max(0, indents));
     }
 
     private static void appendPrefixSpaces(StringBuilder builder, int indents) {

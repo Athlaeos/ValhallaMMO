@@ -18,12 +18,13 @@ public class ProfileStatWeightSource implements AccumulativeStatSource {
     private final Profile baseProfile;
     private final double def;
     private final WeightClass weightClass;
-    private boolean negative = false;
+    private final boolean negative;
 
     public ProfileStatWeightSource(Class<? extends Profile> type, String stat, WeightClass weightClass, boolean negative){
         this.type = type;
         this.stat = stat;
         this.weightClass = weightClass;
+        this.negative = negative;
         baseProfile = ProfileRegistry.getBlankProfile(null, type);
 
         if (baseProfile.intStatNames().contains(stat)) {

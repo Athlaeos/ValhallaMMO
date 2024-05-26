@@ -83,8 +83,6 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
     private int page = 1;
     private ItemBuilder predictedItem = null;
 
-    private final Map<View, List<ItemStack>> items = new HashMap<>();
-
     public ImmersiveRecipeSelectionMenu(PlayerMenuUtility playerMenuUtility, Block clicked, boolean craft) {
         super(playerMenuUtility);
         this.clicked = clicked;
@@ -221,7 +219,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
             }
 
             if (selectedRecipe != null){
-                List<ItemStack> separatedIngredients = ItemUtils.decompressStacks(selectedRecipe.getIngredients()).stream().limit(9).collect(Collectors.toList());
+                List<ItemStack> separatedIngredients = ItemUtils.decompressStacks(selectedRecipe.getIngredients()).stream().limit(9).toList();
                 for (int i = 0; i < separatedIngredients.size(); i++){
                     inventory.setItem(ingredientIndexes.get(i), separatedIngredients.get(i));
                 }

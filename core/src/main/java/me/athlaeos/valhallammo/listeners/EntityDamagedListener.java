@@ -48,6 +48,8 @@ public class EntityDamagedListener implements Listener {
         if (e instanceof EntityDamageByEntityEvent eve) EntityDamagedListener.setDamager(e.getEntity(), eve.getDamager());
     }
 
+    private final Map<UUID, Double> healthTracker = new HashMap<>();
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamageTaken(EntityDamageEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
@@ -57,7 +59,7 @@ public class EntityDamagedListener implements Listener {
             double originalDamage = e.getDamage();
             double customDamage = !customDamageEnabled ? e.getDamage() : type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
             double damageAfterImmunity = !customDamageEnabled ? e.getDamage() : overrideImmunityFrames(customDamage, l);
-            if (damageAfterImmunity <= 0 && type != null && e.getEntityType() != EntityType.ARMOR_STAND) {
+            if (damageAfterImmunity < 0 && type != null && e.getEntityType() != EntityType.ARMOR_STAND) {
                 e.setCancelled(true);
                 return; // entity is immune, and so damage doesn't need to be calculated further
             }
@@ -80,7 +82,12 @@ public class EntityDamagedListener implements Listener {
                 int iFrameBonus = (int) AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_BONUS", l, lastDamager, 10000, true);
                 int iFrames = (int) Math.max(0, iFrameMultiplier * (Math.max(0, 10 + iFrameBonus)));
 
-                double currentHealth = l.getHealth();
+                double predictedHealth = healthTracker.getOrDefault(l.getUniqueId(), l.getHealth()) - damage;
+                healthTracker.put(l.getUniqueId(), predictedHealth); // if two damage instances occur in rapid succession (such as with bonus damage types)
+                // then the predicted health of the entity is recorded and used for additional damage instances. Without this, preceding damage instances
+                // would be ignored because the entity's health would not have changed yet at this point and their health would be set assuming they've only
+                // taken the last damage instance
+
                 if ((type == null || type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
                 if (!customDamageEnabled && l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0.00001);
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
@@ -88,18 +95,19 @@ public class EntityDamagedListener implements Listener {
                     if (customDamageEnabled){
                         AttributeInstance health = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
                         double maxHealth = health != null ? health.getValue() : -1;
-                        if (l.getHealth() > 0) l.setHealth(Math.max(damageCause.equals("POISON") ? 1 : 0, Math.min(maxHealth, currentHealth - damage)));
+                        if (l.getHealth() > 0) l.setHealth(Math.max(damageCause.equals("POISON") ? 1 : 0, Math.min(maxHealth, predictedHealth)));
                     }
                     customDamageCauses.remove(l.getUniqueId());
+                    healthTracker.remove(l.getUniqueId());
                 }, 1L);
             } else if (customDamageEnabled) {
                 // custom damage killed entity
-                l.setLastDamageCause(e);
+                // l.setLastDamageCause(e); // TODO commented out due to deprecation. Watch if this causes any issues
                 if (customDamage > 0) DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage);
                 if (l.getHealth() > 0) l.setHealth(0.0001); // attempt to ensure that this attack will kill
                 if (e.getFinalDamage() == 0) { // if player wouldn't have died even with this little health, force a death (e.g. with resistance V)
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                        l.setLastDamageCause(e);
+                        // l.setLastDamageCause(e);
                         l.setHealth(0);
                     }, 1L);
                 } else {
@@ -161,6 +169,17 @@ public class EntityDamagedListener implements Listener {
         } else return resistedDamage;
     }
 
+    /**
+     * Compares damage taken to entity immunity frames and their last damage taken to determine if the entity should take
+     * damage equal to the difference of the current damage amount and previous damage amount.
+     * <br>
+     * If an entity is immune due to some damage taken, and they take a hit of damage greater than this previous amount, then
+     * they will take the difference between those damage numbers regardless of immunity.
+     * <br>
+     * @param customDamage The damage taken through immunity
+     * @param l the entity
+     * @return -1 if damage is blocked from immunity, or the damage taken if not
+     */
     private double overrideImmunityFrames(double customDamage, LivingEntity l){
         if (l.getNoDamageTicks() > 0) {
             // immunity frames should be overwritten if, during them, the entity takes a hit of damage greater than
@@ -170,7 +189,7 @@ public class EntityDamagedListener implements Listener {
             if (customDamage > lastDamage) {
                 return customDamage - lastDamage;
             }
-            return 0; // entity remains immune, return false
+            return -1; // entity remains immune, return false
         }
         return customDamage;
     }

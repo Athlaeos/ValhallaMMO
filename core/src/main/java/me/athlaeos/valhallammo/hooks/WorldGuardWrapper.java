@@ -57,7 +57,7 @@ public class WorldGuardWrapper {
             RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
             RegionQuery query = container.createQuery();
 
-            return !query.testState(BukkitAdapter.adapt(l), worldguardPlayer, Flags.BUILD);
+            return query.testState(BukkitAdapter.adapt(l), worldguardPlayer, Flags.BUILD);
         }
         return true;
     }

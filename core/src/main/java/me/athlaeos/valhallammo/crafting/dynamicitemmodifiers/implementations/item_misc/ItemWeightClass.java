@@ -5,7 +5,6 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.WeightClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.command.CommandSender;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

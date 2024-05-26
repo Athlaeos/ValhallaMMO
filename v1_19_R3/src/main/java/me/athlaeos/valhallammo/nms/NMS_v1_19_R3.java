@@ -4,8 +4,10 @@ import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
@@ -16,7 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -28,13 +29,15 @@ import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R3.block.data.CraftBlockData;
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_19_R3.generator.strucutre.CraftStructure;
 import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftItemStack;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -51,6 +54,26 @@ public final class NMS_v1_19_R3 implements NMS {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public PotionType getPotionType(PotionMeta meta) {
+        return meta.getBasePotionData().getType();
+    }
+
+    @Override
+    public boolean isUpgraded(PotionMeta meta) {
+        return meta.getBasePotionData().isUpgraded();
+    }
+
+    @Override
+    public boolean isExtended(PotionMeta meta) {
+        return meta.getBasePotionData().isExtended();
+    }
+
+    @Override
+    public void setPotionType(PotionMeta meta, PotionType type) {
+        meta.setBasePotionData(new PotionData(type, false, false));
     }
 
     @Override
@@ -180,5 +203,15 @@ public final class NMS_v1_19_R3 implements NMS {
     @Override
     public void setBookContents(org.bukkit.inventory.ItemStack book, List<BaseComponent[]> pages) {
 
+    }
+
+    @Override
+    public Enchantment getEnchantment(EnchantmentMappings mappedTo) {
+        return NMS_v1_19_R1.oldMappings(mappedTo);
+    }
+
+    @Override
+    public PotionEffectType getPotionEffectType(PotionEffectMappings mappedTo){
+        return NMS_v1_19_R1.oldMappings(mappedTo);
     }
 }

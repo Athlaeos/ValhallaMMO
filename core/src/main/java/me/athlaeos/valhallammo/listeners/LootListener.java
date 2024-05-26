@@ -24,6 +24,7 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.ArchaeologyListener;
+import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PaperLootRefillHandler;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -55,7 +56,6 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LootListener implements Listener {
 
@@ -81,7 +81,6 @@ public class LootListener implements Listener {
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
         double luck = details.getOne();
-
         if (onBlockDestruction(e.getBlock(),
                 new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
                 new GenericBlockDestructionInfo(e.getBlock(), e),
@@ -247,7 +246,7 @@ public class LootListener implements Listener {
             luck += preparedLuckBuffs.getOrDefault(b.getLocation(), 0D);
             ItemStack hand = p.getInventory().getItemInMainHand();
             if (!ItemUtils.isEmpty(hand)){
-                if (hand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) fortune = hand.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+                if (hand.containsEnchantment(EnchantmentMappings.FORTUNE.getEnchantment())) fortune = hand.getEnchantmentLevel(EnchantmentMappings.FORTUNE.getEnchantment());
                 else if (hand.containsEnchantment(Enchantment.SILK_TOUCH)) fortune = -1;
             }
         }
@@ -312,7 +311,7 @@ public class LootListener implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
 
         List<Block> blocks = new ArrayList<>(e.blockList());
-        blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).collect(Collectors.toList()));
+        blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).toList());
         for (Block b : blocks){
             exploded.add(b);
             double extraLuck = preparedLuckBuffs.getOrDefault(b.getLocation(), 0D);
@@ -336,7 +335,7 @@ public class LootListener implements Listener {
         }
 
         List<Block> blocks = new ArrayList<>(e.blockList());
-        blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).collect(Collectors.toList()));
+        blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).toList());
         for (Block b : blocks){
             if (!ArchaeologyListener.isBrushable(b.getType())) {
                 for (ItemStack i : preparedBlockDrops.getOrDefault(b.getLocation(), new ArrayList<>())){
@@ -363,7 +362,7 @@ public class LootListener implements Listener {
         double luck = luckInstance == null ? 0 : luckInstance.getValue();
 
         List<Block> blocks = new ArrayList<>(e.blockList());
-        blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).collect(Collectors.toList()));
+        blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).toList());
         for (Block b : blocks){
             if (ArchaeologyListener.isBrushable(b.getType())) continue;
             exploded.add(b);
@@ -388,7 +387,7 @@ public class LootListener implements Listener {
         Entity owner = uuid == null ? null : ValhallaMMO.getInstance().getServer().getEntity(uuid);
 
         List<Block> blocks = new ArrayList<>(e.blockList());
-        blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).collect(Collectors.toList()));
+        blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).toList());
         for (Block b : blocks){
             if (!ArchaeologyListener.isBrushable(b.getType())){
                 for (ItemStack i : preparedBlockDrops.getOrDefault(b.getLocation(), new ArrayList<>())){
@@ -571,7 +570,7 @@ public class LootListener implements Listener {
         Entity killer = entity.getKiller();
         EntityDamageEvent lastDamageSource = entity.getLastDamageCause();
         if (killer == null && lastDamageSource instanceof EntityDamageByEntityEvent event){
-            if (event.getDamager() instanceof LivingEntity realKiller) killer = realKiller;
+            if (event.getDamager() instanceof LivingEntity) killer = event.getDamager();
         }
 
         Collection<Material> droppedHandTypes = new HashSet<>();
@@ -598,7 +597,7 @@ public class LootListener implements Listener {
 
             if (killer instanceof HumanEntity h){
                 looting = ItemUtils.isEmpty(h.getInventory().getItemInMainHand()) ? 0 :
-                        h.getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+                        h.getInventory().getItemInMainHand().getEnchantmentLevel(EnchantmentMappings.FORTUNE.getEnchantment());
             }
         }
 

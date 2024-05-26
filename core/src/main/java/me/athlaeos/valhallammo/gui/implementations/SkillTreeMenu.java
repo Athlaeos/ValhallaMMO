@@ -24,6 +24,7 @@ import me.athlaeos.valhallammo.skills.skills.implementations.PowerSkill;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -308,7 +309,7 @@ public class SkillTreeMenu extends Menu {
                     if (p == null || !p.shouldBeVisible(target) || offsets == null) continue;
                     ItemBuilder icon = new ItemBuilder(p.getIcon())
                             .name(perkConfirmation != null && perkConfirmation.equals(p.getName()) ? TranslationManager.getTranslation("skilltree_perk_confirmation").replace("%perk%", p.getDisplayName()) : p.getDisplayName())
-                            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS)
+                            .flag(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS)
                             .stringTag(buttonKey, p.getName());
                     int unlockedStatus = p.hasPermanentlyLocked(target) ? 2 : // permanently locked
                             p.hasFakeUnlocked(target) ? 3 : // fake unlocked
@@ -405,7 +406,7 @@ public class SkillTreeMenu extends Menu {
                 ItemStack skillIcon = new ItemBuilder(s.getIcon())
                         .name(s.getDisplayName())
                         .lore(StringUtils.separateStringIntoLines(Utils.chat(s.getDescription()), 40))
-                        .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS)
+                        .flag(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS)
                         .stringTag(buttonKey, s.getType())
                         .get();
 

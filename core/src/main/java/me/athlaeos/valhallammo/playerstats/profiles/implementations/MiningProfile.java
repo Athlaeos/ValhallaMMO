@@ -10,11 +10,11 @@ import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.MiningSkill;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
 
@@ -124,7 +124,7 @@ public class MiningProfile extends Profile {
         }
         int level = getEmptyHandToolFortune();
         ItemBuilder item = new ItemBuilder(material);
-        if (level != 0) item.enchant(level < 0 ? Enchantment.SILK_TOUCH : Enchantment.LOOT_BONUS_BLOCKS, level < 0 ? 1 : level);
+        if (level != 0) item.enchant(level < 0 ? Enchantment.SILK_TOUCH : EnchantmentMappings.FORTUNE.getEnchantment(), level < 0 ? 1 : level);
         if (getEmptyHandToolMiningStrength() > 0) MiningSpeed.setMultiplier(item.getMeta(), getEmptyHandToolMiningStrength());
         emptyHandTool = new ItemBuilder(item.get());
     }

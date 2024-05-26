@@ -2,8 +2,10 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
@@ -15,17 +17,23 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class FlagVanillaAdd extends DynamicItemModifier {
-    private final ItemFlag flag;
+    private String flag;
 
-    public FlagVanillaAdd(String name, ItemFlag flag) {
+    public FlagVanillaAdd(String name, String flag) {
         super(name);
         this.flag = flag;
     }
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        outputItem.flag(flag);
+        correctFlag();
+        outputItem.flag(ItemFlag.valueOf(flag));
         PotionEffectRegistry.updateEffectLore(outputItem.getMeta());
+    }
+
+    private void correctFlag(){
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) &&
+                (flag == null || flag.equalsIgnoreCase("HIDE_POTION_EFFECTS"))) flag = "HIDE_ADDITIONAL_TOOLTIP";
     }
 
     @Override
@@ -39,32 +47,36 @@ public class FlagVanillaAdd extends DynamicItemModifier {
 
     @Override
     public ItemStack getModifierIcon() {
-        return new ItemBuilder(switch (flag.toString()){
+        correctFlag();
+        return new ItemBuilder(switch (flag){
             case "HIDE_DYE" -> Material.RED_DYE;
             case "HIDE_DESTROYS" -> Material.GOLDEN_PICKAXE;
             case "HIDE_ENCHANTS" -> Material.ENCHANTED_BOOK;
             case "HIDE_PLACED_ON" -> Material.BRICKS;
-            case "HIDE_ATTRIBUTES" -> Material.PAPER;
+            case "HIDE_ATTRIBUTES", "HIDE_ADDITIONAL_TOOLTIP" -> Material.PAPER;
             case "HIDE_UNBREAKABLE" -> Material.DIAMOND_PICKAXE;
             case "HIDE_POTION_EFFECTS" -> Material.POTION;
             case "HIDE_ARMOR_TRIM" -> Material.BRICK;
             default -> Material.BARRIER;
-        }).flag(ItemFlag.HIDE_POTION_EFFECTS).get();
+        }).flag(ConventionUtils.getHidePotionEffectsFlag()).get();
     }
 
     @Override
     public String getDisplayName() {
-        return "&7Add Vanilla Item Flag: &e" + StringUtils.toPascalCase(flag.toString().toLowerCase().replace("_", " "));
+        correctFlag();
+        return "&7Add Vanilla Item Flag: &e" + StringUtils.toPascalCase(flag.toLowerCase().replace("_", " "));
     }
 
     @Override
     public String getDescription() {
-        return "&fAdds the " + StringUtils.toPascalCase(flag.toString().toLowerCase().replace("_", " ")) + " item flag to the item.";
+        correctFlag();
+        return "&fAdds the " + StringUtils.toPascalCase(flag.toLowerCase().replace("_", " ")) + " item flag to the item.";
     }
 
     @Override
     public String getActiveDescription() {
-        return "&fAdds the " + StringUtils.toPascalCase(flag.toString().toLowerCase().replace("_", " ")) + " item flag to the item.";
+        correctFlag();
+        return "&fAdds the " + StringUtils.toPascalCase(flag.toLowerCase().replace("_", " ")) + " item flag to the item.";
     }
 
     @Override
@@ -74,6 +86,7 @@ public class FlagVanillaAdd extends DynamicItemModifier {
 
     @Override
     public DynamicItemModifier copy() {
+        correctFlag();
         FlagVanillaAdd m = new FlagVanillaAdd(getName(), flag);
         m.setPriority(this.getPriority());
         return m;

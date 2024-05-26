@@ -14,6 +14,7 @@ import me.athlaeos.valhallammo.item.arrow_attributes.ArrowBehaviorRegistry;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -162,7 +163,7 @@ public class ProjectileListener implements Listener {
             e.getProjectile().setVelocity(e.getProjectile().getVelocity().multiply(speedMultiplier));
 
             boolean infinityExploitable = CustomFlag.hasFlag(consumableMeta, CustomFlag.INFINITY_EXPLOITABLE);
-            boolean hasInfinity = bow.containsEnchantment(Enchantment.ARROW_INFINITE);
+            boolean hasInfinity = bow.containsEnchantment(EnchantmentMappings.INFINITY.getEnchantment());
             boolean shouldSave = hasInfinity && (consumable.isSimilar(new ItemStack(Material.ARROW)) || infinityExploitable);
 
             if (shooter instanceof Player p && (e.getProjectile() instanceof AbstractArrow || e.getProjectile() instanceof Firework)){
@@ -195,7 +196,7 @@ public class ProjectileListener implements Listener {
                 if (e.getProjectile() instanceof AbstractArrow a && !(a instanceof Trident)){
                     // arrows may be preserved with infinity if they resemble a vanilla arrow, or if they have the infinityExploitable flag
                     e.setConsumeItem(!shouldSave);
-                    if (e.shouldConsumeItem()) a.setPickupStatus(AbstractArrow.PickupStatus.ALLOWED);
+                    if (e.shouldConsumeItem() && !isShotFromMultishot(a)) a.setPickupStatus(AbstractArrow.PickupStatus.ALLOWED);
                     else a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
                 }
             }

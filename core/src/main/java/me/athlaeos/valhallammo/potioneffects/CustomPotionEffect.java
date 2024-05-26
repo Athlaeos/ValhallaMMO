@@ -4,7 +4,7 @@ public class CustomPotionEffect {
     private final PotionEffectWrapper effect;
     private long effectiveUntil;
     private double amplifier;
-    private int originalDuration;
+    private final int originalDuration;
 
     /**
      * Use this constructor when adding a plain regular potion effect with a normal duration.

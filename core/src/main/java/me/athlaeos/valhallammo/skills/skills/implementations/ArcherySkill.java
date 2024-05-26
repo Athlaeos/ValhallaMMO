@@ -27,12 +27,12 @@ import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.Bleeder;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -51,6 +51,8 @@ import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class ArcherySkill extends Skill implements Listener {
     private double expBaseBow = 0;
@@ -178,7 +180,8 @@ public class ArcherySkill extends Skill implements Listener {
         ArcheryProfile profile = ProfileCache.getOrCache(p, ArcheryProfile.class);
         ItemBuilder bow = ProjectileListener.getBow(a);
         if (bow == null) return;
-        boolean hasInfinity = bow.getItem().containsEnchantment(Enchantment.ARROW_INFINITE);
+        boolean hasInfinity = bow.getItem().containsEnchantment(EnchantmentMappings.INFINITY.getEnchantment());
+        if (!p.getWorld().equals(v.getWorld())) return;
         int distance = (int) p.getLocation().distance(v.getLocation());
         int damageDistance = (int) Math.ceil(Math.min(damageDistanceLimit, distance) / 10D);
         int expDistance = (int) Math.ceil(Math.min(expDistanceLimit, distance) / 10D);
@@ -254,7 +257,7 @@ public class ArcherySkill extends Skill implements Listener {
 
             if (chargedShotFireAnimation != null) chargedShotFireAnimation.animate(p, p.getEyeLocation(), p.getEyeLocation().getDirection(), 0);
             if (chargedShotSonicBoomAnimation != null && a.getVelocity().lengthSquared() >= sonicBoomRequiredVelocity) chargedShotSonicBoomAnimation.animate(p, p.getEyeLocation(), p.getEyeLocation().getDirection(), 0);
-            if (trail != null) AnimationUtils.trailProjectile(a, trail == Particle.REDSTONE ? new RedstoneParticle(trailOptions) : new GenericParticle(trail), 60);
+            if (trail != null) AnimationUtils.trailProjectile(a, trail == Particle.valueOf(oldOrNew("REDSTONE", "DUST")) ? new RedstoneParticle(trailOptions) : new GenericParticle(trail), 60);
             if (user.crossbowInstantReload && bow.getType() == Material.CROSSBOW){
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                     boolean mainHand = !ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) && p.getInventory().getItemInMainHand().getType() == Material.CROSSBOW;

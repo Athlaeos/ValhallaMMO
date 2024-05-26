@@ -4,8 +4,10 @@ import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
@@ -15,7 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -27,14 +28,15 @@ import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.block.data.CraftBlockData;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftArrow;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_19_R1.generator.strucutre.CraftStructure;
 import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -173,5 +175,118 @@ public final class NMS_v1_19_R1 implements NMS {
     @Override
     public void setBookContents(org.bukkit.inventory.ItemStack book, List<BaseComponent[]> pages) {
 
+    }
+
+    @Override
+    public Enchantment getEnchantment(EnchantmentMappings mappedTo) {
+        return oldMappings(mappedTo);
+    }
+
+    @Override
+    public PotionType getPotionType(PotionMeta meta) {
+        return meta.getBasePotionData().getType();
+    }
+
+    @Override
+    public PotionEffectType getPotionEffectType(PotionEffectMappings mappedTo) {
+        return oldMappings(mappedTo);
+    }
+
+    @Override
+    public boolean isUpgraded(PotionMeta meta) {
+        return meta.getBasePotionData().isUpgraded();
+    }
+
+    @Override
+    public boolean isExtended(PotionMeta meta) {
+        return meta.getBasePotionData().isExtended();
+    }
+
+    @Override
+    public void setPotionType(PotionMeta meta, PotionType type) {
+        meta.setBasePotionData(new PotionData(type, false, false));
+    }
+
+    public static Enchantment oldMappings(EnchantmentMappings mapping){
+        return switch (mapping){
+            case FLAME -> Enchantment.ARROW_FIRE;
+            case POWER -> Enchantment.ARROW_DAMAGE;
+            case INFINITY -> Enchantment.ARROW_INFINITE;
+            case PUNCH -> Enchantment.ARROW_KNOCKBACK;
+            case CURSE_OF_BINDING -> Enchantment.BINDING_CURSE;
+            case CHANNELING -> Enchantment.CHANNELING;
+            case SHARPNESS -> Enchantment.DAMAGE_ALL;
+            case BANE_OF_ARTHROPODS -> Enchantment.DAMAGE_ARTHROPODS;
+            case SMITE -> Enchantment.DAMAGE_UNDEAD;
+            case DEPTH_STRIDER -> Enchantment.DEPTH_STRIDER;
+            case EFFICIENCY -> Enchantment.DIG_SPEED;
+            case UNBREAKING -> Enchantment.DURABILITY;
+            case FIRE_ASPECT -> Enchantment.FIRE_ASPECT;
+            case FROST_WALKER -> Enchantment.FROST_WALKER;
+            case IMPALING -> Enchantment.IMPALING;
+            case KNOCKBACK -> Enchantment.KNOCKBACK;
+            case FORTUNE -> Enchantment.LOOT_BONUS_BLOCKS;
+            case LOOTING -> Enchantment.LOOT_BONUS_MOBS;
+            case LOYALTY -> Enchantment.LOYALTY;
+            case LUCK_OF_THE_SEA -> Enchantment.LUCK;
+            case LURE -> Enchantment.LURE;
+            case MENDING -> Enchantment.MENDING;
+            case MULTISHOT -> Enchantment.MULTISHOT;
+            case RESPIRATION -> Enchantment.OXYGEN;
+            case PIERCING -> Enchantment.PIERCING;
+            case PROTECTION -> Enchantment.PROTECTION_ENVIRONMENTAL;
+            case BLAST_PROTECTION -> Enchantment.PROTECTION_EXPLOSIONS;
+            case FEATHER_FALLING -> Enchantment.PROTECTION_FALL;
+            case FIRE_PROTECTION -> Enchantment.PROTECTION_FIRE;
+            case PROJECTILE_PROTECTION -> Enchantment.PROTECTION_PROJECTILE;
+            case QUICK_CHARGE -> Enchantment.QUICK_CHARGE;
+            case RIPTIDE -> Enchantment.RIPTIDE;
+            case SILK_TOUCH -> Enchantment.SILK_TOUCH;
+            case SOUL_SPEED -> Enchantment.SOUL_SPEED;
+            case SWEEPING_EDGE -> Enchantment.SWEEPING_EDGE;
+            case THORNS -> Enchantment.THORNS;
+            case CURSE_OF_VANISHING -> Enchantment.VANISHING_CURSE;
+            case AQUA_AFFINITY -> Enchantment.WATER_WORKER;
+            default -> null;
+        };
+    }
+
+    public static PotionEffectType oldMappings(PotionEffectMappings mapping){
+        return switch (mapping){
+            case LUCK -> PotionEffectType.LUCK;
+            case HASTE -> PotionEffectType.FAST_DIGGING;
+            case SPEED -> PotionEffectType.SPEED;
+            case HUNGER -> PotionEffectType.HUNGER;
+            case NAUSEA -> PotionEffectType.CONFUSION;
+            case POISON -> PotionEffectType.POISON;
+            case WITHER -> PotionEffectType.WITHER;
+            case GLOWING -> PotionEffectType.GLOWING;
+            case BAD_LUCK -> PotionEffectType.UNLUCK;
+            case DARKNESS -> PotionEffectType.DARKNESS;
+            case BAD_OMEN -> PotionEffectType.BAD_OMEN;
+            case SLOWNESS -> PotionEffectType.SLOW;
+            case STRENGTH -> PotionEffectType.INCREASE_DAMAGE;
+            case WEAKNESS -> PotionEffectType.WEAKNESS;
+            case BLINDNESS -> PotionEffectType.BLINDNESS;
+            case ABSORPTION -> PotionEffectType.ABSORPTION;
+            case LEVITATION -> PotionEffectType.LEVITATION;
+            case JUMP_BOOST -> PotionEffectType.JUMP;
+            case RESISTANCE -> PotionEffectType.DAMAGE_RESISTANCE;
+            case SATURATION -> PotionEffectType.SATURATION;
+            case HEALTH_BOOST -> PotionEffectType.HEALTH_BOOST;
+            case INVISIBILITY -> PotionEffectType.INVISIBILITY;
+            case REGENERATION -> PotionEffectType.REGENERATION;
+            case NIGHT_VISION -> PotionEffectType.NIGHT_VISION;
+            case SLOW_FALLING -> PotionEffectType.SLOW_FALLING;
+            case CONDUIT_POWER -> PotionEffectType.CONDUIT_POWER;
+            case DOLPHINS_GRACE -> PotionEffectType.DOLPHINS_GRACE;
+            case INSTANT_DAMAGE -> PotionEffectType.HARM;
+            case INSTANT_HEALTH -> PotionEffectType.HEAL;
+            case MINING_FATIGUE -> PotionEffectType.SLOW_DIGGING;
+            case FIRE_RESISTANCE -> PotionEffectType.FIRE_RESISTANCE;
+            case WATER_BREATHING -> PotionEffectType.WATER_BREATHING;
+            case HERO_OF_THE_VILLAGE -> PotionEffectType.HERO_OF_THE_VILLAGE;
+            default -> null;
+        };
     }
 }

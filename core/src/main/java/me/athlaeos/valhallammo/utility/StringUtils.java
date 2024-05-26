@@ -11,7 +11,7 @@ public class StringUtils {
 
     public static String toPascalCase(String s){
         if (s == null) return null;
-        if (s.length() == 0) return s;
+        if (s.isEmpty()) return s;
         String allLowercase = s.toLowerCase();
         char c = allLowercase.charAt(0);
         return allLowercase.replaceFirst("" + c, "" + Character.toUpperCase(c));

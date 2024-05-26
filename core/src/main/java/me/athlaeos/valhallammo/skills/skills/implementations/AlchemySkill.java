@@ -23,24 +23,18 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class AlchemySkill extends Skill implements Listener {
     private boolean quickEmptyPotions = true;
@@ -106,11 +100,6 @@ public class AlchemySkill extends Skill implements Listener {
     @Override
     public int getSkillTreeMenuOrderPriority() {
         return 15;
-    }
-
-    @Override
-    public boolean isExperienceScaling() {
-        return true;
     }
 
     @Override
@@ -200,21 +189,20 @@ public class AlchemySkill extends Skill implements Listener {
     }
 
     @EventHandler(priority=EventPriority.MONITOR)
-    public void onProjectileHitBlock(ProjectileHitEvent e){
+    public void onProjectileHitBlock(PotionSplashEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
-                e.getHitBlock() == null || !(e.getEntity() instanceof ThrownPotion t) ||
-                !(t.getShooter() instanceof Player p) ||
+                e.getHitBlock() == null ||
+                !(e.getEntity().getShooter() instanceof Player p) ||
                 WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ALCHEMY)) return;
-        ItemMeta potionMeta = ItemUtils.getItemMeta(t.getItem());
+        ItemMeta potionMeta = ItemUtils.getItemMeta(e.getPotion().getItem());
         if (!isTransmutationPotion(potionMeta)) return;
 
         AlchemyProfile profile = ProfileCache.getOrCache(p, AlchemyProfile.class);
         if (profile.getUnlockedTransmutations().isEmpty() || profile.getTransmutationRadius() <= 0) return;
         Collection<Block> affectedBlocks = BlockUtils.getBlocksTouching(e.getHitBlock(), profile.getTransmutationRadius(), 1, profile.getTransmutationRadius(), Material::isAir);
-
         for (Block b : affectedBlocks){
             if (transmutationsByMaterial.containsKey(b.getType())){
-                if (ValhallaMMO.isHookFunctional(WorldGuardHook.class) && !WorldGuardHook.canPlaceBlocks(b.getLocation(), p)) return;
+                if (ValhallaMMO.isHookFunctional(WorldGuardHook.class) && !WorldGuardHook.canPlaceBlocks(b.getLocation(), p)) continue;
                 b.setType(transmutationsByMaterial.get(b.getType()).to);
             }
         }

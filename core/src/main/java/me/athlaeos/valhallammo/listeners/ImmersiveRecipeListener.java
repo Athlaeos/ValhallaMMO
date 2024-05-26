@@ -127,7 +127,7 @@ public class ImmersiveRecipeListener implements Listener {
                         if (ItemUtils.removeItems(p.getInventory(), recipe.getIngredients(), 1, recipe.getMetaRequirement().getChoice())){
                             ItemBuilder result = recipe.tinker() ? held : new ItemBuilder(recipe.getResult());
                             DynamicItemModifier.modify(result, p, recipe.getModifiers(), false, true, true);
-                            if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
+                            if (result == null || ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                                 Utils.sendMessage(p, ItemUtils.getPDCString(DynamicItemModifier.ERROR_MESSAGE, heldItem, ""));
                                 selectedImmersiveRecipe.remove(p.getUniqueId());
                             } else {

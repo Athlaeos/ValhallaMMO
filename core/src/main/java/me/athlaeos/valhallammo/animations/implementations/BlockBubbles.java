@@ -15,6 +15,8 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.Map;
 
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
+
 public class BlockBubbles extends Animation {
     private static final Map<Material, Particle> bubbleParticles = new HashMap<>();
     private static final Map<Material, Particle> smokeParticles = new HashMap<>();
@@ -24,11 +26,11 @@ public class BlockBubbles extends Animation {
         // if lava, powdered snow, and water cauldrons don't exist in this version of minecraft, default to CAULDRON:WATER_BUBBLE
         bubbleParticles.put(ItemUtils.stringToMaterial("LAVA_CAULDRON", Material.CAULDRON), Particle.FLAME);
         bubbleParticles.put(ItemUtils.stringToMaterial("POWDERED_SNOW_CAULDRON", Material.CAULDRON), Particle.END_ROD);
-        bubbleParticles.put(ItemUtils.stringToMaterial("WATER_CAULDRON", Material.CAULDRON), Particle.WATER_BUBBLE);
+        bubbleParticles.put(ItemUtils.stringToMaterial("WATER_CAULDRON", Material.CAULDRON), Particle.valueOf(oldOrNew("WATER_BUBBLE", "BUBBLE")));
 
         // powdered snow is the only cauldron with a different particle effect
         Material powderedSnowCauldron = ItemUtils.stringToMaterial("WATER_CAULDRON", null);
-        if (powderedSnowCauldron != null) smokeParticles.put(powderedSnowCauldron, Particle.FIREWORKS_SPARK);
+        if (powderedSnowCauldron != null) smokeParticles.put(powderedSnowCauldron, Particle.valueOf(oldOrNew("FIREWORKS_SPARK", "FIREWORK")));
 
         // snow cauldron makes no sound during boiling
         boilSound.put(ItemUtils.stringToMaterial("LAVA_CAULDRON", Material.CAULDRON), Sound.BLOCK_LAVA_AMBIENT);
@@ -43,7 +45,7 @@ public class BlockBubbles extends Animation {
     @Override
     public void animate(LivingEntity crafter, Location location, Vector direction, int tick) {
         Block block = location.getBlock();
-        Particle bubble = bubbleParticles.getOrDefault(block.getType(), Particle.WATER_BUBBLE);
+        Particle bubble = bubbleParticles.getOrDefault(block.getType(), Particle.valueOf(oldOrNew("WATER_BUBBLE", "BUBBLE")));
         Particle smoke = smokeParticles.getOrDefault(block.getType(), Particle.CAMPFIRE_COSY_SMOKE);
         Sound sound = boilSound.get(block.getType());
 

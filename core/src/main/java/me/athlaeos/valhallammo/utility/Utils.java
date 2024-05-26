@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Weighted;
 import net.md_5.bungee.api.ChatColor;
@@ -386,5 +387,19 @@ public class Utils {
             }
         }
         return selectedEntries;
+    }
+
+    /**
+     * Quicker method to check if the server is using 1.20.5 and above, which would result in different mappings
+     */
+    public static boolean hasNewMappings(){
+        return MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5);
+    }
+
+    /**
+     * @return the 'o' value if below version 1.20.5, or n if at or above it.
+     */
+    public static String oldOrNew(String o, String n){
+        return hasNewMappings() ? n : o;
     }
 }

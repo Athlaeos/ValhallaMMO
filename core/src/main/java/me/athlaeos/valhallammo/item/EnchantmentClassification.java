@@ -1,6 +1,8 @@
 package me.athlaeos.valhallammo.item;
 
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.enchantments.Enchantment;
 
 import java.util.Collection;
@@ -19,9 +21,10 @@ public enum EnchantmentClassification {
     UNDEFINED;
     private final Collection<Enchantment> matches = new HashSet<>();
 
+    @SuppressWarnings("deprecation")
     EnchantmentClassification(String... matches){
         for (String m : matches){
-            Enchantment match = Enchantment.getByKey(NamespacedKey.minecraft(m));
+            Enchantment match = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? Registry.ENCHANTMENT.get(NamespacedKey.minecraft(m)) : Enchantment.getByKey(NamespacedKey.minecraft(m));
             if (match == null) continue;
             this.matches.add(match);
         }

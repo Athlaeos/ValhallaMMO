@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.loot.predicates.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -13,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class WorldFilter extends LootPredicate {
     private final Collection<String> worlds = new HashSet<>();
@@ -51,7 +49,7 @@ public class WorldFilter extends LootPredicate {
 
     @Override
     public Map<Integer, ItemStack> getButtons() {
-        List<String> worlds = ValhallaMMO.getInstance().getServer().getWorlds().stream().map(World::getName).collect(Collectors.toList());
+        List<String> worlds = ValhallaMMO.getInstance().getServer().getWorlds().stream().map(World::getName).toList();
         String info;
         if (worlds.isEmpty()) info = "&cNo worlds found(???)";
         else {
@@ -90,7 +88,7 @@ public class WorldFilter extends LootPredicate {
             if (e.isShiftClick()) worlds.add(world);
             else if (e.getClick() == ClickType.MIDDLE) worlds.clear();
             else {
-                List<String> worlds = ValhallaMMO.getInstance().getServer().getWorlds().stream().map(World::getName).collect(Collectors.toList());
+                List<String> worlds = ValhallaMMO.getInstance().getServer().getWorlds().stream().map(World::getName).toList();
                 if (worlds.isEmpty()) return;
                 int currentIndex = world == null ? -1 : worlds.indexOf(world);
                 currentIndex = Math.max(0, Math.min(worlds.size() - 1, currentIndex + (e.isLeftClick() ? 1 : -1)));
@@ -103,10 +101,5 @@ public class WorldFilter extends LootPredicate {
     public boolean test(LootContext context) {
         if (context.getLocation().getWorld() == null || worlds.isEmpty()) return true;
         return worlds.contains(context.getLocation().getWorld().getName()) != inverted;
-    }
-
-    @Override
-    public boolean isCompatibleWithLootType(LootTable.LootType type) {
-        return true;
     }
 }

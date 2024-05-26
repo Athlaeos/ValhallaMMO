@@ -5,7 +5,6 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.AnimationUtils;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.MathUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;

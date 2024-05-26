@@ -2,7 +2,6 @@ package me.athlaeos.valhallammo.loot.predicates.implementations;
 
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -88,10 +87,5 @@ public class SkyLightFilter extends LootPredicate {
     public boolean test(LootContext context) {
         int lightLevel = context.getLocation().getBlock().getLightFromSky();
         return (lightLevel >= from && lightLevel <= to) != inverted;
-    }
-
-    @Override
-    public boolean isCompatibleWithLootType(LootTable.LootType type) {
-        return true;
     }
 }

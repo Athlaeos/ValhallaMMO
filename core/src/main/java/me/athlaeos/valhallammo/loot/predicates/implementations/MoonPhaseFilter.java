@@ -1,9 +1,7 @@
 package me.athlaeos.valhallammo.loot.predicates.implementations;
 
-import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.MoonPhase;
 import me.athlaeos.valhallammo.dom.Pair;
-import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
@@ -101,10 +99,5 @@ public class MoonPhaseFilter extends LootPredicate {
     public boolean test(LootContext context) {
         if (phases.isEmpty() || context.getLocation().getWorld() == null) return inverted;
         return phases.contains(MoonPhase.getPhase(context.getLocation().getWorld())) != inverted;
-    }
-
-    @Override
-    public boolean isCompatibleWithLootType(LootTable.LootType type) {
-        return true;
     }
 }

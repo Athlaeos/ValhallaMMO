@@ -147,9 +147,9 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
     @Override
     public void saveAllProfiles() {
         for (UUID p : new HashSet<>(persistentProfiles.keySet())){
+            if (!persistentProfiles.containsKey(p)) continue;
             Player player = ValhallaMMO.getInstance().getServer().getPlayer(p);
             for (Profile profile : persistentProfiles.get(p).values()){
-                if (!shouldPersist(profile)) continue;
                 try {
                     profile.insertOrUpdateProfile(this);
                 } catch (SQLException e){
@@ -166,7 +166,6 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
         if (persistentProfiles.containsKey(p.getUniqueId())){
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (Profile profile : persistentProfiles.get(p.getUniqueId()).values()){
-                    if (!shouldPersist(profile)) continue;
                     try {
                         profile.insertOrUpdateProfile(this);
                     } catch (SQLException e){
@@ -174,7 +173,6 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
                         e.printStackTrace();
                     }
                 }
-                persistentProfiles.remove(p.getUniqueId());
             });
         }
     }

@@ -136,7 +136,8 @@ public class EntityAttackListener implements Listener {
 
             CombatType combatType = e.getDamager() instanceof Projectile ? CombatType.RANGED : CombatType.MELEE_UNARMED;
             if (trueDamager instanceof LivingEntity a){
-                if(a.getEquipment() != null && !ItemUtils.isEmpty(a.getEquipment().getItemInMainHand())) combatType = CombatType.MELEE_ARMED;
+                if(a.getEquipment() != null && (!ItemUtils.isEmpty(a.getEquipment().getItemInMainHand()) ||
+                        WeightClass.getWeightClass(ItemUtils.getItemMeta(a.getEquipment().getItemInMainHand())) == WeightClass.WEIGHTLESS)) combatType = CombatType.MELEE_ARMED;
 
                 // parry mechanic
                 if (facing) parryDamageMultiplier = Parryer.handleParry(e);
@@ -247,8 +248,7 @@ public class EntityAttackListener implements Listener {
                 double powerAttackMultiplier = 1.5;
                 // sweep attacks should not trigger custom power attack damage multipliers
                 if (e.getDamager() instanceof LivingEntity a && a.getFallDistance() > 0 &&
-                        (!(a instanceof Player p) || WorldGuardHook.inDisabledRegion(a.getLocation(), p, WorldGuardHook.VMMO_COMBAT_POWERATTACK))){
-                    String damageSource = EntityDamagedListener.getLastDamageCause(v);
+                        a instanceof Player p && !WorldGuardHook.inDisabledRegion(a.getLocation(), p, WorldGuardHook.VMMO_COMBAT_POWERATTACK)){
                     powerAttackMultiplier += AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_DAMAGE_MULTIPLIER", v, a, 10000, true);
 
                     double baseDamage = e.getDamage() / 1.5; // remove vanilla crit damage
@@ -260,7 +260,7 @@ public class EntityAttackListener implements Listener {
                     if (damage > 0 && radius > 0){
                         for (Entity entity : e.getEntity().getWorld().getNearbyEntities(e.getEntity().getLocation(), radius, radius, radius, (en) -> en instanceof LivingEntity)){
                             if (EntityClassification.matchesClassification(entity.getType(), EntityClassification.UNALIVE) || entity.equals(a)) continue;
-                            EntityUtils.damage((LivingEntity) entity, a, damage, damageSource);
+                            EntityUtils.damage((LivingEntity) entity, a, damage, "ENTITY_ATTACK");
                         }
                     }
                 }

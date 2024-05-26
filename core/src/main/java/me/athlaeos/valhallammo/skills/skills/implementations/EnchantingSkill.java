@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.EnchantmentClassification;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
@@ -23,6 +24,7 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -44,6 +46,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import java.util.*;
+
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class EnchantingSkill extends Skill implements Listener {
     private static final Map<String, Animation> elementalHitAnimation = new HashMap<>();
@@ -73,6 +77,7 @@ public class EnchantingSkill extends Skill implements Listener {
         super(type);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/enchanting_progression.yml");
@@ -106,7 +111,8 @@ public class EnchantingSkill extends Skill implements Listener {
         ConfigurationSection baseEnchantmentValueSection = progressionConfig.getConfigurationSection("experience.exp_gain.enchantment_base");
         if (baseEnchantmentValueSection != null){
             baseEnchantmentValueSection.getKeys(false).forEach((s) -> {
-                Enchantment e = Enchantment.getByKey(NamespacedKey.minecraft(s.toLowerCase()));
+                if (s.equalsIgnoreCase("sweeping")) s = oldOrNew("sweeping", "sweeping_edge");
+                Enchantment e = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? Registry.ENCHANTMENT.get(NamespacedKey.minecraft(s.toLowerCase())) : Enchantment.getByKey(NamespacedKey.minecraft(s.toLowerCase()));
                 if (e != null) enchantmentBaseValues.put(e, progressionConfig.getDouble("experience.exp_gain.enchantment_base." + s));
                 else ValhallaMMO.logWarning("Invalid enchantment type given at progression_enchanting.yml experience.exp_gain.enchantment_base." + s);
             });
@@ -164,11 +170,6 @@ public class EnchantingSkill extends Skill implements Listener {
     @Override
     public int getSkillTreeMenuOrderPriority() {
         return 10;
-    }
-
-    @Override
-    public boolean isExperienceScaling() {
-        return true;
     }
 
     @Override
@@ -289,7 +290,7 @@ public class EnchantingSkill extends Skill implements Listener {
             if (Utils.proc(p, refundChance, false)){
                 double refundAmount = Math.max(0, Math.min(AccumulativeStatManager.getCachedStats("ENCHANTING_REFUND_AMOUNT", p, 10000, true), 1D));
 
-                expToSpend *= (1 - refundAmount); // exp cost is lowered by the amount "refunded"
+                expToSpend *= (float) (1 - refundAmount); // exp cost is lowered by the amount "refunded"
             }
             int finalCost = Utils.randomAverage(expToSpend);
             int totalEXP = EntityUtils.getTotalExperience(p);

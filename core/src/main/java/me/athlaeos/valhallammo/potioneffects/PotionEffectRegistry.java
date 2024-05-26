@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.potioneffects;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.CustomFlag;
+import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.potioneffects.implementations.*;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.event.EntityCustomPotionEffectEvent;
@@ -18,9 +19,7 @@ import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import java.util.*;
@@ -37,23 +36,71 @@ public class PotionEffectRegistry {
     private static final Map<PotionType, Map<String, PotionTypeEffectWrapper>> typeToEffectWrappings = new HashMap<>();
 
     static {
-        typeToEffectWrappings.put(PotionType.FIRE_RESISTANCE, Map.of("FIRE_RESISTANCE", new PotionTypeEffectWrapper("FIRE_RESISTANCE").dB(180).dEx(480)));
-        typeToEffectWrappings.put(PotionType.INSTANT_DAMAGE, Map.of("HARM", new PotionTypeEffectWrapper("HARM").aB(0).aU(1)));
-        typeToEffectWrappings.put(PotionType.INSTANT_HEAL, Map.of("HEAL", new PotionTypeEffectWrapper("HEAL").aB(0).aU(1)));
-        typeToEffectWrappings.put(PotionType.INVISIBILITY, Map.of("INVISIBILITY", new PotionTypeEffectWrapper("INVISIBILITY").dB(180).dEx(480)));
-        typeToEffectWrappings.put(PotionType.JUMP, Map.of("JUMP", new PotionTypeEffectWrapper("JUMP").dB(180).dEx(480).dUp(180).aB(0).aU(1)));
-        typeToEffectWrappings.put(PotionType.LUCK, Map.of("LUCK", new PotionTypeEffectWrapper("LUCK").dB(300)));
-        typeToEffectWrappings.put(PotionType.NIGHT_VISION, Map.of("NIGHT_VISION", new PotionTypeEffectWrapper("NIGHT_VISION").dB(180).dEx(480)));
-        typeToEffectWrappings.put(PotionType.POISON, Map.of("POISON", new PotionTypeEffectWrapper("POISON").dB(45).dEx(90).dUp(22).aB(0).aU(1)));
-        typeToEffectWrappings.put(PotionType.REGEN, Map.of("REGENERATION", new PotionTypeEffectWrapper("REGENERATION").dB(45).dEx(90).dUp(22).aB(0).aU(1)));
-        typeToEffectWrappings.put(PotionType.SLOW_FALLING, Map.of("SLOW_FALLING", new PotionTypeEffectWrapper("SLOW_FALLING").dB(90).dEx(240)));
-        typeToEffectWrappings.put(PotionType.SLOWNESS, Map.of("SLOW", new PotionTypeEffectWrapper("SLOW").dB(90).dEx(240).dUp(20).aB(0).aU(4)));
-        typeToEffectWrappings.put(PotionType.SPEED, Map.of("SPEED", new PotionTypeEffectWrapper("SPEED").dB(180).dEx(480).dUp(180).aB(0).aU(1)));
-        typeToEffectWrappings.put(PotionType.STRENGTH, Map.of("INCREASE_DAMAGE", new PotionTypeEffectWrapper("INCREASE_DAMAGE").dB(180).dEx(480).dUp(180).aB(0).aU(1)));
-        typeToEffectWrappings.put(PotionType.TURTLE_MASTER, Map.of("SLOW", new PotionTypeEffectWrapper("SLOW").dB(20).dEx(40).dUp(20).aB(3).aU(5),
-                "DAMAGE_RESISTANCE", new PotionTypeEffectWrapper("DAMAGE_RESISTANCE").dB(20).dEx(40).dUp(20).aB(2).aU(3)));
-        typeToEffectWrappings.put(PotionType.WATER_BREATHING, Map.of("WATER_BREATHING", new PotionTypeEffectWrapper("WATER_BREATHING").dB(180).dEx(480)));
-        typeToEffectWrappings.put(PotionType.WEAKNESS, Map.of("WEAKNESS", new PotionTypeEffectWrapper("WEAKNESS").dB(90).dEx(240)));
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
+            typeToEffectWrappings.put(PotionType.valueOf("FIRE_RESISTANCE"), Map.of("FIRE_RESISTANCE", new PotionTypeEffectWrapper("FIRE_RESISTANCE").dB(180)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_FIRE_RESISTANCE"), Map.of("FIRE_RESISTANCE", new PotionTypeEffectWrapper("FIRE_RESISTANCE").dB(480)));
+            typeToEffectWrappings.put(PotionType.valueOf("HARMING"), Map.of("INSTANT_DAMAGE", new PotionTypeEffectWrapper("INSTANT_DAMAGE").aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("STRONG_HARMING"), Map.of("INSTANT_DAMAGE", new PotionTypeEffectWrapper("INSTANT_DAMAGE").aB(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("HEALING"), Map.of("INSTANT_HEALTH", new PotionTypeEffectWrapper("INSTANT_HEALTH").aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("STRONG_HEALING"), Map.of("INSTANT_HEALTH", new PotionTypeEffectWrapper("INSTANT_HEALTH").aB(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("INVISIBILITY"), Map.of("INVISIBILITY", new PotionTypeEffectWrapper("INVISIBILITY").dB(180)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_INVISIBILITY"), Map.of("INVISIBILITY", new PotionTypeEffectWrapper("INVISIBILITY").dB(480)));
+            typeToEffectWrappings.put(PotionType.valueOf("LEAPING"), Map.of("JUMP_BOOST", new PotionTypeEffectWrapper("JUMP_BOOST").dB(180).aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_LEAPING"), Map.of("JUMP_BOOST", new PotionTypeEffectWrapper("JUMP_BOOST").dB(480).aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("STRONG_LEAPING"), Map.of("JUMP_BOOST", new PotionTypeEffectWrapper("JUMP_BOOST").dB(180).aB(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("LUCK"), Map.of("LUCK", new PotionTypeEffectWrapper("LUCK").dB(300)));
+            typeToEffectWrappings.put(PotionType.valueOf("NIGHT_VISION"), Map.of("NIGHT_VISION", new PotionTypeEffectWrapper("NIGHT_VISION").dB(180)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_NIGHT_VISION"), Map.of("NIGHT_VISION", new PotionTypeEffectWrapper("NIGHT_VISION").dB(480)));
+            typeToEffectWrappings.put(PotionType.valueOf("POISON"), Map.of("POISON", new PotionTypeEffectWrapper("POISON").dB(45).aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_POISON"), Map.of("POISON", new PotionTypeEffectWrapper("POISON").dB(90).aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("STRONG_POISON"), Map.of("POISON", new PotionTypeEffectWrapper("POISON").dB(22).aB(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("REGENERATION"), Map.of("REGENERATION", new PotionTypeEffectWrapper("REGENERATION").dB(45).aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_REGENERATION"), Map.of("REGENERATION", new PotionTypeEffectWrapper("REGENERATION").dB(90).aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("STRONG_REGENERATION"), Map.of("REGENERATION", new PotionTypeEffectWrapper("REGENERATION").dB(22).aB(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("SLOW_FALLING"), Map.of("SLOW_FALLING", new PotionTypeEffectWrapper("SLOW_FALLING").dB(90)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_SLOW_FALLING"), Map.of("SLOW_FALLING", new PotionTypeEffectWrapper("SLOW_FALLING").dB(240)));
+            typeToEffectWrappings.put(PotionType.valueOf("SLOWNESS"), Map.of("SLOWNESS", new PotionTypeEffectWrapper("SLOWNESS").dB(90).aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_SLOWNESS"), Map.of("SLOWNESS", new PotionTypeEffectWrapper("SLOWNESS").dB(240).aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("STRONG_SLOWNESS"), Map.of("SLOWNESS", new PotionTypeEffectWrapper("SLOWNESS").dB(20).aB(4)));
+            typeToEffectWrappings.put(PotionType.valueOf("SWIFTNESS"), Map.of("SWIFTNESS", new PotionTypeEffectWrapper("SWIFTNESS").dB(180).aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_SWIFTNESS"), Map.of("SWIFTNESS", new PotionTypeEffectWrapper("SWIFTNESS").dB(480).aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("STRONG_SWIFTNESS"), Map.of("SWIFTNESS", new PotionTypeEffectWrapper("SWIFTNESS").dB(180).aB(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("STRENGTH"), Map.of("STRENGTH", new PotionTypeEffectWrapper("STRENGTH").dB(180).aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_STRENGTH"), Map.of("STRENGTH", new PotionTypeEffectWrapper("STRENGTH").dB(480).aB(0)));
+            typeToEffectWrappings.put(PotionType.valueOf("STRONG_STRENGTH"), Map.of("STRENGTH", new PotionTypeEffectWrapper("STRENGTH").dB(180).aB(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("TURTLE_MASTER"), Map.of("SLOWNESS", new PotionTypeEffectWrapper("SLOWNESS").dB(20).aB(3),
+                    "DAMAGE_RESISTANCE", new PotionTypeEffectWrapper("RESISTANCE").dB(20).aB(2)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_TURTLE_MASTER"), Map.of("SLOWNESS", new PotionTypeEffectWrapper("SLOWNESS").dB(40).aB(3),
+                    "DAMAGE_RESISTANCE", new PotionTypeEffectWrapper("RESISTANCE").dB(40).aB(2)));
+            typeToEffectWrappings.put(PotionType.valueOf("STRONG_TURTLE_MASTER"), Map.of("SLOWNESS", new PotionTypeEffectWrapper("SLOWNESS").dB(20).aB(5),
+                    "DAMAGE_RESISTANCE", new PotionTypeEffectWrapper("RESISTANCE").dB(20).aB(3)));
+            typeToEffectWrappings.put(PotionType.valueOf("WATER_BREATHING"), Map.of("WATER_BREATHING", new PotionTypeEffectWrapper("WATER_BREATHING").dB(180)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_WATER_BREATHING"), Map.of("WATER_BREATHING", new PotionTypeEffectWrapper("WATER_BREATHING").dB(480)));
+            typeToEffectWrappings.put(PotionType.valueOf("WEAKNESS"), Map.of("WEAKNESS", new PotionTypeEffectWrapper("WEAKNESS").dB(90)));
+            typeToEffectWrappings.put(PotionType.valueOf("LONG_WEAKNESS"), Map.of("WEAKNESS", new PotionTypeEffectWrapper("WEAKNESS").dB(240)));
+            typeToEffectWrappings.put(PotionType.valueOf("INFESTED"), Map.of("INFESTED", new PotionTypeEffectWrapper("INFESTED").dB(180)));
+            typeToEffectWrappings.put(PotionType.valueOf("OOZING"), Map.of("OOZING", new PotionTypeEffectWrapper("OOZING").dB(180)));
+            typeToEffectWrappings.put(PotionType.valueOf("WEAVING"), Map.of("WEAVING", new PotionTypeEffectWrapper("WEAVING").dB(180)));
+            typeToEffectWrappings.put(PotionType.valueOf("WIND_CHARGED"), Map.of("WIND_CHARGED", new PotionTypeEffectWrapper("WIND_CHARGED").dB(180)));
+        } else {
+            typeToEffectWrappings.put(PotionType.valueOf("FIRE_RESISTANCE"), Map.of("FIRE_RESISTANCE", new PotionTypeEffectWrapper("FIRE_RESISTANCE").dB(180).dEx(480)));
+            typeToEffectWrappings.put(PotionType.valueOf("INSTANT_DAMAGE"), Map.of("HARM", new PotionTypeEffectWrapper("HARM").aB(0).aU(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("INSTANT_HEAL"), Map.of("HEAL", new PotionTypeEffectWrapper("HEAL").aB(0).aU(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("INVISIBILITY"), Map.of("INVISIBILITY", new PotionTypeEffectWrapper("INVISIBILITY").dB(180).dEx(480)));
+            typeToEffectWrappings.put(PotionType.valueOf("JUMP"), Map.of("JUMP", new PotionTypeEffectWrapper("JUMP").dB(180).dEx(480).dUp(180).aB(0).aU(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("LUCK"), Map.of("LUCK", new PotionTypeEffectWrapper("LUCK").dB(300)));
+            typeToEffectWrappings.put(PotionType.valueOf("NIGHT_VISION"), Map.of("NIGHT_VISION", new PotionTypeEffectWrapper("NIGHT_VISION").dB(180).dEx(480)));
+            typeToEffectWrappings.put(PotionType.valueOf("POISON"), Map.of("POISON", new PotionTypeEffectWrapper("POISON").dB(45).dEx(90).dUp(22).aB(0).aU(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("REGEN"), Map.of("REGENERATION", new PotionTypeEffectWrapper("REGENERATION").dB(45).dEx(90).dUp(22).aB(0).aU(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("SLOW_FALLING"), Map.of("SLOW_FALLING", new PotionTypeEffectWrapper("SLOW_FALLING").dB(90).dEx(240)));
+            typeToEffectWrappings.put(PotionType.valueOf("SLOWNESS"), Map.of("SLOW", new PotionTypeEffectWrapper("SLOW").dB(90).dEx(240).dUp(20).aB(0).aU(4)));
+            typeToEffectWrappings.put(PotionType.valueOf("SPEED"), Map.of("SPEED", new PotionTypeEffectWrapper("SPEED").dB(180).dEx(480).dUp(180).aB(0).aU(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("STRENGTH"), Map.of("INCREASE_DAMAGE", new PotionTypeEffectWrapper("INCREASE_DAMAGE").dB(180).dEx(480).dUp(180).aB(0).aU(1)));
+            typeToEffectWrappings.put(PotionType.valueOf("TURTLE_MASTER"), Map.of("SLOW", new PotionTypeEffectWrapper("SLOW").dB(20).dEx(40).dUp(20).aB(3).aU(5),
+                    "DAMAGE_RESISTANCE", new PotionTypeEffectWrapper("DAMAGE_RESISTANCE").dB(20).dEx(40).dUp(20).aB(2).aU(3)));
+            typeToEffectWrappings.put(PotionType.valueOf("WATER_BREATHING"), Map.of("WATER_BREATHING", new PotionTypeEffectWrapper("WATER_BREATHING").dB(180).dEx(480)));
+            typeToEffectWrappings.put(PotionType.valueOf("WEAKNESS"), Map.of("WEAKNESS", new PotionTypeEffectWrapper("WEAKNESS").dB(90).dEx(240)));
+        }
     }
 
     private static void markAsUnaffected(LivingEntity entity){
@@ -99,6 +146,12 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("DOLPHINS_GRACE", (i) -> true, "\uED1E", StatFormat.ROMAN).addModifier(Material.HEART_OF_THE_SEA, 0.01, 0.25));
         registerNewEffect(new GenericWrapper("BAD_OMEN", (i) -> false, "\uED1F", StatFormat.ROMAN).addModifier(Material.IRON_AXE, 0.01, 0.25));
         registerNewEffect(new GenericWrapper("HERO_OF_THE_VILLAGE", (i) -> true, "\uED20", StatFormat.ROMAN).addModifier(Material.EMERALD, 0.01, 0.25));
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
+            registerNewEffect(new GenericWrapper("INFESTED", (i) -> false, "\uED21", StatFormat.ROMAN).addModifier(Material.STONE, 0.01, 0.25));
+            registerNewEffect(new GenericWrapper("OOZING", (i) -> false, "\uED22", StatFormat.ROMAN).addModifier(Material.SLIME_BLOCK, 0.01, 0.25));
+            registerNewEffect(new GenericWrapper("WEAVING", (i) -> false, "\uED23", StatFormat.ROMAN).addModifier(Material.COBWEB, 0.01, 0.25));
+            registerNewEffect(new GenericWrapper("WIND_CHARGED", (i) -> false, "\uED24", StatFormat.ROMAN).addModifier(Material.TNT, 0.01, 0.25));
+        }
 
         registerNewEffect(new GenericWrapper("BOW_STRENGTH", (i) -> i >= 0, "\uEE00", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.BOW));
         registerNewEffect(new GenericWrapper("ARROW_DAMAGE", (i) -> i >= 0, "\uEE01", StatFormat.DIFFERENCE_FLOAT_P1).addModifier(Material.ARROW, 0.1, 1));
@@ -294,11 +347,12 @@ public class PotionEffectRegistry {
      * @return the item's effects
      */
     public static Map<String, PotionEffectWrapper> getStoredEffects(ItemMeta meta, boolean def){
+        if (meta == null) return new HashMap<>();
         if (meta.getPersistentDataContainer().has(def ? DEFAULT_STORED_EFFECTS : ACTUAL_STORED_EFFECTS, PersistentDataType.STRING)) return parseRawData(getRawData(meta, def));
         else if (meta instanceof PotionMeta p){
-            Map<String, PotionTypeEffectWrapper> wrapper = typeToEffectWrappings.get(p.getBasePotionData().getType());
+            Map<String, PotionTypeEffectWrapper> wrapper = typeToEffectWrappings.get(ValhallaMMO.getNms().getPotionType(p));
             if (wrapper == null) return new HashMap<>();
-            return wrapper.values().stream().map(e -> e.get(p.getBasePotionData())).collect(Collectors.toMap(PotionEffectWrapper::getEffect, e -> e));
+            return wrapper.values().stream().map(e -> e.get(ValhallaMMO.getNms().isUpgraded(p), ValhallaMMO.getNms().isExtended(p))).collect(Collectors.toMap(PotionEffectWrapper::getEffect, e -> e));
         }
         return new HashMap<>();
     }
@@ -373,7 +427,7 @@ public class PotionEffectRegistry {
                 effect.onApply(meta);
             }
 
-            if (meta instanceof PotionMeta p) p.setBasePotionData(new PotionData(PotionType.UNCRAFTABLE, false, false));
+            if (meta instanceof PotionMeta p) ValhallaMMO.getNms().setPotionType(p, MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? null : PotionType.valueOf("UNCRAFTABLE"));
             meta.getPersistentDataContainer().set(ACTUAL_STORED_EFFECTS, PersistentDataType.STRING,
                     effects.values().stream()
                             .filter(e -> !exclude.contains(e.getEffect()))
@@ -470,6 +524,7 @@ public class PotionEffectRegistry {
         if (wrapper.getCharges() == 1) {
             removeEffect(meta, effect);
             CustomFlag.removeItemFlag(meta, CustomFlag.TEMPORARY_POTION_DISPLAY);
+            if (ItemAttributesRegistry.hasCustomStats(meta)) ItemAttributesRegistry.setActualStats(meta, ItemAttributesRegistry.getStats(meta, false));
         } else {
             wrapper.setCharges(wrapper.getCharges() - 1);
             setStoredEffect(meta, wrapper, false);
@@ -791,8 +846,8 @@ public class PotionEffectRegistry {
             return this;
         }
 
-        public PotionEffectWrapper get(PotionData data){
-            return getEffect(potionEffectType).setAmplifier(data.isUpgraded() ? amplifierUpgraded : amplifierBase).setDuration(data.isExtended() ? durationExtended : data.isUpgraded() ? durationUpgraded : durationBase);
+        public PotionEffectWrapper get(boolean upgraded, boolean extended){
+            return getEffect(potionEffectType).setAmplifier(upgraded ? amplifierUpgraded : amplifierBase).setDuration(extended ? durationExtended : upgraded ? durationUpgraded : durationBase);
         }
     }
 }

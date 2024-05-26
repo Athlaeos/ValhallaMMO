@@ -62,7 +62,7 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("DAMAGE_MELEE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE19", (i) -> i >= 0).addModifier(Material.DIAMOND_SWORD));
         register(new AttributeDisplayWrapper("DAMAGE_RANGED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE1A", (i) -> i >= 0).addModifier(Material.BOW));
         register(new AttributeDisplayWrapper("DAMAGE_ALL", StatFormat.PERCENTILE_BASE_1_P1, "\uEE1B", (i) -> i >= 0).addModifier(Material.BLAZE_ROD));
-        register(new AttributeDisplayWrapper("ATTACK_REACH", StatFormat.DIFFERENCE_FLOAT_P2, "\uEE1C", (i) -> i >= 0).addModifier(Material.ENDER_PEARL, 0.1, 1).convertTo("GENERIC_ENTITY_INTERACTION_RANGE"));
+        register(new AttributeDisplayWrapper("ATTACK_REACH", StatFormat.DIFFERENCE_FLOAT_P2, "\uEE1C", (i) -> i >= 0).addModifier(Material.ENDER_PEARL, 0.1, 1).convertTo("PLAYER_ENTITY_INTERACTION_RANGE"));
         register(new AttributeDisplayWrapper("VELOCITY_DAMAGE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE1D", (i) -> i >= 0).addModifier(Material.DIAMOND_HORSE_ARMOR));
         register(new AttributeDisplayWrapper("DISMOUNT_CHANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE1E", (i) -> i >= 0).addModifier(Material.SADDLE));
         register(new AttributeDisplayWrapper("DAMAGE_RESISTANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEE1F", (i) -> i >= 0).addModifier(Material.IRON_INGOT));
@@ -164,24 +164,22 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("LINGERING_RADIUS_MULTIPLIER", StatFormat.PERCENTILE_BASE_1_P1, "\uEE93", (i) -> i >= 0).addModifier(Material.LINGERING_POTION));
         register(new AttributeDisplayWrapper("SPLASH_INTENSITY_MINIMUM", StatFormat.PERCENTILE_BASE_1_P1, "\uEE94", (i) -> i >= 0).addModifier(Material.SPLASH_POTION));
         register(new AttributeDisplayWrapper("ENTITY_RARE_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE95", (i) -> i >= 0).addModifier(Material.CHEST));
-        register(new AttributeDisplayWrapper("DIG_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE96", (i) -> i >= 0).addModifier(Material.DIAMOND_PICKAXE).convertTo("GENERIC_BLOCK_BREAK_SPEED"));
+        register(new AttributeDisplayWrapper("DIG_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE96", (i) -> i >= 0).addModifier(Material.DIAMOND_PICKAXE).convertTo("PLAYER_BLOCK_BREAK_SPEED"));
         register(new AttributeDisplayWrapper("MINING_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE97", (i) -> i >= 0).addModifier(Material.GOLDEN_PICKAXE));
         // \uEE98 is occupied by fall damage icon
         register(new AttributeDisplayWrapper("CROSSBOW_MAGAZINE", StatFormat.INT, "\uEE99", (i) -> i >= 0).addModifier(Material.CROSSBOW, 1, 5));
 
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
             register(new AttributeDisplayWrapper("GENERIC_SCALE", "\uEE9A", (i) -> i >= 0, StatFormat.DIFFERENCE_FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).setOperation(AttributeModifier.Operation.ADD_SCALAR).addModifier(Material.RED_MUSHROOM, 0.01, 0.1));
-            register(new AttributeDisplayWrapper("GENERIC_BLOCK_INTERACTION_RANGE", "\uEE9B", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.SCAFFOLDING, 0.01, 0.25));
+            register(new AttributeDisplayWrapper("PLAYER_BLOCK_INTERACTION_RANGE", "\uEE9B", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.SCAFFOLDING, 0.01, 0.25));
             register(new AttributeDisplayWrapper("GENERIC_STEP_HEIGHT", "\uEE9C", (i) -> i >= 0, StatFormat.FLOAT_P1, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.RABBIT_FOOT, 0.01, 0.1));
-        }
-        register(new AttributeDisplayWrapper("ATTACK_REACH_MULTIPLIER", StatFormat.PERCENTILE_BASE_1_P1, "\uEE9D", (i) -> i >= 0).addModifier(Material.ENDER_PEARL, 0.1, 1));
-        register(new AttributeDisplayWrapper("SHIELD_DISARMING", StatFormat.DIFFERENCE_TIME_SECONDS_BASE_20_P1, "\uEE9E", (i) -> i >= 0).addModifier(Material.NETHERITE_AXE, 1, 10));
-        register(new AttributeDisplayWrapper("LIFE_STEAL", StatFormat.PERCENTILE_BASE_1_P2, "\uEE9F", (i) -> i >= 0).addModifier(Material.GHAST_TEAR, 0.001, 0.01));
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21)){
             register(new AttributeDisplayWrapper("GENERIC_GRAVITY", "\uEEA0", (i) -> i <= 0, StatFormat.DIFFERENCE_FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.BEDROCK, 0.01, 0.1));
             register(new AttributeDisplayWrapper("GENERIC_SAFE_FALL_DISTANCE", "\uEEA1", (i) -> i >= 0, StatFormat.DIFFERENCE_FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.LEATHER_BOOTS, 0.01, 0.1));
             register(new AttributeDisplayWrapper("GENERIC_FALL_DAMAGE_MULTIPLIER", "\uEEA2", (i) -> i <= 0, StatFormat.DIFFERENCE_FLOAT_P1, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.NETHERITE_BOOTS, 0.01, 0.1));
         }
+        register(new AttributeDisplayWrapper("ATTACK_REACH_MULTIPLIER", StatFormat.PERCENTILE_BASE_1_P1, "\uEE9D", (i) -> i >= 0).addModifier(Material.ENDER_PEARL, 0.1, 1));
+        register(new AttributeDisplayWrapper("SHIELD_DISARMING", StatFormat.DIFFERENCE_TIME_SECONDS_BASE_20_P1, "\uEE9E", (i) -> i >= 0).addModifier(Material.NETHERITE_AXE, 1, 10));
+        register(new AttributeDisplayWrapper("LIFE_STEAL", StatFormat.PERCENTILE_BASE_1_P2, "\uEE9F", (i) -> i >= 0).addModifier(Material.GHAST_TEAR, 0.001, 0.01));
 
         addVanillaStat(Material.WOODEN_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
         addVanillaStat(Material.WOODEN_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2));

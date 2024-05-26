@@ -18,6 +18,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Directional;
@@ -42,6 +43,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class CauldronCraftingListener implements Listener {
     private static final NamespacedKey CAULDRON_STORAGE = new NamespacedKey(ValhallaMMO.getInstance(), "cauldron_storage");
@@ -92,8 +95,10 @@ public class CauldronCraftingListener implements Listener {
             if (!(b.getBlockData() instanceof Levelled l) || l.getLevel() <= 0) return;
             if (e.getPlayer().isSneaking()){
                 dumpCauldronContents(b);
-            } else {
+            } else if (!ItemUtils.isEmpty(e.getItem()) && Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_cauldron_item_interact")) {
                 onCauldronClickedItem(e.getPlayer(), b);
+                // I don't know why, but main hand interactions are triggered twice, so a cooldown is applied to prevent double execution
+                Timer.setCooldown(e.getPlayer().getUniqueId(), 100, "cooldown_cauldron_item_interact");
             }
             e.setCancelled(true);
         }
@@ -152,7 +157,7 @@ public class CauldronCraftingListener implements Listener {
      * @param contents any predetermined contents of the cauldron
      * @return a pair with the recipe if one was triggered along with the integer amount the recipe will be crafted, or null if no recipe was found
      */
-    public static Pair<DynamicCauldronRecipe, Integer> updateCauldronRecipes(@Nullable Player responsible, Block cauldron, @Nullable ItemStack catalyst, List<ItemStack> contents){
+    public static Pair<DynamicCauldronRecipe, Integer> updateCauldronRecipes(@Nullable Player responsible, Block cauldron, @Nullable ItemStack catalyst, List<ItemStack> contents, boolean toHand){
         Pair<DynamicCauldronRecipe, Integer> r = getCauldronRecipe(responsible, contents, cauldron, catalyst);
         if (r == null) return null;
         // recipe is null after clicked item, meaning it's not a catalyst.
@@ -176,10 +181,14 @@ public class CauldronCraftingListener implements Listener {
                 CauldronCompleteRecipeEvent completionEvent = new CauldronCompleteRecipeEvent(cauldron, recipe, responsible, result.get());
                 ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(completionEvent);
 
-                for (int i = 0; i < count; i++)
-                    cauldron.getWorld().dropItem(cauldron.getLocation().add(0.5, 1, 0.5), completionEvent.getResult());
+                for (int i = 0; i < count; i++){
+                    if (toHand && responsible != null) {
+                        if (ItemUtils.isEmpty(responsible.getInventory().getItemInMainHand())) responsible.getInventory().setItemInMainHand(completionEvent.getResult());
+                        else ItemUtils.addItem(responsible, completionEvent.getResult(), true);
+                    } else cauldron.getWorld().dropItem(cauldron.getLocation().add(0.5, 1, 0.5), completionEvent.getResult());
+                }
                 cauldron.getWorld().playEffect(cauldron.getLocation().add(0.5, 0.2, 0.5), Effect.EXTINGUISH, 0);
-                cauldron.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, cauldron.getLocation().add(0.5, 0.5, 0.5), 20);
+                cauldron.getWorld().spawnParticle(Particle.valueOf(oldOrNew("FIREWORKS_SPARK", "FIREWORKS")), cauldron.getLocation().add(0.5, 0.5, 0.5), 20);
 
                 recipe.getValidations().forEach(v -> {
                     Validation validation = ValidationRegistry.getValidation(v);
@@ -200,13 +209,13 @@ public class CauldronCraftingListener implements Listener {
      * @return a pair with the recipe if one was triggered along with the integer amount the recipe will be crafted, or null if no recipe was found
      */
     public static Pair<DynamicCauldronRecipe, Integer> updateCauldronRecipes(@Nullable Player responsible, Block cauldron, @Nullable ItemStack catalyst){
-        return updateCauldronRecipes(responsible, cauldron, catalyst, getCauldronContents(cauldron));
+        return updateCauldronRecipes(responsible, cauldron, catalyst, getCauldronContents(cauldron), false);
     }
 
     private static void onCauldronAbsorbItem(Player thrower, Block cauldron, Item item){
         if (activeCauldrons.containsKey(cauldron.getLocation())) return;
         List<ItemStack> contents = getCauldronContents(cauldron);
-        Pair<DynamicCauldronRecipe, Integer> r = updateCauldronRecipes(thrower, cauldron, item.getItemStack(), contents);
+        Pair<DynamicCauldronRecipe, Integer> r = updateCauldronRecipes(thrower, cauldron, item.getItemStack(), contents, false);
         if (r == null) { // recipe is null after thrown item, meaning it's not a catalyst. Add the thrown item to the cauldron
             // if possible, and update the cauldron again afterwards in case a cooking recipe was triggered from it
             contents = addItem(cauldron, item.getItemStack(), thrower);
@@ -214,7 +223,7 @@ public class CauldronCraftingListener implements Listener {
                 item.remove();
             } else return;
 
-            updateCauldronRecipes(thrower, cauldron, null, contents);
+            updateCauldronRecipes(thrower, cauldron, null, contents, false);
         } else {
             DynamicCauldronRecipe recipe = r.getOne();
             int count = r.getTwo();
@@ -234,15 +243,17 @@ public class CauldronCraftingListener implements Listener {
         if (ItemUtils.isEmpty(item)) return;
         List<ItemStack> contents = getCauldronContents(cauldron);
         Pair<DynamicCauldronRecipe, Integer> r = getCauldronRecipe(clicker, contents, cauldron, item);
-        if (r == null) { // recipe is null after thrown item, meaning it's not a catalyst. Add the thrown item to the cauldron
+        if (r == null) { // recipe is null after clicked item, meaning it's not a catalyst. Add the thrown item to the cauldron
             // if possible, and update the cauldron again afterwards in case a cooking recipe was triggered from it
             contents = addItem(cauldron, item, clicker);
             if (contents != null){
                 clicker.getInventory().setItemInMainHand(null);
             } else return;
 
-            updateCauldronRecipes(clicker, cauldron, null, contents);
+            updateCauldronRecipes(clicker, cauldron, null, contents, true);
         } else {
+            ItemStack catalyst = item.clone();
+
             DynamicCauldronRecipe recipe = r.getOne();
             int count = r.getTwo();
             if (item.getAmount() <= recipe.getCatalyst().getItem().getAmount() * count){
@@ -251,6 +262,7 @@ public class CauldronCraftingListener implements Listener {
                 item.setAmount(item.getAmount() - (recipe.getCatalyst().getItem().getAmount() * count));
             }
             clicker.getInventory().setItemInMainHand(item);
+            updateCauldronRecipes(clicker, cauldron, catalyst, contents, true);
         }
     }
 
@@ -271,7 +283,7 @@ public class CauldronCraftingListener implements Listener {
                         return false;
                     })
             ) continue;
-            int count = 1;
+            int count;
             if (!r.isTimedRecipe()){
                 // if the recipe is a catalyst-triggered recipe, skip if the catalyst is empty or if the catalyst
                 // doesn't match the required catalyst, or if there isn't enough of the catalyst
@@ -280,15 +292,22 @@ public class CauldronCraftingListener implements Listener {
                 if (r.getCatalyst().getItem().getAmount() > catalyst.getAmount()) continue;
 
                 count = (int) Math.floor((double) catalyst.getAmount() / (double) r.getCatalyst().getItem().getAmount());
-                if (r.getIngredients().isEmpty()) return new Pair<>(r, count); // catalyst recipes may have no ingredients, timed recipes MUST have ingredients
-                else count = Math.min(count, ItemUtils.timesContained(contents, r.getIngredients(), r.getMetaRequirement().getChoice()));
+
+                ItemBuilder result = new ItemBuilder(r.tinkerCatalyst() ? catalyst : r.getResult());
+                if (r.getIngredients().isEmpty()) {
+                    DynamicItemModifier.modify(result, crafter, r.getModifiers(), false, false, true, count);
+                    if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
+                    return new Pair<>(r, count); // catalyst recipes may have no ingredients, timed recipes MUST have ingredients
+                } else {
+                    DynamicItemModifier.modify(result, crafter, r.getModifiers(), false, false, true, count);
+                    if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
+                    count = Math.min(count, ItemUtils.timesContained(contents, r.getIngredients(), r.getMetaRequirement().getChoice()));
+                }
             } else {
                 // check if all ingredients are present in cauldron
                 count = ItemUtils.timesContained(contents, r.getIngredients(), r.getMetaRequirement().getChoice());
             }
-            if (count > 0){
-                return new Pair<>(r, count);
-            }
+            if (count > 0) return new Pair<>(r, count);
         }
         return null;
     }
@@ -328,7 +347,7 @@ public class CauldronCraftingListener implements Listener {
 
         cauldron.getWorld().playSound(cauldron.getLocation().add(0.5, 0.5, 0.5), Sound.ITEM_BUCKET_FILL, 1F, 1F);
         cauldron.getWorld().playEffect(cauldron.getLocation().add(0.5, 0.2, 0.5), Effect.EXTINGUISH, 0);
-        cauldron.getWorld().spawnParticle(Particle.WATER_SPLASH, cauldron.getLocation().add(0.5, 0.8, 0.5), 15);
+        cauldron.getWorld().spawnParticle(Particle.valueOf(oldOrNew("WATER_SPLASH", "SPLASH")), cauldron.getLocation().add(0.5, 0.8, 0.5), 15);
         setCauldronContents(cauldron, newContents);
         return newContents;
     }

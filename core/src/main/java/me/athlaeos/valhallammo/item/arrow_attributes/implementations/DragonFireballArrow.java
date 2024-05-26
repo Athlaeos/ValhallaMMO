@@ -25,7 +25,7 @@ public class DragonFireballArrow extends ArrowBehavior {
             boolean isIncendiary = ((int) args[1]) == 1;
 
             double multiplier = AccumulativeStatManager.getCachedStats("EXPLOSION_RADIUS_MULTIPLIER", e.getEntity(), 10000, true);
-            radius *= (1 + multiplier);
+            radius *= (float) (1 + multiplier);
 
             DragonFireball dragonFireball = e.getEntity().launchProjectile(DragonFireball.class, e.getProjectile().getVelocity());
             dragonFireball.setShooter(e.getEntity());

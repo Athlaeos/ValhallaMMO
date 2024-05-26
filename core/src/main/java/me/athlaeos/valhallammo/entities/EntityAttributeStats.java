@@ -5,7 +5,6 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.entity.Enderman;
 import org.bukkit.entity.LivingEntity;
 
 import java.util.HashMap;
@@ -19,27 +18,42 @@ public class EntityAttributeStats {
     public static final UUID ARMOR_DISPLAY = UUID.fromString("25b57c1e-5d34-450b-ac9b-c88febc8f1c3");
     public static final UUID SNEAK_MOVEMENT = UUID.fromString("6597cee2-73a0-48e6-ae96-fb8ab4ed1440");
     public static final UUID SPRINT_MOVEMENT = UUID.fromString("41a06dac-306d-4093-a55d-2db7408e06d8");
+    public static final UUID MOVEMENT_SPEED_BONUS = UUID.fromString("18053ff8-ca47-4212-8753-47a537aeb4a3");
+    public static final UUID HEALTH_BONUS = UUID.fromString("7e5c7906-792f-40d8-b1a1-e5b7194b77d2");
+    public static final UUID HEALTH_MULTIPLIER_BONUS = UUID.fromString("7bf71943-e92b-4ba6-b404-2d592e3a520d");
+    public static final UUID TOUGHNESS_BONUS = UUID.fromString("048ace54-c23e-4072-9919-59c3ae075eee");
+    public static final UUID LUCK_BONUS = UUID.fromString("005be4d1-105a-4471-9db4-f61412231238");
+    public static final UUID ATTACK_DAMAGE_BONUS = UUID.fromString("c0af4848-6f51-46a7-a173-867d4da7e726");
+    public static final UUID ATTACK_SPEED_BONUS = UUID.fromString("a7b83798-ca38-4d4a-b9f9-84350195ed20");
+    public static final UUID BLOCK_REACH = UUID.fromString("29182c31-f403-421a-956b-5ec4a35a9c67");
+    public static final UUID ATTACK_REACH_BONUS = UUID.fromString("80134680-c8a6-4640-ae1a-3a06fefc18ee");
+    public static final UUID ATTACK_REACH_MULTIPLIER = UUID.fromString("ce9f747e-2ec1-441e-9965-f7acf876b6d5");
+    public static final UUID STEP_HEIGHT = UUID.fromString("9cd03525-21c9-4d32-be70-0ec076cca3cb");
+    public static final UUID SCALE = UUID.fromString("0099240a-a267-47ec-90bc-4c7b5210069d");
+    public static final UUID GRAVITY = UUID.fromString("6ba2cb2b-55e8-4830-9487-85a5e40e2639");
+    public static final UUID SAFE_FALLING_DISTANCE = UUID.fromString("2805f0d6-9830-4c3c-82c9-88cce6ae1919");
+    public static final UUID FALL_DAMAGE_MULTIPLIER = UUID.fromString("b55d80e9-2762-4688-8ae3-d8c71467d670");
+    public static final UUID JUMP_HEIGHT_MULTIPLIER = UUID.fromString("7a57e7db-5f30-4f57-a9fb-332ea5cc9226");
 
     static{
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_movement_modifier", UUID.fromString("18053ff8-ca47-4212-8753-47a537aeb4a3"), "MOVEMENT_SPEED_BONUS", Attribute.GENERIC_MOVEMENT_SPEED, AttributeModifier.Operation.ADD_SCALAR));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_health_modifier", UUID.fromString("7e5c7906-792f-40d8-b1a1-e5b7194b77d2"), "HEALTH_BONUS", Attribute.GENERIC_MAX_HEALTH, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_health_multiplier_modifier", UUID.fromString("7bf71943-e92b-4ba6-b404-2d592e3a520d"), "HEALTH_MULTIPLIER_BONUS", Attribute.GENERIC_MAX_HEALTH, AttributeModifier.Operation.ADD_SCALAR));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_toughness_modifier", UUID.fromString("048ace54-c23e-4072-9919-59c3ae075eee"), "TOUGHNESS_BONUS", Attribute.GENERIC_ARMOR_TOUGHNESS, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_luck_modifier", UUID.fromString("005be4d1-105a-4471-9db4-f61412231238"), "LUCK_BONUS", Attribute.GENERIC_LUCK, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_attack_damage_modifier", UUID.fromString("c0af4848-6f51-46a7-a173-867d4da7e726"), "ATTACK_DAMAGE_BONUS", Attribute.GENERIC_ATTACK_DAMAGE, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_attack_speed_modifier", UUID.fromString("a7b83798-ca38-4d4a-b9f9-84350195ed20"), "ATTACK_SPEED_BONUS", Attribute.GENERIC_ATTACK_SPEED, AttributeModifier.Operation.ADD_SCALAR));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_movement_modifier", MOVEMENT_SPEED_BONUS, "MOVEMENT_SPEED_BONUS", Attribute.GENERIC_MOVEMENT_SPEED, AttributeModifier.Operation.ADD_SCALAR));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_health_modifier", HEALTH_BONUS, "HEALTH_BONUS", Attribute.GENERIC_MAX_HEALTH, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_health_multiplier_modifier", HEALTH_MULTIPLIER_BONUS, "HEALTH_MULTIPLIER_BONUS", Attribute.GENERIC_MAX_HEALTH, AttributeModifier.Operation.ADD_SCALAR));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_toughness_modifier", TOUGHNESS_BONUS, "TOUGHNESS_BONUS", Attribute.GENERIC_ARMOR_TOUGHNESS, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_luck_modifier", LUCK_BONUS, "LUCK_BONUS", Attribute.GENERIC_LUCK, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_attack_damage_modifier", ATTACK_DAMAGE_BONUS, "ATTACK_DAMAGE_BONUS", Attribute.GENERIC_ATTACK_DAMAGE, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_attack_speed_modifier", ATTACK_SPEED_BONUS, "ATTACK_SPEED_BONUS", Attribute.GENERIC_ATTACK_SPEED, AttributeModifier.Operation.ADD_SCALAR));
 
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_block_reach_modifier", UUID.fromString("29182c31-f403-421a-956b-5ec4a35a9c67"), "BLOCK_REACH", Attribute.valueOf("GENERIC_BLOCK_INTERACTION_RANGE"), AttributeModifier.Operation.ADD_NUMBER));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_block_reach_modifier", UUID.fromString("80134680-c8a6-4640-ae1a-3a06fefc18ee"), "ATTACK_REACH_BONUS", Attribute.valueOf("GENERIC_ENTITY_INTERACTION_RANGE"), AttributeModifier.Operation.ADD_NUMBER));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_block_reach_modifier", UUID.fromString("ce9f747e-2ec1-441e-9965-f7acf876b6d5"), "ATTACK_REACH_MULTIPLIER", Attribute.valueOf("GENERIC_ENTITY_INTERACTION_RANGE"), AttributeModifier.Operation.ADD_SCALAR));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_step_height_modifier", UUID.fromString("9cd03525-21c9-4d32-be70-0ec076cca3cb"), "STEP_HEIGHT", Attribute.valueOf("GENERIC_STEP_HEIGHT"), AttributeModifier.Operation.ADD_NUMBER));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_scale_modifier", UUID.fromString("0099240a-a267-47ec-90bc-4c7b5210069d"), "SCALE", Attribute.valueOf("GENERIC_SCALE"), AttributeModifier.Operation.ADD_SCALAR));
-        }
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21)){
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_gravity_modifier", UUID.fromString("6ba2cb2b-55e8-4830-9487-85a5e40e2639"), "GRAVITY", Attribute.valueOf("GENERIC_GRAVITY"), AttributeModifier.Operation.ADD_SCALAR));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_safe_fall_distance_modifier", UUID.fromString("2805f0d6-9830-4c3c-82c9-88cce6ae1919"), "SAFE_FALLING_DISTANCE", Attribute.valueOf("GENERIC_SAFE_FALL_DISTANCE"), AttributeModifier.Operation.ADD_NUMBER));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_fall_damage_multiplier_modifier", UUID.fromString("b55d80e9-2762-4688-8ae3-d8c71467d670"), "FALL_DAMAGE_MULTIPLIER", Attribute.valueOf("GENERIC_FALL_DAMAGE_MULTIPLIER"), AttributeModifier.Operation.ADD_SCALAR));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_block_reach_modifier", BLOCK_REACH, "BLOCK_REACH", Attribute.valueOf("PLAYER_BLOCK_INTERACTION_RANGE"), AttributeModifier.Operation.ADD_NUMBER));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_entity_reach_modifier", ATTACK_REACH_BONUS, "ATTACK_REACH_BONUS", Attribute.valueOf("PLAYER_ENTITY_INTERACTION_RANGE"), AttributeModifier.Operation.ADD_NUMBER));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_entity_reach_multiplier_modifier", ATTACK_REACH_MULTIPLIER, "ATTACK_REACH_MULTIPLIER", Attribute.valueOf("PLAYER_ENTITY_INTERACTION_RANGE"), AttributeModifier.Operation.ADD_SCALAR));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_step_height_modifier", STEP_HEIGHT, "STEP_HEIGHT", Attribute.valueOf("GENERIC_STEP_HEIGHT"), AttributeModifier.Operation.ADD_NUMBER));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_scale_modifier", SCALE, "SCALE", Attribute.valueOf("GENERIC_SCALE"), AttributeModifier.Operation.ADD_SCALAR));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_gravity_modifier", GRAVITY, "GRAVITY", Attribute.valueOf("GENERIC_GRAVITY"), AttributeModifier.Operation.ADD_SCALAR));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_safe_fall_distance_modifier", SAFE_FALLING_DISTANCE, "SAFE_FALLING_DISTANCE", Attribute.valueOf("GENERIC_SAFE_FALL_DISTANCE"), AttributeModifier.Operation.ADD_NUMBER));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_fall_damage_multiplier_modifier", FALL_DAMAGE_MULTIPLIER, "FALL_DAMAGE_MULTIPLIER", Attribute.valueOf("GENERIC_FALL_DAMAGE_MULTIPLIER"), AttributeModifier.Operation.ADD_SCALAR));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_jump_height_multiplier_modifier", JUMP_HEIGHT_MULTIPLIER, "JUMP_HEIGHT_MULTIPLIER", Attribute.valueOf("GENERIC_JUMP_STRENGTH"), AttributeModifier.Operation.ADD_SCALAR));
         }
     }
 

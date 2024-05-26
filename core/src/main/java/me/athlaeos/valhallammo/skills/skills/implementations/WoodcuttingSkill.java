@@ -132,10 +132,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                 isTree(e.getBlock()) &&
                 !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_TREECAPITATOR)){
             Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), treeCapitatorLimit, b -> Tag.LOGS.isTagged(b.getType()), treeCapitatorScanArea);
-            if (vein.size() > profile.getTreeCapitatorLimit()) {
-                Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getTreeCapitatorCooldown(), "woodcutting_tree_capitator");
-                return;
-            }
+            if (vein.size() > profile.getTreeCapitatorLimit()) return;
             treeCapitatingPlayers.add(e.getPlayer().getUniqueId());
             e.setCancelled(true);
 
@@ -181,7 +178,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                         }, null);
                     }, 20L);
                 });
-            Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getTreeCapitatorCooldown(), "woodcutting_tree_capitator");
+            Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getTreeCapitatorCooldown() * 50, "woodcutting_tree_capitator");
         }
     }
 
@@ -271,11 +268,6 @@ public class WoodcuttingSkill extends Skill implements Listener {
     @Override
     public int getSkillTreeMenuOrderPriority() {
         return 25;
-    }
-
-    @Override
-    public boolean isExperienceScaling() {
-        return true;
     }
 
     @Override

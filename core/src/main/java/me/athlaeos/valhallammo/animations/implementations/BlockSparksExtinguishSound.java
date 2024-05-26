@@ -11,6 +11,8 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.Map;
 
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
+
 public class BlockSparksExtinguishSound extends Animation {
     private static final Map<Material, Effect> finishEffect = new HashMap<>();
 
@@ -30,7 +32,7 @@ public class BlockSparksExtinguishSound extends Animation {
         Block block = location.getBlock();
         Effect finish = finishEffect.get(block.getType());
 
-        block.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, block.getLocation().add(0.5, 0.5, 0.5), 20);
+        block.getWorld().spawnParticle(Particle.valueOf(oldOrNew("FIREWORKS_SPARK", "FIREWORK")), block.getLocation().add(0.5, 0.5, 0.5), 20);
         if (finish != null) block.getWorld().playEffect(block.getLocation().add(0.5, 0.2, 0.5), finish, 0);
     }
 }

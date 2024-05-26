@@ -5,7 +5,6 @@ import me.athlaeos.valhallammo.item.item_attributes.ArrowBehavior;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.AnimationUtils;
 import org.bukkit.Particle;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LargeFireball;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
@@ -26,7 +25,7 @@ public class LargeFireballArrow extends ArrowBehavior {
             boolean isIncendiary = ((int) args[1]) == 1;
 
             double multiplier = AccumulativeStatManager.getCachedStats("EXPLOSION_RADIUS_MULTIPLIER", e.getEntity(), 10000, true);
-            radius *= (1 + multiplier);
+            radius *= (float) (1 + multiplier);
 
             LargeFireball largeFireball = e.getEntity().launchProjectile(LargeFireball.class, e.getProjectile().getVelocity());
             largeFireball.setShooter(e.getEntity());

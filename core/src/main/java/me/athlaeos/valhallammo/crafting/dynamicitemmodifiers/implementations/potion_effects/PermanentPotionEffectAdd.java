@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.PermanentPotionEffects;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -31,7 +32,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectType.getByName(effect), null);
+        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectMappings.getEffect(effect).getPotionEffectType(), null);
         if (potionEffectType == null) return;
         List<PotionEffect> effects = PermanentPotionEffects.getPermanentPotionEffects(outputItem.getMeta());
         effects.add(new PotionEffect(potionEffectType, 0, amplifier));
@@ -45,7 +46,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
 
     @Override
     public Map<Integer, ItemStack> getButtons() {
-        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectType.getByName(effect), null);
+        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectMappings.getEffect(effect).getPotionEffectType(), null);
         if (potionEffectType == null) return new HashMap<>();
         return new Pair<>(12,
                 new ItemBuilder(Material.PAPER)
@@ -63,23 +64,23 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
 
     @Override
     public String getDisplayName() {
-        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectType.getByName(effect), null);
+        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectMappings.getEffect(effect).getPotionEffectType(), null);
         if (potionEffectType == null) return "&cThis effect doesn't exist!";
-        return "&fAdd Permanent Potion Effect: " + potionEffectType.getName().toLowerCase().replace("_", " ");
+        return "&fAdd Permanent Potion Effect: " + effect;
     }
 
     @Override
     public String getDescription() {
-        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectType.getByName(effect), null);
+        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectMappings.getEffect(effect).getPotionEffectType(), null);
         if (potionEffectType == null) return "&8";
-        return "&fAdds " + potionEffectType.getName().toLowerCase().replace("_", " ") + " as permanent effect to the item. ";
+        return "&fAdds " + effect + " as permanent effect to the item. ";
     }
 
     @Override
     public String getActiveDescription() {
-        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectType.getByName(effect), null);
+        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectMappings.getEffect(effect).getPotionEffectType(), null);
         if (potionEffectType == null) return "&8";
-        return "&fAdds " + potionEffectType.getName().toLowerCase().replace("_", " ") + " " + StringUtils.toRoman(Math.max(0, amplifier) + 1) + " as permanent effect to the item. ";
+        return "&fAdds " + effect + " " + StringUtils.toRoman(Math.max(0, amplifier) + 1) + " as permanent effect to the item. ";
     }
 
     @Override

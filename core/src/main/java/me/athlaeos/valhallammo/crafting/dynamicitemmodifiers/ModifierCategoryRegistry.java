@@ -1,12 +1,15 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers;
 
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class ModifierCategoryRegistry {
     public static final ModifierCategory ALL = new ModifierCategory("ALL", 0, new ItemBuilder(Material.BOOKSHELF)
@@ -35,12 +38,12 @@ public class ModifierCategoryRegistry {
             .lore("&fContains all modifiers rewarding", "&fthe player for completing these", "&frecipes, such as money, EXP,", "&fitems, buffs, etc.").get());
     public static final ModifierCategory CUSTOM_POTION_EFFECTS = new ModifierCategory("CUSTOM_POTION_EFFECTS", 8, new ItemBuilder(Material.LINGERING_POTION)
             .name("&5Custom Potion Effects")
-            .flag(ItemFlag.HIDE_POTION_EFFECTS)
+            .flag(ConventionUtils.getHidePotionEffectsFlag())
             .color(Color.fromRGB(128, 0, 255))
             .lore("&fContains all modifiers adding,", "&fremoving, or scaling custom", "&fValhallaMMO potion effects.").get());
     public static final ModifierCategory VANILLA_POTION_EFFECTS = new ModifierCategory("VANILLA_POTION_EFFECTS", 9, new ItemBuilder(Material.POTION)
             .name("&dVanilla Potion Effects")
-            .flag(ItemFlag.HIDE_POTION_EFFECTS)
+            .flag(ConventionUtils.getHidePotionEffectsFlag())
             .color(Color.fromRGB(247, 0, 255))
             .lore("&fContains all modifiers adding,", "&fremoving, or scaling vanilla", "&fpotion effects.").get());
     public static final ModifierCategory POTION_MISC = new ModifierCategory("POTION_MISC", 10, new ItemBuilder(Material.DRAGON_BREATH)

@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.*;
@@ -218,7 +219,7 @@ public class DynamicModifierMenu extends Menu {
             ItemStack icon = new ItemBuilder(modifier.getModifierIcon())
                     .lore(StringUtils.separateStringIntoLines(modifier.getDescription(), 40))
                     .name(modifier.getDisplayName())
-                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_ENCHANTS)
+                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_ENCHANTS)
                     .stringTag(KEY_MODIFIER_ID, modifier.getName()).get();
 
             totalModifierButtons.add(icon);
@@ -244,13 +245,13 @@ public class DynamicModifierMenu extends Menu {
         for (int i = 0; i < 45; i++){
             inventory.setItem(i, null);
         }
-        List<DynamicItemModifier> modifiers = currentModifiers.stream().filter(m -> showRelational || !(m instanceof RelationalItemModifier)).limit(45).sorted(Comparator.comparingInt((DynamicItemModifier a) -> a.getPriority().getPriorityRating())).collect(Collectors.toList());
+        List<DynamicItemModifier> modifiers = currentModifiers.stream().filter(m -> showRelational || !(m instanceof RelationalItemModifier)).limit(45).sorted(Comparator.comparingInt((DynamicItemModifier a) -> a.getPriority().getPriorityRating())).toList();
         for (DynamicItemModifier modifier : modifiers){
             ItemStack icon = new ItemBuilder(modifier.getModifierIcon())
                     .lore(StringUtils.separateStringIntoLines(modifier.getActiveDescription(), 40))
                     .name(modifier.getDisplayName())
                     .stringTag(KEY_MODIFIER_ID, modifier.getName())
-                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_ENCHANTS)
+                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_ENCHANTS)
                     .get();
             inventory.addItem(icon);
         }

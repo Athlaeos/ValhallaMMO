@@ -7,6 +7,8 @@ import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
+
 public class HitPoisonPuff extends Animation {
 
     public HitPoisonPuff(String id) {
@@ -19,7 +21,7 @@ public class HitPoisonPuff extends Animation {
 
     @Override
     public void animate(LivingEntity entity, Location location, Vector direction, int tick) {
-        for (int i = 0; i < 10; i++) entity.getWorld().spawnParticle(Particle.SPELL, location, 0, r, g, b, 1); // color is a sickly green
+        for (int i = 0; i < 10; i++) entity.getWorld().spawnParticle(Particle.valueOf(oldOrNew("SPELL", "INSTANT_EFFECT")), location, 0, r, g, b, 1); // color is a sickly green
         entity.getWorld().playSound(location, Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, .5F, .5F);
     }
 }

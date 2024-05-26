@@ -36,7 +36,7 @@ public class VeryExplosiveArrow extends ArrowBehavior {
             for (int i = 0; i < count; i++){
                 if (e.getEntity().getShooter() instanceof Entity s){
                     double multiplier = AccumulativeStatManager.getCachedStats("EXPLOSION_RADIUS_MULTIPLIER", s, 10000, true);
-                    radius *= (1 + multiplier);
+                    radius *= (float) (1 + multiplier);
                     e.getEntity().getWorld().createExplosion(hit, radius, fire, destructive, s);
                 } else
                     e.getEntity().getWorld().createExplosion(hit, radius, fire, destructive, e.getEntity());

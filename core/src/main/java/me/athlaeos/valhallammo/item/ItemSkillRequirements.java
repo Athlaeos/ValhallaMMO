@@ -181,5 +181,5 @@ public class ItemSkillRequirements {
         return requirements;
     }
 
-    private record SkillRequirement(Skill skill, int levelRequirement) {}
+    public record SkillRequirement(Skill skill, int levelRequirement) {}
 }

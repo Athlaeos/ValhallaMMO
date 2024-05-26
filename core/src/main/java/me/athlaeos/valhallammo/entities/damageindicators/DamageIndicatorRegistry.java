@@ -9,7 +9,6 @@ import me.athlaeos.valhallammo.hooks.DecentHologramsHook;
 import org.bukkit.entity.LivingEntity;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class DamageIndicatorRegistry {
     private static final List<DamageIndicatorStrategy> strategies = new ArrayList<>();
@@ -20,7 +19,7 @@ public class DamageIndicatorRegistry {
     }
 
     public static boolean sendDamageIndicator(LivingEntity l, CustomDamageType damageType, double damage, double mitigated){
-        for (DamageIndicatorStrategy s : strategies.stream().filter(s -> s.use(l)).collect(Collectors.toList())){
+        for (DamageIndicatorStrategy s : strategies.stream().filter(s -> s.use(l)).toList()){
             return critIndicator.remove(l.getUniqueId()) ? s.sendCriticalDamage(l, damageType, damage, mitigated) : s.sendDamage(l, damageType, damage, mitigated);
         }
         return false;

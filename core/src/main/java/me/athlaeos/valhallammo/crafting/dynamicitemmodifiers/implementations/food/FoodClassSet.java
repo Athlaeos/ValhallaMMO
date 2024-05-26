@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.FoodPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,6 +16,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class FoodClassSet extends DynamicItemModifier {
     private FoodClass foodClass = FoodClass.MEAT;
@@ -69,7 +72,7 @@ public class FoodClassSet extends DynamicItemModifier {
                                 "&faffects diminishing returns mechanics",
                                 "&fand food category multipliers.",
                                 "&6Click to cycle")
-                        .flag(ItemFlag.HIDE_POTION_EFFECTS).color(Utils.hexToRgb("#5E2C04"))
+                        .flag(ConventionUtils.getHidePotionEffectsFlag()).color(Utils.hexToRgb("#5E2C04"))
                         .get()).map(new HashSet<>());
     }
 

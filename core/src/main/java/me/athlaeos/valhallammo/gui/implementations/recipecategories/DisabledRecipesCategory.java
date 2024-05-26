@@ -6,16 +6,14 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCauldronRecipe;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
-import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
-import me.athlaeos.valhallammo.gui.implementations.CauldronRecipeEditor;
 import me.athlaeos.valhallammo.gui.implementations.RecipeOverviewMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import me.athlaeos.valhallammo.version.SmithingTransformRecipeWrapper;
 import org.bukkit.ChatColor;
 import org.bukkit.Keyed;
@@ -92,7 +90,7 @@ public class DisabledRecipesCategory extends RecipeCategory{
                     .name(prefix + (enabled ? "&a" : "&c") + StringUtils.toPascalCase(((Keyed) recipe).getKey().getKey().replace("-", " ").replace("_", " ")))
                     .lore(lore)
                     .intTag(SORT_PRIORITY, priority)
-                    .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE)
+                    .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
                     .stringTag(RecipeOverviewMenu.KEY_RECIPE, ((Keyed) recipe).getKey().getKey()).get());
         }
         icons.sort(Comparator.comparingInt((ItemStack i) -> ItemUtils.getPDCInt(SORT_PRIORITY, i, 999)).thenComparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));

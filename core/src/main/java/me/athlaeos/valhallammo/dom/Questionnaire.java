@@ -7,9 +7,9 @@ import java.util.*;
 public class Questionnaire {
     private static final Map<UUID, Questionnaire> questioningPlayers = new HashMap<>();
 
-    public static void startQuestionnaire(Player who, Questionnaire questionaire){
-        questioningPlayers.put(who.getUniqueId(), questionaire);
-        questionaire.start();
+    public static void startQuestionnaire(Player who, Questionnaire questionnaire){
+        questioningPlayers.put(who.getUniqueId(), questionnaire);
+        questionnaire.start();
     }
 
     public static Questionnaire getActiveQuestionnaire(Player who){

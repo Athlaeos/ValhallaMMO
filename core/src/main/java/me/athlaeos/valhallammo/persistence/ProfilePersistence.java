@@ -1,10 +1,6 @@
 package me.athlaeos.valhallammo.persistence;
 
-import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
-import me.athlaeos.valhallammo.playerstats.LeaderboardEntry;
-import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
 import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
@@ -74,20 +70,24 @@ public abstract class ProfilePersistence {
                 runPersistentStartingPerks = true;
             }
             case SKILLS_REFUND_EXP -> {
-                setPersistentProfile(p, ProfileRegistry.getRegisteredProfiles().get(PowerProfile.class).getBlankProfile(p), PowerProfile.class);
+                PowerProfile powerProfile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
+                powerProfile.setUnlockedPerks(new HashSet<>());
+                powerProfile.setFakeUnlockedPerks(new HashSet<>());
+                powerProfile.setPermanentlyLockedPerks(new HashSet<>());
+                ProfileRegistry.setPersistentProfile(p, powerProfile, PowerProfile.class);
+                //setPersistentProfile(p, ProfileRegistry.getRegisteredProfiles().get(PowerProfile.class).getBlankProfile(p), PowerProfile.class);
                 setSkillProfile(p, ProfileRegistry.getRegisteredProfiles().get(PowerProfile.class).getBlankProfile(p), PowerProfile.class);
                 // resets both skill and persistent progress, but refunds exp
                 for (Profile profileType : ProfileRegistry.getRegisteredProfiles().values()) {
                     if (profileType instanceof PowerProfile) continue;
                     Profile profile = getPersistentProfile(p, profileType.getClass());
-                    double totalEXP = profile.getTotalEXP();
+                    //double totalEXP = profile.getTotalEXP();
 
-                    setPersistentProfile(p, profileType.getBlankProfile(p), profileType.getClass());
+                    //setPersistentProfile(p, profileType.getBlankProfile(p), profileType.getClass());
                     setSkillProfile(p, profileType.getBlankProfile(p), profileType.getClass());
-
-                    SkillRegistry.getSkill(profile.getSkillType()).addEXP(p, totalEXP, true, PlayerSkillExperienceGainEvent.ExperienceGainReason.RESET);
+                    //SkillRegistry.getSkill(profile.getSkillType()).addEXP(p, totalEXP, true, PlayerSkillExperienceGainEvent.ExperienceGainReason.RESET);
                 }
-                runPersistentStartingPerks = true;
+                //runPersistentStartingPerks = true;
             }
         }
         SkillRegistry.updateSkillProgression(p, runPersistentStartingPerks);
@@ -148,8 +148,7 @@ public abstract class ProfilePersistence {
     @SuppressWarnings("all")
     public boolean shouldPersist(Profile profile){
         if (profile.getOwner() == null) return false;
-        return ValhallaMMO.getPluginConfig().getDouble("minimum_exp") <= profile.getTotalEXP() ||
-                profilesToSave.getOrDefault(profile.getOwner(), new HashSet<>()).contains(profile.getClass());
+        return profilesToSave.getOrDefault(profile.getOwner(), new HashSet<>()).contains(profile.getClass());
     }
 
     public static Collection<String> deserializeStringSet(String serializedStringSet) {

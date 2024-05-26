@@ -5,7 +5,6 @@ import me.athlaeos.valhallammo.event.AdvancedItemModificationEvent;
 import me.athlaeos.valhallammo.event.ItemModificationEvent;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.CustomFlag;
-import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.NamespacedKey;

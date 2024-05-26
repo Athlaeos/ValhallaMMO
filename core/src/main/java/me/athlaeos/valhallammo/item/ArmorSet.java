@@ -1,7 +1,5 @@
 package me.athlaeos.valhallammo.item;
 
-import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

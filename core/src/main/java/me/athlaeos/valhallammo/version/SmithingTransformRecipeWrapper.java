@@ -9,14 +9,6 @@ public class SmithingTransformRecipeWrapper {
         return new SmithingTransformRecipe(key, result, template, base, addition);
     }
 
-    public static boolean templatesMatch(SmithingRecipe recipe, ItemStack template){
-        if (recipe instanceof SmithingTransformRecipe s){
-            if (ItemUtils.isEmpty(template)) return false;
-            return s.getTemplate().test(template);
-        }
-        return true;
-    }
-
     public static ItemStack getTemplate(SmithingRecipe recipe){
         if (recipe instanceof SmithingTransformRecipe r){
             return convertChoice(r.getTemplate());
@@ -31,5 +23,22 @@ public class SmithingTransformRecipeWrapper {
         } else if (choice instanceof RecipeChoice.ExactChoice m){
             return m.getItemStack();
         } else return null;
+    }
+
+    public static boolean isTransformRecipe(SmithingRecipe recipe){
+        return recipe instanceof SmithingTransformRecipe;
+    }
+
+    public static boolean isTrimRecipe(SmithingRecipe recipe){
+        return recipe instanceof SmithingTrimRecipe;
+    }
+
+    public static boolean templatesMatch(SmithingRecipe recipe, ItemStack template){
+        if (recipe instanceof SmithingTrimRecipe t && !ItemUtils.isEmpty(template)){
+            return t.getTemplate().test(template);
+        } else if (recipe instanceof SmithingTransformRecipe t && !ItemUtils.isEmpty(template)){
+            return t.getTemplate().test(template);
+        }
+        return false;
     }
 }

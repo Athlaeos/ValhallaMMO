@@ -1,6 +1,5 @@
 package me.athlaeos.valhallammo.skills.perk_rewards.implementations;
 
-import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;

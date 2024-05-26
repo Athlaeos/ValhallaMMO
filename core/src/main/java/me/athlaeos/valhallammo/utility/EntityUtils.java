@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -23,14 +24,12 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class EntityUtils {
 
@@ -140,13 +139,23 @@ public class EntityUtils {
         player.giveExp(xp);
     }
 
-    // TODO testing by name is outdated, remove after some time
     public static void addUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type, double amount, AttributeModifier.Operation operation){
         AttributeInstance instance = e.getAttribute(type);
         if (instance != null){
             instance.getModifiers().stream().filter(m -> m != null && m.getName().equals(identifier)).forEach(instance::removeModifier);
             if (amount != 0) instance.addModifier(new AttributeModifier(uuid, identifier, amount, operation));
         }
+    }
+
+    public static boolean hasUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type){
+        AttributeInstance instance = e.getAttribute(type);
+        return instance != null && instance.getModifiers().stream().anyMatch(m -> m != null && m.getName().equals(identifier));
+    }
+
+    public static double getUniqueAttributeValue(LivingEntity e, UUID uuid, String identifier, Attribute type){
+        AttributeInstance instance = e.getAttribute(type);
+        if (instance != null) return instance.getModifiers().stream().filter(m -> m != null && m.getName().equals(identifier) && m.getUniqueId().equals(uuid)).map(AttributeModifier::getAmount).findFirst().orElse(0D);
+        return 0;
     }
 
     public static void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type){
@@ -223,7 +232,7 @@ public class EntityUtils {
         return total;
     }
 
-    private static final Attribute attackReachAttribute = Catch.catchOrElse(() -> Attribute.valueOf("GENERIC_ENTITY_INTERACTION_RANGE"), null);
+    private static final Attribute attackReachAttribute = Catch.catchOrElse(() -> Attribute.valueOf("PLAYER_ENTITY_INTERACTION_RANGE"), null);
     public static double getPlayerReach(Player p){
         if (attackReachAttribute == null) return 3.0;
         AttributeInstance reach = p.getAttribute(attackReachAttribute);
@@ -231,11 +240,11 @@ public class EntityUtils {
         return 3.0;
     }
 
-    private static final Attribute miningSpeedAttribute = Catch.catchOrElse(() -> Attribute.valueOf("GENERIC_BLOCK_BREAK_SPEED"), null);
+    private static final Attribute miningSpeedAttribute = Catch.catchOrElse(() -> Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"), null);
     public static double getPlayerMiningSpeed(Player p){
         if (miningSpeedAttribute == null) return 1.0;
         AttributeInstance speed = p.getAttribute(miningSpeedAttribute);
-        if (speed != null) return speed.getBaseValue();
+        if (speed != null) return speed.getValue();
         return 1.0;
     }
 
@@ -311,7 +320,7 @@ public class EntityUtils {
                     permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getBoots().getMeta()));
                 }
                 for (BiFetcher<List<ItemStack>, LivingEntity> fetcher : otherEquipmentFetchers){
-                    List<ItemBuilder> otherEquipment = fetcher.get(e).stream().map(ItemBuilder::new).collect(Collectors.toList());
+                    List<ItemBuilder> otherEquipment = fetcher.get(e).stream().map(ItemBuilder::new).toList();
                     properties.getMiscEquipment().addAll(otherEquipment);
                     otherEquipment.forEach(i -> {
                         properties.getMiscEquipmentAttributes().put(i, ItemAttributesRegistry.getStats(i.getMeta(), false));

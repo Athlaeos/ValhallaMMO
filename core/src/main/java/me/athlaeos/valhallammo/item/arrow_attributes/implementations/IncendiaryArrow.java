@@ -42,7 +42,7 @@ public class IncendiaryArrow extends ArrowBehavior {
             if (hit.getWorld() == null) return;
             if (e.getEntity().getShooter() instanceof Entity s){
                 double multiplier = AccumulativeStatManager.getCachedStats("EXPLOSION_RADIUS_MULTIPLIER", s, 10000, true);
-                radius *= (1 + multiplier);
+                radius *= (int) (1 + multiplier);
             }
 
             for (Block b : BlockUtils.getBlocksTouchingAnything(hit.getBlock(), radius, radius, radius)){

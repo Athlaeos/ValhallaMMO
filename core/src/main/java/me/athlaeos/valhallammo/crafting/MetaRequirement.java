@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.crafting;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ExactChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialCancelIfCosmeticsChoice;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice;
 
 /**

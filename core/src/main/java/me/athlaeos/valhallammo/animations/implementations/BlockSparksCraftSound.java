@@ -16,6 +16,8 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.Map;
 
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
+
 public class BlockSparksCraftSound extends Animation {
 
     private static final Map<Material, Sound> blockSounds = new HashMap<>();
@@ -57,7 +59,7 @@ public class BlockSparksCraftSound extends Animation {
         Block block = location.getBlock();
         float volume = ProfileCache.getOrCache(crafter, PowerProfile.class).getCraftingSoundVolume();
         block.getWorld().playSound(block.getLocation(), blockSounds.getOrDefault(block.getType(), defaultSound), volume, 1F);
-        block.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, block.getLocation().add(0.5, 1, 0.5), 15);
+        block.getWorld().spawnParticle(Particle.valueOf(oldOrNew("FIREWORKS_SPARK", "FIREWORK")), block.getLocation().add(0.5, 1, 0.5), 15);
     }
 
     public static void setDefaultSound(Sound defaultSound) {

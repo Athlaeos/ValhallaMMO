@@ -10,8 +10,8 @@ import me.athlaeos.valhallammo.utility.Bleeder;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 
@@ -26,7 +26,7 @@ public class CleanseBleed extends PotionEffectWrapper {
     @Override
     public void onApply(ItemMeta i) {
         boolean customFlag = CustomFlag.hasFlag(i, CustomFlag.DISPLAY_ATTRIBUTES);
-        boolean vanillaFlag = i.hasItemFlag(ItemFlag.HIDE_POTION_EFFECTS);
+        boolean vanillaFlag = i.hasItemFlag(ConventionUtils.getHidePotionEffectsFlag());
         boolean temporaryCoatingDisplay = CustomFlag.hasFlag(i, CustomFlag.TEMPORARY_POTION_DISPLAY);
         // if vanilla, hide if either custom or vanilla flags are missing
         // if not vanilla, hide if vanilla flag is present unless custom flag is also present
@@ -40,9 +40,6 @@ public class CleanseBleed extends PotionEffectWrapper {
                     .replace("%prefix%", prefix)
                     .replace("%charges_roman%", this.charges >= 0 ? StringUtils.toRoman(this.charges) : "")
                     .replace("%charges_numeric%", String.valueOf(this.charges));
-            int stacks = (int) Math.max(1, Math.floor(this.amplifier)); // the amount of stacks applied will be the first decimal number of the amplifier
-            double damage = (this.amplifier - stacks) * 10; // the damage will be the decimals of the amplifier multiplied by 10
-            // example: 2.05 will deal 2 stacks of bleed each doing 0.5 damage (0.05 * 10)
             ItemUtils.replaceOrAddLore(i,
                     translation
                             .replace("%icon%", "")
@@ -96,7 +93,7 @@ public class CleanseBleed extends PotionEffectWrapper {
 
     @Override
     public PotionEffectWrapper copy() {
-        return new CleanseBleed(getEffect(), defaultIcon);
+        return new CleanseBleed(getEffect(), defaultIcon).setCharges(charges);
     }
 
     private String prefix(){

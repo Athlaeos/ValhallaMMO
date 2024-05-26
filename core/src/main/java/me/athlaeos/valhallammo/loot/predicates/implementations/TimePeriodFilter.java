@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.loot.predicates.implementations;
 import me.athlaeos.valhallammo.dom.DayTime;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -95,10 +94,5 @@ public class TimePeriodFilter extends LootPredicate {
             before = temp;
         }
         return (w.getTime() >= before && w.getTime() <= after) != inverted;
-    }
-
-    @Override
-    public boolean isCompatibleWithLootType(LootTable.LootType type) {
-        return true;
     }
 }

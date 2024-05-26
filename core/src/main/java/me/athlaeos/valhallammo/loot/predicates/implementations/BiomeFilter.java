@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class BiomeFilter extends LootPredicate {
     private final Material icon;
@@ -80,8 +79,4 @@ public class BiomeFilter extends LootPredicate {
         return biomes.contains(b.getBiome()) != inverted;
     }
 
-    @Override
-    public boolean isCompatibleWithLootType(LootTable.LootType type) {
-        return true;
-    }
 }

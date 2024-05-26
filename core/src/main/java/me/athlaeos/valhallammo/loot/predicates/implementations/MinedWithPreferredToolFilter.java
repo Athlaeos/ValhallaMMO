@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.LootContext;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -37,12 +36,12 @@ public class MinedWithPreferredToolFilter extends LootPredicate {
 
     @Override
     public String getDescription() {
-        return ValhallaMMO.getNms() == null ? "&cFeature disabled due to version incompatibility" : "&fRequires the block to be mined with its preferred tool";
+        return "&fRequires the block to be mined with its preferred tool";
     }
 
     @Override
     public String getActiveDescription() {
-        return ValhallaMMO.getNms() == null ? "&cFeature disabled due to version incompatibility" : "&fRequires the block to " + (isInverted() ? "&cNOT&f " : "") + "be mined with its preferred tool";
+        return "&fRequires the block to " + (isInverted() ? "&cNOT&f " : "") + "be mined with its preferred tool";
     }
 
     @Override
@@ -52,7 +51,6 @@ public class MinedWithPreferredToolFilter extends LootPredicate {
 
     @Override
     public Map<Integer, ItemStack> getButtons() {
-        if (ValhallaMMO.getNms() == null) return new HashMap<>();
         return new Pair<>(2,
                 new ItemBuilder(Material.TNT)
                         .name("&eInvert Condition")
@@ -65,7 +63,6 @@ public class MinedWithPreferredToolFilter extends LootPredicate {
 
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
-        if (ValhallaMMO.getNms() == null) return;
         if (button == 2) inverted = !inverted;
     }
 

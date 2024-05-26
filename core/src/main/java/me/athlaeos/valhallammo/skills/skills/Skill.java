@@ -494,9 +494,9 @@ public abstract class Skill {
             // level conditions don't need to be checked if the player's current exp isn't enough to level up, or low enough to level down
             if (profile.getEXP() >= expForLevel(profile.getLevel() + 1) || profile.getEXP() < 0) {
                 updateLevelUpConditions(p, silent);
+                AccumulativeStatManager.updateStats(p);
             }
         }
-        AccumulativeStatManager.updateStats(p);
     }
 
     public void addLevels(Player player, int levels, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
@@ -723,12 +723,12 @@ public abstract class Skill {
     }
 
     public void updateSkillStats(Player p, boolean runPersistentStartingPerks) {
-        Profile skillProfile = ProfileRegistry.getBlankProfile(p, getProfileType());
         Profile persistentProfile = ProfileRegistry.getPersistentProfile(p, getProfileType());
-        PowerProfile powerProfile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
-        ProfileRegistry.setSkillProfile(p, skillProfile, skillProfile.getClass());
         int level = getLevelFromEXP(persistentProfile.getTotalEXP());
+        PowerProfile powerProfile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            Profile skillProfile = ProfileRegistry.getBlankProfile(p, getProfileType());
+            ProfileRegistry.setSkillProfile(p, skillProfile, skillProfile.getClass());
             for (PerkReward r : startingPerks) {
                 if (!runPersistentStartingPerks && r.isPersistent()) continue;
                 r.apply(p);

@@ -2,7 +2,6 @@ package me.athlaeos.valhallammo.placeholder;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.hooks.PAPIHook;
-import me.athlaeos.valhallammo.hooks.VaultHook;
 import me.athlaeos.valhallammo.placeholder.placeholders.*;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;

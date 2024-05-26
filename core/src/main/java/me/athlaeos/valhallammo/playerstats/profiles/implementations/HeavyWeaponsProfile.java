@@ -15,8 +15,8 @@ public class HeavyWeaponsProfile extends Profile {
     {
         floatStat("damageMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("powerAttackDamageMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create()); // "overhead" hits are what Minecraft normally considers "critical hits", aka falling while hitting. These hits can now do configurable damage, a fraction of which is shared to other mobs in the area.
-        floatStat("powerAttackFraction", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
-        floatStat("powerAttackRadius", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("powerAttackFraction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("powerAttackRadius", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create());
         floatStat("attackSpeedMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("attackReachBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
         floatStat("attackReachMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());

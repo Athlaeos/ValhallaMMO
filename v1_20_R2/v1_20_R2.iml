@@ -92,6 +92,7 @@
     <orderEntry type="module" module-name="valhallammo-core" scope="PROVIDED" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.jeff_media:MorePersistentDataTypes:2.3.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.jeff_media:CustomBlockData:2.1.0" level="project" />
+    <orderEntry type="module" module-name="v1_19_R1" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-transport:4.1.82.Final" level="project" />
   </component>
 </module>

@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -53,7 +54,7 @@ public class PermanentPotionEffects {
         for (String s : effectStrings){
             String[] args = s.split(":");
             if (args.length <= 1) continue;
-            PotionEffectType type = PotionEffectType.getByName(args[0]);
+            PotionEffectType type = PotionEffectMappings.getPotionEffectType(args[0]);
             if (type == null) continue;
             int amplifier = Catch.catchOrElse(() -> Integer.parseInt(args[1]), -1);
             if (amplifier < 0) continue;

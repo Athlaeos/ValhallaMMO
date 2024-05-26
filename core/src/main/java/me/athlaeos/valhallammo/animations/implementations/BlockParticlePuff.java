@@ -17,6 +17,8 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.Map;
 
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
+
 public class BlockParticlePuff extends Animation {
 
     private static final Map<Material, Sound> blockSounds = new HashMap<>();
@@ -61,14 +63,14 @@ public class BlockParticlePuff extends Animation {
         Location origin = block.getLocation().add(0.5, 1.1, 0.5);
         if (block.getType() == Material.GRINDSTONE){
             for (Location l : MathUtils.getRandomPointsInPlane(origin, 0.2, 3)){
-                block.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, l, 0,
+                block.getWorld().spawnParticle(Particle.valueOf(oldOrNew("FIREWORKS_SPARK", "FIREWORK")), l, 0,
                         (origin.getX() - crafter.getLocation().getX()) * 0.09,
                         0,
                         (origin.getZ() - crafter.getLocation().getZ()) * 0.09);
             }
         } else {
             for (Location l : MathUtils.getRandomPointsInPlane(origin, 0.35, 3)){
-                block.getWorld().spawnParticle(Particle.BLOCK_DUST, l, 1, block.getBlockData());
+                block.getWorld().spawnParticle(Particle.valueOf(oldOrNew("BLOCK_DUST", "BLOCK")), l, 1, block.getBlockData());
             }
         }
     }

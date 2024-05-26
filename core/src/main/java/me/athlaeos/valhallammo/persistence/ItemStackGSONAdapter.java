@@ -1,19 +1,13 @@
 package me.athlaeos.valhallammo.persistence;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.Type;
-import java.util.Base64;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Provided by user Schottky on spigotmc.org

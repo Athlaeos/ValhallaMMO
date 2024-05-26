@@ -17,6 +17,8 @@ import org.bukkit.util.Vector;
 
 import java.util.Collection;
 
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
+
 public class ChargedShotAmmo extends Animation {
     private static final Particle ammo;
     private static final Particle.DustOptions ammoOptions;
@@ -65,7 +67,7 @@ public class ChargedShotAmmo extends Animation {
             }
             circle.forEach(l -> {
                 if (l.getWorld() == null || !l.getWorld().equals(p.getWorld())) l.setWorld(p.getWorld());
-                if (ammo == Particle.REDSTONE) p.getWorld().spawnParticle(ammo, l.clone().add(p.getLocation()).add(0, 0.8, 0), 0, ammoOptions);
+                if (ammo == Particle.valueOf(oldOrNew("REDSTONE", "DUST"))) p.getWorld().spawnParticle(ammo, l.clone().add(p.getLocation()).add(0, 0.8, 0), 0, ammoOptions);
                 else p.getWorld().spawnParticle(ammo, l.clone().add(p.getLocation()).add(0, 0.8, 0), 0);
             });
             // if the charges on the animation doesn't match the remaining charges, reset the circle

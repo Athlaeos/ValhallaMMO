@@ -4,7 +4,6 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
-import me.athlaeos.valhallammo.gui.implementations.LootTableEditor;
 import me.athlaeos.valhallammo.gui.implementations.LootTableOverviewMenu;
 import me.athlaeos.valhallammo.gui.implementations.LootTableSelectionMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;

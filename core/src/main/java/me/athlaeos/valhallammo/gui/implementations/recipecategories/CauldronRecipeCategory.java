@@ -4,11 +4,9 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicBrewingRecipe;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCauldronRecipe;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
-import me.athlaeos.valhallammo.gui.implementations.BrewingRecipeEditor;
 import me.athlaeos.valhallammo.gui.implementations.CauldronRecipeEditor;
 import me.athlaeos.valhallammo.gui.implementations.RecipeOverviewMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -16,6 +14,7 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -69,7 +68,7 @@ public class CauldronRecipeCategory extends RecipeCategory{
             icons.add(new ItemBuilder(recipe.tinkerCatalyst() ? recipe.getCatalyst().getItem() : recipe.getResult())
                     .name("&f" + recipe.getName())
                     .lore(lore)
-                    .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE)
+                    .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
                     .stringTag(RecipeOverviewMenu.KEY_RECIPE, recipe.getName()).get());
         }
         icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));

@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.loot.predicates.PredicateRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.*;
@@ -177,7 +178,7 @@ public class LootPredicateMenu extends Menu {
             ItemStack icon = new ItemBuilder(predicate.getIcon())
                     .lore(StringUtils.separateStringIntoLines(predicate.getDescription(), 40))
                     .name(predicate.getDisplayName())
-                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_ENCHANTS)
+                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_ENCHANTS)
                     .stringTag(KEY_PREDICATE_ID, predicate.getKey()).get();
 
             totalPredicateButtons.add(icon);
@@ -201,13 +202,13 @@ public class LootPredicateMenu extends Menu {
         for (int i = 0; i < 45; i++){
             inventory.setItem(i, null);
         }
-        List<LootPredicate> predicates = currentPredicates.stream().limit(45).collect(Collectors.toList());
+        List<LootPredicate> predicates = currentPredicates.stream().limit(45).toList();
         for (LootPredicate predicate : predicates){
             ItemStack icon = new ItemBuilder(predicate.getIcon())
                     .lore(StringUtils.separateStringIntoLines(predicate.getActiveDescription(), 40))
                     .name(predicate.getDisplayName())
                     .stringTag(KEY_PREDICATE_ID, predicate.getKey())
-                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_ENCHANTS)
+                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_ENCHANTS)
                     .get();
             inventory.addItem(icon);
         }

@@ -47,14 +47,17 @@ public class CustomItemRegistry {
         return builder.get();
     }
 
-    public static void register(String id, ItemStack item){
+    public static CustomItem register(String id, ItemStack item){
         item = item.clone();
         item.setAmount(1);
-        items.put(id, new CustomItem(id, item));
+        CustomItem customItem = new CustomItem(id, item);
+        items.put(id, customItem);
+        return customItem;
     }
 
-    public static void register(String id, CustomItem item){
+    public static CustomItem register(String id, CustomItem item){
         items.put(id, item);
+        return item;
     }
 
     @SuppressWarnings("all")

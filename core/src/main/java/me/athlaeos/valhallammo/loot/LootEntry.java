@@ -3,11 +3,9 @@ package me.athlaeos.valhallammo.loot;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
-import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LootEntry implements Weighted {
     private final UUID uuid;

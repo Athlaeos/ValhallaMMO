@@ -56,7 +56,7 @@ public class ItemConsumptionListener implements Listener {
             float saturationToReplenish = FoodPropertyManager.getSaturationValue(item, meta);
 
             foodToReplenish = (int) Math.round(multiplier * foodToReplenish);
-            saturationToReplenish *= multiplier;
+            saturationToReplenish *= (float) multiplier;
 
             int finalFoodToReplenish = foodToReplenish;
             float finalSaturationToReplenish = saturationBefore + saturationToReplenish;

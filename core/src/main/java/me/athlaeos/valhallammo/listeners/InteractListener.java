@@ -2,10 +2,8 @@ package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.BlockInteractConversions;
-import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
-import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.WeightClass;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -18,9 +16,7 @@ import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -32,8 +28,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.RayTraceResult;
 
 import java.util.Collection;
@@ -57,7 +51,7 @@ public class InteractListener implements Listener {
             if (!dualWielding) {
                 if (e.getHand() == EquipmentSlot.OFF_HAND || e.getPlayer().getAttackCooldown() < 0.9) return;
                 Parryer.attemptParry(e.getPlayer());
-            } else if (dualWieldingEnabled && ValhallaMMO.getNms() != null && e.getHand() == EquipmentSlot.OFF_HAND) {
+            } else if (dualWieldingEnabled && e.getHand() == EquipmentSlot.OFF_HAND) {
                 double reach = AccumulativeStatManager.getCachedStats("ATTACK_REACH_BONUS", e.getPlayer(), 10000, true);
                 double multiplier = 1 + AccumulativeStatManager.getCachedStats("ATTACK_REACH_MULTIPLIER", e.getPlayer(), 10000, true);
                 Timer.setCooldown(e.getPlayer().getUniqueId(), 0, "parry_vulnerable");
@@ -86,7 +80,7 @@ public class InteractListener implements Listener {
                         if (offHandAttackSpeed != null) offHandSpeed = offHandAttackSpeed.getValue();
                         EntityUtils.addUniqueAttribute(e.getPlayer(), attackSpeedUUID, "valhalla_dual_wield_attack_speed_offset", Attribute.GENERIC_ATTACK_SPEED, mainHandSpeed - offHandSpeed, AttributeModifier.Operation.ADD_NUMBER);
                         e.getPlayer().attack(l);
-                        if (ValhallaMMO.getNms() != null) ValhallaMMO.getNms().resetAttackCooldown(e.getPlayer());
+                        ValhallaMMO.getNms().resetAttackCooldown(e.getPlayer());
                         EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_dual_wield_attack_speed_offset", Attribute.GENERIC_ATTACK_SPEED);
                         swapHands(e.getPlayer());
 

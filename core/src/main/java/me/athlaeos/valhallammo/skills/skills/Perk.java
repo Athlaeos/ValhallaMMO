@@ -232,7 +232,7 @@ public class Perk {
 
     public void execute(Player p){
         for (String message : messages){
-            for (PerkReward reward : rewards) message = message.replace("{" + reward.getName() + "}", reward.rewardPlaceholder());
+            for (PerkReward reward : rewards) if (message != null) message = message.replace("{" + reward.getName() + "}", reward.rewardPlaceholder());
             p.sendMessage(Utils.chat(message));
         }
         for (String command : commands){

@@ -24,7 +24,7 @@ public class ManageRecipesCommand implements Command {
             } else if (args.length >= 3){
                 String method = args[1];
                 if (method.equalsIgnoreCase("new")){
-                    if (args.length <= 3) return false;
+                    if (args.length == 3) return false;
                     String type = args[2].toLowerCase();
                     if (CustomRecipeRegistry.getAllRecipes().contains(args[3])) {
                         Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_recipe_exists"));
@@ -63,7 +63,7 @@ public class ManageRecipesCommand implements Command {
                     else Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_recipe_missing"));
                     return true;
                 } else if (method.equalsIgnoreCase("copy")) {
-                    if (args.length <= 3) return false;
+                    if (args.length == 3) return false;
                     String recipe = args[2].toLowerCase();
                     String newRecipe = args[3].toLowerCase();
                     if (!CustomRecipeRegistry.getAllRecipes().contains(recipe)) {

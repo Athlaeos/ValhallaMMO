@@ -142,7 +142,7 @@ public class PartyManagementCommand implements TabExecutor {
                 return true;
             }
             case "delete" -> {
-                if (args.length <= 1) return badUsage(sender, "/parties delete <party>");
+                if (args.length == 1) return badUsage(sender, "/parties delete <party>");
                 Party party = PartyManager.getAllParties().get(args[1]);
                 if (party == null){
                     PartyManager.ErrorStatus.PARTY_DOES_NOT_EXIST.sendErrorMessage(sender);

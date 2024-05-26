@@ -1,8 +1,11 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -16,8 +19,13 @@ import org.bukkit.potion.PotionType;
 
 import java.util.*;
 
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
+
 public class PotionTypeForbidden extends DynamicItemModifier {
-    public static final List<PotionType> legalTypes = List.of(PotionType.UNCRAFTABLE, PotionType.AWKWARD, PotionType.MUNDANE, PotionType.THICK);
+    public static final List<PotionType> legalTypes = new ArrayList<>(List.of(PotionType.AWKWARD, PotionType.MUNDANE, PotionType.THICK));
+    static {
+        if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) legalTypes.add(PotionType.valueOf("UNCRAFTABLE"));
+    }
     private final PotionType type;
 
     public PotionTypeForbidden(String name, PotionType type) {
@@ -27,7 +35,7 @@ public class PotionTypeForbidden extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (validate && outputItem.getMeta() instanceof PotionMeta meta && meta.getBasePotionData().getType() == type){
+        if (validate && outputItem.getMeta() instanceof PotionMeta meta && ValhallaMMO.getNms().getPotionType(meta) == type){
             failedRecipe(outputItem, TranslationManager.getTranslation("modifier_warning_forbidden_potion_type"));
         }
     }
@@ -44,7 +52,7 @@ public class PotionTypeForbidden extends DynamicItemModifier {
 
     @Override
     public ItemStack getModifierIcon() {
-        return new ItemBuilder(Material.POTION).flag(ItemFlag.HIDE_POTION_EFFECTS).get();
+        return new ItemBuilder(Material.POTION).flag(ConventionUtils.getHidePotionEffectsFlag()).get();
     }
 
     @Override

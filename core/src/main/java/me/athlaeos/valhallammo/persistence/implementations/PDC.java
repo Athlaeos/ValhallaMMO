@@ -75,6 +75,7 @@ public class PDC extends ProfilePersistence {
     @Override
     public void saveAllProfiles() {
         for (UUID p : new HashSet<>(persistentProfiles.keySet())){
+            if (!JoinLeaveListener.getLoadedProfiles().contains(p)) continue;
             Player player = ValhallaMMO.getInstance().getServer().getPlayer(p);
             if (player == null || !player.isOnline()) {
                 persistentProfiles.remove(p);
@@ -86,7 +87,8 @@ public class PDC extends ProfilePersistence {
 
     @Override
     public void saveProfile(Player p) {
-        if (persistentProfiles.containsKey(p.getUniqueId())){
+        if (persistentProfiles.containsKey(p.getUniqueId()) &&
+                JoinLeaveListener.getLoadedProfiles().contains(p.getUniqueId())){
             for (Profile pr : persistentProfiles.get(p.getUniqueId()).values()){
                 PersistableProfile tempProfile = new PersistableProfile();
 

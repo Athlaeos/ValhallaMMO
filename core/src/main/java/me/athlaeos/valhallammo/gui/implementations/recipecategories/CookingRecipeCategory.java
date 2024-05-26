@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.gui.implementations.RecipeOverviewMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -55,7 +56,7 @@ public abstract class CookingRecipeCategory extends RecipeCategory{
             icons.add(new ItemBuilder(recipe.tinker() ? recipe.getInput().getItem() : recipe.getResult())
                     .name("&f" + recipe.getName())
                     .lore(lore)
-                    .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE)
+                    .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
                     .color(Color.fromRGB(210, 60, 200)).stringTag(RecipeOverviewMenu.KEY_RECIPE, recipe.getName()).get());
         }
         return icons;

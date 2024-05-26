@@ -118,9 +118,7 @@ public class SmithingTagsAdd extends DynamicItemModifier {
             tags.clear();
         }
         return "&fAdds the following tags to the item: /n&e" + (newTags.isEmpty() ? List.of("&cNone") : newTags.keySet().stream().map(t ->
-                "&e" + Objects.requireNonNullElse(
-                        SmithingItemPropertyManager.getTagLore(t) + " " + StringUtils.toRoman(Math.max(1, newTags.get(t))),
-                        t + " " + StringUtils.toRoman(Math.max(1, newTags.get(t)))))
+                        "&e" + SmithingItemPropertyManager.getTagLore(t) + " " + StringUtils.toRoman(Math.max(1, newTags.get(t))))
                 .collect(Collectors.joining(", ")));
     }
 

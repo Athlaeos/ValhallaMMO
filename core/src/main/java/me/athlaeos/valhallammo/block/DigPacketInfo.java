@@ -1,8 +1,10 @@
 package me.athlaeos.valhallammo.block;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.MiningSpeed;
+import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
@@ -11,12 +13,13 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfil
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.EntityUtils;
-import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.MathUtils;
+import me.athlaeos.valhallammo.version.EnchantmentMappings;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -99,8 +102,8 @@ public class DigPacketInfo {
             // preferred tool for block
             baseMultiplier = tool == null ? 1F : (float) MiningSpeed.getMultiplier(tool.getMeta(), b.getType());
 
-            int efficiency = tool == null ? 0 : tool.getItem().getEnchantmentLevel(Enchantment.DIG_SPEED);
-            if (efficiency > 0) baseMultiplier += MathUtils.pow(efficiency, 2) + 1;
+            int efficiency = tool == null ? 0 : tool.getItem().getEnchantmentLevel(EnchantmentMappings.EFFICIENCY.getEnchantment());
+            if (efficiency > 0) baseMultiplier += (float) (MathUtils.pow(efficiency, 2) + 1);
         }
 
         boolean canSwimMine = cachedSwimmingMiners.contains(digger.getUniqueId());
@@ -109,26 +112,31 @@ public class DigPacketInfo {
         if (cachedMultiplier.containsKey(digger.getUniqueId())) {
             additionalMultiplier = cachedMultiplier.get(digger.getUniqueId());
         } else {
-            additionalMultiplier += AccumulativeStatManager.getCachedStats("DIG_SPEED", digger, 10000, true);
+            additionalMultiplier += (float) AccumulativeStatManager.getCachedStats("DIG_SPEED", digger, 10000, true);
 
-            PotionEffect haste = digger.getPotionEffect(PotionEffectType.FAST_DIGGING);
-            if (haste != null) additionalMultiplier += (0.2 * haste.getAmplifier());
+            PotionEffect haste = digger.getPotionEffect(PotionEffectMappings.HASTE.getPotionEffectType());
+            if (haste != null) additionalMultiplier += (0.2F * haste.getAmplifier());
 
-            PotionEffect fatigue = digger.getPotionEffect(PotionEffectType.SLOW_DIGGING);
-            if (fatigue != null && fatigue.getAmplifier() != -1 && fatigue.getAmplifier() < 5) {
-                additionalMultiplier *= MathUtils.pow(0.3, Math.min(fatigue.getAmplifier() + 1, 4));
+            PotionEffect fatigue = digger.getPotionEffect(PotionEffectMappings.MINING_FATIGUE.getPotionEffectType());
+            // mining fatigue with amplifier -1 is inconsistent pre-1.20.5, so to compromise we're going to ignore the mining speed slow from Mining Fatigue I
+            if (fatigue != null && fatigue.getAmplifier() > (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? -1 : 0) && fatigue.getAmplifier() < 5) {
+                additionalMultiplier *= (float) MathUtils.pow(0.3, Math.min(fatigue.getAmplifier() + 1, 4));
             }
 
             PowerProfile profile = ProfileCache.getOrCache(digger, PowerProfile.class);
 
-            canSwimMine = properties.getCombinedEnchantments().getOrDefault(Enchantment.WATER_WORKER, 0) > 0 ||
+            canSwimMine = properties.getCombinedEnchantments().getOrDefault(EnchantmentMappings.AQUA_AFFINITY.getEnchantment(), 0) > 0 ||
                     digger.hasPotionEffect(PotionEffectType.CONDUIT_POWER) || profile.hasAquaAffinity();
 
             cachedMultiplier.put(digger.getUniqueId(), additionalMultiplier);
             if (canSwimMine) cachedSwimmingMiners.add(digger.getUniqueId());
             if (profile.hasAerialAffinity()) cachedAirMiners.add(digger.getUniqueId());
 
-            additionalMultiplier *= EntityUtils.getPlayerMiningSpeed(digger);
+            if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) && CustomBreakSpeedListener.isFatigued(digger))
+                additionalMultiplier *= (float) -EntityUtils.getUniqueAttributeValue(digger, CustomBreakSpeedListener.FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"));
+            // if on newer versions the player's mining speed is nullified by having an opposite mining speed modifier added to prevent cracks from appearing the normal way.
+            // during actual mining speed calculations this nullification is then removed.
+            // this is in an attempt to keep mining speed attributes working
         }
         baseMultiplier *= additionalMultiplier;
 
@@ -137,7 +145,7 @@ public class DigPacketInfo {
             cachedBlockBonus = new BlockCache(b, AccumulativeStatManager.getStats("BLOCK_SPECIFIC_DIG_SPEED", digger, true));
             blockSpecificSpeedCache.put(digger.getUniqueId(), cachedBlockBonus);
         }
-        baseMultiplier += cachedBlockBonus.value;
+        baseMultiplier += (float) cachedBlockBonus.value;
 
         if (isInWater(digger) && !canSwimMine) baseMultiplier /= 5;
         if (!EntityUtils.isOnGround(digger) && !canAirMine) baseMultiplier /= 5;

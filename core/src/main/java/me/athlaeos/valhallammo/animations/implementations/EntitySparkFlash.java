@@ -7,6 +7,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
+
 public class EntitySparkFlash extends Animation {
     public EntitySparkFlash(String id) {
         super(id);
@@ -15,7 +17,7 @@ public class EntitySparkFlash extends Animation {
     @Override
     public void animate(LivingEntity crafter, Location location, Vector direction, int tick) {
         if (location.getWorld() == null) return;
-        location.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, location, 10);
+        location.getWorld().spawnParticle(Particle.valueOf(oldOrNew("FIREWORKS_SPARK", "FIREWORKS")), location, 10);
         location.getWorld().spawnParticle(Particle.FLASH, location, 0);
     }
 }

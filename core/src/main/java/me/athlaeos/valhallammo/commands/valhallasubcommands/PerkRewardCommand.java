@@ -42,9 +42,8 @@ public class PerkRewardCommand implements Command {
 				try {
 					arg = switch (expectedType){
 						case NONE -> null;
-						case DOUBLE -> StringUtils.parseDouble(args[2]);
-						case FLOAT -> StringUtils.parseDouble(args[2]);
-						case INTEGER -> Integer.parseInt(args[2]);
+						case DOUBLE, FLOAT -> StringUtils.parseDouble(args[2]);
+                        case INTEGER -> Integer.parseInt(args[2]);
 						case STRING -> args[2];
 						case STRING_LIST -> List.of(args[2].split(";"));
 						case BOOLEAN -> Boolean.parseBoolean(args[2]);

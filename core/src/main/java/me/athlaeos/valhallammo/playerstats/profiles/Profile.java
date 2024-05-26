@@ -266,7 +266,7 @@ public abstract class Profile {
             if (tablesToUpdate.contains(s)) continue;
             String lower = s.toLowerCase();
             if (ints.containsKey(s)) query.append(", ").append(lower).append(" INTEGER default ").append(ints.get(s).def);
-            if (doubles.containsKey(s)) query.append(", ").append(lower).append(" DOUBLE default ").append(doubles.get(s).def);
+            if (doubles.containsKey(s)) query.append(", ").append(lower).append(" DOUBLE(24,12) default ").append(doubles.get(s).def);
             if (floats.containsKey(s)) query.append(", ").append(lower).append(" FLOAT default ").append(floats.get(s).def);
             if (stringSets.containsKey(s)) query.append(", ").append(lower).append(" TEXT");
             if (booleans.containsKey(s)) query.append(", ").append(lower).append(" BOOLEAN default ").append(booleans.get(s));

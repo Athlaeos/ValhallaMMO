@@ -38,6 +38,7 @@ import me.athlaeos.valhallammo.utility.GlobalEffect;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.AlphaToBetaConversionHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -76,6 +77,8 @@ public class ValhallaMMO extends JavaPlugin {
         return instance;
     }
 
+    private static boolean enabled = true;
+
     @Override
     public void onLoad() {
         // save and update configs
@@ -87,10 +90,12 @@ public class ValhallaMMO extends JavaPlugin {
         save("languages/materials/" + lang + ".json");
         save("recipes/grid_recipes.json");
         save("recipes/brewing_recipes.json");
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_6)) save("recipes/brewing_recipes_1_20_6+.json");
         save("recipes/cooking_recipes.json");
         save("recipes/immersive_recipes.json");
         save("recipes/cauldron_recipes.json");
         save("recipes/smithing_recipes.json");
+        save("items.json");
         save("loot_table_config.json");
         save("loot_tables/digging.json");
         save("loot_tables/fishing.json");
@@ -145,28 +150,30 @@ public class ValhallaMMO extends JavaPlugin {
         registerHook(new PAPIHook());
         registerHook(new WorldGuardHook());
         registerHook(new DecentHologramsHook());
+
+        if (!setupNMS()){
+            enabled = false;
+        }
     }
 
     @Override
     public void onEnable() {
+        if (!enabled){
+            logSevere("This version of Minecraft is not compatible with ValhallaMMO. Sorry!");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         resourcePackConfigForced = pluginConfig.getBoolean("resource_pack_config_override");
         saveAndUpdateConfig("gui_details.yml");
 
-        if (setupNMS()){
-            customMiningSystem = pluginConfig.getBoolean("custom_mining_speeds", true);
-            if (customMiningSystem){
-                packetListener = new PacketListener(new BlockBreakNetworkHandlerImpl());
-                packetListener.addAll();
-                registerListener(new CustomBreakSpeedListener());
-                registerListener(packetListener);
-            }
-            logInfo("NMS version " + nms.getClass().getSimpleName() + " registered!");
-        } else {
-            logWarning("No NMS version found for your server version");
-            logWarning("This version may not be compatible with ValhallaMMO (1.17+) yet and may not work properly, and the following features are disabled:");
-            logWarning("    > Custom block breaking speeds");
-            logWarning("    > Nearby structure scanning");
+        customMiningSystem = pluginConfig.getBoolean("custom_mining_speeds", true);
+        if (customMiningSystem){
+            packetListener = new PacketListener(new BlockBreakNetworkHandlerImpl());
+            packetListener.addAll();
+            registerListener(new CustomBreakSpeedListener());
+            registerListener(packetListener);
         }
+        logInfo("NMS version " + nms.getClass().getSimpleName() + " registered!");
 
         ResourcePack.tryStart();
 
@@ -276,6 +283,7 @@ public class ValhallaMMO extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (!enabled) return;
         ProfileRegistry.getPersistence().saveAllProfiles();
         if (ProfileRegistry.getPersistence() instanceof Database database) {
             try {
@@ -302,8 +310,9 @@ public class ValhallaMMO extends JavaPlugin {
 
     private boolean setupNMS() {
         try {
-            String version = getServer().getClass().getPackage().getName().split("\\.")[3];
-            Class<?> clazz = Class.forName("me.athlaeos.valhallammo.nms.NMS_" + version);
+            String nmsVersion = MinecraftVersion.getServerVersion().getNmsVersion();
+            if (nmsVersion == null) return false;
+            Class<?> clazz = Class.forName("me.athlaeos.valhallammo.nms.NMS_" + nmsVersion);
 
             if (NMS.class.isAssignableFrom(clazz)) {
                 nms = (NMS) clazz.getDeclaredConstructor().newInstance();

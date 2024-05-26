@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,6 +17,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class PotionEffectConvert extends DynamicItemModifier {
     private static final List<String> types = new ArrayList<>();
@@ -120,7 +123,7 @@ public class PotionEffectConvert extends DynamicItemModifier {
                                 .name("&dWhat should" + effectFrom.getEffectName() + " be converted to?")
                                 .lore("&e" + infoTo,
                                         "&6Click to cycle")
-                                .flag(ItemFlag.HIDE_POTION_EFFECTS)
+                                .flag(ConventionUtils.getHidePotionEffectsFlag())
                                 .get()),
                 new Pair<>(14,
                         new ItemBuilder(Material.STRUCTURE_VOID)

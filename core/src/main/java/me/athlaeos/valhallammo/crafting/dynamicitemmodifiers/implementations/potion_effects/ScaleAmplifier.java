@@ -53,8 +53,7 @@ public class ScaleAmplifier extends DynamicItemModifier {
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         Scaling scaling;
         if (presetScaling != null) scaling = ModifierScalingPresets.getScalings().get(presetScaling);
-        else if (commandScaling != null) scaling = new Scaling(commandScaling, mode, lowerBound, upperBound);
-        else scaling = new Scaling(buildScaling(), mode, lowerBound, upperBound);
+        else scaling = new Scaling(Objects.requireNonNullElseGet(commandScaling, this::buildScaling), mode, lowerBound, upperBound);
         if (scaling == null) {
             failedRecipe(outputItem, "&cRecipe scaling wrongly configured, contact admin");
             return;

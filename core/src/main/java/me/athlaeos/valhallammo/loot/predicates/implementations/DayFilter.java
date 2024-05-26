@@ -13,7 +13,6 @@ import org.bukkit.loot.LootContext;
 
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class DayFilter extends LootPredicate {
     @Override
@@ -70,8 +69,4 @@ public class DayFilter extends LootPredicate {
         return DayTime.getTime(w).isDay() != inverted;
     }
 
-    @Override
-    public boolean isCompatibleWithLootType(LootTable.LootType type) {
-        return true;
-    }
 }

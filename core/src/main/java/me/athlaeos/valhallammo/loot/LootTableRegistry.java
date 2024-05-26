@@ -5,15 +5,14 @@ import com.google.gson.GsonBuilder;
 import com.jeff_media.customblockdata.CustomBlockData;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
 import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -51,8 +50,8 @@ public class LootTableRegistry {
     private static final NamespacedKey LOOT_ITEM_SOUND = new NamespacedKey(ValhallaMMO.getInstance(), "loot_item_sound");
 
     private static final Map<String, LootTable> lootTables = new HashMap<>();
-    private static final Map<Material, String> blockLootTables = new HashMap<>();
-    private static final Map<EntityType, String> entityLootTables = new HashMap<>();
+    private static final Map<String, String> blockLootTables = new HashMap<>();
+    private static final Map<String, String> entityLootTables = new HashMap<>();
     private static final Map<NamespacedKey, String> lootTableAdditions = new HashMap<>();
     private static String fishingLootTableFish;
     private static String fishingLootTableTreasure;
@@ -83,6 +82,11 @@ public class LootTableRegistry {
         if (lootTables != null){
             for (File lootTable : lootTables){
                 if (!lootTable.getName().endsWith(".json")) continue;
+                MinecraftVersion fileVersionFilter = Arrays.stream(MinecraftVersion.values())
+                        .filter(v -> v.getVersionString() != null && lootTable.getName().contains(v.getVersionString() + "+"))
+                        .findFirst().orElse(null);
+                // if a version is in the loot table's name, then it will not be loaded if the current minecraft version is older than it
+                if (fileVersionFilter != null && !MinecraftVersion.currentVersionNewerThan(fileVersionFilter)) continue;
                 loadFromFile(lootTable);
             }
         }
@@ -190,13 +194,13 @@ public class LootTableRegistry {
     }
 
     public static LootTable getLootTable(Material block){
-        String table = blockLootTables.get(block);
+        String table = blockLootTables.get(block.toString());
         if (table == null) return null;
         return lootTables.get(table);
     }
 
     public static LootTable getLootTable(EntityType entity){
-        String table = entityLootTables.get(entity);
+        String table = entityLootTables.get(entity.toString());
         if (table == null) return null;
         return lootTables.get(table);
     }
@@ -226,11 +230,11 @@ public class LootTableRegistry {
         return lootTables.get(fishingLootTableJunk);
     }
 
-    public static Map<Material, String> getBlockLootTables() {
+    public static Map<String, String> getBlockLootTables() {
         return blockLootTables;
     }
 
-    public static Map<EntityType, String> getEntityLootTables() {
+    public static Map<String, String> getEntityLootTables() {
         return entityLootTables;
     }
 

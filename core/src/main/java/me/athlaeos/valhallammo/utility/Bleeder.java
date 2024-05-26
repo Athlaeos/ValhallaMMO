@@ -3,11 +3,10 @@ package me.athlaeos.valhallammo.utility;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.CombatType;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.EntityBleedEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
-import me.athlaeos.valhallammo.utility.EntityUtils;
-import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.EntityEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -17,13 +16,13 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class Bleeder {
     private static final Map<UUID, BleedingInstance> bleedingEntities = new HashMap<>();
@@ -90,7 +89,7 @@ public class Bleeder {
                 instance.setBleedingDamage(Math.max(event.getBleedDamage() * (1 + event.getBleedResistance()), instance.bleedingDamage));
             }
             instance.setStacks(event.getStack());
-            bleeder.getWorld().spawnParticle(Particle.BLOCK_DUST, bleeder.getEyeLocation().add(0, -(bleeder.getHeight()/2), 0),
+            bleeder.getWorld().spawnParticle(Particle.valueOf(oldOrNew("BLOCK_DUST", "BLOCK")), bleeder.getEyeLocation().add(0, -(bleeder.getHeight()/2), 0),
                     25, 0.4, 0.4, 0.4, Material.REDSTONE_BLOCK.createBlockData());
             if (!bleedingEntities.containsKey(bleeder.getUniqueId())) {
                 bleedingEntities.put(bleeder.getUniqueId(), instance);
@@ -163,6 +162,7 @@ public class Bleeder {
         public void setBleedingDamage(double bleedingDamage) { this.bleedingDamage = bleedingDamage; }
         public void setDuration(int duration) { this.duration = duration; }
 
+        @SuppressWarnings("deprecation")
         @Override
         public void run() {
             if (duration >= 0 && bleedingEntity.isValid()){
@@ -179,11 +179,12 @@ public class Bleeder {
                     bleedingEntity.setNoDamageTicks(immunityFramesBefore); // makes sure the entity doesn't immune attacks they shouldn't after taking bleed damage
 
                     int particleCount = (int) (3 * Math.min(10, bleedingDamage));
-                    bleedingEntity.getWorld().spawnParticle(Particle.BLOCK_DUST, bleedingEntity.getEyeLocation().add(0, -(bleedingEntity.getHeight()/2), 0),
+                    bleedingEntity.getWorld().spawnParticle(Particle.valueOf(oldOrNew("BLOCK_DUST", "BLOCK")), bleedingEntity.getEyeLocation().add(0, -(bleedingEntity.getHeight()/2), 0),
                             particleCount, 0.4, 0.4, 0.4, Material.REDSTONE_BLOCK.createBlockData());
-                    bleedingEntity.playEffect(EntityEffect.HURT);
+                    if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) bleedingEntity.playHurtAnimation(0F);
+                    else bleedingEntity.playEffect(EntityEffect.HURT);
                 }
-                bleedingEntity.getWorld().spawnParticle(Particle.BLOCK_DUST, bleedingEntity.getEyeLocation().add(0, -(bleedingEntity.getHeight()/2), 0),
+                bleedingEntity.getWorld().spawnParticle(Particle.valueOf(oldOrNew("BLOCK_DUST", "BLOCK")), bleedingEntity.getEyeLocation().add(0, -(bleedingEntity.getHeight()/2), 0),
                         1, 0.4, 0.1, 0.1, Material.REDSTONE_BLOCK.createBlockData());
                 duration--;
             } else {

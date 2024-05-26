@@ -1,7 +1,6 @@
 package me.athlaeos.valhallammo.hooks;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.hooks.VaultHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 

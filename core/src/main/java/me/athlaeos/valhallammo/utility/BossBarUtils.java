@@ -47,7 +47,7 @@ public class BossBarUtils {
         bossBar.setText(title);
     }
 
-    private static class TemporaryBossBar extends BukkitRunnable {
+    public static class TemporaryBossBar extends BukkitRunnable {
         private int timer;
         private double fraction;
         private String text;

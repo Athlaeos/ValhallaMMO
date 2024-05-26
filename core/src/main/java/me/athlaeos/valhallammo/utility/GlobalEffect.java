@@ -2,8 +2,6 @@ package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
-import me.athlaeos.valhallammo.utility.StringUtils;
-import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -305,7 +303,7 @@ public class GlobalEffect extends BukkitRunnable {
         return activeGlobalEffects;
     }
 
-    private static class EffectProperties{
+    public static class EffectProperties{
         private final String effect;
         private final long effectiveUntil;
         private long originalLength;

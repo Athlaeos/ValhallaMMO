@@ -1,7 +1,6 @@
 package me.athlaeos.valhallammo.skills.perk_rewards.implementations;
 
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
-import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 import me.athlaeos.valhallammo.skills.skills.Skill;

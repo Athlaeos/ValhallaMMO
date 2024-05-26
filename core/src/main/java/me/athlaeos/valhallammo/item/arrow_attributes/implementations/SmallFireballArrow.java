@@ -25,7 +25,7 @@ public class SmallFireballArrow extends ArrowBehavior {
             boolean isIncendiary = ((int) args[1]) == 1;
 
             double multiplier = AccumulativeStatManager.getCachedStats("EXPLOSION_RADIUS_MULTIPLIER", e.getEntity(), 10000, true);
-            radius *= (1 + multiplier);
+            radius *= (float) (1 + multiplier);
 
             SmallFireball smallFireball = e.getEntity().launchProjectile(SmallFireball.class, e.getProjectile().getVelocity());
             smallFireball.setShooter(e.getEntity());

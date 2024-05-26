@@ -2,12 +2,10 @@ package me.athlaeos.valhallammo.crafting;
 
 import me.athlaeos.valhallammo.dom.Comparator;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.utility.ItemUtils;
 
 public enum ToolRequirementType {
     // if an item has no tool ID, -1 is given. So anything <0 is regarded as "not a tool"

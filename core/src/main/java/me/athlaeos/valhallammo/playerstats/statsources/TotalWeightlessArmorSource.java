@@ -20,8 +20,8 @@ public class TotalWeightlessArmorSource implements AccumulativeStatSource, EvEAc
     }
 
     @Override
-    public double fetch(Entity victim, Entity attackedBy, boolean use) {
-        if (victim instanceof LivingEntity v && attackedBy instanceof LivingEntity a){
+    public double fetch(Entity victim, Entity a, boolean use) {
+        if (victim instanceof LivingEntity v){
             double nonEquipmentArmor = Math.max(0, AccumulativeStatManager.getCachedRelationalStats("WEIGHTLESS_ARMOR", v, a, 10000, true));
             double armorFlatPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("ARMOR_FLAT_IGNORED", v, a, 10000, true);
 

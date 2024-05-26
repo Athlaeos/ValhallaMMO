@@ -6,8 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MathUtils {
     public static Collection<Location> getRandomPointsInArea(Location center, double radius, int count){

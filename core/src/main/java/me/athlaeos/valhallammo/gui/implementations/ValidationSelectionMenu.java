@@ -11,10 +11,11 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
+import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -115,11 +116,11 @@ public class ValidationSelectionMenu extends Menu {
         for (Validation validation : ValidationRegistry.getValidations()){
             if (targetBlock != null && !validation.isCompatible(targetBlock)) continue;
             ItemBuilder builder = new ItemBuilder(validation.icon())
-                    .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE)
+                    .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
                     .stringTag(KEY_VALIDATION, validation.id());
             if (currentValidations.contains(validation.id())){
                 builder.appendLore("&8&m                <>                ", "&2[&aEnabled&2]");
-                builder.enchant(Enchantment.DURABILITY, 1);
+                builder.enchant(EnchantmentMappings.UNBREAKING.getEnchantment(), 1);
             } else {
                 builder.appendLore("&8&m                <>                ", "&4[&cDisabled&4]");
             }

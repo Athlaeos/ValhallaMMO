@@ -226,7 +226,7 @@ public class MonsterScalingManager {
 
     private static String parseRand(String expression){
         String[] rands = StringUtils.substringsBetween(expression, "rand(", ")");
-        if (rands == null || rands.length == 0) return expression;
+        if (rands == null) return expression;
         for (String rand : rands){
             String[] args = rand.split(",");
             if (args.length == 1) expression = expression.replaceFirst(Pattern.quote("rand(" + rand + ")"), String.valueOf(Utils.getRandom().nextInt(Integer.parseInt(args[0]))));

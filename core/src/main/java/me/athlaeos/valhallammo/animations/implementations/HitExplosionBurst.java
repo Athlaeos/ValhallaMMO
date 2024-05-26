@@ -7,6 +7,8 @@ import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
+
 public class HitExplosionBurst extends Animation {
 
     public HitExplosionBurst(String id) {
@@ -15,7 +17,7 @@ public class HitExplosionBurst extends Animation {
 
     @Override
     public void animate(LivingEntity entity, Location location, Vector direction, int tick) {
-        entity.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, location, 0);
+        entity.getWorld().spawnParticle(Particle.valueOf(oldOrNew("EXPLOSION_LARGE", "EXPLOSION")), location, 0);
         entity.getWorld().playSound(location, Sound.ENTITY_GENERIC_EXPLODE, .5F, 1F);
     }
 }

@@ -4,15 +4,12 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.generator.structure.Structure;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
-import org.bukkit.util.StructureSearchResult;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -180,21 +177,7 @@ public class NearbyStructureFilter extends LootPredicate {
     @Override
     public boolean test(LootContext context) {
         if (context.getLocation().getWorld() == null) return inverted;
-        if (ValhallaMMO.getNms() != null){
-            if (ValhallaMMO.getNms().getNearestStructure(context.getLocation().getWorld(), context.getLocation(), structures) != null) return !inverted;
-        } else {
-            for (Structures s : structures.keySet()){
-                Structure structure = s.getStructure();
-                int range = structures.get(s);
-                StructureSearchResult nearest = context.getLocation().getWorld().locateNearestStructure(context.getLocation(), structure, range, false);
-                if (nearest != null) return !inverted;
-            }
-        }
+        if (ValhallaMMO.getNms().getNearestStructure(context.getLocation().getWorld(), context.getLocation(), structures) != null) return !inverted;
         return inverted;
-    }
-
-    @Override
-    public boolean isCompatibleWithLootType(LootTable.LootType type) {
-        return true;
     }
 }

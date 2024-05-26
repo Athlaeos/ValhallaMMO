@@ -11,7 +11,6 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -20,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class EnchantmentAdd extends DynamicItemModifier {
+    private static final Map<String, Enchantment> keyEnchantmentMap = new HashMap<>();
     private final String enchantment;
     private int level = 1;
     private final Material icon;
@@ -28,12 +28,13 @@ public class EnchantmentAdd extends DynamicItemModifier {
     public EnchantmentAdd(String name, Enchantment enchantment, Material icon) {
         super(name);
         this.enchantment = enchantment.getKey().getKey();
+        keyEnchantmentMap.put(this.enchantment, enchantment);
         this.icon = icon;
     }
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        Enchantment e = Enchantment.getByKey(NamespacedKey.minecraft(enchantment));
+        Enchantment e = keyEnchantmentMap.get(this.enchantment);
         if (e == null) {
             ValhallaMMO.logWarning("EnchantmentAdd modifier was instantiated with an enchantment that doesn't exist: " + enchantment);
             return;
@@ -60,7 +61,7 @@ public class EnchantmentAdd extends DynamicItemModifier {
 
     @Override
     public Map<Integer, ItemStack> getButtons() {
-        Enchantment e = Enchantment.getByKey(NamespacedKey.minecraft(enchantment));
+        Enchantment e = keyEnchantmentMap.get(this.enchantment);
         if (e == null) return new HashMap<>();
         String enchant = StringUtils.toPascalCase(e.getKey().getKey().replace("_", " "));
         return new Pair<>(12,
@@ -90,7 +91,7 @@ public class EnchantmentAdd extends DynamicItemModifier {
 
     @Override
     public String getDisplayName() {
-        Enchantment e = Enchantment.getByKey(NamespacedKey.minecraft(enchantment));
+        Enchantment e = keyEnchantmentMap.get(this.enchantment);
         if (e == null) return "&cInvalid enchantment";
         String enchant = StringUtils.toPascalCase(e.getKey().getKey().replace("_", " "));
         return "&fAdds/removes &e" + enchant + "&f (ADD/REMOVE)";
@@ -98,7 +99,7 @@ public class EnchantmentAdd extends DynamicItemModifier {
 
     @Override
     public String getDescription() {
-        Enchantment e = Enchantment.getByKey(NamespacedKey.minecraft(enchantment));
+        Enchantment e = keyEnchantmentMap.get(this.enchantment);
         if (e == null) return "&cInvalid enchantment";
         String enchant = StringUtils.toPascalCase(e.getKey().getKey().replace("_", " "));
         return "&fAdds &e" + enchant + "&f on the item if level > 0 or cancels the recipe is the item already has it.";
@@ -106,7 +107,7 @@ public class EnchantmentAdd extends DynamicItemModifier {
 
     @Override
     public String getActiveDescription() {
-        Enchantment e = Enchantment.getByKey(NamespacedKey.minecraft(enchantment));
+        Enchantment e = keyEnchantmentMap.get(this.enchantment);
         if (e == null) return "&cInvalid enchantment";
         String enchant = StringUtils.toPascalCase(e.getKey().getKey().replace("_", " "));
         return level > 0 ?
@@ -125,7 +126,7 @@ public class EnchantmentAdd extends DynamicItemModifier {
 
     @Override
     public DynamicItemModifier copy() {
-        Enchantment e = Enchantment.getByKey(NamespacedKey.minecraft(enchantment));
+        Enchantment e = keyEnchantmentMap.get(this.enchantment);
         if (e == null) throw new IllegalStateException("Enchantment " + enchantment + " is invalid");
         EnchantmentAdd m = new EnchantmentAdd(getName(), e, icon);
         m.setLevel(this.level);

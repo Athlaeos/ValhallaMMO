@@ -111,6 +111,7 @@ public class LootFreeSelectionMenu extends Menu {
         if (ItemUtils.isEmpty(clicked)) return;
 
         ItemMeta clickedMeta = clicked.getItemMeta();
+        if (clickedMeta == null) return;
         String action = ItemUtils.getPDCString(BUTTON_ACTION_KEY, clickedMeta, null);
         if (action != null){
             switch (action){

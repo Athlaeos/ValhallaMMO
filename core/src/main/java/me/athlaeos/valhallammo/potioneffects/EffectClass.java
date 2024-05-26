@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.potioneffects;
 
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collection;
@@ -17,7 +18,7 @@ public enum EffectClass {
 
     EffectClass(String... vanillaEffects){
         for (String effect : vanillaEffects) {
-            PotionEffectType type = PotionEffectType.getByName(effect);
+            PotionEffectType type = PotionEffectMappings.getPotionEffectType(effect);
             if (type == null) continue;
             this.vanillaEffects.add(type);
         }

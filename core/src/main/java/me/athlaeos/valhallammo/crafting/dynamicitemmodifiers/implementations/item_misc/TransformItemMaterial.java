@@ -52,9 +52,9 @@ public class TransformItemMaterial extends DynamicItemModifier {
         Material transformTo = classToMaterialMapping.getOrDefault(materialPrefix, new HashMap<>()).get(equipmentClass);
         if (transformTo == null) return;
         outputItem.type(transformTo);
-        for (AttributeWrapper wrapper : ItemAttributesRegistry.getVanillaStats(outputItem.getItem().getType()).values()){
+        for (AttributeWrapper wrapper : ItemAttributesRegistry.getVanillaStats(transformTo).values()){
             // The item's vanilla stats are updated to their vanilla values, any added custom attributes are left alone
-            ItemAttributesRegistry.setStat(outputItem.getMeta(), wrapper.getAttribute(), wrapper.getValue(), wrapper.isHidden(), true);
+            ItemAttributesRegistry.addDefaultStat(outputItem.getMeta(), wrapper.copy());
         }
         PotionEffectRegistry.updateEffectLore(outputItem.getMeta());
     }

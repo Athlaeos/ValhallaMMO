@@ -159,7 +159,6 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
                         e.printStackTrace();
                     }
                 }
-                persistentProfiles.remove(p.getUniqueId());
             });
         }
     }

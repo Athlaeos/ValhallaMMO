@@ -1,6 +1,5 @@
 package me.athlaeos.valhallammo.skills.perk_rewards.implementations;
 
-import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
@@ -9,7 +8,6 @@ import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
-import java.util.List;
 
 public class ProfileStringSetSingle extends PerkReward {
     private String value;

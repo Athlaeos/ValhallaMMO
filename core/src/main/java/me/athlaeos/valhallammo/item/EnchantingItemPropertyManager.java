@@ -1,13 +1,18 @@
 package me.athlaeos.valhallammo.item;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentOffer;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class EnchantingItemPropertyManager {
     private static final Map<Enchantment, Scaling> enchantmentScaling = new HashMap<>();
@@ -41,7 +46,7 @@ public class EnchantingItemPropertyManager {
         registerScaling("quick_charge", Scaling.fromConfig(config, "scalings.quick_charge"));
         registerScaling("riptide", Scaling.fromConfig(config, "scalings.riptide"));
         registerScaling("soul_speed", Scaling.fromConfig(config, "scalings.soul_speed"));
-        registerScaling("sweeping_edge", Scaling.fromConfig(config, "scalings.sweeping_edge"));
+        registerScaling("sweeping", Scaling.fromConfig(config, "scalings.sweeping"));
         registerScaling("thorns", Scaling.fromConfig(config, "scalings.thorns"));
         registerScaling("swift_sneak", Scaling.fromConfig(config, "scalings.swift_sneak"));
     }
@@ -51,9 +56,14 @@ public class EnchantingItemPropertyManager {
      * @param enchantment the enchantment to set its amplifier scalings for
      * @param scaling the scaling formula for the material
      */
+    @SuppressWarnings("deprecation")
     public static void registerScaling(String enchantment, Scaling scaling){
-        Enchantment e = Enchantment.getByKey(NamespacedKey.minecraft(enchantment));
-        if (e == null || scaling == null) return;
+        if (enchantment.equalsIgnoreCase("sweeping")) enchantment = oldOrNew("sweeping", "sweeping_edge");
+        Enchantment e = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? Registry.ENCHANTMENT.get(NamespacedKey.minecraft(enchantment)) : Enchantment.getByKey(NamespacedKey.minecraft(enchantment));
+        if (e == null || scaling == null) {
+            ValhallaMMO.logWarning("Could not register scaling for " + enchantment + ", it's not a valid enchantment!");
+            return;
+        }
         enchantmentScaling.put(e, scaling);
     }
 

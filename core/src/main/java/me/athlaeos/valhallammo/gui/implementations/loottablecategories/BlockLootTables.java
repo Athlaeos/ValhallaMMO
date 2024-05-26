@@ -4,7 +4,6 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
-import me.athlaeos.valhallammo.gui.implementations.LootTableEditor;
 import me.athlaeos.valhallammo.gui.implementations.LootTableOverviewMenu;
 import me.athlaeos.valhallammo.gui.implementations.LootTableSelectionMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -15,7 +14,6 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -58,9 +56,9 @@ public class BlockLootTables extends LootTableCategory{
         Material m = Catch.catchOrElse(() -> Material.valueOf(storedValue), null);
         if (m == null) return;
         if (!e.isShiftClick()) new LootTableSelectionMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), openedFrom, (LootTable table) -> {
-            LootTableRegistry.getBlockLootTables().put(m, table.getKey());
+            LootTableRegistry.getBlockLootTables().put(m.toString(), table.getKey());
             new LootTableOverviewMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), LootTableOverviewMenu.BLOCKS.getId()).open();
         }).open();
-        else LootTableRegistry.getBlockLootTables().remove(m);
+        else LootTableRegistry.getBlockLootTables().remove(m.toString());
     }
 }

@@ -19,6 +19,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfil
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.*;
+import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -162,7 +163,7 @@ public class MiningSkill extends Skill implements Listener {
                     CustomBreakSpeedListener.markInstantBreak(b);
                     e.getPlayer().breakBlock(b);
                 }, (b) -> veinMiningPlayers.remove(b.getUniqueId()));
-            Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getVeinMiningCooldown(), "mining_vein_miner");
+            Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getVeinMiningCooldown() * 50, "mining_vein_miner");
         }
     }
 
@@ -223,9 +224,12 @@ public class MiningSkill extends Skill implements Listener {
         if (drillingActivationSound != null) e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), drillingActivationSound, 1F, 1F);
     }
 
+    private final Collection<UUID> recursionPrevention = new HashSet<>();
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityExplode(EntityExplodeEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof TNTPrimed tnt) || tnt.getSource() == null) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || recursionPrevention.contains(e.getEntity().getUniqueId()) ||
+                e.isCancelled() || !(e.getEntity() instanceof TNTPrimed tnt) || tnt.getSource() == null) return;
         Player responsible = null;
         if (tnt.getSource() instanceof Player p && p.isOnline()) responsible = p;
         else if (tnt.getSource() instanceof AbstractArrow a && a.getShooter() instanceof Player p && p.isOnline()) responsible = p;
@@ -234,13 +238,20 @@ public class MiningSkill extends Skill implements Listener {
 
         MiningProfile profile = ProfileCache.getOrCache(responsible, MiningProfile.class);
         ItemStack normalPickaxe = new ItemStack(Material.IRON_PICKAXE);
-        if (profile.getBlastFortuneLevel() > 0) normalPickaxe.addUnsafeEnchantment(Enchantment.LOOT_BONUS_BLOCKS, profile.getBlastFortuneLevel());
+        if (profile.getBlastFortuneLevel() > 0) normalPickaxe.addUnsafeEnchantment(EnchantmentMappings.FORTUNE.getEnchantment(), profile.getBlastFortuneLevel());
         else if (profile.getBlastFortuneLevel() < 0) normalPickaxe.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 1);
         double blastingDropMultiplier = AccumulativeStatManager.getCachedStats("BLASTING_DROP_MULTIPLIER", responsible, 10000, true);
         double blastingLuck = AccumulativeStatManager.getCachedStats("BLASTING_LUCK", responsible, 10000, true);
 
         double exp = 0;
-        for (Block b : new HashSet<>(e.blockList())){
+        List<Block> blockList = new ArrayList<>(e.blockList());
+
+        // calls another explosion event to make sure other plugins like coreprotect can pick up on it
+        recursionPrevention.add(e.getEntity().getUniqueId());
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new EntityExplodeEvent(e.getEntity(), e.getLocation(), blockList, e.getYield()));
+        recursionPrevention.remove(e.getEntity().getUniqueId());
+
+        for (Block b : blockList){
             LootListener.addPreparedLuck(b, blastingLuck);
             if (b.getType().isAir() || (!tntPreventChaining && b.getType() == Material.TNT) || !BlockUtils.canReward(b)) continue;
             e.blockList().remove(b);
@@ -282,11 +293,6 @@ public class MiningSkill extends Skill implements Listener {
     @Override
     public int getSkillTreeMenuOrderPriority() {
         return 20;
-    }
-
-    @Override
-    public boolean isExperienceScaling() {
-        return true;
     }
 
     @Override

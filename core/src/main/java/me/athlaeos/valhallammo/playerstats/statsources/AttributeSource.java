@@ -2,14 +2,11 @@ package me.athlaeos.valhallammo.playerstats.statsources;
 
 import me.athlaeos.valhallammo.item.ArmorSet;
 import me.athlaeos.valhallammo.item.ArmorSetRegistry;
-import me.athlaeos.valhallammo.item.ItemSkillRequirements;
 import me.athlaeos.valhallammo.item.WeightClass;
-import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatSource;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 
 import java.util.Collection;
 
