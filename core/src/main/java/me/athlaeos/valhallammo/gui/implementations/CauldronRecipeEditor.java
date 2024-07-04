@@ -64,7 +64,7 @@ public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetR
                     "&7custom attributes. If disabled, vanilla ",
                     "&7equipment can be used too.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack toggleTinkerButton = new ItemBuilder(getButtonData("editor_recipe_cauldron_toggletinker", Material.ANVIL))
             .name("&eTinker Catalyst")
             .stringTag(BUTTON_ACTION_KEY, "toggleTinkerButton")
@@ -73,7 +73,7 @@ public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetR
                     "&7Otherwise, it will simply produce the",
                     "&7item specified as the result.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack toggleTimedRecipeButton = new ItemBuilder(getButtonData("editor_recipe_cauldron_toggletimedrecipe", Material.BREWING_STAND))
             .name("&fTimed Recipe")
             .stringTag(BUTTON_ACTION_KEY, "toggleTimedRecipeButton")
@@ -83,7 +83,7 @@ public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetR
                     "&7ingredients to be in the cauldron",
                     "&7for a specified duration",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack metaRequirementButton = new ItemBuilder(getButtonData("editor_recipe_cauldron_toggleexactmeta", Material.PAPER))
             .name("&dMeta Requirement")
             .stringTag(BUTTON_ACTION_KEY, "metaRequirementButton")
@@ -92,7 +92,7 @@ public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetR
                     "&7items.",
                     "&eClick to select next option",
                     "&8&m                <>                ")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack selectValidationButton = new ItemBuilder(getButtonData("editor_recipe_cauldron_selectvalidation", Material.BARRIER))
             .name("&eBlock condition")
             .stringTag(BUTTON_ACTION_KEY, "selectValidationButton")
@@ -111,7 +111,7 @@ public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetR
                     "&71 second is equal to 20 ticks",
                     "&eClick to increase/decrease by 10 ticks",
                     "&eShift-click to increase/decrease by 200 ticks")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack ingredientsButton = new ItemBuilder(getButtonData("editor_recipe_cauldron_ingredients", Material.WRITABLE_BOOK))
             .name("&7Ingredients")
             .stringTag(BUTTON_ACTION_KEY, "ingredientsButton")
@@ -189,7 +189,7 @@ public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetR
             .stringTag(BUTTON_ACTION_KEY, "deleteConfirmButton")
             .enchant(EnchantmentMappings.UNBREAKING.getEnchantment(), 1)
             .lore("&aRight-click &7to confirm recipe deletion")
-            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).wipeAttributes().get();
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .stringTag(BUTTON_ACTION_KEY, "backToMenuButton")
             .name("&fBack to Menu").get();

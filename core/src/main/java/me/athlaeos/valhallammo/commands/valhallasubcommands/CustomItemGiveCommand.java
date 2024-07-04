@@ -43,13 +43,13 @@ public class CustomItemGiveCommand implements Command {
 				return true;
 			}
 
-			ItemStack item = CustomItemRegistry.getProcessedItem(args[1]);
-			if (item == null) {
-				Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_item")));
-				return true;
-			}
-			List<ItemStack> decompressed = ItemUtils.decompressStacks(Map.of(item, amount));
 			for (Player target : targets){
+				ItemStack item = CustomItemRegistry.getProcessedItem(args[1], target);
+				if (item == null) {
+					Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_item")));
+					return true;
+				}
+				List<ItemStack> decompressed = ItemUtils.decompressStacks(Map.of(item, amount));
 				decompressed.forEach(i -> ItemUtils.addItem(target, i, true));
 			}
 			return true;

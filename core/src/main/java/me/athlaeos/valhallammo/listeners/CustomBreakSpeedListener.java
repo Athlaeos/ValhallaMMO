@@ -39,7 +39,7 @@ public class CustomBreakSpeedListener implements Listener {
     public static boolean isVanillaBlockBreakDelay() { return VANILLA_BLOCK_BREAK_DELAY; }
 
     private static boolean disabled = true;
-    private static final PotionEffect fatigueEffect = new PotionEffect(PotionEffectMappings.MINING_FATIGUE.getPotionEffectType(), Integer.MAX_VALUE, -1, false, false, false);
+    private static PotionEffect fatigueEffect;
     public static final UUID FATIGUE_MODIFIER_UUID = UUID.fromString("40e606a7-8401-4f13-a539-7dfcd0c3c8a2");
 
     private static final Map<Location, BlockDigProcess> blockDigProcesses = new ConcurrentHashMap<>();
@@ -49,6 +49,7 @@ public class CustomBreakSpeedListener implements Listener {
 
     public CustomBreakSpeedListener(){
         disabled = false;
+        fatigueEffect = new PotionEffect(PotionEffectMappings.MINING_FATIGUE.getPotionEffectType(), Integer.MAX_VALUE, -1, false, false, false);
 
         new BukkitRunnable(){
             @Override
@@ -58,7 +59,7 @@ public class CustomBreakSpeedListener implements Listener {
                     BlockDigProcess process = blockDigProcesses.get(l);
                     if (totalMiningBlocks.containsKey(l)){
                         // block is in the process of being mined
-                        for (UUID uuid : new HashMap<>(totalMiningBlocks).get(l)){
+                        for (UUID uuid : new HashMap<>(totalMiningBlocks).getOrDefault(l, new HashSet<>())){
                             Player player = ValhallaMMO.getInstance().getServer().getPlayer(uuid);
                             if (player == null) continue;
                             float dmg = DigPacketInfo.damage(player, b);
@@ -182,7 +183,10 @@ public class CustomBreakSpeedListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent e){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> fatiguePlayer(e.getPlayer(), true), 2L);
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            fatiguePlayer(e.getPlayer(), true);
+            fatiguePlayer(e.getPlayer(), true);
+        }, 10L);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -205,14 +209,17 @@ public class CustomBreakSpeedListener implements Listener {
     public static void fatiguePlayer(Player p, boolean force){
         if (isFatigued(p) && !force) return;
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) {
+            // for some reason once doesn't work and right now i really don't feel like figuring out why
             double miningSpeed = EntityUtils.getPlayerMiningSpeed(p);
+            EntityUtils.addUniqueAttribute(p, FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"), -miningSpeed, AttributeModifier.Operation.ADD_NUMBER);
             EntityUtils.addUniqueAttribute(p, FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"), -miningSpeed, AttributeModifier.Operation.ADD_NUMBER);
         } else p.addPotionEffect(fatigueEffect);
     }
 
     public static void removeFatiguedPlayer(Player p){
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) EntityUtils.removeUniqueAttribute(p, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"));
-        else {
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) {
+            EntityUtils.removeUniqueAttribute(p, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"));
+        } else {
             PotionEffect effect = p.getPotionEffect(PotionEffectMappings.MINING_FATIGUE.getPotionEffectType());
             if (effect != null && effect.getAmplifier() >= 0 && effect.getAmplifier() < 5) return;
             p.removePotionEffect(PotionEffectMappings.MINING_FATIGUE.getPotionEffectType());

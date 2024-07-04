@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.MaterialClass;
 import me.athlaeos.valhallammo.skills.skills.implementations.SmithingSkill;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.skills.skills.Skill;
@@ -31,7 +32,16 @@ public class SkillExperience extends DynamicItemModifier {
         if (!use) return;
         Skill s = SkillRegistry.getSkill(skill);
         if (s == null) return;
-        if (s instanceof SmithingSkill smithing) smithing.addEXP(crafter, amount * timesExecuted, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, MaterialClass.getMatchingClass(outputItem.getMeta()));
+        if (s instanceof SmithingSkill smithing) {
+            double trueAmount = amount * timesExecuted;
+            double multiplierBasedOnDurabilityTaken = smithing.getExperienceMultiplierFromDamage(crafter, ItemUtils.getStoredType(outputItem.getMeta()), true);
+            if (timesExecuted > 1){
+                trueAmount -= amount; // subtracting 1x experience quantity from final value, adding multiplied value instead of.
+                // This is to prevent a large crafted bulk of items from being multiplied when only 1 instance should be
+                trueAmount += amount * multiplierBasedOnDurabilityTaken;
+            } else trueAmount *= multiplierBasedOnDurabilityTaken;
+            smithing.addEXP(crafter, trueAmount, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, MaterialClass.getMatchingClass(outputItem.getMeta()));
+        }
         else s.addEXP(crafter, amount * timesExecuted, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 

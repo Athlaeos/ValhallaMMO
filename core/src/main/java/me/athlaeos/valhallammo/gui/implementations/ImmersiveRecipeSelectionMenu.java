@@ -65,15 +65,15 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
     private static final ItemStack favouritesButton = new ItemBuilder(getButtonData("recipeselection_immersive_favourites", Material.NETHER_STAR))
             .name(TranslationManager.getTranslation("selectionmenu_recipe_immersive_favourites"))
             .stringTag(BUTTON_ACTION_KEY, "favouritesButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack craftOnlyButton = new ItemBuilder(getButtonData("recipeselection_immersive_craftonly", Material.CRAFTING_TABLE))
             .name(TranslationManager.getTranslation("selectionmenu_recipe_immersive_craftonly"))
             .stringTag(BUTTON_ACTION_KEY, "craftOnlyButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack tinkerOnlyButton = new ItemBuilder(getButtonData("recipeselection_immersive_tinkeronly", Material.ANVIL))
             .name(TranslationManager.getTranslation("selectionmenu_recipe_immersive_tinkeronly"))
             .stringTag(BUTTON_ACTION_KEY, "tinkerOnlyButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
 
     private View view;
     private final Block clicked;
@@ -124,8 +124,8 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
         String action = ItemUtils.getPDCString(BUTTON_ACTION_KEY, clicked, null);
         if (!StringUtils.isEmpty(action)){
             switch (action){
-                case "pageUp" -> page++;
-                case "pageDown" -> page--;
+                case "pageUp" -> page--;
+                case "pageDown" -> page++;
                 case "favouritesButton" -> view = View.FAVOURITES;
                 case "craftOnlyButton" -> view = View.CRAFTING;
                 case "tinkerOnlyButton" -> view = View.TINKERING;
@@ -199,7 +199,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
             List<ItemStack> p;
             int pageCount = 1;
             if (buttons.size() >= recipeIndexes.size()){
-                Map<Integer, List<ItemStack>> pages = Utils.paginate(45, buttons);
+                Map<Integer, List<ItemStack>> pages = Utils.paginate(recipeIndexes.size(), buttons);
                 pageCount = pages.size();
                 if (page > pages.size()) page = pages.size();
                 else if (page < 1) page = 1;
@@ -278,15 +278,6 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                                     .replace("%item%", recipe.getMetaRequirement().getChoice().ingredientDescription(i));
                         }).collect(Collectors.toList())
                 );
-                List<String> newLore = new ArrayList<>();
-                for (String s : ItemUtils.setListPlaceholder(lore, "%modifiers%",
-                        recipe.getModifiers().stream().map(DynamicItemModifier::getActiveDescription)
-                                .filter(Objects::nonNull)
-                                .collect(Collectors.toList())
-                )){
-                    newLore.addAll(StringUtils.separateStringIntoLines(s, 40));
-                }
-                lore = newLore;
                 String time = String.format("%.1f", (Math.max(0, recipe.getTimeToCraft() * (1 - craftingTimeReduction))/20D));
                 lore = lore.stream().map(l -> l.replace("%crafting_time%", time)).collect(Collectors.toList());
 

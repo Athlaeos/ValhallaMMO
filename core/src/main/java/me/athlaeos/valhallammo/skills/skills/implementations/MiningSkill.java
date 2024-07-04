@@ -24,6 +24,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -170,7 +171,8 @@ public class MiningSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void lootTableDrops(BlockBreakEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlock()) ||
-                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING)) return;
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
+                e.getBlock().getState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("MINING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
         ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
@@ -186,7 +188,8 @@ public class MiningSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemsDropped(BlockDropItemEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState()) ||
-                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING)) return;
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
+                e.getBlockState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("MINING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops
         List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getItemStack().getType()));
@@ -257,7 +260,7 @@ public class MiningSkill extends Skill implements Listener {
             e.blockList().remove(b);
 
             List<ItemStack> predictedDrops = new ArrayList<>(b.getDrops(normalPickaxe));
-            ItemUtils.multiplyItems(predictedDrops, 1 + blastingDropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
+            if (!(b.getState() instanceof Container)) ItemUtils.multiplyItems(predictedDrops, 1 + blastingDropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
             LootListener.markExploded(b);
             LootListener.setFortuneLevel(e.getEntity(), profile.getBlastFortuneLevel());
             LootListener.prepareBlockDrops(b, predictedDrops);

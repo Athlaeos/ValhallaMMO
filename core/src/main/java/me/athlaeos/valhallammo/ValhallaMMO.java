@@ -24,6 +24,7 @@ import me.athlaeos.valhallammo.nms.PacketListener;
 import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
+import me.athlaeos.valhallammo.persistence.implementations.SQL;
 import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
@@ -139,8 +140,13 @@ public class ValhallaMMO extends JavaPlugin {
         saveConfig("skills/smithing_progression.yml");
         saveConfig("skills/woodcutting.yml");
         saveConfig("skills/woodcutting_progression.yml");
-
         TranslationManager.load(lang);
+
+        if (!setupNMS()){
+            enabled = false;
+            return;
+        }
+
         // initialize modifiers and perk rewards
         ResourceExpenseRegistry.registerDefaultExpenses();
         UnlockConditionRegistry.registerDefaultConditions();
@@ -150,10 +156,6 @@ public class ValhallaMMO extends JavaPlugin {
         registerHook(new PAPIHook());
         registerHook(new WorldGuardHook());
         registerHook(new DecentHologramsHook());
-
-        if (!setupNMS()){
-            enabled = false;
-        }
     }
 
     @Override
@@ -194,7 +196,7 @@ public class ValhallaMMO extends JavaPlugin {
         for (PluginHook hook : activeHooks.values()) hook.whenPresent();
 
         if (ConfigManager.getConfig("config.yml").get().getBoolean("metrics", true)){
-            new Metrics(this, 14942).addCustomChart(new Metrics.SimplePie("using_database_for_player_data", () -> connection instanceof Database db && db.getConnection() != null ? "Yes" : "No"));
+            new Metrics(this, 14942).addCustomChart(new Metrics.SimplePie("using_database_for_player_data", () -> connection instanceof SQL db && db.getConnection() != null ? "Yes" : "No"));
         }
 
         registerListener(new Dummy());
@@ -211,6 +213,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerListener(new EnchantmentListener());
         registerListener(new EntityAttackListener());
         registerListener(new EntityDamagedListener());
+        registerListener(new EntityResponsibilityListener());
         registerListener(new EntitySpawnListener());
         registerListener(new HandSwitchListener());
         registerListener(new HealthRegenerationListener());
@@ -319,7 +322,7 @@ public class ValhallaMMO extends JavaPlugin {
             }
 
             return nms != null;
-        } catch (Exception ignored) {
+        } catch (Exception | Error ignored) {
             return false;
         }
     }
@@ -403,7 +406,10 @@ public class ValhallaMMO extends JavaPlugin {
     }
 
     private static void registerHook(PluginHook hook){
-        if (hook.isPresent()) activeHooks.put(hook.getClass(), hook);
+        if (hook.isPresent()) {
+            activeHooks.put(hook.getClass(), hook);
+            logInfo("Initialized plugin hook with " + hook.getPlugin());
+        }
     }
 
     public static boolean isHookFunctional(Class<? extends PluginHook> hook){

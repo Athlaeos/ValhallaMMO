@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier
 import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
@@ -37,13 +38,17 @@ public class CustomItemRegistry {
     }
 
     public static ItemStack getProcessedItem(String id){
+        return getProcessedItem(id, null);
+    }
+
+    public static ItemStack getProcessedItem(String id, Player p){
         CustomItem item = items.get(id);
         if (item == null) return null;
         ItemBuilder builder = new ItemBuilder(item.getItem().clone());
         if (item.getModifiers().removeIf(DynamicItemModifier::requiresPlayer))
             ValhallaMMO.logWarning("Custom item " + id + " had modifiers applied that require player involvement, " +
                     "but custom items cannot have them. These modifiers have been removed, I suggest you check that item");
-        DynamicItemModifier.modify(builder, null, item.getModifiers(), false, false, true);
+        DynamicItemModifier.modify(builder, p, item.getModifiers(), false, true, true);
         return builder.get();
     }
 

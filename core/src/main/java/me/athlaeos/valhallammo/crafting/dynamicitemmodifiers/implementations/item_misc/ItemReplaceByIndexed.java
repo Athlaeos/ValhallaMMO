@@ -25,15 +25,15 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        ItemStack customItem = CustomItemRegistry.getProcessedItem(item);
+        ItemStack customItem = CustomItemRegistry.getProcessedItem(item, crafter);
         if (ItemUtils.isEmpty(customItem)) return;
         outputItem.setItem(customItem);
         outputItem.setMeta(ItemUtils.getItemMeta(customItem));
     }
 
     @Override
-    public ItemStack getNewResult() {
-        return item == null ? null : CustomItemRegistry.getProcessedItem(item);
+    public ItemStack getNewResult(Player crafter) {
+        return item == null ? null : CustomItemRegistry.getProcessedItem(item, crafter);
     }
 
     @Override

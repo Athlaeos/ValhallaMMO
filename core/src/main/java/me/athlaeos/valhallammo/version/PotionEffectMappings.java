@@ -81,6 +81,14 @@ public enum PotionEffectMappings {
         return null;
     }
 
+    public String getOldEffect() {
+        return oldEffect;
+    }
+
+    public String getNewEffect() {
+        return newEffect;
+    }
+
     /**
      * Returns the version-specific enchantment for the given mapping. <br>
      * May be null if enchantment doesn't exist yet

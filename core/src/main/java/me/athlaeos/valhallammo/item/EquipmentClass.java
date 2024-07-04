@@ -65,11 +65,14 @@ public enum EquipmentClass {
                 }
             }
         }
-        if (base != null){
-            for (EquipmentClass tc : EquipmentClass.values()) {
-                if (tc.getMatchingMaterials().contains(base)) {
-                    return tc;
-                }
+        if (base != null) return getMatchingClass(base);
+        return null;
+    }
+
+    public static EquipmentClass getMatchingClass(Material material){
+        for (EquipmentClass tc : EquipmentClass.values()) {
+            if (tc.getMatchingMaterials().contains(material)) {
+                return tc;
             }
         }
         return null;

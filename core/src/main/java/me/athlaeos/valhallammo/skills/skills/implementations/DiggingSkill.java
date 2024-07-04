@@ -14,6 +14,7 @@ import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.version.DiggingArchaeologyExtension;
 import org.bukkit.Material;
+import org.bukkit.block.Container;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Item;
@@ -86,7 +87,8 @@ public class DiggingSkill extends Skill implements Listener {
     public void lootTableDrops(BlockBreakEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() ||
                 !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlock()) ||
-                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING)) return;
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING) ||
+                e.getBlock().getState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("DIGGING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
         ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
@@ -102,7 +104,8 @@ public class DiggingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemsDropped(BlockDropItemEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState()) ||
-                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING)) return;
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING) ||
+                e.getBlockState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("DIGGING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops
         List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getItemStack().getType()));

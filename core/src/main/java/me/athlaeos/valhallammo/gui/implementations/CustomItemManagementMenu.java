@@ -35,15 +35,15 @@ public class CustomItemManagementMenu extends Menu implements SetModifiersMenu {
             .name("&b&lNew")
             .lore("&fClick with item to register it")
             .stringTag(KEY_ACTION, "createNewButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack nextPageButton = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
             .name("&7&lNext page")
             .stringTag(KEY_ACTION, "nextPageButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack previousPageButton = new ItemBuilder(getButtonData("editor_prevpage", Material.ARROW))
             .name("&7&lPrevious page")
             .stringTag(KEY_ACTION, "previousPageButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
 
     private int page = 0;
 
@@ -124,7 +124,7 @@ public class CustomItemManagementMenu extends Menu implements SetModifiersMenu {
                     new DynamicModifierMenu(playerMenuUtility, this).open();
                     return;
                 } else {
-                    e.getWhoClicked().getInventory().addItem(CustomItemRegistry.getProcessedItem(storedValue));
+                    e.getWhoClicked().getInventory().addItem(CustomItemRegistry.getProcessedItem(storedValue, (Player) e.getWhoClicked()));
                 }
             } else {
                 if (ItemUtils.isEmpty(cursor)) {

@@ -45,9 +45,11 @@ public class ModifierRegistry {
         register(new MiningExceptionsAdd("mining_exception_add"));
         register(new MiningSpeedSet("mining_speed"));
         register(new MiningHardnessTranslationsAdd("mining_hardness_translation_add"));
+        register(new EmbeddedToolsSet("embed_tools"));
 
         register(new LootTableSet("loot_table"));
         register(new ItemDummyHelmet("dummy_helmet"));
+        register(new PlayerHead("player_head"));
 
         // All the attribute modifiers are registered in the attribute registry
 

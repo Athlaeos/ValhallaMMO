@@ -359,7 +359,7 @@ public class Utils {
     }
 
     public static void sendActionBar(Player whomst, String message){
-        if (!StringUtils.isEmpty(message)) whomst.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(chat(message)));
+        if (!StringUtils.isEmpty(ChatColor.stripColor(chat(message)))) whomst.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(chat(message)));
     }
 
     public static void sendTitle(Player whomst, String title, String subtitle, int duration, int fade){

@@ -319,16 +319,20 @@ public class EntityAttackListener implements Listener {
             ItemBuilder weapon = new ItemBuilder(hand);
 
             if (hand.getType().isEdible() || weapon.getMeta() instanceof PotionMeta || !EquipmentClass.isHandHeld(weapon.getMeta())) return;
+            boolean updatedMeta = false;
 
             // apply potion effects
             for (PotionEffectWrapper wrapper : PotionEffectRegistry.getStoredEffects(weapon.getMeta(), false).values()){
                 if (PotionEffectRegistry.spendCharge(weapon.getMeta(), wrapper.getEffect())){
                     if (wrapper.isVanilla()) v.addPotionEffect(new PotionEffect(wrapper.getVanillaEffect(), (int) wrapper.getDuration(), (int) wrapper.getAmplifier(), false));
                     else PotionEffectRegistry.addEffect(v, a, new CustomPotionEffect(wrapper, (int) wrapper.getDuration(), wrapper.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ARROW);
+                    updatedMeta = true;
                 }
             }
-            hand.setItemMeta(weapon.getMeta());
-            a.getEquipment().setItemInMainHand(weapon.get(), true);
+            if (updatedMeta){
+                hand.setItemMeta(weapon.getMeta());
+                a.getEquipment().setItemInMainHand(weapon.get(), true);
+            }
         }
     }
 

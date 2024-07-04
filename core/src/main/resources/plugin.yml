@@ -126,6 +126,9 @@ permissions:
   valhalla.tool:
     default: op
     description: "Access to the /valhalla tool command, which gives the user access to specialized tools with specific usages. Not intended for players."
+  valhalla.top:
+    default: true
+    description: "Access to the /valtop command, which gives the user access to viewing the leaderboards."
   valhalla.modify:
     default: op
     description: "Access to the /valhalla modify command, which allows the user to freely modify held items given the right key and strength."

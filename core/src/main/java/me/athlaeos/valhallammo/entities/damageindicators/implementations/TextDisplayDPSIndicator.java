@@ -21,11 +21,13 @@ public class TextDisplayDPSIndicator implements DamageIndicatorStrategy {
 
     @Override
     public boolean sendDamage(LivingEntity l, CustomDamageType damageType, double damage, double mitigated) {
+        if (damage < 0.05 && mitigated < 0.05) return false;
         return update(l, damageType, damage, mitigated, false);
     }
 
     @Override
     public boolean sendCriticalDamage(LivingEntity l, CustomDamageType damageType, double damage, double mitigated) {
+        if (damage < 0.05 && mitigated < 0.05) return false;
         if (Dummy.isDummy(l)) l.playEffect(EntityEffect.ARMOR_STAND_HIT);
         return update(l, damageType, damage, mitigated, true);
     }
@@ -92,7 +94,7 @@ public class TextDisplayDPSIndicator implements DamageIndicatorStrategy {
             this.priority = damageIndicatorMap.get(damaged.getUniqueId()) == null ? 0 : damageIndicatorMap.get(damaged.getUniqueId()).size();
             if (format != null){
                 isCrit = crit;
-                String mitigationString = mitigated < 0.05 || mitigated > 0.05 ? String.format("(%,.1f)", mitigated) : "";
+                String mitigationString = mitigated < -0.05 || mitigated > 0.05 ? String.format("(%s%,.1f)", mitigated > 0 ? "+" : "", mitigated) : "";
                 List<String> lines = Utils.chat(List.of("&l" + format
                         .replace("%icon%", ValhallaMMO.isResourcePackConfigForced() ? type.getHardCodedIndicatorIcon() : type.getIndicatorIcon() == null ? "" : type.getIndicatorIcon())
                         .replace("%dps%", String.format("%,.1f", damage))

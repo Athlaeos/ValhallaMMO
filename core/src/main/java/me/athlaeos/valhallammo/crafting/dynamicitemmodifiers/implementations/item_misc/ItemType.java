@@ -31,7 +31,7 @@ public class ItemType extends DynamicItemModifier implements ResultChangingModif
     }
 
     @Override
-    public ItemStack getNewResult() {
+    public ItemStack getNewResult(Player crafter) {
         return new ItemStack(material);
     }
 

@@ -36,8 +36,8 @@ experience:
     COAL: 10
     IRON_ORE: 40
     RAW_IRON: 20
-    COPPER_ORE: 28
-    RAW_COPPER: 14
+    COPPER_ORE: 16
+    RAW_COPPER: 4
     GOLD_ORE: 80
     RAW_GOLD: 40
     LAPIS_ORE: 160

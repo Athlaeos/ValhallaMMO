@@ -2,7 +2,7 @@ package me.athlaeos.valhallammo.skills.perk_rewards.implementations;
 
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
-import me.athlaeos.valhallammo.skills.perk_rewards.MultipliableReward;
+import me.athlaeos.valhallammo.skills.perk_rewards.MultiplicativeReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
@@ -10,7 +10,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.StatProperties;
 import org.bukkit.entity.Player;
 
-public class ProfileDoubleAdd extends PerkReward implements MultipliableReward {
+public class ProfileDoubleAdd extends PerkReward implements MultiplicativeReward {
     private double value;
     private final String stat;
     private final Class<? extends Profile> type;

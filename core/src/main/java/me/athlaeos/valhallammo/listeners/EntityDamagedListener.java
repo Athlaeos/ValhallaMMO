@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.CustomDamageType;
 import me.athlaeos.valhallammo.entities.damageindicators.DamageIndicatorRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.potioneffects.EffectResponsibility;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -56,6 +57,7 @@ public class EntityDamagedListener implements Listener {
         if (e.getEntity() instanceof LivingEntity l){
             String damageCause = customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString());
             CustomDamageType type = CustomDamageType.getCustomType(damageCause);
+            if (type != null) e.setDamage(e.getDamage() * (1 + EffectResponsibility.getResponsibleDamageBuff(e.getEntity(), type)));
             double originalDamage = e.getDamage();
             double customDamage = !customDamageEnabled ? e.getDamage() : type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
             double damageAfterImmunity = !customDamageEnabled ? e.getDamage() : overrideImmunityFrames(customDamage, l);
@@ -89,10 +91,10 @@ public class EntityDamagedListener implements Listener {
                 // taken the last damage instance
 
                 if ((type == null || type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
-                if (!customDamageEnabled && l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0.00001);
+                if (customDamageEnabled && l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0);
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                     l.setNoDamageTicks(iFrames);
-                    if (customDamageEnabled){
+                    if (customDamageEnabled && !e.isCancelled()){
                         AttributeInstance health = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
                         double maxHealth = health != null ? health.getValue() : -1;
                         if (l.getHealth() > 0) l.setHealth(Math.max(damageCause.equals("POISON") ? 1 : 0, Math.min(maxHealth, predictedHealth)));
@@ -102,13 +104,18 @@ public class EntityDamagedListener implements Listener {
                 }, 1L);
             } else if (customDamageEnabled) {
                 // custom damage killed entity
-                // l.setLastDamageCause(e); // TODO commented out due to deprecation. Watch if this causes any issues
+                if (damageCause.equals("POISON")) {
+                    e.setDamage(0);
+                    l.setHealth(Math.min(l.getHealth(), 1));
+                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> customDamageCauses.remove(l.getUniqueId()), 1L);
+                    return;
+                }
                 if (customDamage > 0) DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage);
                 if (l.getHealth() > 0) l.setHealth(0.0001); // attempt to ensure that this attack will kill
                 if (e.getFinalDamage() == 0) { // if player wouldn't have died even with this little health, force a death (e.g. with resistance V)
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                         // l.setLastDamageCause(e);
-                        l.setHealth(0);
+                        if (l.getHealth() > 0) l.setHealth(0);
                     }, 1L);
                 } else {
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> customDamageCauses.remove(l.getUniqueId()), 1L);

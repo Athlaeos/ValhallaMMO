@@ -23,6 +23,7 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
@@ -67,7 +68,7 @@ public class ImmersiveRecipeListener implements Listener {
             if (tinkerRecipes.size() == 1) recipe = tinkerRecipes.stream().findFirst().orElse(null);
             else Timer.setCooldown(p.getUniqueId(), 1000, "delay_tinkering_attempts");
             if (recipe != null && !recipe.getIngredients().isEmpty()){
-                if (ItemUtils.timesContained(Arrays.asList(p.getInventory().getStorageContents()), recipe.getIngredients(), recipe.getMetaRequirement().getChoice()) <= 0){
+                if (p.getGameMode() != GameMode.CREATIVE && ItemUtils.timesContained(Arrays.asList(p.getInventory().getStorageContents()), recipe.getIngredients(), recipe.getMetaRequirement().getChoice()) <= 0){
                     p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Utils.chat(TranslationManager.getTranslation("error_crafting_no_ingredients"))));
                     Timer.setCooldown(p.getUniqueId(), 500, "delay_crafting_attempts");
                     return;
@@ -94,6 +95,7 @@ public class ImmersiveRecipeListener implements Listener {
                     recipe.getToolRequirement().canCraft(held == null ? -1 : ToolRequirementType.getToolID(held.getMeta()));
             if (!ItemUtils.isSimilarMaterial(recipe.getBlock(), clicked.getType()) || !canPlayerCraft(e, recipe) || !properItemHeld) {
                 selectedImmersiveRecipe.remove(p.getUniqueId());
+                resetFrequency(e.getPlayer());
                 return;
             }
             long interactedFor = Timer.getTimerResult(p.getUniqueId(), "time_held_immersive_interact");
@@ -123,8 +125,8 @@ public class ImmersiveRecipeListener implements Listener {
 
                 if (interactedFor >= recipe.getTimeToCraft() * 50L){
                     // finished crafting, output recipe
-                    if (ItemUtils.timesContained(Arrays.asList(p.getInventory().getStorageContents()), recipe.getIngredients(), recipe.getMetaRequirement().getChoice()) > 0){
-                        if (ItemUtils.removeItems(p.getInventory(), recipe.getIngredients(), 1, recipe.getMetaRequirement().getChoice())){
+                    if (p.getGameMode() == GameMode.CREATIVE || ItemUtils.timesContained(Arrays.asList(p.getInventory().getStorageContents()), recipe.getIngredients(), recipe.getMetaRequirement().getChoice()) > 0){
+                        if (p.getGameMode() == GameMode.CREATIVE || ItemUtils.removeItems(p.getInventory(), recipe.getIngredients(), 1, recipe.getMetaRequirement().getChoice())){
                             ItemBuilder result = recipe.tinker() ? held : new ItemBuilder(recipe.getResult());
                             DynamicItemModifier.modify(result, p, recipe.getModifiers(), false, true, true);
                             if (result == null || ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
@@ -145,6 +147,10 @@ public class ImmersiveRecipeListener implements Listener {
                                     } else {
                                         e.getPlayer().getInventory().addItem(result.get());
                                     }
+                                }
+                                if (recipe.destroysStation()) {
+                                    ValhallaMMO.getNms().blockParticleAnimation(clicked);
+                                    clicked.setType(Material.AIR);
                                 }
 
                                 recipe.getValidations().forEach(v -> {
@@ -204,8 +210,7 @@ public class ImmersiveRecipeListener implements Listener {
     }
 
     private boolean canPlayerCraft(PlayerInteractEvent e, ImmersiveCraftingRecipe recipe){
-        if (recipe == null) return true;
-        if (recipe.getConsecutiveCrafts() == -1) return true;
+        if (recipe == null || e.getPlayer().getGameMode() == GameMode.CREATIVE || recipe.getConsecutiveCrafts() <= 0) return true;
         Player p = e.getPlayer();
         RecipeFrequencyDO frequencyDO = recipeFrequency.getOrDefault(p.getUniqueId(), new RecipeFrequencyDO(0, recipe));
         if (!frequencyDO.getRecipe().getName().equals(recipe.getName())){

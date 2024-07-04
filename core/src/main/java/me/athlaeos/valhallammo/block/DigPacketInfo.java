@@ -21,6 +21,7 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -86,6 +87,10 @@ public class DigPacketInfo {
             MiningProfile profile = ProfileCache.getOrCache(digger, MiningProfile.class);
             // replace empty hand tool only if tool power of that item would be > 1 (valid tool for block)
             if (profile.getEmptyHandTool() != null && ValhallaMMO.getNms().toolPower(profile.getEmptyHandTool().getItem(), b) > 1) tool = profile.getEmptyHandTool();
+        }
+        if (tool != null && !tool.getEmbeddedTools().isEmpty()) {
+            ItemBuilder optimalTool = MiningSpeed.getOptimalEmbeddedTool(tool.getEmbeddedTools(), tool.getMeta(), b);
+            if (optimalTool != null) tool = optimalTool;
         }
         float hardness = tool == null ? BlockUtils.getHardness(b) : MiningSpeed.getHardness(tool.getMeta(), b);
         if (hardness < 0 || hardness > 100000) return 0;

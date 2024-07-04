@@ -26,6 +26,7 @@ public class TranslationManager {
      * Returns the value mapped to the given key. Sends console a warning if no value is mapped and defaults to the key.
      */
     public static String getTranslation(String key){
+        if (pluginTranslations == null) return "";
         if (!key.contains("<lang.") && !pluginTranslations.getStringTranslations().containsKey(key)) ValhallaMMO.logWarning("No translated value mapped for " + key);
         return translatePlaceholders(pluginTranslations.getStringTranslations().getOrDefault(key, key));
     }
@@ -34,6 +35,7 @@ public class TranslationManager {
      * Returns the raw value mapped to the given key. Can be null if no value is mapped
      */
     public static String getRawTranslation(String key){
+        if (pluginTranslations == null) return "";
         if (!pluginTranslations.getStringTranslations().containsKey(key)) return null;
         return translatePlaceholders(pluginTranslations.getStringTranslations().get(key));
     }
@@ -43,18 +45,22 @@ public class TranslationManager {
     }
 
     public static List<String> getListTranslation(String key) {
+        if (pluginTranslations == null) return new ArrayList<>();
         return pluginTranslations.getStringListTranslations().getOrDefault(key, new ArrayList<>());
     }
 
     public static String getIndexedString(int id){
+        if (pluginTranslations == null) return "";
         return pluginTranslations.getStringIndex().getOrDefault(id, "invalid_id_" + id);
     }
 
     public static List<String> getIndexedStringList(int id){
+        if (pluginTranslations == null) return new ArrayList<>();
         return pluginTranslations.getStringListIndex().getOrDefault(id, Collections.singletonList("invalid_id_" + id));
     }
 
     public static String getMaterialTranslation(Material m){
+        if (materialTranslations == null) return "";
         return materialTranslations.getMaterialTranslations().getOrDefault(
                 m.toString(), me.athlaeos.valhallammo.utility.StringUtils.toPascalCase(m.toString().replace("_", " "))
         );

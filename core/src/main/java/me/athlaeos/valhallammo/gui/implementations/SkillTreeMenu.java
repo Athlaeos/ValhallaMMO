@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
+import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
@@ -28,6 +29,7 @@ import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -37,6 +39,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
+
+import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class SkillTreeMenu extends Menu {
     private static final NamespacedKey buttonKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_button_id");
@@ -258,6 +262,8 @@ public class SkillTreeMenu extends Menu {
                                 .replace("%skillpoints%", String.valueOf((acc.getSpendableSkillPoints() - acc.getSpentSkillPoints())))));
                     }
                     meta.setLore(lore);
+                    meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS);
+                    meta.setAttributeModifiers(null);
                     ItemUtils.setItemMeta(i, meta);
                 }
             }
@@ -309,7 +315,7 @@ public class SkillTreeMenu extends Menu {
                     if (p == null || !p.shouldBeVisible(target) || offsets == null) continue;
                     ItemBuilder icon = new ItemBuilder(p.getIcon())
                             .name(perkConfirmation != null && perkConfirmation.equals(p.getName()) ? TranslationManager.getTranslation("skilltree_perk_confirmation").replace("%perk%", p.getDisplayName()) : p.getDisplayName())
-                            .flag(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS)
+                            .flag(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS).wipeAttributes()
                             .stringTag(buttonKey, p.getName());
                     int unlockedStatus = p.hasPermanentlyLocked(target) ? 2 : // permanently locked
                             p.hasFakeUnlocked(target) ? 3 : // fake unlocked
@@ -324,16 +330,16 @@ public class SkillTreeMenu extends Menu {
                             lore.addAll(Utils.chat(StringUtils.separateStringIntoLines(description, 40)));
                         } else if (UnlockConditionRegistry.getValuePlaceholders().stream().anyMatch(con -> l.contains(String.format("%%%s%%", con)))) { // if lore contains a value placeholder
                             UnlockCondition condition = p.getConditions().stream().filter(con -> l.contains(String.format("%%%s%%", con.getValuePlaceholder()))).findAny().orElse(null);
-                            if (condition != null && condition.getConditionMessages() != null && !condition.getConditionMessages().isEmpty()) lore.addAll(Utils.chat(condition.getConditionMessages()));
+                            if (unlockedStatus == 0 && condition != null && condition.getConditionMessages() != null && !condition.getConditionMessages().isEmpty()) lore.addAll(Utils.chat(condition.getConditionMessages()));
                         } else if (UnlockConditionRegistry.getFailurePlaceholders().stream().anyMatch(con -> l.contains(String.format("%%%s%%", con)))) { // if lore contains a failure placeholder
                             UnlockCondition condition = p.getConditions().stream().filter(con -> l.contains(String.format("%%%s%%", con.getFailurePlaceholder()))).findAny().orElse(null);
                             if (unlockedStatus == 0 && !p.metConditionRequirements(target, false) && condition != null && !StringUtils.isEmpty(condition.getFailedConditionMessage())) lore.add(Utils.chat(condition.getFailedConditionMessage()));
-                        } else if (ResourceExpenseRegistry.getValuePlaceholders().stream().anyMatch(con -> l.contains(String.format("%%%s%%", con)))) { // if lore contains a cost placeholder
-                            ResourceExpense condition = p.getExpenses().stream().filter(con -> l.contains(String.format("%%%s%%", con.getCostMessage()))).findAny().orElse(null);
-                            if (condition != null && !StringUtils.isEmpty(condition.getCostMessage())) lore.add(Utils.chat(condition.getCostMessage()));
-                        } else if (ResourceExpenseRegistry.getFailurePlaceholders().stream().anyMatch(con -> l.contains(String.format("%%%s%%", con)))) { // if lore contains a cost placeholder
-                            ResourceExpense condition = p.getExpenses().stream().filter(con -> l.contains(String.format("%%%s%%", con.getCostMessage()))).findAny().orElse(null);
-                            if (unlockedStatus == 0 && !p.metResourceRequirements(target) && condition != null && !StringUtils.isEmpty(condition.getInsufficientFundsMessage())) lore.add(Utils.chat(condition.getInsufficientFundsMessage()));
+                        } else if (ResourceExpenseRegistry.getExpenses().values().stream().anyMatch(con -> l.contains(con.getCostPlaceholder()))) { // if lore contains a cost placeholder
+                            ResourceExpense condition = p.getExpenses().stream().filter(con -> l.contains(con.getCostPlaceholder())).findAny().orElse(null);
+                            if (unlockedStatus == 0 && condition != null && !StringUtils.isEmpty(condition.getCostMessage())) lore.add(Utils.chat(condition.getCostMessage()));
+                        } else if (ResourceExpenseRegistry.getExpenses().values().stream().anyMatch(con -> l.contains(con.getInsufficientCostPlaceholder()))) { // if lore contains a cost placeholder
+                            ResourceExpense condition = p.getExpenses().stream().filter(con -> l.contains(con.getInsufficientCostPlaceholder())).findAny().orElse(null);
+                            if (unlockedStatus == 0 && condition != null && !condition.canPurchase(target) && !StringUtils.isEmpty(condition.getInsufficientFundsMessage())) lore.add(Utils.chat(condition.getInsufficientFundsMessage()));
                         } else if (l.contains("%warning_levels%")){
                             if (unlockedStatus == 0 && !p.metLevelRequirement(target) && !StringUtils.isEmpty(perk_requirement_warning_levels)) lore.add(Utils.chat(perk_requirement_warning_levels));
                         } else if (l.contains("%status_unlocked%")){
@@ -357,6 +363,9 @@ public class SkillTreeMenu extends Menu {
                         }
                     });
                     icon.lore(lore);
+                    icon.flag(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS);
+                    icon.wipeAttributes();
+
                     boolean unlocked = p.hasUnlocked(target);
                     boolean unlockable = p.canUnlock(target);
                     int data = unlocked ? p.getCustomModelDataUnlocked() : unlockable ? p.getCustomModelDataUnlockable() : p.getCustomModelDataVisible();
@@ -406,7 +415,7 @@ public class SkillTreeMenu extends Menu {
                 ItemStack skillIcon = new ItemBuilder(s.getIcon())
                         .name(s.getDisplayName())
                         .lore(StringUtils.separateStringIntoLines(Utils.chat(s.getDescription()), 40))
-                        .flag(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS)
+                        .flag(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS).wipeAttributes()
                         .stringTag(buttonKey, s.getType())
                         .get();
 

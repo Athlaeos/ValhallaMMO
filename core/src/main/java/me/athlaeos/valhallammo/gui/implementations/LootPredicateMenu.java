@@ -32,7 +32,7 @@ public class LootPredicateMenu extends Menu {
     private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_DYE))
             .name("&b&lAdd Condition")
             .stringTag(KEY_ACTION, "createNewButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack cancelButton = new ItemBuilder(Material.BARRIER).stringTag(KEY_ACTION, "cancelButton").name("&cDelete").get();
     private static final ItemStack nextPageButton = new ItemBuilder(Material.ARROW).stringTag(KEY_ACTION, "nextPageButton").name("&7&lNext page").get();
     private static final ItemStack previousPageButton = new ItemBuilder(Material.ARROW).stringTag(KEY_ACTION, "previousPageButton").name("&7&lPrevious page").get();
@@ -178,7 +178,7 @@ public class LootPredicateMenu extends Menu {
             ItemStack icon = new ItemBuilder(predicate.getIcon())
                     .lore(StringUtils.separateStringIntoLines(predicate.getDescription(), 40))
                     .name(predicate.getDisplayName())
-                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_ENCHANTS)
+                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_ENCHANTS).wipeAttributes()
                     .stringTag(KEY_PREDICATE_ID, predicate.getKey()).get();
 
             totalPredicateButtons.add(icon);
@@ -208,7 +208,7 @@ public class LootPredicateMenu extends Menu {
                     .lore(StringUtils.separateStringIntoLines(predicate.getActiveDescription(), 40))
                     .name(predicate.getDisplayName())
                     .stringTag(KEY_PREDICATE_ID, predicate.getKey())
-                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_ENCHANTS)
+                    .flag(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_ENCHANTS).wipeAttributes()
                     .get();
             inventory.addItem(icon);
         }

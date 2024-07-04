@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -142,9 +143,13 @@ public class SmithingItemPropertyManager {
         List<String> newLore = new ArrayList<>();
         int tagIndex = -1; // the purpose of this is to track where in the lore tags are placed, so the position doesn't change
         for (String l : currentLore){
-            if (tagLore.containsValue(l)){
+            String colorStrippedLine = ChatColor.stripColor(Utils.chat(l));
+            if (tagLore.values().stream().map(c -> ChatColor.stripColor(Utils.chat(c
+                    .replace("%lv_roman%", "")
+                    .replace("%lv_normal%", "")))
+            ).anyMatch(colorStrippedLine::contains)){ // if the current line of lore contains any of the tag lores (placeholders removed) then record this line index
                 if (tagIndex < 0) tagIndex = currentLore.indexOf(l);
-            } else newLore.add(l);
+            } else newLore.add(l); // if not, just add the line as is
         }
         Map<Integer, Integer> tags = CustomFlag.hasFlag(meta, CustomFlag.HIDE_TAGS) ? new HashMap<>() : getTags(meta);
         for (Integer tag : tags.keySet().stream().filter(tagLore::containsKey).collect(Collectors.toSet())){

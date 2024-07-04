@@ -114,7 +114,7 @@ public class ResetProfilesCommand implements Command {
 
 	@Override
 	public String getCommand() {
-		return "&c/valhalla reset [type] <player|skill> <confirm|player>";
+		return "&c/valhalla reset [type] <skill> <confirm>";
 	}
 
 	@Override

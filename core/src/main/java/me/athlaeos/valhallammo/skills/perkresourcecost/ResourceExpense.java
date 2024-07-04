@@ -27,6 +27,8 @@ public interface ResourceExpense {
     String getInsufficientFundsMessage();
 
     String getCostMessage();
+    String getCostPlaceholder();
+    String getInsufficientCostPlaceholder();
 
     /**
      * Should be used to check if the plugin is capable of registering this expense, for example if it requires

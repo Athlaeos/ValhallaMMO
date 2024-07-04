@@ -49,6 +49,16 @@ public class ExperienceExpense implements ResourceExpense {
     }
 
     @Override
+    public String getCostPlaceholder() {
+        return "%cost_experience%";
+    }
+
+    @Override
+    public String getInsufficientCostPlaceholder() {
+        return "%warning_cost_experience%";
+    }
+
+    @Override
     public String getCostMessage() {
         return TranslationManager.getTranslation("status_experience_cost").replace("%cost%", "" + cost);
     }

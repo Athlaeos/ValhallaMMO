@@ -52,23 +52,23 @@ public class LootFreeSelectionMenu extends Menu {
     private static final ItemStack confirmSelectionButton = new ItemBuilder(getButtonData("lootselection_confirm", Material.STRUCTURE_VOID))
             .name(TranslationManager.getTranslation("menu_loottablefreeselection_confirmselection"))
             .stringTag(BUTTON_ACTION_KEY, "confirmSelectionButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack nextPageButtonGuaranteed = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
             .name(TranslationManager.getTranslation("translation_next_page"))
             .stringTag(BUTTON_ACTION_KEY, "nextPageButtonGuaranteed")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack previousPageButtonGuaranteed = new ItemBuilder(getButtonData("editor_prevpage", Material.ARROW))
             .name(TranslationManager.getTranslation("translation_previous_page"))
             .stringTag(BUTTON_ACTION_KEY, "previousPageButtonGuaranteed")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack nextPageButtonSelection = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
             .name(TranslationManager.getTranslation("translation_next_page"))
             .stringTag(BUTTON_ACTION_KEY, "nextPageButtonSelection")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack previousPageButtonSelection = new ItemBuilder(getButtonData("editor_prevpage", Material.ARROW))
             .name(TranslationManager.getTranslation("translation_previous_page"))
             .stringTag(BUTTON_ACTION_KEY, "previousPageButtonSelection")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack unselectedDropBase = new ItemBuilder(getButtonData("lootselection_unpicked", Material.RED_DYE)).name("&r").get();
     private static final ItemStack selectedDropBase = new ItemBuilder(getButtonData("lootselection_picked", Material.LIME_DYE)).name("&r").get();
 

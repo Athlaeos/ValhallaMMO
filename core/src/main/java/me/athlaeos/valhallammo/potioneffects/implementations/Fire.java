@@ -1,10 +1,12 @@
 package me.athlaeos.valhallammo.potioneffects.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.CustomDamageType;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.potioneffects.EffectClass;
+import me.athlaeos.valhallammo.potioneffects.EffectResponsibility;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -58,6 +60,12 @@ public class Fire extends PotionEffectWrapper {
     @Override
     public void onInflict(LivingEntity p, LivingEntity causedBy, double amplifier, int duration, double intensity) {
         p.setFireTicks(Math.max(p.getFireTicks(), (int) (intensity * duration)));
+        EffectResponsibility.markResponsible(
+                p.getUniqueId(),
+                causedBy.getUniqueId(),
+                CustomDamageType.FIRE,
+                duration + 10
+        );
     }
 
     @Override

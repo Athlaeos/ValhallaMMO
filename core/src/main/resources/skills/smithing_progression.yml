@@ -9,6 +9,18 @@ starting_perks:
 experience:
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   max_level: 100
+  # Damaging an item (regardless of amount) will increase a tally counter for the item's material type.
+  # The next time Smithing exp is gained with said material type, it is multiplied by the number below TIMES the tally counter.
+  # The tally counter is then reduced by the max amount of times this effect may be stacked (100 stacks reduced to 0,
+  # By default, each stack grants +1% EXP per durability taken, up to 1000 stacks (+1000%) for normal items
+  # For armors, +0.5% EXP is granted per stack up to 200 stacks (+100%) because armor is easier to damage than tools
+  durability_tools_exp_multiplier_stack: 0.01
+  durability_tools_exp_multiplier_maximum: 1000
+  durability_armors_exp_multiplier_stack: 0.005
+  durability_armors_exp_multiplier_maximum: 200
+  durability_chunk_limit: 50 # Similar to the combat skills, damaging an item too much in the same chunk will reduce exp gotten from it.
+  # In this case, it prevents you from getting more stacks if the counter exceeds this limit.
+  # This basically just means you may not get more than 50 stacks per chunk per item type
 
 starting_coordinates: '3,5'
 

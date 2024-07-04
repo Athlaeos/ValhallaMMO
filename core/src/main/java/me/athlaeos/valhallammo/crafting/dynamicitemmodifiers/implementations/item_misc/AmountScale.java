@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.item.MaterialClass;
@@ -55,8 +56,11 @@ public class AmountScale extends DynamicItemModifier {
 
         int minimumAmount = Math.max(0, (int) Math.ceil(originalAmount * minimumFraction));
         int newAmount = (int) Math.max(minimumAmount, Math.floor(scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf((skill * skillMultiplier * skillEfficiency))), originalAmount)));
-        if (newAmount <= 0) failedRecipe(outputItem, "");
-        else outputItem.amount(newAmount);
+        if (newAmount <= 0) {
+            outputItem.amount(1);
+            outputItem.type(Material.BARRIER);
+            failedRecipe(outputItem, TranslationManager.getTranslation("modifier_warning_salvage_insufficient_skill"));
+        } else outputItem.amount(newAmount);
     }
 
     @Override

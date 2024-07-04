@@ -13,11 +13,13 @@ public class DecentHologramsDPSIndicator implements DamageIndicatorStrategy {
 
     @Override
     public boolean sendDamage(LivingEntity l, CustomDamageType damageType, double damage, double mitigated) {
+        if (damage < 0.05 && mitigated < 0.05) return false;
         return DecentHologramsHook.update(l, damageType, damage, mitigated, false);
     }
 
     @Override
     public boolean sendCriticalDamage(LivingEntity l, CustomDamageType damageType, double damage, double mitigated) {
+        if (damage < 0.05 && mitigated < 0.05) return false;
         if (Dummy.isDummy(l)) l.playEffect(EntityEffect.ARMOR_STAND_HIT);
         return DecentHologramsHook.update(l, damageType, damage, mitigated, true);
     }

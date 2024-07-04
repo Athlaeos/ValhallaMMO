@@ -1,7 +1,9 @@
 package me.athlaeos.valhallammo.nms;
 
 import io.netty.channel.Channel;
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
@@ -25,6 +27,9 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.block.data.CraftBlockData;
@@ -32,6 +37,7 @@ import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_19_R1.generator.strucutre.CraftStructure;
 import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -207,6 +213,26 @@ public final class NMS_v1_19_R1 implements NMS {
         meta.setBasePotionData(new PotionData(type, false, false));
     }
 
+    @Override
+    public void addUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type, double amount, AttributeModifier.Operation operation) {
+        addAttribute(e, uuid, identifier, type, amount, operation);
+    }
+
+    @Override
+    public boolean hasUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type) {
+        return hasAttribute(e, uuid, identifier, type);
+    }
+
+    @Override
+    public double getUniqueAttributeValue(LivingEntity e, UUID uuid, String identifier, Attribute type) {
+        return getAttributeValue(e, uuid, identifier, type);
+    }
+
+    @Override
+    public void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type) {
+        removeAttribute(e, identifier, type);
+    }
+
     public static Enchantment oldMappings(EnchantmentMappings mapping){
         return switch (mapping){
             case FLAME -> Enchantment.ARROW_FIRE;
@@ -288,5 +314,29 @@ public final class NMS_v1_19_R1 implements NMS {
             case HERO_OF_THE_VILLAGE -> PotionEffectType.HERO_OF_THE_VILLAGE;
             default -> null;
         };
+    }
+
+    public static void addAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type, double amount, AttributeModifier.Operation operation){
+        AttributeInstance instance = e.getAttribute(type);
+        if (instance != null){
+            instance.getModifiers().stream().filter(m -> m != null && m.getName().equals(identifier)).forEach(instance::removeModifier);
+            if (amount != 0) instance.addModifier(new AttributeModifier(uuid, identifier, amount, operation));
+        }
+    }
+
+    public static boolean hasAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type){
+        AttributeInstance instance = e.getAttribute(type);
+        return instance != null && instance.getModifiers().stream().anyMatch(m -> m != null && m.getName().equals(identifier));
+    }
+
+    public static double getAttributeValue(LivingEntity e, UUID uuid, String identifier, Attribute type){
+        AttributeInstance instance = e.getAttribute(type);
+        if (instance != null) return instance.getModifiers().stream().filter(m -> m != null && m.getName().equals(identifier) && m.getUniqueId().equals(uuid)).map(AttributeModifier::getAmount).findFirst().orElse(0D);
+        return 0;
+    }
+
+    public static void removeAttribute(LivingEntity e, String identifier, Attribute type){
+        AttributeInstance instance = e.getAttribute(type);
+        if (instance != null) instance.getModifiers().stream().filter(m -> m != null && m.getName().equals(identifier)).forEach(instance::removeModifier);
     }
 }

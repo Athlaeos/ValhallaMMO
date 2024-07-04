@@ -58,7 +58,7 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
                     "&7Should all filters pass",
                     "&7or should any filter pass?",
                     "&eClick to toggle")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack predicatesButton = new ItemBuilder(getButtonData("editor_loottable_pool_predicates", Material.WRITABLE_BOOK))
             .name("&bFilter")
             .stringTag(BUTTON_ACTION_KEY, "predicatesButton")
@@ -80,7 +80,7 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
                     "&7any amount as long as the entry's",
                     "&7chance 'procs'",
                     "&eClick to toggle")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setBaseRollsButton = new ItemBuilder(getButtonData("editor_loottable_weightedbaserolls", Material.PAPER))
             .name("&eWeighted Rolls")
             .stringTag(BUTTON_ACTION_KEY, "setBaseRollsButton")
@@ -88,7 +88,7 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
                     "&7loot pool attempt to drop?",
                     "&eClick to change by 1",
                     "&eShift-Click to change by 5")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setBonusLuckRollsButton = new ItemBuilder(getButtonData("editor_loottable_weightedbonusrolls", Material.PAPER))
             .name("&eBonus Luck Rolls")
             .stringTag(BUTTON_ACTION_KEY, "setBonusLuckRollsButton")
@@ -96,7 +96,7 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
                     "&7occur based on player luck?",
                     "&eClick to change by 0.1",
                     "&eShift-Click to change by 1")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setDropChanceButton = new ItemBuilder(getButtonData("editor_loottable_setchance", Material.LAPIS_LAZULI))
             .name("&eDrop Chance")
             .stringTag(BUTTON_ACTION_KEY, "setDropChanceButton")
@@ -104,7 +104,7 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
                     "&7pool to be able to drop things?",
                     "&eClick to change by 1%",
                     "&eShift-Click to change by 10%")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setDropLuckChanceButton = new ItemBuilder(getButtonData("editor_loottable_setluckchance", Material.LAPIS_LAZULI))
             .name("&eDrop Luck Chance")
             .stringTag(BUTTON_ACTION_KEY, "setDropLuckChanceButton")
@@ -112,15 +112,15 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
                     "&7affect the drop chance?",
                     "&eClick to change by 0.1%",
                     "&eShift-Click to change by 2.5%")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack nextPageButton = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
             .name("&7&lNext page")
             .stringTag(BUTTON_ACTION_KEY, "nextPageButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack previousPageButton = new ItemBuilder(getButtonData("editor_prevpage", Material.ARROW))
             .name("&7&lPrevious page")
             .stringTag(BUTTON_ACTION_KEY, "previousPageButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
 
     private static final ItemStack deleteButton = new ItemBuilder(getButtonData("editor_delete", Material.BARRIER))
             .stringTag(BUTTON_ACTION_KEY, "deleteButton")
@@ -130,14 +130,14 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
             .stringTag(BUTTON_ACTION_KEY, "deleteConfirmButton")
             .enchant(EnchantmentMappings.UNBREAKING.getEnchantment(), 1)
             .lore("&aRight-click &7to confirm recipe deletion")
-            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).wipeAttributes().get();
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .stringTag(BUTTON_ACTION_KEY, "backToMenuButton")
             .name("&fBack to Menu").get();
     private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_loottable_newentry", Material.LIME_DYE))
             .name("&b&lNew Entry")
             .stringTag(BUTTON_ACTION_KEY, "createNewButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
 
     public LootPoolEditor(PlayerMenuUtility playerMenuUtility, LootPool pool) {
         super(playerMenuUtility);

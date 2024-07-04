@@ -66,7 +66,7 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
                     "&7custom attributes. If disabled, vanilla ",
                     "&7equipment can be used too.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack toggleTinkerButton = new ItemBuilder(getButtonData("editor_recipe_immersive_toggletinker", Material.ANVIL))
             .name("&eTinker Held item")
             .stringTag(BUTTON_ACTION_KEY, "toggleTinkerButton")
@@ -75,7 +75,7 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
                     "&7Otherwise, it will simply produce the",
                     "&7item specified as the result.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setCraftingBlockButton = new ItemBuilder(getButtonData("editor_recipe_immersive_setcraftingblock", Material.CRAFTING_TABLE))
             .name("&eCrafting Station")
             .stringTag(BUTTON_ACTION_KEY, "setCraftingBlockButton")
@@ -84,14 +84,14 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
                     "&7is.",
                     "&eClick with the block type of your",
                     "&echoosing to change the type.")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack craftTimeButton = new ItemBuilder(getButtonData("editor_recipe_immersive_crafttime", Material.CLOCK))
             .name("&eCrafting Time")
             .stringTag(BUTTON_ACTION_KEY, "craftTimeButton")
             .lore("&7How long it takes to craft this item.",
                     "&eClick to increase/decrease by 0.1 seconds",
                     "&eShift-click to increase/decrease by 1 second")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack repeatCraftsButton = new ItemBuilder(getButtonData("editor_recipe_immersive_repeatcrafts", Material.REPEATER))
             .name("&eRepeatable")
             .stringTag(BUTTON_ACTION_KEY, "repeatCraftsButton")
@@ -100,7 +100,7 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
                     "&7it. This is to prevent afk-crafting",
                     "&eClick to increase/decrease by 1",
                     "&eShift-click to increase/decrease by 16")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack toggleDestroyStationButton = new ItemBuilder(getButtonData("editor_recipe_immersive_toggledestroystation", Material.LAVA_BUCKET))
             .name("&fDestroy Block")
             .stringTag(BUTTON_ACTION_KEY, "toggleDestroyStationButton")
@@ -112,7 +112,7 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
                     "&7The block will be destroyed without",
                     "&7dropping items.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack metaRequirementButton = new ItemBuilder(getButtonData("editor_recipe_immersive_toggleexactmeta", Material.PAPER))
             .name("&dMeta Requirement")
             .stringTag(BUTTON_ACTION_KEY, "metaRequirementButton")
@@ -125,7 +125,7 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
                     "&cand will not be used in crafting.",
                     "&eClick to select next option",
                     "&8&m                <>                ")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack selectValidationButton = new ItemBuilder(getButtonData("editor_recipe_immersive_selectvalidation", Material.BARRIER))
             .name("&eBlock condition")
             .stringTag(BUTTON_ACTION_KEY, "selectValidationButton")
@@ -230,7 +230,7 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
             .stringTag(BUTTON_ACTION_KEY, "deleteConfirmButton")
             .enchant(EnchantmentMappings.UNBREAKING.getEnchantment(), 1)
             .lore("&aRight-click &7to confirm recipe deletion")
-            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).wipeAttributes().get();
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .stringTag(BUTTON_ACTION_KEY, "backToMenuButton")
             .name("&fBack to Menu").get();

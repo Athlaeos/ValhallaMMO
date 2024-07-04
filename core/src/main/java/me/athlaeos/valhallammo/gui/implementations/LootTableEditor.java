@@ -59,7 +59,7 @@ public class LootTableEditor extends Menu {
                     "&cloot",
                     "",
                     "&eClick to cycle")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private final ItemStack iconLabel;
     private static final ItemStack poolDescriptionLabel = new ItemBuilder(getButtonData("editor_loottable_descriptionlabel", Material.PAPER))
             .name("&9What's a pool?")
@@ -71,15 +71,15 @@ public class LootTableEditor extends Menu {
                     "&fits filter conditions pass. ",
                     "&fThis makes tables more structured",
                     "&fand allows for more control.")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack nextPageButton = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
             .name("&7&lNext page")
             .stringTag(BUTTON_ACTION_KEY, "nextPageButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack previousPageButton = new ItemBuilder(getButtonData("editor_prevpage", Material.ARROW))
             .name("&7&lPrevious page")
             .stringTag(BUTTON_ACTION_KEY, "previousPageButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
 
     private static final ItemStack deleteButton = new ItemBuilder(getButtonData("editor_delete", Material.BARRIER))
             .stringTag(BUTTON_ACTION_KEY, "deleteButton")
@@ -89,14 +89,14 @@ public class LootTableEditor extends Menu {
             .stringTag(BUTTON_ACTION_KEY, "deleteConfirmButton")
             .enchant(EnchantmentMappings.UNBREAKING.getEnchantment(), 1)
             .lore("&aRight-click &7to confirm recipe deletion")
-            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).wipeAttributes().get();
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .stringTag(BUTTON_ACTION_KEY, "backToMenuButton")
             .name("&fBack to Menu").get();
     private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_loottable_newpool", Material.LIME_DYE))
             .name("&b&lNew Pool")
             .stringTag(BUTTON_ACTION_KEY, "createNewButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
 
     public LootTableEditor(PlayerMenuUtility playerMenuUtility, LootTable table) {
         super(playerMenuUtility);

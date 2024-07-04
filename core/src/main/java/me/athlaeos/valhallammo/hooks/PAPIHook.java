@@ -43,7 +43,7 @@ public class PAPIHook extends PluginHook{
 
             @Override
             public String onRequest(OfflinePlayer player, @NotNull String params) {
-                return player != null && player.isOnline() ? PlaceholderRegistry.parse("%" + params + "%", (Player) player) : null;
+                return PlaceholderRegistry.parse("%" + params + "%", (Player) player);
             }
         }.register();
     }

@@ -1,11 +1,13 @@
 package me.athlaeos.valhallammo.entities;
 
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
+import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,6 +70,11 @@ public class EntityAttributeStats {
         for (AttributeDataHolder holder : attributesToUpdate.values()){
             EntityUtils.removeUniqueAttribute(e, holder.name(), holder.type());
         }
+
+        EntityUtils.removeUniqueAttribute(e, "armor_nullifier", Attribute.GENERIC_ARMOR);
+        EntityUtils.removeUniqueAttribute(e, "armor_display", Attribute.GENERIC_ARMOR);
+        EntityUtils.removeUniqueAttribute(e, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+        if (e instanceof Player p) CustomBreakSpeedListener.removeFatiguedPlayer(p);
     }
 
     private static void registerAttributeToUpdate(AttributeDataHolder holder){

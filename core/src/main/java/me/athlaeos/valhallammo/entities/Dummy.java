@@ -32,7 +32,7 @@ public class Dummy implements Listener {
     }
 
     public static boolean isDummy(LivingEntity stand){
-        if (stand.getEquipment() == null) return false;
+        if (!(stand instanceof ArmorStand)) return false;
         EntityProperties equipment = EntityCache.getAndCacheProperties(stand);
         if (equipment.getHelmet() == null) return false;
         return equipment.getHelmet().getMeta().getPersistentDataContainer().has(DUMMY_KEY, PersistentDataType.BYTE);

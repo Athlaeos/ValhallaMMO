@@ -164,7 +164,7 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("LINGERING_RADIUS_MULTIPLIER", StatFormat.PERCENTILE_BASE_1_P1, "\uEE93", (i) -> i >= 0).addModifier(Material.LINGERING_POTION));
         register(new AttributeDisplayWrapper("SPLASH_INTENSITY_MINIMUM", StatFormat.PERCENTILE_BASE_1_P1, "\uEE94", (i) -> i >= 0).addModifier(Material.SPLASH_POTION));
         register(new AttributeDisplayWrapper("ENTITY_RARE_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE95", (i) -> i >= 0).addModifier(Material.CHEST));
-        register(new AttributeDisplayWrapper("DIG_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE96", (i) -> i >= 0).addModifier(Material.DIAMOND_PICKAXE).convertTo("PLAYER_BLOCK_BREAK_SPEED"));
+        register(new AttributeDisplayWrapper("DIG_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE96", (i) -> i >= 0).addModifier(Material.DIAMOND_PICKAXE));
         register(new AttributeDisplayWrapper("MINING_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE97", (i) -> i >= 0).addModifier(Material.GOLDEN_PICKAXE));
         // \uEE98 is occupied by fall damage icon
         register(new AttributeDisplayWrapper("CROSSBOW_MAGAZINE", StatFormat.INT, "\uEE99", (i) -> i >= 0).addModifier(Material.CROSSBOW, 1, 5));

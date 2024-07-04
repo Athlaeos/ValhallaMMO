@@ -20,6 +20,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.block.data.type.Leaves;
 import org.bukkit.block.data.type.Sapling;
 import org.bukkit.configuration.ConfigurationSection;
@@ -206,7 +207,8 @@ public class WoodcuttingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void lootTableDrops(BlockBreakEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !Tag.LOGS.isTagged(e.getBlock().getType()) ||
-                !BlockUtils.canReward(e.getBlock()) || WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING)) return;
+                !BlockUtils.canReward(e.getBlock()) || WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING) ||
+                e.getBlock().getState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("WOODCUTTING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
         ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
@@ -222,7 +224,8 @@ public class WoodcuttingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemsDropped(BlockDropItemEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState()) ||
-                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING)) return;
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING) ||
+                e.getBlockState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("WOODCUTTING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops
         List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getItemStack().getType()));

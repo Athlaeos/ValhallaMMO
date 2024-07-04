@@ -139,8 +139,8 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
             persistentProfiles.put(p.getUniqueId(), profs);
             p.sendMessage(Utils.chat(TranslationManager.getTranslation("status_profiles_loaded")));
 
-            SkillRegistry.updateSkillProgression(p, runPersistentStartingPerks);
             JoinLeaveListener.getLoadedProfiles().add(p.getUniqueId());
+            SkillRegistry.updateSkillProgression(p, runPersistentStartingPerks);
         });
     }
 
@@ -149,7 +149,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
         for (UUID p : new HashSet<>(persistentProfiles.keySet())){
             if (!persistentProfiles.containsKey(p)) continue;
             Player player = ValhallaMMO.getInstance().getServer().getPlayer(p);
-            for (Profile profile : persistentProfiles.get(p).values()){
+            for (Profile profile : persistentProfiles.getOrDefault(p, new HashMap<>()).values()){
                 try {
                     profile.insertOrUpdateProfile(this);
                 } catch (SQLException e){
@@ -165,7 +165,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
     public void saveProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())){
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
-                for (Profile profile : persistentProfiles.get(p.getUniqueId()).values()){
+                for (Profile profile : persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>()).values()){
                     try {
                         profile.insertOrUpdateProfile(this);
                     } catch (SQLException e){

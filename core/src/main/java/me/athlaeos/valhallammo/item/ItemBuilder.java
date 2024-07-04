@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -20,15 +21,24 @@ import java.util.*;
 public class ItemBuilder {
     private ItemStack item;
     private ItemMeta meta;
+    private final Collection<MiningSpeed.EmbeddedTool> embeddedTools;
 
     public ItemBuilder(Material m){
         this.item = new ItemStack(m);
         this.meta = ItemUtils.getItemMeta(item);
+        this.embeddedTools = MiningSpeed.getEmbeddedTools(meta);
+    }
+
+    public ItemBuilder(ItemStack i, ItemMeta m){
+        this.item = i.clone();
+        this.meta = m.clone();
+        this.embeddedTools = MiningSpeed.getEmbeddedTools(meta);
     }
 
     public ItemBuilder(ItemStack i){
         this.item = i.clone();
         this.meta = ItemUtils.getItemMeta(item);
+        this.embeddedTools = MiningSpeed.getEmbeddedTools(meta);
     }
 
     public ItemBuilder type(Material type){
@@ -40,6 +50,15 @@ public class ItemBuilder {
     public ItemBuilder translate(){
         TranslationManager.translateItemMeta(meta);
         return this;
+    }
+
+    /**
+     * This method is mainly here because grabbing embedded tools off of items is a relatively more expensive task than grabbing plain ol properties,
+     * so embedded tools are grabbed when ItemBuilder is initialized. Adding or removing embedded tools to the returned set has no effect on the meta itself.
+     * @return the embedded tools stored on this item
+     */
+    public Collection<MiningSpeed.EmbeddedTool> getEmbeddedTools() {
+        return new HashSet<>(embeddedTools);
     }
 
     public ItemBuilder data(int data){
@@ -161,6 +180,21 @@ public class ItemBuilder {
         if (ItemUtils.isEmpty(this.item)) return null;
         ItemUtils.setItemMeta(this.item, meta);
         return item;
+    }
+
+    public ItemBuilder attribute(String attribute, double value, AttributeModifier.Operation operation){
+        ItemAttributesRegistry.addDefaultStat(meta, ItemAttributesRegistry.getCopy(attribute).setOperation(operation).setValue(value));
+        return this;
+    }
+
+    public ItemBuilder attribute(String attribute, double value){
+        ItemAttributesRegistry.addDefaultStat(meta, ItemAttributesRegistry.getCopy(attribute).setOperation(AttributeModifier.Operation.ADD_NUMBER).setValue(value));
+        return this;
+    }
+
+    public ItemBuilder wipeAttributes(){
+        meta.setAttributeModifiers(null);
+        return this;
     }
 
     public ItemStack getItem() { return item; }

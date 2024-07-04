@@ -36,11 +36,11 @@ public class ValidationSelectionMenu extends Menu {
     private static final ItemStack nextPageButton = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
             .name("&7&lNext page")
             .stringTag(KEY_ACTION, "nextPageButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack previousPageButton = new ItemBuilder(getButtonData("editor_prevpage", Material.ARROW))
             .name("&7&lPrevious page")
             .stringTag(KEY_ACTION, "previousPageButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack cancelButton = new ItemBuilder(getButtonData("editor_validation_selection_return", Material.BOOK))
             .stringTag(KEY_ACTION, "cancelButton")
             .name("&7Return to menu without saving").get();
@@ -116,7 +116,7 @@ public class ValidationSelectionMenu extends Menu {
         for (Validation validation : ValidationRegistry.getValidations()){
             if (targetBlock != null && !validation.isCompatible(targetBlock)) continue;
             ItemBuilder builder = new ItemBuilder(validation.icon())
-                    .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
+                    .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE).wipeAttributes()
                     .stringTag(KEY_VALIDATION, validation.id());
             if (currentValidations.contains(validation.id())){
                 builder.appendLore("&8&m                <>                ", "&2[&aEnabled&2]");

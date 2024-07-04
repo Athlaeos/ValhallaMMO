@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -39,9 +40,8 @@ public class GenericWrapper extends PotionEffectWrapper {
         this.defaultIcon = defaultIcon;
     }
 
-    @SuppressWarnings("deprecation")
     private static PotionEffectType getOrDefault(String effect){
-        PotionEffectType type = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? Registry.EFFECT.get(NamespacedKey.minecraft(effect.toLowerCase())) : PotionEffectType.getByName(effect);
+        PotionEffectType type = PotionEffectMappings.getPotionEffectType(effect);
         return (type == null) ? PotionEffectType.REGENERATION : type;
     }
 

@@ -1,6 +1,5 @@
 package me.athlaeos.valhallammo.persistence;
 
-import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
 import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
@@ -75,19 +74,13 @@ public abstract class ProfilePersistence {
                 powerProfile.setFakeUnlockedPerks(new HashSet<>());
                 powerProfile.setPermanentlyLockedPerks(new HashSet<>());
                 ProfileRegistry.setPersistentProfile(p, powerProfile, PowerProfile.class);
-                //setPersistentProfile(p, ProfileRegistry.getRegisteredProfiles().get(PowerProfile.class).getBlankProfile(p), PowerProfile.class);
                 setSkillProfile(p, ProfileRegistry.getRegisteredProfiles().get(PowerProfile.class).getBlankProfile(p), PowerProfile.class);
-                // resets both skill and persistent progress, but refunds exp
+
+                // resets skill progress but leaves persistent progress untouched, and updates based on that
                 for (Profile profileType : ProfileRegistry.getRegisteredProfiles().values()) {
                     if (profileType instanceof PowerProfile) continue;
-                    Profile profile = getPersistentProfile(p, profileType.getClass());
-                    //double totalEXP = profile.getTotalEXP();
-
-                    //setPersistentProfile(p, profileType.getBlankProfile(p), profileType.getClass());
                     setSkillProfile(p, profileType.getBlankProfile(p), profileType.getClass());
-                    //SkillRegistry.getSkill(profile.getSkillType()).addEXP(p, totalEXP, true, PlayerSkillExperienceGainEvent.ExperienceGainReason.RESET);
                 }
-                //runPersistentStartingPerks = true;
             }
         }
         SkillRegistry.updateSkillProgression(p, runPersistentStartingPerks);
@@ -99,7 +92,6 @@ public abstract class ProfilePersistence {
 
         Profile profile = getPersistentProfile(p, associatedSkill.getProfileType());
         profile.setEXP(0);
-        profile.setTotalEXP(0);
         profile.setLevel(0);
         setPersistentProfile(p, profile, associatedSkill.getProfileType());
 

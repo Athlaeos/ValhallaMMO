@@ -67,7 +67,7 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
                     "&7custom attributes. If disabled, vanilla ",
                     "&7equipment can be used too.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack toggleTinkerButton = new ItemBuilder(getButtonData("editor_recipe_smithing_toggletinker", Material.ANVIL))
             .name("&eTinker Tools")
             .stringTag(BUTTON_ACTION_KEY, "toggleTinkerButton")
@@ -76,7 +76,7 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
                     "&7Otherwise, it will simply produce the",
                     "&7item specified as the result.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack toggleConsumeAdditionButton = new ItemBuilder(getButtonData("editor_recipe_smithing_toggleconsumeaddition", Material.GOLDEN_APPLE))
             .name("&eConsume Addition")
             .stringTag(BUTTON_ACTION_KEY, "toggleConsumeAdditionButton")
@@ -86,7 +86,7 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
                     "&7in the smithing table GUI which also",
                     "&7allows it to be tinkered.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack selectValidationButton = new ItemBuilder(getButtonData("editor_recipe_smithing_selectvalidation", Material.BARRIER))
             .name("&eBlock condition")
             .stringTag(BUTTON_ACTION_KEY, "selectValidationButton")

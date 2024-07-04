@@ -61,7 +61,7 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
                     "&7custom attributes. If disabled, vanilla ",
                     "&7equipment can be used too.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack toggleTinkerButton = new ItemBuilder(getButtonData("editor_recipe_cooking_toggletinker", Material.ANVIL))
             .name("&eTinker Tools")
             .stringTag(BUTTON_ACTION_KEY, "toggleTinkerButton")
@@ -70,14 +70,14 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
                     "&7Otherwise, it will simply produce the",
                     "&7item specified as the result.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack toggleHiddenButton = new ItemBuilder(getButtonData("editor_recipe_cooking_togglehidden", Material.ANVIL))
             .name("&eHidden from Recipe Book")
             .stringTag(BUTTON_ACTION_KEY, "toggleHiddenButton")
             .lore("&7If enabled, the recipe will",
                     "&7not be visible in the recipe book.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack selectValidationButton = new ItemBuilder(getButtonData("editor_recipe_cooking_selectvalidation", Material.BARRIER))
             .name("&eBlock condition")
             .stringTag(BUTTON_ACTION_KEY, "selectValidationButton")
@@ -98,7 +98,7 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
                     "&7Typical blasting/smoking time: &a100 ticks",
                     "&eClick to increase/decrease by 1 tick",
                     "&eShift-click to increase/decrease by 20 ticks")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack experienceButton = new ItemBuilder(getButtonData("editor_recipe_cooking_experience", Material.EXPERIENCE_BOTTLE))
             .name("&aExperience")
             .stringTag(BUTTON_ACTION_KEY, "experienceButton")
@@ -107,7 +107,7 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
                     "&a1 experience &7per cook.",
                     "&eClick to increase/decrease by 1",
                     "&eShift-click to increase/decrease by 10 ticks")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack modifierButton = new ItemBuilder(getButtonData("editor_recipe_cooking_modifiers", Material.WRITABLE_BOOK))
             .name("&dDynamic Item Modifiers")
             .stringTag(BUTTON_ACTION_KEY, "modifierButton")

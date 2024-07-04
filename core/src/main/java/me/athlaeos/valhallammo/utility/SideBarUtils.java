@@ -10,7 +10,6 @@ public class SideBarUtils {
     private final static Map<UUID, Sidebar> activeSidebars = new HashMap<>();
     private static final List<Character> colors = List.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'l', 'o', 'n', 'm', 'k', 'r');
     private static final ScoreboardManager manager = ValhallaMMO.getInstance().getServer().getScoreboardManager();
-    private static final Scoreboard scoreboard = manager == null ? null : manager.getNewScoreboard();
 
     /**
      * Shows a sidebar to the player
@@ -34,6 +33,7 @@ public class SideBarUtils {
 
     private static class Sidebar {
         private final Player p;
+        private final Scoreboard scoreboard = manager == null ? null : manager.getNewScoreboard();
 
         private Objective objective;
 

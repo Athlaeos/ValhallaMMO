@@ -9,7 +9,7 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.skills.perk_rewards.MultipliableReward;
+import me.athlaeos.valhallammo.skills.perk_rewards.MultiplicativeReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
@@ -231,7 +231,7 @@ public abstract class Skill {
                 int perkY = c[1];
 
                 Collection<ResourceExpense> expenses = new HashSet<>();
-                for (String expenseKey : ResourceExpenseRegistry.getValuePlaceholders()) {
+                for (String expenseKey : ResourceExpenseRegistry.getExpenses().keySet()) {
                     ResourceExpense expense = ResourceExpenseRegistry.createExpenseInstance(expenseKey);
                     Object cost = progressionConfig.get("perks." + perkName + "." + expenseKey);
                     if (expense == null || cost == null) continue;
@@ -632,7 +632,7 @@ public abstract class Skill {
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (int i = from; i > to; i--) {
                     for (PerkReward reward : levelingPerks) {
-                        if (reward instanceof MultipliableReward || reward.isPersistent()) continue;
+                        if (reward instanceof MultiplicativeReward || reward.isPersistent()) continue;
                         reward.remove(p);
                     }
 
@@ -645,7 +645,7 @@ public abstract class Skill {
                 }
 
                 for (PerkReward reward : levelingPerks) {
-                    if (reward instanceof MultipliableReward r) {
+                    if (reward instanceof MultiplicativeReward r) {
                         if (reward.isPersistent()) continue;
                         r.remove(p, to - from);
                     } else reward.remove(p);
@@ -701,7 +701,7 @@ public abstract class Skill {
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (int i = from + 1; i <= to; i++) {
                     for (PerkReward reward : levelingPerks) {
-                        if (reward instanceof MultipliableReward) continue;
+                        if (reward instanceof MultiplicativeReward) continue;
                         reward.apply(p);
                     }
 
@@ -713,7 +713,7 @@ public abstract class Skill {
                 }
 
                 for (PerkReward reward : levelingPerks) {
-                    if (reward instanceof MultipliableReward r) {
+                    if (reward instanceof MultiplicativeReward r) {
                         r.apply(p, to - from);
                     } else reward.apply(p);
                 }
@@ -724,62 +724,61 @@ public abstract class Skill {
 
     public void updateSkillStats(Player p, boolean runPersistentStartingPerks) {
         Profile persistentProfile = ProfileRegistry.getPersistentProfile(p, getProfileType());
-        int level = getLevelFromEXP(persistentProfile.getTotalEXP());
+        int level = persistentProfile.getLevel();
         PowerProfile powerProfile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
-            Profile skillProfile = ProfileRegistry.getBlankProfile(p, getProfileType());
-            ProfileRegistry.setSkillProfile(p, skillProfile, skillProfile.getClass());
-            for (PerkReward r : startingPerks) {
-                if (!runPersistentStartingPerks && r.isPersistent()) continue;
-                r.apply(p);
-            }
-            if (level > 0) {
-                for (int i = 1; i <= level; i++) {
-                    for (PerkReward reward : levelingPerks) {
-                        if (reward instanceof MultipliableReward || reward.isPersistent())
-                            continue; // persistent rewards should not be executed repeatedly
-                        reward.apply(p);
-                    }
 
-                    // special perk rewards
-                    if (specialLevelingPerks.containsKey(i)) {
-                        for (PerkReward reward : specialLevelingPerks.get(i)) {
-                            if (reward.isPersistent()) continue;
-                            reward.apply(p);
-                        }
-                    }
-                }
-
+        Profile skillProfile = ProfileRegistry.getBlankProfile(p, getProfileType());
+        ProfileRegistry.setSkillProfile(p, skillProfile, skillProfile.getClass());
+        for (PerkReward r : startingPerks) {
+            if (!runPersistentStartingPerks && r.isPersistent()) continue;
+            r.apply(p);
+        }
+        if (level > 0) {
+            for (int i = 1; i <= level; i++) {
                 for (PerkReward reward : levelingPerks) {
-                    if (reward instanceof MultipliableReward r && !reward.isPersistent()) {
-                        r.apply(p, level);
-                    }
+                    if (reward instanceof MultiplicativeReward || reward.isPersistent())
+                        continue; // persistent rewards should not be executed repeatedly
+                    reward.apply(p);
                 }
-            }
 
-            Collection<String> unlockedPerks = powerProfile.getUnlockedPerks();
-            Collection<String> fakeUnlockedPerks = powerProfile.getFakeUnlockedPerks();
-            Collection<String> permanentlyLockedPerks = powerProfile.getPermanentlyLockedPerks();
-            for (Perk perk : perks) {
-                if (fakeUnlockedPerks.contains(perk.getName()) || permanentlyLockedPerks.contains(perk.getName())) continue;
-                if (unlockedPerks.contains(perk.getName())) { // do not trigger perks again if they've not been unlocked, or if they're fake unlocked or permanently unlocked
-                    for (PerkReward reward : perk.getRewards()) {
+                // special perk rewards
+                if (specialLevelingPerks.containsKey(i)) {
+                    for (PerkReward reward : specialLevelingPerks.get(i)) {
                         if (reward.isPersistent()) continue;
                         reward.apply(p);
                     }
-                    if (!perk.getExpenses().isEmpty()){
-                        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-                            for (ResourceExpense expense : perk.getExpenses()) {
-                                expense.purchase(p, false);
-                            }
-                        });
-                    }
                 }
             }
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
+            for (PerkReward reward : levelingPerks) {
+                if (reward instanceof MultiplicativeReward r && !reward.isPersistent()) {
+                    r.apply(p, level);
+                }
+            }
+        }
+
+        Collection<String> unlockedPerks = powerProfile.getUnlockedPerks();
+        Collection<String> fakeUnlockedPerks = powerProfile.getFakeUnlockedPerks();
+        Collection<String> permanentlyLockedPerks = powerProfile.getPermanentlyLockedPerks();
+        for (Perk perk : perks) {
+            if (fakeUnlockedPerks.contains(perk.getName()) || permanentlyLockedPerks.contains(perk.getName())) continue;
+            if (unlockedPerks.contains(perk.getName())) { // do not trigger perks again if they've not been unlocked, or if they're fake unlocked or permanently unlocked
+                for (PerkReward reward : perk.getRewards()) {
+                    if (reward.isPersistent()) continue;
+                    reward.apply(p);
+                }
+                if (!perk.getExpenses().isEmpty()){
+                    ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+                        for (ResourceExpense expense : perk.getExpenses()) {
+                            expense.purchase(p, false);
+                        }
+                    });
+                }
+            }
+        }
+
+        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
                 ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, skillProfile.getClass())));
-        });
     }
 
     private final boolean perksForgettable = ConfigManager.getConfig("config.yml").reload().get().getBoolean("forgettable_perks");

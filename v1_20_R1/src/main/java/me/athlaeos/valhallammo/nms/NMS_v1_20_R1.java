@@ -25,6 +25,8 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R1.block.data.CraftBlockData;
@@ -32,6 +34,7 @@ import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_20_R1.generator.structure.CraftStructureType;
 import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -211,5 +214,25 @@ public final class NMS_v1_20_R1 implements NMS {
     @Override
     public PotionEffectType getPotionEffectType(PotionEffectMappings mappedTo){
         return NMS_v1_19_R1.oldMappings(mappedTo);
+    }
+
+    @Override
+    public void addUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type, double amount, AttributeModifier.Operation operation) {
+        NMS_v1_19_R1.addAttribute(e, uuid, identifier, type, amount, operation);
+    }
+
+    @Override
+    public boolean hasUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type) {
+        return NMS_v1_19_R1.hasAttribute(e, uuid, identifier, type);
+    }
+
+    @Override
+    public double getUniqueAttributeValue(LivingEntity e, UUID uuid, String identifier, Attribute type) {
+        return NMS_v1_19_R1.getAttributeValue(e, uuid, identifier, type);
+    }
+
+    @Override
+    public void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type) {
+        NMS_v1_19_R1.removeAttribute(e, identifier, type);
     }
 }

@@ -25,12 +25,15 @@ import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.craftbukkit.v1_20_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R4.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_20_R4.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_20_R4.generator.structure.CraftStructureType;
 import org.bukkit.craftbukkit.v1_20_R4.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffectType;
@@ -143,8 +146,7 @@ public final class NMS_v1_20_R4 implements NMS {
     public float toolPower(org.bukkit.inventory.ItemStack tool, org.bukkit.block.Block b) {
         if (!ItemUtils.isEmpty(tool)) {
             ItemStack craftItemStack = CraftItemStack.asNMSCopy(tool);
-            Level nmsWorld = ((CraftWorld) b.getWorld()).getHandle();
-            Block nmsBlock = nmsWorld.getBlockState(new BlockPos(b.getX(), b.getY(), b.getZ())).getBlock();
+            Block nmsBlock = ((CraftWorld) b.getWorld()).getHandle().getBlockState(new BlockPos(b.getX(), b.getY(), b.getZ())).getBlock();
             return craftItemStack.getDestroySpeed(nmsBlock.defaultBlockState());
         }
 
@@ -172,8 +174,7 @@ public final class NMS_v1_20_R4 implements NMS {
     @Override
     public Sound blockSound(org.bukkit.block.Block b) {
         try {
-            Level nmsWorld = ((CraftWorld) b.getWorld()).getHandle();
-            Block nmsBlock = nmsWorld.getBlockState(new BlockPos(b.getX(), b.getY(), b.getZ())).getBlock();
+            Block nmsBlock = ((CraftWorld) b.getWorld()).getHandle().getBlockState(new BlockPos(b.getX(), b.getY(), b.getZ())).getBlock();
             SoundType soundEffectType = nmsBlock.defaultBlockState().getSoundType();
 
             Field soundEffectField = soundEffectType.getClass().getDeclaredField("fallSound");
@@ -245,7 +246,7 @@ public final class NMS_v1_20_R4 implements NMS {
             case RESPIRATION -> Enchantment.RESPIRATION;
             case PIERCING -> Enchantment.PIERCING;
             case PROTECTION -> Enchantment.PROTECTION;
-            case BLAST_PROTECTION -> Enchantment.PROJECTILE_PROTECTION;
+            case BLAST_PROTECTION -> Enchantment.BLAST_PROTECTION;
             case FEATHER_FALLING -> Enchantment.FEATHER_FALLING;
             case FIRE_PROTECTION -> Enchantment.FIRE_PROTECTION;
             case PROJECTILE_PROTECTION -> Enchantment.PROJECTILE_PROTECTION;
@@ -305,5 +306,25 @@ public final class NMS_v1_20_R4 implements NMS {
             case RAID_OMEN -> PotionEffectType.RAID_OMEN;
             case TRIAL_OMEN -> PotionEffectType.TRIAL_OMEN;
         };
+    }
+
+    @Override
+    public void addUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type, double amount, AttributeModifier.Operation operation) {
+        NMS_v1_19_R1.addAttribute(e, uuid, identifier, type, amount, operation);
+    }
+
+    @Override
+    public boolean hasUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type) {
+        return NMS_v1_19_R1.hasAttribute(e, uuid, identifier, type);
+    }
+
+    @Override
+    public double getUniqueAttributeValue(LivingEntity e, UUID uuid, String identifier, Attribute type) {
+        return NMS_v1_19_R1.getAttributeValue(e, uuid, identifier, type);
+    }
+
+    @Override
+    public void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type) {
+        NMS_v1_19_R1.removeAttribute(e, identifier, type);
     }
 }

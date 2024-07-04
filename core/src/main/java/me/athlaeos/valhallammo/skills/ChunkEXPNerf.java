@@ -15,12 +15,18 @@ public class ChunkEXPNerf {
 
     private static final Map<UUID, Map<String, Map<Integer, Integer>>> chunkEXPEventMap = new HashMap<>();
 
+    public static boolean doesChunkEXPNerfApply(Chunk chunk, Player player, String key, int customLimit){
+        return getCount(chunk, player, key) >= customLimit;
+    }
+    public static boolean doesChunkEXPNerfApply(Chunk chunk, Player player, String key){
+        return doesChunkEXPNerfApply(chunk, player, key, expEventNerfQuantity);
+    }
     public static double getChunkEXPNerf(Chunk chunk, Player player, String key){
-        if (getCount(chunk, player, key) >= expEventNerfQuantity) return expEventNerfFactor;
+        if (doesChunkEXPNerfApply(chunk, player, key)) return expEventNerfFactor;
         return 1;
     }
     public static double getChunkEXPOrbsNerf(Chunk chunk, Player player, String key){
-        if (getCount(chunk, player, key) >= expEventNerfQuantity) return expOrbsNerfFactor;
+        if (doesChunkEXPNerfApply(chunk, player, key)) return expOrbsNerfFactor;
         return 1;
     }
 

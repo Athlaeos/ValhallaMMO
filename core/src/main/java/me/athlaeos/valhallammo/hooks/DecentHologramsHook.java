@@ -81,11 +81,11 @@ public class DecentHologramsHook extends PluginHook implements Listener {
             this.priority = damageIndicatorMap.get(damaged.getUniqueId()) == null ? 0 : damageIndicatorMap.get(damaged.getUniqueId()).size();
             if (format != null){
                 isCrit = crit;
-                String mitigatedString = mitigated < 0.05 || mitigated > 0.05 ? String.format("(%,.1f)", mitigated) : "";
+                String mitigationString = mitigated < -0.05 || mitigated > 0.05 ? String.format("(%s%,.1f)", mitigated > 0 ? "+" : "", mitigated) : "";
                 List<String> lines = Utils.chat(List.of("&l" + format
                          .replace("%icon%", ValhallaMMO.isResourcePackConfigForced() ? type.getHardCodedIndicatorIcon() : type.getIndicatorIcon() == null ? "" : type.getIndicatorIcon())
                          .replace("%dps%", String.format("%,.1f", damage))
-                         .replace("%mitigated%", mitigatedString)
+                         .replace("%mitigated%", mitigationString)
                          .replace("%crit%", !isCrit || critFormat == null ? "" : critFormat)));
                  this.hologram = DHAPI.createHologram(id.toString(), damaged.getEyeLocation().add(0, 0.5 + (priority * 0.2435), 0), lines);
                  this.hologram.setSaveToFile(false);
@@ -94,7 +94,7 @@ public class DecentHologramsHook extends PluginHook implements Listener {
                  if (lastDamager instanceof Player p && actionBarFormat != null) Utils.sendActionBar(p, "&l" + actionBarFormat
                          .replace("%icon%", ValhallaMMO.isResourcePackConfigForced() ? type.getHardCodedIndicatorIcon() : type.getIndicatorIcon() == null ? "" : type.getIndicatorIcon())
                          .replace("%dps%", String.format("%,.1f", damage))
-                         .replace("%mitigated%", mitigatedString)
+                         .replace("%mitigated%", mitigationString)
                          .replace("%crit%", !isCrit || critFormat == null ? "" : critFormat));
             }
         }

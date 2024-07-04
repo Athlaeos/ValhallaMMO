@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <revision>BETA-1.0.11</revision>
+        <revision>BETA-1.0.13</revision>
         <javaVersion>17</javaVersion>
         <testServerPath>C:\Users\Job\Desktop\paper 1.19\plugins</testServerPath>
         <shadedPackage>me.athlaeos.valhallammo.shaded</shadedPackage>
@@ -31,6 +31,7 @@
         <module>v1_19_R2</module>
         <module>v1_19_R1</module>
         <module>v1_20_R4</module>
+        <module>v1_21_R1</module>
     </modules>
 
     <profiles>

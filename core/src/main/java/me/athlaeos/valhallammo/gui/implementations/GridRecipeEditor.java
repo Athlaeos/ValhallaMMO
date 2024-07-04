@@ -68,7 +68,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
                     "&7custom attributes. If disabled, vanilla ",
                     "&7equipment can be used too.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack toggleTinkerButton = new ItemBuilder(getButtonData("editor_recipe_grid_toggletinker", Material.ANVIL))
             .name("&eTinker Tools")
             .stringTag(BUTTON_ACTION_KEY, "toggleTinkerButton")
@@ -79,14 +79,14 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
                     "&7Otherwise, it will simply produce the",
                     "&7item specified as the result.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack toggleHiddenButton = new ItemBuilder(getButtonData("editor_recipe_grid_togglehidden", Material.ANVIL))
             .name("&eHidden from Recipe Book")
             .stringTag(BUTTON_ACTION_KEY, "toggleHiddenButton")
             .lore("&7If enabled, the recipe will",
                     "&7not be visible in the recipe book.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack selectTinkerItemButton = new ItemBuilder(getButtonData("editor_recipe_grid_selecttinkeritem", Material.ANVIL))
             .name("&eSelect which tool to tinker")
             .stringTag(BUTTON_ACTION_KEY, "selectTinkerItemButton")
@@ -212,7 +212,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
             .stringTag(BUTTON_ACTION_KEY, "deleteConfirmButton")
             .enchant(EnchantmentMappings.UNBREAKING.getEnchantment(), 1)
             .lore("&aRight-click &7to confirm recipe deletion")
-            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).wipeAttributes().get();
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .stringTag(BUTTON_ACTION_KEY, "backToMenuButton")
             .name("&fBack to Menu").get();

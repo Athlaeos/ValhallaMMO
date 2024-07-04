@@ -74,7 +74,9 @@ public class CookingListener implements Listener {
             int firstEmpty = firstEmpty(c);
 
             if (firstEmpty >= 0){
-                ItemBuilder handItem = new ItemBuilder(p.getInventory().getItemInMainHand());
+                ItemStack hand = p.getInventory().getItemInMainHand();
+                if (ItemUtils.isEmpty(hand)) return;
+                ItemBuilder handItem = new ItemBuilder(hand);
                 Pair<CampfireRecipe, DynamicCookingRecipe> recipes = getCampfireRecipe(handItem.getItem());
                 // assertion: the DynamicCookingRecipe(two) is null if CampfireRecipe(one) is also null
                 // and CampfireRecipe cannot be null if DynamicCookingRecipe also isn't null

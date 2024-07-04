@@ -19,7 +19,7 @@ public class ResourceExpenseRegistry {
     }
 
     public static void register(String key, ResourceExpense expense){
-        if (expense.canRegister()) expenses.put(key, expense);
+        expenses.put(key, expense);
     }
 
     public static ResourceExpense createExpenseInstance(String key){
@@ -29,10 +29,14 @@ public class ResourceExpenseRegistry {
     }
 
     public static Collection<String> getValuePlaceholders() {
-        return expenses.keySet();
+        return expenses.values().stream().map(ResourceExpense::getCostPlaceholder).collect(Collectors.toSet());
     }
 
     public static Collection<String> getFailurePlaceholders() {
-        return expenses.values().stream().map(ResourceExpense::getInsufficientFundsMessage).collect(Collectors.toSet());
+        return expenses.values().stream().map(ResourceExpense::getInsufficientCostPlaceholder).collect(Collectors.toSet());
+    }
+
+    public static Map<String, ResourceExpense> getExpenses() {
+        return expenses;
     }
 }

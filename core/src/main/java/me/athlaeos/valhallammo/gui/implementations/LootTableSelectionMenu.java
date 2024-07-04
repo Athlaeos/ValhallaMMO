@@ -33,16 +33,16 @@ public class LootTableSelectionMenu extends Menu {
     private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_DYE))
             .name("&b&lNew")
             .stringTag(KEY_ACTION, "createNewButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().wipeAttributes().get();
     private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
     private static final ItemStack nextPageButton = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
             .name("&7&lNext page")
             .stringTag(KEY_ACTION, "nextPageButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().wipeAttributes().get();
     private static final ItemStack previousPageButton = new ItemBuilder(getButtonData("editor_prevpage", Material.ARROW))
             .name("&7&lPrevious page")
             .stringTag(KEY_ACTION, "previousPageButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().wipeAttributes().get();
 
     private final Menu openedFrom;
     private final Action<LootTable> tableAction;

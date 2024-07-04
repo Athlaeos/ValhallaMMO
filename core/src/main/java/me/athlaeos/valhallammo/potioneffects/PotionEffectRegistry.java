@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.event.EntityCustomPotionEffectEvent;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -246,7 +247,7 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("MAX_HEALTH_FRACTION", (i) -> i >= 0, "\uEE58", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.GOLDEN_APPLE, 0.1, 1));
         registerNewEffect(new GenericWrapper("MOVEMENT_SPEED", (i) -> i >= 0, "\uEE59", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.SUGAR));
 
-        registerNewEffect(new ChocolateMilk("CHOCOLATE_MILK", "\uEE5A").addModifier(Material.COCOA, 0, 0));
+        registerNewEffect(new ChocolateMilk("CHOCOLATE_MILK", "\uEE5A").addModifier(Material.COCOA_BEANS, 0, 0));
         registerNewEffect(new Milk("MILK", "\uEE5B").addModifier(Material.MILK_BUCKET, 0, 0));
 
         registerNewEffect(new GenericWrapper("SNEAK_MOVEMENT_SPEED_BONUS", (i) -> i >= 0, "\uEE5C", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.GOLDEN_BOOTS));
@@ -847,7 +848,8 @@ public class PotionEffectRegistry {
         }
 
         public PotionEffectWrapper get(boolean upgraded, boolean extended){
-            return getEffect(potionEffectType).setAmplifier(upgraded ? amplifierUpgraded : amplifierBase).setDuration(extended ? durationExtended : upgraded ? durationUpgraded : durationBase);
+            // potion effect wrappers are registered under their legacy potion effect type names
+            return getEffect(PotionEffectMappings.getEffect(potionEffectType).getOldEffect()).setAmplifier(upgraded ? amplifierUpgraded : amplifierBase).setDuration(extended ? durationExtended : upgraded ? durationUpgraded : durationBase);
         }
     }
 }

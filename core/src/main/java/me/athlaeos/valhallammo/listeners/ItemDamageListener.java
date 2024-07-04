@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class ItemDamageListener implements Listener {
     @EventHandler(priority= EventPriority.HIGHEST)
     public void onDurabilityChange(PlayerItemDamageEvent e){
-        if (e.isCancelled()) return;
+        if (e.isCancelled() || e.getDamage() == 0) return;
         double durabilityBonus = AccumulativeStatManager.getCachedStats("DURABILITY_BONUS", e.getPlayer(), 10000, true);
         // the durabilityBonus represents a % chance to not spend durability, effectively raising it. If this amount is negative though it's treated as a damage multiplier
 
@@ -38,9 +38,7 @@ public class ItemDamageListener implements Listener {
                 ItemUtils.setItemMeta(e.getItem(), meta);
             } else if (meta instanceof Damageable d && e.getItem().getType().getMaxDurability() > 0) {
                 d.setDamage(e.getItem().getType().getMaxDurability());
-                e.getItem().setItemMeta(d);
-                // e.getItem().setType(Material.AIR);
-                // e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ITEM_BREAK, 1F, 1F);
+                ItemUtils.setItemMeta(e.getItem(), d);
             }
         }
     }

@@ -19,6 +19,7 @@ import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.ItemFlag;
@@ -43,7 +44,7 @@ public class ArmorSetEditor extends Menu implements SetStatsMenu {
     private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_armorset_newentry", Material.LIME_DYE))
             .name("&b&lNew Entry")
             .stringTag(BUTTON_ACTION_KEY, "createNewButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack deleteButton = new ItemBuilder(getButtonData("editor_delete", Material.BARRIER))
             .stringTag(BUTTON_ACTION_KEY, "deleteButton")
             .name("&cDelete Recipe").get();
@@ -52,15 +53,15 @@ public class ArmorSetEditor extends Menu implements SetStatsMenu {
             .stringTag(BUTTON_ACTION_KEY, "deleteConfirmButton")
             .enchant(EnchantmentMappings.UNBREAKING.getEnchantment(), 1)
             .lore("&aRight-click &7to confirm recipe deletion")
-            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).wipeAttributes().get();
     private static final ItemStack nextPageButton = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
             .name("&7&lNext page")
             .stringTag(BUTTON_ACTION_KEY, "nextPageButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack previousPageButton = new ItemBuilder(getButtonData("editor_prevpage", Material.ARROW))
             .name("&7&lPrevious page")
             .stringTag(BUTTON_ACTION_KEY, "previousPageButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .stringTag(BUTTON_ACTION_KEY, "backToMenuButton")
             .name("&fBack to Menu").get();
@@ -68,22 +69,22 @@ public class ArmorSetEditor extends Menu implements SetStatsMenu {
             .name("&dSet Size")
             .lore("&fDetermines how many pieces", "&fof this set the player has", "&fto wear to get the set bonus.")
             .stringTag(BUTTON_ACTION_KEY, "setAmountRequiredButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setNameButton = new ItemBuilder(getButtonData("editor_armorset_setname", Material.NAME_TAG))
             .name("&dSet Name")
             .lore("&fDetermines the set name displayed", "&fon the set items.")
             .stringTag(BUTTON_ACTION_KEY, "setNameButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setLoreButton = new ItemBuilder(getButtonData("editor_armorset_setlore", Material.WRITABLE_BOOK))
             .name("&dSet Lore")
             .lore("&fDetermines the lore displayed", "&fon the set items when wearing", "&fa full set")
             .stringTag(BUTTON_ACTION_KEY, "setLoreButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setStatsButton = new ItemBuilder(getButtonData("editor_armorset_setstats", Material.PAPER))
             .name("&dSet Stats")
             .lore("&fDetermines the stats given", "&fto players wearing a complete", "&fset.")
             .stringTag(BUTTON_ACTION_KEY, "setStatsButton")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
 
     private int page = 0;
     private ArmorSet currentSet = null;

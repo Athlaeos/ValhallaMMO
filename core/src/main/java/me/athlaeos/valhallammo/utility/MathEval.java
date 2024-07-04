@@ -313,7 +313,7 @@ public class MathEval {
                     } else {
                         break;
                     }
-                } else if (chr == ')' || chr == ',') {
+                } else if (chr == ')' || chr == '|') {
                     break;
                 }
             }
@@ -533,7 +533,7 @@ public class MathEval {
         }
 
         private double _next() {
-            if (expression.charAt(index) == ',') {
+            if (expression.charAt(index) == '|') {
                 index++;
             }
             double ret = _evaluate(index, exEnd);

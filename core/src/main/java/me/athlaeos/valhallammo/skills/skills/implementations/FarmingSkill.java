@@ -20,6 +20,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.type.Beehive;
 import org.bukkit.configuration.ConfigurationSection;
@@ -305,7 +306,7 @@ public class FarmingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemsDropped(BlockDropItemEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState()) ||
-                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
+                WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING) || e.getBlockState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("FARMING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops
         List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> blockDropExpValues.containsKey(i.getItemStack().getType()));

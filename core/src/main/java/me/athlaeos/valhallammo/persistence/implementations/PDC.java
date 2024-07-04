@@ -67,8 +67,8 @@ public class PDC extends ProfilePersistence {
             persistentProfiles.put(p.getUniqueId(), profiles);
             p.sendMessage(Utils.chat(TranslationManager.getTranslation("status_profiles_loaded")));
 
-            SkillRegistry.updateSkillProgression(p, false);
             JoinLeaveListener.getLoadedProfiles().add(p.getUniqueId());
+            SkillRegistry.updateSkillProgression(p, false);
         });
     }
 
@@ -89,7 +89,7 @@ public class PDC extends ProfilePersistence {
     public void saveProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId()) &&
                 JoinLeaveListener.getLoadedProfiles().contains(p.getUniqueId())){
-            for (Profile pr : persistentProfiles.get(p.getUniqueId()).values()){
+            for (Profile pr : persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>()).values()){
                 PersistableProfile tempProfile = new PersistableProfile();
 
                 for (String s : pr.intStatNames()) tempProfile.intStats.put(s, pr.getInt(s));

@@ -65,7 +65,7 @@ public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
                     "&7custom attributes. If disabled, vanilla ",
                     "&7equipment can be used too.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack toggleTinkerButton = new ItemBuilder(getButtonData("editor_recipe_brewing_toggletinker", Material.ANVIL))
             .name("&eTinker Tools")
             .stringTag(BUTTON_ACTION_KEY, "toggleTinkerButton")
@@ -74,7 +74,7 @@ public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
                     "&7Otherwise, it will simply produce the",
                     "&7item specified as the result.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack toggleConsumeIngredientButton = new ItemBuilder(getButtonData("editor_recipe_brewing_toggleconsumeingredient", Material.GOLDEN_APPLE))
             .name("&eConsume Ingredient")
             .stringTag(BUTTON_ACTION_KEY, "toggleConsumeIngredientButton")
@@ -83,7 +83,7 @@ public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
                     "&7Otherwise, the ingredient will be left",
                     "&7in the brewing stand GUI.",
                     "&eClick to toggle on/off")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack modifierButton = new ItemBuilder(getButtonData("editor_recipe_brewing_modifiers", Material.WRITABLE_BOOK))
             .name("&dItem Modifiers")
             .stringTag(BUTTON_ACTION_KEY, "modifierButton")
@@ -103,7 +103,7 @@ public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
                     "&7Typical brewing time: &a400 ticks",
                     "&eClick to increase/decrease by 1 tick",
                     "&eShift-click to increase/decrease by 20 ticks")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack recipeOptionsButton = new ItemBuilder(getButtonData("editor_recipe_brewing_recipeoptions", Material.WRITABLE_BOOK))
             .name("&bIngredient Options")
             .stringTag(BUTTON_ACTION_KEY, "recipeOptionsButton")
@@ -164,7 +164,7 @@ public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
             .stringTag(BUTTON_ACTION_KEY, "deleteConfirmButton")
             .enchant(EnchantmentMappings.UNBREAKING.getEnchantment(), 1)
             .lore("&aRight-click &7to confirm recipe deletion")
-            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).wipeAttributes().get();
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .stringTag(BUTTON_ACTION_KEY, "backToMenuButton")
             .name("&fBack to Menu").get();

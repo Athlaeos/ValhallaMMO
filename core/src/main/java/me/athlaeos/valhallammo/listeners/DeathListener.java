@@ -51,6 +51,5 @@ public class DeathListener implements Listener {
         EntityCache.removeProperties(e.getEntity());
         Bleeder.removeBleed(e.getEntity());
         AccumulativeStatManager.updateStats(e.getEntity());
-        String cause = EntityDamagedListener.getLastDamageCause(e.getEntity());
     }
 }

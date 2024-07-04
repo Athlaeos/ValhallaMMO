@@ -215,7 +215,7 @@ public class CraftingTableListener implements Listener {
             inventory.setResult(null);
             return;
         }
-        Player crafter = (Player) e.getViewers().get(0);
+        Player crafter = e.getViewers().isEmpty() ? null : (Player) e.getViewers().get(0);
 
         Map<Integer, ItemMeta> matrixMeta = new HashMap<>();
         // mapping meta to matrix items, so they dont need to be fetched several times per event
@@ -224,7 +224,7 @@ public class CraftingTableListener implements Listener {
             if (ItemUtils.isEmpty(slot)) continue;
             matrixMeta.put(i, ItemUtils.getItemMeta(slot));
         }
-        matrixMetaCache.put(crafter.getUniqueId(), matrixMeta);
+        if (crafter != null) matrixMetaCache.put(crafter.getUniqueId(), matrixMeta);
 
         boolean isRepair = e.isRepair() || Arrays.stream(e.getInventory().getMatrix()).filter(i -> !ItemUtils.isEmpty(i) && i.getType().getMaxDurability() > 0).count() >= 2;
         if (isRepair){
@@ -287,6 +287,10 @@ public class CraftingTableListener implements Listener {
             DynamicGridRecipe recipe = CustomRecipeRegistry.getGridRecipesByKey().get(((Keyed) crafted).getKey());
             if (recipe == null) {
                 return; // not a valhalla recipe, don't do anything
+            }
+            if (crafter == null){
+                inventory.setResult(null);
+                return;
             }
             PowerProfile profile = ProfileCache.getOrCache(crafter, PowerProfile.class);
 

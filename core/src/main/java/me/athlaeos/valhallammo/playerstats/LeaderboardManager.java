@@ -88,9 +88,9 @@ public class LeaderboardManager {
 
     public static void refreshLeaderboards(){
         for (String leaderboard : LeaderboardManager.getLeaderboards().keySet()){
+            cachedLeaderboardsByRank.put(leaderboard, new HashMap<>());
+            cachedLeaderboardsByPlayer.put(leaderboard, new HashMap<>());
             LeaderboardManager.fetchLeaderboard(leaderboard, false, (map) -> {
-                cachedLeaderboardsByRank.put(leaderboard, new HashMap<>());
-                cachedLeaderboardsByPlayer.put(leaderboard, new HashMap<>());
                 cache(leaderboards.get(leaderboard), map);
             });
         }

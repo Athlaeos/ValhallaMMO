@@ -188,7 +188,7 @@ public class CauldronCraftingListener implements Listener {
                     } else cauldron.getWorld().dropItem(cauldron.getLocation().add(0.5, 1, 0.5), completionEvent.getResult());
                 }
                 cauldron.getWorld().playEffect(cauldron.getLocation().add(0.5, 0.2, 0.5), Effect.EXTINGUISH, 0);
-                cauldron.getWorld().spawnParticle(Particle.valueOf(oldOrNew("FIREWORKS_SPARK", "FIREWORKS")), cauldron.getLocation().add(0.5, 0.5, 0.5), 20);
+                cauldron.getWorld().spawnParticle(Particle.valueOf(oldOrNew("FIREWORKS_SPARK", "FIREWORK")), cauldron.getLocation().add(0.5, 0.5, 0.5), 20);
 
                 recipe.getValidations().forEach(v -> {
                     Validation validation = ValidationRegistry.getValidation(v);

@@ -123,8 +123,8 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
                 persistentProfiles.put(p.getUniqueId(), profs);
                 Utils.sendMessage(p, TranslationManager.getTranslation("status_profiles_loaded"));
 
-                SkillRegistry.updateSkillProgression(p, runPersistentStartingPerks);
                 JoinLeaveListener.getLoadedProfiles().add(p.getUniqueId());
+                SkillRegistry.updateSkillProgression(p, runPersistentStartingPerks);
             }
         }.runTaskAsynchronously(ValhallaMMO.getInstance());
     }
@@ -133,7 +133,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
     public void saveAllProfiles() {
         for (UUID p : new HashSet<>(persistentProfiles.keySet())){
             Player player = ValhallaMMO.getInstance().getServer().getPlayer(p);
-            for (Profile profile : persistentProfiles.get(p).values()){
+            for (Profile profile : persistentProfiles.getOrDefault(p, new HashMap<>()).values()){
                 if (!shouldPersist(profile)) continue;
                 try {
                     profile.insertOrUpdateProfile(this);
@@ -150,7 +150,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
     public void saveProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())){
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
-                for (Profile profile : persistentProfiles.get(p.getUniqueId()).values()){
+                for (Profile profile : persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>()).values()){
                     if (!shouldPersist(profile)) continue;
                     try {
                         profile.insertOrUpdateProfile(this);

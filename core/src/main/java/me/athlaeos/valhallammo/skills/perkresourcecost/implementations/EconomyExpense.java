@@ -19,18 +19,20 @@ public class EconomyExpense implements ResourceExpense {
 
     @Override
     public boolean canPurchase(Player p) {
+        if (!canRegister()) return true;
         return ValhallaMMO.getHook(VaultHook.class).getEcon().getBalance(p) >= cost;
     }
 
     @Override
     public void purchase(Player p, boolean initialPurchase) {
-        if (!initialPurchase) return;
+        if (!canRegister() || !initialPurchase) return;
         Economy e = ValhallaMMO.getHook(VaultHook.class).getEcon();
         if (e.getBalance(p) >= cost) e.withdrawPlayer(p, cost);
     }
 
     @Override
     public void refund(Player p) {
+        if (!canRegister()) return;
         Economy e = ValhallaMMO.getHook(VaultHook.class).getEcon();
         e.depositPlayer(p, cost);
     }
@@ -54,6 +56,16 @@ public class EconomyExpense implements ResourceExpense {
     @Override
     public String getCostMessage() {
         return TranslationManager.getTranslation("status_economy_cost").replace("%cost%", "" + cost);
+    }
+
+    @Override
+    public String getCostPlaceholder() {
+        return "%cost_money%";
+    }
+
+    @Override
+    public String getInsufficientCostPlaceholder() {
+        return "%warning_cost_money%";
     }
 
     @Override

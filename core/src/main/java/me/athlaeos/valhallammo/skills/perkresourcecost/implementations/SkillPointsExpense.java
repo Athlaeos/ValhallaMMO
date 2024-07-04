@@ -56,6 +56,16 @@ public class SkillPointsExpense implements ResourceExpense {
     }
 
     @Override
+    public String getCostPlaceholder() {
+        return "%cost%";
+    }
+
+    @Override
+    public String getInsufficientCostPlaceholder() {
+        return "%warning_cost%";
+    }
+
+    @Override
     public String getCostMessage() {
         return TranslationManager.getTranslation("status_skillpoints_cost").replace("%cost%", "" + cost);
     }

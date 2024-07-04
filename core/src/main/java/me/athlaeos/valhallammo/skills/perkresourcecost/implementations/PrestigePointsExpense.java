@@ -51,6 +51,16 @@ public class PrestigePointsExpense implements ResourceExpense {
     }
 
     @Override
+    public String getCostPlaceholder() {
+        return "%cost_prestige%";
+    }
+
+    @Override
+    public String getInsufficientCostPlaceholder() {
+        return "%warning_cost_prestige%";
+    }
+
+    @Override
     public String getCostMessage() {
         return TranslationManager.getTranslation("status_prestigepoints_cost").replace("%cost%", "" + cost);
     }

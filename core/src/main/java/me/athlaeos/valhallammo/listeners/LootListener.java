@@ -5,7 +5,10 @@ import me.athlaeos.valhallammo.block.BlockDestructionInfo;
 import me.athlaeos.valhallammo.block.BlockExplodeBlockDestructionInfo;
 import me.athlaeos.valhallammo.block.EntityExplodeBlockDestructionInfo;
 import me.athlaeos.valhallammo.block.GenericBlockDestructionInfo;
+import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
+import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.entities.EntityClassification;
@@ -19,6 +22,8 @@ import me.athlaeos.valhallammo.loot.LootEntry;
 import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
@@ -45,9 +50,8 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerHarvestBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTables;
 import org.bukkit.loot.Lootable;
@@ -562,6 +566,62 @@ public class LootListener implements Listener {
     }
 
     private final Collection<Material> itemDuplicationWhitelist = new HashSet<>(ItemUtils.getMaterialSet(ValhallaMMO.getPluginConfig().getStringList("item_duplication_whitelist")));
+
+    // this solution is hacky as FUCK, not using it for the time being
+//    private final Map<Material, DynamicCookingRecipe> fireDropFixerValhallaRecipeCache = new HashMap<>();
+//    private final Map<Material, FurnaceRecipe> fireDropFixerVanillaRecipeCache = new HashMap<>();
+//
+//    @EventHandler(priority = EventPriority.LOWEST)
+//    public void entityDropsFurnaceFixer(EntityDeathEvent e){
+//        // Entities killed by fire aspect will actually just have their drops passed through a simulated furnace, which can have unintended
+//        // side-effects for ValhallaMMO.
+//        // We go through the entity's drops and try to guess which Valhalla furnace recipe they belong to. If it belongs to any,
+//        // the player should have it unlocked. If not, we revert the item to the recipe's input item.
+//
+//        // In short, this code is meant to fix vanilla cooked items accidentally being converted to valhalla cooked items
+//        if (e.getEntity().getFireTicks() <= 0) return; // Not on fire
+//
+//        Player killer = e.getEntity().getKiller();
+//        PowerProfile profile = killer == null ? null : ProfileCache.getOrCache(killer, PowerProfile.class);
+//        for (int i = 0; i < e.getDrops().size(); i++){
+//            ItemStack item = e.getDrops().get(i);
+//            ItemMeta meta = ItemUtils.getItemMeta(item);
+//            int amount = item.getAmount();
+//            DynamicCookingRecipe recipe = fireDropFixerValhallaRecipeCache.get(item.getType());
+//            if (!fireDropFixerValhallaRecipeCache.containsKey(item.getType())) {
+//                // recipe uncached, so we either put a recipe or null associated to the item type
+//                recipe = CustomRecipeRegistry.getCookingRecipes().values().stream().filter(r -> {
+//                    // Here we compare the drop to the possible results of the furnace recipe. If it matches and one is found, we convert the item to the recipe input base type instead
+//                    ItemStack compareTo = r.getResult();
+//                    ResultChangingModifier changer = (ResultChangingModifier) r.getModifiers().stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
+//                    DynamicItemModifier modifier = (DynamicItemModifier) changer;
+//                    if (changer != null && (!modifier.requiresPlayer() || (modifier.requiresPlayer() && killer != null))) compareTo = changer.getNewResult(killer);
+//                    return compareTo.getType() == item.getType();
+//                }).findFirst().orElse(null);
+//                fireDropFixerValhallaRecipeCache.put(item.getType(), recipe);
+//            }
+//            if (recipe == null) continue; // no valhalla recipe found, drop is probably fine as is
+//            FurnaceRecipe vanillaRecipe = fireDropFixerVanillaRecipeCache.get(item.getType());
+//            if (vanillaRecipe == null){
+//                Iterator<Recipe> recipeIterator = ValhallaMMO.getInstance().getServer().recipeIterator();
+//                while (recipeIterator.hasNext()){
+//                    // now we go through vanilla recipes to figure out which vanilla recipe should be used to cook the normal drop
+//                    if (!(recipeIterator.next() instanceof FurnaceRecipe f)) continue;
+//                    if (f.getInput().getType() == recipe.getInput().getItem().getType()) {
+//                        vanillaRecipe = f;
+//                        break;
+//                    }
+//                }
+//                fireDropFixerVanillaRecipeCache.put(item.getType(), vanillaRecipe);
+//            }
+//            if (vanillaRecipe == null) continue; // no vanilla recipe found either, no conversion needed
+//
+//            ItemStack convertTo = null;
+//            if (!recipe.isUnlockedForEveryone() || (profile != null && !profile.getUnlockedRecipes().contains(recipe.getName()))) {
+//                // drop is not accessible, turn to vanilla result
+//            }
+//        }
+//    }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDrops(EntityDeathEvent e){

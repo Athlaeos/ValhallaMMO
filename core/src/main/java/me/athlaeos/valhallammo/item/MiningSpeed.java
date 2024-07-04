@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.item;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -8,13 +9,11 @@ import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MiningSpeed {
@@ -180,5 +179,129 @@ public class MiningSpeed {
         Map<Material, Material> hardnessTranslations = getHardnessTranslations(m);
         if (hardnessTranslations.containsKey(block.getType())) return hardnessTranslations.get(block.getType()).getHardness();
         else return BlockUtils.getHardness(block);
+    }
+
+    private static final NamespacedKey EMBEDDED_TOOL_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "embedded_tools");
+
+    /**
+     * Adds an embedded tool to the given item meta
+     * @param m the item on which to add an embedded tool
+     * @param tool the embedded tool to add
+     */
+    public static void addEmbeddedTool(ItemMeta m, ItemStack tool){
+        Collection<EmbeddedTool> embeddedTools = getEmbeddedTools(m);
+        embeddedTools.add(new EmbeddedTool(tool));
+        setEmbeddedTools(m, embeddedTools);
+    }
+
+    /**
+     * Adds an embedded tool to the given item meta
+     * @param m the item on which to add an embedded tool
+     * @param tool the embedded tool to add
+     */
+    public static void addEmbeddedTool(ItemMeta m, Material tool){
+        Collection<EmbeddedTool> embeddedTools = getEmbeddedTools(m);
+        embeddedTools.add(new EmbeddedTool(tool));
+        setEmbeddedTools(m, embeddedTools);
+    }
+
+    /**
+     * Returns the best tool embedded in the given item meta to mine the given block. If the best embedded tool is
+     * only a material, then a new ItemStack is created on which the given meta is applied. If the best embedded tool
+     * is already a full ItemStack, then it is returned instead.
+     * @param m The item meta to get the most optimal embedded tool from
+     * @param b the block which is being used to determine the most optimal tool to mine it
+     * @return the most optimal tool in the form of an ItemStack with which to mine the block with, or null if no tools are stored
+     */
+    public static ItemBuilder getOptimalEmbeddedTool(ItemMeta m, Block b){
+        Collection<EmbeddedTool> embeddedTools = getEmbeddedTools(m);
+        return getOptimalEmbeddedTool(embeddedTools, m, b);
+    }
+
+    /**
+     * Returns the best tool embedded in the given item meta to mine the given block. If the best embedded tool is
+     * only a material, then a new ItemStack is created on which the given meta is applied. If the best embedded tool
+     * is already a full ItemStack, then it is returned instead.
+     * @param m The item meta to get the most optimal embedded tool from
+     * @param b the block which is being used to determine the most optimal tool to mine it
+     * @return the most optimal tool in the form of an ItemStack with which to mine the block with, or null if no tools are stored
+     */
+    public static ItemBuilder getOptimalEmbeddedTool(Collection<EmbeddedTool> embeddedTools, ItemMeta m, Block b){
+        if (embeddedTools.isEmpty()) return null;
+        ItemBuilder bestTool = null;
+        float bestMiningPower = 1;
+        for (EmbeddedTool tool : embeddedTools){
+            ItemBuilder item;
+            if (tool.m != null) {
+                item = new ItemBuilder(new ItemStack(tool.m), m);
+            } else if (!ItemUtils.isEmpty(tool.i)){
+                item = new ItemBuilder(tool.i);
+            } else continue;
+            float power = ValhallaMMO.getNms().toolPower(item.getItem(), b);
+            if (power > bestMiningPower){
+                bestTool = item;
+                bestMiningPower = power;
+            }
+        }
+        return bestTool;
+    }
+
+    /**
+     * Sets the given embedded tools to the item meta
+     * @param m the item meta on which to store these embedded tools
+     * @param embeddedTools the embedded tools to store
+     */
+    public static void setEmbeddedTools(ItemMeta m, Collection<EmbeddedTool> embeddedTools){
+        if (embeddedTools == null || embeddedTools.isEmpty()){
+            m.getPersistentDataContainer().remove(EMBEDDED_TOOL_KEY);
+        } else {
+            String encodedTools = embeddedTools.stream().map(t -> t.m != null ? t.m.toString() : ItemUtils.serialize(t.i)).collect(Collectors.joining("<splitter>"));
+            m.getPersistentDataContainer().set(EMBEDDED_TOOL_KEY, PersistentDataType.STRING, encodedTools);
+        }
+    }
+
+    /**
+     * Collects all embedded tools from the given meta. An embedded tool can either be a plain Material or a full ItemStack
+     * @param m the meta from which to get its embedded tools
+     * @return all embedded tools
+     */
+    public static Collection<EmbeddedTool> getEmbeddedTools(ItemMeta m){
+        String stored = ItemUtils.getPDCString(EMBEDDED_TOOL_KEY, m, null);
+        Collection<EmbeddedTool> embeddedTools = new HashSet<>();
+        if (stored == null || stored.isEmpty()) return embeddedTools;
+        String[] itemStrings = stored.split("<splitter>");
+        for (String s : itemStrings){
+            Material baseMaterial = Catch.catchOrElse(() -> Material.valueOf(s), null);
+            if (baseMaterial != null) embeddedTools.add(new EmbeddedTool(baseMaterial));
+            else {
+                ItemStack item = ItemUtils.deserialize(s);
+                if (ItemUtils.isEmpty(item)) continue;
+                embeddedTools.add(new EmbeddedTool(item));
+            }
+        }
+        return embeddedTools;
+    }
+
+    public static class EmbeddedTool {
+        private final Material m;
+        private final ItemStack i;
+
+        public EmbeddedTool(Material m){
+            this.m = m;
+            this.i = null;
+        }
+
+        public EmbeddedTool(ItemStack i){
+            this.i = i;
+            this.m = null;
+        }
+
+        public Material getMaterial() {
+            return m;
+        }
+
+        public ItemStack getItem() {
+            return i;
+        }
     }
 }

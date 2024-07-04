@@ -59,7 +59,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7Should all filters pass",
                     "&7or should any filter pass?",
                     "&eClick to toggle")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack modifierButton = new ItemBuilder(getButtonData("editor_loottable_entry_modifiers", Material.WRITABLE_BOOK))
             .name("&dDynamic Item Modifiers")
             .stringTag(BUTTON_ACTION_KEY, "modifierButton")
@@ -87,7 +87,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7Chance/weight are irrelevant if",
                     "&7enabled",
                     "&eClick to toggle")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setWeightButton1 = new ItemBuilder(getButtonData("editor_loottable_setweight", Material.IRON_BLOCK))
             .name("&eWeight: ")
             .stringTag(BUTTON_ACTION_KEY, "setWeightButton1")
@@ -100,7 +100,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7weight of all legible drops.",
                     "&eClick to change by 1",
                     "&eShift-Click to change by 10")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setWeightButton2 = new ItemBuilder(getButtonData("editor_loottable_setweight", Material.IRON_BLOCK))
             .name("&eWeight: ")
             .stringTag(BUTTON_ACTION_KEY, "setWeightButton2")
@@ -113,7 +113,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7weight of all legible drops.",
                     "&eClick to change by 100",
                     "&eShift-Click to change by 1000")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setWeightButton3 = new ItemBuilder(getButtonData("editor_loottable_setweight", Material.IRON_BLOCK))
             .name("&eWeight: ")
             .stringTag(BUTTON_ACTION_KEY, "setWeightButton3")
@@ -126,7 +126,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7weight of all legible drops.",
                     "&eClick to change by 10000",
                     "&eShift-Click to change by 100000")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setBonusWeightButton1 = new ItemBuilder(getButtonData("editor_loottable_setluckweight", Material.LAPIS_LAZULI))
             .name("&eBonus Luck Weight: ")
             .stringTag(BUTTON_ACTION_KEY, "setBonusWeightButton1")
@@ -137,7 +137,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7drop will be selected",
                     "&eClick to change by 1",
                     "&eShift-Click to change by 10")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setBonusWeightButton2 = new ItemBuilder(getButtonData("editor_loottable_setluckweight", Material.LAPIS_LAZULI))
             .name("&eBonus Luck Weight: ")
             .stringTag(BUTTON_ACTION_KEY, "setBonusWeightButton2")
@@ -148,7 +148,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7drop will be selected",
                     "&eClick to change by 100",
                     "&eShift-Click to change by 1000")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setBonusWeightButton3 = new ItemBuilder(getButtonData("editor_loottable_setluckweight", Material.LAPIS_LAZULI))
             .name("&eBonus Luck Weight: ")
             .stringTag(BUTTON_ACTION_KEY, "setBonusWeightButton3")
@@ -159,28 +159,28 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7drop will be selected",
                     "&eClick to change by 10000",
                     "&eShift-Click to change by 100000")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setChanceButton1 = new ItemBuilder(getButtonData("editor_loottable_setchance", Material.GOLD_BLOCK))
             .name("&eDrop Chance: ")
             .stringTag(BUTTON_ACTION_KEY, "setChanceButton1")
             .lore("&7Determines the drop chance.",
                     "&eClick to change by 10%",
                     "&eShift-Click to change by 1%")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setChanceButton2 = new ItemBuilder(getButtonData("editor_loottable_setchance", Material.GOLD_BLOCK))
             .name("&eDrop Chance: ")
             .stringTag(BUTTON_ACTION_KEY, "setChanceButton2")
             .lore("&7Determines the drop chance.",
                     "&eClick to change by 0.1%",
                     "&eShift-Click to change by 0.01%")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setChanceButton3 = new ItemBuilder(getButtonData("editor_loottable_setchance", Material.GOLD_BLOCK))
             .name("&eDrop Chance: ")
             .stringTag(BUTTON_ACTION_KEY, "setChanceButton3")
             .lore("&7Determines the drop chance.",
                     "&eClick to change by 0.001%",
                     "&eShift-Click to change by 0.0001%")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setBonusChanceButton1 = new ItemBuilder(getButtonData("editor_loottable_setluckchance", Material.LAPIS_LAZULI))
             .name("&eBonus Luck Chance: ")
             .stringTag(BUTTON_ACTION_KEY, "setBonusChanceButton1")
@@ -191,7 +191,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7chance",
                     "&eClick to change by 10%",
                     "&eShift-Click to change by 1%")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setBonusChanceButton2 = new ItemBuilder(getButtonData("editor_loottable_setluckchance", Material.LAPIS_LAZULI))
             .name("&eBonus Luck Chance: ")
             .stringTag(BUTTON_ACTION_KEY, "setBonusChanceButton2")
@@ -202,7 +202,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7chance",
                     "&eClick to change by 0.1%",
                     "&eShift-Click to change by 0.01%")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setBonusChanceButton3 = new ItemBuilder(getButtonData("editor_loottable_setluckchance", Material.LAPIS_LAZULI))
             .name("&eBonus Luck Chance: ")
             .stringTag(BUTTON_ACTION_KEY, "setBonusChanceButton3")
@@ -213,7 +213,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7chance",
                     "&eClick to change by 0.001%",
                     "&eShift-Click to change by 0.0001%")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setBaseQuantityButton = new ItemBuilder(getButtonData("editor_loottable_basequantity", Material.PAPER))
             .name("&eBase Quantity")
             .stringTag(BUTTON_ACTION_KEY, "setBaseQuantityButton")
@@ -223,7 +223,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7your two given min and max values",
                     "&eClick to change &6min&e amount by 1",
                     "&eShift-Click to change &6max&e amount by 1")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack setFortuneQuantityButton = new ItemBuilder(getButtonData("editor_loottable_luckquantity", Material.PAPER))
             .name("&eFortune Quantity")
             .stringTag(BUTTON_ACTION_KEY, "setFortuneQuantityButton")
@@ -234,7 +234,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7your given fortune min/max per level",
                     "&eClick to change &6min&e amount by 1",
                     "&eShift-Click to change &6max&e amount by 1")
-            .flag(ItemFlag.HIDE_ATTRIBUTES).get();
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
 
     private static final ItemStack deleteButton = new ItemBuilder(getButtonData("editor_delete", Material.BARRIER))
             .stringTag(BUTTON_ACTION_KEY, "deleteButton")
