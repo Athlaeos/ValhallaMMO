@@ -27,26 +27,35 @@ quality_lore: # Lore placed on the item once its quality score equals or exceeds
 # Any number tag can be applied to any item, but only the numbers in this list will display additional lore on the item
 tag_lore: # The tag lores displayed on the item. If one is left empty, it is not displayed.
   0: '<lang.smithing-tag-plated>'
+  1: '<lang.smithing-tag-untempered>'
+  2: '<lang.smithing-tag-blunt>'
   3: '<lang.smithing-tag-razor-sharp>'
   4: '<lang.smithing-tag-well-fit>'
   5: '<lang.smithing-tag-red-hot>'
   6: '<lang.smithing-tag-white-hot>'
+  7: '<lang.smithing-tag-unfit>'
 
 # Error messages that are notified to the player if their item has a tag it's not allowed to have
 tag_error_disallowed:
   0: '<lang.smithing-tag-disallowed-plated>'
+  1: '<lang.smithing-tag-disallowed-untempered>'
+  2: '<lang.smithing-tag-disallowed-blunt>'
   3: '<lang.smithing-tag-disallowed-razor-sharp>'
   4: '<lang.smithing-tag-disallowed-well-fit>'
   5: '<lang.smithing-tag-disallowed-red-hot>'
   6: '<lang.smithing-tag-disallowed-white-hot>'
+  7: '<lang.smithing-tag-disallowed-unfit>'
 
 # Error messages that are notified to the player if their item doesn't have a tag it needs to have
 tag_error_required:
   0: '<lang.smithing-tag-required-plated>'
+  1: '<lang.smithing-tag-required-untempered>'
+  2: '<lang.smithing-tag-required-blunt>'
   3: '<lang.smithing-tag-required-razor-sharp>'
   4: '<lang.smithing-tag-required-well-fit>'
   5: '<lang.smithing-tag-required-red-hot>'
   6: '<lang.smithing-tag-required-white-hot>'
+  7: '<lang.smithing-tag-required-unfit>'
 
 # Scaling used by dynamic quantity modifier, which changes the amount of the resulting item depending on PLAYER SMITHING SKILL
 quantity_scaling: '0.7/300 * %rating% + 0.1,MULTIPLIER,0,0.8'

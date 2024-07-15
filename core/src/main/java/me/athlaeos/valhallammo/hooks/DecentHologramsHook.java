@@ -143,6 +143,7 @@ public class DecentHologramsHook extends PluginHook implements Listener {
         public void run() {
             if (format == null || !damaged.isValid() || damaged.isDead()){
                 damageIndicatorMap.remove(damaged.getUniqueId());
+                hologram.delete();
                 cancel();
                 return;
             }

@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.item;
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class CustomItem {
     }
 
     public String getId() { return id; }
-    public ItemStack getItem() { return item.clone(); }
+    public ItemStack getItem() { return ItemUtils.isEmpty(item) ? null : item.clone(); }
     public List<DynamicItemModifier> getModifiers() { return modifiers; }
     public void setModifiers(List<DynamicItemModifier> modifiers) {
         this.modifiers = modifiers;

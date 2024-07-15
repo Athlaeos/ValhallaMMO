@@ -130,6 +130,7 @@ public class LootTableRegistry {
                 }
             }
             for (LootEntry selectedEntry : selectedEntries){
+                if (ItemUtils.isEmpty(selectedEntry.getDrop())) continue;
                 ItemStack item;
                 if (selectedEntry.getModifiers().isEmpty()){ // if no modifiers, no need to grab metadata from the item and so forth.
                     item = selectedEntry.getDrop().clone();

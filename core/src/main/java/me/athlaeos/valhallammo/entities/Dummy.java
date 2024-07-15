@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,7 +33,7 @@ public class Dummy implements Listener {
     }
 
     public static boolean isDummy(LivingEntity stand){
-        if (!(stand instanceof ArmorStand)) return false;
+        if (stand.getType() != EntityType.ARMOR_STAND) return false;
         EntityProperties equipment = EntityCache.getAndCacheProperties(stand);
         if (equipment.getHelmet() == null) return false;
         return equipment.getHelmet().getMeta().getPersistentDataContainer().has(DUMMY_KEY, PersistentDataType.BYTE);

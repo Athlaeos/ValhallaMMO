@@ -15,7 +15,7 @@ public enum MoonPhase {
 
     public static MoonPhase getPhase(World world){
         if (world.getEnvironment() != World.Environment.NORMAL) return NO_MOON;
-        int days = (int) Math.round(world.getFullTime() / 24000D);
+        int days = (int) Math.floor(world.getFullTime() / 24000D);
         int phase = days % 8;
         return switch (phase){
             case 0 -> FULL;

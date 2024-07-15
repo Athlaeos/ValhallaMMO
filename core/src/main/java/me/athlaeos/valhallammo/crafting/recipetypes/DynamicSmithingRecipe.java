@@ -134,7 +134,7 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
 
         ItemStack i = result.clone();
         ResultChangingModifier changer = (ResultChangingModifier) resultModifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
-        if (changer != null) i = changer.getNewResult(null);
+        if (changer != null) i = changer.getNewResult(null, new ItemBuilder(i));
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20) && t != null){
             return SmithingTransformRecipeWrapper.get(key, translate(i), t, b, a); // using a SmithingTransformRecipe directly results in a ClassNotFoundException on versions lower than 1.20
         } else return new SmithingRecipe(key, translate(i), b, a);

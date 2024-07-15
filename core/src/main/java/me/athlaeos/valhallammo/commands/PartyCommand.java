@@ -281,7 +281,7 @@ public class PartyCommand implements TabExecutor {
             Party party = PartyManager.getParty(p);
             if (args.length == 1) {
                 if (party != null) return List.of("chat", "info", "invite",
-                        "shareitem", "open", "setrank", "kick", "expsharing", "itemsharing", "description", "rename",
+                        "shareitem", "open", "setrank", "kick", "expsharing", "itemsharing", "friendlyfire", "description", "rename",
                         "transferleader", "leave", "disband");
                 else return List.of("create", "muteinvites", "info", "join");
             } else if (args.length == 2 && (args[0].equalsIgnoreCase("join") || args[0].equalsIgnoreCase("info"))) return new ArrayList<>(PartyManager.getAllParties().keySet());

@@ -31,7 +31,7 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier implements Res
     }
 
     @Override
-    public ItemStack getNewResult(Player crafter) {
+    public ItemStack getNewResult(Player crafter, ItemBuilder item) {
         return replaceBy;
     }
 

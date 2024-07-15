@@ -13,10 +13,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class EquipmentClassSet extends DynamicItemModifier {
+public class ItemEquipmentClass extends DynamicItemModifier {
     private EquipmentClass equipmentClass = EquipmentClass.SWORD;
 
-    public EquipmentClassSet(String name) {
+    public ItemEquipmentClass(String name) {
         super(name);
     }
 
@@ -104,7 +104,7 @@ public class EquipmentClassSet extends DynamicItemModifier {
 
     @Override
     public DynamicItemModifier copy() {
-        EquipmentClassSet m = new EquipmentClassSet(getName());
+        ItemEquipmentClass m = new ItemEquipmentClass(getName());
         m.setEquipmentClass(this.equipmentClass);
         m.setPriority(this.getPriority());
         return m;

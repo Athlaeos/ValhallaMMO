@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.crafting.recipetypes.ImmersiveCraftingRecipe;
 import me.athlaeos.valhallammo.dom.Comparator;
 import me.athlaeos.valhallammo.gui.Menu;
@@ -212,10 +213,10 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
             }
 
             if (page < pageCount){
-                inventory.setItem(41, pageUp);
+                inventory.setItem(50, pageDown);
             }
             if (page > 1){
-                inventory.setItem(50, pageDown);
+                inventory.setItem(41, pageUp);
             }
 
             if (selectedRecipe != null){
@@ -266,6 +267,8 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                                 hand :
                                 recipe.getTinkerInput().getItem()) :
                         recipe.getResult()).clone();
+                ResultChangingModifier changingModifier = (ResultChangingModifier) recipe.getModifiers().stream().filter(m -> m instanceof ResultChangingModifier r).findFirst().orElse(null);
+                if (changingModifier != null) button = changingModifier.getNewResult(playerMenuUtility.getOwner(), new ItemBuilder(button));
                 List<String> lore = new ArrayList<>(recipe.getDescription() == null ?
                         defaultFormat :
                         Arrays.asList(recipe.getDescription().split("/n"))

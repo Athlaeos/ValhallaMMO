@@ -474,7 +474,7 @@ public class ItemAttributesRegistry {
     public static void removeStat(ItemMeta meta, AttributeWrapper wrapper){
         Map<String, AttributeWrapper> defaultStats = getStats(meta, true);
         if (defaultStats.isEmpty()) defaultStats = applyVanillaStats(meta);
-        defaultStats.remove(wrapper.getAttribute(), wrapper);
+        defaultStats.remove(wrapper.getAttribute());
         setDefaultStats(meta, defaultStats);
 
         Map<String, AttributeWrapper> actualStats = getStats(meta, false);

@@ -683,13 +683,13 @@ public abstract class Skill {
                         );
                     }
                 }
-            }
 
-            for (String command : levelingCommands) {
-                ValhallaMMO.getInstance().getServer().dispatchCommand(
-                        ValhallaMMO.getInstance().getServer().getConsoleSender(),
-                        command.replace("%player%", p.getName())
-                );
+                for (String command : levelingCommands) {
+                    ValhallaMMO.getInstance().getServer().dispatchCommand(
+                            ValhallaMMO.getInstance().getServer().getConsoleSender(),
+                            command.replace("%player%", p.getName())
+                    );
+                }
             }
 
             if (!silent) {

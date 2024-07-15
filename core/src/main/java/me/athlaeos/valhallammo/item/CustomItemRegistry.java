@@ -74,6 +74,10 @@ public class CustomItemRegistry {
             CustomItem[] items = gson.fromJson(setsReader, CustomItem[].class);
             if (items == null) return;
             for (CustomItem item : items) {
+                if (item.getItem() == null) {
+                    ValhallaMMO.logWarning("Could not load custom item " + item.getId() + ", item was improperly loaded!");
+                    continue;
+                }
                 DynamicItemModifier.sortModifiers(item.getModifiers());
                 register(item.getId(), item);
             }

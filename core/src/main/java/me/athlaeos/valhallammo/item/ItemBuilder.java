@@ -23,6 +23,10 @@ public class ItemBuilder {
     private ItemMeta meta;
     private final Collection<MiningSpeed.EmbeddedTool> embeddedTools;
 
+    public ItemBuilder copy(){
+        return new ItemBuilder(item.clone(), meta.clone());
+    }
+
     public ItemBuilder(Material m){
         this.item = new ItemStack(m);
         this.meta = ItemUtils.getItemMeta(item);

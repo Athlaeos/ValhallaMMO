@@ -28,7 +28,7 @@ public class SmithingTagsCancelIfPresent extends DynamicItemModifier {
         for (Integer tag : SmithingItemPropertyManager.getTags(outputItem.getMeta()).keySet()){
             if (tags.contains(tag)) {
                 String message = SmithingItemPropertyManager.getTagForbiddenErrors().get(tag);
-                if (tag != null) failedRecipe(outputItem, message);
+                if (message != null) failedRecipe(outputItem, message);
                 else failedRecipe(outputItem, TranslationManager.getTranslation("modifier_warning_forbidden_smithing_tag"));
                 break;
             }

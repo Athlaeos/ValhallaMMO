@@ -133,11 +133,11 @@ public abstract class DynamicItemModifier {
         RelationalItemModifier.RelationalResult result = new RelationalItemModifier.RelationalResult(event.getItem(), event.getItem2());
         if (event.sort()) sortModifiers(event.getModifiers());
         for (DynamicItemModifier modifier : event.getModifiers()){
-            if (modifier instanceof RelationalItemModifier relationalItemModifier)
+            if (modifier instanceof RelationalItemModifier relationalItemModifier) {
                 relationalItemModifier.processItem(p, result.i1(), result.i2(), event.use(), event.validate(), event.getCount());
-            else {
-                modifier.processItem(p, i1, event.use(), event.validate(), event.getCount());
-                result = new RelationalItemModifier.RelationalResult(i1, i2);
+            } else {
+                modifier.processItem(p, result.i1(), event.use(), event.validate(), event.getCount());
+                result = new RelationalItemModifier.RelationalResult(result.i1(), result.i2());
                 if (ItemUtils.isEmpty(result.i1().getItem()) || CustomFlag.hasFlag(result.i1().getMeta(), CustomFlag.UNCRAFTABLE) ||
                         ItemUtils.isEmpty(result.i2().getItem()) || CustomFlag.hasFlag(result.i2().getMeta(), CustomFlag.UNCRAFTABLE)) break;
             }

@@ -11,20 +11,20 @@ import java.util.Collection;
 
 public class ProfileStringListFill extends PerkReward {
     private final String stat;
-    private final Fetcher fetcher;
+    private final Fetcher[] fetchers;
     private final Class<? extends Profile> type;
-    public ProfileStringListFill(String name, String stat, Class<? extends Profile> type, Fetcher fetcher) {
+    public ProfileStringListFill(String name, String stat, Class<? extends Profile> type, Fetcher... fetcher) {
         super(name);
         this.stat = stat;
         this.type = type;
-        this.fetcher = fetcher;
+        this.fetchers = fetcher;
     }
 
     @Override
     public void apply(Player player) {
         Profile profile = isPersistent() ? ProfileRegistry.getPersistentProfile(player, type) : ProfileRegistry.getSkillProfile(player, type);
 
-        profile.setStringSet(stat, fetcher.fetch());
+        for (Fetcher f : fetchers) profile.setStringSet(stat, f.fetch());
 
         if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
         else ProfileRegistry.setSkillProfile(player, profile, type);

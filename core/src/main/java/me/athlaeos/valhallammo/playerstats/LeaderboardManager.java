@@ -88,19 +88,19 @@ public class LeaderboardManager {
 
     public static void refreshLeaderboards(){
         for (String leaderboard : LeaderboardManager.getLeaderboards().keySet()){
-            cachedLeaderboardsByRank.put(leaderboard, new HashMap<>());
-            cachedLeaderboardsByPlayer.put(leaderboard, new HashMap<>());
             LeaderboardManager.fetchLeaderboard(leaderboard, false, (map) -> {
+                cachedLeaderboardsByRank.put(leaderboard, new HashMap<>());
+                cachedLeaderboardsByPlayer.put(leaderboard, new HashMap<>());
                 cache(leaderboards.get(leaderboard), map);
-            });
+            }, true);
         }
     }
 
-    public static void fetchLeaderboard(String leaderboard, boolean cache, Action<Map<Integer, LeaderboardEntry>> callback){
+    public static void fetchLeaderboard(String leaderboard, boolean cache, Action<Map<Integer, LeaderboardEntry>> callback, boolean reload){
         Leaderboard l = leaderboards.get(leaderboard);
         if (l == null || !(ProfileRegistry.getPersistence() instanceof LeaderboardCompatible f)) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
-            if (cachedLeaderboardsByRank.containsKey(l.key)) {
+            if (cachedLeaderboardsByRank.containsKey(l.key) && !reload) {
                 if (callback != null) callback.act(cachedLeaderboardsByRank.get(l.key));
             } else {
                 Map<Integer, LeaderboardEntry> results = f.queryLeaderboardEntries(l);
@@ -139,7 +139,7 @@ public class LeaderboardManager {
                     Utils.sendMessage(s, TranslationManager.translatePlaceholders(personalEntryPrefix).replace("%player%", p.getName()) + entryString(l, e));
                 });
             }
-        });
+        }, false);
     }
 
     private static Class<? extends Profile> profileFromString(String s){

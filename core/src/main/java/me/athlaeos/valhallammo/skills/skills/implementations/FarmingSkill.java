@@ -336,12 +336,15 @@ public class FarmingSkill extends Skill implements Listener {
 
     private void instantHarvest(Player p, Block b, FarmingProfile profile) {
         if (!(b.getBlockData() instanceof Ageable a) || a.getAge() < a.getMaximumAge() || !blockDropExpValues.containsKey(b.getType())) return;
+        a = (Ageable) a.clone();
+        a.setAge(0);
         Material previousType = b.getType();
         CustomBreakSpeedListener.markInstantBreak(b);
         b.getWorld().spawnParticle(Particle.valueOf(oldOrNew("BLOCK_CRACK", "BLOCK")), b.getLocation().add(0.5, 0.5, 0.5), 100, 0.1, 0.1, 0.1, 4, b.getBlockData());
         b.getWorld().playSound(b.getLocation().add(0.4, 0.4, 0.4), Sound.BLOCK_CROP_BREAK, 0.3F, 1F);
         p.breakBlock(b);
         b.setType(previousType);
+        b.setBlockData(a);
         growBlock(b, profile);
     }
 

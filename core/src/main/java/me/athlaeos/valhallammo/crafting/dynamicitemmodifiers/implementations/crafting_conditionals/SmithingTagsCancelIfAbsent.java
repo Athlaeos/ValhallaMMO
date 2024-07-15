@@ -29,7 +29,7 @@ public class SmithingTagsCancelIfAbsent extends DynamicItemModifier {
         for (Integer tag : tags){
             if (!tagsToCheck.containsKey(tag)) {
                 String message = SmithingItemPropertyManager.getTagRequiredErrors().get(tag);
-                if (tag != null) failedRecipe(outputItem, message);
+                if (message != null) failedRecipe(outputItem, message);
                 else failedRecipe(outputItem, TranslationManager.getTranslation("modifier_warning_required_smithing_tag"));
                 break;
             }

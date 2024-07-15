@@ -62,6 +62,7 @@ public class ModifierRegistry {
         register(new CounterSetItemLimit("counter_set_item_limit"));
         register(new SmithingTagsAdd("smithing_tags_add"));
         register(new SmithingTagsCancelIfAbsent("smithing_tags_require"));
+        register(new SmithingTagsLevelRequirement("smithing_tags_require_with_levels"));
         register(new SmithingTagsCancelIfPresent("smithing_tags_forbid"));
         register(new SmithingTagsRemove("smithing_tags_remove"));
         register(new SmithingTagsRemoveAll("smithing_tags_clear"));
@@ -129,7 +130,8 @@ public class ModifierRegistry {
         register(new DurabilityRepairScale("repair_scale"));
         register(new DurabilityScale("durability_scale"));
         register(new DurabilityDefaultSet("durability_max_set"));
-        register(new EquipmentClassSet("equipment_type"));
+        register(new ItemEquipmentClass("equipment_type"));
+        register(new ItemMaterialClass("material_type"));
         Arrays.stream(CustomFlag.values()).forEach(f -> register(new FlagCustomAdd("flag_" + f.toString().toLowerCase(), f)));
         Arrays.stream(ItemFlag.values()).forEach(f -> {
             if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) && f == ItemFlag.HIDE_ADDITIONAL_TOOLTIP)
