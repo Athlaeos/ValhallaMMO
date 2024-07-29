@@ -209,7 +209,15 @@ public class CustomRecipeRegistry {
             allRecipes.add(recipe.getName().toLowerCase());
             allKeyedRecipes.put(recipe.getKey(), recipe);
             allKeyedRecipesByName.put(recipe.getName(), recipe);
-            recipe.registerRecipe();
+            try {
+                recipe.registerRecipe();
+            } catch (Exception e){
+                System.out.println("registering cooking recipe" + recipe.getName());
+                System.out.println("this recipe went wrong, it has items: ");
+                System.out.println(recipe.getInput().getItem());
+                System.out.println(recipe.getResult());
+                e.printStackTrace();
+            }
             CookingListener.campfireRecipeCache.clear();
             CookingListener.furnaceRecipeCache.clear();
         }

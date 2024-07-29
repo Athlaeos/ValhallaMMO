@@ -5,7 +5,11 @@ import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
+import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.*;
@@ -19,6 +23,7 @@ import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.version.FurnaceStartSmeltListener;
 import org.bukkit.Effect;
+import org.bukkit.Keyed;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -37,6 +42,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -137,21 +143,46 @@ public class CookingListener implements Listener {
         }
     }
 
+    private final Map<Location, UUID> uuidCache = new HashMap<>();
+    private UUID uuidFromLocation(Location l){
+        if (uuidCache.containsKey(l)) return uuidCache.get(l);
+        UUID uuid = UUID.nameUUIDFromBytes(String.format("%d%d%d", l.getBlockX(), l.getBlockY(), l.getBlockZ()).getBytes());
+        uuidCache.put(l, uuid);
+        return uuid;
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onFurnaceBurn(FurnaceBurnEvent e){
         Block b = e.getBlock();
-        if (b.getBlockData() instanceof Furnace f && !e.isCancelled()){
-            Pair<CookingRecipe<?>, DynamicCookingRecipe> recipes = getFurnaceRecipe(f.getInventory().getSmelting());
-            if (recipes.getOne() == null){
+        if (b.getState() instanceof Furnace f && !e.isCancelled()){
+            UUID furnaceUUID = uuidFromLocation(f.getLocation());
+            if (!Timer.isCooldownPassed(furnaceUUID, "furnace_wait_time")){
                 e.setCancelled(true);
                 return;
             }
+            Pair<CookingRecipe<?>, DynamicCookingRecipe> recipes = getFurnaceRecipe(f.getInventory().getSmelting());
+            if (recipes.getOne() == null){
+                e.setCancelled(true);
+                Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
+                return;
+            }
             if (recipes.getTwo() == null) {
-                if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) e.setCancelled(true);
+                if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) {
+                    e.setCancelled(true);
+                    Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
+                } else {
+                    DynamicCookingRecipe recipe = CustomRecipeRegistry.getCookingRecipesByKey().get(recipes.getOne().getKey());
+                    if (recipe != null) {
+                        e.setCancelled(true);
+                        Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
+                        return; // is a valhalla recipe, but not valid. Cancel recipe
+                    }
+                }
                 return;// vanilla recipe found, cancel if recipe is disabled
             }
             if (WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), WorldGuardHook.VMMO_CRAFTING_FURNACE)){
                 e.setCancelled(true);
+                Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
                 return;
             }
             DynamicCookingRecipe recipe = recipes.getTwo();
@@ -185,6 +216,7 @@ public class CookingListener implements Listener {
                             return false;
                         }))){
                     e.setCancelled(true);
+                    Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
                     f.getWorld().playEffect(f.getLocation(), Effect.EXTINGUISH, 0);
                     return;
                 }
@@ -193,6 +225,7 @@ public class CookingListener implements Listener {
                 if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                     if (owner != null) Timer.setCooldown(owner.getUniqueId(), 500, "delay_furnace_attempts");
                     e.setCancelled(true);
+                    Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
                 }
             }
         }
@@ -262,6 +295,13 @@ public class CookingListener implements Listener {
             }
             if (recipes.getTwo() == null) {
                 if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) e.setCancelled(true);
+                else {
+                    DynamicCookingRecipe recipe = CustomRecipeRegistry.getCookingRecipesByKey().get(recipes.getOne().getKey());
+                    if (recipe != null) {
+                        e.setCancelled(true);
+                        return; // is a valhalla recipe, but not valid. Cancel recipe
+                    }
+                }
                 return;// vanilla recipe found, cancel if recipe is disabled
             }
             if (WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), WorldGuardHook.VMMO_CRAFTING_FURNACE)){
@@ -359,6 +399,7 @@ public class CookingListener implements Listener {
         if (ItemUtils.isEmpty(i)) return new Pair<>(null, null);
         ItemStack clone = i.clone();
         clone.setAmount(1);
+        ItemMeta meta = ItemUtils.getItemMeta(clone);
         if (furnaceRecipeCache.containsKey(clone.toString())) return furnaceRecipeCache.get(clone.toString());
         Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
         CookingRecipe<?> found = null;
@@ -370,6 +411,11 @@ public class CookingListener implements Listener {
                     found = r;
                     DynamicCookingRecipe dynamicRecipe = CustomRecipeRegistry.getCookingRecipesByKey().get(r.getKey());
                     if (dynamicRecipe != null && dynamicRecipe.getType() != DynamicCookingRecipe.CookingRecipeType.CAMPFIRE) {
+                        if (dynamicRecipe.requireValhallaTools() &&
+                                EquipmentClass.getMatchingClass(meta) != null &&
+                                !SmithingItemPropertyManager.hasSmithingQuality(meta)) continue;
+                        if (!defaultChoice(dynamicRecipe.getInput()).matches(dynamicRecipe.getInput().getItem(), i)) continue;
+
                         Pair<CookingRecipe<?>, DynamicCookingRecipe> match = new Pair<>(found, dynamicRecipe);
                         furnaceRecipeCache.put(clone.toString(), match);
                         return match;
@@ -378,5 +424,9 @@ public class CookingListener implements Listener {
             }
         }
         return new Pair<>(found, null);
+    }
+
+    private IngredientChoice defaultChoice(SlotEntry entry){
+        return Objects.requireNonNullElse(entry.getOption(), new MaterialChoice());
     }
 }

@@ -396,7 +396,7 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
         ItemStack icon = new ItemBuilder(input.getItem().clone()).appendLore(SlotEntry.getOptionLore(input)).get();
         inventory.setItem(inputIndex, icon);
         if (!tinker) inventory.setItem(resultIndex, result.clone());
-        else inventory.setItem(resultIndex, new ItemBuilder(input.getItem().getType()).name("&dTinkered Input").get());
+        else inventory.setItem(resultIndex, new ItemBuilder(input.getItem()).name("&dTinkered Input").get());
 
         List<String> validationLore = new ArrayList<>();
         if (!validations.isEmpty()){

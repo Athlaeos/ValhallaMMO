@@ -118,6 +118,7 @@ public class DigPacketInfo {
             additionalMultiplier = cachedMultiplier.get(digger.getUniqueId());
         } else {
             additionalMultiplier += (float) AccumulativeStatManager.getCachedStats("DIG_SPEED", digger, 10000, true);
+            System.out.println(additionalMultiplier);
 
             PotionEffect haste = digger.getPotionEffect(PotionEffectMappings.HASTE.getPotionEffectType());
             if (haste != null) additionalMultiplier += (0.2F * haste.getAmplifier());

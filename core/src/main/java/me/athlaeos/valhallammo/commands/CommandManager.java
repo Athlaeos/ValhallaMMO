@@ -38,7 +38,8 @@ public class CommandManager implements TabExecutor {
 		commands.put("saveall", new SaveAllCommand());
 		commands.put("hardness", new BlockHardnessCommand());
 //		commands.put("reload", new ReloadCommand());
-//		commands.put("import", new ImportCommand());
+		commands.put("import", new ImportCommand());
+		commands.put("export", new ExportCommand());
 //		commands.put("toggleexp", new HideBossBarsCommand());
 //		commands.put("revealrecipekeys", new RecipeRevealToggleCommand());
 	}

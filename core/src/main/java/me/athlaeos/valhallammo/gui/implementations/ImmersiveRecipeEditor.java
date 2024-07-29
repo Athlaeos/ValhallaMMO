@@ -496,7 +496,7 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
 
         if (!tinker) inventory.setItem(resultIndex, result.clone());
         else {
-            inventory.setItem(resultIndex, new ItemBuilder(tinkerInput.getItem().getType()).name("&f" + SlotEntry.toString(tinkerInput))
+            inventory.setItem(resultIndex, new ItemBuilder(tinkerInput.getItem()).name("&f" + SlotEntry.toString(tinkerInput))
                     .lore(SlotEntry.getOptionLore(tinkerInput)).get());
         }
 

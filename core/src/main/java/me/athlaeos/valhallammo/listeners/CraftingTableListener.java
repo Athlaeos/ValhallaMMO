@@ -365,7 +365,7 @@ public class CraftingTableListener implements Listener {
     }
 
     private ItemStack verifyIngredients(Player clicker, PowerProfile profile, DynamicGridRecipe recipe, ItemStack[] matrix){
-        ItemStack result = recipe.getResult().clone();
+        ItemBuilder result = new ItemBuilder(recipe.getResult().clone());
         if (!clicker.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName())) return null;
         Map<Integer, ItemMeta> matrixMeta = matrixMetaCache.getOrDefault(clicker.getUniqueId(), new HashMap<>());
         if (recipe.tinker()){
@@ -384,7 +384,7 @@ public class CraftingTableListener implements Listener {
                         !SmithingItemPropertyManager.hasSmithingQuality(meta)) return null;
 
                 if (defaultChoice(tinkerEntry).matches(tinkerEntry.getItem(), slot)){
-                    result = slot.clone();
+                    result = new ItemBuilder(slot.clone());
                     break;
                 }
             }
@@ -425,7 +425,7 @@ public class CraftingTableListener implements Listener {
         // If allIngredients at this point is not empty that means not all ingredients
         // were verified to exist in the matrix, and so null should be returned
         if (!allIngredients.isEmpty()) return null;
-        return result;
+        return result.get();
     }
 
     private IngredientChoice defaultChoice(SlotEntry entry){

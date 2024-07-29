@@ -94,7 +94,7 @@ public class LootTableSelectionMenu extends Menu {
                                     Utils.sendMessage(getWho(), "&cLoot table key already exists!");
                                 else {
                                     LootTable newTable = new LootTable(answer);
-                                    LootTableRegistry.registerLootTable(newTable);
+                                    LootTableRegistry.registerLootTable(newTable, true);
                                     if (tableAction != null) tableAction.act(newTable);
                                 }
                             };

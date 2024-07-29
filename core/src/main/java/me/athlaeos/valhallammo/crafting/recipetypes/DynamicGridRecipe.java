@@ -12,6 +12,7 @@ import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -210,6 +211,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
             if (tinker == null) tinker = entry; // return the first item found in the grid if no others are found
             if (EquipmentClass.getMatchingClass(ItemUtils.getItemMeta(matrixItem)) != null) return entry;
         }
+        if (tinker == null) System.out.println("no tinker item found for " + name);
         return tinker;
     }
 
@@ -262,8 +264,8 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     private char getItemChar(SlotEntry i, String usedChars){
         if (i == null) return ' ';
         if (ItemUtils.isEmpty(i.getItem())) return ' ';
-        String itemName = ChatColor.stripColor(TranslationManager.translatePlaceholders(SlotEntry.toString(i)));
-        char possibleCharacter = (itemName == null || itemName.isEmpty() ? i.getItem().getType().toString() : itemName).toUpperCase().charAt(0);
+        String itemName = ChatColor.stripColor(Utils.chat(TranslationManager.translatePlaceholders(SlotEntry.toString(i))));
+        char possibleCharacter = (itemName.isEmpty() ? i.getItem().getType().toString() : itemName).toUpperCase().charAt(0);
         if (usedChars.contains(String.valueOf(possibleCharacter))){
             possibleCharacter = i.getItem().getType().toString().toUpperCase().charAt(0);
             if (usedChars.contains(String.valueOf(possibleCharacter))) {

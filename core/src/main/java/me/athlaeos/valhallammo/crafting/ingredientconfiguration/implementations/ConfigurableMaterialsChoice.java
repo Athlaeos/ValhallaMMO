@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 public class ConfigurableMaterialsChoice extends RecipeOption implements IngredientChoice {
-    private final Collection<Material> validChoices = new HashSet<>();
+    private Collection<Material> validChoices = new HashSet<>();
 
     @Override
     public String getName() {
@@ -100,5 +100,14 @@ public class ConfigurableMaterialsChoice extends RecipeOption implements Ingredi
     @Override
     public String ingredientDescription(ItemStack base) {
         return String.join("/", validChoices.stream().map(m -> StringUtils.toPascalCase(m.toString().replace("_", " "))).collect(Collectors.toSet()));
+    }
+
+    public ConfigurableMaterialsChoice setValidChoices(Collection<Material> validChoices) {
+        this.validChoices = validChoices;
+        return this;
+    }
+
+    public Collection<Material> getValidChoices() {
+        return validChoices;
     }
 }

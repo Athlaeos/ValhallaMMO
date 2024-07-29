@@ -155,7 +155,7 @@ public class ItemUtils {
         equipmentClassTranslation.put(EquipmentClass.OTHER, "ingredient_any_other");
         equipmentClassTranslation.put(EquipmentClass.TRINKET, "ingredient_any_trinket");
 
-        Arrays.stream(Material.values()).filter(m -> !m.isAir()).forEach(nonAirMaterials::add);
+        Arrays.stream(Material.values()).filter(m -> !m.isAir() && m.isItem()).forEach(nonAirMaterials::add);
         nonAirMaterialsArray = nonAirMaterials.toArray(new Material[0]);
     }
 

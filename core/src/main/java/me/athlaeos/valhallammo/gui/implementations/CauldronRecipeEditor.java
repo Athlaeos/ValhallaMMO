@@ -418,10 +418,10 @@ public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetR
 
         if (!tinker || timedRecipe) inventory.setItem(resultIndex, result.clone());
         else {
-            inventory.setItem(resultIndex, new ItemBuilder(catalyst.getItem().getType()).name("&dTinkered Catalyst").get());
+            inventory.setItem(resultIndex, new ItemBuilder(catalyst.getItem()).name("&dTinkered Catalyst").get());
         }
 
-        if (!timedRecipe) inventory.setItem(catalystIndex, new ItemBuilder(catalyst.getItem().getType())
+        if (!timedRecipe) inventory.setItem(catalystIndex, new ItemBuilder(catalyst.getItem())
                 .name("&f" + SlotEntry.toString(catalyst))
                 .lore(SlotEntry.getOptionLore(catalyst)).get());
         else inventory.setItem(catalystIndex, new ItemBuilder(cookTimeButton)

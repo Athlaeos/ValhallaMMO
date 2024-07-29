@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 
 public class MiningHardnessTranslationsAdd extends DynamicItemModifier {
     private final Map<Material, Material> translations = new HashMap<>();
-    private Material baseMaterial = Material.STONE;
-    private Material translationMaterial = Material.DEEPSLATE;
+    private Material baseMaterial = Material.DEEPSLATE;
+    private Material translationMaterial = Material.STONE;
 
     public MiningHardnessTranslationsAdd(String name) {
         super(name);
@@ -34,9 +34,9 @@ public class MiningHardnessTranslationsAdd extends DynamicItemModifier {
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
         if (button == 11){
-            if (!ItemUtils.isEmpty(e.getCursor()) && !e.getCursor().getType().isBlock()) baseMaterial = e.getCursor().getType();
+            if (!ItemUtils.isEmpty(e.getCursor()) && e.getCursor().getType().isBlock()) baseMaterial = e.getCursor().getType();
         } else if (button == 13){
-            if (!ItemUtils.isEmpty(e.getCursor()) && !e.getCursor().getType().isBlock()) translationMaterial = e.getCursor().getType();
+            if (!ItemUtils.isEmpty(e.getCursor()) && e.getCursor().getType().isBlock()) translationMaterial = e.getCursor().getType();
         } else if (button == 17){
             if (e.isShiftClick()) translations.clear();
             else translations.put(baseMaterial, translationMaterial);

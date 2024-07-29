@@ -18,9 +18,12 @@ profile_caching: 10000 # duration (in milliseconds) where profiles are cached in
 minimum_exp: 500 # Skill profiles with less than the given amount of EXP will not be saved at all. This is to prevent essentially empty profiles from being saved
 
 # RESOURCE PACK
+# Self hosting details
 resourcepack_port: -1
 server_ip: putiphere
 resourcepack_version: 1.0
+
+# Misc
 admin_gui_filler_removal: true # If true, admin-visible menus like recipe editor menus will have their filler material removed. Normally this filler material is here
 # to better indicate and distinguish clickable buttons and slots from non-functional slots, but if a custom GUI for example is used then this filler material is not required
 resource_pack_config_override: true # If true, certain config options are overridden by hard-coded values that work with the ValhallaMMO resource pack
@@ -145,6 +148,9 @@ item_duplication_whitelist: # The plugin features a "drop rate bonus" stat which
   - STICK
   - SUGAR
   - COAL
+
+lightning_draw_range: 128 # When lightning strikes, if the player has NEGATIVE lightning resistance, lightning spawns closer to that player depending on their lightning resistance
+# To turn this mechanic off, set range to 0
 
 skill_gap_pvp_prevention: true # If true, if two players fought each-other and their power levels are too far apart, they will not be able to fight
 skill_gap_pvp_level: 20 # The maximum level difference allowed until players are able to fight each-other again

@@ -146,13 +146,19 @@ permissions:
     description: "Access to the /valhalla reset command, which soft/hard resets someone's ValhallaMMO progress."
   valhalla.reset:
     default: op
-    description: "Access to the /valhalla reset command, which allows the user to only hard reset their own progress"
+    description: "Access to the /valhalla reset command, which allows the user to only hard reset their own progress."
   valhalla.ignorediminishingreturns:
     default: false
     description: "Allows the user to bypass diminishing returns on EXP gain."
   valhalla.ignorecooldowns:
     default: false
     description: "Allows the user the use abilities freely, cooldown is not applied."
+  valhalla.import:
+    default: op
+    description: "Access to the /valhalla import comamnd, which allows the user to import ValhallaMMO content from a file."
+  valhalla.export:
+    default: op
+    description: "Access to the /valhalla export comamnd, which allows the user to export your ValhallaMMO content to a file."
   valhalla.globalbuffs:
     default: op
     description: "Access to the /valhalla globalbuff command, which allows the user to apply global status effects"

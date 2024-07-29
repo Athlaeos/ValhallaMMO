@@ -126,9 +126,12 @@ public class SmithingItemPropertyManager {
     }
 
     public static void addTag(ItemMeta i, Integer tag, Integer level){
-        Map<Integer, Integer> tags = getTags(i);
-        tags.put(tag, level);
-        setTags(i, tags);
+        if (level <= 0) removeTag(i, tag);
+        else {
+            Map<Integer, Integer> tags = getTags(i);
+            tags.put(tag, level);
+            setTags(i, tags);
+        }
     }
 
     public static void removeTag(ItemMeta i, Integer tag){

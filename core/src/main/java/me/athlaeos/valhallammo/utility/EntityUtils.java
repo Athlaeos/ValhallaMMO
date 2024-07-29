@@ -164,7 +164,7 @@ public class EntityUtils {
         } else {
             int exp = getTotalExperience(player);
             if (exp >= amount) {
-                setTotalExperience(player, exp - amount);
+                setTotalExperience(player, exp + amount);
                 return true;
             } else return false;
         }

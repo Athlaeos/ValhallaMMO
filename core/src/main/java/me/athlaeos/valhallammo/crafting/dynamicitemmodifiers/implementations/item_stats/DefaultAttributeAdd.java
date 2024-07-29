@@ -168,12 +168,17 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
         this.hidden = hidden;
     }
 
+    public void setAdd(boolean add) {
+        this.add = add;
+    }
+
     @Override
     public DynamicItemModifier copy() {
         DefaultAttributeAdd m = new DefaultAttributeAdd(getName(), attribute, smallIncrement, bigIncrement, icon);
         m.setOperation(this.operation);
         m.setValue(this.value);
         m.setHidden(this.hidden);
+        m.setAdd(this.add);
         m.setPriority(this.getPriority());
         return m;
     }

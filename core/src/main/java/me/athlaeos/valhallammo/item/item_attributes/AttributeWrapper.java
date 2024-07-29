@@ -127,7 +127,7 @@ public abstract class AttributeWrapper {
 
     public AttributeWrapper setValue(double value) { this.value = value; return this; }
     public AttributeWrapper setOperation(AttributeModifier.Operation operation) { this.operation = operation; return this; }
-    public void setHidden(boolean hidden) { isHidden = hidden; }
+    public AttributeWrapper setHidden(boolean hidden) { isHidden = hidden; return this; }
 
     public String getLoreDisplay(){
         return null;

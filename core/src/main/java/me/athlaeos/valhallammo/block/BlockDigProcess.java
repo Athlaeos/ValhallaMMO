@@ -51,13 +51,13 @@ public class BlockDigProcess {
         if (instantBlockBreakerTask != null && !done) return;
         done = false;
         instantBlockBreakerTask = ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-            new HashMap<>(blocksToBreakInstantly).forEach((u, l) -> {
-                Player p = ValhallaMMO.getInstance().getServer().getPlayer(u);
+            new HashSet<>(blocksToBreakInstantly.entrySet()).forEach(e -> {
+                Player p = ValhallaMMO.getInstance().getServer().getPlayer(e.getKey());
                 if (p == null || !p.isOnline()){
-                    blocksToBreakInstantly.remove(u);
+                    blocksToBreakInstantly.remove(e.getKey());
                     return;
                 }
-                Block b = l.getBlock();
+                Block b = e.getValue().getBlock();
 
                 ItemBuilder tool = null;
                 if (ItemUtils.isEmpty(p.getInventory().getItemInMainHand())) {

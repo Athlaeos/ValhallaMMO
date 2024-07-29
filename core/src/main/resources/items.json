@@ -37,6 +37,62 @@
     ]
   },
   {
+    "id": "hot_gold",
+    "item": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAKR09MRF9JTkdPVHNxAH4AAHNxAH4AA3VxAH4ABgAA\r\nAANxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXVxAH4ABgAAAAN0AAhJdGVtTWV0YXQA\r\nClVOU1BFQ0lGSUN0AJ17ImV4dHJhIjpbeyJ0ZXh0IjoiPCJ9LHsiY2xpY2tFdmVudCI6eyJhY3Rp\r\nb24iOiJvcGVuX3VybCIsInZhbHVlIjoiaHR0cDovL2xhbmcubWF0ZXJpYWwtaG90LWdvbGQtaW5n\r\nb3Q+In0sInRleHQiOiJsYW5nLm1hdGVyaWFsLWhvdC1nb2xkLWluZ290PiJ9XSwidGV4dCI6IiJ9\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
+        "DATA": {
+          "customModelData": 9827320,
+          "name": "custom_model_data",
+          "priority": "NEUTRAL"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hot_iron",
+    "item": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAKSVJPTl9JTkdPVHNxAH4AAHNxAH4AA3VxAH4ABgAA\r\nAANxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXVxAH4ABgAAAAN0AAhJdGVtTWV0YXQA\r\nClVOU1BFQ0lGSUN0AJ17ImV4dHJhIjpbeyJ0ZXh0IjoiPCJ9LHsiY2xpY2tFdmVudCI6eyJhY3Rp\r\nb24iOiJvcGVuX3VybCIsInZhbHVlIjoiaHR0cDovL2xhbmcubWF0ZXJpYWwtaG90LWlyb24taW5n\r\nb3Q+In0sInRleHQiOiJsYW5nLm1hdGVyaWFsLWhvdC1pcm9uLWluZ290PiJ9XSwidGV4dCI6IiJ9\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
+        "DATA": {
+          "customModelData": 9827320,
+          "name": "custom_model_data",
+          "priority": "NEUTRAL"
+        }
+      }
+    ]
+  },
+  {
+    "id": "unstable_diamond",
+    "item": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAANx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXVxAH4ABgAAAAN0AAhJdGVtTWV0YXQAClVO\r\nU1BFQ0lGSUN0AKF7ImV4dHJhIjpbeyJ0ZXh0IjoiPCJ9LHsiY2xpY2tFdmVudCI6eyJhY3Rpb24i\r\nOiJvcGVuX3VybCIsInZhbHVlIjoiaHR0cDovL2xhbmcubWF0ZXJpYWwtdW5zdGFibGUtZGlhbW9u\r\nZD4ifSwidGV4dCI6ImxhbmcubWF0ZXJpYWwtdW5zdGFibGUtZGlhbW9uZD4ifV0sInRleHQiOiIi\r\nfQ==\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
+        "DATA": {
+          "customModelData": 9827320,
+          "name": "custom_model_data",
+          "priority": "NEUTRAL"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hot_netherite",
+    "item": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX0lOR09Uc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAAA3EAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldXEAfgAGAAAAA3QACEl0ZW1N\r\nZXRhdAAKVU5TUEVDSUZJQ3QAp3siZXh0cmEiOlt7InRleHQiOiI8In0seyJjbGlja0V2ZW50Ijp7\r\nImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFuZy5tYXRlcmlhbC1ob3QtbmV0\r\naGVyaXRlLWluZ290PiJ9LCJ0ZXh0IjoibGFuZy5tYXRlcmlhbC1ob3QtbmV0aGVyaXRlLWluZ290\r\nPiJ9XSwidGV4dCI6IiJ9\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
+        "DATA": {
+          "customModelData": 9827320,
+          "name": "custom_model_data",
+          "priority": "NEUTRAL"
+        }
+      }
+    ]
+  },
+  {
     "id": "chainmail_helmet",
     "item": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0ABBDSEFJTk1BSUxfSEVMTUVU\r\n",
     "modifiers": [

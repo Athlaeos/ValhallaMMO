@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class SmithingTagsLevelRequirement extends DynamicItemModifier {
-    private final Collection<LevelRequirement> tags = new HashSet<>();
+    private Collection<LevelRequirement> tags = new HashSet<>();
     private int tag = 0;
     private int level = 0;
     private boolean lower;
@@ -30,12 +30,13 @@ public class SmithingTagsLevelRequirement extends DynamicItemModifier {
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         Map<Integer, Integer> tagsToCheck = SmithingItemPropertyManager.getTags(outputItem.getMeta());
         for (LevelRequirement tag : tags){
-            if (!tagsToCheck.containsKey(tag.tag)) {
+            int tagLevel = tagsToCheck.getOrDefault(tag.tag, 0);
+            if (tagLevel <= 0 && !tag.lower) {
                 String message = SmithingItemPropertyManager.getTagRequiredErrors().get(tag.tag);
                 failedRecipe(outputItem, Objects.requireNonNullElseGet(message, () -> TranslationManager.getTranslation("modifier_warning_required_smithing_tag")));
                 break;
             } else {
-                if ((tag.lower && tagsToCheck.get(tag.tag) > tag.level) || (!tag.lower && tagsToCheck.get(tag.tag) < tag.level)) {
+                if ((tag.lower && tagLevel > tag.level) || (!tag.lower && tagLevel < tag.level)) {
                     String message = SmithingItemPropertyManager.getTagRequiredErrors().get(tag.tag);
                     failedRecipe(outputItem, Objects.requireNonNullElseGet(message, () -> TranslationManager.getTranslation("modifier_warning_required_smithing_tag").replace("%level%", String.valueOf(tag.level))));
                     break;
@@ -142,7 +143,7 @@ public class SmithingTagsLevelRequirement extends DynamicItemModifier {
 
     @Override
     public String getActiveDescription() {
-        return "&fChecks if the item lacks any of the given tags: /n&e" + (tags.isEmpty() ? List.of("&cNone") : tags.stream().map(t -> {
+        return "&fChecks if the item lacks any of the given tags: /n &e" + (tags.isEmpty() ? List.of("&cNone") : tags.stream().map(t -> {
             String lore = SmithingItemPropertyManager.getTagLore(t.tag);
             if (lore == null) lore = String.valueOf(t.tag);
             return "&e" + lore + (t.lower ? " &cLower than " : " &aHigher than ") + StringUtils.toRoman(t.level);
@@ -166,6 +167,10 @@ public class SmithingTagsLevelRequirement extends DynamicItemModifier {
         return m;
     }
 
+    public void setTags(Collection<LevelRequirement> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String parseCommand(CommandSender executor, String[] args) {
         return "Honestly, this modifier is too complex to even want to use manually";
@@ -182,5 +187,22 @@ public class SmithingTagsLevelRequirement extends DynamicItemModifier {
         return 1;
     }
 
-    public record LevelRequirement(int tag, int level, boolean lower){}
+    public static class LevelRequirement{
+        private int tag;
+        private int level;
+        private boolean lower;
+        public LevelRequirement(int tag, int level, boolean lower){
+            this.tag = tag;
+            this.level = level;
+            this.lower = lower;
+        }
+
+        public int getTag() { return tag; }
+        public int getLevel() { return level; }
+        public boolean isLower() { return lower; }
+
+        public void setLevel(int level) { this.level = level; }
+        public void setLower(boolean lower) { this.lower = lower; }
+        public void setTag(int tag) { this.tag = tag; }
+    }
 }

@@ -63,7 +63,7 @@ public class ImmersiveRecipeCategory extends RecipeCategory{
 
             recipe.getModifiers().forEach(m -> lore.addAll(StringUtils.separateStringIntoLines(m.getActiveDescription(), 40)));
 
-            icons.add(new ItemBuilder(recipe.getResult())
+            icons.add(new ItemBuilder(recipe.tinker() ? recipe.getTinkerInput().getItem() : recipe.getResult())
                     .name("&f" + recipe.getName())
                     .lore(lore)
                     .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)

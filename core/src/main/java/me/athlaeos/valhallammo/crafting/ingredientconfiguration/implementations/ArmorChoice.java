@@ -58,7 +58,7 @@ public class ArmorChoice extends RecipeOption implements IngredientChoice {
 
     @Override
     public boolean matches(ItemStack i1, ItemStack i2) {
-        return EquipmentClass.isArmor(ItemUtils.getItemMeta(i1));
+        return EquipmentClass.isArmor(ItemUtils.getItemMeta(i2));
     }
 
     @Override

@@ -110,6 +110,7 @@ public class EntityDamagedListener implements Listener {
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> customDamageCauses.remove(l.getUniqueId()), 1L);
                     return;
                 }
+                double previousHealth = l.getHealth();
                 if (customDamage > 0) DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage);
                 if (l.getHealth() > 0) l.setHealth(0.0001); // attempt to ensure that this attack will kill
                 if (e.getFinalDamage() == 0) { // if player wouldn't have died even with this little health, force a death (e.g. with resistance V)
@@ -118,7 +119,10 @@ public class EntityDamagedListener implements Listener {
                         if (l.getHealth() > 0) l.setHealth(0);
                     }, 1L);
                 } else {
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> customDamageCauses.remove(l.getUniqueId()), 1L);
+                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                        if (e.isCancelled()) l.setHealth(previousHealth); // if the event was cancelled at this point, restore health to what it was previously
+                        customDamageCauses.remove(l.getUniqueId());
+                    }, 1L);
                 }
             }
         }

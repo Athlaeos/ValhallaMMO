@@ -119,7 +119,7 @@ public class SmithingTagsCancelIfPresent extends DynamicItemModifier {
     public DynamicItemModifier copy() {
         SmithingTagsCancelIfPresent m = new SmithingTagsCancelIfPresent(getName());
         m.getTags().addAll(this.tags);
-        m.setPriority(m.getPriority());
+        m.setPriority(this.getPriority());
         return m;
     }
 

@@ -19,6 +19,10 @@ public class RecipeOptionRegistry {
         registerOption(new PotionChoice());
         registerOption(new MaterialWithIDChoice());
         registerOption(new PotionMatchEffectsChoice());
+        registerOption(new ToolArmorChoice());
+        registerOption(new ToolChoice());
+        registerOption(new WeaponChoice());
+        registerOption(new MeleeWeaponChoice());
     }
 
     public static void registerOption(RecipeOption c) {

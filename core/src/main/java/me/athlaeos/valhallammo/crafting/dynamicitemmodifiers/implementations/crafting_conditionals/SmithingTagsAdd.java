@@ -45,7 +45,7 @@ public class SmithingTagsAdd extends DynamicItemModifier {
         if (button == 11)
             tag = Math.max(0, tag + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 10 : 1)));
         else if (button == 13)
-            level = Math.max(1, level + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 10 : 1)));
+            level += ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 10 : 1));
         else if (button == 17){
             if (e.isShiftClick()) newTags.clear();
             else newTags.put(tag, level);
@@ -74,8 +74,11 @@ public class SmithingTagsAdd extends DynamicItemModifier {
                         .get()).map(Set.of(
                 new Pair<>(13,
                         new ItemBuilder(Material.STRUCTURE_VOID)
-                                .name("&fConfirm Tag")
-                                .lore("&fCurrently selected: &e" + tag + " " + StringUtils.toRoman(newTags.getOrDefault(tag, 1)),
+                                .name("&fTag Level")
+                                .lore("&fTag &e" + tag + "&7 (" + Objects.requireNonNullElse(
+                                                SmithingItemPropertyManager.getTagLore(tag),
+                                                "invisible") + "&7) " + StringUtils.toRoman(level),
+                                        "&fLevel is added to any pre-existing tag level",
                                         "&6Click to add selected tag to",
                                         "&6the list.",
                                         "&6Shift-Click to clear list",
@@ -85,7 +88,7 @@ public class SmithingTagsAdd extends DynamicItemModifier {
                 new Pair<>(17,
                         new ItemBuilder(Material.STRUCTURE_VOID)
                                 .name("&fConfirm Tag")
-                                .lore("&fCurrently selected: &e" + tag + " " + StringUtils.toRoman(newTags.getOrDefault(tag, 1)),
+                                .lore("&fCurrently selected: &e" + tag + " " + StringUtils.toRoman(level),
                                         "&6Click to add selected tag to",
                                         "&6the list.",
                                         "&6Shift-Click to clear list",
@@ -166,5 +169,9 @@ public class SmithingTagsAdd extends DynamicItemModifier {
     @Override
     public int commandArgsRequired() {
         return 1;
+    }
+
+    public void setNewTags(Map<Integer, Integer> newTags) {
+        this.newTags = newTags;
     }
 }

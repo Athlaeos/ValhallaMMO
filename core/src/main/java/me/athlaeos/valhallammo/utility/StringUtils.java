@@ -36,7 +36,8 @@ public class StringUtils {
     }
 
     public static String toRoman(int number) {
-        if (number <= 0) return "0";
+        if (number < 0) return "-" + toRoman(-number);
+        if (number == 0) return "0";
         if (number == 1) return "I";
         int l = romanNumeralsMap.floorKey(number);
         if (number == l) return romanNumeralsMap.get(number);

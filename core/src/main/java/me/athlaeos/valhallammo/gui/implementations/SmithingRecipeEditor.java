@@ -429,7 +429,7 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
         inventory.setItem(baseIndex, null);
         inventory.setItem(additionIndex, null);
         if (!tinker) inventory.setItem(resultIndex, null);
-        else inventory.setItem(resultIndex, new ItemBuilder(base.getItem().getType()).name("&dTinkered Base").get());
+        else inventory.setItem(resultIndex, new ItemBuilder(base.getItem()).name("&dTinkered Base").get());
 
         List<String> templateLore = SlotEntry.getOptionLore(template);
         List<String> baseLore = SlotEntry.getOptionLore(base);

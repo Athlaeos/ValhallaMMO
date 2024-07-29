@@ -57,6 +57,8 @@ public class LootTableRegistry {
     private static String fishingLootTableTreasure;
     private static String fishingLootTableJunk;
 
+    private static LootTableConfiguration lootTableConfiguration;
+
     @SuppressWarnings("all")
     public static void loadFiles(){
         File f = new File(ValhallaMMO.getInstance().getDataFolder(), "/loot_table_config.json");
@@ -66,12 +68,8 @@ public class LootTableRegistry {
         try (BufferedReader lootConfigReader = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))) {
             LootTableConfiguration configuration = gson.fromJson(lootConfigReader, LootTableConfiguration.class);
             if (configuration == null) configuration = new LootTableConfiguration();
-            blockLootTables.putAll(configuration.getBlockLootTables());
-            entityLootTables.putAll(configuration.getEntityLootTables());
-            lootTableAdditions.putAll(configuration.getLootTableAdditions());
-            fishingLootTableFish = configuration.getFishingLootTableFish();
-            fishingLootTableJunk = configuration.getFishingLootTableJunk();
-            fishingLootTableTreasure = configuration.getFishingLootTableTreasure();
+            lootTableConfiguration = configuration;
+            applyConfiguration(configuration);
         } catch (IOException exception){
             ValhallaMMO.logSevere(exception.getMessage());
             exception.printStackTrace();
@@ -92,10 +90,23 @@ public class LootTableRegistry {
         }
     }
 
+    public static void applyConfiguration(LootTableConfiguration configuration){
+        blockLootTables.putAll(configuration.getBlockLootTables());
+        entityLootTables.putAll(configuration.getEntityLootTables());
+        lootTableAdditions.putAll(configuration.getLootTableAdditions());
+        if (configuration.getFishingLootTableFish() != null) fishingLootTableFish = configuration.getFishingLootTableFish();
+        if (configuration.getFishingLootTableJunk() != null) fishingLootTableJunk = configuration.getFishingLootTableJunk();
+        if (configuration.getFishingLootTableTreasure() != null) fishingLootTableTreasure = configuration.getFishingLootTableTreasure();
+    }
+
+    public static LootTableConfiguration getLootTableConfiguration() {
+        return lootTableConfiguration;
+    }
+
     public static void loadFromFile(File file){
         try (BufferedReader tableReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             LootTable table = gson.fromJson(tableReader, LootTable.class);
-            registerLootTable(table);
+            registerLootTable(table, true);
         } catch (IOException exception){
             ValhallaMMO.logSevere(exception.getMessage());
             exception.printStackTrace();
@@ -190,8 +201,8 @@ public class LootTableRegistry {
         }
     }
 
-    public static void registerLootTable(LootTable table){
-        lootTables.put(table.getKey(), table);
+    public static void registerLootTable(LootTable table, boolean overwrite){
+        if (overwrite || !lootTables.containsKey(table.getKey())) lootTables.put(table.getKey(), table);
     }
 
     public static LootTable getLootTable(Material block){

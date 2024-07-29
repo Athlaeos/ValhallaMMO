@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.persistence;
 
 import com.google.gson.*;
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
@@ -23,7 +24,12 @@ public class ItemStackGSONAdapter implements JsonSerializer<ItemStack>, JsonDese
 
     @Override
     public ItemStack deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
-        return convert(Catch.catchOrElse(() -> ItemUtils.deserialize(jsonElement.getAsString()), null));
+        try {
+            return ItemUtils.deserialize(jsonElement.getAsString());
+        } catch (Exception | Error e){
+            ValhallaMMO.logSevere("Could not load ItemStack: " + e.getMessage());
+            return null;
+        }
     }
 
     /**

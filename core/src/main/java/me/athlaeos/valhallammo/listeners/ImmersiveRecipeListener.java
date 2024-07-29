@@ -67,11 +67,15 @@ public class ImmersiveRecipeListener implements Listener {
             Collection<ImmersiveCraftingRecipe> tinkerRecipes = getTinkerRecipes(p, clicked.getType());
             if (tinkerRecipes.size() == 1) recipe = tinkerRecipes.stream().findFirst().orElse(null);
             else Timer.setCooldown(p.getUniqueId(), 1000, "delay_tinkering_attempts");
-            if (recipe != null && !recipe.getIngredients().isEmpty()){
-                if (p.getGameMode() != GameMode.CREATIVE && ItemUtils.timesContained(Arrays.asList(p.getInventory().getStorageContents()), recipe.getIngredients(), recipe.getMetaRequirement().getChoice()) <= 0){
-                    p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Utils.chat(TranslationManager.getTranslation("error_crafting_no_ingredients"))));
-                    Timer.setCooldown(p.getUniqueId(), 500, "delay_crafting_attempts");
-                    return;
+            if (recipe != null){
+                if (!recipe.getTinkerInput().getOption().matches(recipe.getTinkerInput().getItem(), heldItem)){
+                    recipe = selectedImmersiveRecipe.get(p.getUniqueId());
+                } else if (!recipe.getIngredients().isEmpty()) {
+                    if (p.getGameMode() != GameMode.CREATIVE && ItemUtils.timesContained(Arrays.asList(p.getInventory().getStorageContents()), recipe.getIngredients(), recipe.getMetaRequirement().getChoice()) <= 0){
+                        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Utils.chat(TranslationManager.getTranslation("error_crafting_no_ingredients"))));
+                        Timer.setCooldown(p.getUniqueId(), 500, "delay_crafting_attempts");
+                        return;
+                    }
                 }
             }
         }

@@ -93,13 +93,13 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("THROWING_VELOCITY", StatFormat.PERCENTILE_BASE_1_P1, "\uEE38", (i) -> i >= 0).addModifier(Material.SNOWBALL));
         register(new AttributeDisplayWrapper("SMITHING_QUALITY", StatFormat.INT, "\uEE39", (i) -> i >= 0).addModifier(Material.ANVIL, 1, 10));
         register(new AttributeDisplayWrapper("SMITHING_QUALITY_FRACTION", StatFormat.PERCENTILE_BASE_1_P1, "\uEE3A", (i) -> i >= 0).addModifier(Material.ANVIL));
-        register(new AttributeDisplayWrapper("MINING_RARE_DROPS", StatFormat.FLOAT_P1, "\uEE3B", (i) -> i >= 0).addModifier(Material.GOLDEN_PICKAXE));
+        register(new AttributeDisplayWrapper("MINING_RARE_DROPS", StatFormat.FLOAT_P1, "\uEE3B", (i) -> i >= 0).addModifier(Material.GOLDEN_PICKAXE, 0.1, 1));
         register(new AttributeDisplayWrapper("MINING_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE3C", (i) -> i >= 0).addModifier(Material.IRON_PICKAXE));
-        register(new AttributeDisplayWrapper("WOODCUTTING_RARE_DROPS", StatFormat.FLOAT_P1, "\uEE3D", (i) -> i >= 0).addModifier(Material.GOLDEN_AXE));
+        register(new AttributeDisplayWrapper("WOODCUTTING_RARE_DROPS", StatFormat.FLOAT_P1, "\uEE3D", (i) -> i >= 0).addModifier(Material.GOLDEN_AXE, 0.1, 1));
         register(new AttributeDisplayWrapper("WOODCUTTING_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE3E", (i) -> i >= 0).addModifier(Material.IRON_AXE));
-        register(new AttributeDisplayWrapper("DIGGING_RARE_DROPS", StatFormat.FLOAT_P1, "\uEE3F", (i) -> i >= 0).addModifier(Material.GOLDEN_SHOVEL));
+        register(new AttributeDisplayWrapper("DIGGING_RARE_DROPS", StatFormat.FLOAT_P1, "\uEE3F", (i) -> i >= 0).addModifier(Material.GOLDEN_SHOVEL, 0.1, 1));
         register(new AttributeDisplayWrapper("DIGGING_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE40", (i) -> i >= 0).addModifier(Material.IRON_SHOVEL));
-        register(new AttributeDisplayWrapper("FARMING_RARE_DROPS", StatFormat.FLOAT_P1, "\uEE41", (i) -> i >= 0).addModifier(Material.GOLDEN_HOE));
+        register(new AttributeDisplayWrapper("FARMING_RARE_DROPS", StatFormat.FLOAT_P1, "\uEE41", (i) -> i >= 0).addModifier(Material.GOLDEN_HOE, 0.1, 1));
         register(new AttributeDisplayWrapper("FARMING_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE42", (i) -> i >= 0).addModifier(Material.IRON_HOE));
         register(new AttributeDisplayWrapper("FISHING_LUCK", StatFormat.FLOAT_P1, "\uEE43", (i) -> i >= 0).addModifier(Material.FISHING_ROD, 0.1, 1));
         register(new AttributeDisplayWrapper("SKILL_EXP_GAIN", StatFormat.PERCENTILE_BASE_1_P1, "\uEE44", (i) -> i >= 0).addModifier(Material.BOOK));
@@ -165,7 +165,7 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("SPLASH_INTENSITY_MINIMUM", StatFormat.PERCENTILE_BASE_1_P1, "\uEE94", (i) -> i >= 0).addModifier(Material.SPLASH_POTION));
         register(new AttributeDisplayWrapper("ENTITY_RARE_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEE95", (i) -> i >= 0).addModifier(Material.CHEST));
         register(new AttributeDisplayWrapper("DIG_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE96", (i) -> i >= 0).addModifier(Material.DIAMOND_PICKAXE));
-        register(new AttributeDisplayWrapper("MINING_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE97", (i) -> i >= 0).addModifier(Material.GOLDEN_PICKAXE));
+        register(new AttributeDisplayWrapper("MINING_SPEED", StatFormat.FLOAT_P1, "\uEE97", (i) -> i >= 0).addModifier(Material.GOLDEN_PICKAXE, 0.1, 1));
         // \uEE98 is occupied by fall damage icon
         register(new AttributeDisplayWrapper("CROSSBOW_MAGAZINE", StatFormat.INT, "\uEE99", (i) -> i >= 0).addModifier(Material.CROSSBOW, 1, 5));
 
@@ -182,40 +182,40 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("LIFE_STEAL", StatFormat.PERCENTILE_BASE_1_P2, "\uEE9F", (i) -> i >= 0).addModifier(Material.GHAST_TEAR, 0.001, 0.01));
 
         addVanillaStat(Material.WOODEN_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
-        addVanillaStat(Material.WOODEN_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2));
-        addVanillaStat(Material.WOODEN_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1));
-        addVanillaStat(Material.WOODEN_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(7), getCopy("GENERIC_ATTACK_SPEED").setValue(0.8));
-        addVanillaStat(Material.WOODEN_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(1));
+        addVanillaStat(Material.WOODEN_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2), getCopy("MINING_SPEED").setValue(2).setHidden(true));
+        addVanillaStat(Material.WOODEN_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1), getCopy("MINING_SPEED").setValue(2).setHidden(true));
+        addVanillaStat(Material.WOODEN_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(7), getCopy("GENERIC_ATTACK_SPEED").setValue(0.8), getCopy("MINING_SPEED").setValue(2).setHidden(true));
+        addVanillaStat(Material.WOODEN_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(1), getCopy("MINING_SPEED").setValue(2).setHidden(true));
 
         addVanillaStat(Material.STONE_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(5), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
-        addVanillaStat(Material.STONE_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(3), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2));
-        addVanillaStat(Material.STONE_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(3.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1));
-        addVanillaStat(Material.STONE_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(9), getCopy("GENERIC_ATTACK_SPEED").setValue(0.8));
-        addVanillaStat(Material.STONE_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(2));
+        addVanillaStat(Material.STONE_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(3), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2), getCopy("MINING_SPEED").setValue(4).setHidden(true));
+        addVanillaStat(Material.STONE_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(3.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1), getCopy("MINING_SPEED").setValue(4).setHidden(true));
+        addVanillaStat(Material.STONE_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(9), getCopy("GENERIC_ATTACK_SPEED").setValue(0.8), getCopy("MINING_SPEED").setValue(4).setHidden(true));
+        addVanillaStat(Material.STONE_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(2), getCopy("MINING_SPEED").setValue(4).setHidden(true));
 
         addVanillaStat(Material.GOLDEN_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
-        addVanillaStat(Material.GOLDEN_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2));
-        addVanillaStat(Material.GOLDEN_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1));
-        addVanillaStat(Material.GOLDEN_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(7), getCopy("GENERIC_ATTACK_SPEED").setValue(0.8));
-        addVanillaStat(Material.GOLDEN_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(1));
+        addVanillaStat(Material.GOLDEN_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2), getCopy("MINING_SPEED").setValue(12).setHidden(true));
+        addVanillaStat(Material.GOLDEN_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1), getCopy("MINING_SPEED").setValue(12).setHidden(true));
+        addVanillaStat(Material.GOLDEN_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(7), getCopy("GENERIC_ATTACK_SPEED").setValue(0.8), getCopy("MINING_SPEED").setValue(12).setHidden(true));
+        addVanillaStat(Material.GOLDEN_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(1), getCopy("MINING_SPEED").setValue(12).setHidden(true));
 
         addVanillaStat(Material.IRON_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(6), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
-        addVanillaStat(Material.IRON_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2));
-        addVanillaStat(Material.IRON_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1));
-        addVanillaStat(Material.IRON_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(9), getCopy("GENERIC_ATTACK_SPEED").setValue(0.9));
-        addVanillaStat(Material.IRON_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(3));
+        addVanillaStat(Material.IRON_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2), getCopy("MINING_SPEED").setValue(6).setHidden(true));
+        addVanillaStat(Material.IRON_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1), getCopy("MINING_SPEED").setValue(6).setHidden(true));
+        addVanillaStat(Material.IRON_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(9), getCopy("GENERIC_ATTACK_SPEED").setValue(0.9), getCopy("MINING_SPEED").setValue(6).setHidden(true));
+        addVanillaStat(Material.IRON_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(3), getCopy("MINING_SPEED").setValue(6).setHidden(true));
 
         addVanillaStat(Material.DIAMOND_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(7), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
-        addVanillaStat(Material.DIAMOND_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(5), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2));
-        addVanillaStat(Material.DIAMOND_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(5.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1));
-        addVanillaStat(Material.DIAMOND_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(9), getCopy("GENERIC_ATTACK_SPEED").setValue(1));
-        addVanillaStat(Material.DIAMOND_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(4));
+        addVanillaStat(Material.DIAMOND_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(5), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2), getCopy("MINING_SPEED").setValue(8).setHidden(true));
+        addVanillaStat(Material.DIAMOND_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(5.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1), getCopy("MINING_SPEED").setValue(8).setHidden(true));
+        addVanillaStat(Material.DIAMOND_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(9), getCopy("GENERIC_ATTACK_SPEED").setValue(1), getCopy("MINING_SPEED").setValue(8).setHidden(true));
+        addVanillaStat(Material.DIAMOND_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(4), getCopy("MINING_SPEED").setValue(8).setHidden(true));
 
         addVanillaStat(Material.NETHERITE_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(8), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
-        addVanillaStat(Material.NETHERITE_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(6), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2));
-        addVanillaStat(Material.NETHERITE_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(6.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1));
-        addVanillaStat(Material.NETHERITE_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(10), getCopy("GENERIC_ATTACK_SPEED").setValue(1));
-        addVanillaStat(Material.NETHERITE_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(4));
+        addVanillaStat(Material.NETHERITE_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(6), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2), getCopy("MINING_SPEED").setValue(9).setHidden(true));
+        addVanillaStat(Material.NETHERITE_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(6.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1), getCopy("MINING_SPEED").setValue(9).setHidden(true));
+        addVanillaStat(Material.NETHERITE_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(10), getCopy("GENERIC_ATTACK_SPEED").setValue(1), getCopy("MINING_SPEED").setValue(9).setHidden(true));
+        addVanillaStat(Material.NETHERITE_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(4), getCopy("MINING_SPEED").setValue(9).setHidden(true));
 
         addVanillaStat(Material.LEATHER_HELMET, getCopy("GENERIC_ARMOR").setValue(1));
         addVanillaStat(Material.LEATHER_CHESTPLATE, getCopy("GENERIC_ARMOR").setValue(3));

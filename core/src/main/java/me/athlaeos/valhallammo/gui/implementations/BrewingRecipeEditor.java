@@ -392,7 +392,7 @@ public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
         inventory.setItem(ingredientIndex, null);
         for (Integer i : applyOnIndexes) inventory.setItem(i, null);
         if (!tinker) inventory.setItem(resultIndex, null);
-        else inventory.setItem(resultIndex, new ItemBuilder(applyOn.getItem().getType()).name("&dTinkered Base").get());
+        else inventory.setItem(resultIndex, new ItemBuilder(applyOn.getItem()).name("&dTinkered Base").get());
 
         List<String> ingredientLore = SlotEntry.getOptionLore(ingredient);
         List<String> applyOnLore = SlotEntry.getOptionLore(applyOn);
