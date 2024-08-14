@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
@@ -13,6 +14,7 @@ import me.athlaeos.valhallammo.version.SmithingTransformRecipeWrapper;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -49,7 +51,7 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
 
     @Override
     public void registerRecipe() {
-        if (hasEquivalentVanillaSmithingRecipe(template.getItem(), base.getItem(), addition.getItem())) return; // does not need to be registered because an identical vanilla recipe already exists
+        // if (hasEquivalentVanillaSmithingRecipe(template.getItem(), base.getItem(), addition.getItem())) return; // does not need to be registered because an identical vanilla recipe already exists
         Recipe recipe = generateRecipe();
         if (ValhallaMMO.getInstance().getServer().getRecipe(key) != null) ValhallaMMO.getInstance().getServer().removeRecipe(key);
         if (recipe != null) ValhallaMMO.getInstance().getServer().addRecipe(recipe);
@@ -117,8 +119,31 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
     public void setConsumeAddition(boolean consumeAddition) { this.consumeAddition = consumeAddition; }
     public void setHiddenFromBook(boolean hiddenFromBook) { this.hiddenFromBook = hiddenFromBook; }
 
+    /**
+     * Changes an item's type if its display name contains a formatted string telling the plugin it should be turned
+     * into another item if it exists
+     * @param i the item to convert
+     * @return the converted item
+     */
+    private ItemStack convert(ItemStack i){
+        if (i == null) return null;
+        if (!i.hasItemMeta()) return i;
+        ItemMeta meta = i.getItemMeta();
+        if (meta == null) return null;
+        if (!meta.hasDisplayName()) return i;
+        String displayName = meta.getDisplayName();
+        if (!displayName.contains("REPLACEWITH:")) return i;
+        String[] args = displayName.split("REPLACEWITH:");
+        if (args.length != 2) return i;
+        Material m = Catch.catchOrElse(() -> Material.valueOf(args[1]), null);
+        if (m == null) return i;
+        return new ItemStack(m);
+    }
+
     @SuppressWarnings("deprecation")
     public SmithingRecipe generateRecipe() {
+        if (template != null) template.setExactIngredient(convert(template.getItem()));
+
         RecipeChoice t = null;
         if (template != null) t = template.getOption() == null ?
                 new RecipeChoice.MaterialChoice(template.getItem().getType()) :

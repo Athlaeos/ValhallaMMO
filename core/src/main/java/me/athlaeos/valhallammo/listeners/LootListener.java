@@ -5,15 +5,14 @@ import me.athlaeos.valhallammo.block.BlockDestructionInfo;
 import me.athlaeos.valhallammo.block.BlockExplodeBlockDestructionInfo;
 import me.athlaeos.valhallammo.block.EntityExplodeBlockDestructionInfo;
 import me.athlaeos.valhallammo.block.GenericBlockDestructionInfo;
-import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.event.BlockDestructionEvent;
 import me.athlaeos.valhallammo.event.ValhallaLootPopulateEvent;
+import me.athlaeos.valhallammo.event.ValhallaLootReplacementEvent;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.gui.implementations.LootFreeSelectionMenu;
 import me.athlaeos.valhallammo.item.CustomFlag;
@@ -21,9 +20,8 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.loot.LootEntry;
 import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
+import me.athlaeos.valhallammo.loot.ReplacementTable;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
@@ -31,13 +29,11 @@ import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.ArchaeologyListener;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PaperLootRefillHandler;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Container;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -47,19 +43,23 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.TradeSelectEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerHarvestBlockEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTables;
 import org.bukkit.loot.Lootable;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LootListener implements Listener {
 
@@ -426,6 +426,7 @@ public class LootListener implements Listener {
             if (table == null || !BlockUtils.canReward(b) || ArchaeologyListener.isBrushable(b.getType())) return false;
             LootTableRegistry.setLootTable(b, null);
             List<ItemStack> generatedLoot = LootTableRegistry.getLoot(table, context, LootTable.LootType.BREAK);
+
             ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, generatedLoot);
             ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
             if (!loottableEvent.isCancelled()){
@@ -456,44 +457,214 @@ public class LootListener implements Listener {
         if (e.getClickedBlock() == null || ValhallaMMO.isWorldBlacklisted(e.getClickedBlock().getWorld().getName()) ||
                 e.useInteractedBlock() == Event.Result.DENY || e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getHand() == EquipmentSlot.OFF_HAND) return;
         Block b = e.getClickedBlock();
-        if (!(b.getState() instanceof Lootable l) || !(b.getState() instanceof Container c) || ArchaeologyListener.isBrushable(b.getState())) return;
+        if (!(b.getState() instanceof Lootable l) || !(b.getState() instanceof Container c) || ArchaeologyListener.isBrushable(b.getState()) || l.getLootTable() == null) return;
         if (ValhallaMMO.isUsingPaperMC() && !PaperLootRefillHandler.canGenerateLoot(b.getState(), e.getPlayer())) return;
+        org.bukkit.loot.LootTable lootTable = l.getLootTable();
+
         LootTable table = LootTableRegistry.getLootTable(b, b.getType());
-        if (table == null && l.getLootTable() != null) table = LootTableRegistry.getLootTable(l.getLootTable().getKey());
-        if (table == null) return;
-        LootTableRegistry.setLootTable(b, null);
+        if (table == null) table = LootTableRegistry.getLootTable(lootTable.getKey());
         AttributeInstance luckInstance = e.getPlayer().getAttribute(Attribute.GENERIC_LUCK);
         double luck = luckInstance == null ? 0 : luckInstance.getValue();
         LootContext context = new LootContext.Builder(b.getLocation()).killer(null).lootedEntity(e.getPlayer()).lootingModifier(0).luck((float) luck).build();
-        List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.CONTAINER);
-        ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
-        if (!loottableEvent.isCancelled()){
-            switch (loottableEvent.getPreservationType()){
-                case CLEAR -> {
-                    l.setLootTable(null);
-                    b.getState().update();
-                    c.getInventory().clear();
-                }
-                case CLEAR_UNLESS_EMPTY -> {
-                    if (!loottableEvent.getDrops().isEmpty()) {
+        if (table != null) {
+            LootTableRegistry.setLootTable(b, null);
+            List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.CONTAINER);
+            ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            if (!loottableEvent.isCancelled()){
+                boolean skip = false;
+                switch (loottableEvent.getPreservationType()){
+                    case CLEAR -> {
                         l.setLootTable(null);
                         b.getState().update();
                         c.getInventory().clear();
                     }
+                    case CLEAR_UNLESS_EMPTY -> {
+                        if (!loottableEvent.getDrops().isEmpty()) {
+                            l.setLootTable(null);
+                            b.getState().update();
+                            c.getInventory().clear();
+                        }
+                    }
+                    case KEEP -> {
+                        if (loottableEvent.getDrops().isEmpty()) skip = true;
+                    }
                 }
-                case KEEP -> {
-                    if (loottableEvent.getDrops().isEmpty()) return;
+                if (!skip){
+                    List<ItemStack> drops = new ArrayList<>(loottableEvent.getDrops());
+                    for (int i = 0; i < c.getInventory().getSize() - drops.size(); i++) drops.add(null);
+                    Collections.shuffle(drops);
+                    for (int i = 0; i < drops.size(); i++) {
+                        ItemStack drop = drops.get(i);
+                        if (ItemUtils.isEmpty(drop)) continue;
+                        if (i > c.getInventory().getSize() - 1) break;
+                        c.getInventory().setItem(i, drop);
+                    }
                 }
             }
-            List<ItemStack> drops = new ArrayList<>(loottableEvent.getDrops());
-            for (int i = 0; i < c.getInventory().getSize() - drops.size(); i++) drops.add(null);
-            Collections.shuffle(drops);
-            for (int i = 0; i < drops.size(); i++) {
-                ItemStack drop = drops.get(i);
-                if (ItemUtils.isEmpty(drop)) continue;
-                if (i > c.getInventory().getSize() - 1) break;
-                c.getInventory().setItem(i, drop);
+        }
+
+        ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(lootTable.getKey());
+        ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
+        ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
+        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable == null || !event.isCancelled()){
+            for (int i = 0; i < c.getInventory().getSize(); i++){
+                ItemStack item = c.getInventory().getItem(i);
+                if (ItemUtils.isEmpty(item)) continue;
+                ItemStack replacement = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.CONTAINER, item);
+                if (!ItemUtils.isEmpty(replacement)) item = replacement;
+                ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.CONTAINER, item);
+                if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
+                if (!ItemUtils.isEmpty(item)) c.getInventory().setItem(i, item);
+            }
+        }
+    }
+
+    private final NamespacedKey VILLAGER_TRADES = new NamespacedKey(ValhallaMMO.getInstance(), "villager_trades");
+
+    private Map<Integer, ItemStack> getTrades(Entity villager){
+        Map<Integer, ItemStack> trades = new HashMap<>();
+        if (!villager.getPersistentDataContainer().has(VILLAGER_TRADES)) return trades;
+        String value = villager.getPersistentDataContainer().get(VILLAGER_TRADES, PersistentDataType.STRING);
+        if (value == null || value.isEmpty()) return trades;
+        String[] entries = value.split("<trade>");
+        for (String entry : entries){
+            String[] placement = entry.split("<index>");
+            if (placement.length < 2) continue;
+            int index = Catch.catchOrElse(() -> Integer.parseInt(placement[0]), -1);
+            if (index < 0) continue;
+            ItemStack item = Catch.catchOrElse(() -> ItemUtils.deserialize(placement[1]), null);
+            if (ItemUtils.isEmpty(item)) continue;
+            trades.put(index, item);
+        }
+        return trades;
+    }
+
+    private void setTrades(Entity villager, Map<Integer, ItemStack> trades){
+        villager.getPersistentDataContainer().set(VILLAGER_TRADES, PersistentDataType.STRING,
+                trades.entrySet().stream().map(e -> String.format("%d<index>%s", e.getKey(), ItemUtils.serialize(e.getValue()))).collect(Collectors.joining("<trade>"))
+        );
+    }
+
+    private void setTrade(Entity villager, int i, ItemStack trade){
+        Map<Integer, ItemStack> trades = getTrades(villager);
+        if (trade == null) trades.remove(i);
+        else trades.put(i, trade);
+        setTrades(villager, trades);
+    }
+
+//    @EventHandler(priority = EventPriority.MONITOR)
+//    public void onAcquireTrade(VillagerAcquireTradeEvent e){
+//        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+//
+//        int index = -1;
+//        for (int i = 0; i < e.getEntity().getRecipes().size(); i++){
+//            MerchantRecipe recipe = e.getEntity().getRecipe(i);
+//            if (recipe.equals(e.getRecipe())) {
+//                index = i;
+//                break;
+//            }
+//        }
+//        if (index < 0) return;
+//        setTrade(e.getEntity(), index, null);
+//    }
+//
+//    @EventHandler(priority = EventPriority.MONITOR)
+//    public void onPrepareTrade(TradeSelectEvent e){
+//        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() || !(e.getInventory().getHolder() instanceof Entity en)) return;
+//        Map<Integer, ItemStack> trades = getTrades(en);
+//
+//        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+//            if (trades.containsKey(e.getIndex())) {
+//                e.getInventory().setItem(2, trades.get(e.getIndex()));
+//            } else {
+//                ItemStack result = e.getInventory().getItem(2);
+//                if (ItemUtils.isEmpty(result)) return;
+//                AttributeInstance luckInstance = e.getWhoClicked().getAttribute(Attribute.GENERIC_LUCK);
+//                double luck = luckInstance == null ? 0 : luckInstance.getValue();
+//                LootContext context = new LootContext.Builder(e.getWhoClicked().getLocation()).killer(null).lootedEntity(e.getWhoClicked()).lootingModifier(0).luck((float) luck).build();
+//
+//                ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
+//                ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(globalTable, context);
+//                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+//                if (!event.isCancelled()){
+//                    System.out.println("going for replacement on " + result.getType());
+//                    ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.VILLAGER, result);
+//                    if (!ItemUtils.isEmpty(globalReplacement)) {
+//                        e.getInventory().setItem(2, result);
+//                        System.out.println("set new trade");
+//                        setTrade(en, e.getIndex(), result);
+//                    } else System.out.println("replacement is empty");
+//                }
+//            }
+//        }, 2L);
+//    }
+
+    @EventHandler
+    public void onHopperTransfer(InventoryMoveItemEvent e){
+        if (e.getDestination().getHolder() instanceof Container c && c.getBlock().getState() instanceof Lootable l && l.getLootTable() != null) e.setCancelled(true);
+        if (e.getDestination().getHolder() instanceof Entity c && c instanceof Lootable l && l.getLootTable() != null) e.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onChestCartOpen(PlayerInteractAtEntityEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getRightClicked().getWorld().getName()) || e.isCancelled() || e.getHand() == EquipmentSlot.OFF_HAND) return;
+        Entity entity = e.getRightClicked();
+        if (!(entity instanceof Lootable l) || !(entity instanceof InventoryHolder c) || l.getLootTable() == null) return;
+        if (ValhallaMMO.isUsingPaperMC() && !PaperLootRefillHandler.canGenerateLoot(entity, e.getPlayer())) return;
+        LootTable table = LootTableRegistry.getLootTable(l.getLootTable().getKey());
+        AttributeInstance luckInstance = e.getPlayer().getAttribute(Attribute.GENERIC_LUCK);
+        double luck = luckInstance == null ? 0 : luckInstance.getValue();
+        LootContext context = new LootContext.Builder(entity.getLocation()).killer(null).lootedEntity(e.getPlayer()).lootingModifier(0).luck((float) luck).build();
+        if (table != null) {
+            List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.CONTAINER);
+            ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            if (!loottableEvent.isCancelled()){
+                boolean skip = false;
+                switch (loottableEvent.getPreservationType()){
+                    case CLEAR -> {
+                        l.setLootTable(null);
+                        c.getInventory().clear();
+                    }
+                    case CLEAR_UNLESS_EMPTY -> {
+                        if (!loottableEvent.getDrops().isEmpty()) {
+                            l.setLootTable(null);
+                            c.getInventory().clear();
+                        }
+                    }
+                    case KEEP -> {
+                        if (loottableEvent.getDrops().isEmpty()) skip = true;
+                    }
+                }
+                if (!skip){
+                    List<ItemStack> drops = new ArrayList<>(loottableEvent.getDrops());
+                    for (int i = 0; i < c.getInventory().getSize() - drops.size(); i++) drops.add(null);
+                    Collections.shuffle(drops);
+                    for (int i = 0; i < drops.size(); i++) {
+                        ItemStack drop = drops.get(i);
+                        if (ItemUtils.isEmpty(drop)) continue;
+                        if (i > c.getInventory().getSize() - 1) break;
+                        c.getInventory().setItem(i, drop);
+                    }
+                }
+            }
+        }
+
+        ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(l.getLootTable().getKey());
+        ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
+        ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
+        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable == null || !event.isCancelled()){
+            for (int i = 0; i < c.getInventory().getSize(); i++){
+                ItemStack item = c.getInventory().getItem(i);
+                if (ItemUtils.isEmpty(item)) continue;
+                ItemStack replacement = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.CONTAINER, item);
+                if (!ItemUtils.isEmpty(replacement)) item = replacement;
+                ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.CONTAINER, item);
+                if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
+                if (!ItemUtils.isEmpty(item)) c.getInventory().setItem(i, item);
             }
         }
     }
@@ -646,8 +817,6 @@ public class LootListener implements Listener {
         double dropMultiplier = killer == null || entity instanceof Player ? 0 : AccumulativeStatManager.getCachedStats("ENTITY_DROPS", killer, 10000, true);
         ItemUtils.multiplyItems(e.getDrops(), 1 + dropMultiplier, false, i -> !i.hasItemMeta() && itemDuplicationWhitelist.contains(i.getType()) && !droppedHandTypes.contains(i.getType()));
 
-        LootTable table = LootTableRegistry.getLootTable(entity);
-        if (table == null) return;
         int looting = 0;
         double luck = 0;
         if (killer != null){
@@ -661,23 +830,43 @@ public class LootListener implements Listener {
             }
         }
 
-        if (killer != null) realKiller.put(entity.getUniqueId(), killer.getUniqueId());
+        LootTable table = LootTableRegistry.getLootTable(entity);
         LootContext context = new LootContext.Builder(entity.getLocation()).killer(null).lootedEntity(entity).lootingModifier(looting).luck((float) luck).build();
-        List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.KILL);
-        realKiller.remove(entity.getUniqueId());
-        ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
-        if (!loottableEvent.isCancelled()){
-            switch (loottableEvent.getPreservationType()){
-                case CLEAR -> e.getDrops().clear();
-                case CLEAR_UNLESS_EMPTY -> {
-                    if (!loottableEvent.getDrops().isEmpty()) e.getDrops().clear();
+        if (table != null) {
+            if (killer != null) realKiller.put(entity.getUniqueId(), killer.getUniqueId());
+            List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.KILL);
+            realKiller.remove(entity.getUniqueId());
+            ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            if (!loottableEvent.isCancelled()){
+                boolean skip = false;
+                switch (loottableEvent.getPreservationType()){
+                    case CLEAR -> e.getDrops().clear();
+                    case CLEAR_UNLESS_EMPTY -> {
+                        if (!loottableEvent.getDrops().isEmpty()) e.getDrops().clear();
+                    }
+                    case KEEP -> {
+                        if (loottableEvent.getDrops().isEmpty()) skip = true;
+                    }
                 }
-                case KEEP -> {
-                    if (loottableEvent.getDrops().isEmpty()) return;
-                }
+                if (!skip) e.getDrops().addAll(loottableEvent.getDrops());
             }
-            e.getDrops().addAll(loottableEvent.getDrops());
+        }
+
+        ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(e.getEntityType());
+        ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
+        ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
+        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable == null || !event.isCancelled()){
+            for (int i = 0; i < e.getDrops().size(); i++){
+                ItemStack item = e.getDrops().get(i);
+                if (ItemUtils.isEmpty(item)) continue;
+                ItemStack replacement = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.KILL, item);
+                if (!ItemUtils.isEmpty(replacement)) item = replacement;
+                ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.KILL, item);
+                if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
+                if (!ItemUtils.isEmpty(replacement)) e.getDrops().set(i, item);
+            }
         }
     }
 
@@ -693,12 +882,46 @@ public class LootListener implements Listener {
             clear(e.getBlock());
             return;
         }
+        Pair<Double, Integer> details = getFortuneAndLuck(e.getPlayer(), e.getBlock());
+        int fortune = details.getTwo();
+        double luck = details.getOne();
+        LootContext context = new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(e.getPlayer()).killer(null).lootingModifier(fortune).luck((float) luck).build();
+
         boolean transfer = transferToInventory.containsKey(e.getBlock().getLocation()) && transferToInventory.get(e.getBlock().getLocation()).equals(e.getPlayer().getUniqueId());
+        ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(e.getBlockState().getType());
+        ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
+        ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
+        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable == null || !event.isCancelled()){
+            List<ItemStack> drops = preparedBlockDrops.getOrDefault(e.getBlock().getLocation(), new ArrayList<>());
+            for (int i = 0; i < drops.size(); i++){
+                ItemStack item = drops.get(i);
+                if (ItemUtils.isEmpty(item)) continue;
+                ItemStack replacement1 = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.BREAK, item);
+                if (!ItemUtils.isEmpty(replacement1)) item = replacement1;
+                ItemStack globalReplacement = event.executeGlobal() ? LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.BREAK, item) : null;
+                if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
+                if (!ItemUtils.isEmpty(item)) drops.set(i, item);
+            }
+            preparedBlockDrops.put(e.getBlock().getLocation(), drops);
+        }
+
         for (ItemStack item : preparedBlockDrops.getOrDefault(e.getBlock().getLocation(), new ArrayList<>())){
             if (transfer) ItemUtils.addItem(e.getPlayer(), item, false);
             else e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
         }
         preparedBlockDrops.remove(e.getBlock().getLocation());
+        if (!event.isCancelled()){
+            for (int i = 0; i < e.getItems().size(); i++){
+                ItemStack item = e.getItems().get(i).getItemStack();
+                ItemStack replacement = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.BREAK, item);
+                if (!ItemUtils.isEmpty(replacement)) item = replacement;
+                ItemStack globalReplacement = event.executeGlobal() ? LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.BREAK, item) : null;
+                if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
+                if (ItemUtils.isEmpty(item)) e.getItems().get(i).setItemStack(item);
+            }
+        }
+
         if (transfer){
             for (Item i : e.getItems()) ItemUtils.addItem(e.getPlayer(), i.getItemStack(), false);
             e.getItems().clear();
@@ -740,25 +963,41 @@ public class LootListener implements Listener {
     public void onPiglinBarter(PiglinBarterEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         LootTable table = LootTableRegistry.getLootTable(LootTables.PIGLIN_BARTERING);
-        if (table == null) return;
-
         LootContext context = new LootContext.Builder(e.getEntity().getLocation()).killer(null).lootedEntity(null).lootingModifier(0).luck(0).build();
+        if (table != null) {
 
-        List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.PIGLIN_BARTER);
-        ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
-        if (!loottableEvent.isCancelled()){
-            switch (loottableEvent.getPreservationType()){
-                case CLEAR -> e.getOutcome().clear();
-                case CLEAR_UNLESS_EMPTY -> {
-                    if (!loottableEvent.getDrops().isEmpty()) e.getOutcome().clear();
+            List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.PIGLIN_BARTER);
+            ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            if (!loottableEvent.isCancelled()){
+                boolean skip = false;
+                switch (loottableEvent.getPreservationType()){
+                    case CLEAR -> e.getOutcome().clear();
+                    case CLEAR_UNLESS_EMPTY -> {
+                        if (!loottableEvent.getDrops().isEmpty()) e.getOutcome().clear();
+                    }
+                    case KEEP -> {
+                        if (loottableEvent.getDrops().isEmpty()) skip = true;
+                    }
                 }
-                case KEEP -> {
-                    if (loottableEvent.getDrops().isEmpty()) return;
-                }
+
+                if (!skip) e.getOutcome().addAll(loottableEvent.getDrops());
             }
-
-            e.getOutcome().addAll(loottableEvent.getDrops());
+        }
+        ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(LootTables.PIGLIN_BARTERING);
+        ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
+        ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
+        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable == null || !event.isCancelled()){
+            for (int i = 0; i < e.getOutcome().size(); i++){
+                ItemStack item = e.getOutcome().get(i);
+                if (ItemUtils.isEmpty(item)) continue;
+                ItemStack replacement1 = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.PIGLIN_BARTER, item);
+                if (!ItemUtils.isEmpty(replacement1)) item = replacement1;
+                ItemStack globalReplacement = event.executeGlobal() ? LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.PIGLIN_BARTER, item) : null;
+                if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
+                if (!ItemUtils.isEmpty(item)) e.getOutcome().set(i, item);
+            }
         }
     }
 

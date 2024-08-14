@@ -211,7 +211,6 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
             if (tinker == null) tinker = entry; // return the first item found in the grid if no others are found
             if (EquipmentClass.getMatchingClass(ItemUtils.getItemMeta(matrixItem)) != null) return entry;
         }
-        if (tinker == null) System.out.println("no tinker item found for " + name);
         return tinker;
     }
 

@@ -26,7 +26,7 @@ public class SaveAllCommand implements Command {
             GlobalEffect.saveActiveGlobalEffects();
             CustomItemRegistry.saveItems();
             ArmorSetRegistry.saveArmorSets();
-            LootTableRegistry.saveLootTables();
+            LootTableRegistry.saveAll();
 
             Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_saveall_done"));
         });

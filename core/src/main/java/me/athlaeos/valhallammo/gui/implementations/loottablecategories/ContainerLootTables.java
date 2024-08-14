@@ -14,6 +14,7 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -24,15 +25,17 @@ import java.util.stream.Collectors;
 
 import static me.athlaeos.valhallammo.gui.implementations.LootTableOverviewMenu.KEY_TABLE;
 
-public class ContainerLootTables extends LootTableCategory{
-    private static final Map<LootTables, Material> lootTablesIconMapping = new HashMap<>();
+public class ContainerLootTables extends TableCategory {
+    private static final Map<NamespacedKey, Material> lootTablesIconMapping = new HashMap<>();
+    private static final Map<NamespacedKey, LootTables> lootTablesMapping = new HashMap<>();
     static {
         for (LootTables type : LootTables.values()){
             String baseType = getEntityIcon(type.toString());
             if (baseType == null) continue;
             Material icon = ItemUtils.stringToMaterial(baseType, Material.STRUCTURE_VOID);
             if (icon == null) continue;
-            lootTablesIconMapping.put(type, icon);
+            lootTablesIconMapping.put(type.getKey(), icon);
+            lootTablesMapping.put(type.getKey(), type);
         }
     }
 
@@ -46,11 +49,11 @@ public class ContainerLootTables extends LootTableCategory{
     @Override
     public List<ItemStack> getCategoryOptions() {
         List<ItemBuilder> buttons = new ArrayList<>();
-        for (LootTables l : lootTablesIconMapping.keySet()){
+        for (NamespacedKey l : lootTablesIconMapping.keySet()){
             LootTable typeTable = LootTableRegistry.getLootTable(l);
-            ItemBuilder builder = new ItemBuilder(lootTablesIconMapping.get(l))
+            ItemBuilder builder = new ItemBuilder(lootTablesIconMapping.getOrDefault(l, Material.CHEST))
                     .name((typeTable != null ? "&a" : "&c") + l)
-                    .stringTag(KEY_TABLE, l.toString());
+                    .stringTag(KEY_TABLE, lootTablesMapping.get(l).toString());
             if (typeTable == null) builder.lore("&cNo loot table set");
             else builder.lore("&aHas loot table: " + typeTable.getKey());
             builder.appendLore("&fClick to set new loot table", "&fShift-Click to remove loot table");
@@ -67,7 +70,7 @@ public class ContainerLootTables extends LootTableCategory{
         if (en == null) return;
         if (!e.isShiftClick()) new LootTableSelectionMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), openedFrom, (LootTable table) -> {
             LootTableRegistry.getLootTableAdditions().put(en.getKey(), table.getKey());
-            new LootTableOverviewMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), LootTableOverviewMenu.CONTAINERS.getId()).open();
+            new LootTableOverviewMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), LootTableOverviewMenu.CONTAINERS_LOOT.getId()).open();
         }).open();
         else LootTableRegistry.getLootTableAdditions().remove(en.getKey());
     }

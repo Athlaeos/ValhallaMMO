@@ -7,6 +7,7 @@ experience:
   max_level: 100
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   exp_per_damage: 7
+  mace_exp_multiplier: 0.1 # When using "The Mace" to attack, exp rewarded is multiplied by this amount
   spawner_spawned_multiplier: 0.7
   exp_enemies_nerfed:
     ENDERMAN: 0.01

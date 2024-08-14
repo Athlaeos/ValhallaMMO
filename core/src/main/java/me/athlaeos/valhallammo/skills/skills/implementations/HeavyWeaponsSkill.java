@@ -53,6 +53,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
     private double expPerDamage = 0;
     private double spawnerMultiplier = 0;
+    private double maceExpMultiplier = 0;
     
     public HeavyWeaponsSkill(String type) {
         super(type);
@@ -81,6 +82,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
         }
         expPerDamage = progressionConfig.getDouble("experience.exp_per_damage");
         spawnerMultiplier = progressionConfig.getDouble("experience.spawner_spawned_multiplier");
+        maceExpMultiplier = progressionConfig.getDouble("experience.mace_exp_multiplier");
 
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
@@ -158,6 +160,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);
                 addEXP(p,
                         Math.min(EntityUtils.getMaxHP(l), e.getDamage()) *
+                                (weapon.getItem().getType().toString().equals("MACE") ? maceExpMultiplier : 1) *
                                 expPerDamage *
                                 entityExpMultiplier *
                                 chunkNerf *

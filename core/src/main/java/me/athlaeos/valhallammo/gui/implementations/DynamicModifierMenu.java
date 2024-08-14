@@ -1,16 +1,23 @@
 package me.athlaeos.valhallammo.gui.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.*;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
+import me.athlaeos.valhallammo.crafting.recipetypes.*;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.gui.SetModifiersMenu;
+import me.athlaeos.valhallammo.item.CustomItem;
+import me.athlaeos.valhallammo.item.CustomItemRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.ConventionUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.*;
@@ -38,6 +45,16 @@ public class DynamicModifierMenu extends Menu {
     private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_DYE))
             .name("&b&lNew")
             .stringTag(KEY_ACTION, "createNewButton")
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
+    private static final ItemStack copyFromRecipeButton = new ItemBuilder(getButtonData("editor_modifiers_copyfromrecipe", Material.CRAFTING_TABLE))
+            .name("&b&lCopy from Recipe")
+            .lore("&fCopies the modifiers from a selected", "&frecipe. This overwrites existing", "&fmodifiers with the same ID!")
+            .stringTag(KEY_ACTION, "copyFromRecipeButton")
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
+    private static final ItemStack copyFromIndexButton = new ItemBuilder(getButtonData("editor_modifiers_copyfromindexeditem", Material.ENDER_CHEST))
+            .name("&d&lCopy from Indexed Item")
+            .lore("&fCopies the modifiers from a selected", "&findexed item. This overwrites existing", "&fmodifiers with the same ID!")
+            .stringTag(KEY_ACTION, "copyFromIndexButton")
             .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack cancelButton = new ItemBuilder(Material.BARRIER).stringTag(KEY_ACTION, "cancelButton").name("&cDelete").get();
     private static final ItemStack nextPageButton = new ItemBuilder(Material.ARROW).stringTag(KEY_ACTION, "nextPageButton").name("&7&lNext page").get();
@@ -108,13 +125,18 @@ public class DynamicModifierMenu extends Menu {
                         }
                     }
                 }
+                case "copyFromRecipeButton" -> view = View.RECIPE_MODIFIERS;
+                case "copyFromIndexButton" -> view = View.INDEX_MODIFIERS;
                 case "createNewButton" -> view = View.PICK_MODIFIERS;
                 case "nextPageButton" -> currentPage++;
                 case "previousPageButton" -> currentPage--;
                 case "cancelButton" -> {
-                    if (currentModifier != null) {
-                        if (currentModifiers.removeIf(m -> m.getName().equalsIgnoreCase(currentModifier.getName()))) view = View.VIEW_MODIFIERS;
-                        else view = View.PICK_MODIFIERS;
+                    if (view == View.RECIPE_MODIFIERS || view == View.INDEX_MODIFIERS) view = View.VIEW_MODIFIERS;
+                    else {
+                        if (currentModifier != null) {
+                            if (currentModifiers.removeIf(m -> m.getName().equalsIgnoreCase(currentModifier.getName()))) view = View.VIEW_MODIFIERS;
+                            else view = View.PICK_MODIFIERS;
+                        }
                     }
                 }
                 case "modifierPriorityButton" -> {
@@ -145,6 +167,34 @@ public class DynamicModifierMenu extends Menu {
         }
         String clickedCategory = ItemUtils.getPDCString(KEY_MODIFIER_CATEGORY_ID, clickedItem, "");
         if (!StringUtils.isEmpty(clickedCategory)) currentCategory = ModifierCategoryRegistry.getCategory(clickedCategory);
+        String clickedRecipe = ItemUtils.getPDCString(RECIPES_KEY, clickedItem, null);
+        List<DynamicItemModifier> newModifiers = new ArrayList<>();
+        if (clickedRecipe != null) {
+            if (CustomRecipeRegistry.getGridRecipes().containsKey(clickedRecipe)) newModifiers.addAll(CustomRecipeRegistry.getGridRecipes().get(clickedRecipe).getModifiers().stream().map(DynamicItemModifier::copy).toList());
+            else if (CustomRecipeRegistry.getCookingRecipes().containsKey(clickedRecipe)) newModifiers.addAll(CustomRecipeRegistry.getCookingRecipes().get(clickedRecipe).getModifiers().stream().map(DynamicItemModifier::copy).toList());
+            else if (CustomRecipeRegistry.getBrewingRecipes().containsKey(clickedRecipe)) newModifiers.addAll(CustomRecipeRegistry.getBrewingRecipes().get(clickedRecipe).getModifiers().stream().map(DynamicItemModifier::copy).toList());
+            else if (CustomRecipeRegistry.getSmithingRecipes().containsKey(clickedRecipe)) newModifiers.addAll(CustomRecipeRegistry.getSmithingRecipes().get(clickedRecipe).getResultModifiers().stream().map(DynamicItemModifier::copy).toList());
+            else if (CustomRecipeRegistry.getCauldronRecipes().containsKey(clickedRecipe)) newModifiers.addAll(CustomRecipeRegistry.getCauldronRecipes().get(clickedRecipe).getModifiers().stream().map(DynamicItemModifier::copy).toList());
+            else if (CustomRecipeRegistry.getImmersiveRecipes().containsKey(clickedRecipe)) newModifiers.addAll(CustomRecipeRegistry.getImmersiveRecipes().get(clickedRecipe).getModifiers().stream().map(DynamicItemModifier::copy).toList());
+            else Utils.sendMessage(e.getWhoClicked(), "&cThis recipe has already been deleted");
+
+            if (!newModifiers.isEmpty()){
+                currentModifiers.removeIf(cm -> newModifiers.stream().anyMatch(nm -> cm.getName().equalsIgnoreCase(nm.getName())));
+                currentModifiers.addAll(newModifiers);
+                view = View.VIEW_MODIFIERS;
+            }
+        }
+        String clickedIndexedItem = ItemUtils.getPDCString(INDEX_KEY, clickedItem, null);
+        if (clickedIndexedItem != null){
+            if (CustomItemRegistry.getItems().containsKey(clickedIndexedItem)) newModifiers.addAll(CustomItemRegistry.getItem(clickedIndexedItem).getModifiers().stream().map(DynamicItemModifier::copy).toList());
+            else Utils.sendMessage(e.getWhoClicked(), "&cThis item has already been deleted");
+
+            if (!newModifiers.isEmpty()){
+                currentModifiers.removeIf(cm -> newModifiers.stream().anyMatch(nm -> cm.getName().equalsIgnoreCase(nm.getName())));
+                currentModifiers.addAll(newModifiers);
+                view = View.VIEW_MODIFIERS;
+            }
+        }
 
         if (ItemUtils.getPDCInt(KEY_MODIFIER_BUTTON, clickedItem, 0) > 0 && currentModifier != null){
             int buttonPressed = modifierButtonIndexes.indexOf(e.getRawSlot());
@@ -171,7 +221,65 @@ public class DynamicModifierMenu extends Menu {
             case VIEW_MODIFIERS -> setViewModifiersView();
             case PICK_MODIFIERS -> setPickModifiersView();
             case NEW_MODIFIER -> setNewModifierView();
+            case INDEX_MODIFIERS -> setItemIndexModifiersView();
+            case RECIPE_MODIFIERS -> setRecipeModifiersView();
         }
+    }
+
+    private final List<ItemStack> recipeButtons = new ArrayList<>();
+    private final NamespacedKey RECIPES_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "key_recipes");
+    private final NamespacedKey INDEX_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "key_index");
+
+    private void setRecipeModifiersView(){
+        List<ItemStack> buttons = new ArrayList<>();
+        if (recipeButtons.isEmpty()){
+            for (DynamicGridRecipe recipe : CustomRecipeRegistry.getGridRecipes().values()) buttons.add(icon(recipe.getName(), "&6Grid Recipes", recipe.tinker() ? Objects.requireNonNullElse(recipe.getGridTinkerEquipment(), new SlotEntry(recipe.getResult(), new MaterialChoice())).getItem() : recipe.getResult(), recipe.getModifiers(), true));
+            for (DynamicCookingRecipe recipe : CustomRecipeRegistry.getCookingRecipes().values()) buttons.add(icon(recipe.getName(), "&c" + StringUtils.toPascalCase(recipe.getType().toString().replace("_", " ")) + " Recipes", recipe.tinker() ? recipe.getInput().getItem() : recipe.getResult(), recipe.getModifiers(), true));
+            for (DynamicSmithingRecipe recipe : CustomRecipeRegistry.getSmithingRecipes().values()) buttons.add(icon(recipe.getName(), "&9Smithing Recipes", recipe.tinkerBase() ? recipe.getBase().getItem() : recipe.getResult(), recipe.getResultModifiers(), true));
+            for (DynamicBrewingRecipe recipe : CustomRecipeRegistry.getBrewingRecipes().values()) buttons.add(icon(recipe.getName(), "&dBrewing Recipes", recipe.tinker() ? recipe.getIngredient().getItem() : recipe.getResult(), recipe.getModifiers(), true));
+            for (DynamicCauldronRecipe recipe : CustomRecipeRegistry.getCauldronRecipes().values()) buttons.add(icon(recipe.getName(), "&bCauldron Recipes", recipe.tinkerCatalyst() ? recipe.getCatalyst().getItem() : recipe.getResult(), recipe.getModifiers(), true));
+            for (ImmersiveCraftingRecipe recipe : CustomRecipeRegistry.getImmersiveRecipes().values()) buttons.add(icon(recipe.getName(), "&aImmersive Recipes", recipe.tinker() ? recipe.getTinkerInput().getItem() : recipe.getResult(), recipe.getModifiers(), true));
+            recipeButtons.addAll(buttons);
+        } else buttons.addAll(recipeButtons);
+        buttons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));
+
+        Map<Integer, List<ItemStack>> pages = Utils.paginate(45, buttons);
+
+        currentPage = Math.max(1, Math.min(currentPage, pages.size()));
+
+        if (!pages.isEmpty()){
+            for (ItemStack i : pages.get(currentPage - 1)){
+                inventory.addItem(i);
+            }
+        }
+
+        inventory.setItem(45, previousPageButton);
+        inventory.setItem(53, nextPageButton);
+        inventory.setItem(49, cancelButton);
+    }
+
+    private void setItemIndexModifiersView(){
+        List<ItemStack> buttons = new ArrayList<>();
+        for (CustomItem item : CustomItemRegistry.getItems().values()) buttons.add(icon(item.getId(), "&6Grid Recipes", item.getItem(), item.getModifiers(), false));            recipeButtons.addAll(buttons);
+
+        buttons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));
+        Map<Integer, List<ItemStack>> pages = Utils.paginate(45, buttons);
+
+        currentPage = Math.max(1, Math.min(currentPage, pages.size()));
+
+        if (!pages.isEmpty()){
+            for (ItemStack i : pages.get(currentPage - 1)){
+                inventory.addItem(i);
+            }
+        }
+
+        inventory.setItem(45, previousPageButton);
+        inventory.setItem(53, nextPageButton);
+        inventory.setItem(49, cancelButton);
+    }
+
+    private ItemStack icon(String name, String source, ItemStack base, List<DynamicItemModifier> modifiers, boolean recipes){
+        return new ItemBuilder(base).name("&e" + name + "&f from " + source).lore("&fModifiers:", "").stringTag(recipes ? RECIPES_KEY : INDEX_KEY, name).appendLore(modifiers.stream().map(m -> "&f> " + m.getDisplayName()).toList()).get();
     }
 
     private void setNewModifierView(){
@@ -258,7 +366,9 @@ public class DynamicModifierMenu extends Menu {
         if (currentModifiers.size() <= 44){
             inventory.addItem(createNewButton);
         }
+        inventory.setItem(46, copyFromIndexButton);
         inventory.setItem(49, confirmButton);
+        inventory.setItem(52, copyFromRecipeButton);
     }
 
     @SuppressWarnings("unused")
@@ -280,6 +390,8 @@ public class DynamicModifierMenu extends Menu {
     private enum View{
         PICK_MODIFIERS,
         VIEW_MODIFIERS,
-        NEW_MODIFIER
+        NEW_MODIFIER,
+        RECIPE_MODIFIERS,
+        INDEX_MODIFIERS
     }
 }

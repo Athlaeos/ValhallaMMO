@@ -4,6 +4,8 @@ import me.athlaeos.valhallammo.crafting.recipetypes.*;
 import me.athlaeos.valhallammo.item.CustomItem;
 import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.LootTableConfiguration;
+import me.athlaeos.valhallammo.loot.ReplacementTable;
+import me.athlaeos.valhallammo.loot.ReplacementTableConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,10 +19,14 @@ public class ContentPackage {
     private final Map<String, ImmersiveCraftingRecipe> immersiveRecipes = new HashMap<>();
     private final Map<String, LootTable> lootTables = new HashMap<>();
     private LootTableConfiguration lootTableConfiguration = null;
+    private final Map<String, ReplacementTable> replacementTables = new HashMap<>();
+    private ReplacementTableConfiguration replacementTableConfiguration = null;
     private final Map<String, CustomItem> customItems = new HashMap<>();
 
     public LootTableConfiguration getLootTableConfiguration() { return lootTableConfiguration; }
     public void setLootTableConfiguration(LootTableConfiguration lootTableConfiguration) { this.lootTableConfiguration = lootTableConfiguration; }
+    public ReplacementTableConfiguration getReplacementTableConfiguration() { return replacementTableConfiguration; }
+    public void setReplacementTableConfiguration(ReplacementTableConfiguration replacementTableConfiguration) { this.replacementTableConfiguration = replacementTableConfiguration; }
     public Map<String, CustomItem> getCustomItems() { return customItems; }
     public Map<String, DynamicBrewingRecipe> getBrewingRecipes() { return brewingRecipes; }
     public Map<String, DynamicCauldronRecipe> getCauldronRecipes() { return cauldronRecipes; }
@@ -29,4 +35,5 @@ public class ContentPackage {
     public Map<String, DynamicSmithingRecipe> getSmithingRecipes() { return smithingRecipes; }
     public Map<String, ImmersiveCraftingRecipe> getImmersiveRecipes() { return immersiveRecipes; }
     public Map<String, LootTable> getLootTables() { return lootTables; }
+    public Map<String, ReplacementTable> getReplacementTables() {return replacementTables;}
 }

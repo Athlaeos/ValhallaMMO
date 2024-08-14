@@ -32,6 +32,8 @@ public class SmithingItemPropertyManager {
     private static final Map<Integer, String> tagForbiddenErrors = new HashMap<>();
     private static final Map<String, Map<MaterialClass, Scaling>> materialScalings = new HashMap<>();
 
+    private static double qualityRoundingPrecision = 10;
+
     public static void register(String attribute, MaterialClass materialClass, Scaling scaling){
         if (attribute == null || materialClass == null || scaling == null) return;
         Map<MaterialClass, Scaling> newScaling = materialScalings.getOrDefault(attribute, new HashMap<>());
@@ -41,6 +43,8 @@ public class SmithingItemPropertyManager {
 
     public static void loadConfig(){
         YamlConfiguration yaml = ConfigManager.getConfig( "skills/smithing.yml").get();
+
+        qualityRoundingPrecision = yaml.getDouble("quality_rounding_precision", 10D);
 
         ConfigurationSection qualitySection = yaml.getConfigurationSection("quality_lore");
         if (qualitySection != null){
@@ -245,7 +249,7 @@ public class SmithingItemPropertyManager {
         if (meta == null) return;
 
         if (quality == null) meta.getPersistentDataContainer().remove(QUALITY_SMITHING);
-        else meta.getPersistentDataContainer().set(QUALITY_SMITHING, PersistentDataType.INTEGER, quality);
+        else meta.getPersistentDataContainer().set(QUALITY_SMITHING, PersistentDataType.INTEGER, (int) Math.round(Utils.roundToMultiple(quality, qualityRoundingPrecision)));
 
         setQualityLore(meta);
     }

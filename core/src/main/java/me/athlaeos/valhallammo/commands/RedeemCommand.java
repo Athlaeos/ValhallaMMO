@@ -46,7 +46,7 @@ public class RedeemCommand implements TabExecutor {
 				if (levels) {
 					int amountToRedeem = Math.max(0, Integer.parseInt(args[2]));
 					if (profile.getRedeemableLevelTokens() < amountToRedeem){
-						Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_insufficient_level_tokens"));
+						Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_insufficient_level_tokens").replace("%amount%", String.valueOf(profile.getRedeemableLevelTokens())));
 						return true;
 					}
 					if (amountToRedeem == 0) return true;
@@ -56,7 +56,7 @@ public class RedeemCommand implements TabExecutor {
 				} else {
 					double amountToRedeem = Math.max(0, StringUtils.parseDouble(args[2]));
 					if (profile.getRedeemableExperiencePoints() < amountToRedeem){
-						Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_insufficient_exp_tokens"));
+						Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_insufficient_exp_tokens").replace("%amount%", String.valueOf(profile.getRedeemableExperiencePoints())));
 						return true;
 					}
 					if (amountToRedeem == 0) return true;

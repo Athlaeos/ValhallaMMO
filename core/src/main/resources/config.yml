@@ -107,6 +107,9 @@ block_recovery_speed: 0.015 # The amount of health (of max 1, per tick) at which
 
 # GAMEPLAY
 
+inventory_repairing_vanilla: true # If false, players will no longer be able to repair vanilla items in their inventories
+inventory_repairing_valhalla: true # If false, players will no longer be able to repair valhalla items in their inventories
+
 item_duplication_whitelist: # The plugin features a "drop rate bonus" stat which duplicates enemy drops on death. Any item listed here will be be affected by this stat
   - STRING
   - RAW_CHICKEN
@@ -201,6 +204,11 @@ item_skill_requirement_warning_delay: 600000 # Players are warned of their equip
 # COMBAT & DAMAGE
 
 dual_wielding: true # If true, players can attack with the item in their offhand in addition to main hand
+
+# If true, damage multipliers (such as crit, power attacks, ranged multipliers, etc.) are multiplied with eachother as
+# opposed to added on top of eachother. Having multipliers be multiplied with eachother results in much greater damage
+# compared to additive multipliers.
+damage_multipliers_multiplicative: false
 
 damage_indicator_format: "&c%icon%%dps%%mitigated%%crit%"
 damage_indicator_crit: " <lang.damage_indicator_crit>" # The placeholder for

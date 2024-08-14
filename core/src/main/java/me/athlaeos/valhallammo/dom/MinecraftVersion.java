@@ -8,6 +8,7 @@ public enum MinecraftVersion {
     MINECRAFT_1_24(17, "1_24", "1.24", null),
     MINECRAFT_1_23(16, "1_23", "1.23", null),
     MINECRAFT_1_22(15, "1_22", "1.22", null),
+    MINECRAFT_1_21_1(14.1F, "1_21_1", "1.21.1", "v1_21_R1"),
     MINECRAFT_1_21(14, "1_21", "1.21", "v1_21_R1"),
     MINECRAFT_1_20_6(13.6F, "1_20_6", "1.20.6", "v1_20_R4"),
     MINECRAFT_1_20_5(13.5F, "1_20_5", "1.20.5", "v1_20_R4"),

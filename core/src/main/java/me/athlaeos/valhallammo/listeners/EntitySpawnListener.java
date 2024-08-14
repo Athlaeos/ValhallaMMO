@@ -73,21 +73,22 @@ public class EntitySpawnListener implements Listener {
         e.getEntity().setMetadata("valhallammo_spawnreason", new FixedMetadataValue(ValhallaMMO.getInstance(), e.getSpawnReason().toString()));
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onLevelledEntitySpawn(CreatureSpawnEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !viableSpawnReasons.contains(e.getSpawnReason().toString()) ||
                 e.isCancelled() || EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE)) return;
+        AttributeInstance maxHealth = e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (e.getEntity().getCustomName() != null || (maxHealth != null && maxHealth.getDefaultValue() != maxHealth.getValue())) return;
+
         if (e.getEntity() instanceof Wolf w){
             if (MonsterScalingManager.updateWolfLevel(w, w.getOwner())){
-                AttributeInstance newMaxHealth = w.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-                if (newMaxHealth != null) w.setHealth(newMaxHealth.getValue());
+                if (maxHealth != null) w.setHealth(maxHealth.getValue());
             }
         } else {
             int predictedLevel = MonsterScalingManager.getNewLevel(e.getEntity());
             if (predictedLevel < 0) return;
             MonsterScalingManager.setLevel(e.getEntity(), predictedLevel);
 
-            AttributeInstance maxHealth = e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
             if (maxHealth != null) e.getEntity().setHealth(maxHealth.getValue());
         }
     }

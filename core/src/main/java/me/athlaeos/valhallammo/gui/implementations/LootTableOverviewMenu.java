@@ -26,19 +26,29 @@ public class LootTableOverviewMenu extends Menu {
     public static final NamespacedKey KEY_TABLE_CATEGORY = new NamespacedKey(ValhallaMMO.getInstance(), "key_table_category");
     public static final NamespacedKey KEY_TABLE = new NamespacedKey(ValhallaMMO.getInstance(), "key_table");
 
-    public static final LootTableCategory BLOCKS = new BlockLootTables(13);
-    public static final LootTableCategory ENTITIES = new EntityLootTables(22);
-    public static final LootTableCategory CONTAINERS = new ContainerLootTables(31);
-    public static final LootTableCategory FISHING = new FishingLootTable(40);
-    private static final Map<String, LootTableCategory> categories = new HashMap<>();
+    public static final TableCategory BLOCKS_LOOT = new BlockLootTables(12);
+    public static final TableCategory ENTITIES_LOOT = new EntityLootTables(21);
+    public static final TableCategory CONTAINERS_LOOT = new ContainerLootTables(30);
+    public static final TableCategory FISHING_LOOT = new FishingLootTable(39);
+    public static final TableCategory GLOBAL_REPLACEMENT = new GlobalReplacementTable(5);
+    public static final TableCategory BLOCKS_REPLACEMENT = new BlockReplacementTables(14);
+    public static final TableCategory ENTITIES_REPLACEMENT = new EntityReplacementTables(23);
+    public static final TableCategory CONTAINERS_REPLACEMENT = new ContainerReplacementTables(32);
+    public static final TableCategory FISHING_REPLACEMENT = new FishingReplacementTable(41);
+    private static final Map<String, TableCategory> categories = new HashMap<>();
     static {
-        registerCategory(BLOCKS);
-        registerCategory(ENTITIES);
-        registerCategory(CONTAINERS);
-        registerCategory(FISHING);
+        registerCategory(BLOCKS_LOOT);
+        registerCategory(ENTITIES_LOOT);
+        registerCategory(CONTAINERS_LOOT);
+        registerCategory(FISHING_LOOT);
+        registerCategory(GLOBAL_REPLACEMENT);
+        registerCategory(BLOCKS_REPLACEMENT);
+        registerCategory(ENTITIES_REPLACEMENT);
+        registerCategory(CONTAINERS_REPLACEMENT);
+        registerCategory(FISHING_REPLACEMENT);
     }
-    public static void registerCategory(LootTableCategory category){ categories.put(category.getId(), category); }
-    public static Map<String, LootTableCategory> getCategories() { return new HashMap<>(categories); }
+    public static void registerCategory(TableCategory category){ categories.put(category.getId(), category); }
+    public static Map<String, TableCategory> getCategories() { return new HashMap<>(categories); }
 
     private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
     private static final ItemStack nextPageButton = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
@@ -57,9 +67,13 @@ public class LootTableOverviewMenu extends Menu {
             .name("&fEdit Loot Tables")
             .stringTag(KEY_ACTION, "editLootTablesButton")
             .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
+    private static final ItemStack editReplacementTablesButton = new ItemBuilder(getButtonData("editor_replacementtable_edit", Material.KNOWLEDGE_BOOK))
+            .name("&fEdit Replacement Tables")
+            .stringTag(KEY_ACTION, "editReplacementTablesButton")
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
 
     private int currentPage = 0;
-    private LootTableCategory currentCategory = null;
+    private TableCategory currentCategory = null;
 
     public LootTableOverviewMenu(PlayerMenuUtility playerMenuUtility) {
         super(playerMenuUtility);
@@ -98,6 +112,10 @@ public class LootTableOverviewMenu extends Menu {
                 }
                 case "editLootTablesButton" -> {
                     new LootTableSelectionMenu(playerMenuUtility, this, null).open();
+                    return;
+                }
+                case "editReplacementTablesButton" -> {
+                    new ReplacementTableSelectionMenu(playerMenuUtility, this, null).open();
                     return;
                 }
                 case "nextPageButton" -> currentPage++;
@@ -155,9 +173,10 @@ public class LootTableOverviewMenu extends Menu {
     private void setViewCategoriesView(){
         if (!ValhallaMMO.getPluginConfig().getBoolean("admin_gui_filler_removal")) for (int i = 0; i < 54; i++) inventory.setItem(i, filler);
 
-        for (LootTableCategory category : categories.values()){
+        for (TableCategory category : categories.values()){
             inventory.setItem(category.getPosition(), new ItemBuilder(category.getIcon()).stringTag(KEY_TABLE_CATEGORY, category.getId()).get());
         }
-        inventory.setItem(49, editLootTablesButton);
+        inventory.setItem(48, editLootTablesButton);
+        inventory.setItem(50, editReplacementTablesButton);
     }
 }

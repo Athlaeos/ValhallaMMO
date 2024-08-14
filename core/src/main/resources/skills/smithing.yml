@@ -7,6 +7,8 @@ levelbar_title: '<lang.skill-smithing-level-bar>'
 levelbar_color: YELLOW # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
 levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID
 
+quality_rounding_precision: 10 # Item's qualities will be rounded to the nearest multiple of the given number, this is to reduce on the inconsistencies between individually crafted items
+
 quality_lore: # Lore placed on the item once its quality score equals or exceeds the given value PLUS the item material's intended
   # pivot point quality. Bit difficult to put into words, but here's an example:
   # Diamond gear surpasses vanilla level past a quality of 70, and I've decided "good" should be vanilla level.

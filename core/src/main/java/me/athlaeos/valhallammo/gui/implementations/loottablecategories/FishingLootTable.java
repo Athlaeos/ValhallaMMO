@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 
 import static me.athlaeos.valhallammo.gui.implementations.LootTableOverviewMenu.KEY_TABLE;
 
-public class FishingLootTable extends LootTableCategory{
+public class FishingLootTable extends TableCategory {
     private static final List<ItemBuilder> fishingTableEntries = new ArrayList<>();
 
     public FishingLootTable(int position) {
         super("loot_table_fishing",
-                new ItemBuilder(Material.FISHING_ROD)
+                new ItemBuilder(Material.COD)
                         .name("&eFishing Loot Table").lore("&fLoot tables assigned to fishing").get(),
                 position, Utils.chat(ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF318\uF80C\uF80A\uF808\uF802" : TranslationManager.getTranslation("editormenu_fishingtable")));
     }
@@ -75,7 +75,7 @@ public class FishingLootTable extends LootTableCategory{
                 case "treasure" -> LootTableRegistry.setFishingLootTableTreasure(table.getKey());
                 case "junk" -> LootTableRegistry.setFishingLootTableJunk(table.getKey());
             }
-            new LootTableOverviewMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), LootTableOverviewMenu.FISHING.getId()).open();
+            new LootTableOverviewMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), LootTableOverviewMenu.FISHING_LOOT.getId()).open();
         }).open();
         else switch (storedValue){
             case "fish" -> LootTableRegistry.setFishingLootTableFish(null);

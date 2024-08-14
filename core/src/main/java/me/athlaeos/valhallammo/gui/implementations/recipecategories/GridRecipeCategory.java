@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.ToolRequirementType;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
@@ -78,7 +79,9 @@ public class GridRecipeCategory extends RecipeCategory{
             if (recipe.getModifiers().isEmpty()) lore.add("&aNo modifiers executed");
             recipe.getModifiers().forEach(m -> lore.addAll(StringUtils.separateStringIntoLines(m.getActiveDescription(), 40)));
 
-            icons.add(new ItemBuilder(recipe.tinker() ? Objects.requireNonNullElse(recipe.getGridTinkerEquipment().getItem(), new ItemStack(Material.BARRIER)) : recipe.getResult())
+            SlotEntry tinkerEntry = recipe.getGridTinkerEquipment();
+            if (tinkerEntry == null) tinkerEntry = new SlotEntry(recipe.getResult(), new MaterialChoice());
+            icons.add(new ItemBuilder(recipe.tinker() ? Objects.requireNonNullElse(tinkerEntry.getItem(), new ItemStack(Material.BARRIER)) : recipe.getResult())
                     .name("&f" + recipe.getName())
                     .lore(lore)
                     .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)

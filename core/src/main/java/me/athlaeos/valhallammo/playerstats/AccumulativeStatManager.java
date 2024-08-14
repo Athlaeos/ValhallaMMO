@@ -2,7 +2,6 @@ package me.athlaeos.valhallammo.playerstats;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.entities.MonsterScalingManager;
 import me.athlaeos.valhallammo.item.WeightClass;
@@ -31,7 +30,7 @@ public class AccumulativeStatManager {
     }
 
     static {
-        register("GLOBAL_EXP_GAIN", new ProfileStatSource(PowerProfile.class, "allSkillEXPMultiplier"), new GlobalBuffSource("percent_skill_exp_gain"), new PotionEffectSource("SKILL_EXP_GAIN"));
+        register("GLOBAL_EXP_GAIN", new ProfileStatSource(PowerProfile.class, "allSkillEXPMultiplier"), new GlobalBuffSource("percent_skill_exp_gain"), new AttributeSource("SKILL_EXP_GAIN"), new PotionEffectSource("SKILL_EXP_GAIN"));
 
         // armors
         register("ARMOR_TOTAL", new DefensiveSourceSource("TOTAL_LIGHT_ARMOR"), new DefensiveSourceSource("TOTAL_HEAVY_ARMOR"), new DefensiveSourceSource("TOTAL_WEIGHTLESS_ARMOR"));
@@ -162,7 +161,7 @@ public class AccumulativeStatManager {
         register("JUMPS_BONUS", new AttributeSource("JUMPS").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "jumpBonus"), new PotionEffectSource("JUMPS"));
         register("SNEAK_MOVEMENT_SPEED_BONUS", new AttributeSource("SNEAK_MOVEMENT_SPEED_BONUS").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "sneakMovementSpeedBonus"), new GlobalBuffSource("movement_sneak_speed"), new PotionEffectSource("SNEAK_MOVEMENT_SPEED_BONUS"));
         register("SPRINT_MOVEMENT_SPEED_BONUS", new AttributeSource("SPRINT_MOVEMENT_SPEED_BONUS").penalty("attribute"), new ProfileStatSource(PowerProfile.class, "sprintMovementSpeedBonus"), new GlobalBuffSource("movement_sprint_speed"), new PotionEffectSource("SPRINT_MOVEMENT_SPEED_BONUS"));
-        register("DIG_SPEED", new PotionEffectSource("DIG_SPEED"), new DrillingMiningSpeedSource(), new AttributeSource("DIG_SPEED"));
+        register("DIG_SPEED", new PotionEffectSource("DIG_SPEED"), new AttributeSource("DIG_SPEED"));
         register("BLOCK_SPECIFIC_DIG_SPEED", new DiggingStatSource("diggingSpeedBonus"), new WoodcuttingStatSource("woodcuttingSpeedBonus"), new MiningDrillingActiveSource(), new MiningStatSource("miningSpeedBonus"), new MiningUnbreakableBlocksSource()); // should never be cached as this stat is dependent on the block currently being looked at
         register("FISHING_LUCK", new FishingLuckRainSource(), new AttributeSource("FISHING_LUCK"), new PotionEffectSource("FISHING_LUCK"), new FishingLuckLotSSource(), new FishingLuckFullMoonSource(), new FishingLuckNewMoonSource());
         register("FISHING_SPEED_MULTIPLIER", new AttributeSource("FISHING_LUCK"), new PotionEffectSource("FISHING_LUCK"), new FishingLuckLotSSource(), new FishingLuckFullMoonSource(), new FishingLuckNewMoonSource());

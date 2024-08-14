@@ -27,6 +27,8 @@ public class AlchemyItemPropertyManager {
     private static final Map<Integer, String> tagRequiredErrors = new HashMap<>();
     private static final Map<Integer, String> tagForbiddenErrors = new HashMap<>();
 
+    private static double qualityRoundingPrecision = 10;
+
     public static Map<Integer, String> getTagRequiredErrors() {
         return tagRequiredErrors;
     }
@@ -45,6 +47,8 @@ public class AlchemyItemPropertyManager {
 
     public static void loadConfig(){
         YamlConfiguration config = ConfigManager.getConfig("skills/alchemy.yml").get();
+
+        qualityRoundingPrecision = config.getDouble("quality_rounding_precision", 10D);
 
         ConfigurationSection qualitySection = config.getConfigurationSection("quality_lore");
         if (qualitySection != null){
@@ -195,7 +199,7 @@ public class AlchemyItemPropertyManager {
         if (meta == null) return;
 
         if (quality == null) meta.getPersistentDataContainer().remove(QUALITY_ALCHEMY);
-        else meta.getPersistentDataContainer().set(QUALITY_ALCHEMY, PersistentDataType.INTEGER, quality);
+        else meta.getPersistentDataContainer().set(QUALITY_ALCHEMY, PersistentDataType.INTEGER, (int) Math.round(Utils.roundToMultiple(quality, qualityRoundingPrecision)));
 
         setQualityLore(meta);
     }

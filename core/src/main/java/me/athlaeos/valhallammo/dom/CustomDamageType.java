@@ -16,7 +16,7 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
         return damageToCustomTypeMapping.get(damageCause);
     }
 
-    public static final CustomDamageType FIRE = new CustomDamageType("FIRE", "FIRE", "LAVA", "MELTING", "FIRE_TICK", "HOT_FLOOR", "DRYOUT")
+    public static final CustomDamageType FIRE = new CustomDamageType("FIRE", "FIRE", "LAVA", "MELTING", "FIRE_TICK", "HOT_FLOOR", "DRYOUT", "CAMPFIRE")
             .additiveDamage("FIRE_DAMAGE_BONUS").multiplicativeDamage("FIRE_DAMAGE_DEALT")
             .resistance("FIRE_RESISTANCE")
             .immuneable()

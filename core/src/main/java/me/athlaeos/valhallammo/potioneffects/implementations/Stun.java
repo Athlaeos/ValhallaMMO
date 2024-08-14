@@ -101,22 +101,25 @@ public class Stun extends PotionEffectWrapper {
      * @param force true if the entity should be stunned regardless of immunity, false otherwise
      */
     public static void stunTarget(LivingEntity entity, LivingEntity causedBy, int duration, boolean force){
-        double durationMultiplier = force ? 1 : Math.max(0, 1 - AccumulativeStatManager.getRelationalStats("STUN_RESISTANCE", entity, causedBy, true));
-        int newDuration = (int) Math.round(duration * durationMultiplier);
-        EntityStunEvent event = new EntityStunEvent(entity, causedBy, newDuration);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
-        if (!event.isCancelled()){
-            if (!(event.getEntity() instanceof LivingEntity l) || (!force && !Timer.isCooldownPassed(entity.getUniqueId(), "stun_immunity"))) return;
-            for (PotionEffectWrapper e : stunEffects){
-                if (e.isVanilla()){
-                    l.addPotionEffect(new PotionEffect(e.getVanillaEffect(), newDuration, (int) e.getAmplifier(), true, false));
-                } else {
-                    PotionEffectRegistry.addEffect(l, causedBy, new CustomPotionEffect(e, newDuration, e.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            if (!entity.isValid() || entity.isDead()) return;
+            double durationMultiplier = force ? 1 : Math.max(0, 1 - AccumulativeStatManager.getRelationalStats("STUN_RESISTANCE", entity, causedBy, true));
+            int newDuration = (int) Math.round(duration * durationMultiplier);
+            EntityStunEvent event = new EntityStunEvent(entity, causedBy, newDuration);
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+            if (!event.isCancelled()){
+                if (!(event.getEntity() instanceof LivingEntity l) || (!force && !Timer.isCooldownPassed(entity.getUniqueId(), "stun_immunity"))) return;
+                for (PotionEffectWrapper e : stunEffects){
+                    if (e.isVanilla()){
+                        l.addPotionEffect(new PotionEffect(e.getVanillaEffect(), newDuration, (int) e.getAmplifier(), true, false));
+                    } else {
+                        PotionEffectRegistry.addEffect(l, causedBy, new CustomPotionEffect(e, newDuration, e.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
+                    }
                 }
+                EntityCache.resetPotionEffects((LivingEntity) event.getEntity()); // adding/removing an effect as a result of this method should reset the entity's potion effect cache
+                Timer.setCooldown(entity.getUniqueId(), stunImmunityDuration * 50, "stun_immunity");
             }
-            EntityCache.resetPotionEffects((LivingEntity) event.getEntity()); // adding/removing an effect as a result of this method should reset the entity's potion effect cache
-            Timer.setCooldown(entity.getUniqueId(), stunImmunityDuration * 50, "stun_immunity");
-        }
+        }, 1L);
     }
 
     public static void attemptStun(LivingEntity entity, LivingEntity causedBy){

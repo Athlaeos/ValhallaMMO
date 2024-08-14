@@ -8,6 +8,8 @@ levelbar_title: '<lang.skill-alchemy-level-bar>'
 levelbar_color: PURPLE # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
 levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID
 
+quality_rounding_precision: 10 # Item's qualities will be rounded to the nearest multiple of the given number, this is to reduce on the inconsistencies between individually crafted items
+
 transmutation_liquid_flash: true
 transmutation_sound: BLOCK_ENCHANTMENT_TABLE_USE
 transmutation_name: '<lang.transmutation_potion>'

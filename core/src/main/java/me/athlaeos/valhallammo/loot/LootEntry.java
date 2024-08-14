@@ -50,7 +50,7 @@ public class LootEntry implements Weighted {
     public double getChanceQuality() { return chanceQuality; }
     @Override public double getWeight() { return weight; }
     public void setWeight(double weight) { this.weight = weight; }
-    @Override public double getWeight(double luck) { return Math.max(0, weight + (weightQuality * luck)); }
+    @Override public double getWeight(double luck, double fortune) { return Math.max(0, weight + (weightQuality * luck)); }
     public void setWeightQuality(double weightQuality) { this.weightQuality = weightQuality; }
     public double getWeightQuality() { return weightQuality; }
     public List<DynamicItemModifier> getModifiers() { return modifiers; }

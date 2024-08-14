@@ -1,14 +1,11 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers;
 
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.food.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.crafting_conditionals.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.EnchantmentRandomize;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.EnchantmentsClear;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.food.EffectNullification;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.food.FoodClassSet;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.food.FoodValueSet;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.food.SaturationValueSet;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier;
@@ -112,6 +109,13 @@ public class ModifierRegistry {
             register(new EnchantmentAdd("enchant_add_breach", EnchantmentMappings.BREACH.getEnchantment(), Material.MACE));
             register(new EnchantmentAdd("enchant_add_density", EnchantmentMappings.DENSITY.getEnchantment(), Material.MACE));
             register(new EnchantmentAdd("enchant_add_wind_burst", EnchantmentMappings.WIND_BURST.getEnchantment(), Material.MACE));
+        }
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21)){
+            register(new MaxStackSizeSet("max_stack_size"));
+            register(new HideToolTip("tooltip_hide"));
+            register(new FireResistant("fire_resistant_item"));
+            register(new EnchantmentGlint("glint"));
+            register(new MakeEdible("edible"));
         }
 
         register(new AmountAdd("amount_add"));

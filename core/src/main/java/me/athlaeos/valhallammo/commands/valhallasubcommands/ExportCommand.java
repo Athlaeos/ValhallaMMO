@@ -28,7 +28,7 @@ public class ExportCommand implements Command {
                 if (m == null) Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_import_invalid_mode").replace("%mode%", mode));
                 else exportModes.add(m);
             }
-        }
+        } else exportModes.addAll(List.of(ContentPackageManager.ExportMode.values()));
 
         if (ContentPackageManager.exportContent(file, exportModes.toArray(new ContentPackageManager.ExportMode[0])))
             Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_export_success").replace("%path%", "/export/" + file + " .json"));

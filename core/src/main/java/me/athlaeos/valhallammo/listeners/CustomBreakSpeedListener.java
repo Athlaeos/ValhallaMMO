@@ -144,6 +144,7 @@ public class CustomBreakSpeedListener implements Listener {
         if (!BLOCK_RECOVERY){
             totalMiningBlocks.remove(info.getBlock().getLocation());
             blockDigProcesses.remove(info.getBlock().getLocation());
+            BlockDigProcess.sendCracks(info.getBlock(), -1);
         }
     }
 
@@ -153,6 +154,7 @@ public class CustomBreakSpeedListener implements Listener {
                 ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
         if (!isFatigued(e.getPlayer())){
             e.setCancelled(true);
+            fatiguePlayer(e.getPlayer(), true);
             return;
         }
         BlockDigProcess process = blockDigProcesses.get(e.getBlock().getLocation());

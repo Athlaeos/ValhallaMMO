@@ -33,7 +33,7 @@ public class ImportCommand implements Command {
                 if (m == null) Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_import_invalid_mode").replace("%mode%", mode));
                 else exportModes.add(m);
             }
-        }
+        } else exportModes.addAll(List.of(ContentPackageManager.ExportMode.values()));
         ContentPackageManager.importContent(contentPackage, exportModes.toArray(new ContentPackageManager.ExportMode[0]));
         Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_import_success"));
         return true;

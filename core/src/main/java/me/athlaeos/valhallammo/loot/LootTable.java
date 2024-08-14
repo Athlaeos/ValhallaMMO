@@ -31,8 +31,8 @@ public class LootTable {
     public boolean failsPredicates(PredicateSelection predicateSelection, LootType type, LootContext context, Collection<LootPredicate> predicates){
         if (predicates.isEmpty()) return false;
         return !switch (predicateSelection) {
-            case ALL -> predicates.stream().allMatch(p -> p.isCompatibleWithLootType(type) && p.test(context));
-            case ANY -> predicates.stream().anyMatch(p -> p.isCompatibleWithLootType(type) && p.test(context));
+            case ALL -> predicates.stream().allMatch(p -> !p.isCompatibleWithLootType(type) || p.test(context));
+            case ANY -> predicates.stream().anyMatch(p -> !p.isCompatibleWithLootType(type) || p.test(context));
         };
     }
 
@@ -47,7 +47,8 @@ public class LootTable {
         FISH,
         KILL,
         PIGLIN_BARTER,
-        ARCHAEOLOGY
+        ARCHAEOLOGY,
+        VILLAGER
     }
 
     public enum VanillaLootPreservationType{

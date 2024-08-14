@@ -185,6 +185,10 @@ public class Utils {
         return (double) Math.round(d * 1000000d) / 1000000d;
     }
 
+    public static double roundToMultiple(double number, double multiple){
+        return multiple * Math.round(number / multiple);
+    }
+
     private static final Map<String, Double> evalCache = new HashMap<>();
     private static final MathEval math = new MathEval();
     public static double eval(String expression) {
@@ -366,14 +370,14 @@ public class Utils {
         if (!StringUtils.isEmpty(title)) whomst.sendTitle(chat(title), chat(subtitle), fade, duration, fade);
     }
 
-    public static <T extends Weighted> List<T> weightedSelection(Collection<T> entries, int rolls, double luck){
+    public static <T extends Weighted> List<T> weightedSelection(Collection<T> entries, int rolls, double luck, double fortune){
         // weighted selection
         double totalWeight = 0;
         List<T> selectedEntries = new ArrayList<>();
         if (entries.isEmpty()) return selectedEntries;
         List<Pair<T, Double>> totalEntries = new ArrayList<>();
         for (T entry : entries){
-            totalWeight += entry.getWeight(luck);
+            totalWeight += entry.getWeight(luck, fortune);
             totalEntries.add(new Pair<>(entry, totalWeight));
         }
 

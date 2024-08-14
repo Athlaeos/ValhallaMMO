@@ -2,8 +2,10 @@ package me.athlaeos.valhallammo.block;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.MiningSpeed;
 import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import me.athlaeos.valhallammo.listeners.LootListener;
+import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfile;
 import me.athlaeos.valhallammo.utility.BlockUtils;
@@ -33,9 +35,7 @@ public class BlockDigProcess {
             // if block is not forcefully damaged and the damage was not enough to instantly break the block,
             // a cooldown is applied in which the player can not break the next block
             if (!force && damage < 1F && CustomBreakSpeedListener.isVanillaBlockBreakDelay()) Timer.setCooldown(by.getUniqueId(), 300, "delay_block_breaking_allowed");
-            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
-                breakBlockInstantly(by, block)
-            );
+            breakBlockInstantly(by, block);
         } else {
             lastStage = getCracks();
             sendCracks(block, lastStage);
@@ -58,13 +58,20 @@ public class BlockDigProcess {
                     return;
                 }
                 Block b = e.getValue().getBlock();
-
                 ItemBuilder tool = null;
+                ItemBuilder originalTool = null;
                 if (ItemUtils.isEmpty(p.getInventory().getItemInMainHand())) {
                     MiningProfile profile = ProfileCache.getOrCache(p, MiningProfile.class);
                     if (profile.getEmptyHandTool() != null) tool = profile.getEmptyHandTool();
+                } else {
+                    tool = EntityCache.getAndCacheProperties(p).getMainHand();
+                    originalTool = tool;
                 }
-                if (tool != null && !BlockUtils.hasDrops(b, p, tool.getItem()) && ValhallaMMO.getNms().toolPower(tool.getItem(), b) > 1)
+                if (tool != null && !tool.getEmbeddedTools().isEmpty()) {
+                    ItemBuilder optimalTool = MiningSpeed.getOptimalEmbeddedTool(tool.getEmbeddedTools(), tool.getMeta(), b);
+                    if (optimalTool != null) tool = optimalTool;
+                }
+                if (tool != null && !BlockUtils.hasDrops(b, p, originalTool == null ? null : originalTool.getItem()) && ValhallaMMO.getNms().toolPower(tool.getItem(), b) > 1)
                     LootListener.prepareBlockDrops(b, new ArrayList<>(b.getDrops(tool.get())));
                 ValhallaMMO.getNms().breakBlock(p, b);
                 CustomBreakSpeedListener.getBlockDigProcesses().remove(b.getLocation());

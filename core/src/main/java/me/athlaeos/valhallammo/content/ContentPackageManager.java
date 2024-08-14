@@ -55,15 +55,18 @@ public class ContentPackageManager {
 
     public static void importContent(ContentPackage contentPackage, ExportMode... importModes){
         List<ExportMode> modes = List.of(importModes);
+        if (modes.contains(ExportMode.ITEMS)) contentPackage.getCustomItems().values().forEach(i -> CustomItemRegistry.register(i.getId(), i));
+        if (modes.contains(ExportMode.LOOT_TABLES)) contentPackage.getLootTables().values().forEach(l -> LootTableRegistry.registerLootTable(l, true));
+        if (modes.contains(ExportMode.LOOT_CONFIGURATION)) LootTableRegistry.applyConfiguration(contentPackage.getLootTableConfiguration());
+        if (modes.contains(ExportMode.REPLACEMENT_TABLES)) contentPackage.getReplacementTables().values().forEach(l -> LootTableRegistry.registerReplacementTable(l, true));
+        if (modes.contains(ExportMode.REPLACEMENT_CONFIGURATION)) LootTableRegistry.applyConfiguration(contentPackage.getReplacementTableConfiguration());
         if (modes.contains(ExportMode.RECIPES_IMMERSIVE)) contentPackage.getImmersiveRecipes().values().forEach(r -> CustomRecipeRegistry.register(r, true));
         if (modes.contains(ExportMode.RECIPES_SMITHING)) contentPackage.getSmithingRecipes().values().forEach(r -> CustomRecipeRegistry.register(r, true));
         if (modes.contains(ExportMode.RECIPES_GRID)) contentPackage.getGridRecipes().values().forEach(r -> CustomRecipeRegistry.register(r, true));
         if (modes.contains(ExportMode.RECIPES_BREWING)) contentPackage.getBrewingRecipes().values().forEach(r -> CustomRecipeRegistry.register(r, true));
         if (modes.contains(ExportMode.RECIPES_COOKING)) contentPackage.getCookingRecipes().values().forEach(r -> CustomRecipeRegistry.register(r, true));
         if (modes.contains(ExportMode.RECIPES_CAULDRON)) contentPackage.getCauldronRecipes().values().forEach(r -> CustomRecipeRegistry.register(r, true));
-        if (modes.contains(ExportMode.LOOT_TABLES)) contentPackage.getLootTables().values().forEach(l -> LootTableRegistry.registerLootTable(l, true));
-        if (modes.contains(ExportMode.LOOT_CONFIGURATION)) LootTableRegistry.applyConfiguration(contentPackage.getLootTableConfiguration());
-        if (modes.contains(ExportMode.ITEMS)) contentPackage.getCustomItems().values().forEach(i -> CustomItemRegistry.register(i.getId(), i));
+        CustomRecipeRegistry.setChangesMade();
     }
 
     public static void importContent(ContentPackage contentPackage){
@@ -109,6 +112,8 @@ public class ContentPackageManager {
         RECIPES_IMMERSIVE(p -> p.getImmersiveRecipes().putAll(CustomRecipeRegistry.getImmersiveRecipes())),
         LOOT_TABLES(p -> p.getLootTables().putAll(LootTableRegistry.getLootTables())),
         LOOT_CONFIGURATION(p -> p.setLootTableConfiguration(LootTableRegistry.getLootTableConfiguration())),
+        REPLACEMENT_TABLES(p -> p.getReplacementTables().putAll(LootTableRegistry.getReplacementTables())),
+        REPLACEMENT_CONFIGURATION(p -> p.setReplacementTableConfiguration(LootTableRegistry.getReplacementTableConfiguration())),
         ITEMS(p -> p.getCustomItems().putAll(CustomItemRegistry.getItems()));
 
         private final Action<ContentPackage> action;

@@ -32,27 +32,6 @@ public class ItemStackGSONAdapter implements JsonSerializer<ItemStack>, JsonDese
         }
     }
 
-    /**
-     * Changes an item's type if its display name contains a formatted string telling the plugin it should be turned
-     * into another item if it exists
-     * @param i the item to convert
-     * @return the converted item
-     */
-    private ItemStack convert(ItemStack i){
-        if (i == null) return null;
-        if (!i.hasItemMeta()) return i;
-        ItemMeta meta = i.getItemMeta();
-        if (meta == null) return null;
-        if (!meta.hasDisplayName()) return i;
-        String displayName = meta.getDisplayName();
-        if (!displayName.contains("REPLACEWITH:")) return i;
-        String[] args = displayName.split("REPLACEWITH:");
-        if (args.length != 2) return i;
-        Material m = Catch.catchOrElse(() -> Material.valueOf(args[1]), null);
-        if (m == null) return i;
-        return new ItemStack(m);
-    }
-
 //    final Type objectStringMapType = new TypeToken<Map<String, Object>>() {}.getType();
 //
 //    @Override

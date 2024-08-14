@@ -93,11 +93,12 @@ public class DynamicCookingRecipe implements ValhallaRecipe, ValhallaKeyedRecipe
         ItemStack i = result.clone();
         ResultChangingModifier changer = (ResultChangingModifier) modifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
         if (changer != null) i = changer.getNewResult(null, new ItemBuilder(i));
+        i = new ItemBuilder(i).translate().get();
         return switch (type){
-            case SMOKER -> new SmokingRecipe(key, recipeBookIcon(i), input.getOption().getChoice(input.getItem()), experience, cookTime);
-            case BLAST_FURNACE -> new BlastingRecipe(key, recipeBookIcon(i), input.getOption().getChoice(input.getItem()), experience, cookTime);
-            case CAMPFIRE -> new CampfireRecipe(key, recipeBookIcon(i), input.getOption().getChoice(input.getItem()), experience, cookTime);
-            default -> new FurnaceRecipe(key, recipeBookIcon(i), input.getOption().getChoice(input.getItem()), experience, cookTime);
+            case SMOKER -> new SmokingRecipe(key, i, input.getOption().getChoice(input.getItem()), experience, cookTime);
+            case BLAST_FURNACE -> new BlastingRecipe(key, i, input.getOption().getChoice(input.getItem()), experience, cookTime);
+            case CAMPFIRE -> new CampfireRecipe(key, i, input.getOption().getChoice(input.getItem()), experience, cookTime);
+            default -> new FurnaceRecipe(key, i, input.getOption().getChoice(input.getItem()), experience, cookTime);
         };
     }
 

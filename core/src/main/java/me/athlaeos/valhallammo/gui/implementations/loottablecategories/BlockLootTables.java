@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 import static me.athlaeos.valhallammo.gui.implementations.LootTableOverviewMenu.KEY_TABLE;
 
-public class BlockLootTables extends LootTableCategory{
+public class BlockLootTables extends TableCategory {
     public BlockLootTables(int position) {
         super("loot_table_blocks",
                 new ItemBuilder(Material.STONE).name("&eBlock Loot Tables").lore("&fLoot tables assigned to blocks, ", "&fdropped when broken.").get(),
@@ -57,7 +57,7 @@ public class BlockLootTables extends LootTableCategory{
         if (m == null) return;
         if (!e.isShiftClick()) new LootTableSelectionMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), openedFrom, (LootTable table) -> {
             LootTableRegistry.getBlockLootTables().put(m.toString(), table.getKey());
-            new LootTableOverviewMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), LootTableOverviewMenu.BLOCKS.getId()).open();
+            new LootTableOverviewMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), LootTableOverviewMenu.BLOCKS_LOOT.getId()).open();
         }).open();
         else LootTableRegistry.getBlockLootTables().remove(m.toString());
     }

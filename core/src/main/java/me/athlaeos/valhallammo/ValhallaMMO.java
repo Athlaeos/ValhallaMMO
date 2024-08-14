@@ -39,7 +39,6 @@ import me.athlaeos.valhallammo.utility.GlobalEffect;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.AlphaToBetaConversionHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -87,8 +86,7 @@ public class ValhallaMMO extends JavaPlugin {
 
         String lang = pluginConfig.getString("language", "en-us");
         save("languages/en-us.json");
-        save("languages/" + lang + ".json");
-        save("languages/materials/" + lang + ".json");
+        save("languages/materials/en-us.json");
         save("recipes/grid_recipes.json");
         save("recipes/brewing_recipes.json");
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_6)) save("recipes/brewing_recipes_1_20_6+.json");
@@ -101,6 +99,8 @@ public class ValhallaMMO extends JavaPlugin {
         save("loot_tables/digging.json");
         save("loot_tables/fishing.json");
         save("loot_tables/woodcutting.json");
+        save("replacement_table_config.json");
+        save("replacement_tables/loot_valhallafication.json");
         saveConfig("recipes/disabled_recipes.yml");
         saveConfig("leaderboards.yml");
         saveConfig("mob_stats.yml");
@@ -301,7 +301,7 @@ public class ValhallaMMO extends JavaPlugin {
         }
 
         CustomRecipeRegistry.saveRecipes(false);
-        LootTableRegistry.saveLootTables();
+        LootTableRegistry.saveAll();
         ArmorSetRegistry.saveArmorSets();
         CustomItemRegistry.saveItems();
         GlobalEffect.saveActiveGlobalEffects();

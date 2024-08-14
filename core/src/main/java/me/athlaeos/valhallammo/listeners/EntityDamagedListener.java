@@ -61,7 +61,7 @@ public class EntityDamagedListener implements Listener {
             double originalDamage = e.getDamage();
             double customDamage = !customDamageEnabled ? e.getDamage() : type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
             double damageAfterImmunity = !customDamageEnabled ? e.getDamage() : overrideImmunityFrames(customDamage, l);
-            if (damageAfterImmunity < 0 && type != null && e.getEntityType() != EntityType.ARMOR_STAND) {
+            if (damageAfterImmunity < 0 && e.getEntityType() != EntityType.ARMOR_STAND) {
                 e.setCancelled(true);
                 return; // entity is immune, and so damage doesn't need to be calculated further
             }
@@ -83,14 +83,13 @@ public class EntityDamagedListener implements Listener {
                 double iFrameMultiplier = 1 + AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_MULTIPLIER", l, lastDamager, 10000, true);
                 int iFrameBonus = (int) AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_BONUS", l, lastDamager, 10000, true);
                 int iFrames = (int) Math.max(0, iFrameMultiplier * (Math.max(0, 10 + iFrameBonus)));
-
                 double predictedHealth = healthTracker.getOrDefault(l.getUniqueId(), l.getHealth()) - damage;
                 healthTracker.put(l.getUniqueId(), predictedHealth); // if two damage instances occur in rapid succession (such as with bonus damage types)
                 // then the predicted health of the entity is recorded and used for additional damage instances. Without this, preceding damage instances
                 // would be ignored because the entity's health would not have changed yet at this point and their health would be set assuming they've only
                 // taken the last damage instance
 
-                if ((type == null || type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
+                if ((type != null && type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
                 if (customDamageEnabled && l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0);
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                     l.setNoDamageTicks(iFrames);

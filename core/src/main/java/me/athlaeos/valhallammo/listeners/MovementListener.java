@@ -23,6 +23,33 @@ import java.util.UUID;
 public class MovementListener implements Listener {
     private static final Map<UUID, Vector> lastMovementVectors = new HashMap<>();
 
+    public MovementListener(){
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+            for (Player p : ValhallaMMO.getInstance().getServer().getOnlinePlayers()){
+                if (Timer.isCooldownPassed(p.getUniqueId(), "delay_combat_update")) { // combat status is checked every half second
+                    EntityAttackListener.updateCombatStatus(p);
+                    Timer.setCooldown(p.getUniqueId(), 500, "delay_combat_update");
+                }
+                if (Timer.isCooldownPassed(p.getUniqueId(), "delay_movement_update")){
+                    EntityAttributeStats.updateStats(p);
+
+                    AttributeInstance armorInstance = p.getAttribute(Attribute.GENERIC_ARMOR);
+                    EntityUtils.removeUniqueAttribute(p, "armor_nullifier", Attribute.GENERIC_ARMOR);
+                    EntityUtils.removeUniqueAttribute(p, "armor_display", Attribute.GENERIC_ARMOR);
+                    if (armorInstance != null){
+                        double totalArmor = AccumulativeStatManager.getCachedStats("ARMOR_TOTAL", p, 10000, true);
+                        int scale = ValhallaMMO.getPluginConfig().getInt("armor_scale", 50);
+                        double newArmor = Math.max(0, Math.min(20, (totalArmor / scale) * 20));
+                        EntityUtils.addUniqueAttribute(p, EntityAttributeStats.ARMOR_NULLIFIER, "armor_nullifier", Attribute.GENERIC_ARMOR, -armorInstance.getValue(), AttributeModifier.Operation.ADD_NUMBER); // sets armor bar to 0
+                        EntityUtils.addUniqueAttribute(p, EntityAttributeStats.ARMOR_DISPLAY, "armor_display", Attribute.GENERIC_ARMOR, newArmor, AttributeModifier.Operation.ADD_NUMBER); // then increases armor to match a custom scale
+                    }
+
+                    Timer.setCooldown(p.getUniqueId(), 10000, "delay_movement_update");
+                }
+            }
+        }, 20L, 20L);
+    }
+
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
@@ -31,26 +58,6 @@ public class MovementListener implements Listener {
             return;
         }
         lastMovementVectors.put(e.getPlayer().getUniqueId(), e.getTo().toVector().subtract(e.getFrom().toVector()));
-        if (Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_combat_update")) { // combat status is checked every half second
-            EntityAttackListener.updateCombatStatus(e.getPlayer());
-            Timer.setCooldown(e.getPlayer().getUniqueId(), 500, "delay_combat_update");
-        }
-        if (Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_movement_update")){
-            EntityAttributeStats.updateStats(e.getPlayer());
-
-            AttributeInstance armorInstance = e.getPlayer().getAttribute(Attribute.GENERIC_ARMOR);
-            EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_nullifier", Attribute.GENERIC_ARMOR);
-            EntityUtils.removeUniqueAttribute(e.getPlayer(), "armor_display", Attribute.GENERIC_ARMOR);
-            if (armorInstance != null){
-                double totalArmor = AccumulativeStatManager.getCachedStats("ARMOR_TOTAL", e.getPlayer(), 10000, true);
-                int scale = ValhallaMMO.getPluginConfig().getInt("armor_scale", 50);
-                double newArmor = Math.max(0, Math.min(20, (totalArmor / scale) * 20));
-                EntityUtils.addUniqueAttribute(e.getPlayer(), EntityAttributeStats.ARMOR_NULLIFIER, "armor_nullifier", Attribute.GENERIC_ARMOR, -armorInstance.getValue(), AttributeModifier.Operation.ADD_NUMBER); // sets armor bar to 0
-                EntityUtils.addUniqueAttribute(e.getPlayer(), EntityAttributeStats.ARMOR_DISPLAY, "armor_display", Attribute.GENERIC_ARMOR, newArmor, AttributeModifier.Operation.ADD_NUMBER); // then increases armor to match a custom scale
-            }
-
-            Timer.setCooldown(e.getPlayer().getUniqueId(), 10000, "delay_movement_update");
-        }
     }
 
     public static void resetAttributeStats(Player p){

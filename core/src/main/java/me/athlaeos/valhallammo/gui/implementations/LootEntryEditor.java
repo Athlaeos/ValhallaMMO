@@ -97,7 +97,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7per roll is equal to ",
                     "&7dropWeight/totalWeight, ",
                     "&7where totalWeight is the combined",
-                    "&7weight of all legible drops.",
+                    "&7weight of all possible drops.",
                     "&eClick to change by 1",
                     "&eShift-Click to change by 10")
             .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
@@ -110,7 +110,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7per roll is equal to ",
                     "&7dropWeight/totalWeight, ",
                     "&7where totalWeight is the combined",
-                    "&7weight of all legible drops.",
+                    "&7weight of all possible drops.",
                     "&eClick to change by 100",
                     "&eShift-Click to change by 1000")
             .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
@@ -123,7 +123,7 @@ public class LootEntryEditor extends Menu implements SetModifiersMenu, SetLootPr
                     "&7per roll is equal to ",
                     "&7dropWeight/totalWeight, ",
                     "&7where totalWeight is the combined",
-                    "&7weight of all legible drops.",
+                    "&7weight of all possible drops.",
                     "&eClick to change by 10000",
                     "&eShift-Click to change by 100000")
             .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();

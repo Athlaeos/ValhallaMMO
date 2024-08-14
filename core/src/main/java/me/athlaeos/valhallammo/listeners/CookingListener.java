@@ -9,7 +9,6 @@ import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.*;
@@ -23,7 +22,6 @@ import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.version.FurnaceStartSmeltListener;
 import org.bukkit.Effect;
-import org.bukkit.Keyed;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -379,12 +377,18 @@ public class CookingListener implements Listener {
         if (campfireRecipeCache.containsKey(clone.toString())) return campfireRecipeCache.get(clone.toString());
         Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
         CampfireRecipe found = null;
+        ItemMeta meta = ItemUtils.getItemMeta(clone);
         while (iterator.hasNext()){
             if (iterator.next() instanceof CampfireRecipe c){
                 if (c.getInputChoice().test(i)){
                     found = c;
                     DynamicCookingRecipe dynamicRecipe = CustomRecipeRegistry.getCookingRecipesByKey().get(c.getKey());
                     if (dynamicRecipe != null && dynamicRecipe.getType() == DynamicCookingRecipe.CookingRecipeType.CAMPFIRE) {
+                        if (dynamicRecipe.requireValhallaTools() &&
+                                EquipmentClass.getMatchingClass(meta) != null &&
+                                !SmithingItemPropertyManager.hasSmithingQuality(meta)) continue;
+                        if (!defaultChoice(dynamicRecipe.getInput()).matches(dynamicRecipe.getInput().getItem(), i)) continue;
+
                         Pair<CampfireRecipe, DynamicCookingRecipe> match = new Pair<>(found, dynamicRecipe);
                         campfireRecipeCache.put(clone.toString(), match);
                         return match;

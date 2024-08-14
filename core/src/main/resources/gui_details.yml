@@ -110,7 +110,11 @@ editor_save: STRUCTURE_VOID:1829130
 editor_delete: BARRIER:1829131
 editor_deleteconfirm: BARRIER:1829132
 
+editor_modifiers_copyfromrecipe: CRAFTING_TABLE:-1
+editor_modifiers_copyfromindexeditem: ENDER_CHEST:-1
+
 editor_loottable_edit: WRITABLE_BOOK:-1
+editor_replacementtable_edit: KNOWLEDGE_BOOK:-1
 
 editor_armorset_newentry: LIME_DYE:1829130
 editor_armorset_setname: NAME_TAG:-1
@@ -136,3 +140,5 @@ editor_loottable_entry_modifiers: WRITABLE_BOOK:1829130
 editor_loottable_pool_predicates: HOPPER:-1
 editor_loottable_entry_predicates: HOPPER:-1
 editor_loottable_descriptionlabel: PAPER:-1
+editor_loottable_villager_entry: EMERALD:-1
+editor_loottable_toggletinker: ANVIL:1829130

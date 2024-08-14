@@ -192,7 +192,7 @@ public class FishingSkill extends Skill implements Listener {
         double luck = AccumulativeStatManager.getCachedStats("FISHING_LUCK", p, 10000, true) + LootListener.getPreparedLuck(p);
         if (luckAttribute != null) luck += luckAttribute.getValue();
 
-        FishingTableEntry pickedEntry = Utils.weightedSelection(fishingTables, 1, luck).stream().findFirst().orElse(null);
+        FishingTableEntry pickedEntry = Utils.weightedSelection(fishingTables, 1, luck, 0).stream().findFirst().orElse(null);
         if (pickedEntry == null) return; // somehow, no entry. bail out
         if (pickedEntry.valhallaTable.get() != null && pickedEntry.valhallaTable.get().getPools().isEmpty()) return;
         LootContext context = new LootContext.Builder(p.getLocation()).luck((float) luck).lootingModifier(0).killer(p).lootedEntity(p).build();
@@ -237,7 +237,7 @@ public class FishingSkill extends Skill implements Listener {
 
     private record FishingTableEntry(LootTables vanillaTable, Fetcher<LootTable> valhallaTable, double baseWeight, double bonusWeightPerLuck) implements Weighted {
         @Override public double getWeight() { return baseWeight; }
-        @Override public double getWeight(double luck) { return Math.max(0, baseWeight + (luck * bonusWeightPerLuck)); }
+        @Override public double getWeight(double luck, double fortune) { return Math.max(0, baseWeight + (luck * bonusWeightPerLuck)); }
     }
 
     public static void simulateFishingEvent(Player p){
@@ -245,7 +245,7 @@ public class FishingSkill extends Skill implements Listener {
         double luck = AccumulativeStatManager.getCachedStats("FISHING_LUCK", p, 10000, true) + LootListener.getPreparedLuck(p);
         if (luckAttribute != null) luck += luckAttribute.getValue();
 
-        FishingTableEntry pickedEntry = Utils.weightedSelection(fishingTables, 1, luck).stream().findFirst().orElse(null);
+        FishingTableEntry pickedEntry = Utils.weightedSelection(fishingTables, 1, luck, 0).stream().findFirst().orElse(null);
         if (pickedEntry == null) return; // somehow, no entry. bail out
         LootContext context = new LootContext.Builder(p.getLocation()).luck((float) luck).lootingModifier(0).killer(p).lootedEntity(p).build();
 

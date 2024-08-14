@@ -2,7 +2,9 @@ package me.athlaeos.valhallammo.loot;
 
 import org.bukkit.NamespacedKey;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class LootTableConfiguration {

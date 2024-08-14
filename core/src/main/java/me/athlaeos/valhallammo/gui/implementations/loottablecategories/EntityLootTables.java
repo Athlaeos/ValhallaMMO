@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 import static me.athlaeos.valhallammo.gui.implementations.LootTableOverviewMenu.KEY_TABLE;
 
-public class EntityLootTables extends LootTableCategory{
+public class EntityLootTables extends TableCategory {
     private static final Map<EntityType, Material> entityIconMapping = new HashMap<>();
     static {
         for (EntityType type : EntityType.values()){
@@ -66,7 +66,7 @@ public class EntityLootTables extends LootTableCategory{
         if (en == null) return;
         if (!e.isShiftClick()) new LootTableSelectionMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), openedFrom, (LootTable table) -> {
             LootTableRegistry.getEntityLootTables().put(en.toString(), table.getKey());
-            new LootTableOverviewMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), LootTableOverviewMenu.ENTITIES.getId()).open();
+            new LootTableOverviewMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()), LootTableOverviewMenu.ENTITIES_LOOT.getId()).open();
         }).open();
         else LootTableRegistry.getEntityLootTables().remove(en.toString());
     }
