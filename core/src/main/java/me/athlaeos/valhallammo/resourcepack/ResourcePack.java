@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.resourcepack;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.utility.Zipper;
 import org.bukkit.entity.Player;
 
 import java.io.BufferedInputStream;
@@ -15,8 +16,8 @@ public class ResourcePack {
      * I copied most of this from thesheepdev's Simple Resourcepack, so code credit for resource pack hosting goes to them
      */
     private static File pack;
-    private static final String defaultPackLink = "https://github.com/user-attachments/files/16415921/ValhallaMMO.zip";
-    private static final String defaultSha1 = "b0919da5b81e339e65d01b0e7ce6bcd8deb425bc";
+    private static final String defaultPackLink = "https://github.com/user-attachments/files/16638849/ValhallaMMO.zip";
+    private static final String defaultSha1 = "e4566478fb96695819f3e00f1caab90a75c74553";
 
     public static File getPack() {
         return pack;

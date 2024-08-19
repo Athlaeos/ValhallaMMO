@@ -33,7 +33,7 @@ public class PlayerJumpEvent extends Event {
     private static class PlayerJumpEventListener implements Listener {
         @EventHandler
         public void onStatisticJump(EntityExhaustionEvent e){
-            if (e.getExhaustionReason() != EntityExhaustionEvent.ExhaustionReason.JUMP || !(e.getEntity() instanceof Player p)) return;
+            if (!e.getExhaustionReason().toString().contains("JUMP") || !(e.getEntity() instanceof Player p)) return;
             ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new PlayerJumpEvent(p));
         }
     }

@@ -180,6 +180,9 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("ATTACK_REACH_MULTIPLIER", StatFormat.PERCENTILE_BASE_1_P1, "\uEE9D", (i) -> i >= 0).addModifier(Material.ENDER_PEARL, 0.1, 1));
         register(new AttributeDisplayWrapper("SHIELD_DISARMING", StatFormat.DIFFERENCE_TIME_SECONDS_BASE_20_P1, "\uEE9E", (i) -> i >= 0).addModifier(Material.NETHERITE_AXE, 1, 10));
         register(new AttributeDisplayWrapper("LIFE_STEAL", StatFormat.PERCENTILE_BASE_1_P2, "\uEE9F", (i) -> i >= 0).addModifier(Material.GHAST_TEAR, 0.001, 0.01));
+        register(new AttributeDisplayWrapper("PVP_RESISTANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEEA3", (i) -> i >= 0).addModifier(Material.IRON_CHESTPLATE));
+        register(new AttributeDisplayWrapper("DAMAGE_PLAYER", StatFormat.PERCENTILE_BASE_1_P1, "\uEEA4", (i) -> i >= 0).addModifier(Material.IRON_SWORD));
+        register(new AttributeDisplayWrapper("DAMAGE_MOUNTED", StatFormat.PERCENTILE_BASE_1_P1, "\uEEA5", (i) -> i >= 0).addModifier(Material.SADDLE));
 
         addVanillaStat(Material.WOODEN_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
         addVanillaStat(Material.WOODEN_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2), getCopy("MINING_SPEED").setValue(2).setHidden(true));
@@ -382,14 +385,8 @@ public class ItemAttributesRegistry {
                     if (attribute == Attribute.GENERIC_ATTACK_SPEED && wrapper.getOperation() == AttributeModifier.Operation.ADD_NUMBER) value -= 4; // player default attack speed
                     if (attribute == Attribute.GENERIC_ATTACK_DAMAGE && wrapper.getOperation() == AttributeModifier.Operation.ADD_NUMBER) value -= 1; // player default attack damage
                     EquipmentSlot slot = ItemUtils.getEquipmentSlot(meta);
-                    meta.addAttributeModifier(attribute, new AttributeModifier(
-                            UUID.randomUUID(),
-                            wrapper.getAttribute().replaceFirst("_", ".").toLowerCase(),
-                            value,
-                            wrapper.getOperation(),
-                            slot
-                    ));
-                    if (CustomFlag.hasFlag(meta, CustomFlag.ATTRIBUTE_FOR_BOTH_HANDS))
+                    if (CustomFlag.hasFlag(meta, CustomFlag.ATTRIBUTE_FOR_HELMET)) slot = EquipmentSlot.HEAD;
+                    else if (CustomFlag.hasFlag(meta, CustomFlag.ATTRIBUTE_FOR_BOTH_HANDS))
                         meta.addAttributeModifier(attribute, new AttributeModifier(
                                 UUID.randomUUID(),
                                 wrapper.getAttribute().replaceFirst("_", ".").toLowerCase(),
@@ -397,6 +394,13 @@ public class ItemAttributesRegistry {
                                 wrapper.getOperation(),
                                 EquipmentSlot.OFF_HAND
                         ));
+                    meta.addAttributeModifier(attribute, new AttributeModifier(
+                            UUID.randomUUID(),
+                            wrapper.getAttribute().replaceFirst("_", ".").toLowerCase(),
+                            value,
+                            wrapper.getOperation(),
+                            slot
+                    ));
                 }
                 wrapper.onApply(meta);
             }

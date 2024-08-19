@@ -145,7 +145,11 @@ public class EntityAttackListener implements Listener {
             if (trueDamager instanceof LivingEntity a){
                 // parry mechanic
                 if (facing) damageMultiplier = getDamageMultiplier(damageMultiplier, Parryer.handleParry(e));
-                Timer.setCooldown(trueDamager.getUniqueId(), 0, "parry_effective"); // the attacker should have their parry interrupted if they attack while active
+                Timer.setCooldown(a.getUniqueId(), 0, "parry_effective"); // the attacker should have their parry interrupted if they attack while active
+
+                // mounted damage mechanic
+                if (trueDamager.getVehicle() instanceof LivingEntity)
+                    damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedAttackerRelationalStats("MOUNTED_DAMAGE_DEALT", e.getEntity(), e.getDamager(), 10000, true));
             }
 
             // custom stun mechanics
@@ -310,6 +314,7 @@ public class EntityAttackListener implements Listener {
     }
 
     public static double getDamageMultiplier(double original, double multiplier){
+        if (multiplier == 1) return original;
         return multiplyDamageNumbers ? (original * multiplier) : (original + (multiplier - 1));
     }
 

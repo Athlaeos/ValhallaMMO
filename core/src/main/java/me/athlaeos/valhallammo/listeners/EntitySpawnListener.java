@@ -95,7 +95,7 @@ public class EntitySpawnListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onWolfInteract(PlayerInteractAtEntityEvent e){
-        if (e.isCancelled() || !(e.getRightClicked() instanceof Wolf w) || ValhallaMMO.isWorldBlacklisted(e.getRightClicked().getWorld().getName())) return;
+        if (e.isCancelled() || !(e.getRightClicked() instanceof Wolf w) || w.getOwner() == null || ValhallaMMO.isWorldBlacklisted(e.getRightClicked().getWorld().getName())) return;
         AttributeInstance maxHealth = w.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (maxHealth == null) return;
         double healthFraction = w.getHealth() / maxHealth.getValue();

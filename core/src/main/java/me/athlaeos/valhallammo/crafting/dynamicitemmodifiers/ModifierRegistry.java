@@ -127,6 +127,7 @@ public class ModifierRegistry {
         register(new CustomModelDataSet("custom_model_data"));
         register(new CustomIDSet("custom_id"));
         register(new DisplayNameSet("rename"));
+        register(new LoreSet("relore"));
         register(new PreventSwordSweeping("sweeping_removal"));
 //        register(new ThrowableWeapon("throwable_weapon"));
         register(new DurabilityRandomized("durability_randomize"));

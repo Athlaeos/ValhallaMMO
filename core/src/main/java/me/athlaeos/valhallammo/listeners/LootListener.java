@@ -815,7 +815,7 @@ public class LootListener implements Listener {
             if (!ItemUtils.isEmpty(equipment.getBoots())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
         }
         double dropMultiplier = killer == null || entity instanceof Player ? 0 : AccumulativeStatManager.getCachedStats("ENTITY_DROPS", killer, 10000, true);
-        ItemUtils.multiplyItems(e.getDrops(), 1 + dropMultiplier, false, i -> !i.hasItemMeta() && itemDuplicationWhitelist.contains(i.getType()) && !droppedHandTypes.contains(i.getType()));
+        ItemUtils.multiplyItems(e.getDrops(), 1D + dropMultiplier, false, i -> itemDuplicationWhitelist.contains(i.getType()) && !droppedHandTypes.contains(i.getType()));
 
         int looting = 0;
         double luck = 0;

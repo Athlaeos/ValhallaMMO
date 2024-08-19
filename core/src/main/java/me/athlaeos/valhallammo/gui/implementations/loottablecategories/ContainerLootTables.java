@@ -30,7 +30,7 @@ public class ContainerLootTables extends TableCategory {
     private static final Map<NamespacedKey, LootTables> lootTablesMapping = new HashMap<>();
     static {
         for (LootTables type : LootTables.values()){
-            String baseType = getEntityIcon(type.toString());
+            String baseType = getIcon(type.toString());
             if (baseType == null) continue;
             Material icon = ItemUtils.stringToMaterial(baseType, Material.STRUCTURE_VOID);
             if (icon == null) continue;
@@ -75,7 +75,7 @@ public class ContainerLootTables extends TableCategory {
         else LootTableRegistry.getLootTableAdditions().remove(en.getKey());
     }
 
-    private static String getEntityIcon(String type){
+    private static String getIcon(String type){
         return switch(type){
             case "TRAIL_RUINS_ARCHAEOLOGY_COMMON" -> "TERRACOTTA";
             case "TRAIL_RUINS_ARCHAEOLOGY_RARE" -> "YELLOW_GLAZED_TERRACOTTA";
@@ -127,6 +127,26 @@ public class ContainerLootTables extends TableCategory {
             case "BASTION_OTHER" -> "BLACKSTONE";
             case "ANCIENT_CITY" -> "SCULK";
             case "IGLOO_CHEST" -> "ICE";
+            case "TRIAL_CHAMBERS_REWARD" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_REWARD_COMMON" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_REWARD_RARE" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_REWARD_UNIQUE" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_REWARD_OMINOUS" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_REWARD_OMINOUS_COMMON" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_REWARD_OMINOUS_RARE" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_REWARD_OMINOUS_UNIQUE" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_SUPPLY" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_CORRIDOR" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_INTERSECTION" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_INTERSECTION_BARREL" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_ENTRANCE" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_CORRIDOR_DISPENSER" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_CHAMBER_DISPENSER" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_WATER_DISPENSER" -> "TRIAL_KEY";
+            case "TRIAL_CHAMBERS_CORRIDOR_POT" -> "TRIAL_KEY";
+            case "EQUIPMENT_TRIAL_CHAMBER" -> "TRIAL_KEY";
+            case "EQUIPMENT_TRIAL_CHAMBER_RANGED" -> "TRIAL_KEY";
+            case "EQUIPMENT_TRIAL_CHAMBER_MELEE" -> "TRIAL_KEY";
             default -> null;
         };
     }

@@ -47,7 +47,8 @@ public class ItemBuilder {
 
     public ItemBuilder type(Material type){
         item.setType(type);
-        ItemUtils.updateStoredType(meta, type);
+        ItemUtils.setItemMeta(item, meta);
+        meta = ItemUtils.getItemMeta(item);
         return this;
     }
 

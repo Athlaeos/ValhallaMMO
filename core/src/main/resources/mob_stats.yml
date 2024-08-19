@@ -12,12 +12,17 @@ regional_player_level: "(%combined_player_level% * 1.2 - 0.2) / %nearby_player_c
 wolf_leveling: true # If true, wolves level along with players which buffs their stats
 default_wolf_leveling: "%level%" # Wolf scalings cannot use the rand() function
 
-default: # Mob stats for all entities. Mobs specified in the `entity` section can also be given stats, which overwrite the default stats when present.
-  # For example, zombies receive -100% radiant resistance. This overwrites the default 100% radiant resistance.
+
+global: # Stats for all entities. Entities specified in the `entity` section can also be given stats, which overwrite the global and default stats when present.
+  # For example, zombies receive -100% radiant resistance. This overwrites the global 100% radiant resistance.
+  # %level% may be used as placeholder, but for creatures with no level (passive mobs or players for example) they will have a level of 0
+  RADIANT_RESISTANCE: 1 # Almost all entities aren't undead, so they shouldn't take radiant damage
+
+default: # Stats for all monsters
+  # If wolf_leveling is also true, then wolves are included among these stats
   # By default mobs get 50% crit damage, this is added to the zombie's stats unless the zombie has crit damage specified also.
   level: "%level% + rand(-5,5)" # %level% here refers to the average player power level at the location. Elsewhere it refers to the entity's level
   exp_orb_bonus: "0.02 * %level%" # Exp orb buffs
-  RADIANT_RESISTANCE: 1 # Almost all mobs aren't undead, so they shouldn't take radiant damage
   HEALTH_MULTIPLIER_BONUS: "-0.3 + (0.033 * %level%)" # Lowers mob hp by 30% initially, increases up to quadruple hp at level 100
   WEIGHTLESS_ARMOR: "0.2 * %level%" # Gives mobs up to 20 base armor at level 100
   DAMAGE_DEALT: "-0.3 + (0.023 * %level%)" # Lowers mob damage by 30% initially, increases up to triple damage at level 100

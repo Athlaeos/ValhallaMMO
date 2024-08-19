@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicSmithingRecipe;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
@@ -17,6 +18,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,6 +27,7 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SmithingTableListener implements Listener {
 
@@ -57,6 +60,13 @@ public class SmithingTableListener implements Listener {
             if (recipes.getOne() == null) return; // no recipe was found at all, so do nothing
             if (recipes.getTwo() == null) {
                 if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) s.setResult(null);
+                else {
+                    DynamicSmithingRecipe recipe = CustomRecipeRegistry.getSmithingRecipesByKey().get(recipes.getOne().getKey());
+                    if (recipe != null) {
+                        e.setCancelled(true);
+                        return; // is a valhalla recipe, but not valid. Cancel recipe
+                    }
+                }
                 return;// vanilla recipe found, cancel if recipe is disabled
             }
             DynamicSmithingRecipe r = recipes.getTwo();
@@ -149,6 +159,13 @@ public class SmithingTableListener implements Listener {
                 if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) s.setResult(null);
                 if (!ItemUtils.isEmpty(e.getResult()) && SmithingItemPropertyManager.hasSmithingQuality(base.getMeta()) &&
                         base.getItem().getType() != e.getResult().getType()) s.setResult(null);
+                else {
+                    DynamicSmithingRecipe recipe = CustomRecipeRegistry.getSmithingRecipesByKey().get(recipes.getOne().getKey());
+                    if (recipe != null) {
+                        s.setResult(null);
+                        return; // is a valhalla recipe, but not valid. Cancel recipe
+                    }
+                }
                 return;// vanilla recipe found, cancel if recipe is disabled or if resulting item is custom and different from base item
             }
             DynamicSmithingRecipe recipe = recipes.getTwo();

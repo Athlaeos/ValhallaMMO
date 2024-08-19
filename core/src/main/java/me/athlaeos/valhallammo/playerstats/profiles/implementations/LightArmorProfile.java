@@ -36,6 +36,7 @@ public class LightArmorProfile extends Profile {
         floatStat("stunResistancePerPiece", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("bleedResistancePerPiece", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("knockbackResistancePerPiece", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("pvpResistancePerPiece", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
 
         floatStat("armorBonusPerPiece", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
         floatStat("armorMultiplierPerPiece", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
@@ -66,6 +67,7 @@ public class LightArmorProfile extends Profile {
         floatStat("setStunResistance", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("setBleedResistance", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("setKnockbackResistance", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("setPvPResistance", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
 
         floatStat("setArmorBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
         floatStat("setArmorMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
@@ -126,6 +128,7 @@ public class LightArmorProfile extends Profile {
     public float getStunResistance(boolean setBonus) { return setBonus ? getFloat("setStunResistance") : getFloat("stunResistancePerPiece"); }
     public float getBleedResistance(boolean setBonus) { return setBonus ? getFloat("setBleedResistance") : getFloat("bleedResistancePerPiece"); }
     public float getKnockbackResistance(boolean setBonus) { return setBonus ? getFloat("setKnockbackResistance") : getFloat("knockbackResistancePerPiece"); }
+    public float getPvPResistance(boolean setBonus) { return setBonus ? getFloat("setPvPResistance") : getFloat("pvpResistancePerPiece"); }
     public float getArmorBonus(boolean setBonus) { return setBonus ? getFloat("setArmorBonus") : getFloat("armorBonusPerPiece"); }
     public float getArmorMultiplier(boolean setBonus) { return setBonus ? getFloat("setArmorMultiplier") : getFloat("armorMultiplierPerPiece"); }
     public float getHungerSaveChance(boolean setBonus) { return setBonus ? getFloat("setHungerSaveChance") : getFloat("hungerSaveChancePerPiece"); }
@@ -155,6 +158,7 @@ public class LightArmorProfile extends Profile {
     public void setStunResistance(boolean setBonus, float value) { setFloat(setBonus ? "setStunResistance" : "stunResistancePerPiece", value); }
     public void setBleedResistance(boolean setBonus, float value) { setFloat(setBonus ? "setBleedResistance" : "bleedResistancePerPiece", value); }
     public void setKnockbackResistance(boolean setBonus, float value) { setFloat(setBonus ? "setKnockbackResistance" : "knockbackResistancePerPiece", value); }
+    public void setPvPResistance(boolean setBonus, float value) { setFloat(setBonus ? "setPvPResistance" : "pvpResistancePerPiece", value); }
     public void setArmorBonus(boolean setBonus, float value) { setFloat(setBonus ? "setArmorBonus" : "armorBonusPerPiece", value); }
     public void setArmorMultiplier(boolean setBonus, float value) { setFloat(setBonus ? "setArmorMultiplier" : "armorMultiplierPerPiece", value); }
     public void setHungerSaveChance(boolean setBonus, float value) { setFloat(setBonus ? "setHungerSaveChance" : "hungerSaveChancePerPiece", value); }

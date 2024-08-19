@@ -112,19 +112,19 @@ inventory_repairing_valhalla: true # If false, players will no longer be able to
 
 item_duplication_whitelist: # The plugin features a "drop rate bonus" stat which duplicates enemy drops on death. Any item listed here will be be affected by this stat
   - STRING
-  - RAW_CHICKEN
+  - CHICKEN
   - COOKED_CHICKEN
   - FEATHER
-  - RAW_COD
+  - COD
   - COOKED_COD
   - LEATHER
-  - RAW_BEEF
+  - BEEF
   - COOKED_BEEF
   - GLOW_INK_SAC
-  - RAW_RABBIT
+  - RABBIT
   - COOKED_RABBIT
   - RABBIT_HIDE
-  - RAW_MUTTON
+  - MUTTON
   - COOKED_MUTTON
   - BONE
   - INK_SAC

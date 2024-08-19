@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.event.EntityUpdateLevelEvent;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.GameMode;
@@ -20,6 +21,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class MonsterScalingManager {
@@ -28,6 +30,7 @@ public class MonsterScalingManager {
     private static boolean enabled = false;
     private static boolean monstersOnly = true;
     private static String regionalPlayerLevel = null;
+    private static final Map<String, String> globalStatScaling = new HashMap<>();
     private static final Map<String, String> defaultStatScaling = new HashMap<>();
     private static String defaultLevelScaling = null;
     private static String defaultExpOrbScaling = null;
@@ -36,6 +39,8 @@ public class MonsterScalingManager {
     private static final Map<EntityType, String> entityExpOrbScaling = new HashMap<>();
     private static boolean wolfLeveling = false;
     private static String defaultWolfLevelScaling = null;
+
+    private static final Map<UUID, Double> regionalMonsterLevelCache = new HashMap<>();
 
     public static void loadMonsterScalings(){
         YamlConfiguration config = ConfigManager.getConfig("mob_stats.yml").reload().get();
@@ -46,6 +51,15 @@ public class MonsterScalingManager {
         regionalPlayerLevel = config.getString("regional_player_level");
         wolfLeveling = config.getBoolean("wolf_leveling");
         defaultWolfLevelScaling = config.getString("default_wolf_leveling");
+
+        ConfigurationSection globalStats = config.getConfigurationSection("global");
+        if (globalStats != null){
+            for (String stat : globalStats.getKeys(false)){
+                if (!AccumulativeStatManager.getSources().containsKey(stat)){
+                    ValhallaMMO.logWarning("Invalid global stat " + stat + " referenced in mob_stats.yml");
+                } else globalStatScaling.put(stat, config.getString("global." + stat));
+            }
+        }
 
         ConfigurationSection defaultStats = config.getConfigurationSection("default");
         if (defaultStats != null){
@@ -121,15 +135,16 @@ public class MonsterScalingManager {
      * @return the entity's stat, or 0 if the entity is a player, or is not a monster when only monsters are allowed.
      */
     public static double getStatValue(LivingEntity entity, String stat){
-        if (!enabled || !((monstersOnly && entity instanceof Monster) || (wolfLeveling && entity instanceof Wolf)) || entity instanceof Player) return 0;
-        int level = getLevel(entity);
-        if (level < 0) return 0;
+        if (!enabled) return 0;
+        int level = Math.max(0, getLevel(entity));
         if (entityStatScaling.containsKey(entity.getType())){
             Map<String, String> entityStats = entityStatScaling.getOrDefault(entity.getType(), new HashMap<>());
             if (!entityStats.containsKey(stat)) return 0;
             return Utils.eval(parseRand(entityStatScaling.get(entity.getType()).get(stat).replace("%level%", String.valueOf(level))));
-        } else if (defaultStatScaling.containsKey(stat)) {
+        } else if ((entity instanceof Monster || (wolfLeveling && entity instanceof Wolf)) && defaultStatScaling.containsKey(stat)) {
             return Utils.eval(parseRand(defaultStatScaling.get(stat).replace("%level%", String.valueOf(level))));
+        } else if (globalStatScaling.containsKey(stat)) {
+            return Utils.eval(parseRand(globalStatScaling.get(stat).replace("%level%", String.valueOf(level))));
         }
         return 0;
     }
@@ -166,7 +181,7 @@ public class MonsterScalingManager {
      */
     public static int getNewLevel(LivingEntity entity){
         if (!enabled || (monstersOnly && !(entity instanceof Monster)) || entity instanceof Player) return -1;
-        int powerLevel = (int) Math.round(getAreaDifficultyLevel(entity.getLocation()));
+        int powerLevel = (int) Math.round(getAreaDifficultyLevel(entity.getLocation(), null));
         if (entityLevelScaling.containsKey(entity.getType())){
             return Math.max(0, (int) Utils.eval(parseRand(entityLevelScaling.get(entity.getType()).replace("%level%", String.valueOf(powerLevel)))));
         } else if (defaultLevelScaling != null) return Math.max(0, (int) Utils.eval(parseRand(defaultLevelScaling.replace("%level%", String.valueOf(powerLevel)))));
@@ -203,7 +218,7 @@ public class MonsterScalingManager {
      * @param l the location to check the average power level of. Takes the average of all players in a 128 block radius.
      * @return The average power level of surrounding players.
      */
-    public static double getAreaDifficultyLevel(Location l){
+    public static double getAreaDifficultyLevel(Location l, Player cacheFor){
         if (!enabled || l.getWorld() == null) return 0;
         Collection<Entity> players = l.getWorld().getNearbyEntities(l, 128, 128, 128, (entity) -> entity instanceof Player p && p.getGameMode() != GameMode.CREATIVE);
         int combinedLevel = 0;
@@ -216,12 +231,22 @@ public class MonsterScalingManager {
             if (lowest < 0 || lowest > profile.getLevel()) lowest = profile.getLevel();
             if (highest < 0 || highest < profile.getLevel()) highest = profile.getLevel();
         }
-        return regionalPlayerLevel == null ?
+        double level = regionalPlayerLevel == null ?
                 (double) combinedLevel / players.size() :
                 Utils.eval(regionalPlayerLevel.replace("%combined_player_level%", String.valueOf(combinedLevel))
                         .replace("%nearby_player_count%", String.valueOf(players.size()))
                         .replace("%min_player_level%", String.valueOf(lowest))
                         .replace("%max_player_level%", String.valueOf(highest)));
+        if (cacheFor != null) regionalMonsterLevelCache.put(cacheFor.getUniqueId(), level);
+        return level;
+    }
+
+    public static double getCachedDifficultyLevel(Player from){
+        if (Timer.isCooldownPassed(from.getUniqueId(), "delay_regional_difficulty_cache_update")){
+            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> getAreaDifficultyLevel(from.getLocation(), from));
+            Timer.setCooldown(from.getUniqueId(), 10000, "delay_regional_difficulty_cache_update");
+        }
+        return regionalMonsterLevelCache.getOrDefault(from.getUniqueId(), 0D);
     }
 
     private static String parseRand(String expression){

@@ -323,6 +323,9 @@ public class PotionEffectRegistry {
             registerNewEffect(new GenericWrapper("GENERIC_SAFE_FALL_DISTANCE", (i) -> i >= 0, "\uEEA1",  StatFormat.DIFFERENCE_FLOAT_P1).addModifier(Material.LEATHER_BOOTS, 0.01, 0.1));
             registerNewEffect(new GenericWrapper("GENERIC_FALL_DAMAGE_MULTIPLIER", (i) -> i <= 0, "\uEEA2",  StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.NETHERITE_BOOTS, 0.01, 0.1));
         }
+        registerNewEffect(new GenericWrapper("PVP_RESISTANCE", (i) -> i >= 0, "\uEEA3", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.IRON_CHESTPLATE));
+        registerNewEffect(new GenericWrapper("DAMAGE_PLAYER", (i) -> i >= 0, "\uEEA4", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.IRON_SWORD));
+        registerNewEffect(new GenericWrapper("DAMAGE_MOUNTED", (i) -> i >= 0, "\uEEA5", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.SADDLE));
     }
 
     public static void reload(){

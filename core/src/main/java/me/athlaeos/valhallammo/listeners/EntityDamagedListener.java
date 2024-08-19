@@ -60,6 +60,18 @@ public class EntityDamagedListener implements Listener {
             if (type != null) e.setDamage(e.getDamage() * (1 + EffectResponsibility.getResponsibleDamageBuff(e.getEntity(), type)));
             double originalDamage = e.getDamage();
             double customDamage = !customDamageEnabled ? e.getDamage() : type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
+
+            // custom damage did not kill entity
+            Entity lastDamager = lastDamager(e);
+            if (e.getEntity() instanceof Player dP && lastDamager instanceof Player aP){
+                // pvp damage bonus and resistance mechanic
+                double bonus = AccumulativeStatManager.getCachedAttackerRelationalStats("PLAYER_DAMAGE_DEALT", dP, aP, 10000, true);
+                e.setDamage(e.getDamage() * (1 + bonus));
+
+                double resistance = AccumulativeStatManager.getCachedRelationalStats("PVP_RESISTANCE", dP, aP, 10000, true);
+                e.setDamage(e.getDamage() * (1 - resistance));
+            }
+
             double damageAfterImmunity = !customDamageEnabled ? e.getDamage() : overrideImmunityFrames(customDamage, l);
             if (damageAfterImmunity < 0 && e.getEntityType() != EntityType.ARMOR_STAND) {
                 e.setCancelled(true);
@@ -77,8 +89,6 @@ public class EntityDamagedListener implements Listener {
                     EntityUtils.isEntityFacing(p, d.getDamager().getLocation(), EntityAttackListener.getFacingAngleCos())) return; // blocking with shield damage reduction
             final double damage = customDamage;
             if (applyImmunity){
-                // custom damage did not kill entity
-                Entity lastDamager = e instanceof EntityDamageByEntityEvent eve ? eve.getDamager() : null;
 
                 double iFrameMultiplier = 1 + AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_MULTIPLIER", l, lastDamager, 10000, true);
                 int iFrameBonus = (int) AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_BONUS", l, lastDamager, 10000, true);
@@ -127,10 +137,14 @@ public class EntityDamagedListener implements Listener {
         }
     }
 
+    private static Entity lastDamager(EntityDamageEvent e){
+        UUID lastDamagerUUID = e instanceof EntityDamageByEntityEvent eve ? eve.getDamager().getUniqueId() : lastDamagedByMap.get(e.getEntity().getUniqueId());
+        return lastDamagerUUID == null ? null : ValhallaMMO.getInstance().getServer().getEntity(lastDamagerUUID);
+    }
+
     public static double calculateCustomDamage(EntityDamageEvent e){
         String damageCause = customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString());
-        UUID lastDamagerUUID = entityDamageCauses.contains(e.getCause().toString()) ? lastDamagedByMap.get(e.getEntity().getUniqueId()) : null;
-        Entity lastDamager = lastDamagerUUID == null ? null : ValhallaMMO.getInstance().getServer().getEntity(lastDamagerUUID);
+        Entity lastDamager = lastDamager(e);
 
         CustomDamageType customDamageType = CustomDamageType.getCustomType(damageCause);
 

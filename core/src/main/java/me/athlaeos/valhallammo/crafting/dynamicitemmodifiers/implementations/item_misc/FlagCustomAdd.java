@@ -46,6 +46,7 @@ public class FlagCustomAdd extends DynamicItemModifier {
             case HIDE_DURABILITY -> Material.WOODEN_PICKAXE;
             case DISPLAY_ATTRIBUTES -> Material.NAME_TAG;
             case ATTRIBUTE_FOR_BOTH_HANDS -> Material.GOLDEN_SWORD;
+            case ATTRIBUTE_FOR_HELMET -> Material.TURTLE_HELMET;
             case INFINITY_EXPLOITABLE -> Material.ARROW;
             case UNENCHANTABLE -> Material.ENCHANTING_TABLE;
             case TEMPORARY_POTION_DISPLAY -> Material.GLASS_BOTTLE;

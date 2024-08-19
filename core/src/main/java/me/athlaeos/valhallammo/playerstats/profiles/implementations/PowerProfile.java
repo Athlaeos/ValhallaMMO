@@ -68,6 +68,8 @@ public class PowerProfile extends Profile {
         floatStat("freezingDamageMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("lightningDamageMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("explosionDamageMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("playerDamageMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("mountedDamageMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("attackSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("attackKnockbackBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("luckBonus", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create());
@@ -88,6 +90,7 @@ public class PowerProfile extends Profile {
         floatStat("fallDamageResistance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("critChanceResistance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("critDamageResistance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("pvpResistance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("cooldownReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("craftingTimeReduction", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("cookingSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
@@ -392,6 +395,12 @@ public class PowerProfile extends Profile {
     public float getExplosionDamageMultiplier(){ return getFloat("explosionDamageMultiplier");}
     public void setExplosionDamageMultiplier(float value){ setFloat("explosionDamageMultiplier", value);}
 
+    public float getPlayerDamageMultiplier(){ return getFloat("playerDamageMultiplier");}
+    public void setPlayerDamageMultiplier(float value){ setFloat("playerDamageMultiplier", value);}
+
+    public float getMountedDamageMultiplier(){ return getFloat("mountedDamageMultiplier");}
+    public void setMountedDamageMultiplier(float value){ setFloat("mountedDamageMultiplier", value);}
+
     public float getAttackSpeedBonus(){ return getFloat("attackSpeedBonus");}
     public void setAttackSpeedBonus(float value){ setFloat("attackSpeedBonus", value);}
 
@@ -425,8 +434,11 @@ public class PowerProfile extends Profile {
     public float getMagicResistance(){ return getFloat("magicResistance");}
     public void setMagicResistance(float value){ setFloat("magicResistance", value);}
 
-    public float getPoisonResistance(){ return getFloat("immunityFrameBonus");}
-    public void setPoisonResistance(float value){ setFloat("immunityFrameBonus", value);}
+    public float getPoisonResistance(){ return getFloat("poisonResistance");}
+    public void setPoisonResistance(float value){ setFloat("poisonResistance", value);}
+
+    public float getPvPResistance(){ return getFloat("pvpResistance");}
+    public void setPvPResistance(float value){ setFloat("pvpResistance", value);}
 
     public float getFallDamageResistance(){ return getFloat("fallDamageResistance");}
     public void setFallDamageResistance(float value){ setFloat("fallDamageResistance", value);}

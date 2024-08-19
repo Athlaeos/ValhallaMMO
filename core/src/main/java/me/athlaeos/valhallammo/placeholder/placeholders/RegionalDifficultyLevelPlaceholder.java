@@ -11,6 +11,6 @@ public class RegionalDifficultyLevelPlaceholder extends Placeholder {
 
     @Override
     public String parse(String s, Player p) {
-        return s.replace(this.placeholder, String.format("%,.1f", MonsterScalingManager.getAreaDifficultyLevel(p.getLocation())));
+        return s.replace(this.placeholder, String.format("%,.1f", MonsterScalingManager.getCachedDifficultyLevel(p)));
     }
 }

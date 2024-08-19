@@ -18,6 +18,7 @@ public enum CustomFlag {
     DISPLAY_ATTRIBUTES, // tells an item to display its attributes anyway through lore, even if the vanilla HIDE_ATTRIBUTES flag is applied
     HIDE_DURABILITY,
     ATTRIBUTE_FOR_BOTH_HANDS,
+    ATTRIBUTE_FOR_HELMET,
     INFINITY_EXPLOITABLE,
     UNCRAFTABLE,
     TEMPORARY_POTION_DISPLAY,
