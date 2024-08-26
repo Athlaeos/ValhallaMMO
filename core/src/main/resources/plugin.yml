@@ -10,6 +10,7 @@ softdepend:
 - WorldGuard
 - PlaceholderAPI
 - DecentHolograms
+- JustLootIt
 commands:
   valhalla:
     description: "Main command for all things ValhallaMMO-related"
