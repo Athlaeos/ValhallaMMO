@@ -14,6 +14,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.FishingProfile;
+import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -141,7 +142,11 @@ public class FishingSkill extends Skill implements Listener {
                 if (ItemUtils.isEmpty(i)) return;
                 exp += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
             }
-            if (exp > 0) addEXP(e.getPlayer(), exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+            double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(e.getHook().getLocation().getChunk(), e.getPlayer(), "fishing");
+            if (exp > 0) {
+                addEXP(e.getPlayer(), exp * chunkNerf, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+                ChunkEXPNerf.increment(e.getHook().getLocation().getChunk(), e.getPlayer(), "fishing");
+            }
         }
     }
 

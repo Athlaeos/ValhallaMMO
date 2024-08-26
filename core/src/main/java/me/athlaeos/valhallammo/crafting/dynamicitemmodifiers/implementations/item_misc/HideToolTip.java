@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.dom.Pair;
@@ -24,7 +25,7 @@ public class HideToolTip extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        outputItem.getMeta().setHideTooltip(hideToolTip);
+        ValhallaMMO.getNms().setHideTooltip(outputItem.getMeta(), hideToolTip);
     }
 
     @Override

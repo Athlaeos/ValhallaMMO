@@ -396,6 +396,7 @@ public class CookingListener implements Listener {
                 }
             }
         }
+        campfireRecipeCache.put(clone.toString(), new Pair<>(found, null));
         return new Pair<>(found, null);
     }
 
@@ -403,8 +404,9 @@ public class CookingListener implements Listener {
         if (ItemUtils.isEmpty(i)) return new Pair<>(null, null);
         ItemStack clone = i.clone();
         clone.setAmount(1);
+        if (furnaceRecipeCache.get(clone.toString()) != null) return furnaceRecipeCache.get(clone.toString());
+
         ItemMeta meta = ItemUtils.getItemMeta(clone);
-        if (furnaceRecipeCache.containsKey(clone.toString())) return furnaceRecipeCache.get(clone.toString());
         Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
         CookingRecipe<?> found = null;
         while (iterator.hasNext()){
@@ -427,6 +429,7 @@ public class CookingListener implements Listener {
                 }
             }
         }
+        furnaceRecipeCache.put(clone.toString(), new Pair<>(found, null));
         return new Pair<>(found, null);
     }
 

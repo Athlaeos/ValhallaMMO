@@ -525,7 +525,7 @@ public class LootListener implements Listener {
 
     private Map<Integer, ItemStack> getTrades(Entity villager){
         Map<Integer, ItemStack> trades = new HashMap<>();
-        if (!villager.getPersistentDataContainer().has(VILLAGER_TRADES)) return trades;
+        if (!villager.getPersistentDataContainer().has(VILLAGER_TRADES, PersistentDataType.STRING)) return trades;
         String value = villager.getPersistentDataContainer().get(VILLAGER_TRADES, PersistentDataType.STRING);
         if (value == null || value.isEmpty()) return trades;
         String[] entries = value.split("<trade>");
@@ -853,6 +853,7 @@ public class LootListener implements Listener {
             }
         }
 
+        if (e.getEntity() instanceof Player) return;
         ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(e.getEntityType());
         ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
         ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
@@ -860,14 +861,56 @@ public class LootListener implements Listener {
         if (replacementTable == null || !event.isCancelled()){
             for (int i = 0; i < e.getDrops().size(); i++){
                 ItemStack item = e.getDrops().get(i);
+                if (droppedHandTypes.contains(item.getType())) continue;
                 if (ItemUtils.isEmpty(item)) continue;
                 ItemStack replacement = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.KILL, item);
                 if (!ItemUtils.isEmpty(replacement)) item = replacement;
                 ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.KILL, item);
                 if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
-                if (!ItemUtils.isEmpty(replacement)) e.getDrops().set(i, item);
+                if (!ItemUtils.isEmpty(item)) e.getDrops().set(i, item);
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onEntityEquipmentSpawn(EntitySpawnEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof LivingEntity le) || le.getEquipment() == null ||
+                e.isCancelled() || EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE)) return;
+        AttributeInstance maxHealth = le.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (e.getEntity().getCustomName() != null || (maxHealth != null && maxHealth.getDefaultValue() != maxHealth.getValue())) return; // do not modify equipment if entity is modified themselves
+
+        LootContext context = new LootContext.Builder(le.getLocation()).killer(null).lootedEntity(le).lootingModifier(0).luck(0).build();
+        EntityEquipment entityEquipment = le.getEquipment();
+        ItemStack[] equipment = new ItemStack[]{ null, null, null, null, null, null };
+        if (!ItemUtils.isEmpty(entityEquipment.getItemInMainHand())) equipment[0] = entityEquipment.getItemInMainHand();
+        if (!ItemUtils.isEmpty(entityEquipment.getItemInOffHand())) equipment[1] = entityEquipment.getItemInOffHand();
+        if (!ItemUtils.isEmpty(entityEquipment.getHelmet())) equipment[2] = entityEquipment.getHelmet();
+        if (!ItemUtils.isEmpty(entityEquipment.getChestplate())) equipment[3] = entityEquipment.getChestplate();
+        if (!ItemUtils.isEmpty(entityEquipment.getLeggings())) equipment[4] = entityEquipment.getLeggings();
+        if (!ItemUtils.isEmpty(entityEquipment.getBoots())) equipment[5] = entityEquipment.getBoots();
+
+        ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(e.getEntityType());
+        ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
+        ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
+        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable == null || !event.isCancelled()){
+            for (int i = 0; i < equipment.length; i++){
+                ItemStack item = equipment[i];
+                if (ItemUtils.isEmpty(item)) continue;
+                ItemStack replacement = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.KILL, item);
+                if (!ItemUtils.isEmpty(replacement)) item = replacement;
+                ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.KILL, item);
+                if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
+                if (!ItemUtils.isEmpty(item)) equipment[i] = item;
+            }
+        }
+
+        if (!ItemUtils.isEmpty(equipment[0])) entityEquipment.setItemInMainHand(equipment[0]);
+        if (!ItemUtils.isEmpty(equipment[1])) entityEquipment.setItemInOffHand(equipment[1]);
+        if (!ItemUtils.isEmpty(equipment[2])) entityEquipment.setHelmet(equipment[2]);
+        if (!ItemUtils.isEmpty(equipment[3])) entityEquipment.setChestplate(equipment[3]);
+        if (!ItemUtils.isEmpty(equipment[4])) entityEquipment.setLeggings(equipment[4]);
+        if (!ItemUtils.isEmpty(equipment[5])) entityEquipment.setBoots(equipment[5]);
     }
 
     private static final Map<UUID, UUID> realKiller = new HashMap<>();
@@ -918,7 +961,7 @@ public class LootListener implements Listener {
                 if (!ItemUtils.isEmpty(replacement)) item = replacement;
                 ItemStack globalReplacement = event.executeGlobal() ? LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.BREAK, item) : null;
                 if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
-                if (ItemUtils.isEmpty(item)) e.getItems().get(i).setItemStack(item);
+                if (!ItemUtils.isEmpty(item)) e.getItems().get(i).setItemStack(item);
             }
         }
 

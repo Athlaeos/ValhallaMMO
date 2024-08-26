@@ -36,6 +36,7 @@ import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
@@ -199,6 +200,31 @@ public final class NMS_v1_20_R1 implements NMS {
     public void resetAttackCooldown(Player p){
         ServerPlayer entityPlayer = ((CraftPlayer) p).getHandle();
         entityPlayer.resetAttackStrengthTicker();
+    }
+
+    @Override
+    public void setEdible(ItemMeta meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {
+        // do nothing, incompatible
+    }
+
+    @Override
+    public void setGlint(ItemMeta meta, boolean glint) {
+        // do nothing, incompatible
+    }
+
+    @Override
+    public void setMaxStackSize(ItemMeta meta, int stackSize) {
+        // do nothing, incompatible
+    }
+
+    @Override
+    public void setFireResistant(ItemMeta meta, boolean fireResistant) {
+        // do nothing, incompatible
+    }
+
+    @Override
+    public void setHideTooltip(ItemMeta meta, boolean hideToolTip) {
+        // do nothing, incompatible
     }
 
     @Override

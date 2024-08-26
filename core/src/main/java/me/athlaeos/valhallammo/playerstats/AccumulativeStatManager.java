@@ -275,15 +275,15 @@ public class AccumulativeStatManager {
 
         register("FISHING_EXP_GAIN", new ProfileStatSource(FishingProfile.class, "fishingEXPMultiplier"), new GlobalBuffSource("fishing_experience"));
 
-        register("ARCHERY_EXP_GAIN", new ProfileStatSource(ArcheryProfile.class, "archeryEXPMultiplier"));
+        register("ARCHERY_EXP_GAIN", new ProfileStatSource(ArcheryProfile.class, "archeryEXPMultiplier"), new GlobalBuffSource("archery_experience"));
 
-        register("LIGHT_ARMOR_EXP_GAIN", new ProfileStatSource(LightArmorProfile.class, "lightArmorEXPMultiplier"));
+        register("LIGHT_ARMOR_EXP_GAIN", new ProfileStatSource(LightArmorProfile.class, "lightArmorEXPMultiplier"), new GlobalBuffSource("light_armor_experience"));
 
-        register("HEAVY_ARMOR_EXP_GAIN", new ProfileStatSource(HeavyArmorProfile.class, "heavyArmorEXPMultiplier"));
+        register("HEAVY_ARMOR_EXP_GAIN", new ProfileStatSource(HeavyArmorProfile.class, "heavyArmorEXPMultiplier"), new GlobalBuffSource("heavy_armor_experience"));
 
-        register("LIGHT_WEAPONS_EXP_GAIN", new ProfileStatSource(LightWeaponsProfile.class, "lightWeaponsEXPMultiplier"));
+        register("LIGHT_WEAPONS_EXP_GAIN", new ProfileStatSource(LightWeaponsProfile.class, "lightWeaponsEXPMultiplier"), new GlobalBuffSource("light_weapons_experience"));
 
-        register("HEAVY_WEAPONS_EXP_GAIN", new ProfileStatSource(HeavyWeaponsProfile.class, "heavyWeaponsEXPMultiplier"));
+        register("HEAVY_WEAPONS_EXP_GAIN", new ProfileStatSource(HeavyWeaponsProfile.class, "heavyWeaponsEXPMultiplier"), new GlobalBuffSource("heavy_weapons_experience"));
     }
 
     /**

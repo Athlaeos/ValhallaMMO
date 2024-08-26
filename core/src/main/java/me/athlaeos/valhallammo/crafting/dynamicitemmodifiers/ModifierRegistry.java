@@ -106,9 +106,9 @@ public class ModifierRegistry {
         register(new EnchantmentAdd("enchant_add_curse_vanishing", EnchantmentMappings.CURSE_OF_VANISHING.getEnchantment(), Material.BARRIER));
         register(new EnchantmentAdd("enchant_add_aqua_affinity", EnchantmentMappings.AQUA_AFFINITY.getEnchantment(), Material.CONDUIT));
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
-            register(new EnchantmentAdd("enchant_add_breach", EnchantmentMappings.BREACH.getEnchantment(), Material.MACE));
-            register(new EnchantmentAdd("enchant_add_density", EnchantmentMappings.DENSITY.getEnchantment(), Material.MACE));
-            register(new EnchantmentAdd("enchant_add_wind_burst", EnchantmentMappings.WIND_BURST.getEnchantment(), Material.MACE));
+            register(new EnchantmentAdd("enchant_add_breach", EnchantmentMappings.BREACH.getEnchantment(), Material.valueOf("MACE")));
+            register(new EnchantmentAdd("enchant_add_density", EnchantmentMappings.DENSITY.getEnchantment(), Material.valueOf("MACE")));
+            register(new EnchantmentAdd("enchant_add_wind_burst", EnchantmentMappings.WIND_BURST.getEnchantment(), Material.valueOf("MACE")));
         }
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21)){
             register(new MaxStackSizeSet("max_stack_size"));
@@ -139,7 +139,7 @@ public class ModifierRegistry {
         register(new ItemMaterialClass("material_type"));
         Arrays.stream(CustomFlag.values()).forEach(f -> register(new FlagCustomAdd("flag_" + f.toString().toLowerCase(), f)));
         Arrays.stream(ItemFlag.values()).forEach(f -> {
-            if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) && f == ItemFlag.HIDE_ADDITIONAL_TOOLTIP)
+            if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) && f.toString().equals("HIDE_ADDITIONAL_TOOLTIP"))
                 register(new FlagVanillaAdd("flag_hide_potion_effects", f.toString()));
             else register(new FlagVanillaAdd("flag_" + f.toString().toLowerCase(), f.toString()));
         });

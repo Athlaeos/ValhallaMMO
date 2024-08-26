@@ -45,7 +45,7 @@
 
     <build>
         <defaultGoal>clean package</defaultGoal>
-        <finalName>ValhallaMMO_${revision}</finalName>
+        <finalName>ValhallaMMO+_${revision}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

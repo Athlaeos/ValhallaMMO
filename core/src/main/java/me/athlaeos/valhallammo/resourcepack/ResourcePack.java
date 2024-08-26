@@ -1,7 +1,6 @@
 package me.athlaeos.valhallammo.resourcepack;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.utility.Zipper;
 import org.bukkit.entity.Player;
 
 import java.io.BufferedInputStream;

@@ -17,10 +17,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.EnchantingProfile;
 import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.utility.EntityUtils;
-import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
-import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -77,7 +75,6 @@ public class EnchantingSkill extends Skill implements Listener {
         super(type);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void loadConfiguration() {
         ValhallaMMO.getInstance().save("skills/enchanting_progression.yml");
@@ -261,10 +258,7 @@ public class EnchantingSkill extends Skill implements Listener {
 
         int expSpent = EntityUtils.getTotalExperience(enchanter.getLevel()) - EntityUtils.getTotalExperience(enchanter.getLevel() - (e.whichButton() + 1));
         double exp = EXPForEnchantments(enchanter, e.getEnchantsToAdd()) + (experienceSpentConversion * expSpent);
-        if (doDiminishingReturnsApply(enchanter)){
-            exp *= diminishingReturnsMultiplier;
-            reduceTallyCounter(enchanter);
-        }
+        System.out.println("rewarding " + exp + " exp");
         addEXP(enchanter, exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
         storedEnchantmentOffers.remove(enchanter.getUniqueId());
@@ -375,12 +369,13 @@ public class EnchantingSkill extends Skill implements Listener {
         for (Enchantment e : enchantments.keySet()){
             double levelMultiplier = enchantmentLevelMultipliers.getOrDefault(enchantments.get(e), 0D);
             double baseAmount = enchantmentBaseValues.getOrDefault(e, 0D);
-
+            System.out.println("player " + p.getName() + " got enchantment " + e.getKey().getKey() + " " + StringUtils.toRoman(enchantments.get(e)) + " which is worth " + (baseAmount * levelMultiplier));
             amount += baseAmount * levelMultiplier;
         }
 
         if (doDiminishingReturnsApply(p)){
             amount *= diminishingReturnsMultiplier;
+            System.out.println("diminishing returns: " + diminishingReturnsMultiplier);
             reduceTallyCounter(p);
         }
         return amount;
