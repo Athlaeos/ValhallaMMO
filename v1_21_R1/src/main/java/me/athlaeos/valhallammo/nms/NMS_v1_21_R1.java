@@ -38,7 +38,9 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlotGroup;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.components.FoodComponent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
@@ -224,6 +226,36 @@ public final class NMS_v1_21_R1 implements NMS {
     public void resetAttackCooldown(Player p){
         ServerPlayer entityPlayer = ((CraftPlayer) p).getHandle();
         entityPlayer.resetAttackStrengthTicker();
+    }
+
+    @Override
+    public void setEdible(ItemMeta meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {
+        if (edible){
+            FoodComponent food = meta.getFood();
+            food.setCanAlwaysEat(canAlwaysEat);
+            food.setEatSeconds(eatTimeSeconds);
+            meta.setFood(food);
+        } else meta.setFood(null);
+    }
+
+    @Override
+    public void setGlint(ItemMeta meta, boolean glint) {
+        meta.setEnchantmentGlintOverride(glint);
+    }
+
+    @Override
+    public void setMaxStackSize(ItemMeta meta, int stackSize) {
+        meta.setMaxStackSize(stackSize);
+    }
+
+    @Override
+    public void setFireResistant(ItemMeta meta, boolean fireResistant) {
+        meta.setFireResistant(fireResistant);
+    }
+
+    @Override
+    public void setHideTooltip(ItemMeta meta, boolean hideToolTip) {
+        meta.setHideTooltip(hideToolTip);
     }
 
     @Override

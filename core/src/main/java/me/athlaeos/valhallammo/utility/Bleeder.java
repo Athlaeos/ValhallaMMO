@@ -181,8 +181,7 @@ public class Bleeder {
                     int particleCount = (int) (3 * Math.min(10, bleedingDamage));
                     bleedingEntity.getWorld().spawnParticle(Particle.valueOf(oldOrNew("BLOCK_DUST", "BLOCK")), bleedingEntity.getEyeLocation().add(0, -(bleedingEntity.getHeight()/2), 0),
                             particleCount, 0.4, 0.4, 0.4, Material.REDSTONE_BLOCK.createBlockData());
-                    if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) bleedingEntity.playHurtAnimation(0F);
-                    else bleedingEntity.playEffect(EntityEffect.HURT);
+                    bleedingEntity.playEffect(EntityEffect.HURT);
                 }
                 bleedingEntity.getWorld().spawnParticle(Particle.valueOf(oldOrNew("BLOCK_DUST", "BLOCK")), bleedingEntity.getEyeLocation().add(0, -(bleedingEntity.getHeight()/2), 0),
                         1, 0.4, 0.1, 0.1, Material.REDSTONE_BLOCK.createBlockData());

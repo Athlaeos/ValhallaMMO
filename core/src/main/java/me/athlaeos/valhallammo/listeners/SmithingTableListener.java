@@ -248,6 +248,7 @@ public class SmithingTableListener implements Listener {
                 }
             }
         }
+        smithingRecipeCache.put(key, new Pair<>(found, null));
         return new Pair<>(found, null);
     }
 

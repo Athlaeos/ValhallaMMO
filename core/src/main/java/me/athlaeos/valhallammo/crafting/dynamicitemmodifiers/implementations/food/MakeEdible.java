@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.food;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
@@ -10,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.components.FoodComponent;
 
 import java.util.*;
 
@@ -25,12 +25,7 @@ public class MakeEdible extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (edible){
-            FoodComponent food = outputItem.getMeta().getFood();
-            food.setCanAlwaysEat(canAlwaysEat);
-            food.setEatSeconds(eatTimeSeconds);
-            outputItem.getMeta().setFood(food);
-        } else outputItem.getMeta().setFood(null);
+        ValhallaMMO.getNms().setEdible(outputItem.getMeta(), edible, canAlwaysEat, eatTimeSeconds);
     }
 
     @Override

@@ -19,6 +19,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -39,6 +40,12 @@ public interface NMS extends Listener {
     void breakBlock(Player p, Block b);
     Sound blockSound(Block b);
     void resetAttackCooldown(Player p);
+
+    void setEdible(ItemMeta meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds);
+    void setGlint(ItemMeta meta, boolean glint);
+    void setMaxStackSize(ItemMeta meta, int stackSize);
+    void setFireResistant(ItemMeta meta, boolean fireResistant);
+    void setHideTooltip(ItemMeta meta, boolean hideToolTip);
 
     void setBookContents(ItemStack book, List<BaseComponent[]> pages);
 
