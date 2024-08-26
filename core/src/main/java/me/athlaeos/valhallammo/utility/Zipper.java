@@ -1,4 +1,4 @@
-package me.athlaeos.valhallammo.resourcepack;
+package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 
