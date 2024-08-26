@@ -16,6 +16,10 @@
 
     <repositories>
         <repository>
+            <id>lauriichan</id>
+            <url>https://maven.lauriichan.me/release</url>
+        </repository>
+        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -66,6 +70,13 @@
             <artifactId>CustomBlockData</artifactId>
             <version>2.1.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.lauriichan.spigot.justlootit</groupId>
+            <artifactId>justlootit-core</artifactId>
+            <version>1.7.0</version>
+            <classifier>shaded</classifier>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
