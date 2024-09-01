@@ -370,6 +370,7 @@ public class EntityUtils {
     }
 
     public static void damage(LivingEntity entity, Entity by, double amount, String type){
+        if (entity.isDead()) return;
         int immunityBefore = entity.getNoDamageTicks();
         entity.setNoDamageTicks(0);
         EntityDamagedListener.setCustomDamageCause(entity.getUniqueId(), type);

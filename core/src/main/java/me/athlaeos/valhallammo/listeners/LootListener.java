@@ -601,10 +601,22 @@ public class LootListener implements Listener {
 //        }, 2L);
 //    }
 
+    private final Map<Location, Boolean> chestCache = new HashMap<>();
+
     @EventHandler
     public void onHopperTransfer(InventoryMoveItemEvent e){
-        if (e.getDestination().getHolder() instanceof Container c && c.getBlock().getState() instanceof Lootable l && l.getLootTable() != null) e.setCancelled(true);
-        if (e.getDestination().getHolder() instanceof Entity c && c instanceof Lootable l && l.getLootTable() != null) e.setCancelled(true);
+        if (chestCache.containsKey(e.getDestination().getLocation())) {
+            if (chestCache.get(e.getDestination().getLocation())) e.setCancelled(true);
+            return;
+        }
+        if (e.getDestination().getHolder() instanceof Container c && c.getBlock().getState() instanceof Lootable l && l.getLootTable() != null) {
+            e.setCancelled(true);
+            chestCache.put(e.getDestination().getLocation(), true);
+        } else chestCache.put(e.getDestination().getLocation(), false);
+        if (e.getDestination().getHolder() instanceof Entity c && c instanceof Lootable l && l.getLootTable() != null) {
+            e.setCancelled(true);
+            chestCache.put(e.getDestination().getLocation(), true);
+        } else chestCache.put(e.getDestination().getLocation(), false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)

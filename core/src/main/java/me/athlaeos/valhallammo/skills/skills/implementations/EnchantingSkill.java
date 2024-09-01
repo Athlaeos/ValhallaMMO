@@ -258,7 +258,6 @@ public class EnchantingSkill extends Skill implements Listener {
 
         int expSpent = EntityUtils.getTotalExperience(enchanter.getLevel()) - EntityUtils.getTotalExperience(enchanter.getLevel() - (e.whichButton() + 1));
         double exp = EXPForEnchantments(enchanter, e.getEnchantsToAdd()) + (experienceSpentConversion * expSpent);
-        System.out.println("rewarding " + exp + " exp");
         addEXP(enchanter, exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
         storedEnchantmentOffers.remove(enchanter.getUniqueId());
@@ -308,15 +307,19 @@ public class EnchantingSkill extends Skill implements Listener {
         } else {
             damagePerType = (e.getDamage() * conversion) / profile.getElementalDamageTypes().size();
         }
+        if (conversion <= 0) return;
         e.setDamage(e.getDamage() * (1 - conversion)); // damage is reduced by the fraction of it that is converted
 
-        for (String damageType : profile.getElementalDamageTypes()){
-            EntityUtils.damage(v, p, damagePerType, damageType);
-            if (enhanced) {
-                Animation a = elementalHitAnimation.get(damageType);
-                if (a != null) a.animate(v, e.getDamager() instanceof Projectile pr ? pr.getLocation() : v.getEyeLocation(), p.getEyeLocation().getDirection(), 0);
+        final boolean en = enhanced;
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            for (String damageType : profile.getElementalDamageTypes()){
+                EntityUtils.damage(v, p, damagePerType, damageType);
+                if (en) {
+                    Animation a = elementalHitAnimation.get(damageType);
+                    if (a != null) a.animate(v, e.getDamager() instanceof Projectile pr ? pr.getLocation() : v.getEyeLocation(), p.getEyeLocation().getDirection(), 0);
+                }
             }
-        }
+        }, 1L);
     }
 
     @SuppressWarnings("all")
@@ -326,7 +329,7 @@ public class EnchantingSkill extends Skill implements Listener {
         if (WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_hand_swap")) return; // to prevent spam, a cooldown of 0.5 seconds is applied
         if (ItemUtils.isEmpty(e.getOffHandItem())) return;
-        if (!EquipmentClass.isHandHeld(ItemUtils.getItemMeta(e.getMainHandItem()))) return;
+        if (!EquipmentClass.isHandHeld(ItemUtils.getItemMeta(e.getOffHandItem()))) return;
         EnchantingProfile profile = ProfileCache.getOrCache(e.getPlayer(), EnchantingProfile.class);
         if (profile.getActiveElementalDamageMultiplier() == 0 && profile.getActiveElementalDamageConversion() == 0) return;
         // if the player gains no benefit from enhanced attacks, it is considered not unlocked
@@ -369,13 +372,11 @@ public class EnchantingSkill extends Skill implements Listener {
         for (Enchantment e : enchantments.keySet()){
             double levelMultiplier = enchantmentLevelMultipliers.getOrDefault(enchantments.get(e), 0D);
             double baseAmount = enchantmentBaseValues.getOrDefault(e, 0D);
-            System.out.println("player " + p.getName() + " got enchantment " + e.getKey().getKey() + " " + StringUtils.toRoman(enchantments.get(e)) + " which is worth " + (baseAmount * levelMultiplier));
             amount += baseAmount * levelMultiplier;
         }
 
         if (doDiminishingReturnsApply(p)){
             amount *= diminishingReturnsMultiplier;
-            System.out.println("diminishing returns: " + diminishingReturnsMultiplier);
             reduceTallyCounter(p);
         }
         return amount;

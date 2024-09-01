@@ -22,7 +22,7 @@ public class PredicateRegistry {
         register(new BiomeFilter(Material.MYCELIUM, "Mushroom Islands", Biome.MUSHROOM_FIELDS));
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20)) register(new BiomeFilter(Material.STONE, "All Highlands", Biome.JAGGED_PEAKS, Biome.FROZEN_PEAKS, Biome.STONY_PEAKS, Biome.MEADOW, Biome.CHERRY_GROVE, Biome.GROVE, Biome.SNOWY_SLOPES, Biome.WINDSWEPT_HILLS, Biome.WINDSWEPT_GRAVELLY_HILLS, Biome.WINDSWEPT_FOREST));
         else register(new BiomeFilter(Material.STONE, "All Highlands", Biome.JAGGED_PEAKS, Biome.FROZEN_PEAKS, Biome.STONY_PEAKS, Biome.MEADOW, Biome.GROVE, Biome.SNOWY_SLOPES, Biome.WINDSWEPT_HILLS, Biome.WINDSWEPT_GRAVELLY_HILLS, Biome.WINDSWEPT_FOREST));
-        register(new BiomeFilter(Material.POWDER_SNOW, "Peaks", Biome.JAGGED_PEAKS, Biome.FROZEN_PEAKS, Biome.STONY_PEAKS));
+        register(new BiomeFilter(Material.POWDER_SNOW_BUCKET, "Peaks", Biome.JAGGED_PEAKS, Biome.FROZEN_PEAKS, Biome.STONY_PEAKS));
         register(new BiomeFilter(Material.BEEHIVE, "Meadow", Biome.MEADOW));
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20)) register(new BiomeFilter(Material.CHERRY_LEAVES, "Cherry Blossom", Biome.CHERRY_GROVE));
         register(new BiomeFilter(Material.GRAVEL, "Hills", Biome.WINDSWEPT_HILLS, Biome.WINDSWEPT_GRAVELLY_HILLS, Biome.WINDSWEPT_FOREST));
