@@ -98,7 +98,7 @@ public class CustomBreakSpeedListener implements Listener {
         PrepareBlockBreakEvent event = new PrepareBlockBreakEvent(b, info.getDigger());
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) initialDamage = 0;
-        if (initialDamage >= 1) {
+        if (initialDamage >= 1 || ItemUtils.breaksInstantly(b.getType())) {
             BlockDigProcess.breakBlockInstantly(info.getDigger(), b);
             if (event.getAdditionalBlocks().isEmpty()) return;
         } else {
@@ -111,7 +111,7 @@ public class CustomBreakSpeedListener implements Listener {
 
         for (Block block : event.getAdditionalBlocks()){
             float damage = instantBlockBreaks.contains(b.getLocation()) ? 999 : DigPacketInfo.damage(info.getDigger(), b);
-            if (damage >= 1) BlockDigProcess.breakBlockInstantly(info.getDigger(), block);
+            if (damage >= 1 || ItemUtils.breaksInstantly(b.getType())) BlockDigProcess.breakBlockInstantly(info.getDigger(), block);
             else {
                 BlockDigProcess p = blockDigProcesses.computeIfAbsent(block.getLocation(), k -> new BlockDigProcess(block));
                 Collection<UUID> mP = totalMiningBlocks.getOrDefault(block.getLocation(), new HashSet<>());

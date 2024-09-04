@@ -290,7 +290,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                 icons.add(new ItemBuilder(button).name("&r" +
                         (isFavourited(playerMenuUtility.getOwner(), recipe.getName()) ?
                                 favouritePrefix + displayName + favouriteSuffix :
-                                displayName)).lore(lore).stringTag(BUTTON_RECIPE_KEY, recipe.getName()).get());
+                                displayName)).lore(lore).stringTag(BUTTON_RECIPE_KEY, recipe.getName()).translate().get());
             }
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> callback.onItemsBuilt(icons));

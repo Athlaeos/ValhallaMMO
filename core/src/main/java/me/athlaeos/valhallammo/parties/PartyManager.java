@@ -578,7 +578,7 @@ public class PartyManager {
         float def = defaultFloats.getOrDefault(stat, 0F) + p.getFloats().getOrDefault(stat, 0F);
         Pair<PartyLevel, Double> partyLevel = getPartyLevel(p);
         if (partyLevel == null) return def;
-        for (int i = 0; i < partyLevel.getOne().level; i++) {
+        for (int i = 0; i <= partyLevel.getOne().level; i++) {
             if (partyLevels.containsKey(i)) def += partyLevels.get(i).floatStatBuffs.getOrDefault(stat, 0F);
         }
         return def;
@@ -596,7 +596,7 @@ public class PartyManager {
         int def = defaultInts.getOrDefault(stat, 0) + p.getInts().getOrDefault(stat, 0);
         Pair<PartyLevel, Double> partyLevel = getPartyLevel(p);
         if (partyLevel == null) return def;
-        for (int i = 0; i < partyLevel.getOne().level; i++) {
+        for (int i = 0; i <= partyLevel.getOne().level; i++) {
             if (partyLevels.containsKey(i)) def += partyLevels.get(i).intStatBuffs.getOrDefault(stat, 0);
         }
         return def;
@@ -616,7 +616,7 @@ public class PartyManager {
         boolean def = defaultBools.getOrDefault(stat, false);
         Pair<PartyLevel, Double> partyLevel = getPartyLevel(p);
         if (partyLevel == null || def) return def;
-        for (int i = 0; i < partyLevel.getOne().level; i++) if (partyLevel.getOne().boolStats.getOrDefault(stat, false)) return true;
+        for (int i = 0; i <= partyLevel.getOne().level; i++) if (partyLevel.getOne().boolStats.getOrDefault(stat, false)) return true;
         return false;
     }
 

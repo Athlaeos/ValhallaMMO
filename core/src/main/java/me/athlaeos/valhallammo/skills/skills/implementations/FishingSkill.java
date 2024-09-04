@@ -214,7 +214,6 @@ public class FishingSkill extends Skill implements Listener {
             ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
             ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
             if (!loottableEvent.isCancelled()){
-                LootListener.prepareFishingDrops(p.getUniqueId(), loottableEvent.getDrops());
                 boolean clearVanilla = switch (loottableEvent.getPreservationType()){
                     case CLEAR -> true;
                     case CLEAR_UNLESS_EMPTY -> !loottableEvent.getDrops().isEmpty();

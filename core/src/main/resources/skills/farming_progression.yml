@@ -79,6 +79,7 @@ experience:
   entity_breed:
     FROG: 80
     MUSHROOM_COW: 70
+    MOOSHROOM: 70
     HOGLIN: 100
     OCELOT: 90
     TURTLE: 90
