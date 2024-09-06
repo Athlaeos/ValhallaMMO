@@ -23,6 +23,7 @@ default: # Stats for all monsters
   # By default mobs get 50% crit damage, this is added to the zombie's stats unless the zombie has crit damage specified also.
   level: "%level% + rand(-5,5)" # %level% here refers to the average player power level at the location. Elsewhere it refers to the entity's level
   exp_orb_bonus: "0.02 * %level%" # Exp orb buffs
+  loot_bonus: "0.02 * %level%"
   HEALTH_MULTIPLIER_BONUS: "-0.3 + (0.033 * %level%)" # Lowers mob hp by 30% initially, increases up to quadruple hp at level 100
   WEIGHTLESS_ARMOR: "0.2 * %level%" # Gives mobs up to 20 base armor at level 100
   DAMAGE_DEALT: "-0.3 + (0.023 * %level%)" # Lowers mob damage by 30% initially, increases up to triple damage at level 100

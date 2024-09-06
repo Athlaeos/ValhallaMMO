@@ -34,9 +34,11 @@ public class MonsterScalingManager {
     private static final Map<String, String> defaultStatScaling = new HashMap<>();
     private static String defaultLevelScaling = null;
     private static String defaultExpOrbScaling = null;
+    private static String defaultLootScaling = null;
     private static final Map<EntityType, Map<String, String>> entityStatScaling = new HashMap<>();
     private static final Map<EntityType, String> entityLevelScaling = new HashMap<>();
     private static final Map<EntityType, String> entityExpOrbScaling = new HashMap<>();
+    private static final Map<EntityType, String> entityLootScaling = new HashMap<>();
     private static boolean wolfLeveling = false;
     private static String defaultWolfLevelScaling = null;
 
@@ -66,6 +68,7 @@ public class MonsterScalingManager {
             for (String stat : defaultStats.getKeys(false)){
                 if (stat.equals("level")) defaultLevelScaling = config.getString("default.level");
                 else if (stat.equals("exp_orb_bonus")) defaultExpOrbScaling = config.getString("default.exp_orb_bonus");
+                else if (stat.equals("loot_bonus")) defaultLootScaling = config.getString("default.loot_bonus");
                 else {
                     if (!AccumulativeStatManager.getSources().containsKey(stat)){
                         ValhallaMMO.logWarning("Invalid default stat " + stat + " referenced in mob_stats.yml");
@@ -85,6 +88,7 @@ public class MonsterScalingManager {
                     for (String stat : stats.getKeys(false)){
                         if (stat.equals("level")) entityLevelScaling.put(e, config.getString("entity." + entity + ".level"));
                         else if (stat.equals("exp_orb_bonus")) entityExpOrbScaling.put(e, config.getString("entity." + entity + ".exp_orb_bonus"));
+                        else if (stat.equals("loot_bonus")) entityLootScaling.put(e, config.getString("entity." + entity + ".loot_bonus"));
                         else {
                             if (!AccumulativeStatManager.getSources().containsKey(stat)){
                                 ValhallaMMO.logWarning("Invalid " + entity + " stat " + stat + " referenced in mob_stats.yml");
@@ -124,6 +128,25 @@ public class MonsterScalingManager {
             return Utils.eval(parseRand(expScaling.replace("%level%", String.valueOf(level))));
         } else if (defaultExpOrbScaling != null) {
             return Utils.eval(parseRand(defaultExpOrbScaling.replace("%level%", String.valueOf(level))));
+        }
+        return 0;
+    }
+
+    /**
+     * Returns the exp orb bonus based on mob level
+     * @param entity the entity to get their bonus exp from
+     * @return the exp orb bonus, or 0 if the entity is lv <0 or invalid or if no scaling has been defined
+     */
+    public static double getLootMultiplier(LivingEntity entity){
+        if (!enabled || (monstersOnly && !(entity instanceof Monster) && !(entity instanceof Boss)) || entity instanceof Player) return 0;
+        int level = getLevel(entity);
+        if (level < 0) return 0;
+        if (entityLootScaling.containsKey(entity.getType())){
+            String expScaling = entityLootScaling.get(entity.getType());
+            if (expScaling == null) return 0;
+            return Utils.eval(parseRand(expScaling.replace("%level%", String.valueOf(level))));
+        } else if (defaultLootScaling != null) {
+            return Utils.eval(parseRand(defaultLootScaling.replace("%level%", String.valueOf(level))));
         }
         return 0;
     }

@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.entities.EntityClassification;
+import me.athlaeos.valhallammo.entities.MonsterScalingManager;
 import me.athlaeos.valhallammo.event.BlockDestructionEvent;
 import me.athlaeos.valhallammo.event.ValhallaLootPopulateEvent;
 import me.athlaeos.valhallammo.event.ValhallaLootReplacementEvent;
@@ -825,7 +826,7 @@ public class LootListener implements Listener {
             if (!ItemUtils.isEmpty(equipment.getLeggings())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
             if (!ItemUtils.isEmpty(equipment.getBoots())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
         }
-        double dropMultiplier = killer == null || entity instanceof Player ? 0 : AccumulativeStatManager.getCachedStats("ENTITY_DROPS", killer, 10000, true);
+        double dropMultiplier = killer == null || entity instanceof Player ? 0 : (AccumulativeStatManager.getCachedStats("ENTITY_DROPS", killer, 10000, true) + MonsterScalingManager.getLootMultiplier(e.getEntity()));
         ItemUtils.multiplyItems(e.getDrops(), 1D + dropMultiplier, false, i -> itemDuplicationWhitelist.contains(i.getType()) && !droppedHandTypes.contains(i.getType()));
 
         int looting = 0;

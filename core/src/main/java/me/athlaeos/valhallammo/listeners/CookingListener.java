@@ -86,8 +86,8 @@ public class CookingListener implements Listener {
                 // and CampfireRecipe cannot be null if DynamicCookingRecipe also isn't null
 
                 if (recipes.getOne() == null){ // if no campfire recipe with this item was found, try for the off-hand
+                    if (ItemUtils.isEmpty(p.getInventory().getItemInOffHand())) return;
                     handItem = new ItemBuilder(p.getInventory().getItemInOffHand());
-                    if (ItemUtils.isEmpty(hand)) return;
                     recipes = getCampfireRecipe(handItem.getItem());
                 }
                 if (recipes.getOne() == null) return; // no recipe was found at all, so do nothing
