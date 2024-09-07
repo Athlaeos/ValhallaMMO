@@ -147,10 +147,10 @@ public class DigPacketInfo {
 
         BlockCache cachedBlockBonus = blockSpecificSpeedCache.get(digger.getUniqueId());
         if (cachedBlockBonus == null || !sameLocation(b, cachedBlockBonus.block)) {
-            cachedBlockBonus = new BlockCache(b, AccumulativeStatManager.getStats("BLOCK_SPECIFIC_DIG_SPEED", digger, true));
+            cachedBlockBonus = new BlockCache(b, 1 + AccumulativeStatManager.getStats("BLOCK_SPECIFIC_DIG_SPEED", digger, true));
             blockSpecificSpeedCache.put(digger.getUniqueId(), cachedBlockBonus);
         }
-        baseMultiplier += (float) cachedBlockBonus.value;
+        baseMultiplier *= (float) cachedBlockBonus.value;
 
         if (isInWater(digger) && !canSwimMine) baseMultiplier /= 5;
         if (!EntityUtils.isOnGround(digger) && !canAirMine) baseMultiplier /= 5;
