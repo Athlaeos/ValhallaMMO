@@ -18,6 +18,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -60,4 +61,11 @@ public interface NMS extends Listener {
     boolean hasUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type);
     double getUniqueAttributeValue(LivingEntity e, UUID uuid, String identifier, Attribute type);
     void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type);
+
+    void sendArmorChange(LivingEntity entity, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots);
+    default void resetArmorChange(LivingEntity entity){
+        EntityEquipment equipment = entity.getEquipment();
+        if (equipment == null) return;
+        sendArmorChange(entity, equipment.getHelmet(), equipment.getChestplate(), equipment.getLeggings(), equipment.getBoots());
+    }
 }

@@ -416,6 +416,11 @@ public class ItemUtils {
         return def;
     }
 
+    public static ItemStack itemOrAir(ItemStack item){
+        if (isEmpty(item)) return new ItemStack(Material.AIR);
+        return item;
+    }
+
     public static String getItemName(ItemMeta meta){
         String name;
         if (meta == null) return "null";

@@ -62,7 +62,7 @@
     <build>
         <defaultGoal>clean package</defaultGoal>
         <directory>../target</directory>
-        <finalName>ValhallaMMO_${revision}</finalName>
+        <finalName>ValhallaMMOPremium_${revision}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

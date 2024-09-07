@@ -5,6 +5,8 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.utility.MathUtils;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,7 +20,7 @@ import java.util.UUID;
 public class PacketListener implements Listener {
 
     private final NetworkHandler handler;
-    private final Map<UUID, Channel> channels = new HashMap<>();
+    private static final Map<UUID, Channel> channels = new HashMap<>();
 
     public PacketListener(NetworkHandler handler){
         this.handler = handler;
@@ -75,9 +77,16 @@ public class PacketListener implements Listener {
             closeChannel(p);
     }
 
-    public void sendPacket(Player p, Object packet){
+    public static void sendPacket(Player p, Object packet){
         Channel channel = channels.get(p.getUniqueId());
         if (channel == null) return;
         channel.pipeline().writeAndFlush(packet);
+    }
+
+    public static void broadcastPlayerPacket(LivingEntity origin, Object packet, boolean includeOrigin){
+        for(Player p : origin.getWorld().getPlayers()){
+            if(p.getLocation().distanceSquared(origin.getLocation()) < MathUtils.pow(ValhallaMMO.getInstance().getServer().getViewDistance(), 2) * 16 && (!includeOrigin && p.equals(origin))) continue;
+            sendPacket(p, packet);
+        }
     }
 }
