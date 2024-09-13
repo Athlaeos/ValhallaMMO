@@ -1,5 +1,4 @@
-package me.athlaeos.valhallammo.villagers;
-import me.athlaeos.valhallammo.gui.MenuListener;
+package me.athlaeos.valhallammo.trading;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,17 +20,7 @@ public abstract class VirtualMerchant {
 
     public abstract String getMenuName();
 
-    public abstract void handleMenu(InventoryClickEvent e);
-
-    public abstract void handleMenu(InventoryDragEvent e);
-
-    public abstract void setMenuItems();
-
     public void open(){
-
-        this.setMenuItems();
-        MerchantListener.setActiveMenu(playerMenuUtility.getOwner(), this);
-
         playerMenuUtility.getOwner().openMerchant(merchant, true);
     }
 
