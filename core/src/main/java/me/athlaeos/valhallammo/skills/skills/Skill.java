@@ -460,7 +460,7 @@ public abstract class Skill {
      */
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         // non-levelable skills should not gain exp
-        if (!isLevelableSkill()) return;
+        if (!isLevelableSkill() || (requiredPermission != null && !p.hasPermission(requiredPermission))) return;
         // creative mode players should not gain skill-acquired exp
         if (p.getGameMode() == GameMode.CREATIVE && !(this instanceof PowerSkill) && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
         // only experience-scaling skills should scale with exp multipliers. By default, this only excludes PowerSkill
