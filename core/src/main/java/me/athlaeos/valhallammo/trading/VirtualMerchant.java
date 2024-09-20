@@ -1,8 +1,6 @@
 package me.athlaeos.valhallammo.trading;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import org.bukkit.Bukkit;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 
@@ -17,6 +15,8 @@ public abstract class VirtualMerchant {
         this.merchant = Bukkit.createMerchant(getMenuName());
         this.merchant.setRecipes(recipes);
     }
+
+    public abstract void onClose();
 
     public abstract String getMenuName();
 

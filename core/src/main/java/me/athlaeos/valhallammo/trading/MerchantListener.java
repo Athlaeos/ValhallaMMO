@@ -6,6 +6,9 @@ import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
@@ -13,7 +16,19 @@ import org.bukkit.inventory.MerchantRecipe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VillagerListener implements Listener {
+public class MerchantListener implements Listener {
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onClose(InventoryCloseEvent e){
+        if (e.getInventory().getType() != InventoryType.MERCHANT) return;
+        System.out.println("closed");
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onOpen(InventoryOpenEvent e){
+        if (e.getInventory().getType() != InventoryType.MERCHANT) return;
+        System.out.println("open");
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onVillagerInteract(PlayerInteractAtEntityEvent e){

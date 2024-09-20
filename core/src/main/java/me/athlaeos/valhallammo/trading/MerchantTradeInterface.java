@@ -11,6 +11,11 @@ public class MerchantTradeInterface extends VirtualMerchant {
     }
 
     @Override
+    public void onClose() {
+
+    }
+
+    @Override
     public String getMenuName() {
         return "test";
     }
