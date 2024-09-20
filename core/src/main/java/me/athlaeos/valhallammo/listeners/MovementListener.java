@@ -31,17 +31,21 @@ public class MovementListener implements Listener {
                     Timer.setCooldown(p.getUniqueId(), 500, "delay_combat_update");
                 }
                 if (Timer.isCooldownPassed(p.getUniqueId(), "delay_movement_update")){
-                    EntityAttributeStats.updateStats(p);
+                    if (ValhallaMMO.isWorldBlacklisted(p.getWorld().getName())){
+                        EntityAttributeStats.removeStats(p);
+                    } else {
+                        EntityAttributeStats.updateStats(p);
 
-                    AttributeInstance armorInstance = p.getAttribute(Attribute.GENERIC_ARMOR);
-                    EntityUtils.removeUniqueAttribute(p, "armor_nullifier", Attribute.GENERIC_ARMOR);
-                    EntityUtils.removeUniqueAttribute(p, "armor_display", Attribute.GENERIC_ARMOR);
-                    if (armorInstance != null){
-                        double totalArmor = AccumulativeStatManager.getCachedStats("ARMOR_TOTAL", p, 10000, true);
-                        int scale = ValhallaMMO.getPluginConfig().getInt("armor_scale", 50);
-                        double newArmor = Math.max(0, Math.min(20, (totalArmor / scale) * 20));
-                        EntityUtils.addUniqueAttribute(p, EntityAttributeStats.ARMOR_NULLIFIER, "armor_nullifier", Attribute.GENERIC_ARMOR, -armorInstance.getValue(), AttributeModifier.Operation.ADD_NUMBER); // sets armor bar to 0
-                        EntityUtils.addUniqueAttribute(p, EntityAttributeStats.ARMOR_DISPLAY, "armor_display", Attribute.GENERIC_ARMOR, newArmor, AttributeModifier.Operation.ADD_NUMBER); // then increases armor to match a custom scale
+                        AttributeInstance armorInstance = p.getAttribute(Attribute.GENERIC_ARMOR);
+                        EntityUtils.removeUniqueAttribute(p, "armor_nullifier", Attribute.GENERIC_ARMOR);
+                        EntityUtils.removeUniqueAttribute(p, "armor_display", Attribute.GENERIC_ARMOR);
+                        if (armorInstance != null){
+                            double totalArmor = AccumulativeStatManager.getCachedStats("ARMOR_TOTAL", p, 10000, true);
+                            int scale = ValhallaMMO.getPluginConfig().getInt("armor_scale", 50);
+                            double newArmor = Math.max(0, Math.min(20, (totalArmor / scale) * 20));
+                            EntityUtils.addUniqueAttribute(p, EntityAttributeStats.ARMOR_NULLIFIER, "armor_nullifier", Attribute.GENERIC_ARMOR, -armorInstance.getValue(), AttributeModifier.Operation.ADD_NUMBER); // sets armor bar to 0
+                            EntityUtils.addUniqueAttribute(p, EntityAttributeStats.ARMOR_DISPLAY, "armor_display", Attribute.GENERIC_ARMOR, newArmor, AttributeModifier.Operation.ADD_NUMBER); // then increases armor to match a custom scale
+                        }
                     }
 
                     Timer.setCooldown(p.getUniqueId(), 10000, "delay_movement_update");

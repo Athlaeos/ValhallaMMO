@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
@@ -18,17 +19,7 @@ public class ToolArmorChoice extends RecipeOption implements IngredientChoice {
 
     static {
         List<Material> toolsAndArmor = new ArrayList<>();
-        toolsAndArmor.addAll(EquipmentClass.SWORD.getMatchingMaterials());
-        toolsAndArmor.addAll(EquipmentClass.PICKAXE.getMatchingMaterials());
-        toolsAndArmor.addAll(EquipmentClass.AXE.getMatchingMaterials());
-        toolsAndArmor.addAll(EquipmentClass.SHOVEL.getMatchingMaterials());
-        toolsAndArmor.addAll(EquipmentClass.HOE.getMatchingMaterials());
-        toolsAndArmor.addAll(EquipmentClass.TRIDENT.getMatchingMaterials());
-        toolsAndArmor.addAll(EquipmentClass.HELMET.getMatchingMaterials());
-        toolsAndArmor.addAll(EquipmentClass.CHESTPLATE.getMatchingMaterials());
-        toolsAndArmor.addAll(EquipmentClass.LEGGINGS.getMatchingMaterials());
-        toolsAndArmor.addAll(EquipmentClass.BOOTS.getMatchingMaterials());
-        toolsAndArmor.addAll(EquipmentClass.ELYTRA.getMatchingMaterials());
+        for (EquipmentClass c : EquipmentClass.values()) toolsAndArmor.addAll(c.getMatchingMaterials());
         ToolArmorChoice.toolsAndArmor = toolsAndArmor;
     }
 
@@ -39,15 +30,15 @@ public class ToolArmorChoice extends RecipeOption implements IngredientChoice {
 
     @Override
     public String getActiveDescription() {
-        return "The ingredient can be replaced with any tool or armor of any material";
+        return "The ingredient can be replaced with any type of equipment of any material";
     }
 
     @Override
     public ItemStack getIcon() {
-        return new ItemBuilder(Material.LEATHER_CHESTPLATE).name("&7Any Tool or Armor")
+        return new ItemBuilder(Material.LEATHER_CHESTPLATE).name("&7Any Equipment")
         .lore(
             "&aIngredient may be substituted with",
-            "&aany tool or armor of any material."
+            "&aany type of equipment of any material."
         ).get();
     }
 
@@ -80,7 +71,7 @@ public class ToolArmorChoice extends RecipeOption implements IngredientChoice {
     @SuppressWarnings("all")
     @Override
     public boolean matches(ItemStack i1, ItemStack i2) {
-        return toolsAndArmor.contains(i2.getType());
+        return EquipmentClass.getMatchingClass(ItemUtils.getItemMeta(i2)) != null;
     }
 
     @SuppressWarnings("all")

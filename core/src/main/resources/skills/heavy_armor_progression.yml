@@ -1,6 +1,6 @@
 starting_perks:
   heavyarmor_heavyarmormultiplier_add: -0.3
-  heavyarmor_movementspeedperpiece_add: -0.075
+  heavyarmor_movementspeedperpiece_add: -0.0375
 
 experience:
   max_level: 100
@@ -46,7 +46,7 @@ perks:
     hidden: false
     required_lv: 20
     perk_rewards:
-      heavyarmor_movementspeedperpiece_add: 0.025
+      heavyarmor_movementspeedperpiece_add: 0.0175
     messages:
       - "<lang.heavyarmor_perk_1a_messages>"
     requireperk_all:
@@ -72,7 +72,7 @@ perks:
     required_lv: 60
     perk_rewards:
       heavyarmor_setamount_add: -1
-      heavyarmor_movementspeedperpiece_add: 0.025
+      heavyarmor_movementspeedperpiece_add: 0.02
     messages:
       - "<lang.heavyarmor_perk_2a_messages>"
     requireperk_all:

@@ -821,10 +821,10 @@ public class LootListener implements Listener {
         if (equipment != null){
             if (!ItemUtils.isEmpty(equipment.getItemInMainHand())) droppedHandTypes.add(equipment.getItemInMainHand().getType());
             if (!ItemUtils.isEmpty(equipment.getItemInOffHand())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
-            if (!ItemUtils.isEmpty(equipment.getHelmet())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
-            if (!ItemUtils.isEmpty(equipment.getChestplate())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
-            if (!ItemUtils.isEmpty(equipment.getLeggings())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
-            if (!ItemUtils.isEmpty(equipment.getBoots())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
+            if (!ItemUtils.isEmpty(equipment.getHelmet())) droppedHandTypes.add(equipment.getHelmet().getType());
+            if (!ItemUtils.isEmpty(equipment.getChestplate())) droppedHandTypes.add(equipment.getChestplate().getType());
+            if (!ItemUtils.isEmpty(equipment.getLeggings())) droppedHandTypes.add(equipment.getLeggings().getType());
+            if (!ItemUtils.isEmpty(equipment.getBoots())) droppedHandTypes.add(equipment.getBoots().getType());
         }
         double dropMultiplier = killer == null || entity instanceof Player ? 0 : (AccumulativeStatManager.getCachedStats("ENTITY_DROPS", killer, 10000, true) + MonsterScalingManager.getLootMultiplier(e.getEntity()));
         ItemUtils.multiplyItems(e.getDrops(), 1D + dropMultiplier, false, i -> itemDuplicationWhitelist.contains(i.getType()) && !droppedHandTypes.contains(i.getType()));

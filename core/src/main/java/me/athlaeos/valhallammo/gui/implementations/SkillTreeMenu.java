@@ -412,6 +412,7 @@ public class SkillTreeMenu extends Menu {
             skills.sort(Comparator.comparingInt(Skill::getSkillTreeMenuOrderPriority));
             for (Skill s : skills){
                 if (!s.isLevelableSkill()) continue;
+                if (s.getRequiredPermission() != null && !playerMenuUtility.getOwner().hasPermission(s.getRequiredPermission())) continue;
                 ItemStack skillIcon = new ItemBuilder(s.getIcon())
                         .name(s.getDisplayName())
                         .lore(StringUtils.separateStringIntoLines(Utils.chat(s.getDescription()), 40))

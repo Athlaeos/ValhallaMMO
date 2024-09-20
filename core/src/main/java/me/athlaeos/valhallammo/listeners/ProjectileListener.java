@@ -49,7 +49,7 @@ public class ProjectileListener implements Listener {
     public void onLaunch(ProjectileLaunchEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         ItemBuilder projectile;
-        if (e.getEntity() instanceof ThrowableProjectile t) {
+        if (e.getEntity() instanceof ThrowableProjectile t && !ItemUtils.isEmpty(t.getItem())) {
             projectile = new ItemBuilder(t.getItem().clone());
             ItemUtils.storeItem(e.getEntity(), projectile.getItem());
         } else if (e.getEntity().getShooter() instanceof BlockProjectileSource b){

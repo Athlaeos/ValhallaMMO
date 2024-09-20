@@ -180,7 +180,14 @@ public class CustomBreakSpeedListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
         fatiguePlayer(e.getPlayer(), true);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onWorldChange(PlayerChangedWorldEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) removeFatiguedPlayer(e.getPlayer());
+        else fatiguePlayer(e.getPlayer(), true);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

@@ -1,6 +1,6 @@
 starting_perks:
   lightarmor_lightarmormultiplier_add: -0.3
-  lightarmor_movementspeedperpiece_add: -0.05
+  lightarmor_movementspeedperpiece_add: -0.025
 
 experience: 
   max_level: 100 
@@ -46,7 +46,7 @@ perks:
     hidden: false
     required_lv: 20
     perk_rewards:
-      lightarmor_movementspeedperpiece_add: 0.025
+      lightarmor_movementspeedperpiece_add: 0.01
     messages:
       - "<lang.lightarmor_perk_1a_messages>"
     requireperk_all:
@@ -72,7 +72,7 @@ perks:
     required_lv: 60
     perk_rewards:
       lightarmor_setamount_add: -1
-      lightarmor_movementspeedperpiece_add: 0.025
+      lightarmor_movementspeedperpiece_add: 0.015
     messages:
       - "<lang.lightarmor_perk_2a_messages>"
     requireperk_all:
@@ -282,7 +282,7 @@ perks:
       reset_skill_light_armor: 0
       p:lightarmor_newgameplus_add: 1
       p:lightarmor_damageresistanceperpiece_add: 0.0125
-      p:lightarmor_movementspeedperpiece_add: 0.025
+      p:lightarmor_movementspeedperpiece_add: 0.02
       p:lightarmor_lightarmorexpmultiplier_add: -0.25
       p:perks_unlocked_add:
         - lightarmor_perk_ng1
@@ -302,7 +302,7 @@ perks:
       reset_skill_light_armor: 0
       p:lightarmor_newgameplus_add: 1
       p:lightarmor_damageresistanceperpiece_add: 0.0125
-      p:lightarmor_movementspeedperpiece_add: 0.025
+      p:lightarmor_movementspeedperpiece_add: 0.02
       p:lightarmor_lightarmorexpmultiplier_add: -0.25
       p:perks_unlocked_add:
         - lightarmor_perk_ng1

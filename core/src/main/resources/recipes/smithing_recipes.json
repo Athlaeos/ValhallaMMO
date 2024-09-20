@@ -116,7 +116,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -269,7 +269,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -435,7 +435,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -528,7 +528,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -681,7 +681,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -881,7 +881,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -974,7 +974,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -1161,7 +1161,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -1357,7 +1357,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -1641,7 +1641,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -1846,7 +1846,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -1939,7 +1939,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -2143,7 +2143,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -2309,7 +2309,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
@@ -2436,7 +2436,7 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
+          "minimumValue": 0.2,
           "name": "durability_scale",
           "priority": "LATER"
         }
