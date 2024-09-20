@@ -1553,7 +1553,7 @@
     "smithing_perk_2_name": "&eApprentice Blacksmith",
     "smithing_perk_2_description": "&7Greatly buffs the quality of your &eStone&7 and &eChainmail&7 items.",
     "smithing_perk_3_name": "&eBlacksmith",
-    "smithing_perk_3_description": "&7Greatly buffs the quality of your &eIron&7 and &eGold&7 items.",
+    "smithing_perk_3_description": "&eUnlocks diamond equipment&7, though it'll be of poor quality. &7Greatly buffs the quality of your &eIron&7 and &eGold&7 items.",
     "smithing_perk_4_name": "&eCrystalsmith",
     "smithing_perk_4_description": "&7Greatly buffs the quality of your &eDiamond&7 items.",
     "smithing_perk_5_name": "&eHellforge",
@@ -2851,7 +2851,11 @@
     "smithing_perk_3_messages": [
       "&e✰ &6Blacksmith &e✰",
       "&e{smithing_ironcraftingskill_add} &7Iron Quality",
-      "&e{smithing_goldcraftingskill_add} &7Gold Quality"
+      "&e{smithing_goldcraftingskill_add} &7Gold Quality",
+      "&eRecipes Unlocked",
+      "&7- &bAll diamond equipment",
+      "&cAt this level, diamond equipment will still",
+      "&cbe of poor quality. "
     ],
     "smithing_perk_4_messages": [
       "&e✰ &6Crystalsmith &e✰",

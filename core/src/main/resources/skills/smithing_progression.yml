@@ -126,6 +126,22 @@ perks:
     perk_rewards:
       smithing_ironcraftingskill_add: 50
       smithing_goldcraftingskill_add: 50
+      recipes_unlock:
+        - craft_diamond_helmet
+        - craft_diamond_chestplate
+        - craft_diamond_leggings
+        - craft_diamond_boots
+        - craft_diamond_sword
+        - craft_diamond_axe
+        - craft_diamond_pickaxe
+        - craft_diamond_shovel
+        - craft_diamond_hoe
+        - craft_diamond_warhammer
+        - craft_diamond_greataxe
+        - craft_diamond_spear
+        - craft_diamond_dagger
+        - craft_diamond_rapier
+        - craft_diamond_mace
     messages:
       - "<lang.smithing_perk_3_messages>"
     requireperk_all:

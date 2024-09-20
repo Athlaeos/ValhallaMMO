@@ -3754,7 +3754,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -4201,7 +4201,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -4830,7 +4830,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -5291,7 +5291,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -7468,7 +7468,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -8918,7 +8918,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -10557,7 +10557,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -18200,7 +18200,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -20190,7 +20190,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -20868,7 +20868,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -24137,7 +24137,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -27820,7 +27820,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -33388,7 +33388,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -34788,7 +34788,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
@@ -35783,7 +35783,7 @@
         }
       }
     ],
-    "unlockedForEveryone": true,
+    "unlockedForEveryone": false,
     "toolRequirement": {
       "toolRequirementType": "NOT_REQUIRED",
       "requiredToolID": -1
