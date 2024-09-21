@@ -2,7 +2,6 @@ display_name: '<lang.skill-alchemy-displayname>'
 icon: BREWING_STAND
 icon_data: 3510001
 description: '<lang.skill-alchemy-description>'
-permission: 'some.permission'
 
 levelbar_title: '<lang.skill-alchemy-level-bar>'
 levelbar_color: PURPLE # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
