@@ -9,16 +9,14 @@ public class MerchantData {
     private final Map<Integer, TradeData> trades = new HashMap<>(); // represents a
 
     private class TradeData{
+        private final String id;
         private final ItemStack item;
-        private final ItemStack scalingCostItem;
-        private final ItemStack optionalCostItem;
         private final double maxSales;
         private final double salesLeft;
 
-        public TradeData(ItemStack item, ItemStack scalingCostItem, ItemStack optionalCostItem, double maxSales, double salesLeft){
+        public TradeData(String id, ItemStack item, double maxSales, double salesLeft){
+            this.id = id;
             this.item = item;
-            this.scalingCostItem = scalingCostItem;
-            this.optionalCostItem = optionalCostItem;
             this.maxSales = maxSales;
             this.salesLeft = salesLeft;
         }
