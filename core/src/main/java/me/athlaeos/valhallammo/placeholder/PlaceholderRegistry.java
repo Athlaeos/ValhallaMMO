@@ -23,14 +23,14 @@ public class PlaceholderRegistry {
             for (String numberStat : profile.getNumberStatProperties().keySet()) {
                 StatFormat format = profile.getNumberStatProperties().get(numberStat).getFormat();
                 if (format == null) continue;
-                registerPlaceholder(new NumericProfileStatPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase() + "_" + numberStat.toLowerCase() + "%", profile.getClass(), numberStat, format));
+                registerPlaceholder(new NumericProfileStatPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase(java.util.Locale.US) + "_" + numberStat.toLowerCase(java.util.Locale.US) + "%", profile.getClass(), numberStat, format));
             }
-            registerPlaceholder(new ProfileNextLevelPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase() + "_next_level%", profile.getClass(), StatFormat.INT));
-            registerPlaceholder(new ProfileNextLevelEXPPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase() + "_next_level_exp%", profile.getClass(), StatFormat.INT));
+            registerPlaceholder(new ProfileNextLevelPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase(java.util.Locale.US) + "_next_level%", profile.getClass(), StatFormat.INT));
+            registerPlaceholder(new ProfileNextLevelEXPPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase(java.util.Locale.US) + "_next_level_exp%", profile.getClass(), StatFormat.INT));
         }
 
         for (String statSource : AccumulativeStatManager.getSources().keySet()) {
-            registerPlaceholder(new TotalStatPlaceholder("%stat_source_" + statSource.toLowerCase() + "%", statSource));
+            registerPlaceholder(new TotalStatPlaceholder("%stat_source_" + statSource.toLowerCase(java.util.Locale.US) + "%", statSource));
         }
 
         registerPlaceholder(new SpendableSkillPointsPlaceholder("%skillpoints%"));

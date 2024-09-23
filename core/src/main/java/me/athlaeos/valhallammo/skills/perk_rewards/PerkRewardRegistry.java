@@ -25,7 +25,7 @@ public class PerkRewardRegistry {
 
     static {
         for (Profile profile : ProfileRegistry.getRegisteredProfiles().values()){
-            String skill = profile.getSkillType().getSimpleName().toLowerCase().replace("skill", "");
+            String skill = profile.getSkillType().getSimpleName().toLowerCase(java.util.Locale.US).replace("skill", "");
             if (profile.getSkillType() == null) continue;
             for (String s : profile.getAllStatNames()) {
                 StatProperties properties = profile.getNumberStatProperties().get(s);
@@ -49,7 +49,7 @@ public class PerkRewardRegistry {
         }
 
         for (ResetType type : ResetType.values()){
-            register(new ProgressReset("reset_" + type.toString().toLowerCase(), type));
+            register(new ProgressReset("reset_" + type.toString().toLowerCase(java.util.Locale.US), type));
         }
 
         BiAction<String, Player> forget = (s, p) -> ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {

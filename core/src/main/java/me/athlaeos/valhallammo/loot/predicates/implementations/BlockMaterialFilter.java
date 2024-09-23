@@ -38,7 +38,7 @@ public class BlockMaterialFilter extends LootPredicate {
 
     @Override
     public String getActiveDescription() {
-        return "&fRequires the container to " + (isInverted() ? "&cNOT&f " : "") + "be one of &e" + blocks.stream().map(b -> b.toString().toLowerCase()).collect(Collectors.joining(", "));
+        return "&fRequires the container to " + (isInverted() ? "&cNOT&f " : "") + "be one of &e" + blocks.stream().map(b -> b.toString().toLowerCase(java.util.Locale.US)).collect(Collectors.joining(", "));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class BlockMaterialFilter extends LootPredicate {
                                 "&fInverted conditions must &cnot &fpass",
                                 "&fthis condition. ",
                                 "&6Click to toggle")
-                        .appendLore(blocks.isEmpty() ? List.of("&cNone, condition always passes") : blocks.stream().map(b -> "&f>" + b.toString().toLowerCase()).toList())
+                        .appendLore(blocks.isEmpty() ? List.of("&cNone, condition always passes") : blocks.stream().map(b -> "&f>" + b.toString().toLowerCase(java.util.Locale.US)).toList())
                         .get()).map(Set.of(
                                 new Pair<>(12,
                                         new ItemBuilder(Material.TNT)
@@ -64,7 +64,7 @@ public class BlockMaterialFilter extends LootPredicate {
                                                         "&6add required block type",
                                                         "&cShift-Click to clear list",
                                                         "&fCurrently: ")
-                                                .appendLore(blocks.isEmpty() ? List.of("&cNone, condition always passes") : blocks.stream().map(b -> "&f>" + b.toString().toLowerCase()).toList())
+                                                .appendLore(blocks.isEmpty() ? List.of("&cNone, condition always passes") : blocks.stream().map(b -> "&f>" + b.toString().toLowerCase(java.util.Locale.US)).toList())
                                                 .get()))
         );
     }

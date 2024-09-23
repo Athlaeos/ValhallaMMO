@@ -183,7 +183,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
                 FROM %s ORDER BY %s DESC%s;
                 """;
         String t = p.getTableName();
-        String c = stat.toLowerCase();
+        String c = stat.toLowerCase(java.util.Locale.US);
         return String.format(query,
                 t, extraStats.stream().map(e -> String.format(", %s.%s", t, e)).collect(Collectors.joining()),
                 t, c, t, c, extraStats.stream().map(e -> String.format(", %s DESC", e)).collect(Collectors.joining()));

@@ -389,14 +389,14 @@ public class ItemAttributesRegistry {
                     else if (CustomFlag.hasFlag(meta, CustomFlag.ATTRIBUTE_FOR_BOTH_HANDS))
                         meta.addAttributeModifier(attribute, new AttributeModifier(
                                 UUID.randomUUID(),
-                                wrapper.getAttribute().replaceFirst("_", ".").toLowerCase(),
+                                wrapper.getAttribute().replaceFirst("_", ".").toLowerCase(java.util.Locale.US),
                                 value,
                                 wrapper.getOperation(),
                                 EquipmentSlot.OFF_HAND
                         ));
                     meta.addAttributeModifier(attribute, new AttributeModifier(
                             UUID.randomUUID(),
-                            wrapper.getAttribute().replaceFirst("_", ".").toLowerCase(),
+                            wrapper.getAttribute().replaceFirst("_", ".").toLowerCase(java.util.Locale.US),
                             value,
                             wrapper.getOperation(),
                             slot

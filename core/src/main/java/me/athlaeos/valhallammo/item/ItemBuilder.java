@@ -1,19 +1,19 @@
 package me.athlaeos.valhallammo.item;
 
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.*;
+import org.bukkit.material.Colorable;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
@@ -159,6 +159,11 @@ public class ItemBuilder {
             m.setColor(color);
         } else if (meta instanceof PotionMeta m){
             m.setColor(color);
+        }
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21)){
+            if (meta instanceof ColorableArmorMeta c){
+                c.setColor(color);
+            }
         }
         return this;
     }

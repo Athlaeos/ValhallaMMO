@@ -56,17 +56,17 @@ public class FlagCustomAdd extends DynamicItemModifier {
 
     @Override
     public String getDisplayName() {
-        return "&7Add Custom Item Flag: &e" + StringUtils.toPascalCase(flag.toString().toLowerCase().replace("_", " "));
+        return "&7Add Custom Item Flag: &e" + StringUtils.toPascalCase(flag.toString().toLowerCase(java.util.Locale.US).replace("_", " "));
     }
 
     @Override
     public String getDescription() {
-        return "&fAdds the " + StringUtils.toPascalCase(flag.toString().toLowerCase().replace("_", " ")) + " item flag to the item.";
+        return "&fAdds the " + StringUtils.toPascalCase(flag.toString().toLowerCase(java.util.Locale.US).replace("_", " ")) + " item flag to the item.";
     }
 
     @Override
     public String getActiveDescription() {
-        return "&fAdds the " + StringUtils.toPascalCase(flag.toString().toLowerCase().replace("_", " ")) + " item flag to the item.";
+        return "&fAdds the " + StringUtils.toPascalCase(flag.toString().toLowerCase(java.util.Locale.US).replace("_", " ")) + " item flag to the item.";
     }
 
     @Override

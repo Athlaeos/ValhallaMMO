@@ -109,7 +109,7 @@ public class EnchantingSkill extends Skill implements Listener {
         if (baseEnchantmentValueSection != null){
             baseEnchantmentValueSection.getKeys(false).forEach((s) -> {
                 if (s.equalsIgnoreCase("sweeping")) s = oldOrNew("sweeping", "sweeping_edge");
-                Enchantment e = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? Registry.ENCHANTMENT.get(NamespacedKey.minecraft(s.toLowerCase())) : Enchantment.getByKey(NamespacedKey.minecraft(s.toLowerCase()));
+                Enchantment e = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? Registry.ENCHANTMENT.get(NamespacedKey.minecraft(s.toLowerCase(java.util.Locale.US))) : Enchantment.getByKey(NamespacedKey.minecraft(s.toLowerCase(java.util.Locale.US)));
                 if (e != null) enchantmentBaseValues.put(e, progressionConfig.getDouble("experience.exp_gain.enchantment_base." + s));
                 else ValhallaMMO.logWarning("Invalid enchantment type given at progression_enchanting.yml experience.exp_gain.enchantment_base." + s);
             });

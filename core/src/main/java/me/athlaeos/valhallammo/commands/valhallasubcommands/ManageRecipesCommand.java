@@ -25,7 +25,7 @@ public class ManageRecipesCommand implements Command {
                 String method = args[1];
                 if (method.equalsIgnoreCase("new")){
                     if (args.length == 3) return false;
-                    String type = args[2].toLowerCase();
+                    String type = args[2].toLowerCase(java.util.Locale.US);
                     if (CustomRecipeRegistry.getAllRecipes().contains(args[3])) {
                         Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_recipe_exists"));
                         return true;
@@ -47,7 +47,7 @@ public class ManageRecipesCommand implements Command {
                     }
                     return true;
                 } else if (method.equalsIgnoreCase("edit")) {
-                    String recipe = args[2].toLowerCase();
+                    String recipe = args[2].toLowerCase(java.util.Locale.US);
                     if (CustomRecipeRegistry.getCauldronRecipes().containsKey(recipe))
                         new CauldronRecipeEditor(PlayerMenuUtilManager.getPlayerMenuUtility(player), CustomRecipeRegistry.getCauldronRecipes().get(recipe)).open();
                     else if (CustomRecipeRegistry.getCookingRecipes().containsKey(recipe))
@@ -64,8 +64,8 @@ public class ManageRecipesCommand implements Command {
                     return true;
                 } else if (method.equalsIgnoreCase("copy")) {
                     if (args.length == 3) return false;
-                    String recipe = args[2].toLowerCase();
-                    String newRecipe = args[3].toLowerCase();
+                    String recipe = args[2].toLowerCase(java.util.Locale.US);
+                    String newRecipe = args[3].toLowerCase(java.util.Locale.US);
                     if (!CustomRecipeRegistry.getAllRecipes().contains(recipe)) {
                         Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_recipe_missing"));
                         return true;

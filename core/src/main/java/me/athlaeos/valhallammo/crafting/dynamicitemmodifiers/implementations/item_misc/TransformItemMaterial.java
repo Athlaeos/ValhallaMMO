@@ -80,12 +80,12 @@ public class TransformItemMaterial extends DynamicItemModifier {
 
     @Override
     public String getDescription() {
-        return "&fChanges the equipment's material to " + materialPrefix.toLowerCase() + ". This resets the item's stats and item meta";
+        return "&fChanges the equipment's material to " + materialPrefix.toLowerCase(java.util.Locale.US) + ". This resets the item's stats and item meta";
     }
 
     @Override
     public String getActiveDescription() {
-        return "&fChanges the equipment's material to " + materialPrefix.toLowerCase() + ".";
+        return "&fChanges the equipment's material to " + materialPrefix.toLowerCase(java.util.Locale.US) + ".";
     }
 
     @Override

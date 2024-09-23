@@ -43,7 +43,7 @@ public class BlockSurroundedMaterialFilter extends LootPredicate {
 
     @Override
     public String getActiveDescription() {
-        return "&fRequires the block to " + (isInverted() ? "&cNOT&f " : "") + "be surrounded by at least " + quantity + " of &e" + materials.stream().map(b -> b.toString().toLowerCase()).collect(Collectors.joining(", "));
+        return "&fRequires the block to " + (isInverted() ? "&cNOT&f " : "") + "be surrounded by at least " + quantity + " of &e" + materials.stream().map(b -> b.toString().toLowerCase(java.util.Locale.US)).collect(Collectors.joining(", "));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class BlockSurroundedMaterialFilter extends LootPredicate {
                                                         "&6add required block type",
                                                         "&cShift-Click to clear list",
                                                         "&fCurrently: ")
-                                                .appendLore(materials.isEmpty() ? List.of("&cNone, condition always passes") : materials.stream().map(b -> "&f>" + b.toString().toLowerCase()).toList())
+                                                .appendLore(materials.isEmpty() ? List.of("&cNone, condition always passes") : materials.stream().map(b -> "&f>" + b.toString().toLowerCase(java.util.Locale.US)).toList())
                                                 .get()),
                 new Pair<>(11,
                         new ItemBuilder(Material.STRUCTURE_VOID)

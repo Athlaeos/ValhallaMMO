@@ -61,7 +61,7 @@ public class PotionEffectAdd extends DynamicItemModifier {
         return new Pair<>(11,
                 new ItemBuilder(Material.PAPER)
                         .name("&dHow strong should this effect be?")
-                        .lore("&f" + effect.getEffect().toLowerCase().replace("_", " ") + " " + effect.getFormat().format(value + (effect.isVanilla() ? 1 : 0)) + " &f(" + StringUtils.toTimeStamp(duration, 20) + ")",
+                        .lore("&f" + effect.getEffect().toLowerCase(java.util.Locale.US).replace("_", " ") + " " + effect.getFormat().format(value + (effect.isVanilla() ? 1 : 0)) + " &f(" + StringUtils.toTimeStamp(duration, 20) + ")",
                                 "&e" + String.format("%.2f", value),
                                 "&6Click to add/subtract " + smallIncrement,
                                 "&6Shift-Click to add/subtract " + bigIncrement)
@@ -69,7 +69,7 @@ public class PotionEffectAdd extends DynamicItemModifier {
                 new Pair<>(13,
                         new ItemBuilder(Material.PAPER)
                                 .name("&dHow long should the duration be?")
-                                .lore("&f" + effect.getEffect().toLowerCase().replace("_", " ") + " " + effect.getFormat().format(value + (effect.isVanilla() ? 1 : 0)) + " &f(" + StringUtils.toTimeStamp(duration, 20) + ")",
+                                .lore("&f" + effect.getEffect().toLowerCase(java.util.Locale.US).replace("_", " ") + " " + effect.getFormat().format(value + (effect.isVanilla() ? 1 : 0)) + " &f(" + StringUtils.toTimeStamp(duration, 20) + ")",
                                         "&6Click to add/subtract 1 second",
                                         "&6Shift-Click to add/subtract 15 seconds")
                                 .get()),
@@ -98,19 +98,19 @@ public class PotionEffectAdd extends DynamicItemModifier {
     @Override
     public String getDisplayName() {
         PotionEffectWrapper effect = PotionEffectRegistry.getEffect(this.effect);
-        return (effect.isVanilla() ? "&bVanilla" : "&dCustom") + " Potion Effect: " + effect.getEffect().toLowerCase().replace("_", " ") + " (ADD)";
+        return (effect.isVanilla() ? "&bVanilla" : "&dCustom") + " Potion Effect: " + effect.getEffect().toLowerCase(java.util.Locale.US).replace("_", " ") + " (ADD)";
     }
 
     @Override
     public String getDescription() {
         PotionEffectWrapper effect = PotionEffectRegistry.getEffect(this.effect);
-        return "&fAdds " + effect.getEffect().toLowerCase().replace("_", " ") + " as default effect to the item. ";
+        return "&fAdds " + effect.getEffect().toLowerCase(java.util.Locale.US).replace("_", " ") + " as default effect to the item. ";
     }
 
     @Override
     public String getActiveDescription() {
         PotionEffectWrapper effect = PotionEffectRegistry.getEffect(this.effect);
-        return "&fAdds " + effect.getEffect().toLowerCase().replace("_", " ") + " " + effect.getFormat().format(value + (effect.isVanilla() ? 1 : 0)) + " &f(" + StringUtils.toTimeStamp(duration, 20) + ")" + " to the item. ";
+        return "&fAdds " + effect.getEffect().toLowerCase(java.util.Locale.US).replace("_", " ") + " " + effect.getFormat().format(value + (effect.isVanilla() ? 1 : 0)) + " &f(" + StringUtils.toTimeStamp(duration, 20) + ")" + " to the item. ";
     }
 
     @Override

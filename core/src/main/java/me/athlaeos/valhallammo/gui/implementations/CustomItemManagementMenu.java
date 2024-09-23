@@ -92,7 +92,7 @@ public class CustomItemManagementMenu extends Menu implements SetModifiersMenu {
                             Question question = getQuestions().get(0);
                             if (question.getAnswer() == null) return super.getOnFinish();
                             return (p) -> {
-                                String answer = question.getAnswer().replaceAll(" ", "_").toLowerCase();
+                                String answer = question.getAnswer().replaceAll(" ", "_").toLowerCase(java.util.Locale.US);
                                 if (answer.contains("cancel")) playerMenuUtility.getPreviousMenu().open();
                                 else if (CustomItemRegistry.getItems().containsKey(answer)) {
                                     Utils.sendMessage(getWho(), "&cItem id already exists!");

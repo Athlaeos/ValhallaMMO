@@ -260,20 +260,20 @@ public class DefaultAttributeScale extends DynamicItemModifier {
     @Override
     public String getDisplayName() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        return (attribute.isVanilla() ? "&b" : "&d") + "Scale Attribute: " + attribute.getAttribute().toLowerCase().replace("_", " ");
+        return (attribute.isVanilla() ? "&b" : "&d") + "Scale Attribute: " + attribute.getAttribute().toLowerCase(java.util.Locale.US).replace("_", " ");
     }
 
     @Override
     public String getDescription() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        return "&fScales the item's " + attribute.getAttribute().toLowerCase().replace("_", " ") + " stat according to a defined formula";
+        return "&fScales the item's " + attribute.getAttribute().toLowerCase(java.util.Locale.US).replace("_", " ") + " stat according to a defined formula";
     }
 
     @Override
     public String getActiveDescription() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
         return String.format("&fScales the item's %s stat according to the formula /n%s, using the mode %s. %s%s",
-                attribute.getAttribute().toLowerCase().replace("_", " "),
+                attribute.getAttribute().toLowerCase(java.util.Locale.US).replace("_", " "),
                 buildScaling(), mode,
                 lowerBound == null ? "" : "&fResult cannot go below " + lowerBound + ". ",
                 upperBound == null ? "" : "&fResult cannot go above " + upperBound + ".");

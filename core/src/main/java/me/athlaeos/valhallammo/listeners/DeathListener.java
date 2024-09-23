@@ -29,8 +29,8 @@ public class DeathListener implements Listener {
         Entity lastDamager = EntityDamagedListener.getLastDamager(e.getEntity());
 
         List<String> deathMessages = lastDamager != null ?
-                TranslationManager.getListTranslation("death_message_" + cause.toLowerCase() + "_enemy") :
-                TranslationManager.getListTranslation("death_message_" + cause.toLowerCase());
+                TranslationManager.getListTranslation("death_message_" + cause.toLowerCase(java.util.Locale.US) + "_enemy") :
+                TranslationManager.getListTranslation("death_message_" + cause.toLowerCase(java.util.Locale.US));
         if (deathMessages == null || deathMessages.isEmpty()) return;
         String pickedEntry = deathMessages.get(Utils.getRandom().nextInt(deathMessages.size()));
         if (!StringUtils.isEmpty(pickedEntry)) e.setDeathMessage(Utils.chat(pickedEntry

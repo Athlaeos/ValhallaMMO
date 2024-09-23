@@ -67,12 +67,12 @@ public class SkillRegistry {
         skillsByType.put(skill.getType(), skill);
         allSkillsByType = Collections.unmodifiableMap(skillsByType);
 
-        PerkRewardRegistry.register(new SkillReset("reset_skill_" + skill.getType().toLowerCase(), skill.getType()));
-        PerkRewardRegistry.register(new SkillRefund("refund_skill_" + skill.getType().toLowerCase()));
-        PerkRewardRegistry.register(new SkillLevelsAdd("skill_levels_add_" + skill.getType().toLowerCase(), skill));
-        PerkRewardRegistry.register(new SkillEXPAdd("skill_exp_add_" + skill.getType().toLowerCase(), skill));
-        ModifierRegistry.register(new SkillExperience("reward_" + skill.getType().toLowerCase() + "_experience", skill.getType()));
-        ModifierRegistry.register(new SkillRequirementAdd("requirement_add_" + skill.getType().toLowerCase(), skill.getType()));
+        PerkRewardRegistry.register(new SkillReset("reset_skill_" + skill.getType().toLowerCase(java.util.Locale.US), skill.getType()));
+        PerkRewardRegistry.register(new SkillRefund("refund_skill_" + skill.getType().toLowerCase(java.util.Locale.US)));
+        PerkRewardRegistry.register(new SkillLevelsAdd("skill_levels_add_" + skill.getType().toLowerCase(java.util.Locale.US), skill));
+        PerkRewardRegistry.register(new SkillEXPAdd("skill_exp_add_" + skill.getType().toLowerCase(java.util.Locale.US), skill));
+        ModifierRegistry.register(new SkillExperience("reward_" + skill.getType().toLowerCase(java.util.Locale.US) + "_experience", skill.getType()));
+        ModifierRegistry.register(new SkillRequirementAdd("requirement_add_" + skill.getType().toLowerCase(java.util.Locale.US), skill.getType()));
 
         skill.loadConfiguration();
         skill.perks.forEach(PerkRegistry::registerPerk);

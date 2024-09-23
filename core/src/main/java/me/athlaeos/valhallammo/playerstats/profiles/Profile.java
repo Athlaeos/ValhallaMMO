@@ -243,7 +243,7 @@ public abstract class Profile {
         tablesToUpdate.add(name);
     }
 
-    private final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "PDC_persistence_" + getClass().getSimpleName().toLowerCase());
+    private final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "PDC_persistence_" + getClass().getSimpleName().toLowerCase(java.util.Locale.US));
     public NamespacedKey getKey(){
         return key;
     }
@@ -264,7 +264,7 @@ public abstract class Profile {
         // prepare table with all non-update stat names
         for (String s : allStatNames){
             if (tablesToUpdate.contains(s)) continue;
-            String lower = s.toLowerCase();
+            String lower = s.toLowerCase(java.util.Locale.US);
             if (ints.containsKey(s)) query.append(", ").append(lower).append(" INTEGER default ").append(ints.get(s).def);
             if (doubles.containsKey(s)) query.append(", ").append(lower).append(" DOUBLE(24,12) default ").append(doubles.get(s).def);
             if (floats.containsKey(s)) query.append(", ").append(lower).append(" FLOAT default ").append(floats.get(s).def);
@@ -276,7 +276,7 @@ public abstract class Profile {
 
         // edit table with new columns
         for (String s : allStatNames){
-            String lower = s.toLowerCase();
+            String lower = s.toLowerCase(java.util.Locale.US);
             if (ints.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "INTEGER default " + ints.get(s).def);
             if (doubles.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "DOUBLE default " + doubles.get(s).def);
             if (floats.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "FLOAT default " + floats.get(s).def);
@@ -320,7 +320,7 @@ public abstract class Profile {
         if (result.next()){
             Profile profile = getBlankProfile(p);
             for (String s : allStatNames){
-                String lower = s.toLowerCase();
+                String lower = s.toLowerCase(java.util.Locale.US);
                 if (ints.containsKey(s)) {
                     profile.ints.get(s).value = result.getInt(lower);
                     if (result.wasNull()) profile.ints.get(s).value = profile.ints.get(s).def;

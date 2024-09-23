@@ -48,19 +48,19 @@ public class DefaultAttributeRemove extends DynamicItemModifier {
     @Override
     public String getDisplayName() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        return (attribute.isVanilla() ? "&bVanilla" : "&dCustom") + " Attribute: " + attribute.getAttribute().toLowerCase().replace("_", " ") + " (REMOVE)";
+        return (attribute.isVanilla() ? "&bVanilla" : "&dCustom") + " Attribute: " + attribute.getAttribute().toLowerCase(java.util.Locale.US).replace("_", " ") + " (REMOVE)";
     }
 
     @Override
     public String getDescription() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        return "&fRemoves " + attribute.getAttribute().toLowerCase().replace("_", " ") + " from the item";
+        return "&fRemoves " + attribute.getAttribute().toLowerCase(java.util.Locale.US).replace("_", " ") + " from the item";
     }
 
     @Override
     public String getActiveDescription() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        return "&fRemoves " + attribute.getAttribute().toLowerCase().replace("_", " ") + " from the item";
+        return "&fRemoves " + attribute.getAttribute().toLowerCase(java.util.Locale.US).replace("_", " ") + " from the item";
     }
 
     @Override

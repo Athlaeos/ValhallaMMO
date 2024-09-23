@@ -56,7 +56,7 @@ public class TestCommand implements Command {
 
 //    private void registerSkillProfileFormats(){
 //        for (Skill s : SkillRegistry.getAllSkills().values()){
-//            List<String> format = TranslationManager.getListTranslation("profile_format_" + s.getType().toLowerCase());
+//            List<String> format = TranslationManager.getListTranslation("profile_format_" + s.getType().toLowerCase(java.util.Locale.US));
 //            if (format == null) format = new ArrayList<>();
 //            profileFormats.put(s, format);
 //        }

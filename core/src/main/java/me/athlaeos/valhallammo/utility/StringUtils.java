@@ -12,7 +12,7 @@ public class StringUtils {
     public static String toPascalCase(String s){
         if (s == null) return null;
         if (s.isEmpty()) return s;
-        String allLowercase = s.toLowerCase();
+        String allLowercase = s.toLowerCase(java.util.Locale.US);
         char c = allLowercase.charAt(0);
         return allLowercase.replaceFirst("" + c, "" + Character.toUpperCase(c));
     }

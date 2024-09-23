@@ -31,7 +31,7 @@ public class PotionEffectCommand implements Command {
 		}
 
 		if (args.length >= 4){
-			String effect = args[1].toUpperCase();
+			String effect = args[1].toUpperCase(java.util.Locale.US);
 			double amplifier;
 			int duration;
 			try {
@@ -99,7 +99,7 @@ public class PotionEffectCommand implements Command {
 
 	@Override
 	public List<String> getSubcommandArgs(CommandSender sender, String[] args) {
-		if (args.length == 2) return new ArrayList<>(PotionEffectRegistry.getRegisteredEffects().values().stream().filter(e -> !e.isVanilla()).map(e -> e.getEffect().toLowerCase()).sorted().toList());
+		if (args.length == 2) return new ArrayList<>(PotionEffectRegistry.getRegisteredEffects().values().stream().filter(e -> !e.isVanilla()).map(e -> e.getEffect().toLowerCase(java.util.Locale.US)).sorted().toList());
 		if (args.length == 3) return List.of("<amplifier>");
 		if (args.length == 4) return List.of("<duration>");
 		return Command.noSubcommandArgs();

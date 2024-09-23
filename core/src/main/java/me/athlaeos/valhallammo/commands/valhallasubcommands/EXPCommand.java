@@ -45,7 +45,7 @@ public class EXPCommand implements Command {
 				return true;
 			}
 
-			Skill skill = SkillRegistry.getSkill(args[1].toUpperCase());
+			Skill skill = SkillRegistry.getSkill(args[1].toUpperCase(java.util.Locale.US));
 			if (skill == null) {
 				Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_skill")));
 				return true;

@@ -10,7 +10,7 @@ public class TotalStatPlaceholder extends Placeholder {
 
     public TotalStatPlaceholder(String placeholder, String statSource) {
         super(placeholder);
-        this.statSource = statSource.toUpperCase();
+        this.statSource = statSource.toUpperCase(java.util.Locale.US);
     }
 
     @Override

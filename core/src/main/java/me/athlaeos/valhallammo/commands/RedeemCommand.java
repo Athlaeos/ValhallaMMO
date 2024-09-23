@@ -32,7 +32,7 @@ public class RedeemCommand implements TabExecutor {
 			return true;
 		}
 		if (args.length > 2){
-			Skill skill = SkillRegistry.getSkill(args[1].toUpperCase());
+			Skill skill = SkillRegistry.getSkill(args[1].toUpperCase(java.util.Locale.US));
 			if (skill == null || skill instanceof PowerSkill) {
 				Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_invalid_skill"));
 				return true;
@@ -81,7 +81,7 @@ public class RedeemCommand implements TabExecutor {
 		if (strings.length == 2) return
 				SkillRegistry.getAllSkills().values().stream()
 						.filter(skill -> !(skill instanceof PowerSkill))
-						.map(skill -> skill.getType().toLowerCase())
+						.map(skill -> skill.getType().toLowerCase(java.util.Locale.US))
 						.collect(Collectors.toList());
 		if (strings.length == 3) return List.of("<amount>", "1", "2", "3", "...");
 		return null;

@@ -28,7 +28,7 @@ public class BiomeFilter extends LootPredicate {
 
     @Override
     public String getKey() {
-        return "biome_" + ChatColor.stripColor(Utils.chat(name)).toLowerCase().replace(" ", "_");
+        return "biome_" + ChatColor.stripColor(Utils.chat(name)).toLowerCase(java.util.Locale.US).replace(" ", "_");
     }
 
     @Override

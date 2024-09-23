@@ -75,7 +75,7 @@ public class ProfileStatsCommand implements Command {
     @Override
     public List<String> getSubcommandArgs(CommandSender sender, String[] args) {
         if (args.length == 2){
-            return SkillRegistry.getAllSkills().values().stream().map(s -> s.getType().toLowerCase()).collect(Collectors.toList());
+            return SkillRegistry.getAllSkills().values().stream().map(s -> s.getType().toLowerCase(java.util.Locale.US)).collect(Collectors.toList());
         }
         return null;
     }

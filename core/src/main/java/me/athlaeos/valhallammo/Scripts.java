@@ -43,7 +43,7 @@ public class Scripts {
     }
 
     public static void createUpgradeRecipe(String attribute, String on, int tag, int maxLevel, double value){
-        String name = "tinker_upgrade_" + attribute.toLowerCase();
+        String name = "tinker_upgrade_" + attribute.toLowerCase(java.util.Locale.US);
         DynamicGridRecipe recipe = new DynamicGridRecipe(name);
         recipe.setShapeless(true);
         recipe.setRequireValhallaTools(true);
@@ -68,7 +68,7 @@ public class Scripts {
         m2.setPriority(ModifierPriority.SOON);
         m2.setNewTags(Map.of(tag, 1, 8, -1));
         modifiers.add(m2);
-        DefaultAttributeAdd m3 = (DefaultAttributeAdd) ModifierRegistry.createModifier("attribute_add_" + attribute.toLowerCase());
+        DefaultAttributeAdd m3 = (DefaultAttributeAdd) ModifierRegistry.createModifier("attribute_add_" + attribute.toLowerCase(java.util.Locale.US));
         m3.setValue(value);
         m3.setHidden(false);
         m3.setAdd(true);
@@ -103,7 +103,7 @@ public class Scripts {
 
             if (modifiers.stream().noneMatch(m -> m instanceof DefaultAttributeAdd)){
                 for (AttributeWrapper wrapper : ItemAttributesRegistry.getVanillaStats(recipe.getResult().getType()).values()){
-                    DefaultAttributeAdd modifier = (DefaultAttributeAdd) ModifierRegistry.createModifier("attribute_add_" + wrapper.getAttribute().toLowerCase());
+                    DefaultAttributeAdd modifier = (DefaultAttributeAdd) ModifierRegistry.createModifier("attribute_add_" + wrapper.getAttribute().toLowerCase(java.util.Locale.US));
                     modifier.setPriority(ModifierPriority.NEUTRAL);
                     modifier.setValue(wrapper.getValue());
                     modifier.setOperation(AttributeModifier.Operation.ADD_NUMBER);

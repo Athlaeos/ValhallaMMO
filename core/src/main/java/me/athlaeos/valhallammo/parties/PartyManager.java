@@ -512,7 +512,7 @@ public class PartyManager {
     }
 
     private static String convertNameToID(String name){
-        return name.toLowerCase().replaceAll(" ", "_").replaceAll("&[0-9a-fA-FkmolnrKMOLNR]", "");
+        return name.toLowerCase(java.util.Locale.US).replaceAll(" ", "_").replaceAll("&[0-9a-fA-FkmolnrKMOLNR]", "");
     }
 
     /**
