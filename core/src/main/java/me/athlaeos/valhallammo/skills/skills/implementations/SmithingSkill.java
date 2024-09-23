@@ -111,8 +111,8 @@ public class SmithingSkill extends Skill implements Listener {
     }
 
     public void incrementStacks(Player crafter, Material forMaterial){
-        if (ChunkEXPNerf.doesChunkEXPNerfApply(crafter.getLocation().getChunk(), crafter, "smithing_durability_damage_counter_" + forMaterial.toString().toLowerCase(), durabilityChunkLimit)) return;
-        ChunkEXPNerf.increment(crafter.getLocation().getChunk(), crafter, "smithing_durability_damage_counter_" + forMaterial.toString().toLowerCase());
+        if (ChunkEXPNerf.doesChunkEXPNerfApply(crafter.getLocation().getChunk(), crafter, "smithing_durability_damage_counter_" + forMaterial.toString().toLowerCase(java.util.Locale.US), durabilityChunkLimit)) return;
+        ChunkEXPNerf.increment(crafter.getLocation().getChunk(), crafter, "smithing_durability_damage_counter_" + forMaterial.toString().toLowerCase(java.util.Locale.US));
         setStacks(crafter, forMaterial, getStacks(crafter, forMaterial) + 1);
     }
 

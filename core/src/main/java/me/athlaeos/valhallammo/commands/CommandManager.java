@@ -59,7 +59,7 @@ public class CommandManager implements TabExecutor {
 			return true;
 		}
 
-		Command command = commands.get(args[0].toLowerCase());
+		Command command = commands.get(args[0].toLowerCase(java.util.Locale.US));
 		if (command == null) {
 			Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_command")));
 			return true;

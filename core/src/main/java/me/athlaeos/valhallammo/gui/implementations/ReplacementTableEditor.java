@@ -148,7 +148,7 @@ public class ReplacementTableEditor extends Menu {
                             Question question = getQuestions().get(0);
                             if (question.getAnswer() == null) return super.getOnFinish();
                             return (p) -> {
-                                String answer = question.getAnswer().replaceAll(" ", "_").toLowerCase();
+                                String answer = question.getAnswer().replaceAll(" ", "_").toLowerCase(java.util.Locale.US);
                                 if (answer.contains("cancel")) playerMenuUtility.getPreviousMenu().open();
                                 else if (table.getReplacementPools().containsKey(answer))
                                     Utils.sendMessage(getWho(), "&cPool key already exists!");

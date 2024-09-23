@@ -54,9 +54,9 @@ public abstract class AttributeWrapper {
         this.icon = icon;
         this.smallIncrement = smallIncrement;
         this.bigIncrement = bigIncrement;
-        ModifierRegistry.register(new DefaultAttributeAdd("attribute_add_" + attribute.toLowerCase(), attribute, smallIncrement, bigIncrement, icon));
-        ModifierRegistry.register(new DefaultAttributeRemove("attribute_remove_" + attribute.toLowerCase(), attribute, icon));
-        ModifierRegistry.register(new DefaultAttributeScale("attribute_scale_" + attribute.toLowerCase(), attribute, icon));
+        ModifierRegistry.register(new DefaultAttributeAdd("attribute_add_" + attribute.toLowerCase(java.util.Locale.US), attribute, smallIncrement, bigIncrement, icon));
+        ModifierRegistry.register(new DefaultAttributeRemove("attribute_remove_" + attribute.toLowerCase(java.util.Locale.US), attribute, icon));
+        ModifierRegistry.register(new DefaultAttributeScale("attribute_scale_" + attribute.toLowerCase(java.util.Locale.US), attribute, icon));
         return this;
     }
     /**
@@ -122,7 +122,7 @@ public abstract class AttributeWrapper {
     public Attribute getVanillaAttribute() { return vanillaAttribute; }
     public StatFormat getFormat() { return format; }
     public String getAttributeName(){
-        return TranslationManager.getRawTranslation("attribute_" + attribute.toLowerCase());
+        return TranslationManager.getRawTranslation("attribute_" + attribute.toLowerCase(java.util.Locale.US));
     }
 
     public AttributeWrapper setValue(double value) { this.value = value; return this; }
@@ -134,7 +134,7 @@ public abstract class AttributeWrapper {
     }
 
     public String getAttributeIcon(){
-        return TranslationManager.getTranslation("stat_icon_" + attribute.toLowerCase());
+        return TranslationManager.getTranslation("stat_icon_" + attribute.toLowerCase(java.util.Locale.US));
     }
 
     public abstract AttributeWrapper copy();

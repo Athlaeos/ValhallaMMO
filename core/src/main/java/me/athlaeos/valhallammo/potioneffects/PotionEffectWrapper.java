@@ -40,9 +40,9 @@ public abstract class PotionEffectWrapper {
     }
 
     public PotionEffectWrapper addModifier(Material icon, double smallIncrement, double bigIncrement){
-        ModifierRegistry.register(new PotionEffectAdd("potion_effect_add_" + newToOldEffectMappings.getOrDefault(effect, effect).toLowerCase(), effect, smallIncrement, bigIncrement, icon));
+        ModifierRegistry.register(new PotionEffectAdd("potion_effect_add_" + newToOldEffectMappings.getOrDefault(effect, effect).toLowerCase(java.util.Locale.US), effect, smallIncrement, bigIncrement, icon));
         if (isVanilla) {
-            ModifierRegistry.register(new PermanentPotionEffectAdd("permanent_effect_add_" + newToOldEffectMappings.getOrDefault(effect, effect).toLowerCase(), effect, icon));
+            ModifierRegistry.register(new PermanentPotionEffectAdd("permanent_effect_add_" + newToOldEffectMappings.getOrDefault(effect, effect).toLowerCase(java.util.Locale.US), effect, icon));
         }
         return this;
     }
@@ -70,13 +70,13 @@ public abstract class PotionEffectWrapper {
     public int getCharges() { return charges; }
 
     public String getPotionName(){
-        return TranslationManager.getTranslation("potion_name_" + effect.toLowerCase());
+        return TranslationManager.getTranslation("potion_name_" + effect.toLowerCase(java.util.Locale.US));
     }
     public String getEffectName(){
-        return TranslationManager.getTranslation("effect_name_" + effect.toLowerCase());
+        return TranslationManager.getTranslation("effect_name_" + effect.toLowerCase(java.util.Locale.US));
     }
     public String getEffectIcon(){
-        return TranslationManager.getTranslation("stat_icon_" + effect.toLowerCase());
+        return TranslationManager.getTranslation("stat_icon_" + effect.toLowerCase(java.util.Locale.US));
     }
     public abstract boolean isSingleUse();
 

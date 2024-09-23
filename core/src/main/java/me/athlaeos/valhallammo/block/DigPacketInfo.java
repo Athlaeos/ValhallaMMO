@@ -167,7 +167,7 @@ public class DigPacketInfo {
     }
 
     public static Type fromName(String name) {
-        return switch (name.toUpperCase()) {
+        return switch (name.toUpperCase(java.util.Locale.US)) {
             case "START_DESTROY_BLOCK" -> Type.START;
             case "STOP_DESTROY_BLOCK" -> Type.STOP;
             case "ABORT_DESTROY_BLOCK" -> Type.ABORT;

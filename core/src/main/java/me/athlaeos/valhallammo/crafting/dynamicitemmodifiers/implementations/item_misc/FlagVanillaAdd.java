@@ -64,19 +64,19 @@ public class FlagVanillaAdd extends DynamicItemModifier {
     @Override
     public String getDisplayName() {
         correctFlag();
-        return "&7Add Vanilla Item Flag: &e" + StringUtils.toPascalCase(flag.toLowerCase().replace("_", " "));
+        return "&7Add Vanilla Item Flag: &e" + StringUtils.toPascalCase(flag.toLowerCase(java.util.Locale.US).replace("_", " "));
     }
 
     @Override
     public String getDescription() {
         correctFlag();
-        return "&fAdds the " + StringUtils.toPascalCase(flag.toLowerCase().replace("_", " ")) + " item flag to the item.";
+        return "&fAdds the " + StringUtils.toPascalCase(flag.toLowerCase(java.util.Locale.US).replace("_", " ")) + " item flag to the item.";
     }
 
     @Override
     public String getActiveDescription() {
         correctFlag();
-        return "&fAdds the " + StringUtils.toPascalCase(flag.toLowerCase().replace("_", " ")) + " item flag to the item.";
+        return "&fAdds the " + StringUtils.toPascalCase(flag.toLowerCase(java.util.Locale.US).replace("_", " ")) + " item flag to the item.";
     }
 
     @Override

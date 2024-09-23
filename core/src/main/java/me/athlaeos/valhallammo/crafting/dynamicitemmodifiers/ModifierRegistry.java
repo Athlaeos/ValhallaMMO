@@ -137,11 +137,11 @@ public class ModifierRegistry {
         register(new DurabilityDefaultSet("durability_max_set"));
         register(new ItemEquipmentClass("equipment_type"));
         register(new ItemMaterialClass("material_type"));
-        Arrays.stream(CustomFlag.values()).forEach(f -> register(new FlagCustomAdd("flag_" + f.toString().toLowerCase(), f)));
+        Arrays.stream(CustomFlag.values()).forEach(f -> register(new FlagCustomAdd("flag_" + f.toString().toLowerCase(java.util.Locale.US), f)));
         Arrays.stream(ItemFlag.values()).forEach(f -> {
             if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) && f.toString().equals("HIDE_ADDITIONAL_TOOLTIP"))
                 register(new FlagVanillaAdd("flag_hide_potion_effects", f.toString()));
-            else register(new FlagVanillaAdd("flag_" + f.toString().toLowerCase(), f.toString()));
+            else register(new FlagVanillaAdd("flag_" + f.toString().toLowerCase(java.util.Locale.US), f.toString()));
         });
         register(new ItemReplace("replace"));
         register(new ItemReplaceKeepingAmount("replace_keep_amount"));
@@ -169,8 +169,8 @@ public class ModifierRegistry {
         register(new AlchemyTagsCancelIfPresent("alchemy_tags_forbid"));
         register(new AlchemyTagsRemove("alchemy_tags_remove"));
         register(new AlchemyTagsRemoveAll("alchemy_tags_clear"));
-        PotionTypeForbidden.legalTypes.forEach(t -> register(new PotionTypeForbidden("potion_type_forbid_" + t.toString().toLowerCase(), t)));
-        PotionTypeRequired.legalTypes.forEach(t -> register(new PotionTypeRequired("potion_type_require_" + t.toString().toLowerCase(), t)));
+        PotionTypeForbidden.legalTypes.forEach(t -> register(new PotionTypeForbidden("potion_type_forbid_" + t.toString().toLowerCase(java.util.Locale.US), t)));
+        PotionTypeRequired.legalTypes.forEach(t -> register(new PotionTypeRequired("potion_type_require_" + t.toString().toLowerCase(java.util.Locale.US), t)));
         register(new PotionTypeSet("potion_type_set"));
         register(new ConversionTransmutationPotion("transmutation_potion"));
         register(new ScaleAmplifier("potion_amplifier_scale"));

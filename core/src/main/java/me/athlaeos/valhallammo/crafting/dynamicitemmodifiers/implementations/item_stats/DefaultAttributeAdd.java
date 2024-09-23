@@ -93,7 +93,7 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
         extraButtons.add(new Pair<>(attribute.isVanilla() ? 12 : 13,
                 new ItemBuilder(Material.PAPER)
                         .name("&dHow strong should this base stat be?")
-                        .lore("&f" + attribute.getAttribute().toLowerCase().replace("_", " ") + " &e" + attribute.getFormat().format(value),
+                        .lore("&f" + attribute.getAttribute().toLowerCase(java.util.Locale.US).replace("_", " ") + " &e" + attribute.getFormat().format(value),
                                 "&6Click to add/subtract " + (5 * smallIncrement),
                                 "&6Shift-Click to add/subtract " + (10 * bigIncrement))
                         .get()
@@ -121,7 +121,7 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
         return new Pair<>(11,
                 new ItemBuilder(Material.PAPER)
                         .name("&dHow strong should this base stat be?")
-                        .lore("&f" + attribute.getAttribute().toLowerCase().replace("_", " ") + " &e" + attribute.getFormat().format(value),
+                        .lore("&f" + attribute.getAttribute().toLowerCase(java.util.Locale.US).replace("_", " ") + " &e" + attribute.getFormat().format(value),
                                 "&6Click to add/subtract " + smallIncrement,
                                 "&6Shift-Click to add/subtract " + bigIncrement)
                         .get()).map(extraButtons);
@@ -135,19 +135,19 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
     @Override
     public String getDisplayName() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        return (attribute.isVanilla() ? "&bVanilla" : "&dCustom") + " Attribute: " + attribute.getAttribute().toLowerCase().replace("_", " ") + " (ADD)";
+        return (attribute.isVanilla() ? "&bVanilla" : "&dCustom") + " Attribute: " + attribute.getAttribute().toLowerCase(java.util.Locale.US).replace("_", " ") + " (ADD)";
     }
 
     @Override
     public String getDescription() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        return "&fAdds " + attribute.getAttribute().toLowerCase().replace("_", " ") + " as default stat to the item. If the item has vanilla stats by default, they are applied first";
+        return "&fAdds " + attribute.getAttribute().toLowerCase(java.util.Locale.US).replace("_", " ") + " as default stat to the item. If the item has vanilla stats by default, they are applied first";
     }
 
     @Override
     public String getActiveDescription() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        return "&fAdds " + attribute.getAttribute().toLowerCase().replace("_", " ") + " &e" + attribute.getFormat().format(value) + " as default stat to the item. ";
+        return "&fAdds " + attribute.getAttribute().toLowerCase(java.util.Locale.US).replace("_", " ") + " &e" + attribute.getFormat().format(value) + " as default stat to the item. ";
     }
 
     @Override

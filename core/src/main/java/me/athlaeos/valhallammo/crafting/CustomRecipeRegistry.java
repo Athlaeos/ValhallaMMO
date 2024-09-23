@@ -81,7 +81,7 @@ public class CustomRecipeRegistry {
         YamlConfiguration disabled = ConfigManager.getConfig("recipes/disabled_recipes.yml").reload().get();
         for (String s : disabled.getStringList("disabled")){
             try {
-                NamespacedKey recipeKey = NamespacedKey.minecraft(s.toLowerCase());
+                NamespacedKey recipeKey = NamespacedKey.minecraft(s.toLowerCase(java.util.Locale.US));
                 disabledRecipes.add(recipeKey);
             } catch (IllegalArgumentException ignored){
                 ValhallaMMO.logWarning("Invalid recipe key '" + s + "' found, recipe contains illegal characters. Allowed characters: [a-zA-Z0-9/. -], cancelled crafting recipe removal");
@@ -176,9 +176,9 @@ public class CustomRecipeRegistry {
     }
 
     public static void register(DynamicBrewingRecipe recipe, boolean overwrite){
-        if (overwrite || !brewingRecipes.containsKey(recipe.getName().toLowerCase())) {
-            brewingRecipes.put(recipe.getName().toLowerCase(), recipe);
-            allRecipes.add(recipe.getName().toLowerCase());
+        if (overwrite || !brewingRecipes.containsKey(recipe.getName().toLowerCase(java.util.Locale.US))) {
+            brewingRecipes.put(recipe.getName().toLowerCase(java.util.Locale.US), recipe);
+            allRecipes.add(recipe.getName().toLowerCase(java.util.Locale.US));
 
             Collection<DynamicBrewingRecipe> existing = brewingRecipesByIngredient.getOrDefault(recipe.getIngredient().getItem().getType(), new HashSet<>());
             existing.add(recipe);
@@ -186,15 +186,15 @@ public class CustomRecipeRegistry {
         }
     }
     public static void register(DynamicCauldronRecipe recipe, boolean overwrite){
-        if (overwrite || !cauldronRecipes.containsKey(recipe.getName().toLowerCase())) {
-            cauldronRecipes.put(recipe.getName().toLowerCase(), recipe);
-            allRecipes.add(recipe.getName().toLowerCase());
+        if (overwrite || !cauldronRecipes.containsKey(recipe.getName().toLowerCase(java.util.Locale.US))) {
+            cauldronRecipes.put(recipe.getName().toLowerCase(java.util.Locale.US), recipe);
+            allRecipes.add(recipe.getName().toLowerCase(java.util.Locale.US));
         }
     }
     public static void register(ImmersiveCraftingRecipe recipe, boolean overwrite){
-        if (overwrite || !immersiveRecipes.containsKey(recipe.getName().toLowerCase())) {
-            immersiveRecipes.put(recipe.getName().toLowerCase(), recipe);
-            allRecipes.add(recipe.getName().toLowerCase());
+        if (overwrite || !immersiveRecipes.containsKey(recipe.getName().toLowerCase(java.util.Locale.US))) {
+            immersiveRecipes.put(recipe.getName().toLowerCase(java.util.Locale.US), recipe);
+            allRecipes.add(recipe.getName().toLowerCase(java.util.Locale.US));
 
             Material base = ItemUtils.getBaseMaterial(recipe.getBlock());
             Collection<ImmersiveCraftingRecipe> recipesByBlock = immersiveRecipesByBlock.getOrDefault(base, new HashSet<>());
@@ -203,10 +203,10 @@ public class CustomRecipeRegistry {
         }
     }
     public static void register(DynamicCookingRecipe recipe, boolean overwrite){
-        if (overwrite || !cookingRecipes.containsKey(recipe.getName().toLowerCase())) {
-            cookingRecipes.put(recipe.getName().toLowerCase(), recipe);
+        if (overwrite || !cookingRecipes.containsKey(recipe.getName().toLowerCase(java.util.Locale.US))) {
+            cookingRecipes.put(recipe.getName().toLowerCase(java.util.Locale.US), recipe);
             cookingRecipesByKey.put(recipe.getKey(), recipe);
-            allRecipes.add(recipe.getName().toLowerCase());
+            allRecipes.add(recipe.getName().toLowerCase(java.util.Locale.US));
             allKeyedRecipes.put(recipe.getKey(), recipe);
             allKeyedRecipesByName.put(recipe.getName(), recipe);
             try {
@@ -219,14 +219,14 @@ public class CustomRecipeRegistry {
         }
     }
     public static void register(DynamicGridRecipe recipe, boolean overwrite){
-        if (overwrite || !gridRecipes.containsKey(recipe.getName().toLowerCase())) {
-            gridRecipes.put(recipe.getName().toLowerCase(), recipe);
+        if (overwrite || !gridRecipes.containsKey(recipe.getName().toLowerCase(java.util.Locale.US))) {
+            gridRecipes.put(recipe.getName().toLowerCase(java.util.Locale.US), recipe);
             gridRecipesByKey.put(recipe.getKey(), recipe);
             gridRecipesByKey.put(recipe.getKey2(), recipe);
             Collection<DynamicGridRecipe> existing = gridRecipesByIngredientQuantities.getOrDefault(recipe.getItems().size(), new HashSet<>());
             existing.add(recipe);
             gridRecipesByIngredientQuantities.put(recipe.getItems().size(), existing);
-            allRecipes.add(recipe.getName().toLowerCase());
+            allRecipes.add(recipe.getName().toLowerCase(java.util.Locale.US));
             allKeyedRecipes.put(recipe.getKey(), recipe);
             allKeyedRecipesByName.put(recipe.getName(), recipe);
             recipe.registerRecipe();
@@ -240,10 +240,10 @@ public class CustomRecipeRegistry {
                         recipe.getTemplate().getOption().getChoice(recipe.getTemplate().getItem()) == null
                 )
         ) recipe.setTemplate(new SlotEntry(new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE), new MaterialChoice()));
-        if (overwrite || !smithingRecipes.containsKey(recipe.getName().toLowerCase())) {
-            smithingRecipes.put(recipe.getName().toLowerCase(), recipe);
+        if (overwrite || !smithingRecipes.containsKey(recipe.getName().toLowerCase(java.util.Locale.US))) {
+            smithingRecipes.put(recipe.getName().toLowerCase(java.util.Locale.US), recipe);
             smithingRecipesByKey.put(recipe.getKey(), recipe);
-            allRecipes.add(recipe.getName().toLowerCase());
+            allRecipes.add(recipe.getName().toLowerCase(java.util.Locale.US));
             allKeyedRecipes.put(recipe.getKey(), recipe);
             allKeyedRecipesByName.put(recipe.getName(), recipe);
             recipe.registerRecipe();

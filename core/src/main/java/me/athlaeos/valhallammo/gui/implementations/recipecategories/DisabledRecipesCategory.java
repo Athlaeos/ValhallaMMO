@@ -153,9 +153,9 @@ public class DisabledRecipesCategory extends RecipeCategory{
     private char getItemChar(ItemStack i, String usedChars){
         if (ItemUtils.isEmpty(i)) return ' ';
         String itemName = ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(i)));
-        char possibleCharacter = (itemName.isEmpty() ? i.getType().toString() : itemName).toUpperCase().charAt(0);
+        char possibleCharacter = (itemName.isEmpty() ? i.getType().toString() : itemName).toUpperCase(java.util.Locale.US).charAt(0);
         if (usedChars.contains(String.valueOf(possibleCharacter))){
-            possibleCharacter = i.getType().toString().toUpperCase().charAt(0);
+            possibleCharacter = i.getType().toString().toUpperCase(java.util.Locale.US).charAt(0);
             if (usedChars.contains(String.valueOf(possibleCharacter))) {
                 for (Character c : Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I')) {
                     if (!usedChars.contains(String.valueOf(c))) {

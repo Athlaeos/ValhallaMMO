@@ -24,7 +24,7 @@ public class ExportCommand implements Command {
         if (args.length > 2){
             String[] modes = Arrays.copyOfRange(args, 2, args.length);
             for (String mode : modes){
-                ContentPackageManager.ExportMode m = Catch.catchOrElse(() -> ContentPackageManager.ExportMode.valueOf(mode.toUpperCase()), null);
+                ContentPackageManager.ExportMode m = Catch.catchOrElse(() -> ContentPackageManager.ExportMode.valueOf(mode.toUpperCase(java.util.Locale.US)), null);
                 if (m == null) Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_import_invalid_mode").replace("%mode%", mode));
                 else exportModes.add(m);
             }

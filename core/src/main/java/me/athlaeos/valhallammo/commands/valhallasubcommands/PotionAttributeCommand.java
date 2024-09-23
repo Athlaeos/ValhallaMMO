@@ -48,7 +48,7 @@ public class PotionAttributeCommand implements Command {
 					return true;
 				}
 			}
-			if (!PotionEffectRegistry.getRegisteredEffects().containsKey(effect.toUpperCase())){
+			if (!PotionEffectRegistry.getRegisteredEffects().containsKey(effect.toUpperCase(java.util.Locale.US))){
 				Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_effect")));
 				return true;
 			}
@@ -60,10 +60,10 @@ public class PotionAttributeCommand implements Command {
 			ItemBuilder result = new ItemBuilder(target.getInventory().getItemInMainHand());
 			if (result.getItem().getType().isEdible()) charges = -1; // consumable items can't really have charges, so they're always "infinite"
 
-			PotionEffectWrapper defaultWrapper = PotionEffectRegistry.getEffect(effect.toUpperCase()).setAmplifier(defaultValue).setDuration(defaultDuration).setCharges(charges);
+			PotionEffectWrapper defaultWrapper = PotionEffectRegistry.getEffect(effect.toUpperCase(java.util.Locale.US)).setAmplifier(defaultValue).setDuration(defaultDuration).setCharges(charges);
 			PotionEffectRegistry.addDefaultEffect(result.getMeta(), defaultWrapper);
 			if (actualValue != null){
-				PotionEffectRegistry.setStoredEffect(result.getMeta(), effect.toUpperCase(), actualValue, actualDuration, charges, false);
+				PotionEffectRegistry.setStoredEffect(result.getMeta(), effect.toUpperCase(java.util.Locale.US), actualValue, actualDuration, charges, false);
 			}
 			PotionEffectRegistry.updateItemName(result.getMeta(), false, false);
 			target.getInventory().setItemInMainHand(result.get());
@@ -99,7 +99,7 @@ public class PotionAttributeCommand implements Command {
 
 	@Override
 	public List<String> getSubcommandArgs(CommandSender sender, String[] args) {
-		if (args.length == 2) return new ArrayList<>(PotionEffectRegistry.getRegisteredEffects().values().stream().map(e -> e.getEffect().toLowerCase()).sorted().toList());
+		if (args.length == 2) return new ArrayList<>(PotionEffectRegistry.getRegisteredEffects().values().stream().map(e -> e.getEffect().toLowerCase(java.util.Locale.US)).sorted().toList());
 		if (args.length == 3) return List.of("<default_value>");
 		if (args.length == 4) return List.of("<default_duration>");
 		if (args.length == 5) return List.of("<actual_value_or_charges>");

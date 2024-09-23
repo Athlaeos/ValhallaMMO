@@ -264,9 +264,9 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
         if (i == null) return ' ';
         if (ItemUtils.isEmpty(i.getItem())) return ' ';
         String itemName = ChatColor.stripColor(Utils.chat(TranslationManager.translatePlaceholders(SlotEntry.toString(i))));
-        char possibleCharacter = (itemName.isEmpty() ? i.getItem().getType().toString() : itemName).toUpperCase().charAt(0);
+        char possibleCharacter = (itemName.isEmpty() ? i.getItem().getType().toString() : itemName).toUpperCase(java.util.Locale.US).charAt(0);
         if (usedChars.contains(String.valueOf(possibleCharacter))){
-            possibleCharacter = i.getItem().getType().toString().toUpperCase().charAt(0);
+            possibleCharacter = i.getItem().getType().toString().toUpperCase(java.util.Locale.US).charAt(0);
             if (usedChars.contains(String.valueOf(possibleCharacter))) {
                 for (Character c : Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I')) {
                     if (!usedChars.contains(String.valueOf(c))) {

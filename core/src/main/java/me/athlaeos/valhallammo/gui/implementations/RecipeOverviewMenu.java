@@ -120,7 +120,7 @@ public class RecipeOverviewMenu extends Menu {
                             Question question = getQuestions().get(0);
                             if (question.getAnswer() == null) return super.getOnFinish();
                             return (p) -> {
-                                String answer = question.getAnswer().replaceAll(" ", "_").toLowerCase();
+                                String answer = question.getAnswer().replaceAll(" ", "_").toLowerCase(java.util.Locale.US);
                                 if (answer.contains("cancel")) playerMenuUtility.getPreviousMenu().open();
                                 else if (CustomRecipeRegistry.getAllRecipes().contains(answer))
                                     Utils.sendMessage(getWho(), TranslationManager.getTranslation("error_command_recipe_exists"));

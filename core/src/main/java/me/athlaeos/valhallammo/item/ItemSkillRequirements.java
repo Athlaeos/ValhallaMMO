@@ -73,7 +73,7 @@ public class ItemSkillRequirements {
                     Material stored = ItemUtils.getStoredType(meta);
                     double fractionLevel = (double) profile.getLevel() / (double) r.levelRequirement;
                     double formulaResult = Utils.eval(penaltyScaling.replace("%fraction_level%", String.format("%.3f", fractionLevel)));
-                    if (stored != null && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_warning_overleveled_item_" + stored.toString().toLowerCase())){
+                    if (stored != null && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_warning_overleveled_item_" + stored.toString().toLowerCase(java.util.Locale.US))){
                         String message = warningTooAdvanced
                                 .replace("%item%", ItemUtils.getItemName(meta))
                                 .replace("%skill%", r.skill.getDisplayName())
@@ -83,7 +83,7 @@ public class ItemSkillRequirements {
                                 case 1 -> Utils.sendActionBar(p, message);
                                 case 2 -> Utils.sendMessage(p, message);
                             }
-                            Timer.setCooldown(p.getUniqueId(), warningDisplayCooldown, "cooldown_warning_overleveled_item_" + stored.toString().toLowerCase());
+                            Timer.setCooldown(p.getUniqueId(), warningDisplayCooldown, "cooldown_warning_overleveled_item_" + stored.toString().toLowerCase(java.util.Locale.US));
                         }
                     }
                     return maxPenalty * Math.max(0, Math.min(1, formulaResult));

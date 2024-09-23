@@ -51,7 +51,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
         return new Pair<>(12,
                 new ItemBuilder(Material.PAPER)
                         .name("&dHow strong should this effect be?")
-                        .lore("&f" + effect.toLowerCase().replace("_", " ") + " " + StringUtils.toRoman(Math.max(0, amplifier) + 1),
+                        .lore("&f" + effect.toLowerCase(java.util.Locale.US).replace("_", " ") + " " + StringUtils.toRoman(Math.max(0, amplifier) + 1),
                                 "&6Click to add/subtract 1",
                                 "&6Shift-Click to add/subtract 3")
                         .get()).map(Set.of());

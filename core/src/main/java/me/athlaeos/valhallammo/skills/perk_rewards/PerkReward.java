@@ -4,13 +4,14 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public abstract class PerkReward implements Cloneable{
     protected String name;
     protected boolean persist = true;
 
     public PerkReward(String name){
-        this.name = name.toLowerCase();
+        this.name = name.toLowerCase(Locale.US);
     }
 
     /**

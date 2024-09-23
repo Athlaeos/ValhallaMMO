@@ -28,7 +28,7 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
     /**
      * Generic display wrappers display their attributes in item lore, given a stat format and with the info when the attribute
      * is considered beneficiary or not. The translations for the attributes are automatically gathered from the translation file
-     * based on the attribute's name. The translation key should match "attribute_" + attributeName.toLowerCase(), or it will
+     * based on the attribute's name. The translation key should match "attribute_" + attributeName.toLowerCase(java.util.Locale.US), or it will
      * not be able to find a translation. If new attributes are registered by other plugins they should add these key/translation pairs to
      * the translation manager.<br>
      * If a registered attribute matches a vanilla attribute, the format will be ignored and instead a
@@ -49,7 +49,7 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
     /**
      * Generic display wrappers display their attributes in item lore, given a stat format and with the info when the attribute
      * is considered beneficiary or not. The translations for the attributes are automatically gathered from the translation file
-     * based on the attribute's name. The translation key should match "attribute_" + attributeName.toLowerCase(), or it will
+     * based on the attribute's name. The translation key should match "attribute_" + attributeName.toLowerCase(java.util.Locale.US), or it will
      * not be able to find a translation. If new attributes are registered by other plugins they should add these key/translation pairs to
      * the translation manager.
      * @param attribute the attribute name
@@ -84,7 +84,7 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
     /**
      * Generic display wrappers display their attributes in item lore, given the info when the attribute
      * is considered beneficiary or not. The translations for the attributes are automatically gathered from the translation file
-     * based on the attribute's name. The translation key should match "attribute_" + attributeName.toLowerCase(), or it will
+     * based on the attribute's name. The translation key should match "attribute_" + attributeName.toLowerCase(java.util.Locale.US), or it will
      * not be able to find a translation. If new attributes are registered by other plugins they should add these key/translation pairs to
      * the translation manager.<br>
      * Unlike the other two constructors, the main format is left empty and replaced with 3 operation-specific formats. This constructor should be used for vanilla
@@ -145,7 +145,7 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
 
     @Override
     public void onRemove(ItemMeta i) {
-        String translation = TranslationManager.getTranslation("attribute_" + attribute.toLowerCase());
+        String translation = TranslationManager.getTranslation("attribute_" + attribute.toLowerCase(java.util.Locale.US));
         if (StringUtils.isEmpty(translation)) return;
         ItemUtils.removeIfLoreContains(i, translation
                 .replace("%icon%", "")

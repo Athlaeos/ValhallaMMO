@@ -48,7 +48,7 @@ public class AttributeCommand implements Command {
 			if (args.length >= 5){
 				hidden = args[4].equalsIgnoreCase("true");
 			}
-			if (!ItemAttributesRegistry.getRegisteredAttributes().containsKey(attribute.toUpperCase())){
+			if (!ItemAttributesRegistry.getRegisteredAttributes().containsKey(attribute.toUpperCase(java.util.Locale.US))){
 				Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_attribute")));
 				return true;
 			}
@@ -59,11 +59,11 @@ public class AttributeCommand implements Command {
 
 			ItemBuilder result = new ItemBuilder(target.getInventory().getItemInMainHand());
 			if (defaultValue != null){
-				AttributeWrapper defaultWrapper = ItemAttributesRegistry.getCopy(attribute.toUpperCase()).setValue(defaultValue);
+				AttributeWrapper defaultWrapper = ItemAttributesRegistry.getCopy(attribute.toUpperCase(java.util.Locale.US)).setValue(defaultValue);
 				ItemAttributesRegistry.addDefaultStat(result.getMeta(), defaultWrapper);
 			}
 			if (actualValue != null){
-				ItemAttributesRegistry.setStat(result.getMeta(), attribute.toUpperCase(), actualValue, hidden, false);
+				ItemAttributesRegistry.setStat(result.getMeta(), attribute.toUpperCase(java.util.Locale.US), actualValue, hidden, false);
 			}
 			target.getInventory().setItemInMainHand(result.get());
 			return true;
@@ -98,7 +98,7 @@ public class AttributeCommand implements Command {
 
 	@Override
 	public List<String> getSubcommandArgs(CommandSender sender, String[] args) {
-		if (args.length == 2) return new ArrayList<>(ItemAttributesRegistry.getRegisteredAttributes().values().stream().map(a -> a.getAttribute().toLowerCase()).sorted().toList());
+		if (args.length == 2) return new ArrayList<>(ItemAttributesRegistry.getRegisteredAttributes().values().stream().map(a -> a.getAttribute().toLowerCase(java.util.Locale.US)).sorted().toList());
 		if (args.length == 3) return List.of("<default_value>", "same");
 		if (args.length == 4) return List.of("<actual_value>", "same");
 		if (args.length == 5) return List.of("true", "false");

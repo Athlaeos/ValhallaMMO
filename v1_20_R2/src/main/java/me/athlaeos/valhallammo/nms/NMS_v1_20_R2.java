@@ -187,7 +187,7 @@ public final class NMS_v1_20_R2 implements NMS {
 
             ResourceLocation minecraftKey = (ResourceLocation) keyField.get(soundEffect);
 
-            return Sound.valueOf(minecraftKey.getPath().toUpperCase()
+            return Sound.valueOf(minecraftKey.getPath().toUpperCase(java.util.Locale.US)
                     .replace(".", "_")
                     .replace("_FALL", "_HIT"));
         } catch (NoSuchFieldException | IllegalAccessException ignored) {

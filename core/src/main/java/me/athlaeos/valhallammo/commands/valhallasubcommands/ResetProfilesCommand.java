@@ -43,10 +43,10 @@ public class ResetProfilesCommand implements Command {
 		boolean overwriteConfirmation = args.length > 3 && args[3].equalsIgnoreCase("confirm");
 
 		try {
-			ResetType type = resetSingleSkill ? null : ResetType.valueOf(args[1].toUpperCase());
+			ResetType type = resetSingleSkill ? null : ResetType.valueOf(args[1].toUpperCase(java.util.Locale.US));
 			if (sender.hasPermission("valhalla.reset") ||
 					sender.hasPermission("valhalla.reset.other") ||
-					sender.hasPermission("valhalla.reset." + (type == null ? "skill" : type.toString().toLowerCase()))) {
+					sender.hasPermission("valhalla.reset." + (type == null ? "skill" : type.toString().toLowerCase(java.util.Locale.US)))) {
 				if (target == null){
 					Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_player_required")));
 					return true;
@@ -69,7 +69,7 @@ public class ResetProfilesCommand implements Command {
 				}
 
 				if (type == null) {
-					Skill skillToReset = SkillRegistry.getSkill(args[2].toUpperCase());
+					Skill skillToReset = SkillRegistry.getSkill(args[2].toUpperCase(java.util.Locale.US));
 					if (skillToReset == null) {
 						Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_invalid_skill"));
 						return true;
@@ -99,7 +99,7 @@ public class ResetProfilesCommand implements Command {
 	public boolean hasPermission(CommandSender sender) {
 		return sender.hasPermission("valhalla.reset") ||
 				sender.hasPermission("valhalla.reset.other") ||
-				Arrays.stream(ResetType.values()).anyMatch(t -> sender.hasPermission("valhalla.reset." + t.toString().toLowerCase()));
+				Arrays.stream(ResetType.values()).anyMatch(t -> sender.hasPermission("valhalla.reset." + t.toString().toLowerCase(java.util.Locale.US)));
 	}
 
 	@Override
