@@ -4,6 +4,7 @@ import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.trading.GossipTypeWrapper;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -17,6 +18,7 @@ import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
@@ -68,4 +70,6 @@ public interface NMS extends Listener {
         if (equipment == null) return;
         sendArmorChange(entity, equipment.getHelmet(), equipment.getChestplate(), equipment.getLeggings(), equipment.getBoots());
     }
+    int getReputation(Player player, Villager villager);
+    void modifyReputation(Player player, Villager villager, GossipTypeWrapper reason);
 }

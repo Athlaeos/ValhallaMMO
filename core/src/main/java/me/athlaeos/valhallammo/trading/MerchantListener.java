@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.trading;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Villager;
@@ -32,13 +33,18 @@ public class MerchantListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onVillagerInteract(PlayerInteractAtEntityEvent e){
-        if (!(e.getRightClicked() instanceof Villager)) return;
+        if (!(e.getRightClicked() instanceof Villager v)) return;
+        int reputation = ValhallaMMO.getNms().getReputation(e.getPlayer(), v);
+        System.out.println("reputation: " + reputation);
+        if (reputation >= 0) ValhallaMMO.getNms().modifyReputation(e.getPlayer(), v, GossipTypeWrapper.MAJOR_NEGATIVE);
+        else ValhallaMMO.getNms().modifyReputation(e.getPlayer(), v, GossipTypeWrapper.MAJOR_POSITIVE);
+
         List<MerchantRecipe> recipes = new ArrayList<>();
         MerchantRecipe r1 = new MerchantRecipe(new ItemStack(Material.TOTEM_OF_UNDYING), 0, 3, true, 1, 1.1F, 3, 6);
         r1.addIngredient(new ItemStack(Material.DIAMOND, 5));
         r1.addIngredient(new ItemStack(Material.REDSTONE, 10));
         recipes.add(r1);
-        new MerchantTradeInterface(PlayerMenuUtilManager.getPlayerMenuUtility(e.getPlayer()), recipes).open();
+        new MerchantTradeInterface(PlayerMenuUtilManager.getPlayerMenuUtility(e.getPlayer()), v, recipes).open();
         e.setCancelled(true);
     }
 

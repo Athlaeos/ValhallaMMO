@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MerchantData {
-    private final Map<Integer, TradeData> trades = new HashMap<>(); // represents a
+    private final Map<Integer, TradeData> trades = new HashMap<>();
 
     private class TradeData{
         private final String id;
