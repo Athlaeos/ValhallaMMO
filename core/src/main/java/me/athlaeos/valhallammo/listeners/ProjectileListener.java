@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
@@ -196,6 +197,20 @@ public class ProjectileListener implements Listener {
                 if (e.getProjectile() instanceof AbstractArrow a && !(a instanceof Trident)){
                     // arrows may be preserved with infinity if they resemble a vanilla arrow, or if they have the infinityExploitable flag
                     e.setConsumeItem(!shouldSave);
+                    if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21) && e.shouldConsumeItem()) {
+                        // setConsumeItem does not function on 1.21 and above, so manually remove item
+                        for (ItemStack item : p.getInventory().getContents()){
+                            if (ItemUtils.isEmpty(item) || !item.isSimilar(consumable)) continue;
+                            if (item.getAmount() <= 1){
+                                ItemStack clone = consumable.clone();
+                                clone.setAmount(1);
+                                p.getInventory().remove(clone);
+                            } else {
+                                item.setAmount(item.getAmount() - 1);
+                            }
+                            break;
+                        }
+                    }
                     if (e.shouldConsumeItem() && !isShotFromMultishot(a)) a.setPickupStatus(AbstractArrow.PickupStatus.ALLOWED);
                     else a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
                 }

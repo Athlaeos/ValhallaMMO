@@ -47,7 +47,7 @@ public class BrewingStandListener implements Listener {
 
     @EventHandler
     public void onBrewingInventoryInteract(InventoryClickEvent e){
-        if (e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())) return;
+        if (e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || CustomRecipeRegistry.getBrewingRecipes().isEmpty()) return;
 
         if (e.getView().getTopInventory() instanceof BrewerInventory b){
             Player p = (Player) e.getWhoClicked();
@@ -84,7 +84,7 @@ public class BrewingStandListener implements Listener {
 
     @EventHandler
     public void onBrewingInventoryDrag(InventoryDragEvent e){
-        if (e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())) return;
+        if (e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || CustomRecipeRegistry.getBrewingRecipes().isEmpty()) return;
         if (e.getView().getTopInventory() instanceof BrewerInventory b){
             Player p = (Player) e.getWhoClicked();
             ItemUtils.calculateDragEvent(e, 1, 0, 1, 2);
@@ -96,7 +96,7 @@ public class BrewingStandListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onStandPlace(BlockPlaceEvent e){
-        if (e.isCancelled() || e.getBlock().getType() != Material.BREWING_STAND) return;
+        if (e.isCancelled() || e.getBlock().getType() != Material.BREWING_STAND || CustomRecipeRegistry.getBrewingRecipes().isEmpty()) return;
         BlockUtils.setOwner(e.getBlock(), e.getPlayer().getUniqueId());
     }
 
@@ -104,7 +104,8 @@ public class BrewingStandListener implements Listener {
     public void onBrewingInventoryHopperFeed(InventoryMoveItemEvent e){
         if (e.getDestination().getLocation() == null ||
                 e.getDestination().getLocation().getWorld() == null ||
-                ValhallaMMO.isWorldBlacklisted(e.getDestination().getLocation().getWorld().getName())) return;
+                ValhallaMMO.isWorldBlacklisted(e.getDestination().getLocation().getWorld().getName()) ||
+                CustomRecipeRegistry.getBrewingRecipes().isEmpty()) return;
         if (e.getDestination() instanceof BrewerInventory b){
             if(b.getLocation() == null) {
                 e.setCancelled(true);
@@ -117,7 +118,7 @@ public class BrewingStandListener implements Listener {
 
     @EventHandler(priority= EventPriority.HIGHEST)
     public void onBrew(BrewEvent e){
-        if (e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
+        if (e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || CustomRecipeRegistry.getBrewingRecipes().isEmpty()) return;
         e.setCancelled(true);
     }
 
