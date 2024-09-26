@@ -450,9 +450,11 @@ public class ItemAttributesRegistry {
      * @return the AttributeWrapper containing the details of the stat, or null if none were really really found
      */
     public static AttributeWrapper getAnyAttribute(ItemMeta meta, String attribute){
-        return Objects.requireNonNullElse(getStats(meta, false).get(attribute),
-                Objects.requireNonNullElse(getStats(meta, true).get(attribute),
-                        getVanillaStats(ItemUtils.getStoredType(meta)).get(attribute)));
+        AttributeWrapper current = getStats(meta, false).get(attribute);
+        if (current != null) return current;
+        AttributeWrapper def = getStats(meta, true).get(attribute);
+        if (def != null) return def;
+        return getVanillaStats(ItemUtils.getStoredType(meta)).get(attribute);
     }
 
     /**
