@@ -95,7 +95,7 @@ public class CraftingTableListener implements Listener {
                 case LEFT -> {
                     if (!ItemUtils.isEmpty(e.getCursor()) && !ItemUtils.isEmpty(inventory.getResult()) &&
                             (!e.getCursor().isSimilar(inventory.getResult()) ||
-                                    (e.getCursor().getAmount() + inventory.getResult().getAmount() > e.getCursor().getType().getMaxStackSize()))){
+                                    (e.getCursor().getAmount() + inventory.getResult().getAmount() > ValhallaMMO.getNms().getMaxStackSize(e.getCursor().getItemMeta(), e.getCursor().getType())))){
                         // cursor cannot stack with result item, do not proceed
                         e.setCancelled(true);
                         return;
@@ -106,7 +106,7 @@ public class CraftingTableListener implements Listener {
                     // calculate how many items can be crafted
 
                     // the max amount of items the player could craft if they have enough inventory space,
-                    int maxCraftable = 64;
+                    int maxCraftable = 99;
                     Map<Integer, ItemMeta> matrixMeta = matrixMetaCache.getOrDefault(e.getWhoClicked().getUniqueId(), new HashMap<>());
                     for (int i = 0; i < inventory.getMatrix().length; i++){
                         ItemStack slot = inventory.getMatrix()[i];
@@ -190,7 +190,7 @@ public class CraftingTableListener implements Listener {
                 ItemStack cursor = e.getCursor();
                 if (!ItemUtils.isEmpty(cursor)){
                     // cancel crafting if the result no longer fits in the cursor
-                    if (!cursor.isSimilar(finalResult) || cursor.getAmount() + finalResult.getAmount() > cursor.getType().getMaxStackSize()){
+                    if (!cursor.isSimilar(finalResult) || cursor.getAmount() + finalResult.getAmount() > ValhallaMMO.getNms().getMaxStackSize(cursor.getItemMeta(), cursor.getType())){
                         e.setCancelled(true);
                         return;
                     }

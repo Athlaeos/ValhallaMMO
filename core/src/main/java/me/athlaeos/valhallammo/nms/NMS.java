@@ -44,6 +44,7 @@ public interface NMS extends Listener {
     void setEdible(ItemMeta meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds);
     void setGlint(ItemMeta meta, boolean glint);
     void setMaxStackSize(ItemMeta meta, int stackSize);
+    int getMaxStackSize(ItemMeta meta, Material baseMaterial);
     void setFireResistant(ItemMeta meta, boolean fireResistant);
     void setHideTooltip(ItemMeta meta, boolean hideToolTip);
 
