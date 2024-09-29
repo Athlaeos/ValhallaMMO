@@ -1,12 +1,15 @@
 package me.athlaeos.valhallammo.trading;
 
+import me.athlaeos.valhallammo.dom.Weighted;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-public class MerchantType {
+public class MerchantType implements Weighted {
     private final String type;
+    private int version = 0; // if the version saved on the villager is lower than that of their type, their trades are reset
     private String name = null;
     private boolean realistic = false; // if realistic, villagers reset their trades when they restock
     private boolean canLoseProfession = true; // if true, villagers with this merchant type may lose their profession if they have no exp or levels
@@ -19,13 +22,6 @@ public class MerchantType {
             MerchantLevel.EXPERT, new MerchantLevelTrades(2, 0, new HashSet<>()),
             MerchantLevel.MASTER, new MerchantLevelTrades(2, 0, new HashSet<>())
     ));
-    private final Map<MerchantLevel, Integer> levelDetails = new HashMap<>(Map.of(
-            MerchantLevel.NOVICE, 0,
-            MerchantLevel.APPRENTICE, 0,
-            MerchantLevel.JOURNEYMAN, 0,
-            MerchantLevel.EXPERT, 0,
-            MerchantLevel.MASTER, 0
-    ));
 
     public MerchantType(String type){
         this.type = type;
@@ -36,37 +32,43 @@ public class MerchantType {
     public void setRealistic(boolean realistic) { this.realistic = realistic; }
     public void setPerPlayerStock(boolean perPlayerStock) { this.perPlayerStock = perPlayerStock; }
     public void setWeight(double weight) { this.weight = weight; }
+    public void setVersion(int version) { this.version = version; }
+    public void setCanLoseProfession(boolean canLoseProfession) { this.canLoseProfession = canLoseProfession; }
     public String getName() { return name; }
     public boolean isRealistic() { return realistic; }
     public boolean isPerPlayerStock() { return perPlayerStock; }
     public double getWeight() { return weight; }
 
-    public Collection<String> getTrades(MerchantLevel level){
-        return trades.get(level).getTrades();
+    @Override
+    public double getWeight(double luck, double fortune) {
+        return weight;
     }
 
-    public double getRolls(MerchantLevel level, double luck){
-        return Math.max(0, trades.get(level).getRolls() + (luck * trades.get(level).getRollQuality()));
+    public boolean canLoseProfession() { return canLoseProfession; }
+    public int getVersion() { return version; }
+
+    public MerchantLevelTrades getTrades(MerchantLevel level){
+        return trades.get(level);
     }
 
-    private static class MerchantLevelDetails{
-        private int requiredEXP;
+    public Map<MerchantLevel, MerchantLevelTrades> getTrades() {
+        return trades;
     }
 
-    private static class MerchantLevelTrades{
+    public double getRolls(MerchantLevel level){
+        return Math.max(0, trades.get(level).getRolls());
+    }
+
+    public static class MerchantLevelTrades{
         private double rolls;
-        private double rollQuality;
         private final Collection<String> trades;
 
         private MerchantLevelTrades(double rolls, double rollQuality, Collection<String> trades){
             this.rolls = rolls;
-            this.rollQuality = rollQuality;
             this.trades = trades;
         }
 
-        public double getRollQuality() { return rollQuality; }
         public double getRolls() { return rolls; }
-        public void setRollQuality(double rollQuality) { this.rollQuality = rollQuality; }
         public void setRolls(double rolls) { this.rolls = rolls; }
         public Collection<String> getTrades() { return trades; }
     }
