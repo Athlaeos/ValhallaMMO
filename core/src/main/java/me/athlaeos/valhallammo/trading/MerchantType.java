@@ -55,6 +55,10 @@ public class MerchantType implements Weighted {
         return trades;
     }
 
+    public void addTrade(MerchantLevel level, MerchantTrade trade){
+        trades.get(level).getTrades().add(trade.getId());
+    }
+
     public double getRolls(MerchantLevel level){
         return Math.max(0, trades.get(level).getRolls());
     }

@@ -43,6 +43,7 @@ public class CustomTradeRegistry {
     static {
         MerchantConfiguration configuration = new MerchantConfiguration("test", Villager.Profession.NONE);
         MerchantType type = new MerchantType("test");
+        MerchantTrade t1 = new MerchantTrade("test1");
     }
 
     /**
