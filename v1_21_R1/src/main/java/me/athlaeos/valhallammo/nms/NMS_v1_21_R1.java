@@ -68,6 +68,8 @@ public final class NMS_v1_21_R1 implements NMS {
     Constructor<?>[] entityGossipConstructors = null;
 
     public NMS_v1_21_R1(){
+        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
+
         try {
             gossipContainerClass = GossipContainer.class;
             gossipContainerGossips = gossipContainerClass.getDeclaredField("c");
@@ -330,6 +332,11 @@ public final class NMS_v1_21_R1 implements NMS {
     @Override
     public void setMaxStackSize(ItemMeta meta, int stackSize) {
         meta.setMaxStackSize(stackSize);
+    }
+
+    @Override
+    public int getMaxStackSize(ItemMeta meta, Material defaultType) {
+        return meta.getMaxStackSize();
     }
 
     @Override
