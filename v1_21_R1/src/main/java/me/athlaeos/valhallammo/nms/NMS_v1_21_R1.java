@@ -68,8 +68,6 @@ public final class NMS_v1_21_R1 implements NMS {
     Constructor<?>[] entityGossipConstructors = null;
 
     public NMS_v1_21_R1(){
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
-
         try {
             gossipContainerClass = GossipContainer.class;
             gossipContainerGossips = gossipContainerClass.getDeclaredField("c");
@@ -87,6 +85,11 @@ public final class NMS_v1_21_R1 implements NMS {
         } catch (NoSuchFieldException ignored){
             ValhallaMMO.logSevere("Could not find field name 'entries' in GossipContainer$GossipEntry, some villager reputation-related functionality may not work");
         }
+    }
+
+    @Override
+    public void onEnable() {
+        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
     }
 
     @Override

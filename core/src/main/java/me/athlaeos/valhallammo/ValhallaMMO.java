@@ -166,7 +166,7 @@ public class ValhallaMMO extends JavaPlugin {
             logSevere("This version of Minecraft is not compatible with ValhallaMMO. Sorry!");
             getServer().getPluginManager().disablePlugin(this);
             return;
-        }
+        } else nms.onEnable();
         resourcePackConfigForced = pluginConfig.getBoolean("resource_pack_config_override");
         saveAndUpdateConfig("gui_details.yml");
 
@@ -326,6 +326,7 @@ public class ValhallaMMO extends JavaPlugin {
 
             return nms != null;
         } catch (Exception | Error ignored) {
+            ignored.printStackTrace();
             return false;
         }
     }

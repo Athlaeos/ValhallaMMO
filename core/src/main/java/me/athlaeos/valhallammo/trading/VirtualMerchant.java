@@ -14,7 +14,7 @@ public abstract class VirtualMerchant {
     private final Merchant merchant;
     private final UUID villager;
     private final PlayerMenuUtility playerMenuUtility;
-    private List<MerchantRecipe> recipes;
+    private List<MerchantRecipe> recipes = new ArrayList<>();
     private int expToGrant = 0;
 
     private boolean changeRecipes = true;

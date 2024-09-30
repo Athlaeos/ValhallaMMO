@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -76,7 +77,10 @@ public class CustomTradeRegistry {
      */
     public static MerchantData createCustomTrader(Villager villager, boolean persist){
         MerchantConfiguration configuration = merchantConfigurationByProfession.get(villager.getProfession());
-        if (configuration == null) return null;
+        if (configuration == null) {
+            System.out.println("no configuration");
+            return null;
+        }
         Collection<MerchantType> types = new HashSet<>();
         for (String type : new HashSet<>(configuration.getMerchantTypes())) {
             if (registeredMerchantTypes.containsKey(type)) types.add(registeredMerchantTypes.get(type));
@@ -86,9 +90,13 @@ public class CustomTradeRegistry {
             }
         }
         MerchantType selectedType = Utils.weightedSelection(types, 1, 0, 0).stream().findFirst().orElse(null);
-        if (selectedType == null) return null;
+        if (selectedType == null) {
+            System.out.println("no type for " + villager.getProfession());
+            return null;
+        }
         List<MerchantData.TradeData> trades = new ArrayList<>();
         for (MerchantLevel level : selectedType.getTrades().keySet()){
+            System.out.println("checking trades for level " + level);
             MerchantType.MerchantLevelTrades levelTrades = selectedType.getTrades(level);
             Collection<MerchantTrade> merchantTrades = new HashSet<>();
             for (String trade : new HashSet<>(levelTrades.getTrades())) {
@@ -109,6 +117,7 @@ public class CustomTradeRegistry {
             });
         }
         MerchantData data = new MerchantData(selectedType, trades.toArray(new MerchantData.TradeData[0]));
+        System.out.println("gave villager " + trades.size() + " trades");
         if (persist) data.serialize(villager);
         return data;
     }
@@ -153,7 +162,12 @@ public class CustomTradeRegistry {
             if (remainingUses > maxUses) remainingUses = maxUses;
             int uses = (int) Math.floor(maxUses - remainingUses);
             MerchantRecipe recipe = new MerchantRecipe(tradeData.getItem(), uses, (int) Math.floor(maxUses), trade.rewardsExperience(), trade.getVillagerExperience(), trade.getDemandMultiplier(), tradeData.getDemand(), trade.getSpecialPrice());
+            List<ItemStack> ingredients = new ArrayList<>();
+            ingredients.add(trade.getScalingCostItem());
+            if (!ItemUtils.isEmpty(trade.getOptionalCostItem())) ingredients.add(trade.getOptionalCostItem());
+            recipe.setIngredients(ingredients);
             recipes.add(recipe);
+            System.out.println("added " + trade.getId());
         }
         if (modified) data.serialize(villager);
         return recipes;

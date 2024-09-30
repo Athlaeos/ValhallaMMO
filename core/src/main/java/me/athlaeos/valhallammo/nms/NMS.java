@@ -71,6 +71,9 @@ public interface NMS extends Listener {
         if (equipment == null) return;
         sendArmorChange(entity, equipment.getHelmet(), equipment.getChestplate(), equipment.getLeggings(), equipment.getBoots());
     }
+    default void onEnable(){
+        // do nothing by default
+    }
     int getReputation(Player player, Villager villager);
     void modifyReputation(Player player, Villager villager, GossipTypeWrapper reason);
 }
