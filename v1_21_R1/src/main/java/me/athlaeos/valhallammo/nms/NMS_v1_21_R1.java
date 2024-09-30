@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.nms;
 import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -48,6 +47,10 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public final class NMS_v1_21_R1 implements NMS {
+
+    public NMS_v1_21_R1(){
+        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
+    }
 
     @Override
     public Pair<Location, Structures> getNearestStructure(World world, Location location, Map<Structures, Integer> structuresToFind){
