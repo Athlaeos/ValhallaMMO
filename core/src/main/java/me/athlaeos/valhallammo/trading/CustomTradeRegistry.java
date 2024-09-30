@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet;
 import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
@@ -11,10 +12,12 @@ import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.Utils;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -44,6 +47,21 @@ public class CustomTradeRegistry {
         MerchantConfiguration configuration = new MerchantConfiguration("test", Villager.Profession.NONE);
         MerchantType type = new MerchantType("test");
         MerchantTrade t1 = new MerchantTrade("test1");
+        t1.setScalingCostItem(new ItemStack(Material.EMERALD, 10));
+        t1.setOptionalCostItem(new ItemStack(Material.DIAMOND, 1));
+        t1.setMaxUses(3);
+        DisplayNameSet m1 = new DisplayNameSet("rename");
+        m1.setDisplayName("&cTest");
+        t1.setModifiers(new ArrayList<>(List.of(m1)));
+        t1.setResult(new ItemStack(Material.NETHER_STAR));
+        t1.setVillagerExperience(10);
+        registerTrade(t1);
+        type.addTrade(MerchantLevel.NOVICE, t1);
+        type.addTrade(MerchantLevel.APPRENTICE, t1);
+        type.addTrade(MerchantLevel.JOURNEYMAN, t1);
+        registerMerchantType(type);
+        configuration.getMerchantTypes().add(type.getType());
+        registerConfiguration(configuration);
     }
 
     /**
