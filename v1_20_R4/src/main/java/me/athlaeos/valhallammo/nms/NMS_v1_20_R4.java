@@ -305,6 +305,11 @@ public final class NMS_v1_20_R4 implements NMS {
     }
 
     @Override
+    public int getMaxStackSize(ItemMeta meta, Material baseMaterial) {
+        return baseMaterial.getMaxStackSize();
+    }
+
+    @Override
     public void setFireResistant(ItemMeta meta, boolean fireResistant) {
         // do nothing, incompatible
     }
