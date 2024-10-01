@@ -51,6 +51,7 @@ public class CauldronCraftingListener implements Listener {
     private static final Map<UUID, CauldronInputTick> entityThrowItemLimiter = new HashMap<>();
     private static final Map<Location, CauldronInputTick> blockThrowItemLimiter = new HashMap<>();
     private static final Map<Location, CauldronCookingTask> activeCauldrons = new HashMap<>();
+    private static final int cauldron_capacity = ValhallaMMO.getPluginConfig().getInt("cauldron_max_capacity", 3);
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onItemThrow(PlayerDropItemEvent e){
@@ -86,13 +87,16 @@ public class CauldronCraftingListener implements Listener {
         }
     }
 
+    // these items have an interaction with cauldrons, and so they should be ignored
+    private static final Collection<Material> blacklistedItems = ItemUtils.getMaterialSet("BUCKET", "WATER_BUCKET", "LAVA_BUCKET", "SNOW_BUCKET", "GLASS_BOTTLE");
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCauldronClick(PlayerInteractEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
         if (e.getClickedBlock() == null || e.getHand() != EquipmentSlot.HAND || e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (e.getClickedBlock().getType().toString().contains("CAULDRON")) {
             Block b = e.getClickedBlock();
-            if (!(b.getBlockData() instanceof Levelled l) || l.getLevel() <= 0) return;
+            if (!(b.getBlockData() instanceof Levelled l) || l.getLevel() <= 0 || (!ItemUtils.isEmpty(e.getItem()) && blacklistedItems.contains(e.getItem().getType()))) return;
             if (e.getPlayer().isSneaking()){
                 dumpCauldronContents(b);
             } else if (!ItemUtils.isEmpty(e.getItem()) && Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_cauldron_item_interact")) {
@@ -339,7 +343,7 @@ public class CauldronCraftingListener implements Listener {
             }
         }
         List<ItemStack> newContents = ItemUtils.decompressStacks(compactedContents);
-        if (newContents.size() > ValhallaMMO.getPluginConfig().getInt("cauldron_max_capacity", 3)) return null;
+        if (newContents.size() > cauldron_capacity) return null;
 
         CauldronAbsorbItemEvent event = new CauldronAbsorbItemEvent(cauldron, i, adder);
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);

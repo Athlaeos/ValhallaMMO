@@ -61,4 +61,7 @@ public interface NMS extends Listener {
     boolean hasUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type);
     double getUniqueAttributeValue(LivingEntity e, UUID uuid, String identifier, Attribute type);
     void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type);
+    default void onEnable(){
+        // do nothing by default
+    }
 }

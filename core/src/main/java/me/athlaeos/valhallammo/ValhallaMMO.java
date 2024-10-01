@@ -145,7 +145,7 @@ public class ValhallaMMO extends JavaPlugin {
         if (!setupNMS()){
             enabled = false;
             return;
-        }
+        } else nms.onEnable();
 
         // initialize modifiers and perk rewards
         ResourceExpenseRegistry.registerDefaultExpenses();
