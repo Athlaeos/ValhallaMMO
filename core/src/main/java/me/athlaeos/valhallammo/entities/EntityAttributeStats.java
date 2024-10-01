@@ -62,7 +62,9 @@ public class EntityAttributeStats {
     public static void updateStats(LivingEntity e){
         for (AttributeDataHolder holder : attributesToUpdate.values()){
             double value = AccumulativeStatManager.getCachedStats(holder.statSource(), e, 10000, true);
-            EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type(), value, holder.operation());
+            if (holder.statSource.equals("JUMP_HEIGHT_MULTIPLIER")){
+                EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type(), 0.1 * value, holder.operation());
+            } else EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type(), value, holder.operation());
         }
     }
 
