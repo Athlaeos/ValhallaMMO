@@ -145,7 +145,7 @@ public class ValhallaMMO extends JavaPlugin {
         if (!setupNMS()){
             enabled = false;
             return;
-        } else nms.onEnable();
+        }
 
         // initialize modifiers and perk rewards
         ResourceExpenseRegistry.registerDefaultExpenses();
@@ -165,7 +165,7 @@ public class ValhallaMMO extends JavaPlugin {
             logSevere("This version of Minecraft is not compatible with ValhallaMMO. Sorry!");
             getServer().getPluginManager().disablePlugin(this);
             return;
-        }
+        } else nms.onEnable();
         resourcePackConfigForced = pluginConfig.getBoolean("resource_pack_config_override");
         saveAndUpdateConfig("gui_details.yml");
 
