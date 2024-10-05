@@ -1882,6 +1882,13 @@
     "smithing_perk_ng2_description": "&7Resets your smithing level back to 0, and reduces experience gained by &c{smithing_genericexpmultiplier_add}&7. In exchange, you again gain a permanent &e{smithing_genericcraftingskill_add} &7bonus to all your creations"
   },
   "stringListTranslations": {
+    "valhallammo_command_plain": [
+      "&eValhallaMMO v%version% by Athlaeos",
+      "&7/val help",
+      "&7/skills",
+      "&r",
+      "&7Wiki: &ehttps://github.com/Athlaeos/ValhallaMMO/wiki"
+    ],
     "heavyarmor_perk_ng1_messages": [
       "&c✰ &4New Game I &c✰",
       "&c{heavyarmor_heavyarmorexpmultiplier_add} &7Heavy Armor EXP",

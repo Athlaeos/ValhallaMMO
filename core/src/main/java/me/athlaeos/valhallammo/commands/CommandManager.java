@@ -51,11 +51,9 @@ public class CommandManager implements TabExecutor {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command cmd, @NotNull String name, String[] args) {
 		if (args.length == 0) {
-			Utils.sendMessage(sender, Utils.chat(String.format("&eValhallaMMO v%s by Athlaeos", ValhallaMMO.getInstance().getDescription().getVersion())));
-			Utils.sendMessage(sender, Utils.chat("&7/val help"));
-			Utils.sendMessage(sender, Utils.chat("&7/skills"));
-			Utils.sendMessage(sender, "&r");
-			Utils.sendMessage(sender, "&7Wiki: &ehttps://github.com/Athlaeos/ValhallaMMO/wiki");
+			for (String s : TranslationManager.getListTranslation("valhallammo_command_plain")){
+				Utils.sendMessage(sender, s.replace("%version%", ValhallaMMO.getInstance().getDescription().getVersion()));
+			}
 			return true;
 		}
 
