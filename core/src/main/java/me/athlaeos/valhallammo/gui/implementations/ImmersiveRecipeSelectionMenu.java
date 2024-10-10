@@ -93,7 +93,8 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
         if (profile == null) return;
         boolean allAllowed = p.hasPermission("valhalla.allrecipes");
         CustomRecipeRegistry.getImmersiveRecipesByBlock().getOrDefault(clicked.getType(), new HashSet<>()).forEach(r -> {
-            if (r.isUnlockedForEveryone() || allAllowed || profile.getUnlockedRecipes().contains(r.getName())){
+            if (r.isUnlockedForEveryone() || allAllowed || profile.getUnlockedRecipes().contains(r.getName())
+                    || p.hasPermission("valhalla.recipe." + r.getName())){
                 recipes.add(r);
             }
         });
