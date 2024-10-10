@@ -109,7 +109,8 @@ public class CookingListener implements Listener {
                         })) ||
                         (ValhallaMMO.isWorldBlacklisted(c.getWorld().getName())) ||
                         (WorldGuardHook.inDisabledRegion(c.getLocation(), WorldGuardHook.VMMO_CRAFTING_CAMPFIRE)) ||
-                        (!p.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName()))) {
+                        (!p.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName())
+                                && !p.hasPermission("valhalla.recipe." + recipe.getName()))) {
                     // If the the player's profile is null, the player hasn't unlocked the recipe,
                     // the world is blacklisted, any of the validations failed, or the location is in a region
                     // which blocks custom recipes, cancel campfire interaction
@@ -191,7 +192,8 @@ public class CookingListener implements Listener {
                 if (owner != null){
                     PowerProfile profile = ProfileCache.getOrCache(owner, PowerProfile.class);
                     if (profile == null ||
-                            (!owner.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName()))) {
+                            (!owner.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName()) &&
+                                    !owner.hasPermission("valhalla.recipe." + recipe.getName()))) {
                         // If the the player's profile is null, the player hasn't unlocked the recipe,
                         // the world is blacklisted, any of the validations failed, or the location is in a region
                         // which blocks custom recipes, cancel campfire interaction

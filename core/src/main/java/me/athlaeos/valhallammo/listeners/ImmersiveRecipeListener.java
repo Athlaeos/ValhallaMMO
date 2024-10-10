@@ -107,7 +107,7 @@ public class ImmersiveRecipeListener implements Listener {
                 // only check crafting conditions on start and finish of crafting process
                 PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
                 if (profile == null ||
-                        (!p.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName())) ||
+                        (!p.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName()) && !p.hasPermission("valhalla.recipe." + recipe.getName())) ||
                         ValhallaMMO.isWorldBlacklisted(p.getWorld().getName()) ||
                         (WorldGuardHook.inDisabledRegion(clicked.getLocation(), WorldGuardHook.VMMO_CRAFTING_IMMERSIVE)) ||
                         (recipe.getValidations().stream().anyMatch(v -> {

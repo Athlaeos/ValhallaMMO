@@ -273,7 +273,8 @@ public class BrewingStandListener implements Listener {
         if (brewer == null && r.getModifiers().stream().anyMatch(DynamicItemModifier::requiresPlayer)) return RecipeStatus.SKIP;
         if (p != null && !allowedAllRecipes &&
                 !r.isUnlockedForEveryone() &&
-                !p.getUnlockedRecipes().contains(r.getName())) return RecipeStatus.SKIP;
+                !p.getUnlockedRecipes().contains(r.getName()) &&
+                (brewer == null || !brewer.hasPermission("valhalla.recipe." + r.getName()))) return RecipeStatus.SKIP;
 
         for (int i = 0; i < 3; i++) {
             if (recipes.size() == 3) {

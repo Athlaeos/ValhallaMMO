@@ -324,7 +324,8 @@ public class CraftingTableListener implements Listener {
                             inventory.getLocation().getWorld() != null &&
                             ValhallaMMO.isWorldBlacklisted(inventory.getLocation().getWorld().getName())) ||
                     (WorldGuardHook.inDisabledRegion(inventory.getLocation(), WorldGuardHook.VMMO_CRAFTING_CRAFTINGTABLE)) ||
-                    (!crafter.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName()))) {
+                    (!crafter.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName()) &&
+                            !crafter.hasPermission("valhalla.recipe." + recipe.getName()))) {
                 // If the recipe or the player's profile are null, the player hasn't unlocked the recipe,
                 // the world is blacklisted, any of the validations failed, or the location is in a region
                 // which blocks custom recipes, nullify result
@@ -372,7 +373,8 @@ public class CraftingTableListener implements Listener {
 
     private ItemStack verifyIngredients(Player clicker, PowerProfile profile, DynamicGridRecipe recipe, ItemStack[] matrix){
         ItemBuilder result = new ItemBuilder(recipe.getResult().clone());
-        if (!clicker.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName())) return null;
+        if (!clicker.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName())
+        && !clicker.hasPermission("valhalla.recipe." + recipe.getName())) return null;
         Map<Integer, ItemMeta> matrixMeta = matrixMetaCache.getOrDefault(clicker.getUniqueId(), new HashMap<>());
         if (recipe.tinker()){
             SlotEntry tinkerEntry = recipe.getGridTinkerEquipment();
