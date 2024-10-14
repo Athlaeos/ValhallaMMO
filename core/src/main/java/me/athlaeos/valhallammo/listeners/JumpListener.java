@@ -37,7 +37,7 @@ public class JumpListener implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
         if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
             double jumpHeightBonus = AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getPlayer(), 10000, true);
-            if (jumpHeightBonus > 0) e.getPlayer().setVelocity(e.getPlayer().getVelocity().add(new Vector(0, (jumpHeightBonus * 0.1), 0)));
+            if (jumpHeightBonus > 0) e.getPlayer().setVelocity(e.getPlayer().getVelocity().add(new Vector(0, (jumpHeightBonus * 0.15), 0)));
         }
 
         if (e.getPlayer().getAllowFlight()) return; // players who already have the permission to fly are not able to multi-jump

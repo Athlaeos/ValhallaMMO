@@ -18,11 +18,14 @@ import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
 import me.athlaeos.valhallammo.listeners.CookingListener;
 import me.athlaeos.valhallammo.listeners.SmithingTableListener;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.version.SmithingTransformRecipeWrapper;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.SmithingRecipe;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -246,8 +249,17 @@ public class CustomRecipeRegistry {
             allRecipes.add(recipe.getName().toLowerCase(java.util.Locale.US));
             allKeyedRecipes.put(recipe.getKey(), recipe);
             allKeyedRecipesByName.put(recipe.getName(), recipe);
-            recipe.registerRecipe();
             SmithingTableListener.smithingRecipeCache.clear();
+            boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
+            Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
+            while (iterator.hasNext()){
+                Recipe r = iterator.next();
+                if (!(r instanceof SmithingRecipe s) || (!s.getBase().test(recipe.getBase().getItem()) || !s.getAddition().test(recipe.getAddition().getItem()))) continue;
+                if (isTemplateCompatible && !SmithingTransformRecipeWrapper.templatesMatch(s, SmithingTransformRecipeWrapper.getTemplate(s))) continue;
+                // recipe with somewhat matching ingredients already exists, no need to register this recipe again
+                return;
+            }
+            recipe.registerRecipe();
         }
     }
 

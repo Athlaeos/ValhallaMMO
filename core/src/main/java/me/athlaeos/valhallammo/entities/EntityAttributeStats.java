@@ -55,15 +55,16 @@ public class EntityAttributeStats {
             registerAttributeToUpdate(new AttributeDataHolder("valhalla_gravity_modifier", GRAVITY, "GRAVITY", Attribute.valueOf("GENERIC_GRAVITY"), AttributeModifier.Operation.ADD_SCALAR));
             registerAttributeToUpdate(new AttributeDataHolder("valhalla_safe_fall_distance_modifier", SAFE_FALLING_DISTANCE, "SAFE_FALLING_DISTANCE", Attribute.valueOf("GENERIC_SAFE_FALL_DISTANCE"), AttributeModifier.Operation.ADD_NUMBER));
             registerAttributeToUpdate(new AttributeDataHolder("valhalla_fall_damage_multiplier_modifier", FALL_DAMAGE_MULTIPLIER, "FALL_DAMAGE_MULTIPLIER", Attribute.valueOf("GENERIC_FALL_DAMAGE_MULTIPLIER"), AttributeModifier.Operation.ADD_SCALAR));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_jump_height_multiplier_modifier", JUMP_HEIGHT_MULTIPLIER, "JUMP_HEIGHT_MULTIPLIER", Attribute.valueOf("GENERIC_JUMP_STRENGTH"), AttributeModifier.Operation.ADD_SCALAR));
+            registerAttributeToUpdate(new AttributeDataHolder("valhalla_jump_height_multiplier_modifier", JUMP_HEIGHT_MULTIPLIER, "JUMP_HEIGHT_MULTIPLIER", Attribute.valueOf("GENERIC_JUMP_STRENGTH"), AttributeModifier.Operation.ADD_NUMBER));
         }
     }
 
     public static void updateStats(LivingEntity e){
         for (AttributeDataHolder holder : attributesToUpdate.values()){
+            EntityUtils.removeUniqueAttribute(e, holder.name, holder.type);
             double value = AccumulativeStatManager.getCachedStats(holder.statSource(), e, 10000, true);
             if (holder.statSource.equals("JUMP_HEIGHT_MULTIPLIER")){
-                EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type(), 0.1 * value, holder.operation());
+                EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type(), 0.15 * value, holder.operation());
             } else EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type(), value, holder.operation());
         }
     }

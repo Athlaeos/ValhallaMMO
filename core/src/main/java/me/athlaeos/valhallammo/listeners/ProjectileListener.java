@@ -72,6 +72,10 @@ public class ProjectileListener implements Listener {
                 } else if (a.getShooter() instanceof LivingEntity l) {
                     inaccuracy = AccumulativeStatManager.getCachedStats("RANGED_INACCURACY", l, 10000, true);
                     direction = l.getEyeLocation().getDirection();
+                    double bonusDamage = AccumulativeStatManager.getCachedStats("RANGED_DAMAGE_BONUS", l, 10000, true);
+                    if (bonusDamage != 0) a.setDamage(Math.max(0, a.getDamage() + bonusDamage));
+                    double bonusPiercing = AccumulativeStatManager.getCachedStats("RANGED_PIERCING_BONUS", l, 10000, true);
+                    if (bonusPiercing != 0) a.setPierceLevel(Math.max(0, a.getPierceLevel() + Utils.randomAverage(bonusPiercing)));
                 } else direction = a.getVelocity();
 
                 if (!isShotFromMultishot(a)){
