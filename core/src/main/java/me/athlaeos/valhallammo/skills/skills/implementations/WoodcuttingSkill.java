@@ -189,7 +189,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
      * A tree is defined as any log with any leaves connected somewhere above it.
      */
     private boolean isTree(Block b){
-        Collection<Block> treeBlocks = BlockUtils.getBlockVein(b, treeScanLimit, l -> Tag.LOGS.isTagged(l.getType()) || Tag.LEAVES.isTagged(l.getType()), treeScanArea);
+        Collection<Block> treeBlocks = BlockUtils.getBlockVein(b, treeScanLimit, l -> !BlockStore.isPlaced(l) && (Tag.LOGS.isTagged(l.getType()) || Tag.LEAVES.isTagged(l.getType())), treeScanArea);
         return treeBlocks.stream().anyMatch(l -> Tag.LOGS.isTagged(l.getType())) && treeBlocks.stream().anyMatch(l -> Tag.LEAVES.isTagged(l.getType()));
     }
 
