@@ -131,7 +131,7 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("DAMAGE_RADIANT", StatFormat.PERCENTILE_BASE_1_P1, "\uEE65", (i) -> i >= 0).addModifier(Material.GOLD_INGOT));
         register(new AttributeDisplayWrapper("DAMAGE_NECROTIC", StatFormat.PERCENTILE_BASE_1_P1, "\uEE66", (i) -> i >= 0).addModifier(Material.BONE));
         register(new AttributeDisplayWrapper("COOKING_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEE67", (i) -> i >= 0).addModifier(Material.BLAST_FURNACE));
-        register(new AttributeDisplayWrapper("JUMP_HEIGHT", StatFormat.PERCENTILE_BASE_1_P1, "\uEE68", (i) -> i >= 0).addModifier(Material.SLIME_BLOCK).convertTo("GENERIC_JUMP_STRENGTH"));
+        register(new AttributeDisplayWrapper("JUMP_HEIGHT", StatFormat.PERCENTILE_BASE_1_P1, "\uEE68", (i) -> i >= 0).addModifier(Material.SLIME_BLOCK));
         register(new AttributeDisplayWrapper("JUMPS", StatFormat.INT, "\uEE69", (i) -> i >= 0).addModifier(Material.STICKY_PISTON, 1, 3));
         register(new AttributeDisplayWrapper("EXTRA_EXPLOSION_DAMAGE", StatFormat.FLOAT_P1, "\uEE6A", (i) -> i >= 0).addModifier(Material.TNT, 0.1, 1));
         register(new AttributeDisplayWrapper("EXTRA_FIRE_DAMAGE", StatFormat.FLOAT_P1, "\uEE6B", (i) -> i >= 0).addModifier(Material.FIRE_CHARGE, 0.1, 1));

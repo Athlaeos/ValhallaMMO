@@ -88,7 +88,7 @@ public class CauldronCraftingListener implements Listener {
     }
 
     // these items have an interaction with cauldrons, and so they should be ignored
-    private static final Collection<Material> blacklistedItems = ItemUtils.getMaterialSet("BUCKET", "WATER_BUCKET", "LAVA_BUCKET", "SNOW_BUCKET", "GLASS_BOTTLE");
+    private static final Collection<Material> blacklistedItems = ItemUtils.getMaterialSet(ValhallaMMO.getPluginConfig().getStringList("cauldron_item_blacklist"));
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCauldronClick(PlayerInteractEvent e){

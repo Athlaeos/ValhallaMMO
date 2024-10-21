@@ -36,6 +36,12 @@ tag_lore: # The tag lores displayed on the item. If one is left empty, it is not
   5: '<lang.smithing-tag-red-hot>'
   6: '<lang.smithing-tag-white-hot>'
   7: '<lang.smithing-tag-unfit>'
+  8: '<lang.smithing-tag-upgrade-slots>'
+  9: '<lang.smithing-upgrade-extra-upgrades>'
+  # 10-20 are occupied by upgrades
+  21: '<lang.smithing-upgrade-deepslate-mining>'
+  # 22-50 are also occupied by upgrades
+  # 101, 102, and 103 are by default occupied by upgrade slots 1, 2, and 3 respectively. Avoid using.
 
 # Error messages that are notified to the player if their item has a tag it's not allowed to have
 tag_error_disallowed:
@@ -47,6 +53,49 @@ tag_error_disallowed:
   5: '<lang.smithing-tag-disallowed-red-hot>'
   6: '<lang.smithing-tag-disallowed-white-hot>'
   7: '<lang.smithing-tag-disallowed-unfit>'
+  8: '<lang.smithing-tag-upgrade-slots>' # all tools and armor get some upgrade slots on creation
+  9: '<lang.smithing-upgrade-extra-upgrades>' # all tools and armor may have their upgrade slots expanded further
+  10: '<lang.smithing-upgrade-mining-speed>' # axes, pickaxes, shovels, hoes only
+  11: '<lang.smithing-upgrade-mining-drops>' # axes, pickaxes, shovels, hoes only
+  12: '<lang.smithing-upgrade-mining-luck>' # axes, pickaxes, shovels, hoes only
+  13: '<lang.smithing-upgrade-attack-damage>' # all melee items
+  14: '<lang.smithing-upgrade-crit-chance>' # all weapons
+  16: '<lang.smithing-upgrade-attack-reach>' # all melee items
+  17: '<lang.smithing-upgrade-bleed-chance>' # all weapons
+  18: '<lang.smithing-upgrade-armor-penetration>' # all weapons
+  19: '<lang.smithing-upgrade-immunity-reduction>' # all weapons
+  20: '<lang.smithing-upgrade-dismount-chance>' # all weapons
+  21: '<lang.smithing-upgrade-deepslate-mining>' # pickaxes only
+  22: '<lang.smithing-upgrade-durability>' # all items
+  23: '<lang.smithing-upgrade-entity-drops>' # all weapons
+  24: '<lang.smithing-upgrade-lifesteal>' # all weapons
+  25: '<lang.smithing-upgrade-shield-disarming>' # all weapons
+  26: '<lang.smithing-upgrade-ammo-consumption>' # (cross)bows only
+  27: '<lang.smithing-upgrade-stun-chance>' # all weapons
+  28: '<lang.smithing-upgrade-immunity>' # armors only
+  29: '<lang.smithing-upgrade-healing-bonus>' # armors only
+  30: '<lang.smithing-upgrade-cooldown-reduction>' # armors only
+  31: '<lang.smithing-upgrade-dodge-chance>' # armors only
+  32: '<lang.smithing-upgrade-skill-exp>' # armors only
+  33: '<lang.smithing-upgrade-vanilla-exp>' # armors only
+  34: '<lang.smithing-upgrade-knockback-resistance>' # armors only
+  35: '<lang.smithing-upgrade-bleeding-resistance>' # armors only
+  36: '<lang.smithing-upgrade-crit-resistance>' # armors only
+  37: '<lang.smithing-upgrade-stun-resistance>' # armors only
+  38: '<lang.smithing-upgrade-sneak-speed>' # leggings only
+  39: '<lang.smithing-upgrade-sprint-speed>' # leggings only
+  40: '<lang.smithing-upgrade-jumps-bonus>' # boots only
+  41: '<lang.smithing-upgrade-jump-height>' # boots only
+  42: '<lang.smithing-upgrade-fire-damage-multiplier>' # chestplates only
+  43: '<lang.smithing-upgrade-magic-damage-multiplier>' # chestplates only
+  44: '<lang.smithing-upgrade-poison-damage-multiplier>' # chestplates only
+  45: '<lang.smithing-upgrade-radiant-damage-multiplier>' # chestplates only
+  46: '<lang.smithing-upgrade-necrotic-damage-multiplier>' # chestplates only
+  47: '<lang.smithing-upgrade-damage-multiplier>' # chestplates only
+  48: '<lang.smithing-upgrade-smithing-quality>' # helmets only
+  49: '<lang.smithing-upgrade-alchemy-quality>' # helmets only
+  50: '<lang.smithing-upgrade-enchanting-quality>' # helmets only
+# 51, 52, and 53 are by default occupied by upgrade slots 1, 2, and 3 respectively. Avoid using.
 
 # Error messages that are notified to the player if their item doesn't have a tag it needs to have
 tag_error_required:
@@ -58,6 +107,7 @@ tag_error_required:
   5: '<lang.smithing-tag-required-red-hot>'
   6: '<lang.smithing-tag-required-white-hot>'
   7: '<lang.smithing-tag-required-unfit>'
+  8: '<lang.smithing-tag-insufficient-upgrade-slots>'
 
 # Scaling used by dynamic quantity modifier, which changes the amount of the resulting item depending on PLAYER SMITHING SKILL
 quantity_scaling: '0.7/300 * %rating% + 0.1,MULTIPLIER,0,0.8'

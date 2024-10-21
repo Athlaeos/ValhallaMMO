@@ -445,6 +445,12 @@ immersive_on_regular_click: [] # Any block material in the list will only need t
 cauldron_max_capacity: 3 # The max amount of items a cauldron is allowed to hold (and therefore the max amount of ingredients recipes can possess)
 # High numbers will allow players to stealthily store many items which may not be desirable
 cauldron_item_duration: 20 # The amount of ticks an item, after throwing, can be absorbed by the cauldron. (20 ticks = 1 second)
+cauldron_item_blacklist:
+  - BUCKET
+  - WATER_BUCKET
+  - LAVA_BUCKET
+  - SNOW_BUCKET
+  - GLASS_BOTTLE
 
 model_data_nextpage: 3511004
 model_data_prevpage: 3511008

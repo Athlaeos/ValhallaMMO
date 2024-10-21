@@ -229,23 +229,23 @@ public class SmithingTableListener implements Listener {
         while (iterator.hasNext()){
             if (iterator.next() instanceof SmithingRecipe s && s.getBase().test(base.getItem()) && s.getAddition().test(addition.getItem())){
                 found = s;
-                DynamicSmithingRecipe dynamicRecipe = CustomRecipeRegistry.getSmithingRecipesByKey().get(s.getKey());
-                if (dynamicRecipe == null) continue;
-                if (dynamicRecipe.getBase().getOption().matches(dynamicRecipe.getBase().getItem(), base.getItem()) &&
-                        dynamicRecipe.getAddition().getOption().matches(dynamicRecipe.getAddition().getItem(), addition.getItem())) {
-                    if (isTemplateCompatible && ItemUtils.isEmpty(template)) continue; // 1.20+ recipes need to be template compatible, and so templates cannot be null
-                    // templates are considered matching if templates aren't in the game yet, if the dynamic recipe template is null,
-                    // or if the dynamic template matches the template item
-                    if (dynamicRecipe.requireValhallaTools() && ((EquipmentClass.getMatchingClass(base.getMeta()) != null && !SmithingItemPropertyManager.hasSmithingQuality(base.getMeta())) ||
-                            (EquipmentClass.getMatchingClass(addition.getMeta()) != null && !SmithingItemPropertyManager.hasSmithingQuality(addition.getMeta())))) continue;
+                for (DynamicSmithingRecipe dynamicRecipe : CustomRecipeRegistry.getSmithingRecipes().values()){
+                    if (dynamicRecipe.getBase().getOption().matches(dynamicRecipe.getBase().getItem(), base.getItem()) &&
+                            dynamicRecipe.getAddition().getOption().matches(dynamicRecipe.getAddition().getItem(), addition.getItem())) {
+                        if (isTemplateCompatible && ItemUtils.isEmpty(template)) continue; // 1.20+ recipes need to be template compatible, and so templates cannot be null
+                        // templates are considered matching if templates aren't in the game yet, if the dynamic recipe template is null,
+                        // or if the dynamic template matches the template item
+                        if (dynamicRecipe.requireValhallaTools() && ((EquipmentClass.getMatchingClass(base.getMeta()) != null && !SmithingItemPropertyManager.hasSmithingQuality(base.getMeta())) ||
+                                (EquipmentClass.getMatchingClass(addition.getMeta()) != null && !SmithingItemPropertyManager.hasSmithingQuality(addition.getMeta())))) continue;
 
-                    boolean templatesMatch = !isTemplateCompatible || ((dynamicRecipe.getTemplate() == null || dynamicRecipe.getTemplate().getOption() == null || ItemUtils.isEmpty(dynamicRecipe.getTemplate().getItem())) ?
-                            ItemUtils.isEmpty(template) :
-                            dynamicRecipe.getTemplate().getOption().matches(dynamicRecipe.getTemplate().getItem(), template));
-                    Pair<SmithingRecipe, DynamicSmithingRecipe> match = new Pair<>(found, dynamicRecipe);
-                    if (!templatesMatch) continue;
-                    smithingRecipeCache.put(key, match);
-                    return match;
+                        boolean templatesMatch = !isTemplateCompatible || ((dynamicRecipe.getTemplate() == null || dynamicRecipe.getTemplate().getOption() == null || ItemUtils.isEmpty(dynamicRecipe.getTemplate().getItem())) ?
+                                ItemUtils.isEmpty(template) :
+                                dynamicRecipe.getTemplate().getOption().matches(dynamicRecipe.getTemplate().getItem(), template));
+                        Pair<SmithingRecipe, DynamicSmithingRecipe> match = new Pair<>(found, dynamicRecipe);
+                        if (!templatesMatch) continue;
+                        smithingRecipeCache.put(key, match);
+                        return match;
+                    }
                 }
             }
         }

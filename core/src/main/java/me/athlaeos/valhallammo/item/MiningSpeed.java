@@ -145,6 +145,8 @@ public class MiningSpeed {
     public static Map<Material, Double> getExceptions(ItemMeta m){
         String stored = ItemUtils.getPDCString(SPEED_MULTIPLIER_SPECIFIC, m, "");
         Map<Material, Double> exceptions = new HashMap<>();
+        Material base = ItemUtils.getStoredType(m);
+        if (base != null) exceptions.putAll(defaultExceptions.getOrDefault(base, new HashMap<>()));
         if (!stored.isEmpty()){
             for (String exceptionString : stored.split(";")){
                 String[] args = exceptionString.split(":");
