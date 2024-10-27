@@ -9,6 +9,7 @@
 /**/*.iml
 /**/out/
 /**/run/
+/**/server/*
 
 /**/pom.xml.tag
 /**/pom.xml.releaseBackup

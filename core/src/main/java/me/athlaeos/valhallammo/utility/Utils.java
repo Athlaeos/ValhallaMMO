@@ -5,6 +5,8 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Weighted;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -19,11 +21,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Utils {
 
@@ -289,34 +290,22 @@ public class Utils {
         return result;
     }
 
-    static final Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
-
     public static List<String> chat(List<String> messages){
         if (messages == null) return new ArrayList<>();
         return messages.stream().map(Utils::chat).toList();
     }
 
     /**
-     * Converts all color codes to ChatColor. Works with hex codes.
-     * Hex code format is triggered with &#123456
-     * @param message the message to convert
+     * Converts all color codes to ChatColor. Works with MiniMessages.
+     * @param oldMessage the message to convert
      * @return the converted message
      */
-    public static String chat(String message) {
-        if (StringUtils.isEmpty(message)) return "";
-        char COLOR_CHAR = ChatColor.COLOR_CHAR;
-        Matcher matcher = hexPattern.matcher(message);
-        StringBuilder buffer = new StringBuilder(message.length() + 4 * 8);
-        while (matcher.find())
-        {
-            String group = matcher.group(1);
-            matcher.appendReplacement(buffer, COLOR_CHAR + "x"
-                    + COLOR_CHAR + group.charAt(0) + COLOR_CHAR + group.charAt(1)
-                    + COLOR_CHAR + group.charAt(2) + COLOR_CHAR + group.charAt(3)
-                    + COLOR_CHAR + group.charAt(4) + COLOR_CHAR + group.charAt(5)
-            );
-        }
-        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
+    public static String chat(String oldMessage) {
+        var miniMessage = MiniMessage.miniMessage();
+        String mmified = miniMessage.serialize(LegacyComponentSerializer.legacySection().deserialize(oldMessage)).replace("\\", "");
+        @NotNull String newMessage = LegacyComponentSerializer.legacyAmpersand().serialize(miniMessage.deserialize(mmified));
+        
+        return ChatColor.translateAlternateColorCodes('&', newMessage);
     }
 
     public static <T> Map<Integer, List<T>> paginate(int pageSize, List<T> allEntries) {
