@@ -149,7 +149,12 @@ public class MerchantListener implements Listener {
         CustomTradeRegistry.getCustomTrader(v, true);
         List<MerchantRecipe> recipes = CustomTradeRegistry.recipesFromVillager(v, e.getPlayer());
         if (recipes == null) System.out.println("could not make trader recipes");
-        else new SimpleMerchant(PlayerMenuUtilManager.getPlayerMenuUtility(e.getPlayer()), v, recipes).open();
+        else {
+            System.out.println("fetched " + recipes.size() + " recipes");
+            VirtualMerchant merchant = new SimpleMerchant(PlayerMenuUtilManager.getPlayerMenuUtility(e.getPlayer()), v, recipes);
+            if (merchant.getRecipes().isEmpty()) v.shakeHead();
+            else merchant.open();
+        }
         e.setCancelled(true);
     }
 

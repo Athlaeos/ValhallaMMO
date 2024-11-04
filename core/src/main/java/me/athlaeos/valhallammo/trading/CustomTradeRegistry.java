@@ -45,21 +45,34 @@ public class CustomTradeRegistry {
     private static final Map<String, MerchantTrade> registeredMerchantTrades = new HashMap<>();
 
     static {
+        DisplayNameSet m1 = new DisplayNameSet("rename");
+        m1.setDisplayName("&cTest");
+
         MerchantConfiguration configuration = new MerchantConfiguration("test", Villager.Profession.NONE);
         MerchantType type = new MerchantType("test");
         MerchantTrade t1 = new MerchantTrade("test1");
         t1.setScalingCostItem(new ItemStack(Material.EMERALD, 10));
         t1.setOptionalCostItem(new ItemStack(Material.DIAMOND, 1));
         t1.setMaxUses(3);
-        DisplayNameSet m1 = new DisplayNameSet("rename");
-        m1.setDisplayName("&cTest");
-        t1.setModifiers(new ArrayList<>(List.of(m1)));
         t1.setResult(new ItemStack(Material.NETHER_STAR));
+        t1.setModifiers(new ArrayList<>(List.of(m1)));
         t1.setVillagerExperience(10);
+        MerchantTrade t2 = new MerchantTrade("test2");
+        t2.setScalingCostItem(new ItemStack(Material.REDSTONE, 10));
+        t2.setOptionalCostItem(new ItemStack(Material.DIAMOND, 1));
+        t2.setMaxUses(3);
+        t2.setResult(new ItemStack(Material.ECHO_SHARD));
+        t2.setVillagerExperience(10);
+        MerchantTrade t3 = new MerchantTrade("test3");
+        t3.setScalingCostItem(new ItemStack(Material.LAPIS_LAZULI, 10));
+        t3.setOptionalCostItem(new ItemStack(Material.DIAMOND, 1));
+        t3.setMaxUses(3);
+        t3.setResult(new ItemStack(Material.QUARTZ));
+        t3.setVillagerExperience(10);
         registerTrade(t1);
         type.addTrade(MerchantLevel.NOVICE, t1);
-        type.addTrade(MerchantLevel.APPRENTICE, t1);
-        type.addTrade(MerchantLevel.JOURNEYMAN, t1);
+        type.addTrade(MerchantLevel.APPRENTICE, t2);
+        type.addTrade(MerchantLevel.JOURNEYMAN, t3);
         registerMerchantType(type);
         configuration.getMerchantTypes().add(type.getType());
         registerConfiguration(configuration);
@@ -147,11 +160,15 @@ public class CustomTradeRegistry {
                 player.sendMessage(Utils.chat("&c" + error + ", please notify admin"));
                 continue;
             }
+            System.out.println("moasdsd trad "+ trade.getId());
             trades.add(trade);
         }
         for (MerchantTrade trade : trades){
             MerchantData.TradeData tradeData = data.getTrades().get(trade.getId());
-            if (tradeData.getLevel() > villager.getVillagerLevel()) continue;
+            if (tradeData.getLevel() > villager.getVillagerLevel()) {
+                System.out.println("this trade is beyond the villagers level " + tradeData.getLevel() + "/" + villager.getVillagerLevel());
+                continue;
+            }
             double maxUses = trade.getMaxUses();
             double remainingUses = tradeData.getSalesLeft();
             if (!trade.hasFixedUseCount()){
