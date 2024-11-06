@@ -26,7 +26,7 @@ resourcepack_version: 1.0
 # Misc
 admin_gui_filler_removal: true # If true, admin-visible menus like recipe editor menus will have their filler material removed. Normally this filler material is here
 # to better indicate and distinguish clickable buttons and slots from non-functional slots, but if a custom GUI for example is used then this filler material is not required
-resource_pack_config_override: true # If true, certain config options are overridden by hard-coded values that work with the ValhallaMMO resource pack
+resource_pack_config_override: false # If true, certain config options are overridden by hard-coded values that work with the ValhallaMMO resource pack
 # This option can be toggled in-game with /val resourcepack <enable/disable>
 
 # GENERAL

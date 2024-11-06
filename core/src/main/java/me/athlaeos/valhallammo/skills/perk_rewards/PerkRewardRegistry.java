@@ -63,8 +63,8 @@ public class PerkRewardRegistry {
             p.discoverRecipe(recipe.getKey());
         });
 
-        register(new ProfileStringListAdd("perks_unlocked_add", "unlockedPerks", PowerProfile.class));
-        register(new ProfileStringListRemove("perks_unlocked_remove", "unlockedPerks", PowerProfile.class));
+        register(new ProfileStringListAdd("perks_unlocked_add", "unlockedPerks", PowerProfile.class, true));
+        register(new ProfileStringListRemove("perks_unlocked_remove", "unlockedPerks", PowerProfile.class, true));
         register(new ProfileStringListAdd("perks_fake_unlock_add", "fakeUnlockedPerks", PowerProfile.class));
         register(new ProfileStringListRemove("perks_fake_unlock_remove", "fakeUnlockedPerks", PowerProfile.class));
         register(new ProfileStringListClear("perks_fake_unlock_clear", "fakeUnlockedPerks", PowerProfile.class));

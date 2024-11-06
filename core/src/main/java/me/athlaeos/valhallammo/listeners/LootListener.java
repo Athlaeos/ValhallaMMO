@@ -819,12 +819,14 @@ public class LootListener implements Listener {
         Collection<Material> droppedHandTypes = new HashSet<>();
         EntityEquipment equipment = entity.getEquipment();
         if (equipment != null){
-            if (!ItemUtils.isEmpty(equipment.getItemInMainHand())) droppedHandTypes.add(equipment.getItemInMainHand().getType());
-            if (!ItemUtils.isEmpty(equipment.getItemInOffHand())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
-            if (!ItemUtils.isEmpty(equipment.getHelmet())) droppedHandTypes.add(equipment.getHelmet().getType());
-            if (!ItemUtils.isEmpty(equipment.getChestplate())) droppedHandTypes.add(equipment.getChestplate().getType());
-            if (!ItemUtils.isEmpty(equipment.getLeggings())) droppedHandTypes.add(equipment.getLeggings().getType());
-            if (!ItemUtils.isEmpty(equipment.getBoots())) droppedHandTypes.add(equipment.getBoots().getType());
+            // it is assumed that items with a >95% drop chance are items that have explicitly been given to the killed entity, as they'll have a 100% drop chance
+            // such items cannot be duplicated or edited
+            if (!ItemUtils.isEmpty(equipment.getItemInMainHand()) && equipment.getItemInMainHandDropChance() >= 0.95F) droppedHandTypes.add(equipment.getItemInMainHand().getType());
+            if (!ItemUtils.isEmpty(equipment.getItemInOffHand()) && equipment.getItemInOffHandDropChance() >= 0.95F) droppedHandTypes.add(equipment.getItemInOffHand().getType());
+            if (!ItemUtils.isEmpty(equipment.getHelmet()) && equipment.getHelmetDropChance() >= 0.95F) droppedHandTypes.add(equipment.getHelmet().getType());
+            if (!ItemUtils.isEmpty(equipment.getChestplate()) && equipment.getChestplateDropChance() >= 0.95F) droppedHandTypes.add(equipment.getChestplate().getType());
+            if (!ItemUtils.isEmpty(equipment.getLeggings()) && equipment.getLeggingsDropChance() >= 0.95F) droppedHandTypes.add(equipment.getLeggings().getType());
+            if (!ItemUtils.isEmpty(equipment.getBoots()) && equipment.getBootsDropChance() >= 0.95F) droppedHandTypes.add(equipment.getBoots().getType());
         }
         double dropMultiplier = killer == null || entity instanceof Player ? 0 : (AccumulativeStatManager.getCachedStats("ENTITY_DROPS", killer, 10000, true) + MonsterScalingManager.getLootMultiplier(e.getEntity()));
         ItemUtils.multiplyItems(e.getDrops(), 1D + dropMultiplier, false, i -> itemDuplicationWhitelist.contains(i.getType()) && !droppedHandTypes.contains(i.getType()));

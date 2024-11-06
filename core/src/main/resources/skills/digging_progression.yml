@@ -120,6 +120,9 @@ perks:
         - craft_flint
         - craft_clay
         - craft_mud
+        - craft_grass
+        - craft_soul_sand
+        - craft_soul_soil
         - craft_concrete_white
         - craft_concrete_orange
         - craft_concrete_magenta

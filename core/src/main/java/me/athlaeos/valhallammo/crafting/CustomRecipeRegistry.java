@@ -251,6 +251,7 @@ public class CustomRecipeRegistry {
             allKeyedRecipesByName.put(recipe.getName(), recipe);
             SmithingTableListener.smithingRecipeCache.clear();
             boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
+            if (isTemplateCompatible) recipe.convertTemplate();
             Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
             while (iterator.hasNext()){
                 Recipe r = iterator.next();

@@ -120,30 +120,25 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
     public void setHiddenFromBook(boolean hiddenFromBook) { this.hiddenFromBook = hiddenFromBook; }
 
     /**
-     * Changes an item's type if its display name contains a formatted string telling the plugin it should be turned
-     * into another item if it exists
-     * @param i the item to convert
-     * @return the converted item
+     * Converts the recipe's template item to an updated item if possible
      */
-    private ItemStack convert(ItemStack i){
-        if (i == null) return null;
-        if (!i.hasItemMeta()) return i;
-        ItemMeta meta = i.getItemMeta();
-        if (meta == null) return null;
-        if (!meta.hasDisplayName()) return i;
+    public void convertTemplate(){
+        ItemStack t = template == null ? null : template.getItem();
+        if (t == null) return;
+        ItemMeta meta = t.getItemMeta();
+        if (meta == null) return;
+        if (!meta.hasDisplayName()) return;
         String displayName = meta.getDisplayName();
-        if (!displayName.contains("REPLACEWITH:")) return i;
+        if (!displayName.contains("REPLACEWITH:")) return;
         String[] args = displayName.split("REPLACEWITH:");
-        if (args.length != 2) return i;
+        if (args.length != 2) return;
         Material m = Catch.catchOrElse(() -> Material.valueOf(args[1]), null);
-        if (m == null) return i;
-        return new ItemStack(m);
+        if (m == null) return;
+        template.setExactIngredient(new ItemStack(m));
     }
 
     @SuppressWarnings("deprecation")
     public SmithingRecipe generateRecipe() {
-        if (template != null) template.setExactIngredient(convert(template.getItem()));
-
         RecipeChoice t = null;
         if (template != null) t = template.getOption() == null ?
                 new RecipeChoice.MaterialChoice(template.getItem().getType()) :

@@ -5,6 +5,8 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Weighted;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -24,6 +26,8 @@ import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static me.athlaeos.valhallammo.hooks.MiniMessageHook.convertMiniMessage;
 
 public class Utils {
 
@@ -296,6 +300,18 @@ public class Utils {
         return messages.stream().map(Utils::chat).toList();
     }
 
+    private static boolean miniMessageSupported;
+    static {
+        try {
+            Class.forName("net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer");
+            miniMessageSupported = true;
+            ValhallaMMO.logInfo("MiniMessage support initialized");
+        } catch (ClassNotFoundException ignored){
+            miniMessageSupported = false;
+            ValhallaMMO.logInfo("MiniMessage support could not be initialized");
+        }
+    }
+
     /**
      * Converts all color codes to ChatColor. Works with hex codes.
      * Hex code format is triggered with &#123456
@@ -304,6 +320,7 @@ public class Utils {
      */
     public static String chat(String message) {
         if (StringUtils.isEmpty(message)) return "";
+        if (miniMessageSupported) message = convertMiniMessage(message);
         char COLOR_CHAR = ChatColor.COLOR_CHAR;
         Matcher matcher = hexPattern.matcher(message);
         StringBuilder buffer = new StringBuilder(message.length() + 4 * 8);
