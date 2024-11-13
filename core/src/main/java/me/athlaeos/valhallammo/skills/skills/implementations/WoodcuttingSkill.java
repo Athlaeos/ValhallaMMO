@@ -119,6 +119,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                 !dropsExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         WoodcuttingProfile profile = ProfileCache.getOrCache(e.getPlayer(), WoodcuttingProfile.class);
 
+        if (!hasPermissionAccess(e.getPlayer())) return;
         double woodCuttingLuck = AccumulativeStatManager.getCachedStats("WOODCUTTING_LUCK", e.getPlayer(), 10000, true);
         if (BlockUtils.canReward(e.getBlock())){
             e.setExpToDrop(e.getExpToDrop() + Utils.randomAverage(profile.getBlockExperienceRate()));

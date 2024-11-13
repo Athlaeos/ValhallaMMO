@@ -863,4 +863,8 @@ public abstract class Skill {
     public boolean isPerksForgettable() {
         return perksForgettable;
     }
+
+    public boolean hasPermissionAccess(Player p){
+        return requiredPermission == null || p.hasPermission(requiredPermission);
+    }
 }

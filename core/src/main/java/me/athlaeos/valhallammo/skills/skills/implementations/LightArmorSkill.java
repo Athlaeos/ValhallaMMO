@@ -118,6 +118,7 @@ public class LightArmorSkill extends Skill implements Listener {
             double exp = expPerDamage * lastDamageTaken * entityExpMultiplier * (1 + (totalLightArmor * expBonusPerPoint)) * chunkNerf;
             addEXP(p, count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
+            if (!hasPermissionAccess(p)) return;
             if (profile.isAdrenalineUnlocked() && profile.getAdrenalineLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_light_armor_adrenaline") &&
                     !WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_ADRENALINE)){
 
@@ -138,6 +139,7 @@ public class LightArmorSkill extends Skill implements Listener {
     public void onPotionEffect(EntityPotionEffectEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getNewEffect() == null) return;
         if (!(e.getEntity() instanceof Player p)) return;
+        if (!hasPermissionAccess(p)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTARMOR)) return;
         LightArmorProfile profile = ProfileCache.getOrCache(p, LightArmorProfile.class);
         EntityProperties properties = EntityCache.getAndCacheProperties(p);
@@ -149,6 +151,7 @@ public class LightArmorSkill extends Skill implements Listener {
     public void onPotionEffect(EntityCustomPotionEffectEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getNewEffect() == null || e.getCause() == EntityPotionEffectEvent.Cause.POTION_DRINK) return;
         if (!(e.getEntity() instanceof Player p)) return;
+        if (!hasPermissionAccess(p)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTARMOR) ||
                 WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_POTIONIMMUNITY)) return;
         LightArmorProfile profile = ProfileCache.getOrCache(p, LightArmorProfile.class);

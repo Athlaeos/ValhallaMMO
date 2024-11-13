@@ -131,6 +131,7 @@ public class MiningSkill extends Skill implements Listener {
             e.setCancelled(true);
             return;
         }
+        if (!hasPermissionAccess(e.getPlayer())) return;
         if (BlockUtils.canReward(e.getBlock())) {
             int experience = e.getExpToDrop() + Utils.randomAverage(profile.getBlockExperienceRate());
             experience = Utils.randomAverage(experience * (1D + profile.getBlockExperienceMultiplier()));
@@ -216,6 +217,7 @@ public class MiningSkill extends Skill implements Listener {
                 (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_DRILLING)) return;
+        if (!hasPermissionAccess(e.getPlayer())) return;
         ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
         if (ItemUtils.isEmpty(hand) || !hand.getType().toString().endsWith("_PICKAXE")) return;
         MiningProfile profile = ProfileCache.getOrCache(e.getPlayer(), MiningProfile.class);

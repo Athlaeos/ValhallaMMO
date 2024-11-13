@@ -115,7 +115,8 @@ public class AlchemySkill extends Skill implements Listener {
     public void onPotionCombine(InventoryClickEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() || !e.isRightClick() ||
                 !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_combining_attempts") ||
-                WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_ALCHEMY)) return;
+                WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_ALCHEMY) ||
+                !hasPermissionAccess((Player) e.getWhoClicked())) return;
         if (!(e.getClickedInventory() instanceof PlayerInventory) || !e.isRightClick()) return; // player inventory must be right-clicked
         Timer.setCooldown(e.getWhoClicked().getUniqueId(), 500, "delay_combining_attempts"); // setting cooldown between attempts so this can't be spammed with some macro
         if (ItemUtils.isEmpty(e.getCurrentItem()) || ItemUtils.isEmpty(e.getCursor())) return; // neither items must be empty
@@ -193,7 +194,8 @@ public class AlchemySkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
                 e.getHitBlock() == null ||
                 !(e.getEntity().getShooter() instanceof Player p) ||
-                WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ALCHEMY)) return;
+                WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ALCHEMY) ||
+                !hasPermissionAccess(p)) return;
         ItemMeta potionMeta = ItemUtils.getItemMeta(e.getPotion().getItem());
         if (!isTransmutationPotion(potionMeta)) return;
 

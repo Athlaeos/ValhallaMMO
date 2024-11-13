@@ -150,7 +150,8 @@ public class ArcherySkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.getHand() == EquipmentSlot.OFF_HAND ||
                 e.useItemInHand() == Event.Result.DENY || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_charged_shot_attempts") ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ARCHERY) ||
-                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_COMBAT_CHARGEDSHOT)) return;
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_COMBAT_CHARGEDSHOT) ||
+                !hasPermissionAccess(e.getPlayer())) return;
         Timer.setCooldown(e.getPlayer().getUniqueId(), 500, "delay_charged_shot_attempts");
         if (!e.getPlayer().isSneaking() && e.getAction() != Action.LEFT_CLICK_AIR && e.getAction() != Action.LEFT_CLICK_BLOCK) return;
         ItemStack mainHand = e.getPlayer().getInventory().getItemInMainHand();

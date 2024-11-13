@@ -34,7 +34,6 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
 import org.bukkit.block.Container;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -623,7 +622,7 @@ public class LootListener implements Listener {
     public void onChestCartOpen(PlayerInteractAtEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getRightClicked().getWorld().getName()) || e.isCancelled() || e.getHand() == EquipmentSlot.OFF_HAND) return;
         Entity entity = e.getRightClicked();
-        if (!(entity instanceof Lootable l) || !(entity instanceof InventoryHolder c) || l.getLootTable() == null) return;
+        if (entity.getType() != EntityType.MINECART_CHEST || !(entity instanceof Lootable l) || !(entity instanceof InventoryHolder c) || l.getLootTable() == null) return;
         if (ValhallaMMO.isUsingPaperMC() && !PaperLootRefillHandler.canGenerateLoot(entity, e.getPlayer())) return;
         LootTable table = LootTableRegistry.getLootTable(l.getLootTable().getKey());
         AttributeInstance luckInstance = e.getPlayer().getAttribute(Attribute.GENERIC_LUCK);

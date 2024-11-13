@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.resourcepack;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.utility.Zipper;
 import org.bukkit.entity.Player;
 
@@ -10,14 +11,49 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ResourcePack {
     /*
      * I copied most of this from thesheepdev's Simple Resourcepack, so code credit for resource pack hosting goes to them
      */
     private static File pack;
+    private static final Map<MinecraftVersion, ResourcePackDetails> resourcePacks = new HashMap<>();
     private static final String defaultPackLink = "https://github.com/user-attachments/files/16638849/ValhallaMMO.zip";
     private static final String defaultSha1 = "e4566478fb96695819f3e00f1caab90a75c74553";
+    static {
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_26, null, null);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_25, null, null);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_24, null, null);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_23, null, null);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_3, null, null);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_2, null, null);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_1, null, null);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22, null, null);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_5, null, null);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_4, null, null);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_3, null, null);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_2, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_1, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_6, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_5, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_4, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_3, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_2, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_1, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19_4, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19_3, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19_2, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19_1, defaultPackLink, defaultSha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19, defaultPackLink, defaultSha1);
+    }
+
+    private static void mapResourcePackDetails(MinecraftVersion version, String packLink, String packSha1){
+        resourcePacks.put(version, new ResourcePackDetails(packLink, packSha1));
+    }
 
     public static File getPack() {
         return pack;
@@ -45,8 +81,23 @@ public class ResourcePack {
         }
     }
 
+    public static String getResourcePackURL(){
+        ResourcePackDetails details = resourcePacks.get(MinecraftVersion.getServerVersion());
+        if (details == null) {
+            ValhallaMMO.logWarning("Warning! An up-to-date resource pack for this version has not yet been made! Using default version. This may not work well or at all");
+            return defaultPackLink;
+        }
+        return details.link;
+    }
+
+    public static String getResourcePackSha1(){
+        ResourcePackDetails details = resourcePacks.get(MinecraftVersion.getServerVersion());
+        if (details == null) return defaultSha1;
+        return details.sha1;
+    }
+
     public static boolean downloadDefault(){
-        try (BufferedInputStream in = new BufferedInputStream(new URL(defaultPackLink).openStream());
+        try (BufferedInputStream in = new BufferedInputStream(new URL(getResourcePackURL()).openStream());
              FileOutputStream out = new FileOutputStream("ValhallaMMO_default.zip")) {
             byte[] data = new byte[1024];
             int read;
@@ -104,4 +155,6 @@ public class ResourcePack {
     public static String getDefaultSha1() {
         return defaultSha1;
     }
+
+    private static record ResourcePackDetails(String link, String sha1){}
 }

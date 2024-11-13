@@ -3,9 +3,12 @@ package me.athlaeos.valhallammo.nms;
 import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
+import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
@@ -34,8 +37,10 @@ import org.bukkit.craftbukkit.v1_21_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R1.generator.structure.CraftStructureType;
 import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -308,5 +313,38 @@ public final class NMS_v1_21_R1 implements NMS {
         AttributeInstance instance = e.getAttribute(type);
         NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), identifier);
         if (instance != null) instance.getModifiers().stream().filter(m -> m != null && (m.getKey().equals(key) || m.getName().equals(identifier))).forEach(instance::removeModifier);
+    }
+
+    @Override
+    public void setItemModel(ItemMeta meta, String namespacedKey){
+        // not compatible
+    }
+
+    @Override
+    public void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
+        // not compatible
+    }
+
+    @Override
+    public void setToolTipStyle(ItemMeta meta, String namespacedKey){
+        // not compatible
+    }
+
+    @Override
+    public String getItemModel(ItemMeta meta) {
+        // not compatible
+        return null;
+    }
+
+    @Override
+    public EquippableWrapper getEquippable(ItemMeta meta) {
+        // not compatible
+        return null;
+    }
+
+    @Override
+    public String getToolTipStyle(ItemMeta meta) {
+        // not compatible
+        return null;
     }
 }

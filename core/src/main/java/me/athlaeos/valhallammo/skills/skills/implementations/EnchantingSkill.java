@@ -236,8 +236,9 @@ public class EnchantingSkill extends Skill implements Listener {
         double chance = AccumulativeStatManager.getCachedStats("ENCHANTING_AMPLIFY_CHANCE", enchanter, 10000, true);
 
         EnchantingProfile profile = ProfileCache.getOrCache(enchanter, EnchantingProfile.class);
+        boolean accessible = hasPermissionAccess(e.getEnchanter());
         for (Enchantment en : e.getEnchantsToAdd().keySet()){
-            int enchantmentBonus = profile.getEnchantmentBonus(en) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(en));
+            int enchantmentBonus = accessible ? profile.getEnchantmentBonus(en) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(en)) : 0;
             if (Utils.proc(chance, 0, false)) {
                 e.getEnchantsToAdd().put(en, Math.max(1, EnchantingItemPropertyManager.getScaledLevel(en, skill, e.getEnchantsToAdd().get(en)) + enchantmentBonus));
             } else e.getEnchantsToAdd().put(en, Math.max(1, e.getEnchantsToAdd().get(en) + enchantmentBonus));
@@ -271,7 +272,8 @@ public class EnchantingSkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
                 !EntityDamagedListener.getEntityDamageCauses().contains(e.getCause().toString())) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
-        if (!(trueDamager instanceof Player p) || !(e.getEntity() instanceof LivingEntity v)) return;
+        if (!(trueDamager instanceof Player p) || !(e.getEntity() instanceof LivingEntity v) ||
+                !hasPermissionAccess(p)) return;
         if (WorldGuardHook.inDisabledRegion(e.getDamager().getLocation(), p, WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         EnchantingProfile profile = ProfileCache.getOrCache(p, EnchantingProfile.class);
         if (profile.getElementalDamageTypes().isEmpty()) return;
@@ -330,6 +332,7 @@ public class EnchantingSkill extends Skill implements Listener {
         if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_hand_swap")) return; // to prevent spam, a cooldown of 0.5 seconds is applied
         if (ItemUtils.isEmpty(e.getOffHandItem())) return;
         if (!EquipmentClass.isHandHeld(ItemUtils.getItemMeta(e.getOffHandItem()))) return;
+        if (!hasPermissionAccess(e.getPlayer())) return;
         EnchantingProfile profile = ProfileCache.getOrCache(e.getPlayer(), EnchantingProfile.class);
         if (profile.getActiveElementalDamageMultiplier() == 0 && profile.getActiveElementalDamageConversion() == 0) return;
         // if the player gains no benefit from enhanced attacks, it is considered not unlocked
@@ -426,8 +429,9 @@ public class EnchantingSkill extends Skill implements Listener {
                 skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY_ANVIL", combiner, 10000, true)));
 
                 EnchantingProfile profile = ProfileCache.getOrCache(combiner, EnchantingProfile.class);
+                boolean skillAccess = hasPermissionAccess(combiner);
                 for (Enchantment en : Enchantment.values()) {
-                    int enchantmentBonus = profile.getEnchantmentBonus(en) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(en));
+                    int enchantmentBonus = skillAccess ? profile.getEnchantmentBonus(en) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(en)) : 0;
                     maxLevels.put(en, en.getMaxLevel() == 1 ? 1 : creative ? Integer.MAX_VALUE : (EnchantingItemPropertyManager.getScaledAnvilLevel(en, skill) + enchantmentBonus));
                 }
                 anvilMaxLevelCache.put(combiner.getUniqueId(), maxLevels);

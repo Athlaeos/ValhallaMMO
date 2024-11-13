@@ -41,7 +41,7 @@ public class FireResistant extends DynamicItemModifier {
         return new Pair<>(12,
                 new ItemBuilder(Material.BOOK)
                         .name("&eShould the item be fire resistant?")
-                        .lore("7fSet to &e" + (fireResistant == null ? "reset" : (fireResistant ? "yes" : "no")),
+                        .lore("&fSet to &e" + (fireResistant == null ? "reset" : (fireResistant ? "yes" : "no")),
                                 "&fIf yes, the item cannot be destroyed",
                                 "&fby lava or fire.",
                                 "&fIf no, the item will be destructible",

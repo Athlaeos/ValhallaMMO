@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -88,6 +89,8 @@ public class ProfileStatDefenderArmorWeightSetSource implements AccumulativeStat
                 case WEIGHTLESS -> properties.getWeightlessArmorCount();
             };
             Profile profile = ProfileCache.getOrCache(pl, type);
+            String requiredPermission = SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission();
+            if (requiredPermission != null && !pl.hasPermission(requiredPermission)) return def;
             int required = -1;
             if (quantityType.equals(Integer.class)) required = profile.getInt(qtyStat);
             if (quantityType.equals(Float.class)) required = (int) profile.getFloat(qtyStat);

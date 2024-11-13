@@ -111,6 +111,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
             double exp = expPerDamage * lastDamageTaken * entityExpMultiplier * (1 + (totalHeavyArmor * expBonusPerPoint)) * chunkNerf;
             addEXP(p, count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
+            if (!hasPermissionAccess(p)) return;
             if (profile.isRageUnlocked() && profile.getRageLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_heavy_armor_rage") &&
                     !WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_RAGE)){
                 EntityProperties properties = EntityCache.getAndCacheProperties(p);
@@ -130,6 +131,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
     public void onPotionEffect(EntityPotionEffectEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getNewEffect() == null || e.getCause() == EntityPotionEffectEvent.Cause.POTION_DRINK) return;
         if (!(e.getEntity() instanceof Player p)) return;
+        if (!hasPermissionAccess(p)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_HEAVYARMOR)) return;
         HeavyArmorProfile profile = ProfileCache.getOrCache(p, HeavyArmorProfile.class);
         EntityProperties properties = EntityCache.getAndCacheProperties(p);
@@ -141,6 +143,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
     public void onPotionEffect(EntityCustomPotionEffectEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getNewEffect() == null) return;
         if (!(e.getEntity() instanceof Player p)) return;
+        if (!hasPermissionAccess(p)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_HEAVYARMOR) ||
                 WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_POTIONIMMUNITY)) return;
         HeavyArmorProfile profile = ProfileCache.getOrCache(p, HeavyArmorProfile.class);

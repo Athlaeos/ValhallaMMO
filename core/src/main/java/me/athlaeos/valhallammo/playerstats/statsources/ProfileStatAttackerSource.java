@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -65,6 +66,8 @@ public class ProfileStatAttackerSource implements AccumulativeStatSource, EvEAcc
 
         if (trueAttacker instanceof Player pl){
             Profile profile = ProfileCache.getOrCache(pl, type);
+            String requiredPermission = SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission();
+            if (requiredPermission != null && !pl.hasPermission(requiredPermission)) return def;
             if (numberType.equals(Integer.class)) return (negative ? -1 : 1) * profile.getInt(stat);
             if (numberType.equals(Float.class)) return (negative ? -1 : 1) * profile.getFloat(stat);
             return (negative ? -1 : 1) * profile.getDouble(stat);

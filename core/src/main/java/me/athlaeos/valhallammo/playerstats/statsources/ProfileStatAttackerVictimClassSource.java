@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -63,6 +64,8 @@ public class ProfileStatAttackerVictimClassSource implements AccumulativeStatSou
     public double fetch(Entity victim, Entity attackedBy, boolean use) {
         if (attackedBy instanceof Player pl && EntityClassification.matchesClassification(victim.getType(), entityClassification)){
             Profile profile = ProfileCache.getOrCache(pl, type);
+            String requiredPermission = SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission();
+            if (requiredPermission != null && !pl.hasPermission(requiredPermission)) return def;
             if (numberType.equals(Integer.class)) return (negative ? -1 : 1) * profile.getInt(stat);
             if (numberType.equals(Float.class)) return (negative ? -1 : 1) * profile.getFloat(stat);
             return (negative ? -1 : 1) * profile.getDouble(stat);

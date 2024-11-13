@@ -93,6 +93,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
                 !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_heavy_coating_attempts") ||
                 WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_HEAVYWEAPONS)) return;
         if (!(e.getClickedInventory() instanceof PlayerInventory) || !e.isRightClick()) return; // player inventory must be right-clicked
+        if (!hasPermissionAccess((Player) e.getWhoClicked())) return;
         Timer.setCooldown(e.getWhoClicked().getUniqueId(), 500, "delay_heavy_coating_attempts"); // setting cooldown between attempts so this can't be spammed with some macro
         if (ItemUtils.isEmpty(e.getCurrentItem()) || ItemUtils.isEmpty(e.getCursor())) return; // neither items must be empty
         if (!validCoatingItems.contains(e.getCursor().getType())) return; // must be a valid item for coating

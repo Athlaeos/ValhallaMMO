@@ -107,6 +107,7 @@ public class FishingSkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() ||
                 !(e.getState() == PlayerFishEvent.State.FISHING || e.getState() == PlayerFishEvent.State.CAUGHT_FISH) ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FISHING)) return;
+
         FishingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FishingProfile.class);
         if (e.getState() == PlayerFishEvent.State.FISHING) {
             double multiplier = (1 / (1 + Math.max(-0.999, profile.getFishingSpeedBonus())));

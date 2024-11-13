@@ -3,10 +3,13 @@ package me.athlaeos.valhallammo.nms;
 import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
+import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
@@ -35,14 +38,18 @@ import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R2.generator.structure.CraftStructureType;
 import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.bukkit.inventory.meta.components.FoodComponent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.bukkit.tag.DamageTypeTags;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -199,6 +206,7 @@ public final class NMS_v1_21_R2 implements NMS {
         ((CraftPlayer) p).getHandle().gameMode.destroyBlock(new BlockPos(b.getX(), b.getY(), b.getZ()));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Sound blockSound(org.bukkit.block.Block b) {
         try {
@@ -231,6 +239,7 @@ public final class NMS_v1_21_R2 implements NMS {
         entityPlayer.resetAttackStrengthTicker();
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void setEdible(ItemMeta meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {
         if (edible){
@@ -255,9 +264,10 @@ public final class NMS_v1_21_R2 implements NMS {
         return meta.hasMaxStackSize() ? meta.getMaxStackSize() : defaultType.getMaxStackSize();
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void setFireResistant(ItemMeta meta, boolean fireResistant) {
-        meta.setFireResistant(fireResistant);
+        meta.setDamageResistant(DamageTypeTags.IS_FIRE);
     }
 
     @Override
@@ -280,6 +290,7 @@ public final class NMS_v1_21_R2 implements NMS {
         return NMS_v1_20_R4.newMappings(mappedTo);
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     public static void addAttribute(LivingEntity e, String identifier, Attribute type, double amount, AttributeModifier.Operation operation){
         AttributeInstance instance = e.getAttribute(type);
         if (instance != null) {
@@ -306,5 +317,50 @@ public final class NMS_v1_21_R2 implements NMS {
         AttributeInstance instance = e.getAttribute(type);
         NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), identifier);
         if (instance != null) instance.getModifiers().stream().filter(m -> m != null && (m.getKey().equals(key) || m.getName().equals(identifier))).forEach(instance::removeModifier);
+    }
+
+    @Override
+    public void setItemModel(ItemMeta meta, String namespacedKey){
+        meta.setItemModel(StringUtils.isEmpty(namespacedKey) ? null : NamespacedKey.fromString(namespacedKey));
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
+        if (slot == null || StringUtils.isEmpty(modelKey)) meta.setEquippable(null);
+        else {
+            EquippableComponent equippableComponent = meta.getEquippable();
+            equippableComponent.setModel(NamespacedKey.fromString(modelKey));
+            equippableComponent.setSlot(slot);
+            equippableComponent.setAllowedEntities(allowedTypes == null || allowedTypes.isEmpty() ? EntityClassification.getEntityTypes(e -> e != EntityClassification.UNALIVE) : allowedTypes);
+            equippableComponent.setCameraOverlay(StringUtils.isEmpty(cameraOverlayKey) ? null : NamespacedKey.fromString(cameraOverlayKey));
+            equippableComponent.setSwappable(true);
+            equippableComponent.setEquipSound(equipSound == null ? Sound.ITEM_ARMOR_EQUIP_GENERIC : equipSound);
+            equippableComponent.setDamageOnHurt(true);
+            meta.setEquippable(equippableComponent);
+        }
+    }
+
+    @Override
+    public void setToolTipStyle(ItemMeta meta, String namespacedKey){
+        meta.setTooltipStyle(StringUtils.isEmpty(namespacedKey) ? null : NamespacedKey.fromString(namespacedKey));
+    }
+
+    @Override
+    public String getItemModel(ItemMeta meta) {
+        return !meta.hasItemModel() || meta.getItemModel() == null ? null : meta.getItemModel().toString();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public EquippableWrapper getEquippable(ItemMeta meta) {
+        if (!meta.hasEquippable() || meta.getEquippable().getModel() == null) return null;
+        EquippableComponent e = meta.getEquippable();
+        return new EquippableWrapper(e.getModel().toString(), e.getSlot(), e.getCameraOverlay() == null ? null : e.getCameraOverlay().toString(), e.getEquipSound(), e.getAllowedEntities());
+    }
+
+    @Override
+    public String getToolTipStyle(ItemMeta meta) {
+        return !meta.hasTooltipStyle() || meta.getTooltipStyle() == null ? null : meta.getTooltipStyle().toString();
     }
 }

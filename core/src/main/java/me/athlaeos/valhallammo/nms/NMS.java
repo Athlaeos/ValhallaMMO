@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.nms;
 
 import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
+import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
@@ -15,9 +16,11 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -64,4 +67,11 @@ public interface NMS extends Listener {
     default void onEnable(){
         // do nothing by default
     }
+
+    void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes);
+    void setItemModel(ItemMeta meta, String namespacedKey);
+    void setToolTipStyle(ItemMeta meta, String namespacedKey);
+    String getItemModel(ItemMeta meta);
+    EquippableWrapper getEquippable(ItemMeta meta);
+    String getToolTipStyle(ItemMeta meta);
 }

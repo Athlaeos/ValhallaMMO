@@ -117,6 +117,11 @@ public class ModifierRegistry {
             register(new EnchantmentGlint("glint"));
             register(new MakeEdible("edible"));
         }
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21_3)){
+            register(new ToolTip("tooltip"));
+            register(new ItemModel("model"));
+            register(new Equippable("equippable"));
+        }
 
         register(new AmountAdd("amount_add"));
         register(new AmountRandomized("amount_randomized"));

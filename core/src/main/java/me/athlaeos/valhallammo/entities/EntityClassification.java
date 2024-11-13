@@ -17,7 +17,7 @@ public enum EntityClassification {
             "PIGLIN_BRUTE", "PILLAGER", "PLAYER", "POLAR_BEAR", "PUFFERFISH", "RABBIT", "RAVAGER", "SALMON",
             "SHEEP", "SHULKER", "SILVERFISH", "SLIME", "SNOWMAN", "SPIDER", "SQUID", "STRIDER", "TADPOLE",
             "TRADER_LLAMA", "TROPICAL_FISH", "TURTLE", "VEX", "VILLAGER", "VINDICATOR", "WANDERING_TRADER",
-            "WARDEN", "WITCH", "WOLF", "CAMEL", "SNIFFER", "ARMADILLO", "BREEZE"), // living entities
+            "WARDEN", "WITCH", "WOLF", "CAMEL", "SNIFFER", "ARMADILLO", "BREEZE", "CREAKING", "CREAKING_TRANSIENT"), // living entities
     UNALIVE("AREA_EFFECT_CLOUD", "ARMOR_STAND", "ARROW", "BOAT", "CHEST_BOAT", "DRAGON_FIREBALL", "DROPPED_ITEM",
             "EGG", "ENDER_CRYSTAL", "ENDER_PEARL", "ENDER_SIGNAL", "EVOKER_FANGS", "EXPERIENCE_ORB", "FALLING_BLOCK",
             "FIREBALL", "FIREWORK", "FISHING_HOOK", "GLOW_ITEM_FRAME", "ITEM_FRAME", "LEASH_HITCH", "LIGHTNING",
@@ -34,7 +34,7 @@ public enum EntityClassification {
             "EVOKER", "GHAST", "GUARDIAN", "HOGLIN", "HUSK", "ILLUSIONER", "MAGMA_CUBE", "PHANTOM", "PIGLIN_BRUTE",
             "PILLAGER", "RAVAGER", "SHULKER", "SILVERFISH", "SKELETON", "SLIME", "SPIDER", "STRAY", "VEX",
             "VINDICATOR", "WARDEN", "WITCH", "WITHER", "WITHER_SKELETON", "ZOGLIN", "ZOMBIE", "ZOMBIE_VILLAGER",
-            "BREEZE", "BOGGED"), // hostile entities
+            "BREEZE", "BOGGED", "CREAKING", "CREAKING_TRANSIENT"), // hostile entities
     NEUTRAL("BEE", "CAVE_SPIDER", "ENDERMAN", "GOAT", "IRON_GOLEM", "LLAMA", "PANDA", "PIGLIN", "POLAR_BEAR",
             "SNOWMAN", "SPIDER", "TRADER_LLAMA", "WOLF", "ZOMBIFIED_PIGLIN"), // neutral entities
     PASSIVE("ALLAY", "AXOLOTL", "BAT", "CAT", "CHICKEN", "COD", "COW", "DOLPHIN", "DONKEY", "FOX", "FROG",
@@ -55,7 +55,7 @@ public enum EntityClassification {
             "PHANTOM", "PIG", "PILLAGER", "PUFFERFISH", "RABBIT", "RAVAGER", "SALMON", "SHEEP", "SILVERFISH",
             "SKELETON", "SKELETON_HORSE", "SLIME", "SPIDER", "SQUID", "STRAY", "TADPOLE", "TRADER_LLAMA",
             "TROPICAL_FISH", "TURTLE", "VEX", "VILLAGER", "VINDICATOR", "WANDERING_TRADER", "WARDEN", "WITCH",
-            "WOLF", "ZOMBIE", "ZOMBIE_VILLAGER", "ARMADILLO", "BREEZE", "BOGGED"), // creatures that spawn in the overworld
+            "WOLF", "ZOMBIE", "ZOMBIE_VILLAGER", "ARMADILLO", "BREEZE", "BOGGED", "CREAKING", "CREAKING_TRANSIENT"), // creatures that spawn in the overworld
     NETHER_NATIVE("BLAZE", "GHAST", "HOGLIN", "MAGMA_CUBE", "PIGLIN", "PIGLIN_BRUTE", "SKELETON", "STRIDER",
             "WITHER_SKELETON", "ZOMBIFIED_PIGLIN"), // creatures that spawn in the nether
     END_NATIVE("ENDER_DRAGON", "ENDERMAN", "ENDERMITE", "SHULKER"), // creatures that spawn in the end
