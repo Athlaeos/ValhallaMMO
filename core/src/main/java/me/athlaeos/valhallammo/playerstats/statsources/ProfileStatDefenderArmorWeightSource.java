@@ -73,7 +73,7 @@ public class ProfileStatDefenderArmorWeightSource implements AccumulativeStatSou
             };
             if (quantity == 0) return def;
             Profile profile = ProfileCache.getOrCache(pl, type);
-            String requiredPermission = SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission();
+            String requiredPermission = SkillRegistry.isRegistered(profile.getSkillType()) ? SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission() : null;
             if (requiredPermission != null && !pl.hasPermission(requiredPermission)) return def;
             if (numberType.equals(Integer.class)) return (negative ? -1 : 1) * profile.getInt(stat) * quantity;
             if (numberType.equals(Float.class)) return (negative ? -1 : 1) * profile.getFloat(stat) * quantity;

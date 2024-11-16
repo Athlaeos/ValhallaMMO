@@ -45,7 +45,7 @@ public class ProfileStatSource implements AccumulativeStatSource {
     public double fetch(Entity p, boolean use) {
         if (p instanceof Player pl){
             Profile profile = ProfileCache.getOrCache(pl, type);
-            String requiredPermission = SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission();
+            String requiredPermission = SkillRegistry.isRegistered(profile.getSkillType()) ? SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission() : null;
             if (requiredPermission != null && !pl.hasPermission(requiredPermission)) return def;
             if (numberType.equals(Integer.class)) return profile.getInt(stat);
             if (numberType.equals(Float.class)) return profile.getFloat(stat);
