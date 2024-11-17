@@ -34,7 +34,7 @@ public enum EntityClassification {
             "EVOKER", "GHAST", "GUARDIAN", "HOGLIN", "HUSK", "ILLUSIONER", "MAGMA_CUBE", "PHANTOM", "PIGLIN_BRUTE",
             "PILLAGER", "RAVAGER", "SHULKER", "SILVERFISH", "SKELETON", "SLIME", "SPIDER", "STRAY", "VEX",
             "VINDICATOR", "WARDEN", "WITCH", "WITHER", "WITHER_SKELETON", "ZOGLIN", "ZOMBIE", "ZOMBIE_VILLAGER",
-            "BREEZE", "BOGGED", "CREAKING", "CREAKING_TRANSIENT"), // hostile entities
+            "BREEZE", "BOGGED", "CREAKING"), // hostile entities
     NEUTRAL("BEE", "CAVE_SPIDER", "ENDERMAN", "GOAT", "IRON_GOLEM", "LLAMA", "PANDA", "PIGLIN", "POLAR_BEAR",
             "SNOWMAN", "SPIDER", "TRADER_LLAMA", "WOLF", "ZOMBIFIED_PIGLIN"), // neutral entities
     PASSIVE("ALLAY", "AXOLOTL", "BAT", "CAT", "CHICKEN", "COD", "COW", "DOLPHIN", "DONKEY", "FOX", "FROG",

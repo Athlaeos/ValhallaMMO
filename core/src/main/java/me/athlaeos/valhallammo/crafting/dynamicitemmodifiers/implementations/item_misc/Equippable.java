@@ -38,7 +38,7 @@ public class Equippable extends DynamicItemModifier {
                 wrapper.slot(),
                 wrapper.cameraOverlayKey(),
                 wrapper.equipSound(),
-                new ArrayList<>(wrapper.allowedTypes()));
+                wrapper.allowedTypes() == null ? null : new ArrayList<>(wrapper.allowedTypes()));
     }
 
     @Override

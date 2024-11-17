@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.SmithingTransformRecipeWrapper;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -154,7 +155,9 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
 
         ItemStack i = result.clone();
         ResultChangingModifier changer = (ResultChangingModifier) resultModifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
-        if (changer != null) i = changer.getNewResult(null, new ItemBuilder(i));
+        if (changer != null) {
+            i = Utils.thisorDefault(changer.getNewResult(null, new ItemBuilder(i)), i);
+        }
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20) && t != null){
             return SmithingTransformRecipeWrapper.get(key, translate(i), t, b, a); // using a SmithingTransformRecipe directly results in a ClassNotFoundException on versions lower than 1.20
         } else return new SmithingRecipe(key, translate(i), b, a);

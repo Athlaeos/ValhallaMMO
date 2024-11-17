@@ -65,7 +65,6 @@ tag_error_disallowed:
   18: '<lang.smithing-upgrade-disallowed-armor-penetration>' # all weapons
   19: '<lang.smithing-upgrade-disallowed-immunity-reduction>' # all weapons
   20: '<lang.smithing-upgrade-disallowed-dismount-chance>' # all weapons
-  21: '<lang.smithing-upgrade-disallowed-deepslate-mining>' # pickaxes only
   22: '<lang.smithing-upgrade-disallowed-durability>' # all items
   23: '<lang.smithing-upgrade-disallowed-entity-drops>' # all weapons
   24: '<lang.smithing-upgrade-disallowed-lifesteal>' # all weapons

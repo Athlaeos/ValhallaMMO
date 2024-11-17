@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.*;
@@ -92,7 +93,9 @@ public class DynamicCookingRecipe implements ValhallaRecipe, ValhallaKeyedRecipe
         if (input.getOption() == null) input.setOption(new MaterialChoice());
         ItemStack i = result.clone();
         ResultChangingModifier changer = (ResultChangingModifier) modifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
-        if (changer != null) i = changer.getNewResult(null, new ItemBuilder(i));
+        if (changer != null) {
+            i = Utils.thisorDefault(changer.getNewResult(null, new ItemBuilder(i)), i);
+        }
         i = new ItemBuilder(i).translate().get();
         return switch (type){
             case SMOKER -> new SmokingRecipe(key, i, input.getOption().getChoice(input.getItem()), experience, cookTime);

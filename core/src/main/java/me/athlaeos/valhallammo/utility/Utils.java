@@ -423,4 +423,8 @@ public class Utils {
     public static String oldOrNew(String o, String n){
         return hasNewMappings() ? n : o;
     }
+
+    public static <T> T thisorDefault(T input, T def){
+        return input == null ? def : input;
+    }
 }

@@ -53,6 +53,7 @@ import org.bukkit.tag.DamageTypeTags;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class NMS_v1_21_R2 implements NMS {
     @Override
@@ -332,7 +333,7 @@ public final class NMS_v1_21_R2 implements NMS {
             EquippableComponent equippableComponent = meta.getEquippable();
             equippableComponent.setModel(NamespacedKey.fromString(modelKey));
             equippableComponent.setSlot(slot);
-            equippableComponent.setAllowedEntities(allowedTypes == null || allowedTypes.isEmpty() ? EntityClassification.getEntityTypes(e -> e != EntityClassification.UNALIVE) : allowedTypes);
+            equippableComponent.setAllowedEntities(allowedTypes == null || allowedTypes.isEmpty() ? null : allowedTypes);
             equippableComponent.setCameraOverlay(StringUtils.isEmpty(cameraOverlayKey) ? null : NamespacedKey.fromString(cameraOverlayKey));
             equippableComponent.setSwappable(true);
             equippableComponent.setEquipSound(equipSound == null ? Sound.ITEM_ARMOR_EQUIP_GENERIC : equipSound);
