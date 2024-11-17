@@ -99,21 +99,19 @@ public class StringUtils {
 
     public static List<String> separateStringIntoLines(String string, int maxLength){
         List<String> lines = new ArrayList<>();
-        String[] words = string.split(" ");
-        if (words.length == 0) return lines;
-        StringBuilder sentence = new StringBuilder(words[0]);
-        for (String w : Arrays.copyOfRange(words, 1, words.length)){
-            if (sentence.length() + w.length() > maxLength || w.contains("/n")){
-                w = w.replace("/n", "");
-                lines.add(sentence.toString());
-                String previousSentence = sentence.toString();
-                sentence = new StringBuilder();
-                sentence.append(Utils.chat(org.bukkit.ChatColor.getLastColors(Utils.chat(previousSentence)))).append(w);
-            } else {
-                sentence.append(" ").append(w);
+        String[] byNewLines = string.split("/n");
+        for (String line : byNewLines){
+            String[] words = line.split(" ");
+            StringBuilder sentence = new StringBuilder(words[0]);
+            for (String word : Arrays.copyOfRange(words, 1, words.length)){
+                if (sentence.length() + word.length() > maxLength){
+                    lines.add(sentence.toString());
+                    String previousSentence = sentence.toString();
+                    sentence = new StringBuilder(Utils.vanillaChat(org.bukkit.ChatColor.getLastColors(Utils.vanillaChat(previousSentence)))).append(word);
+                } else sentence.append(" ").append(word);
             }
+            lines.add(sentence.toString());
         }
-        lines.add(sentence.toString());
         return lines;
     }
 

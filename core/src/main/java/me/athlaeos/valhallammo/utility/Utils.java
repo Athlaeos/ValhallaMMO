@@ -321,6 +321,11 @@ public class Utils {
     public static String chat(String message) {
         if (StringUtils.isEmpty(message)) return "";
         if (miniMessageSupported) message = convertMiniMessage(message);
+        return vanillaChat(message);
+    }
+
+    public static String vanillaChat(String message) {
+        if (StringUtils.isEmpty(message)) return "";
         char COLOR_CHAR = ChatColor.COLOR_CHAR;
         Matcher matcher = hexPattern.matcher(message);
         StringBuilder buffer = new StringBuilder(message.length() + 4 * 8);
