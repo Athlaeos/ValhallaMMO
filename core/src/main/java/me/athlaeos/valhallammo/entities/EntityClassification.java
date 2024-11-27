@@ -24,7 +24,11 @@ public enum EntityClassification {
             "LLAMA_SPIT", "MARKER", "MINECART", "MINECART_CHEST", "MINECART_COMMAND", "MINECART_FURNACE",
             "MINECART_HOPPER", "MINECART_MOB_SPAWNER", "MINECART_TNT", "PAINTING", "PRIMED_TNT", "SHULKER_BULLET",
             "SMALL_FIREBALL", "SNOWBALL", "SPECTRAL_ARROW", "SPLASH_POTION", "THROWN_EXP_BOTTLE", "TRIDENT",
-            "WITHER_SKULL", "UNKNOWN"), // entities that were never alive (e.g. POTION_EFFECT_CLOUD)
+            "WITHER_SKULL", "UNKNOWN", "OAK_BOAT", "SPRUCE_BOAT", "BIRCH_BOAT", "DARK_OAK_BOAT",
+            "ACACIA_BOAT", "JUNGLE_BOAT", "CHERRY_BOAT", "PALE_OAK_BOAT", "MANGROVE_BOAT", "BAMBOO_RAFT",
+            "OAK_CHEST_BOAT", "SPRUCE_CHEST_BOAT", "BIRCH_CHEST_BOAT", "DARK_OAK_CHEST_BOAT",
+            "ACACIA_CHEST_BOAT", "JUNGLE_CHEST_BOAT", "CHERRY_CHEST_BOAT", "PALE_OAK_CHEST_BOAT",
+            "MANGROVE_CHEST_BOAT", "BAMBOO_CHEST_RAFT"), // entities that were never alive (e.g. POTION_EFFECT_CLOUD)
     UNDEAD("DROWNED", "GIANT", "HUSK", "PHANTOM", "SKELETON", "SKELETON_HORSE", "STRAY", "WITHER",
             "WITHER_SKELETON", "ZOGLIN", "ZOMBIE", "ZOMBIE_HORSE", "ZOMBIE_VILLAGER", "ZOMBIFIED_PIGLIN",
             "BOGGED"), // undead entities
@@ -67,7 +71,11 @@ public enum EntityClassification {
             "LLAMA_SPIT", "SHULKER_BULLET", "SMALL_FIREBALL", "SNOWBALL", "SPECTRAL_ARROW", "SPLASH_POTION",
             "THROWN_EXP_BOTTLE", "TRIDENT", "WITHER_SKULL"), // projectiles
     RIDEABLE("BOAT", "CHEST_BOAT", "DONKEY", "HORSE", "LLAMA", "MINECART", "MULE", "SKELETON_HORSE",
-            "STRIDER", "TRADER_LLAMA", "ZOMBIE_HORSE"), // entities that are naturally rideable by player (not through commands/API)
+            "STRIDER", "TRADER_LLAMA", "ZOMBIE_HORSE", "OAK_BOAT", "SPRUCE_BOAT", "BIRCH_BOAT", "DARK_OAK_BOAT",
+            "ACACIA_BOAT", "JUNGLE_BOAT", "CHERRY_BOAT", "PALE_OAK_BOAT", "MANGROVE_BOAT", "BAMBOO_RAFT",
+            "OAK_CHEST_BOAT", "SPRUCE_CHEST_BOAT", "BIRCH_CHEST_BOAT", "DARK_OAK_CHEST_BOAT",
+            "ACACIA_CHEST_BOAT", "JUNGLE_CHEST_BOAT", "CHERRY_CHEST_BOAT", "PALE_OAK_CHEST_BOAT",
+            "MANGROVE_CHEST_BOAT", "BAMBOO_CHEST_RAFT"), // entities that are naturally rideable by player (not through commands/API)
     STRUCTURE("ARMOR_STAND", "ENDER_CRYSTAL", "GLOW_ITEM_FRAME", "ITEM_FRAME", "PAINTING"), // structural entities (e.g. ENDER_CRYSTAL or ARMOR_STAND)
     UNNATURAL("GIANT", "ILLUSIONER", "ZOMBIE_HORSE"), // entities that do not spawn (e.g. GIANT or ILLUSIONER)
     BUILDABLE("IRON_GOLEM", "SNOWMAN", "WITHER"), // entities that can be spawned through structures (e.g. SNOW_GOLEM or IRON_GOLEM)

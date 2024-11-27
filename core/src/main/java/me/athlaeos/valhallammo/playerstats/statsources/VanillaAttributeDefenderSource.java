@@ -6,7 +6,6 @@ import me.athlaeos.valhallammo.item.WeightClass;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatSource;
 import me.athlaeos.valhallammo.playerstats.EvEAccumulativeStatSource;
 import me.athlaeos.valhallammo.utility.EntityUtils;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -14,12 +13,12 @@ import org.bukkit.entity.LivingEntity;
 import java.util.Collection;
 
 public class VanillaAttributeDefenderSource implements AccumulativeStatSource, EvEAccumulativeStatSource {
-    private final Attribute attribute;
+    private final String attribute;
     private final AttributeModifier.Operation operation;
     private WeightClass weightClass = null;
     private String statPenalty = null;
 
-    public VanillaAttributeDefenderSource(Attribute attribute, AttributeModifier.Operation operation){
+    public VanillaAttributeDefenderSource(String attribute, AttributeModifier.Operation operation){
         this.attribute = attribute;
         this.operation = operation;
     }
@@ -36,10 +35,9 @@ public class VanillaAttributeDefenderSource implements AccumulativeStatSource, E
     public double fetch(Entity victim, Entity attackedBy, boolean use) {
         if (victim instanceof LivingEntity l){
             double value = EntityUtils.combinedAttributeValue(l, attribute, operation, weightClass, statPenalty, false);
-
             Collection<ArmorSet> activeSets = ArmorSetRegistry.getActiveArmorSets(l);
             for (ArmorSet set : activeSets){
-                value += set.getSetBonus().getOrDefault(attribute.toString(), 0D);
+                value += set.getSetBonus().getOrDefault(attribute, 0D);
             }
             return value;
         }
@@ -53,7 +51,7 @@ public class VanillaAttributeDefenderSource implements AccumulativeStatSource, E
 
             Collection<ArmorSet> activeSets = ArmorSetRegistry.getActiveArmorSets(l);
             for (ArmorSet set : activeSets){
-                value += set.getSetBonus().getOrDefault(attribute.toString(), 0D);
+                value += set.getSetBonus().getOrDefault(attribute, 0D);
             }
             return value;
         }

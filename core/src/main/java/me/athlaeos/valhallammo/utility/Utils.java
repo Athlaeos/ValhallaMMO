@@ -1,10 +1,7 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.dom.Catch;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
-import me.athlaeos.valhallammo.dom.Pair;
-import me.athlaeos.valhallammo.dom.Weighted;
+import me.athlaeos.valhallammo.dom.*;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
@@ -431,5 +428,15 @@ public class Utils {
 
     public static <T> T thisorDefault(T input, T def){
         return input == null ? def : input;
+    }
+
+    public static <T> T random(Collection<T> coll) {
+        int num = (int) (Math.random() * coll.size());
+        for(T t: coll) if (--num < 0) return t;
+        throw new AssertionError();
+    }
+
+    public static void repeat(int times, Action<Integer> what){
+        for (int i = 0; i < times; i++) what.act(i);
     }
 }

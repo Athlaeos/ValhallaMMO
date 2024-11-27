@@ -6,9 +6,7 @@ import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
-import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
@@ -56,6 +54,7 @@ public final class NMS_v1_21_R1 implements NMS {
     @Override
     public void onEnable() {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
+        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new VaultLootListener(), ValhallaMMO.getInstance());
     }
 
     @Override
@@ -237,6 +236,7 @@ public final class NMS_v1_21_R1 implements NMS {
         entityPlayer.resetAttackStrengthTicker();
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void setEdible(ItemMeta meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {
         if (edible){

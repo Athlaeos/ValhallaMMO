@@ -155,7 +155,7 @@ item_duplication_whitelist: # The plugin features a "drop rate bonus" stat which
 lightning_draw_range: 128 # When lightning strikes, if the player has NEGATIVE lightning resistance, lightning spawns closer to that player depending on their lightning resistance
 # To turn this mechanic off, set range to 0
 
-skill_gap_pvp_prevention: true # If true, if two players fought each-other and their power levels are too far apart, they will not be able to fight
+skill_gap_pvp_prevention: false # If true, if two players fought each-other and their power levels are too far apart, they will not be able to fight
 skill_gap_pvp_level: 20 # The maximum level difference allowed until players are able to fight each-other again
 
 # Adds an additional effect to the luck stat. Chance-based effects will now roll once extra for each point of luck the player has.

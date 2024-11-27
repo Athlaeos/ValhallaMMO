@@ -33,6 +33,8 @@ public class CommandManager implements TabExecutor {
 		commands.put("armorsets", new ArmorSetManagerCommand());
 		commands.put("items", new CustomItemManagerCommand());
 		commands.put("give", new CustomItemGiveCommand());
+		commands.put("drop", new CustomItemDropCommand());
+		commands.put("spawn", new LevelledMobSpawnCommand());
 		commands.put("globalbuff", new GlobalEffectCommand());
 		commands.put("resourcepack", new ResourcePackCommand());
 		commands.put("saveall", new SaveAllCommand());

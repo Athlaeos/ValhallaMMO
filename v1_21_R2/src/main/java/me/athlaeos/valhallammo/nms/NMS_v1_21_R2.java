@@ -6,7 +6,6 @@ import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
-import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -30,7 +29,6 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.craftbukkit.v1_21_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R2.block.data.CraftBlockData;
@@ -42,7 +40,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.components.EquippableComponent;
@@ -53,12 +50,12 @@ import org.bukkit.tag.DamageTypeTags;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public final class NMS_v1_21_R2 implements NMS {
     @Override
     public void onEnable() {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
+        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new VaultLootListener(), ValhallaMMO.getInstance());
     }
 
     @Override
@@ -128,22 +125,22 @@ public final class NMS_v1_21_R2 implements NMS {
 
     @Override
     public void addUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type, double amount, AttributeModifier.Operation operation) {
-        addAttribute(e, identifier, type, amount, operation);
+        NMS_v1_21_R1.addAttribute(e, identifier, type, amount, operation);
     }
 
     @Override
     public boolean hasUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type) {
-        return hasAttribute(e, identifier, type);
+        return NMS_v1_21_R1.hasAttribute(e, identifier, type);
     }
 
     @Override
     public double getUniqueAttributeValue(LivingEntity e, UUID uuid, String identifier, Attribute type) {
-        return getAttributeValue(e, identifier, type);
+        return NMS_v1_21_R1.getAttributeValue(e, identifier, type);
     }
 
     @Override
     public void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type) {
-        removeAttribute(e, identifier, type);
+        NMS_v1_21_R1.removeAttribute(e, identifier, type);
     }
 
     @Override
@@ -289,35 +286,6 @@ public final class NMS_v1_21_R2 implements NMS {
     @Override
     public PotionEffectType getPotionEffectType(PotionEffectMappings mappedTo){
         return NMS_v1_20_R4.newMappings(mappedTo);
-    }
-
-    @SuppressWarnings("UnstableApiUsage")
-    public static void addAttribute(LivingEntity e, String identifier, Attribute type, double amount, AttributeModifier.Operation operation){
-        AttributeInstance instance = e.getAttribute(type);
-        if (instance != null) {
-            NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), identifier);
-            instance.getModifiers().stream().filter(m -> m != null && (m.getKey().equals(key) || m.getName().equals(identifier))).forEach(instance::removeModifier);
-            if (amount != 0) instance.addModifier(new AttributeModifier(key, amount, operation, EquipmentSlotGroup.ANY));
-        }
-    }
-
-    public static boolean hasAttribute(LivingEntity e, String identifier, Attribute type){
-        AttributeInstance instance = e.getAttribute(type);
-        NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), identifier);
-        return instance != null && instance.getModifiers().stream().anyMatch(m -> m != null && (m.getKey().equals(key) || m.getName().equals(identifier)));
-    }
-
-    public static double getAttributeValue(LivingEntity e, String identifier, Attribute type){
-        AttributeInstance instance = e.getAttribute(type);
-        NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), identifier);
-        if (instance != null) return instance.getModifiers().stream().filter(m -> m != null  && (m.getKey().equals(key) || m.getName().equals(identifier))).map(AttributeModifier::getAmount).findFirst().orElse(0D);
-        return 0;
-    }
-
-    public static void removeAttribute(LivingEntity e, String identifier, Attribute type){
-        AttributeInstance instance = e.getAttribute(type);
-        NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), identifier);
-        if (instance != null) instance.getModifiers().stream().filter(m -> m != null && (m.getKey().equals(key) || m.getName().equals(identifier))).forEach(instance::removeModifier);
     }
 
     @Override

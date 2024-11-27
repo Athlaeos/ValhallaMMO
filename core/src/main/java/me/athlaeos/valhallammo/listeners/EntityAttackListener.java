@@ -77,7 +77,10 @@ public class EntityAttackListener implements Listener {
                 !pA.hasPermission("valhalla.ignorenoobprotection")){
             PowerProfile victimProfile = ProfileCache.getOrCache(pV, PowerProfile.class);
             PowerProfile attackerProfile = ProfileCache.getOrCache(pA, PowerProfile.class);
-            if (Math.abs(attackerProfile.getLevel() - victimProfile.getLevel()) > skillGapPvPLevel) e.setCancelled(true);
+            if (Math.abs(attackerProfile.getLevel() - victimProfile.getLevel()) > skillGapPvPLevel) {
+                Utils.sendMessage(pA, TranslationManager.getTranslation("skill_gap_prevention_message"));
+                e.setCancelled(true);
+            }
         }
     }
 

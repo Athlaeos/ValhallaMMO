@@ -48,7 +48,8 @@ public class LootTable {
         KILL,
         PIGLIN_BARTER,
         ARCHAEOLOGY,
-        VILLAGER
+        VILLAGER,
+        VAULT
     }
 
     public enum VanillaLootPreservationType{
