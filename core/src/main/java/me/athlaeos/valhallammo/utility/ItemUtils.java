@@ -45,7 +45,7 @@ public class ItemUtils {
     private static final Collection<Tag<Material>> materialTags = new HashSet<>(Arrays.asList(Tag.PLANKS, Tag.LOGS, Tag.ITEMS_STONE_TOOL_MATERIALS, Tag.ANVIL, Tag.CAULDRONS,
     Tag.WOOL, Tag.BEDS, Tag.SAPLINGS, Tag.ITEMS_BANNERS, Tag.CANDLES, Tag.COAL_ORES, Tag.GOLD_ORES, Tag.IRON_ORES, Tag.LAPIS_ORES, Tag.COPPER_ORES, Tag.DIAMOND_ORES,
     Tag.EMERALD_ORES, Tag.REDSTONE_ORES, Tag.DOORS, Tag.FENCES, Tag.FENCE_GATES, Tag.SMALL_FLOWERS, Tag.ITEMS_BOATS, Tag.ITEMS_FISHES, Tag.LEAVES,
-    Tag.PRESSURE_PLATES, Tag.SAND, Tag.SIGNS, Tag.TALL_FLOWERS, Tag.TRAPDOORS, Tag.WALLS));
+    Tag.PRESSURE_PLATES, Tag.SAND, Tag.SIGNS, Tag.TRAPDOORS, Tag.WALLS));
     
     private static final Map<Material, Tag<Material>> similarItemsMap = new HashMap<>();
     private static final Map<Material, String> itemCategoryTranslation = new HashMap<>();

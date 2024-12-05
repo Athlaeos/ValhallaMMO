@@ -104,7 +104,6 @@ public class VaultLootListener implements Listener {
                 ((TrialSpawner) data).isOminous();
         boolean isVault = data instanceof Vault;
         LikelyTables likelyTables = getLikelyLootTables(e.getDispensedLoot(), isOminous, isVault);
-        List<ItemStack> newItems = new ArrayList<>(likelyTables.unmatchedItems);
 
         List<DropDetails> details = new ArrayList<>();
 
@@ -141,6 +140,8 @@ public class VaultLootListener implements Listener {
                 }
             }
             if (clearVanilla) details.removeIf(d -> !d.isValhalla);
+
+            List<ItemStack> newItems = new ArrayList<>(likelyTables.unmatchedItems);
 
             for (DropDetails d : details){
                 if (clearVanilla && !d.isValhalla) continue;

@@ -1,11 +1,13 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 public class StringUtils {
 
@@ -97,6 +99,7 @@ public class StringUtils {
                 .replace("%seconds%", String.format("%." + (decimal ? 1 : 0) + "f", seconds));
     }
 
+    static final Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
     public static List<String> separateStringIntoLines(String string, int maxLength){
         List<String> lines = new ArrayList<>();
         String[] byNewLines = string.split("/n");
@@ -104,7 +107,9 @@ public class StringUtils {
             String[] words = line.split(" ");
             StringBuilder sentence = new StringBuilder(words[0]);
             for (String word : Arrays.copyOfRange(words, 1, words.length)){
-                if (sentence.length() + word.length() > maxLength){
+                String rawWord = ChatColor.stripColor(Utils.chat(word.replaceAll(hexPattern.pattern(), "")));
+                String rawSentence = ChatColor.stripColor(Utils.chat(sentence.toString().replaceAll(hexPattern.pattern(), "")));
+                if (rawSentence.length() + rawWord.length() > maxLength){
                     lines.add(sentence.toString());
                     String previousSentence = sentence.toString();
                     sentence = new StringBuilder(Utils.vanillaChat(org.bukkit.ChatColor.getLastColors(Utils.vanillaChat(previousSentence)))).append(word);

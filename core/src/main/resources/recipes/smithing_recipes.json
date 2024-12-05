@@ -835,6 +835,19 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
+          "attribute": "GENERIC_ATTACK_SPEED",
+          "value": 4.0,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "GOLDEN_SWORD",
+          "name": "attribute_add_generic_attack_speed",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
           "attribute": "GENERIC_ATTACK_DAMAGE",
           "value": 4.0,
           "operation": "ADD_NUMBER",
