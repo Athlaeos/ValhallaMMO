@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
@@ -75,7 +76,10 @@ public class Parryer {
     }
 
     public static void attemptParry(LivingEntity e){
-        if (!Timer.isCooldownPassed(e.getUniqueId(), "parry_cooldown")) return;
+        if (!Timer.isCooldownPassed(e.getUniqueId(), "parry_cooldown")) {
+            if (e instanceof Player p) Timer.sendCooldownStatus(p, "parry_cooldown", TranslationManager.getTranslation("ability_parry"));
+            return;
+        }
         int cooldown = (int) AccumulativeStatManager.getCachedStats("PARRY_COOLDOWN", e, 10000, true) - 1;
         if (cooldown < 0) return;
         int activeDuration = (int) AccumulativeStatManager.getCachedStats("PARRY_EFFECTIVENESS_DURATION", e, 10000, true);

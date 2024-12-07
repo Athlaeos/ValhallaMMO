@@ -41,6 +41,8 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
@@ -166,6 +168,8 @@ public class MiningSkill extends Skill implements Listener {
                     e.getPlayer().breakBlock(b);
                 }, (b) -> veinMiningPlayers.remove(b.getUniqueId()));
             Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getVeinMiningCooldown() * 50, "mining_vein_miner");
+        } else {
+            if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_vein_miner")) Timer.sendCooldownStatus(e.getPlayer(), "mining_vein_miner", TranslationManager.getTranslation("ability_vein_miner"));
         }
     }
 
@@ -216,7 +220,10 @@ public class MiningSkill extends Skill implements Listener {
                 !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_drilling_duration") ||
                 (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
-                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_DRILLING)) return;
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_DRILLING)) {
+            if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_drilling_cooldown")) Timer.sendCooldownStatus(e.getPlayer(), "mining_drilling_cooldown", TranslationManager.getTranslation("ability_drilling"));
+            return;
+        }
         if (!hasPermissionAccess(e.getPlayer())) return;
         ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
         if (ItemUtils.isEmpty(hand) || !hand.getType().toString().endsWith("_PICKAXE")) return;
@@ -227,6 +234,12 @@ public class MiningSkill extends Skill implements Listener {
         Utils.sendActionBar(e.getPlayer(), drillingOn);
         if (drillingAnimation != null) drillingAnimation.animate(e.getPlayer(), e.getPlayer().getLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
         if (drillingActivationSound != null) e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), drillingActivationSound, 1F, 1F);
+
+        if (!ValhallaMMO.isCustomMiningEnabled()){
+            int amplifier = Math.round(profile.getDrillingSpeedBonus()) - 1;
+            if (amplifier < 0) return;
+            e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, profile.getDrillingDuration(), amplifier, true, false, false));
+        }
     }
 
     private final Collection<UUID> recursionPrevention = new HashSet<>();

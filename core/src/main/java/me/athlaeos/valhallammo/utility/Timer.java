@@ -1,7 +1,12 @@
 package me.athlaeos.valhallammo.utility;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +40,44 @@ public class Timer {
             double cooldownReduction = AccumulativeStatManager.getStats("COOLDOWN_REDUCTION", entity, true);
             int newCooldown = Math.max(0, (int) (timems * (1D - cooldownReduction)));
             setCooldown(entity.getUniqueId(), newCooldown, cooldownKey);
+        }
+    }
+
+    private static final Map<UUID, BukkitRunnable> cooldownStatusRunnables = new HashMap<>();
+
+    public static void sendCooldownStatus(Player player, String cooldownKey, String type){
+        int ticks = ConfigManager.getConfig("config.yml").get().getInt("cooldown_status_duration", 0);
+        if (ticks > 0){
+            BukkitRunnable existingRunnable = cooldownStatusRunnables.get(player.getUniqueId());
+            if (existingRunnable != null) existingRunnable.cancel();
+            existingRunnable = new BukkitRunnable() {
+                int ticksRemaining = ticks;
+                @Override
+                public void run() {
+                    long remainingCooldown = getCooldown(player.getUniqueId(), cooldownKey);
+
+                    Utils.sendActionBar(player, TranslationManager.getTranslation("status_cooldown")
+                            .replace("%type%", type)
+                            .replace("%timestamp%", StringUtils.toTimeStamp(remainingCooldown, 1000))
+                            .replace("%timestamp2%", StringUtils.toTimeStamp2(remainingCooldown, 1000, true))
+                    );
+                    if (ticksRemaining < 0 || remainingCooldown <= 0 || !player.isOnline()) {
+                        cancel();
+                        cooldownStatusRunnables.remove(player.getUniqueId());
+                    }
+                    ticksRemaining--;
+                }
+            };
+            existingRunnable.runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
+            cooldownStatusRunnables.put(player.getUniqueId(), existingRunnable);
+        } else if (ticks == 0) {
+            long remainingCooldown = getCooldown(player.getUniqueId(), cooldownKey);
+
+            Utils.sendActionBar(player, TranslationManager.getTranslation("status_cooldown")
+                    .replace("%type%", type)
+                    .replace("%timestamp%", StringUtils.toTimeStamp(remainingCooldown, 1000))
+                    .replace("%timestamp2%", StringUtils.toTimeStamp2(remainingCooldown, 1000, true))
+            );
         }
     }
 

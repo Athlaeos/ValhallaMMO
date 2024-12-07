@@ -53,6 +53,11 @@ language: 'en-us' # The language file used. Language files can be found in Valha
 world_blacklist: # If a world name is in this list, ValhallaMMO has no influence here except for custom recipe mechanics.
   - exampleworldlol
 
+# A duration of >0 repeats the message every game tick, updating the duration along the way.
+# A duration of ==0 shows the message only once
+# A duration of <0 doesn't show any message
+cooldown_status_duration: 100 # Duration (in ticks) for which the cooldown message is sent to the player to display their cooldown
+
 armor_scale: 40 # Defines the "maximum" armor displayed in the armor bar. Whatever number is defined here equals 10 full armor icons,
 # so by default 20 armor points will grant roughly 5 armor icons. Of course, players can still exceed this value, it will just not be displayed.
 

@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import me.athlaeos.valhallammo.listeners.LootListener;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
@@ -181,6 +182,8 @@ public class WoodcuttingSkill extends Skill implements Listener {
                     }, 20L);
                 });
             Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getTreeCapitatorCooldown() * 50, "woodcutting_tree_capitator");
+        } else {
+            if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "woodcutting_tree_capitator")) Timer.sendCooldownStatus(e.getPlayer(), "woodcutting_tree_capitator", TranslationManager.getTranslation("ability_tree_capitator"));
         }
     }
 

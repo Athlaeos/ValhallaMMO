@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.event.EntityCustomPotionEffectEvent;
 import me.athlaeos.valhallammo.event.PlayerLeaveCombatEvent;
@@ -109,7 +110,7 @@ public class LightArmorSkill extends Skill implements Listener {
         LightArmorProfile profile = ProfileCache.getOrCache(p, LightArmorProfile.class);
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            if (e.isCancelled() || !p.isOnline()) return;
+            if (e.isCancelled() || !p.isOnline() || e.getDamage() <= 0) return;
             double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(p.getLocation().getChunk(), p, "armors");
             int count = EntityCache.getAndCacheProperties(p).getLightArmorCount();
             double totalLightArmor = AccumulativeStatManager.getCachedStats("TOTAL_LIGHT_ARMOR", p, 10000, false);
@@ -130,6 +131,8 @@ public class LightArmorSkill extends Skill implements Listener {
                 adrenalinePotionEffects.forEach(r -> r.applyPotionEffect(p, profile.getAdrenalineLevel()));
                 if (adrenalineActivation != null) adrenalineActivation.animate(p, p.getLocation(), p.getEyeLocation().getDirection(), 0);
                 Timer.setCooldownIgnoreIfPermission(p, profile.getAdrenalineCooldown() * 50, "cooldown_light_armor_adrenaline");
+            } else {
+                if (!Timer.isCooldownPassed(p.getUniqueId(), "cooldown_light_armor_adrenaline")) Timer.sendCooldownStatus(p, "cooldown_light_armor_adrenaline", TranslationManager.getTranslation("ability_adrenaline"));
             }
             ChunkEXPNerf.increment(p.getLocation().getChunk(), p, "armors");
         }, 2L);
@@ -167,8 +170,11 @@ public class LightArmorSkill extends Skill implements Listener {
 
         int armorCount = properties.getLightArmorCount();
         int expRewardTimes = (int) (timeInCombat / 1000D);
+
+        double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(e.getPlayer().getLocation().getChunk(), e.getPlayer(), "armors");
+        ChunkEXPNerf.increment(e.getPlayer().getLocation().getChunk(), e.getPlayer(), "armors");
         
-        addEXP(e.getPlayer(), expRewardTimes * armorCount * expPerCombatSecond, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+        addEXP(e.getPlayer(), expRewardTimes * chunkNerf * armorCount * expPerCombatSecond, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
     @Override

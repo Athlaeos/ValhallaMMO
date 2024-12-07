@@ -114,13 +114,13 @@ public class LightWeaponsProfile extends Profile {
     public float getDamageMultiplier() { return getFloat("damageMultiplier"); }
     public void setDamageMultiplier(float value) { setFloat("damageMultiplier", value); }
 
-    public float getPowerAttackDamageMultiplier() { return getFloat("overheadDamageMultiplier"); }
-    public void setPowerAttackDamageMultiplier(float value) { setFloat("overheadDamageMultiplier", value); }
+    public float getPowerAttackDamageMultiplier() { return getFloat("powerAttackDamageMultiplier"); }
+    public void setPowerAttackDamageMultiplier(float value) { setFloat("powerAttackDamageMultiplier", value); }
     public float getAttackReachMultiplier() { return getFloat("attackReachMultiplier"); }
     public void setAttackReachMultiplier(float value) { setFloat("attackReachMultiplier", value); }
 
-    public float getPowerAttackFraction() { return getFloat("overheadFraction"); }
-    public void setPowerAttackFraction(float value) { setFloat("overheadFraction", value); }
+    public float getPowerAttackFraction() { return getFloat("powerAttackFraction"); }
+    public void setPowerAttackFraction(float value) { setFloat("powerAttackFraction", value); }
 
     public float getParryDamageReduction() { return getFloat("parryDamageReduction"); }
     public void setParryDamageReduction(float value) { setFloat("parryDamageReduction", value); }
@@ -128,8 +128,8 @@ public class LightWeaponsProfile extends Profile {
     public float getParryCooldownSuccessReduction() { return getFloat("parryCooldownSuccessReduction"); }
     public void setParryCooldownSuccessReduction(float value) { setFloat("parryCooldownSuccessReduction", value); }
 
-    public float getPowerAttackRadius() { return getFloat("overheadRadius"); }
-    public void setPowerAttackRadius(float value) { setFloat("overheadRadius", value); }
+    public float getPowerAttackRadius() { return getFloat("powerAttackRadius"); }
+    public void setPowerAttackRadius(float value) { setFloat("powerAttackRadius", value); }
 
     public float getAttackSpeedMultiplier() { return getFloat("attackSpeedMultiplier"); }
     public void setAttackSpeedMultiplier(float value) { setFloat("attackSpeedMultiplier", value); }

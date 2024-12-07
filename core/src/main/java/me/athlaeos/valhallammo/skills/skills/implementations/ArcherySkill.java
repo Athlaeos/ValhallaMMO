@@ -15,6 +15,7 @@ import me.athlaeos.valhallammo.listeners.EntityAttackListener;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
 import me.athlaeos.valhallammo.listeners.EntitySpawnListener;
 import me.athlaeos.valhallammo.listeners.ProjectileListener;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.particle.implementations.GenericParticle;
 import me.athlaeos.valhallammo.particle.implementations.RedstoneParticle;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -158,7 +159,10 @@ public class ArcherySkill extends Skill implements Listener {
         if (ItemUtils.isEmpty(mainHand) || !e.getPlayer().isSneaking()) return;
         if (mainHand.getType() != Material.BOW && mainHand.getType() != Material.CROSSBOW) return;
         ArcheryProfile profile = ProfileCache.getOrCache(e.getPlayer(), ArcheryProfile.class);
-        if (!profile.isChargedShotUnlocked() || profile.getChargedShotCharges() <= 0 || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_charged_shot")) return;
+        if (!profile.isChargedShotUnlocked() || profile.getChargedShotCharges() <= 0 || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_charged_shot")) {
+            if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_charged_shot")) Timer.sendCooldownStatus(e.getPlayer(), "cooldown_charged_shot", TranslationManager.getTranslation("ability_charged_shot"));
+            return;
+        }
         chargedShotUsers.put(e.getPlayer().getUniqueId(), new ChargedShotUser(
                 profile.getChargedShotCharges(), profile.getChargedShotVelocityBonus(),
                 profile.getChargedShotDamageMultiplier(), profile.getChargedShotKnockback(),

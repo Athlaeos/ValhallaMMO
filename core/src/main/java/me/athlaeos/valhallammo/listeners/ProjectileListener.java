@@ -201,8 +201,9 @@ public class ProjectileListener implements Listener {
                 if (e.getProjectile() instanceof AbstractArrow a && !(a instanceof Trident)){
                     // arrows may be preserved with infinity if they resemble a vanilla arrow, or if they have the infinityExploitable flag
                     e.setConsumeItem(!shouldSave);
-                    if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21) && e.shouldConsumeItem()) {
-                        // setConsumeItem does not function on 1.21 and above, so manually remove item
+                    if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21) &&
+                            MinecraftVersion.currentVersionOlderThan(MinecraftVersion.MINECRAFT_1_21_1) && e.shouldConsumeItem()) {
+                        // setConsumeItem does not function on 1.21-1.21.1 apparently, so manually remove item
                         for (ItemStack item : p.getInventory().getContents()){
                             if (ItemUtils.isEmpty(item) || !item.isSimilar(consumable)) continue;
                             if (item.getAmount() <= 1){

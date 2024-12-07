@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import me.athlaeos.valhallammo.listeners.LootListener;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
@@ -233,6 +234,8 @@ public class FarmingSkill extends Skill implements Listener {
                     }, (b) -> fieldHarvestingPlayers.remove(b.getUniqueId()));
                 Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getFieldHarvestCooldown() * 50, "farming_field_harvest");
             } else if (profile.isInstantHarvesting()) {
+                if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "farming_field_harvest")) Timer.sendCooldownStatus(e.getPlayer(), "farming_field_harvest", TranslationManager.getTranslation("ability_field_harvest"));
+
                 instantHarvest(e.getPlayer(), clickedBlock, profile);
                 e.getPlayer().swingMainHand();
             }

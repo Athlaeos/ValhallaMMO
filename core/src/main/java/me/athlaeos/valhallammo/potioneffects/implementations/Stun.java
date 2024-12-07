@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.potioneffects.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.event.EntityStunEvent;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.localization.TranslationManager;
@@ -102,22 +103,30 @@ public class Stun extends PotionEffectWrapper {
      */
     public static void stunTarget(LivingEntity entity, LivingEntity causedBy, int duration, boolean force){
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            if (!entity.isValid() || entity.isDead()) return;
+            if (!entity.isValid() || entity.isDead() || !entity.hasAI()) return;
             double durationMultiplier = force ? 1 : Math.max(0, 1 - AccumulativeStatManager.getRelationalStats("STUN_RESISTANCE", entity, causedBy, true));
             int newDuration = (int) Math.round(duration * durationMultiplier);
             EntityStunEvent event = new EntityStunEvent(entity, causedBy, newDuration);
             ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()){
-                if (!(event.getEntity() instanceof LivingEntity l) || (!force && !Timer.isCooldownPassed(entity.getUniqueId(), "stun_immunity"))) return;
-                for (PotionEffectWrapper e : stunEffects){
-                    if (e.isVanilla()){
-                        l.addPotionEffect(new PotionEffect(e.getVanillaEffect(), newDuration, (int) e.getAmplifier(), true, false));
-                    } else {
-                        PotionEffectRegistry.addEffect(l, causedBy, new CustomPotionEffect(e, newDuration, e.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
+                if (EntityClassification.matchesClassification(entity.getType(), EntityClassification.HOSTILE) ||
+                        EntityClassification.matchesClassification(entity.getType(), EntityClassification.NEUTRAL)){
+                    entity.setAI(false);
+                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                        entity.setAI(true);
+                    }, newDuration);
+                } else {
+                    if (!(event.getEntity() instanceof LivingEntity l) || (!force && !Timer.isCooldownPassed(entity.getUniqueId(), "stun_immunity"))) return;
+                    for (PotionEffectWrapper e : stunEffects){
+                        if (e.isVanilla()){
+                            l.addPotionEffect(new PotionEffect(e.getVanillaEffect(), newDuration, (int) e.getAmplifier(), true, false));
+                        } else {
+                            PotionEffectRegistry.addEffect(l, causedBy, new CustomPotionEffect(e, newDuration, e.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
+                        }
                     }
+                    EntityCache.resetPotionEffects(l); // adding/removing an effect as a result of this method should reset the entity's potion effect cache
+                    Timer.setCooldown(entity.getUniqueId(), stunImmunityDuration * 50, "stun_immunity");
                 }
-                EntityCache.resetPotionEffects((LivingEntity) event.getEntity()); // adding/removing an effect as a result of this method should reset the entity's potion effect cache
-                Timer.setCooldown(entity.getUniqueId(), stunImmunityDuration * 50, "stun_immunity");
             }
         }, 1L);
     }
