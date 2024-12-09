@@ -273,7 +273,7 @@
     "skilltree_arrow_name_nw": "&fMove up-left",
     "skilltree_perk_confirmation": "&fDo you want to unlock %perk%&f?",
     "warning_not_enough_skillpoints": "&cNot enough skill points",
-    "perk_format_requirement_one": "&7Requires:",
+    "perk_format_requirement_one": "&7Requires One Of:",
     "perk_format_requirement_all": "&7Requires:",
     "perk_format_requirement": "&7- %perk_required%",
     "perk_other_level_requirement": "&7            %skill% &7LV&e%level_required%",

@@ -31,7 +31,7 @@ public class HelpCommand implements Command {
 		
 		if (pages.isEmpty()) return true;
 
-		int page = 0;
+		int page = 1;
 		if (args.length >= 2){
 			try {
 				page = Integer.parseInt(args[1]);
@@ -41,11 +41,12 @@ public class HelpCommand implements Command {
 			}
 		}
 
-		for (String line : pages.get(Math.max(0, Math.min(pages.size() - 1, page)))) {
+		page = Math.max(1, Math.min(pages.size(), page));
+		for (String line : pages.get(page - 1)) {
 			sender.sendMessage(Utils.chat(line));
 		}
 		Utils.chat("&8&m                                             ");
-		sender.sendMessage(Utils.chat(String.format("&8[&e1&8/&e%s&8]", pages.size())));
+		sender.sendMessage(Utils.chat(String.format("&8[&e%s&8/&e%s&8]", page, pages.size())));
 		return true;
 	}
 
