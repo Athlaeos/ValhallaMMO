@@ -273,7 +273,7 @@ public final class NMS_v1_19_R3 implements NMS {
     }
 
     @Override
-    public void setItemModel(ItemMeta meta, String namespacedKey){
+    public void setItemModel(ItemMeta meta, String model){
         // not compatible
     }
 

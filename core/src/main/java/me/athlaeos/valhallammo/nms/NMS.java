@@ -8,10 +8,7 @@ import me.athlaeos.valhallammo.dom.Structures;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import net.md_5.bungee.api.chat.BaseComponent;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
@@ -27,6 +24,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -69,9 +67,34 @@ public interface NMS extends Listener {
     }
 
     void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes);
-    void setItemModel(ItemMeta meta, String namespacedKey);
+    void setItemModel(ItemMeta meta, String model);
     void setToolTipStyle(ItemMeta meta, String namespacedKey);
     String getItemModel(ItemMeta meta);
     EquippableWrapper getEquippable(ItemMeta meta);
     String getToolTipStyle(ItemMeta meta);
+
+    default void setCMDFloatList(ItemMeta meta, List<Float> floats){
+        // do nothing
+    }
+    default void setCMDStringList(ItemMeta meta, List<String> strings){
+        // do nothing
+    }
+    default void setCMDColorList(ItemMeta meta, List<Color> colors){
+        // do nothing
+    }
+    default void setCMDBooleanList(ItemMeta meta, List<Boolean> booleans){
+        // do nothing
+    }
+    default List<Float> getCMDFloatList(ItemMeta meta){
+        return new ArrayList<>();
+    }
+    default List<String> getCMDStringList(ItemMeta meta){
+        return new ArrayList<>();
+    }
+    default List<Color> getCMDColorList(ItemMeta meta){
+        return new ArrayList<>();
+    }
+    default List<Boolean> getCMDBooleanList(ItemMeta meta){
+        return new ArrayList<>();
+    }
 }

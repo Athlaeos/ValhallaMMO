@@ -323,7 +323,8 @@ public class ValhallaMMO extends JavaPlugin {
             }
 
             return nms != null;
-        } catch (Exception | Error ignored) {
+        } catch (Exception | Error e) {
+            e.printStackTrace();
             return false;
         }
     }

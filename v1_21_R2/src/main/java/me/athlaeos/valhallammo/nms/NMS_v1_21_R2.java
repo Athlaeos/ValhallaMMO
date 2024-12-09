@@ -289,8 +289,8 @@ public final class NMS_v1_21_R2 implements NMS {
     }
 
     @Override
-    public void setItemModel(ItemMeta meta, String namespacedKey){
-        meta.setItemModel(StringUtils.isEmpty(namespacedKey) ? null : NamespacedKey.fromString(namespacedKey));
+    public void setItemModel(ItemMeta meta, String model){
+        meta.setItemModel(StringUtils.isEmpty(model) ? null : NamespacedKey.fromString(model));
     }
 
     @SuppressWarnings("UnstableApiUsage")

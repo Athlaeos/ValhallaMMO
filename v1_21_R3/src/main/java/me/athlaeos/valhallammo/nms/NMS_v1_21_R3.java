@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.nms;
 import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
@@ -42,6 +43,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.bukkit.inventory.meta.components.FoodComponent;
 import org.bukkit.potion.PotionEffectType;
@@ -288,9 +290,76 @@ public final class NMS_v1_21_R3 implements NMS {
         return NMS_v1_20_R4.newMappings(mappedTo);
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
-    public void setItemModel(ItemMeta meta, String namespacedKey){
-        meta.setItemModel(StringUtils.isEmpty(namespacedKey) ? null : NamespacedKey.fromString(namespacedKey));
+    public void setItemModel(ItemMeta meta, String model){
+        Number asNumber = Catch.catchOrElse(() -> model.contains(".") || model.contains(",") ? Float.parseFloat(model) : Integer.parseInt(model), -1);
+        if (asNumber.floatValue() < 0 || asNumber.intValue() < 0) {
+            meta.setItemModel(StringUtils.isEmpty(model) ? null : NamespacedKey.fromString(model));
+        } else {
+            CustomModelDataComponent component = meta.getCustomModelDataComponent();
+            if (asNumber instanceof Float f) {
+                List<Float> floats = new ArrayList<>(List.of(f));
+                component.setFloats(floats);
+                meta.setCustomModelDataComponent(component);
+            } else if (asNumber instanceof Integer i) meta.setCustomModelData(i);
+        }
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setCMDBooleanList(ItemMeta meta, List<Boolean> booleans) {
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setFlags(booleans);
+        meta.setCustomModelDataComponent(component);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setCMDColorList(ItemMeta meta, List<Color> colors) {
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setColors(colors);
+        meta.setCustomModelDataComponent(component);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setCMDFloatList(ItemMeta meta, List<Float> floats) {
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setFloats(floats);
+        meta.setCustomModelDataComponent(component);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setCMDStringList(ItemMeta meta, List<String> strings) {
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setStrings(strings);
+        meta.setCustomModelDataComponent(component);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public List<Boolean> getCMDBooleanList(ItemMeta meta) {
+        return meta.getCustomModelDataComponent().getFlags();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public List<Color> getCMDColorList(ItemMeta meta) {
+        return meta.getCustomModelDataComponent().getColors();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public List<Float> getCMDFloatList(ItemMeta meta) {
+        return meta.getCustomModelDataComponent().getFloats();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public List<String> getCMDStringList(ItemMeta meta) {
+        return meta.getCustomModelDataComponent().getStrings();
     }
 
     @SuppressWarnings("UnstableApiUsage")
