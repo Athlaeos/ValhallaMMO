@@ -235,26 +235,56 @@ perks:
         - salvage_wooden_axe
         - salvage_wooden_shovel
         - salvage_wooden_hoe
+        - salvage_wooden_dagger
+        - salvage_wooden_mace
+        - salvage_wooden_rapier
+        - salvage_wooden_greataxe
+        - salvage_wooden_warhammer
+        - salvage_wooden_spear
         - salvage_stone_sword
         - salvage_stone_pickaxe
         - salvage_stone_axe
         - salvage_stone_shovel
         - salvage_stone_hoe
+        - salvage_stone_dagger
+        - salvage_stone_mace
+        - salvage_stone_rapier
+        - salvage_stone_greataxe
+        - salvage_stone_warhammer
+        - salvage_stone_spear
         - salvage_golden_sword
         - salvage_golden_pickaxe
         - salvage_golden_axe
         - salvage_golden_shovel
         - salvage_golden_hoe
+        - salvage_golden_dagger
+        - salvage_golden_mace
+        - salvage_golden_rapier
+        - salvage_golden_greataxe
+        - salvage_golden_warhammer
+        - salvage_golden_spear
         - salvage_iron_sword
         - salvage_iron_pickaxe
         - salvage_iron_axe
         - salvage_iron_shovel
         - salvage_iron_hoe
+        - salvage_iron_dagger
+        - salvage_iron_mace
+        - salvage_iron_rapier
+        - salvage_iron_greataxe
+        - salvage_iron_warhammer
+        - salvage_iron_spear
         - salvage_diamond_sword
         - salvage_diamond_pickaxe
         - salvage_diamond_axe
         - salvage_diamond_shovel
         - salvage_diamond_hoe
+        - salvage_diamond_dagger
+        - salvage_diamond_mace
+        - salvage_diamond_rapier
+        - salvage_diamond_greataxe
+        - salvage_diamond_warhammer
+        - salvage_diamond_spear
     messages:
       - "<lang.fishing_perk_combo_messages>"
     requireperk_all:

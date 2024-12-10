@@ -663,7 +663,7 @@ public class LootListener implements Listener {
             }
         }
 
-        ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(l.getLootTable().getKey());
+        ReplacementTable replacementTable = l.getLootTable() == null ? null : LootTableRegistry.getReplacementTable(l.getLootTable().getKey());
         ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
         ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
         if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
