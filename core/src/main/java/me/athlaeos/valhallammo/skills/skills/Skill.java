@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.skills.skills;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillLevelUpEvent;
 import me.athlaeos.valhallammo.event.ValhallaUpdatedStatsEvent;
@@ -35,6 +36,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -607,7 +609,7 @@ public abstract class Skill {
      *
      * @param p the player to level up
      */
-    public void changePlayerLevel(Player p, int from, int to, boolean silent) {
+    private void changePlayerLevel(Player p, int from, int to, boolean silent) {
         if (!isLevelableSkill()) return;
         if (to < from) {
             // level down
@@ -671,7 +673,7 @@ public abstract class Skill {
                 if (!silent) {
                     if (specialLevelingMessages.containsKey(i)) {
                         for (String message : specialLevelingMessages.get(i)) {
-                            p.sendMessage(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(Utils.chat(message), p), p));
+                            p.sendMessage(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(Utils.chat(message.replace("%player%", p.getName())), p), p));
                         }
                     }
                 }
@@ -693,8 +695,39 @@ public abstract class Skill {
             }
 
             if (!silent) {
-                for (String message : levelingMessages) {
-                    Utils.sendMessage(p, TranslationManager.translatePlaceholders(message).replace("%level%", String.valueOf(to)));
+                Map<Integer, List<String>> messages = new HashMap<>();
+                int lastDelay = 0;
+                for (String message : levelingMessages){
+                    String[] matches = message.startsWith("DELAY(") ? org.apache.commons.lang.StringUtils.substringsBetween(message, "DELAY(", ")") : new String[0];
+                    int delay = Math.max(0, matches == null || matches.length == 0 ? 0 : Catch.catchOrElse(() -> Integer.parseInt(matches[0]), 0));
+
+                    lastDelay += delay;
+                    List<String> thisDelayMessages = messages.getOrDefault(lastDelay, new ArrayList<>());
+                    thisDelayMessages.add(message);
+                    messages.put(lastDelay, thisDelayMessages);
+                }
+                if (lastDelay == 0){
+                    levelingMessages.forEach(message ->
+                            Utils.sendMessage(p, TranslationManager.translatePlaceholders(message).replace("%player%", p.getName()).replace("%level%", String.valueOf(to)))
+                    );
+                } else {
+                    int finalDuration = lastDelay;
+                    new BukkitRunnable(){
+                        int timer = 0;
+                        @Override
+                        public void run() {
+                            if (timer >= finalDuration || !p.isOnline()) {
+                                cancel();
+                                return;
+                            }
+
+                            messages.getOrDefault(timer, new ArrayList<>())
+                                    .forEach(message ->
+                                            Utils.sendMessage(p, TranslationManager.translatePlaceholders(message).replace("%player%", p.getName()).replace("%level%", String.valueOf(to)))
+                                    );
+                            timer++;
+                        }
+                    }.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
                 }
             }
 

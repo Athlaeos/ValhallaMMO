@@ -16,6 +16,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.EnchantingProfile;
+import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
@@ -56,9 +57,8 @@ public class EnchantingSkill extends Skill implements Listener {
     private double diminishingReturnsMultiplier = 0;
     private int diminishingReturnsCount = 0;
     private boolean anvilDowngrading = false;
-    private final Collection<EntityType> diminishingReturnsEntities = new HashSet<>();
     private final Map<EntityType, Double> entityEXPMultipliers = new HashMap<>();
-    private final Map<UUID, Integer> diminishingReturnTallyCounter = new HashMap<>();
+    private final Map<UUID, Map<EntityType, Integer>> diminishingReturnTallyCounter = new HashMap<>();
 
     private Animation elementalBladeActivationAnimation = AnimationRegistry.ELEMENTAL_BLADE_ACTIVATION;
     private Animation elementaBladeExpirationAnimation = AnimationRegistry.ELEMENTAL_BLADE_EXPIRATION;
@@ -89,11 +89,6 @@ public class EnchantingSkill extends Skill implements Listener {
         this.anvilDowngrading = skillConfig.getBoolean("anvil_downgrading");
         this.diminishingReturnsMultiplier = progressionConfig.getDouble("experience.diminishing_returns.multiplier");
         this.diminishingReturnsCount = progressionConfig.getInt("experience.diminishing_returns.amount");
-        progressionConfig.getStringList("experience.diminishing_returns.mobs").forEach(s -> {
-            EntityType e = Catch.catchOrElse(() -> EntityType.valueOf(s), null, "Invalid entity type given in skills/enchanting_progression.yml experience.diminishing_returns.on." + s);
-            if (e == null) return;
-            this.diminishingReturnsEntities.add(e);
-        });
 
         ConfigurationSection expReducedEntitySection = progressionConfig.getConfigurationSection("experience.diminishing_returns.mob_experience");
         if (expReducedEntitySection != null){
@@ -354,7 +349,18 @@ public class EnchantingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityKilled(EntityDeathEvent e) {
         if (e.getEntity().getKiller() == null) return;
-        if (diminishingReturnsEntities.contains(e.getEntityType())) incrementMobTally(e.getEntity().getKiller(), e.getEntityType());
+
+        if (ChunkEXPNerf.doesChunkEXPNerfApply(
+                e.getEntity().getLocation().getChunk(),
+                e.getEntity().getKiller(),
+                "enchanting_mob_tally_" + e.getEntityType().toString().toLowerCase(),
+                diminishingReturnsCount)
+        ) incrementMobTally(e.getEntity().getKiller(), e.getEntityType());
+        else ChunkEXPNerf.increment(
+                e.getEntity().getLocation().getChunk(),
+                e.getEntity().getKiller(),
+                "enchanting_mob_tally_" + e.getEntityType().toString().toLowerCase()
+        );
 
         e.setDroppedExp(Utils.randomAverage(e.getDroppedExp() * entityEXPMultipliers.getOrDefault(e.getEntityType(), 1D)));
     }
@@ -498,19 +504,25 @@ public class EnchantingSkill extends Skill implements Listener {
 
     private void incrementMobTally(Player p, EntityType type){
         if (p.hasPermission("valhalla.ignorediminishingreturns")) return;
-        if (!diminishingReturnsEntities.contains(type)) return;
-        diminishingReturnTallyCounter.put(p.getUniqueId(), diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), 0) + 1);
+        Map<EntityType, Integer> entityMap = diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), new HashMap<>());
+        entityMap.put(type, entityMap.getOrDefault(type, 0) + 1);
+        diminishingReturnTallyCounter.put(p.getUniqueId(), diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), entityMap));
     }
 
     private void reduceTallyCounter(Player p){
-        int count = diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), 0);
-        if (count < diminishingReturnsCount) return;
+        Map<EntityType, Integer> entityMap = diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), new HashMap<>());
+        EntityType highest = entityMap.keySet().stream().filter(e -> entityMap.getOrDefault(e, 0) >= diminishingReturnsCount).findFirst().orElse(null);
+        if (highest == null) return;
+        int count = entityMap.get(highest);
         count -= diminishingReturnsCount;
-        diminishingReturnTallyCounter.put(p.getUniqueId(), count);
+        entityMap.put(highest, count);
+        diminishingReturnTallyCounter.put(p.getUniqueId(), entityMap);
     }
 
     private boolean doDiminishingReturnsApply(Player p){
         if (p.hasPermission("valhalla.ignorediminishingreturns")) return false;
-        return diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), 0) >= diminishingReturnsCount;
+        Map<EntityType, Integer> entityMap = diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), new HashMap<>());
+        EntityType highest = entityMap.keySet().stream().filter(e -> entityMap.getOrDefault(e, 0) >= diminishingReturnsCount).findFirst().orElse(null);
+        return highest != null;
     }
 }

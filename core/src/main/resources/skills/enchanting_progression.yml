@@ -92,12 +92,8 @@ experience:
     # until the tally counter is below the "amount".
     # Example: a player kills 55 endermen. The next 5 times the player enchants something, their skill experience rewarded
     # is reduced to only 20% (multiplier of 0.2). Now their tally counter is 5 instead of 55, so their experience isn't reduced.
-    multiplier: 0.2
-    amount: 10
-    mobs:
-      - ENDERMAN
-      - ZOMBIFIED_PIGLIN
-      - GUARDIAN
+    multiplier: 0.1
+    amount: 20
     mob_experience: # Alternatively, you may also choose to directly reduce (or buff!) the enchanting experience rewarded from these
       # entities. In case you want to nerf popular experience farms such as Endermen or Zombie Piglin grinders.
       # By default these multipliers are 1.0 so they don't do anything, they are just there as examples.
@@ -571,7 +567,7 @@ perks:
       p:enchanting_enchantingskill_add: 50
       p:enchanting_anvilskill_add: 50
       p:enchanting_essencemultiplier_add: 0.5
-      p:enchanting_enchantingexpmultiplier_add: -0.25
+      p:enchanting_enchantingexpmultiplier_add: -0.5
       p:perks_unlocked_add:
         - enchanting_perk_ng1
     messages:
@@ -592,7 +588,7 @@ perks:
       p:enchanting_enchantingskill_add: 50
       p:enchanting_anvilskill_add: 50
       p:enchanting_essencemultiplier_add: 0.5
-      p:enchanting_enchantingexpmultiplier_add: -0.25
+      p:enchanting_enchantingexpmultiplier_add: -0.17
       p:perks_unlocked_add:
         - enchanting_perk_ng1
         - enchanting_perk_ng2

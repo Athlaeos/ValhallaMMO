@@ -180,6 +180,8 @@ public class ValhallaMMO extends JavaPlugin {
 
         ResourcePack.tryStart();
 
+        ProfileRegistry.setupDatabase();
+        ProfileRegistry.registerDefaultProfiles();
         ItemAttributesRegistry.registerAttributes();
         PotionEffectRegistry.registerEffects();
         SmithingItemPropertyManager.loadConfig();
@@ -191,7 +193,6 @@ public class ValhallaMMO extends JavaPlugin {
         BlockInteractConversions.loadConversions();
         ModifierScalingPresets.loadScalings();
 
-        ProfileRegistry.setupDatabase();
         ProfilePersistence connection = ProfileRegistry.getPersistence();
 
         for (PluginHook hook : activeHooks.values()) hook.whenPresent();

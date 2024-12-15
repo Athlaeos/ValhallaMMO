@@ -194,7 +194,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
      */
     private boolean isTree(Block b){
         Collection<Block> treeBlocks = BlockUtils.getBlockVein(b, treeScanLimit, l -> !BlockStore.isPlaced(l) && (Tag.LOGS.isTagged(l.getType()) || Tag.LEAVES.isTagged(l.getType())), treeScanArea);
-        return treeBlocks.stream().anyMatch(l -> Tag.LOGS.isTagged(l.getType())) && treeBlocks.stream().anyMatch(l -> Tag.LEAVES.isTagged(l.getType()));
+        return treeBlocks.stream().anyMatch(l -> Tag.LOGS.isTagged(l.getType())) && treeBlocks.stream().anyMatch(l -> Tag.LEAVES.isTagged(l.getType()) || l.getType() == Material.NETHER_WART_BLOCK || l.getType() == Material.WARPED_WART_BLOCK);
     }
 
     // checks up to 48 blocks above the log mined for a leaf block which might be used as origin

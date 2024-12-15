@@ -501,7 +501,7 @@ perks:
       p:woodcutting_newgameplus_add: 1
       p:woodcutting_woodcuttingdrops_add: 0.3
       p:woodcutting_woodcuttingspeedbonus_add: 0.25
-      p:woodcutting_woodcuttingexpmultiplier_add: -0.25
+      p:woodcutting_woodcuttingexpmultiplier_add: -0.5
       p:perks_unlocked_add:
         - woodcutting_perk_ng1
     messages:
@@ -521,7 +521,7 @@ perks:
       p:woodcutting_newgameplus_add: 1
       p:woodcutting_woodcuttingdrops_add: 0.3
       p:woodcutting_woodcuttingspeedbonus_add: 0.25
-      p:woodcutting_woodcuttingexpmultiplier_add: -0.25
+      p:woodcutting_woodcuttingexpmultiplier_add: -0.17
       p:perks_unlocked_add:
         - woodcutting_perk_ng1
         - woodcutting_perk_ng2

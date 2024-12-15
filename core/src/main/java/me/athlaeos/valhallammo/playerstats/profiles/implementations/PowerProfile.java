@@ -141,6 +141,8 @@ public class PowerProfile extends Profile {
         booleanStat("badFoodImmune", new BooleanProperties(true, true));
         booleanStat("miningAffinityWater", new BooleanProperties(true, true));
         booleanStat("miningAffinityAir", new BooleanProperties(true, true));
+        floatStat("oneShotProtectionFraction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        intStat("oneShotProtectionCooldown", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
 
         stringSetStat("unlockedPerks");
         stringSetStat("fakeUnlockedPerks"); // if a perk is "fake unlocked" it will be excluded from stat calculation, as if the player hasn't unlocked it at all
@@ -221,6 +223,9 @@ public class PowerProfile extends Profile {
     public boolean hideGlobalBuffs() { return getBoolean("hideGlobalBuffs"); }
     public void toggleGlobalBuffs() { setBoolean("hideGlobalBuffs", !hideGlobalBuffs()); }
 
+    public float getOneShotProtectionFraction() { return getFloat("oneShotProtectionFraction"); }
+    public void setOneShotProtectionFraction(float volume) { setFloat("oneShotProtectionFraction", volume); }
+
     public float getCraftingSoundVolume() { return getFloat("craftingEffectVolume"); }
     public void setCraftingSoundVolume(float volume) { setFloat("craftingEffectVolume", volume); }
 
@@ -229,6 +234,9 @@ public class PowerProfile extends Profile {
 
     public int getSpendableSkillPoints(){ return getInt("spendableSkillPoints");}
     public void setSpendableSkillPoints(int value){ setInt("spendableSkillPoints", value);}
+
+    public int getOneShotProtectionCooldown(){ return getInt("oneShotProtectionCooldown"); }
+    public void setOneShotProtectionCooldown(int points){ setInt("oneShotProtectionCooldown", points); }
 
     public int getSpentSkillPoints(){ return getInt("spentSkillPoints"); }
     public void setSpentSkillPoints(int points){ setInt("spentSkillPoints", points); }

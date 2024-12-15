@@ -242,7 +242,9 @@ public class FarmingSkill extends Skill implements Listener {
         }
         if (clickedBlock.getBlockData() instanceof Beehive b && b.getHoneyLevel() >= b.getMaximumHoneyLevel()) {
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                if (b.getHoneyLevel() < b.getMaximumHoneyLevel()){
+                Beehive newHive = clickedBlock.getBlockData() instanceof Beehive bee ? bee : null;
+                if (newHive == null) return;
+                if (newHive.getHoneyLevel() < newHive.getMaximumHoneyLevel()){
                     // hive is empty after 5 ticks, so it can be assumed it was harvested
                     if (blockInteractExpValues.containsKey(clickedBlock.getType())) {
                         double amount = blockInteractExpValues.get(clickedBlock.getType());
@@ -256,8 +258,8 @@ public class FarmingSkill extends Skill implements Listener {
                     }
 
                     if (Utils.proc(e.getPlayer(), profile.getHiveHoneySaveChance(), false)) {
-                        b.setHoneyLevel(b.getMaximumHoneyLevel());
-                        clickedBlock.setBlockData(b);
+                        newHive.setHoneyLevel(newHive.getMaximumHoneyLevel());
+                        clickedBlock.setBlockData(newHive);
                     }
                 }
             }, 5L);

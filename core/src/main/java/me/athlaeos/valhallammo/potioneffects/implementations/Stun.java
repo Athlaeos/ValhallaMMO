@@ -109,24 +109,16 @@ public class Stun extends PotionEffectWrapper {
             EntityStunEvent event = new EntityStunEvent(entity, causedBy, newDuration);
             ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()){
-                if (EntityClassification.matchesClassification(entity.getType(), EntityClassification.HOSTILE) ||
-                        EntityClassification.matchesClassification(entity.getType(), EntityClassification.NEUTRAL)){
-                    entity.setAI(false);
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                        entity.setAI(true);
-                    }, newDuration);
-                } else {
-                    if (!(event.getEntity() instanceof LivingEntity l) || (!force && !Timer.isCooldownPassed(entity.getUniqueId(), "stun_immunity"))) return;
-                    for (PotionEffectWrapper e : stunEffects){
-                        if (e.isVanilla()){
-                            l.addPotionEffect(new PotionEffect(e.getVanillaEffect(), newDuration, (int) e.getAmplifier(), true, false));
-                        } else {
-                            PotionEffectRegistry.addEffect(l, causedBy, new CustomPotionEffect(e, newDuration, e.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
-                        }
+                if (!(event.getEntity() instanceof LivingEntity l) || (!force && !Timer.isCooldownPassed(entity.getUniqueId(), "stun_immunity"))) return;
+                for (PotionEffectWrapper e : stunEffects){
+                    if (e.isVanilla()){
+                        l.addPotionEffect(new PotionEffect(e.getVanillaEffect(), newDuration, (int) e.getAmplifier(), true, false));
+                    } else {
+                        PotionEffectRegistry.addEffect(l, causedBy, new CustomPotionEffect(e, newDuration, e.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
                     }
-                    EntityCache.resetPotionEffects(l); // adding/removing an effect as a result of this method should reset the entity's potion effect cache
-                    Timer.setCooldown(entity.getUniqueId(), stunImmunityDuration * 50, "stun_immunity");
                 }
+                EntityCache.resetPotionEffects(l); // adding/removing an effect as a result of this method should reset the entity's potion effect cache
+                Timer.setCooldown(entity.getUniqueId(), stunImmunityDuration * 50, "stun_immunity");
             }
         }, 1L);
     }

@@ -337,7 +337,7 @@ perks:
       reset_skill_smithing: 0
       p:smithing_genericcraftingskill_add: 50
       p:smithing_newgameplus_add: 1
-      p:smithing_genericexpmultiplier_add: -0.25
+      p:smithing_genericexpmultiplier_add: -0.5
       p:perks_unlocked_add:
         - smithing_perk_ng1
     messages:
@@ -356,7 +356,7 @@ perks:
       reset_skill_smithing: 0
       p:smithing_genericcraftingskill_add: 50
       p:smithing_newgameplus_add: 1
-      p:smithing_genericexpmultiplier_add: -0.25
+      p:smithing_genericexpmultiplier_add: -0.17
       p:perks_unlocked_add:
         - smithing_perk_ng1
         - smithing_perk_ng2

@@ -259,7 +259,7 @@ perks:
       p:alchemy_newgameplus_add: 1
       p:alchemy_genericbrewingskill_add: 50
       p:alchemy_brewingtimereduction_add: 0.5
-      p:alchemy_alchemyexpmultiplier_add: -0.25
+      p:alchemy_alchemyexpmultiplier_add: -0.5
       p:perks_unlocked_add:
         - alchemy_perk_ng1
     messages:
@@ -279,7 +279,7 @@ perks:
       p:alchemy_newgameplus_add: 1
       p:alchemy_genericbrewingskill_add: 50
       p:alchemy_brewingtimereduction_add: 0.5
-      p:alchemy_alchemyexpmultiplier_add: -0.25
+      p:alchemy_alchemyexpmultiplier_add: -0.17
       p:perks_unlocked_add:
         - alchemy_perk_ng1
         - alchemy_perk_ng2

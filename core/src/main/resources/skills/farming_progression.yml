@@ -365,7 +365,7 @@ perks:
       p:farming_newgameplus_add: 1
       p:farming_farmingdrops_add: 0.3
       p:farming_butcherydrops_add: 0.3
-      p:farming_farmingexpmultiplier_add: -0.25
+      p:farming_farmingexpmultiplier_add: -0.5
       p:perks_unlocked_add:
         - farming_perk_ng1
     messages:
@@ -385,7 +385,7 @@ perks:
       p:farming_newgameplus_add: 1
       p:farming_farmingdrops_add: 0.3
       p:farming_butcherydrops_add: 0.3
-      p:farming_farmingexpmultiplier_add: -0.25
+      p:farming_farmingexpmultiplier_add: -0.17
       p:perks_unlocked_add:
         - farming_perk_ng1
         - farming_perk_ng2

@@ -207,7 +207,7 @@ perks:
     description: "<lang.fishing_perk_combo_description>"
     cost: 1
     hidden: false
-    required_lv: 90
+    required_lv: 50
     perk_rewards:
       recipes_unlock:
         - salvage_leather_helmet
@@ -290,7 +290,7 @@ perks:
     requireperk_all:
       - fishing_perk_1
     other_levels_required:
-      - SMITHING:90
+      - SMITHING:70
   fishing_perk_ng1:
     icon: TOTEM_OF_UNDYING
     coords: "1,6"
@@ -305,7 +305,7 @@ perks:
       p:fishing_fishingdrops_add: 0.5
       p:fishing_fishingluck_add: 2.5
       p:fishing_fishingspeedbonus_add: 0.25
-      p:fishing_fishingexpmultiplier_add: -0.25
+      p:fishing_fishingexpmultiplier_add: -0.5
       p:perks_unlocked_add:
         - fishing_perk_ng1
     messages:
@@ -326,7 +326,7 @@ perks:
       p:fishing_fishingdrops_add: 0.5
       p:fishing_fishingluck_add: 2.5
       p:fishing_fishingspeedbonus_add: 0.25
-      p:fishing_fishingexpmultiplier_add: -0.25
+      p:fishing_fishingexpmultiplier_add: -0.17
       p:perks_unlocked_add:
         - fishing_perk_ng1
         - fishing_perk_ng2

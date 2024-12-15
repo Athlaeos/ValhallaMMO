@@ -409,7 +409,7 @@ perks:
       p:mining_miningspeedbonus_add: 0.25
       p:mining_blastingdrops_add: 0.25
       p:mining_miningdrops_add: 0.25
-      p:mining_miningexpmultiplier_add: -0.25
+      p:mining_miningexpmultiplier_add: -0.5
       p:perks_unlocked_add:
         - mining_perk_ng1
     messages:
@@ -430,7 +430,7 @@ perks:
       p:mining_miningspeedbonus_add: 0.25
       p:mining_blastingdrops_add: 0.25
       p:mining_miningdrops_add: 0.25
-      p:mining_miningexpmultiplier_add: -0.25
+      p:mining_miningexpmultiplier_add: -0.17
       p:perks_unlocked_add:
         - mining_perk_ng1
         - mining_perk_ng2

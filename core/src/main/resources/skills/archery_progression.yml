@@ -324,7 +324,7 @@ perks:
       p:archery_inaccuracy_add: -3
       p:archery_bowcritchance_add: 0.1
       p:archery_crossbowcritchance_add: 0.1
-      p:archery_archeryexpmultiplier_add: -0.25
+      p:archery_archeryexpmultiplier_add: -0.5
       p:perks_unlocked_add:
         - archery_perk_ng1
     messages:
@@ -347,7 +347,7 @@ perks:
       p:archery_inaccuracy_add: -3
       p:archery_bowcritchance_add: 0.1
       p:archery_crossbowcritchance_add: 0.1
-      p:archery_archeryexpmultiplier_add: -0.25
+      p:archery_archeryexpmultiplier_add: -0.17
       p:perks_unlocked_add:
         - archery_perk_ng1
         - archery_perk_ng2

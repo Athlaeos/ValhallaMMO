@@ -272,7 +272,7 @@ perks:
       p:heavyweapons_damagemultiplier_add: 0.15
       p:heavyweapons_powerattackfraction_add: 0.2
       p:heavyweapons_critchance_add: 0.1
-      p:heavyweapons_heavyweaponsexpmultiplier_add: -0.25
+      p:heavyweapons_heavyweaponsexpmultiplier_add: -0.5
       p:perks_unlocked_add:
         - heavyweapons_perk_ng1
     messages:
@@ -293,7 +293,7 @@ perks:
       p:heavyweapons_damagemultiplier_add: 0.15
       p:heavyweapons_powerattackfraction_add: 0.2
       p:heavyweapons_critchance_add: 0.1
-      p:heavyweapons_heavyweaponsexpmultiplier_add: -0.25
+      p:heavyweapons_heavyweaponsexpmultiplier_add: -0.17
       p:perks_unlocked_add:
         - heavyweapons_perk_ng1
         - heavyweapons_perk_ng2

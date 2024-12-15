@@ -21,7 +21,7 @@ public class ProfileRegistry {
     private static final int delay_profile_saving = ConfigManager.getConfig("config.yml").reload().get().getInt("db_persist_delay");
     private static Map<Class<? extends Profile>, Profile> registeredProfiles = Collections.unmodifiableMap(new HashMap<>());
 
-    static {
+    public static void registerDefaultProfiles(){
         registerProfileType(new PowerProfile(null));
         registerProfileType(new AlchemyProfile(null));
         registerProfileType(new SmithingProfile(null));
@@ -46,6 +46,16 @@ public class ProfileRegistry {
         Map<Class<? extends Profile>, Profile> profiles = new HashMap<>(registeredProfiles);
         profiles.put(p.getClass(), p);
         registeredProfiles = Collections.unmodifiableMap(profiles);
+        p.registerPerkRewards();
+
+        if (persistence instanceof Database){
+            try {
+                p.createTable((Database) persistence);
+            } catch (SQLException e){
+                ValhallaMMO.logSevere("SQLException when trying to create a table for profile type " + p.getClass().getSimpleName() + ". ");
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void setupDatabase(){
@@ -54,19 +64,8 @@ public class ProfileRegistry {
         if (((Database) persistence).getConnection() == null) persistence = new SQLite(); // if SQL connection fails, choose SQLite
         if (((Database) persistence).getConnection() == null) persistence = new PDC(); // if SQLite fails, choose PDC
 
-        if (persistence instanceof Database){
-            for (Profile s : registeredProfiles.values()){
-                try {
-                    s.createTable((Database) persistence);
-                } catch (SQLException e){
-                    ValhallaMMO.logSevere("SQLException when trying to create a table for profile type " + s.getClass().getSimpleName() + ". ");
-                    e.printStackTrace();
-                }
-            }
-        }
-
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(ValhallaMMO.getInstance(), () -> {
-            ProfileRegistry.saveAll();
+            saveAll();
             LeaderboardManager.refreshLeaderboards();
         }, delay_profile_saving, delay_profile_saving);
     }

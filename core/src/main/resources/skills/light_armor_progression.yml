@@ -283,7 +283,7 @@ perks:
       p:lightarmor_newgameplus_add: 1
       p:lightarmor_damageresistanceperpiece_add: 0.0125
       p:lightarmor_movementspeedperpiece_add: 0.02
-      p:lightarmor_lightarmorexpmultiplier_add: -0.25
+      p:lightarmor_lightarmorexpmultiplier_add: -0.5
       p:perks_unlocked_add:
         - lightarmor_perk_ng1
     messages:
@@ -303,7 +303,7 @@ perks:
       p:lightarmor_newgameplus_add: 1
       p:lightarmor_damageresistanceperpiece_add: 0.0125
       p:lightarmor_movementspeedperpiece_add: 0.02
-      p:lightarmor_lightarmorexpmultiplier_add: -0.25
+      p:lightarmor_lightarmorexpmultiplier_add: -0.17
       p:perks_unlocked_add:
         - lightarmor_perk_ng1
         - lightarmor_perk_ng2

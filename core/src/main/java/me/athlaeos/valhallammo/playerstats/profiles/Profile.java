@@ -7,6 +7,8 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.StatProperties;
+import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
+import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -466,5 +468,29 @@ public abstract class Profile {
             return profile.getNumberStatProperties().get(i).getFormat();
         }
         return null;
+    }
+
+    public void registerPerkRewards(){
+        String skill = getSkillType().getSimpleName().toLowerCase(java.util.Locale.US).replace("skill", "");
+        if (getSkillType() == null) return;
+        for (String s : getAllStatNames()) {
+            StatProperties properties = getNumberStatProperties().get(s);
+            if (properties != null && properties.generatePerkRewards()) {
+                if (intStatNames().contains(s)) {
+                    PerkRewardRegistry.register(new ProfileIntAdd(skill + "_" + s + "_add", s, getClass()));
+                    PerkRewardRegistry.register(new ProfileIntSet(skill + "_" + s + "_set", s, getClass()));
+                } else if (floatStatNames().contains(s)) {
+                    PerkRewardRegistry.register(new ProfileFloatAdd(skill + "_" + s + "_add", s, getClass()));
+                    PerkRewardRegistry.register(new ProfileFloatSet(skill + "_" + s + "_set", s, getClass()));
+                } else if (doubleStatNames().contains(s)) {
+                    PerkRewardRegistry.register(new ProfileDoubleAdd(skill + "_" + s + "_add", s, getClass()));
+                    PerkRewardRegistry.register(new ProfileDoubleSet(skill + "_" + s + "_set", s, getClass()));
+                }
+            }
+            if (shouldBooleanStatHavePerkReward(s)){
+                PerkRewardRegistry.register(new ProfileBooleanSet(skill + "_" + s + "_set", s, getClass()));
+                PerkRewardRegistry.register(new ProfileBooleanToggle(skill + "_" + s + "_toggle", s, getClass()));
+            }
+        }
     }
 }

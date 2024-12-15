@@ -35,7 +35,7 @@ public class EntitySpawnListener implements Listener {
             "DEFAULT", "NATURAL", "SPAWNER_EGG", "VILLAGE_INVASION", "VILLAGE_DEFENSE", "SPAWNER", "SILVERFISH_BLOCK",
             "RAID", "PATROL", "NETHER_PORTAL", "LIGHTNING", "ENDER_PEARL", "BUILD_WITHER", "BUILD_IRONGOLEM", "BUILD_SNOWMAN",
             "EGG", "CURED", "DISPENSE_EGG", "DROWNED", "INFECTION", "JOCKEY", "METAMORPHOSIS", "PIGLIN_ZOMBIFIED", "SLIME_SPLIT",
-            "BREEDING"
+            "BREEDING", "TRIAL_SPAWNER", "TRAP"
     );
 
     @EventHandler(priority = EventPriority.LOWEST)

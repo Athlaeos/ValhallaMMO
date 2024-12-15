@@ -22,11 +22,17 @@ public class ChunkEXPNerf {
         return doesChunkEXPNerfApply(chunk, player, key, expEventNerfQuantity);
     }
     public static double getChunkEXPNerf(Chunk chunk, Player player, String key){
-        if (doesChunkEXPNerfApply(chunk, player, key)) return expEventNerfFactor;
+        return getChunkEXPNerf(chunk, player, key, expEventNerfFactor);
+    }
+    public static double getChunkEXPNerf(Chunk chunk, Player player, String key, double customFactor){
+        if (doesChunkEXPNerfApply(chunk, player, key)) return customFactor;
         return 1;
     }
     public static double getChunkEXPOrbsNerf(Chunk chunk, Player player, String key){
-        if (doesChunkEXPNerfApply(chunk, player, key)) return expOrbsNerfFactor;
+        return getChunkEXPOrbsNerf(chunk, player, key, expOrbsNerfFactor);
+    }
+    public static double getChunkEXPOrbsNerf(Chunk chunk, Player player, String key, double customFactor){
+        if (doesChunkEXPNerfApply(chunk, player, key)) return customFactor;
         return 1;
     }
 

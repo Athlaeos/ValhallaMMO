@@ -115,6 +115,14 @@ block_recovery_speed: 0.015 # The amount of health (of max 1, per tick) at which
 inventory_repairing_vanilla: true # If false, players will no longer be able to repair vanilla items in their inventories
 inventory_repairing_valhalla: true # If false, players will no longer be able to repair valhalla items in their inventories
 
+# If true, a player cannot be oneshot if the damage comes from a player
+oneshot_protection_players: true
+# If true, a player cannot be oneshot if the damage comes from a non-player
+oneshot_protection_mobs: true
+# Represents a multiplier applied on the victim's max hp. Oneshot protection is broken if damage exceeds this value
+# For example, if a player has 20 health, they need to take 60 damage in a single hit to not receive oneshot protection
+oneshot_protection_limit: 3
+
 item_duplication_whitelist: # The plugin features a "drop rate bonus" stat which duplicates enemy drops on death. Any item listed here will be be affected by this stat
   - STRING
   - CHICKEN
@@ -352,32 +360,32 @@ crit_particle_effect: true
 # Damage mitigation obtained from specific enchantments. These mitigations reduce damage before armor comes into play.
 # These mitigations also stack on top of any additional damage mitigation attributes the armor may be given,
 # as example: a protection V chestplate that also has +15% damage mitigations will effectively have 22.5% damage mitigation
-protection_effectiveness: 0.015 # 1.5% up to 30%
-protection_cap: 0.3
-protection_magic_effectiveness: 0.03 # 3% up to 60%
-protection_magic_cap: 0.6
-protection_poison_effectiveness: 0.03 # 3% up to 60%
-protection_poison_cap: 0.6
+protection_effectiveness: 0.015 # 1.5% up to 45%
+protection_cap: 0.45
+protection_magic_effectiveness: 0.03 # 3% up to 90%
+protection_magic_cap: 0.9
+protection_poison_effectiveness: 0.03 # 3% up to 90%
+protection_poison_cap: 0.9
 protection_bludgeoning_effectiveness: 0 # no benefit
 protection_bludgeoning_cap: 0
 protection_melee_effectiveness: 0 # no benefit
 protection_melee_cap: 0
-protection_lightning_effectiveness: 0.03 # 3% up to 60%
-protection_lightning_cap: 0.6
-protection_freezing_effectiveness: 0.03 # 3% up to 60%
-protection_freezing_cap: 0.6
-protection_radiant_effectiveness: 0.04 # 4% up to 80%
-protection_radiant_cap: 0.8
-protection_necrotic_effectiveness: 0.04 # 4% up to 80%
-protection_necrotic_cap: 0.8
+protection_lightning_effectiveness: 0.03 # 3% up to 90%
+protection_lightning_cap: 0.9
+protection_freezing_effectiveness: 0.03 # 3% up to 90%
+protection_freezing_cap: 0.9
+protection_radiant_effectiveness: 0.04 # 4% up to 100%
+protection_radiant_cap: 1.0
+protection_necrotic_effectiveness: 0.04 # 4% up to 100%
+protection_necrotic_cap: 1.0
 fire_protection_effectiveness: 0.05 # 5% up to 100%
 fire_protection_cap: 1
-projectile_protection_effectiveness: 0.03 # 3% up to 60%
-projectile_protection_cap: 0.6
-blast_protection_effectiveness: 0.04 # 4% up to 80%
+projectile_protection_effectiveness: 0.03 # 3% up to 90%
+projectile_protection_cap: 0.9
+blast_protection_effectiveness: 0.04 # 4% up to 100%
 blast_protection_cap: 1
-feather_falling_effectiveness: 0.15 # 15% up to 75%
-feather_falling_cap: 0.75
+feather_falling_effectiveness: 0.15 # 15% up to 90%
+feather_falling_cap: 0.9
 
 buff_resistance_reduction: 0.2 # Damage reduction per level of the Resistance buff (vanilla value: 0.2)
 

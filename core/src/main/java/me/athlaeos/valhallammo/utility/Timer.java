@@ -4,6 +4,8 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -64,6 +66,7 @@ public class Timer {
                     if (ticksRemaining < 0 || remainingCooldown <= 0 || !player.isOnline()) {
                         cancel();
                         cooldownStatusRunnables.remove(player.getUniqueId());
+                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(""));
                     }
                     ticksRemaining--;
                 }

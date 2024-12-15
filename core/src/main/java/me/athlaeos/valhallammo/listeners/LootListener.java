@@ -876,6 +876,7 @@ public class LootListener implements Listener {
                 ItemStack item = e.getDrops().get(i);
                 if (droppedHandTypes.contains(item.getType())) continue;
                 if (ItemUtils.isEmpty(item)) continue;
+                item = item.clone();
                 ItemStack replacement = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.KILL, item);
                 if (!ItemUtils.isEmpty(replacement)) item = replacement;
                 ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.KILL, item);

@@ -5,9 +5,12 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.CustomDamageType;
 import me.athlaeos.valhallammo.entities.damageindicators.DamageIndicatorRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.EffectResponsibility;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -35,12 +38,20 @@ public class EntityDamagedListener implements Listener {
 
     private static final Map<String, Double> physicalDamageTypes = new HashMap<>();
 
+    private final boolean pvpOneShotProtection;
+    private final boolean pveOneShotProtection;
+    private final double oneShotProtectionCap;
+
     public EntityDamagedListener(){
         YamlConfiguration c = ValhallaMMO.getPluginConfig();
         for (String type : c.getStringList("armor_effective_types")){
             String[] args = type.split(":");
             physicalDamageTypes.put(args[0], args.length > 1 ? Catch.catchOrElse(() -> StringUtils.parseDouble(args[1]), 1D) : 1D);
         }
+
+        pvpOneShotProtection = c.getBoolean("oneshot_protection_players");
+        pveOneShotProtection = c.getBoolean("oneshot_protection_mobs");
+        oneShotProtectionCap = c.getDouble("oneshot_protection_limit");
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -66,10 +77,28 @@ public class EntityDamagedListener implements Listener {
             if (e.getEntity() instanceof Player dP && lastDamager instanceof Player aP){
                 // pvp damage bonus and resistance mechanic
                 double bonus = AccumulativeStatManager.getCachedAttackerRelationalStats("PLAYER_DAMAGE_DEALT", dP, aP, 10000, true);
-                e.setDamage(e.getDamage() * (1 + bonus));
+                customDamage *= 1 + bonus;
 
                 double resistance = AccumulativeStatManager.getCachedRelationalStats("PVP_RESISTANCE", dP, aP, 10000, true);
-                e.setDamage(e.getDamage() * (1 - resistance));
+                customDamage *= 1 - resistance;
+            }
+
+            if (lastDamager == null || ((pvpOneShotProtection && lastDamager instanceof Player) || (pveOneShotProtection && !(lastDamager instanceof Player)))) {
+                double oneShotProtectionFraction = AccumulativeStatManager.getCachedRelationalStats("ONESHOT_PROTECTION_FRACTION", l, lastDamager, 10000, true);
+                if (oneShotProtectionFraction > 0){
+                    AttributeInstance healthAttribute = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+                    if (healthAttribute != null){
+                        double maxHealth = healthAttribute.getValue();
+                        double damageUntilOSP = maxHealth * (1 - oneShotProtectionFraction);
+                        if (maxHealth * oneShotProtectionCap < customDamage && customDamage > damageUntilOSP && l.getHealth() > damageUntilOSP){
+                            customDamage = damageUntilOSP;
+                            if (l instanceof Player p){
+                                PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
+                                Timer.setCooldownIgnoreIfPermission(p, profile.getOneShotProtectionCooldown() * 50, "cooldown_oneshot_protection");
+                            }
+                        }
+                    }
+                }
             }
 
             double damageAfterImmunity = !customDamageEnabled ? e.getDamage() : overrideImmunityFrames(customDamage, l);
