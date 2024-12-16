@@ -52,7 +52,7 @@ public class ProfileStatWeightSource implements AccumulativeStatSource {
     public double fetch(Entity p, boolean use) {
         if (p instanceof Player pl){
             EntityProperties properties = EntityCache.getAndCacheProperties(pl);
-            if (properties.getMainHand() == null || WeightClass.getWeightClass(properties.getMainHand().getMeta()) != weightClass) return def;
+            if (properties.getMainHand() != null && WeightClass.getWeightClass(properties.getMainHand().getMeta()) != weightClass) return def;
             Profile profile = ProfileCache.getOrCache(pl, type);
             String requiredPermission = SkillRegistry.isRegistered(profile.getSkillType()) ? SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission() : null;
             if (requiredPermission != null && !pl.hasPermission(requiredPermission)) return def;

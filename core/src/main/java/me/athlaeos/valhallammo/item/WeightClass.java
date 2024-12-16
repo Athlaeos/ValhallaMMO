@@ -50,6 +50,23 @@ public enum WeightClass {
         return WEIGHTLESS;
     }
 
+    public static boolean hasDefinedWeightClass(ItemMeta meta){
+        if (meta == null) return false;
+        Material stored = ItemUtils.getStoredType(meta);
+        String value = ItemUtils.getPDCString(WEIGHT_CLASS, meta, null);
+        if (value != null){
+            try {
+                return true;
+            } catch (IllegalArgumentException ignored) {}
+        }
+        if (stored != null){
+            for (WeightClass type : values()){
+                if (type.matchingMaterials.contains(stored)) return true;
+            }
+        }
+        return false;
+    }
+
     public static void setWeightClass(ItemMeta meta, WeightClass weightClass){
         if (meta == null) return;
         if (weightClass == null) meta.getPersistentDataContainer().remove(WEIGHT_CLASS);

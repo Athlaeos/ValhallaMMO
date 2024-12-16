@@ -152,7 +152,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                 }, (b) -> {
                     treeCapitatingPlayers.remove(e.getPlayer().getUniqueId());
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                        List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, bl -> Tag.LEAVES.isTagged(bl.getType()) && (bl.getBlockData() instanceof Leaves l && !l.isPersistent() && l.getDistance() > 3), treeCapitatorLeavesScanArea));
+                        List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, this::isLeaves, treeCapitatorLeavesScanArea));
                         Collections.shuffle(leaves);
                         BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, bl -> {
                             LootListener.addPreparedLuck(bl, woodCuttingLuck);
@@ -172,7 +172,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                 }, (b) -> {
                     treeCapitatingPlayers.remove(e.getPlayer().getUniqueId());
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                        List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, bl -> Tag.LEAVES.isTagged(bl.getType()) && (bl.getBlockData() instanceof Leaves l && !l.isPersistent() && l.getDistance() > 3), treeCapitatorLeavesScanArea));
+                        List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, this::isLeaves, treeCapitatorLeavesScanArea));
                         Collections.shuffle(leaves);
                         BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, bl -> {
                             LootListener.addPreparedLuck(bl, woodCuttingLuck);
@@ -194,7 +194,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
      */
     private boolean isTree(Block b){
         Collection<Block> treeBlocks = BlockUtils.getBlockVein(b, treeScanLimit, l -> !BlockStore.isPlaced(l) && (Tag.LOGS.isTagged(l.getType()) || Tag.LEAVES.isTagged(l.getType())), treeScanArea);
-        return treeBlocks.stream().anyMatch(l -> Tag.LOGS.isTagged(l.getType())) && treeBlocks.stream().anyMatch(l -> Tag.LEAVES.isTagged(l.getType()) || l.getType() == Material.NETHER_WART_BLOCK || l.getType() == Material.WARPED_WART_BLOCK);
+        return treeBlocks.stream().anyMatch(l -> Tag.LOGS.isTagged(l.getType())) && treeBlocks.stream().anyMatch(this::isLeaves);
     }
 
     // checks up to 48 blocks above the log mined for a leaf block which might be used as origin
@@ -202,10 +202,15 @@ public class WoodcuttingSkill extends Skill implements Listener {
         for (int i = 1; i < 48; i++){
             if (b.getLocation().getY() + i >= b.getWorld().getMaxHeight()) break;
             Block blockAt = b.getLocation().add(0, i, 0).getBlock();
-            if (Tag.LEAVES.isTagged(blockAt.getType())) return blockAt;
+            if (isLeaves(blockAt)) return blockAt;
             if (!blockAt.getType().isAir() && !Tag.LOGS.isTagged(blockAt.getType())) return null;
         }
         return null;
+    }
+
+    private boolean isLeaves(Block block){
+        if (Tag.LEAVES.isTagged(block.getType()) && block.getBlockData() instanceof Leaves l && !l.isPersistent() && l.getDistance() > 3) return true;
+        return block.getType() == Material.NETHER_WART_BLOCK || block.getType() == Material.WARPED_WART_BLOCK;
     }
 
     @EventHandler(priority = EventPriority.HIGH)

@@ -45,9 +45,6 @@ public class CustomItemRegistry {
         CustomItem item = items.get(id);
         if (item == null) return null;
         ItemBuilder builder = new ItemBuilder(item.getItem().clone());
-        if (item.getModifiers().removeIf(DynamicItemModifier::requiresPlayer))
-            ValhallaMMO.logWarning("Custom item " + id + " had modifiers applied that require player involvement, " +
-                    "but custom items cannot have them. These modifiers have been removed, I suggest you check that item");
         DynamicItemModifier.modify(builder, p, item.getModifiers(), false, true, true);
         return builder.get();
     }

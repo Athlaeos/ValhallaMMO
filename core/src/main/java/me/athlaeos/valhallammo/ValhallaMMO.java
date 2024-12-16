@@ -205,6 +205,7 @@ public class ValhallaMMO extends JavaPlugin {
         PlayerJumpEvent.register(this);
         registerListener(new AnvilListener());
         registerListener(new ArmorSwitchListener());
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) registerListener(new BlockDamageListener());
         registerListener(new BlockListener());
         registerListener(new BrewingStandListener());
         registerListener(new CauldronCraftingListener());

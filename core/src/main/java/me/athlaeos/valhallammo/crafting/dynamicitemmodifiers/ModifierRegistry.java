@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.pot
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_misc.*;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.CommandsSet;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.Item;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.Money;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.VanillaExperience;
@@ -148,6 +149,7 @@ public class ModifierRegistry {
                 register(new FlagVanillaAdd("flag_hide_potion_effects", f.toString()));
             else register(new FlagVanillaAdd("flag_" + f.toString().toLowerCase(java.util.Locale.US), f.toString()));
         });
+        register(new CommandsSet("commands"));
         register(new ItemReplace("replace"));
         register(new ItemReplaceKeepingAmount("replace_keep_amount"));
         register(new ItemType("material"));
