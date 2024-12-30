@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.CustomDamageType;
 import me.athlaeos.valhallammo.entities.damageindicators.DamageIndicatorRegistry;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
@@ -12,6 +13,7 @@ import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -41,6 +43,7 @@ public class EntityDamagedListener implements Listener {
     private final boolean pvpOneShotProtection;
     private final boolean pveOneShotProtection;
     private final double oneShotProtectionCap;
+    private final Sound oneShotProtectionSound;
 
     public EntityDamagedListener(){
         YamlConfiguration c = ValhallaMMO.getPluginConfig();
@@ -52,6 +55,7 @@ public class EntityDamagedListener implements Listener {
         pvpOneShotProtection = c.getBoolean("oneshot_protection_players");
         pveOneShotProtection = c.getBoolean("oneshot_protection_mobs");
         oneShotProtectionCap = c.getDouble("oneshot_protection_limit");
+        oneShotProtectionSound = Catch.catchOrElse(() -> Sound.valueOf(c.getString("oneshot_protection_sound")), Sound.ITEM_TOTEM_USE);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -90,11 +94,13 @@ public class EntityDamagedListener implements Listener {
                     if (healthAttribute != null){
                         double maxHealth = healthAttribute.getValue();
                         double damageUntilOSP = maxHealth * (1 - oneShotProtectionFraction);
-                        if (maxHealth * oneShotProtectionCap < customDamage && customDamage > damageUntilOSP && l.getHealth() > damageUntilOSP){
+                        if (maxHealth * oneShotProtectionCap >= customDamage && customDamage > damageUntilOSP && l.getHealth() > damageUntilOSP){
                             customDamage = damageUntilOSP;
                             if (l instanceof Player p){
                                 PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
                                 Timer.setCooldownIgnoreIfPermission(p, profile.getOneShotProtectionCooldown() * 50, "cooldown_oneshot_protection");
+                                Timer.sendCooldownStatus(p, "cooldown_oneshot_protection", TranslationManager.getTranslation("ability_oneshot_protection"));
+                                p.playSound(p, oneShotProtectionSound, 1F, 1F);
                             }
                         }
                     }

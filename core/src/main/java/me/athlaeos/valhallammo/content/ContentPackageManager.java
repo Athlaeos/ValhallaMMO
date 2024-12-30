@@ -10,7 +10,7 @@ import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
-import me.athlaeos.valhallammo.crafting.recipetypes.ValhallaRecipe;
+import me.athlaeos.valhallammo.crafting.recipetypes.*;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.item.CustomItemRegistry;
@@ -18,10 +18,12 @@ import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContentPackageManager {
@@ -73,9 +75,17 @@ public class ContentPackageManager {
         importContent(contentPackage, ExportMode.values());
     }
 
-    public static boolean exportContent(String packageName, ExportMode... exportModes){
-        ContentPackage contentPackage = new ContentPackage();
+    public static boolean exportContent(String packageName, List<ValhallaRecipe> recipes, boolean add, ExportMode... exportModes){
+        ContentPackage contentPackage = add ? Utils.thisorDefault(fromFile(packageName), new ContentPackage()) : new ContentPackage();
         for (ExportMode mode : exportModes) mode.act(contentPackage);
+        for (ValhallaRecipe recipe : recipes){
+            if (recipe instanceof ImmersiveCraftingRecipe r) contentPackage.getImmersiveRecipes().put(r.getName(), r);
+            else if (recipe instanceof DynamicCauldronRecipe r) contentPackage.getCauldronRecipes().put(r.getName(), r);
+            else if (recipe instanceof DynamicGridRecipe r) contentPackage.getGridRecipes().put(r.getName(), r);
+            else if (recipe instanceof DynamicCookingRecipe r) contentPackage.getCookingRecipes().put(r.getName(), r);
+            else if (recipe instanceof DynamicBrewingRecipe r) contentPackage.getBrewingRecipes().put(r.getName(), r);
+            else if (recipe instanceof DynamicSmithingRecipe r) contentPackage.getSmithingRecipes().put(r.getName(), r);
+        }
 
         File f = new File(ValhallaMMO.getInstance().getDataFolder(), "/export/" + packageName + ".json");
         try {
@@ -100,7 +110,7 @@ public class ContentPackageManager {
     }
 
     public static void exportContent(String path){
-        exportContent(path, ExportMode.values());
+        exportContent(path, new ArrayList<>(), false, ExportMode.values());
     }
 
     public enum ExportMode{

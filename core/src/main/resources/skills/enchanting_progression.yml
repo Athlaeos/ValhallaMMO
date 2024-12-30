@@ -519,7 +519,7 @@ perks:
         - enchanting_perk_offensive
         - enchanting_perk_utility
     messages:
-      - "<lang.enchanting_perk_offensive_messages>"
+      - "<lang.enchanting_perk_defensive_messages>"
     requireperk_all:
       - enchanting_perk_4
   enchanting_perk_utility:

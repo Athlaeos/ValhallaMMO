@@ -150,6 +150,7 @@ public class ProjectileListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onShoot(EntityShootBowEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getProjectile() instanceof Projectile pr)) return;
+        boolean wouldBeConsumed = e.shouldConsumeItem();
         ItemStack bow = e.getBow();
         if (e.getProjectile() instanceof AbstractArrow a && a.isShotFromCrossbow() && a.getPickupStatus() != AbstractArrow.PickupStatus.ALLOWED && !ItemUtils.isEmpty(bow) && bow.containsEnchantment(Enchantment.MULTISHOT)){
             setMultishotArrow(a); // it's safe to assume these are secondary multishot arrows
@@ -159,8 +160,11 @@ public class ProjectileListener implements Listener {
         LivingEntity shooter = e.getEntity();
         double speedMultiplier = Math.max(0, AccumulativeStatManager.getCachedStats("RANGED_VELOCITY_BONUS", shooter, 10000, true));
 
-        ItemStack consumable = e.getConsumable();
-        if (!ItemUtils.isEmpty(consumable) && !ItemUtils.isEmpty(bow)){
+        ItemStack tempConsumable = e.getConsumable();
+        if (!ItemUtils.isEmpty(tempConsumable) && !ItemUtils.isEmpty(bow)){
+            tempConsumable = tempConsumable.clone();
+            tempConsumable.setAmount(1);
+            ItemStack consumable = tempConsumable;
             ItemBuilder builderBow = new ItemBuilder(bow);
             setBow(pr, builderBow);
 
@@ -169,7 +173,7 @@ public class ProjectileListener implements Listener {
 
             boolean infinityExploitable = CustomFlag.hasFlag(consumableMeta, CustomFlag.INFINITY_EXPLOITABLE);
             boolean hasInfinity = bow.containsEnchantment(EnchantmentMappings.INFINITY.getEnchantment());
-            boolean shouldSave = hasInfinity && (consumable.isSimilar(new ItemStack(Material.ARROW)) || infinityExploitable);
+            boolean shouldSave = hasInfinity && (ItemUtils.isSimilar(consumable, new ItemStack(Material.ARROW)) || infinityExploitable);
 
             if (shooter instanceof Player p && (e.getProjectile() instanceof AbstractArrow || e.getProjectile() instanceof Firework)){
                 double ammoSaveChance = AccumulativeStatManager.getCachedStats("AMMO_SAVE_CHANCE", shooter, 10000, true);
@@ -201,23 +205,28 @@ public class ProjectileListener implements Listener {
                 if (e.getProjectile() instanceof AbstractArrow a && !(a instanceof Trident)){
                     // arrows may be preserved with infinity if they resemble a vanilla arrow, or if they have the infinityExploitable flag
                     e.setConsumeItem(!shouldSave);
-                    if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21) &&
-                            MinecraftVersion.currentVersionOlderThan(MinecraftVersion.MINECRAFT_1_21_1) && e.shouldConsumeItem()) {
-                        // setConsumeItem does not function on 1.21-1.21.1 apparently, so manually remove item
-                        for (ItemStack item : p.getInventory().getContents()){
-                            if (ItemUtils.isEmpty(item) || !item.isSimilar(consumable)) continue;
-                            if (item.getAmount() <= 1){
-                                ItemStack clone = consumable.clone();
-                                clone.setAmount(1);
-                                p.getInventory().remove(clone);
-                            } else {
-                                item.setAmount(item.getAmount() - 1);
-                            }
-                            break;
-                        }
-                    }
                     if (e.shouldConsumeItem() && !isShotFromMultishot(a)) a.setPickupStatus(AbstractArrow.PickupStatus.ALLOWED);
                     else a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+                    if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21)) {
+                        if (e.shouldConsumeItem() && !wouldBeConsumed && hasInfinity){
+                            // setConsumeItem does not function on 1.21+ apparently, so manually remove item
+                            // Since the bow has infinity, the arrow is not consumed. But since it *should* be consumed,
+                            // we have to manually remove the item
+                            for (ItemStack item : p.getInventory().getContents()){
+                                if (ItemUtils.isEmpty(item) || !ItemUtils.isSimilar(item, consumable)) continue;
+                                if (item.getAmount() <= 1){
+                                    p.getInventory().remove(item);
+                                } else {
+                                    item.setAmount(item.getAmount() - 1);
+                                }
+                                break;
+                            }
+                            e.setConsumeItem(false); // if this method decides to start working again, it'll prevent more than 1 arrow from being consumed
+                        } else if (!e.shouldConsumeItem() && wouldBeConsumed){
+                            // The item should not be consumed, but is, so we add the arrow back to the players inventory
+                            ItemUtils.addItem(p, consumable, false);
+                        }
+                    }
                 }
             }
 

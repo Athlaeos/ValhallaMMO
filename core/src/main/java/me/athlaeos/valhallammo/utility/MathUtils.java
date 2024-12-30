@@ -220,11 +220,11 @@ public class MathUtils {
         return points;
     }
 
-    public static int[][] getOffsetsBetweenPoints(int[] offset1, int[] offset2){
+    public static int[][] getOffsetsBetweenPoints(int[] offset1, int[] offset2, int[]... append){
         int xOff = Math.abs(offset1[0] - offset2[0]) + 1;
         int yOff = Math.abs(offset1[1] - offset2[1]) + 1;
         int zOff = Math.abs(offset1[2] - offset2[2]) + 1;
-        int arraySize = Math.abs(xOff) * Math.abs(yOff) * Math.abs(zOff);
+        int arraySize = (Math.abs(xOff) * Math.abs(yOff) * Math.abs(zOff)) + append.length;
         int[][] offsets = new int[arraySize][3];
         int index = 0;
         for (int x = offset1[0]; x <= offset2[0]; x++){
@@ -234,6 +234,9 @@ public class MathUtils {
                     index++;
                 }
             }
+        }
+        for (int i = 1; i <= append.length; i++){
+            offsets[arraySize - i] = append[i];
         }
 
         return offsets;

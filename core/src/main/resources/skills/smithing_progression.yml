@@ -172,6 +172,7 @@ perks:
     required_lv: 60
     perk_rewards:
       smithing_diamondcraftingskill_add: 50
+      power_inventoryrepairingkeepenchanting_toggle: []
     messages:
       - "<lang.smithing_perk_4_messages>"
     requireperk_all:

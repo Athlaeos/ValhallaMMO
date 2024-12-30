@@ -179,13 +179,25 @@ public class BrewingStandListener implements Listener {
         public void run() {
             Location l = inventory.getLocation();
             BrewingStand stand = inventory.getHolder();
-            if (l == null || l.getBlock().getType() != Material.BREWING_STAND || stand == null || stand.getFuelLevel() <= 0 || ItemUtils.isEmpty(inventory.getIngredient())){
+            boolean consumeFuel = false;
+            if (l == null || l.getBlock().getType() != Material.BREWING_STAND || stand == null || ItemUtils.isEmpty(inventory.getIngredient())){
                 cancel();
                 if (l != null) activeStands.remove(l);
                 return;
             }
+            if (stand.getFuelLevel() <= 0){
+                if (!ItemUtils.isEmpty(inventory.getFuel()) && inventory.getFuel().getType() == Material.BLAZE_POWDER){
+                    stand.setFuelLevel(20);
+                    consumeFuel = true;
+                } else {
+                    cancel();
+                    activeStands.remove(l);
+                    return;
+                }
+            }
+
             if (!activeStands.containsKey(l)) cancel();
-            if (visualProgress > 0){
+            if (visualProgress - tickStep > 0){
                 if (disabled || recipes.isEmpty()){
                     visualProgress = 10;
                 } else {
@@ -199,12 +211,17 @@ public class BrewingStandListener implements Listener {
             // stand is finished brewing
             stand.setFuelLevel(stand.getFuelLevel() - 1);
             if (stand.getFuelLevel() <= 0 && !ItemUtils.isEmpty(inventory.getFuel()) && inventory.getFuel().getType() == Material.BLAZE_POWDER){
-                ItemStack powder = inventory.getFuel();
-                if (powder.getAmount() <= 1) inventory.setFuel(null);
-                else powder.setAmount(powder.getAmount() - 1);
                 stand.setFuelLevel(20);
+                consumeFuel = true;
             }
+            stand.setBrewingTime(0);
             stand.update();
+
+            if (consumeFuel){
+                ItemStack powder = inventory.getFuel();
+                if (powder.getAmount() <= 1) inventory.setItem(fuel, null);
+                else powder.setAmount(powder.getAmount() - 1);
+            }
 
             ItemStack[] results = new ItemStack[] { null, null, null };
             for (int slot = 0; slot < 3; slot++){

@@ -463,7 +463,7 @@ public class AccumulativeStatManager {
         attemptMapCleanup();
         if (statCache.containsKey(e.getUniqueId())){
             if (statCache.getOrDefault(e.getUniqueId(), new HashMap<>()).get(stat) != null){
-                return statCache.get(e.getUniqueId()).get(stat).getKey() > System.currentTimeMillis();
+                return statCache.getOrDefault(e.getUniqueId(), new HashMap<>()).get(stat).getKey() > System.currentTimeMillis();
             }
         }
         return false;

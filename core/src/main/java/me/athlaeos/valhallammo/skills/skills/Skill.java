@@ -400,7 +400,7 @@ public abstract class Skill {
                     nextLevel--;
                     EXP += expForLevel;
                 } else {
-                    EXP = expForLevel - EXP;
+                    EXP += expForLevel;
                     break; // player does not have enough negative experience to level down
                 }
             }
@@ -464,9 +464,10 @@ public abstract class Skill {
         // non-levelable skills should not gain exp
         if (!isLevelableSkill() || (requiredPermission != null && !p.hasPermission(requiredPermission))) return;
         // creative mode players should not gain skill-acquired exp
-        if (p.getGameMode() == GameMode.CREATIVE && !(this instanceof PowerSkill) && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
+        if (p.getGameMode() == GameMode.CREATIVE && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
         // only experience-scaling skills should scale with exp multipliers. By default, this only excludes PowerSkill
-        if (isExperienceScaling()) amount *= (1 + AccumulativeStatManager.getStats("GLOBAL_EXP_GAIN", p, true));
+        if (isExperienceScaling() && (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION||
+                reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE)) amount *= (1 + AccumulativeStatManager.getStats("GLOBAL_EXP_GAIN", p, true));
 
         PlayerSkillExperienceGainEvent event = new PlayerSkillExperienceGainEvent(p, amount, this, reason);
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
@@ -514,11 +515,11 @@ public abstract class Skill {
                 expToGive += expForLevel(level);
             }
         }
-        addEXP(player, expToGive, silent, reason);
-        // make sure the player ends up at 0 exp for the level
-        if (p.getLevel() < levels) addEXP(player, expForLevel(p.getLevel() + 1) - p.getEXP(), silent, reason);
-        else if (p.getLevel() == levels) addEXP(player, -p.getEXP(), silent, reason);
-        else addEXP(player, expForLevel(p.getLevel()) + p.getEXP(), silent, reason);
+        addEXP(player, Math.ceil(expToGive), silent, reason);
+//        // make sure the player ends up at 0 exp for the level
+//        if (p.getLevel() < levels) addEXP(player, expForLevel(p.getLevel() + 1) - p.getEXP(), silent, reason);
+//        else if (p.getLevel() == levels) addEXP(player, -p.getEXP(), silent, reason);
+//        else addEXP(player, expForLevel(p.getLevel()) + p.getEXP(), silent, reason);
     }
 
     private final Map<UUID, EXPStatusStruct> expTracker = new HashMap<>();
@@ -649,7 +650,7 @@ public abstract class Skill {
                 for (PerkReward reward : levelingPerks) {
                     if (reward instanceof MultiplicativeReward r) {
                         if (reward.isPersistent()) continue;
-                        r.remove(p, to - from);
+                        r.remove(p, from - to);
                     } else reward.remove(p);
                 }
 

@@ -390,4 +390,17 @@ public class EntityUtils {
         double dot = dir.dot(who.getEyeLocation().getDirection());
         return dot >= cos_angle;
     }
+
+    public static boolean isUnarmed(LivingEntity player){
+        EntityProperties properties = EntityCache.getAndCacheProperties(player);
+
+        // player is holding something that's not weightless, not unarmed!
+        if (properties.getMainHand() != null && WeightClass.getWeightClass(properties.getMainHand().getMeta()) != WeightClass.WEIGHTLESS) return false;
+
+        // player is not holding anything, unarmed!
+        if (properties.getMainHand() == null) return true;
+        AttributeWrapper damageAttribute = ItemAttributesRegistry.getAnyAttribute(properties.getMainHand().getMeta(), "GENERIC_ATTACK_DAMAGE");
+        // Has a damage attribute, but not a defined weight class. That means that it must be a damaging item not explicitly marked weightless
+        return damageAttribute == null || WeightClass.hasDefinedWeightClass(properties.getMainHand().getMeta());
+    }
 }

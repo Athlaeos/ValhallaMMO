@@ -442,10 +442,21 @@ public class ItemUtils {
         if (i1Meta == null && i2Meta == null) return true;
         if (i1Meta == null || i2Meta == null) return false;
         ItemStack i1Clone = i1.clone();
+        i1Clone.setAmount(1);
         ItemStack i2Clone = i2.clone();
+        i2Clone.setAmount(1);
         i1Clone.setItemMeta(i1Meta);
         i2Clone.setItemMeta(i2Meta);
-        return i1Clone.toString().equals(i2Clone.toString());
+        String i1String = i1Clone.toString();
+        String i2String = i2Clone.toString();
+        // unhandled remover
+        if (i1String.contains(" unhandled=") || i2String.contains(" unhandled=")){
+            String match = StringUtils.substringBetween(i1String, " unhandled=", ",");
+            if (match != null) i1String = i1String.replace(" unhandled=" + match + ",", "");
+            String match2 = StringUtils.substringBetween(i2String, " unhandled=", ",");
+            if (match2 != null) i2String = i2String.replace(" unhandled=" + match2 + ",", "");
+        }
+        return i1String.equals(i2String);
     }
 
     public static ItemMeta reSetItemText(ItemMeta meta){

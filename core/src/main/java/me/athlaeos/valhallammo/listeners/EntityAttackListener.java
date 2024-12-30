@@ -142,7 +142,7 @@ public class EntityAttackListener implements Listener {
 
             CombatType combatType = e.getDamager() instanceof Projectile ? CombatType.RANGED :
                     (trueDamager instanceof LivingEntity a && a.getEquipment() != null && (!ItemUtils.isEmpty(a.getEquipment().getItemInMainHand()) ||
-                            WeightClass.getWeightClass(ItemUtils.getItemMeta(a.getEquipment().getItemInMainHand())) != WeightClass.WEIGHTLESS) ?
+                            EntityUtils.isUnarmed(a)) ?
                             CombatType.MELEE_UNARMED :
                             CombatType.MELEE_ARMED);
             if (trueDamager instanceof LivingEntity a){

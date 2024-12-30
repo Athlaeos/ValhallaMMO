@@ -195,8 +195,6 @@ public class ValhallaMMO extends JavaPlugin {
 
         ProfilePersistence connection = ProfileRegistry.getPersistence();
 
-        for (PluginHook hook : activeHooks.values()) hook.whenPresent();
-
         if (ConfigManager.getConfig("config.yml").get().getBoolean("metrics", true)){
             new Metrics(this, 14942).addCustomChart(new Metrics.SimplePie("using_database_for_player_data", () -> connection instanceof SQL db && db.getConnection() != null ? "Yes" : "No"));
         }
@@ -205,7 +203,7 @@ public class ValhallaMMO extends JavaPlugin {
         PlayerJumpEvent.register(this);
         registerListener(new AnvilListener());
         registerListener(new ArmorSwitchListener());
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) registerListener(new BlockDamageListener());
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) && !customMiningSystem) registerListener(new BlockDamageListener());
         registerListener(new BlockListener());
         registerListener(new BrewingStandListener());
         registerListener(new CauldronCraftingListener());
@@ -285,6 +283,8 @@ public class ValhallaMMO extends JavaPlugin {
             logInfo("Alpha files found and conversion enabled! Enabling data transfer from Alpha to Beta");
             registerListener(new AlphaToBetaConversionHandler());
         }
+
+        for (PluginHook hook : activeHooks.values()) hook.whenPresent();
     }
 
     @Override

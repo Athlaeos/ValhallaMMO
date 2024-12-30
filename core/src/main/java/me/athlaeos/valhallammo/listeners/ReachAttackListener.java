@@ -38,7 +38,7 @@ public class ReachAttackListener implements Listener {
                 e.getAnimationType() != PlayerAnimationType.ARM_SWING ||
                 lastArmSwingReasons.getOrDefault(e.getPlayer().getUniqueId(), ArmSwingReason.ATTACK) != ArmSwingReason.ATTACK) return;
         EntityProperties properties = EntityCache.getAndCacheProperties(e.getPlayer());
-        if (properties.getMainHand() == null || WeightClass.getWeightClass(properties.getMainHand().getMeta()) == WeightClass.WEIGHTLESS)
+        if (properties.getMainHand() != null && WeightClass.getWeightClass(properties.getMainHand().getMeta()) == WeightClass.WEIGHTLESS)
             return;  // only items with a weight class, or empty fist, can reach attack
 
         Player p = e.getPlayer();

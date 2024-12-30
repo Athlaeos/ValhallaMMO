@@ -163,7 +163,7 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
         else return new AttributeDisplayWrapper(attribute, format, defaultIcon, isPositive, compatibleWith.toArray(new Material[0])).offset(displayStatOffset).setOperation(operation).setValue(value).convertTo(convertTo);
     }
 
-    private String prefix(boolean positive){
+    public String prefix(boolean positive){
         return TranslationManager.getTranslation("stat_attribute_" + (positive ? "positive" : "negative") + "_prefix");
     }
 
@@ -183,5 +183,13 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
             case ADD_NUMBER -> add_number.format(value + displayStatOffset);
             case MULTIPLY_SCALAR_1 -> multiply_scalar_1.format(value + displayStatOffset);
         } : this.format.format(value + displayStatOffset);
+    }
+
+    public Predicate<Double> getIsPositive() {
+        return isPositive;
+    }
+
+    public double getDisplayStatOffset() {
+        return displayStatOffset;
     }
 }

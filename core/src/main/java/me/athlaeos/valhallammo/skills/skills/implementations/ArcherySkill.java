@@ -136,9 +136,12 @@ public class ArcherySkill extends Skill implements Listener {
         if (ItemUtils.isEmpty(e.getCurrentItem()) || e.getCurrentItem().getType() != Material.CROSSBOW) return; // neither items must be empty
         ItemBuilder clicked = new ItemBuilder(e.getCurrentItem());
         if (clicked.getMeta() instanceof CrossbowMeta m){
-            List<ItemStack> projectiles = m.getChargedProjectiles();
-            if (projectiles.isEmpty()) return;
-            projectiles.forEach(i -> ItemUtils.addItem((Player) e.getWhoClicked(), i, true));
+            ItemStack projectile = m.getChargedProjectiles().stream().findFirst().orElse(null);
+            if (ItemUtils.isEmpty(projectile)) return;
+            projectile = projectile.clone();
+            projectile.setAmount(1);
+            ItemUtils.addItem((Player) e.getWhoClicked(), projectile, true);
+
             e.getWhoClicked().getWorld().playSound(e.getWhoClicked().getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1F, 1F);
             m.setChargedProjectiles(new ArrayList<>());
             e.setCurrentItem(clicked.get());

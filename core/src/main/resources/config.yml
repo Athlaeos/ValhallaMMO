@@ -122,6 +122,7 @@ oneshot_protection_mobs: true
 # Represents a multiplier applied on the victim's max hp. Oneshot protection is broken if damage exceeds this value
 # For example, if a player has 20 health, they need to take 60 damage in a single hit to not receive oneshot protection
 oneshot_protection_limit: 3
+oneshot_protection_sound: ITEM_TOTEM_USE
 
 item_duplication_whitelist: # The plugin features a "drop rate bonus" stat which duplicates enemy drops on death. Any item listed here will be be affected by this stat
   - STRING
@@ -473,78 +474,3 @@ model_data_tinker_view: 3511002
 # If true, items crafted with a custom crafting method will be dropped on top of the crafting block. If false, they will
 # be added to the player's inventory.
 craft_item_drop: true
-
-# PARTIES
-
-parties: true # If disabled, all party functionality is disabled
-item_sharing: true # If disabled, item sharing will not be possible
-exp_sharing: true # If disabled, exp sharing will not be possible
-
-party_creation_cooldown: 86400000 # Cooldown to create a party, so it can't be spammed (default 1d)
-item_share_cooldown: 3600000 # Cooldown between item shares (default 1hr)
-
-name_character_minimum: 2
-name_character_limit: 24 # Name limit of party names
-description_character_limit: 256 # Description limit of party descriptions
-party_chat_format: '&2[PC] &a[%rank%&a] %s &f> %s'
-party_spy_chat_format: '&4[PS] &c[%party%] %s &7> %s'
-name_allow_colors: true # If true, party creators may add colors to their party name
-description_allow_colors: true # If true, party creators may add colors to their description
-
-party_capacity_default: 50 # Default member capacity of a party
-exp_sharing_default: true # If false, party exp sharing will be disabled by default
-item_sharing_default: true # If false, party item sharing will be disabled by default
-
-exp_sharing_radius: 25 # Default exp sharing radius
-exp_sharing_multiplier: 1.0 # Default exp sharing fraction
-# Exp gained by 1 player is shared equally among nearby allies within the radius, and then multiplied by this amount
-
-# The default rank each member will get upon joining
-default_rank: rookie # The rank here must be present in the below "ranks", if not the party system will be disabled
-leader_title: '<lang.party-rank-leader>'
-ranks: # Ranks may be distributed by the party leader, each rank has a title and may have additional permissions
-  rookie:
-    rating: 0
-    title: '<lang.party-rank-rookie>'
-    permissions: # Valid permissions are
-    # party_chat, item_share, exp_share, open_party, invite_member, kick_members, manage_roles, manage_description
-      - party_chat
-  member:
-    rating: 1
-    title: '<lang.party-rank-member>'
-    permissions:
-      - item_sharing
-      - party_chat
-  trusted:
-    rating: 2
-    title: '<lang.party-rank-trusted>'
-    permissions:
-      - invite_member
-      - item_sharing
-      - party_chat
-  inner_circle:
-    rating: 3
-    title: '<lang.party-rank-inner-circle>'
-    permissions:
-      - invite_member
-      - item_sharing
-      - party_chat
-      - manage_roles
-      - open_party
-      - exp_share
-      - kick_members
-      - manage_description
-# party_chat: access to party chat
-# item_share: ability to share items with other party members
-# exp_share: ability to toggle exp share on and off for the party
-# open_party: ability to open party or to have party invite only (closed = invite only, open = free join + invite)
-# toggle_item_sharing: ability to toggle item sharing
-# toggle_exp_sharing: ability to toggle exp sharing
-# invite_members: ability to invite other people to the party
-# manage_roles: ability to take and give roles that are below the member's own rank to people with rankings lower than that of their own
-# kick_members: ability to remove members from the party with rankings lower than that of their own
-# manage_description: ability to change the party's description
-# The leader by default has all permissions and is the only one who can transfer leadership
-
-party_info: # This information is displayed in the command /party info, and mostly intended for the creator of the party
-  - '<lang.party-info-format>'

@@ -2,7 +2,6 @@ package me.athlaeos.valhallammo.potioneffects.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
-import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.event.EntityStunEvent;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.localization.TranslationManager;
@@ -22,7 +21,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;

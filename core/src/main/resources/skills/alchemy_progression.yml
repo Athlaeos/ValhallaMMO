@@ -175,8 +175,8 @@ perks:
       alchemy_brewingtimereduction_add: 0.6
       alchemy_potioncombiningunlocked_toggle: 0
       alchemy_potioncombiningmaxcombinations_add: 3
-      alchemy_potioncombiningamplifiermultiplier_add: -0.2
-      alchemy_potioncombiningdurationmultiplier_add: 0
+      alchemy_potioncombiningamplifiermultiplier_add: 0
+      alchemy_potioncombiningdurationmultiplier_add: -0.2
     messages:
       - "<lang.alchemy_perk_3_messages>"
     requireperk_one:

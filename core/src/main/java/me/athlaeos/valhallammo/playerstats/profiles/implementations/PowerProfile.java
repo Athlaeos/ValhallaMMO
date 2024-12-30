@@ -156,6 +156,8 @@ public class PowerProfile extends Profile {
         booleanStat("hideExperienceGain");
         booleanStat("hideGlobalBuffs");
         floatStat("craftingEffectVolume", 1F, new PropertyBuilder().min(0).max(10).create());
+
+        booleanStat("inventoryRepairingKeepEnchanting", new BooleanProperties(true, true));
     } // TODO an annotation to automate getters and setters for all these properties?
 
     public float getShieldDisarming() { return getFloat("shieldDisarming"); }
@@ -203,6 +205,9 @@ public class PowerProfile extends Profile {
 
     public boolean hasAquaAffinity() { return getBoolean("miningAffinityWater"); }
     public void setAquaAffinity(boolean affinity) { setBoolean("miningAffinityWater", affinity); }
+
+    public boolean hasInventoryRepairingKeepEnchanting() { return getBoolean("inventoryRepairingKeepEnchanting"); }
+    public void setInventoryRepairingKeepEnchanting(boolean affinity) { setBoolean("inventoryRepairingKeepEnchanting", affinity); }
 
     public boolean hasAerialAffinity() { return getBoolean("miningAffinityAir"); }
     public void setAerialAffinity(boolean affinity) { setBoolean("miningAffinityAir", affinity); }

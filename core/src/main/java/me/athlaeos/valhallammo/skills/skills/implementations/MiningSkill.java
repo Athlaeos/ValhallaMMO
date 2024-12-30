@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
@@ -235,8 +236,8 @@ public class MiningSkill extends Skill implements Listener {
         if (drillingAnimation != null) drillingAnimation.animate(e.getPlayer(), e.getPlayer().getLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
         if (drillingActivationSound != null) e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), drillingActivationSound, 1F, 1F);
 
-        if (!ValhallaMMO.isCustomMiningEnabled()){
-            int amplifier = Math.round(profile.getDrillingSpeedBonus()) - 1;
+        if (!ValhallaMMO.isCustomMiningEnabled() && !MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
+            int amplifier = (int) Math.round(profile.getDrillingSpeedBonus() / 0.2) - 1;
             if (amplifier < 0) return;
             e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, profile.getDrillingDuration(), amplifier, true, false, false));
         }

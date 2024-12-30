@@ -14,3 +14,7 @@ valid_coating_items:
   - SPLASH_POTION
   - LINGERING_POTION
   - SNOWBALL
+
+dual_wielding_bonus: true # If true, players will get an attack speed buff and immunity reduction while dual wielding light weapons, but lose the ability to parry
+dual_wielding_attack_speed: 0.2 # The attack speed buff players get while dual wielding light weapons
+dual_wielding_immunity_reduction: 0.2 # The immunity reduction buff players get while dual wielding light weapons
