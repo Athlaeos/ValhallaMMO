@@ -98,7 +98,8 @@ public class EntityAttackListener implements Listener {
 
         double damageMultiplier = 1;
 
-        boolean sweep = e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK;
+        String cause = EntityDamagedListener.getLastDamageCause(v);
+        boolean sweep = e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK || (cause != null && cause.equals("ENTITY_SWEEP_ATTACK"));
         if (sweep && trueDamager instanceof LivingEntity a && a.getEquipment() != null && !ItemUtils.isEmpty(a.getEquipment().getItemInMainHand())){
             ItemMeta mainHand = ItemUtils.getItemMeta(a.getEquipment().getItemInMainHand());
             if (SweepStatus.preventSweeping(mainHand)) {
@@ -285,7 +286,7 @@ public class EntityAttackListener implements Listener {
                         if (damage > 0 && radius > 0){
                             for (Entity entity : e.getEntity().getWorld().getNearbyEntities(e.getEntity().getLocation(), radius, radius, radius, (en) -> en instanceof LivingEntity)){
                                 if (EntityClassification.matchesClassification(entity.getType(), EntityClassification.UNALIVE) || entity.equals(a)) continue;
-                                EntityUtils.damage((LivingEntity) entity, a, damage, "ENTITY_ATTACK");
+                                EntityUtils.damage((LivingEntity) entity, a, damage, "ENTITY_SWEEP_ATTACK");
                             }
                         }
                     }
