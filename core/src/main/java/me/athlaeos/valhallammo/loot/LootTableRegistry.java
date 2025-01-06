@@ -162,6 +162,10 @@ public class LootTableRegistry {
         return replacementTableConfiguration;
     }
 
+    public static void loadLootTable(File file){
+        loadFromFile(file);
+    }
+
     public static void loadFromFile(File file){
         try (BufferedReader tableReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             LootTable table = gson.fromJson(tableReader, LootTable.class);
