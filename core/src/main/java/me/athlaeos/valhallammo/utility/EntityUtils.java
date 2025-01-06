@@ -374,8 +374,10 @@ public class EntityUtils {
         int immunityBefore = entity.getNoDamageTicks();
         entity.setNoDamageTicks(0);
         EntityDamagedListener.setCustomDamageCause(entity.getUniqueId(), type);
-        if (by != null) EntityDamagedListener.setDamager(entity, by);
-        entity.damage(amount);
+        if (by != null) {
+            EntityDamagedListener.setDamager(entity, by);
+            entity.damage(amount, by);
+        } else entity.damage(amount);
         entity.setNoDamageTicks(immunityBefore);
     }
 

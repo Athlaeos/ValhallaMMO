@@ -95,6 +95,9 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
             .lifeStealable()
             .translation(TranslationManager.getTranslation("damage_type_necrotic"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_necrotic")).i("&f\uEE72&7").register();
+    public static final CustomDamageType OTHER = new CustomDamageType("OTHER", "SUFFOCATION", "CRAMMING", "CUSTOM")
+            .i("\uED18")
+            .immuneable().register();
 
     public static Map<String, CustomDamageType> getRegisteredTypes() {
         return registeredTypes;
@@ -139,11 +142,11 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
     }
 
     public String getIndicatorIcon() {
-        return indicatorIcon;
+        return indicatorIcon == null ? "" : indicatorIcon;
     }
 
     public String getHardCodedIndicatorIcon() {
-        return hardCodedIndicatorIcon;
+        return hardCodedIndicatorIcon == null ? "" : hardCodedIndicatorIcon;
     }
 
     public void setHurtAnimation(Animation hurtAnimation) {

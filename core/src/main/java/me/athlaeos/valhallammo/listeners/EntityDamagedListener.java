@@ -32,7 +32,7 @@ import java.util.*;
 public class EntityDamagedListener implements Listener {
     private static final boolean customDamageEnabled = ValhallaMMO.getPluginConfig().getBoolean("custom_damage_system", true);
     private static final Collection<String> entityDamageCauses = new HashSet<>(Set.of("THORNS", "ENTITY_ATTACK", "ENTITY_SWEEP_ATTACK", "PROJECTILE", "ENTITY_EXPLOSION", "SONIC_BOOM"));
-    private static final Collection<String> trueDamage = new HashSet<>(Set.of("VOID", "SONIC_BOOM", "STARVATION", "SUICIDE", "WORLD_BORDER", "KILL", "GENERIC_KILL"));
+    private static final Collection<String> trueDamage = new HashSet<>(Set.of("VOID", "SONIC_BOOM", "STARVATION", "DROWNING", "SUICIDE", "WORLD_BORDER", "KILL", "GENERIC_KILL"));
 
     private static final Map<UUID, String> customDamageCauses = new HashMap<>();
     private static final Map<UUID, UUID> lastDamagedByMap = new HashMap<>();
@@ -124,7 +124,6 @@ public class EntityDamagedListener implements Listener {
                     EntityUtils.isEntityFacing(p, d.getDamager().getLocation(), EntityAttackListener.getFacingAngleCos())) return; // blocking with shield damage reduction
             final double damage = customDamage;
             if (applyImmunity){
-
                 double iFrameMultiplier = 1 + AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_MULTIPLIER", l, lastDamager, 10000, true);
                 int iFrameBonus = (int) AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_BONUS", l, lastDamager, 10000, true);
                 int iFrames = (int) Math.max(0, iFrameMultiplier * (Math.max(0, 10 + iFrameBonus)));

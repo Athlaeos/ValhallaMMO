@@ -98,7 +98,7 @@ public class LootTableRegistry {
                         .findFirst().orElse(null);
                 // if a version is in the loot table's name, then it will not be loaded if the current minecraft version is older than it
                 if (fileVersionFilter != null && !MinecraftVersion.currentVersionNewerThan(fileVersionFilter)) continue;
-                loadLootTable(lootTable);
+                loadFromFile(lootTable);
             }
         }
 
@@ -126,7 +126,7 @@ public class LootTableRegistry {
                         .findFirst().orElse(null);
                 // if a version is in the loot table's name, then it will not be loaded if the current minecraft version is older than it
                 if (fileVersionFilter != null && !MinecraftVersion.currentVersionNewerThan(fileVersionFilter)) continue;
-                loadReplacementTable(lootTable);
+                loadReplacementTableFromFile(lootTable);
             }
         }
     }
@@ -162,7 +162,7 @@ public class LootTableRegistry {
         return replacementTableConfiguration;
     }
 
-    public static void loadLootTable(File file){
+    public static void loadFromFile(File file){
         try (BufferedReader tableReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             LootTable table = gson.fromJson(tableReader, LootTable.class);
             registerLootTable(table, true);
@@ -172,7 +172,7 @@ public class LootTableRegistry {
         }
     }
 
-    public static void loadReplacementTable(File file){
+    public static void loadReplacementTableFromFile(File file){
         try (BufferedReader tableReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             ReplacementTable table = gson.fromJson(tableReader, ReplacementTable.class);
             registerReplacementTable(table, true);

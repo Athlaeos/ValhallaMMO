@@ -1,9 +1,9 @@
-starting_perks:
-  alchemy_brewingtimereduction_add: -0.3
+starting_perks: []
 
 experience:
   max_level: 100
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
+  exp_multiplier_quality: 0.01 # Added experience multiplier for each point of quality of the potion
 
 special_perks: []
 
@@ -27,7 +27,7 @@ perks:
     hidden: false
     required_lv: 0
     perk_rewards:
-      alchemy_brewingtimereduction_add: 0.2
+      alchemy_brewingtimereduction_add: 0.5
     messages:
       - "<lang.alchemy_perk_1_messages>"
     custom_model_data_unlockable: -1
@@ -118,7 +118,7 @@ perks:
     required_lv: 40
     perk_rewards:
       alchemy_buffbrewingskill_add: 20
-      alchemy_brewingtimereduction_add: 0.4
+      alchemy_brewingtimereduction_add: 0.75
     messages:
       - "<lang.alchemy_perk_b1_messages>"
     requireperk_all:
@@ -172,7 +172,7 @@ perks:
     hidden: false
     required_lv: 80
     perk_rewards:
-      alchemy_brewingtimereduction_add: 0.6
+      alchemy_brewingtimereduction_add: 1.25
       alchemy_potioncombiningunlocked_toggle: 0
       alchemy_potioncombiningmaxcombinations_add: 3
       alchemy_potioncombiningamplifiermultiplier_add: 0
@@ -258,7 +258,7 @@ perks:
       reset_skill_alchemy: 0
       p:alchemy_newgameplus_add: 1
       p:alchemy_genericbrewingskill_add: 50
-      p:alchemy_brewingtimereduction_add: 0.5
+      p:alchemy_brewingtimereduction_add: 0.75
       p:alchemy_alchemyexpmultiplier_add: -0.5
       p:perks_unlocked_add:
         - alchemy_perk_ng1
@@ -278,7 +278,7 @@ perks:
       reset_skill_alchemy: 0
       p:alchemy_newgameplus_add: 1
       p:alchemy_genericbrewingskill_add: 50
-      p:alchemy_brewingtimereduction_add: 0.5
+      p:alchemy_brewingtimereduction_add: 1.0
       p:alchemy_alchemyexpmultiplier_add: -0.17
       p:perks_unlocked_add:
         - alchemy_perk_ng1

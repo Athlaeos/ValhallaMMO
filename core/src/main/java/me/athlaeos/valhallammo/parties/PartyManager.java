@@ -791,6 +791,7 @@ public class PartyManager {
 
     @SuppressWarnings("all")
     public static void saveParties(){
+        if (!enabledParties) return;
         File f = new File(ValhallaMMO.getInstance().getDataFolder(), "/parties.json");
         try {
             f.createNewFile();

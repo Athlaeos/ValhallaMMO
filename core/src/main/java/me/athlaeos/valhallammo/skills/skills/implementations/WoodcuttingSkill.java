@@ -211,7 +211,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
 
     private boolean isLeaves(Block block){
         if (Tag.LEAVES.isTagged(block.getType()) && block.getBlockData() instanceof Leaves l) return true;
-        return block.getType() == Material.NETHER_WART_BLOCK || block.getType() == Material.WARPED_WART_BLOCK;
+        return block.getType() == Material.NETHER_WART_BLOCK || block.getType() == Material.WARPED_WART_BLOCK || block.getType() == Material.SHROOMLIGHT;
     }
 
     @EventHandler(priority = EventPriority.HIGH)

@@ -47,6 +47,7 @@ public class AlchemySkill extends Skill implements Listener {
     private Sound transmutationSound = null;
     private static List<String> transmutationPotionLore = new ArrayList<>();
     private static String transmutationPotionName = null;
+    private double qualityPotionExperienceMultiplier = 0;
 
     public AlchemySkill(String type) {
         super(type);
@@ -71,6 +72,8 @@ public class AlchemySkill extends Skill implements Listener {
         validCombiningItems.addAll(ItemUtils.getMaterialSet(skillConfig.getStringList("valid_combining_items")));
         transmutationPotionLore = Utils.chat(TranslationManager.translateListPlaceholders(skillConfig.getStringList("transmutation_lore")));
         transmutationPotionName = Utils.chat(TranslationManager.translatePlaceholders(skillConfig.getString("transmutation_name")));
+
+        qualityPotionExperienceMultiplier = progressionConfig.getDouble("experience.exp_multiplier_quality", 0.01);
 
         ConfigurationSection section = transmutationConfig.getConfigurationSection("transmutations");
         if (section != null){
@@ -232,4 +235,8 @@ public class AlchemySkill extends Skill implements Listener {
     }
 
     private record Transmutation(String key, Material from, Material to){}
+
+    public double getQualityPotionExperienceMultiplier() {
+        return qualityPotionExperienceMultiplier;
+    }
 }

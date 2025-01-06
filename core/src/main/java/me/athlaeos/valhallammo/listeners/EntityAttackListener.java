@@ -88,6 +88,11 @@ public class EntityAttackListener implements Listener {
     public void onAttack(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof LivingEntity v) ||
                 e.getDamager() instanceof EnderPearl) return;
+        if (e.getDamager() instanceof EnderDragon && v.getNoDamageTicks() > 0){
+            // Ender dragons seem to be an exception entity that are capable of attacking every tick, we don't want that because it basically instantly kills people
+            e.setCancelled(true);
+            return;
+        }
 
         Entity trueDamager = EntityUtils.getTrueDamager(e);
 

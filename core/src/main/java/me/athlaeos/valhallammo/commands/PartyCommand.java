@@ -131,8 +131,8 @@ public class PartyCommand implements TabExecutor {
                 Utils.sendMessage(p, TranslationManager.getTranslation("status_command_party_player_kicked"));
                 return true;
             }
-            case "transferleadership" -> {
-                if (args.length == 1) return badUsage(p, "/party transferleadership <player>");
+            case "transferleader" -> {
+                if (args.length == 1) return badUsage(p, "/party transferleader <player>");
                 Player target = ValhallaMMO.getInstance().getServer().getPlayer(args[1]);
                 if (target == null) {
                     Utils.sendMessage(p, TranslationManager.getTranslation("error_command_player_offline"));

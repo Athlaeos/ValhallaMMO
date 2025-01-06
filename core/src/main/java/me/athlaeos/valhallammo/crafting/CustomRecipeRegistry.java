@@ -24,6 +24,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.SmithingRecipe;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 import java.io.*;
 import java.util.*;
@@ -182,6 +184,18 @@ public class CustomRecipeRegistry {
         );
     }
 
+    private static void addRecipePermission(String recipeName){
+        Permission existing = ValhallaMMO.getInstance().getServer().getPluginManager().getPermission("valhalla.recipe." + recipeName);
+        if (existing != null) return;
+        existing = new Permission("valhalla.recipe." + recipeName, "Grants access to the recipe " + recipeName, PermissionDefault.FALSE);
+        ValhallaMMO.getInstance().getServer().getPluginManager().addPermission(existing);
+    }
+
+    private static void removePermission(String recipeName){
+        ValhallaMMO.getInstance().getServer().getPluginManager().removePermission("valhalla.recipe." + recipeName);
+
+    }
+
     public static void register(DynamicBrewingRecipe recipe, boolean overwrite){
         if (overwrite || !brewingRecipes.containsKey(recipe.getName().toLowerCase(java.util.Locale.US))) {
             brewingRecipes.put(recipe.getName().toLowerCase(java.util.Locale.US), recipe);
@@ -190,12 +204,16 @@ public class CustomRecipeRegistry {
             Collection<DynamicBrewingRecipe> existing = brewingRecipesByIngredient.getOrDefault(recipe.getIngredient().getItem().getType(), new HashSet<>());
             existing.add(recipe);
             brewingRecipesByIngredient.put(recipe.getIngredient().getItem().getType(), existing);
+
+            addRecipePermission(recipe.getName());
         }
     }
     public static void register(DynamicCauldronRecipe recipe, boolean overwrite){
         if (overwrite || !cauldronRecipes.containsKey(recipe.getName().toLowerCase(java.util.Locale.US))) {
             cauldronRecipes.put(recipe.getName().toLowerCase(java.util.Locale.US), recipe);
             allRecipes.add(recipe.getName().toLowerCase(java.util.Locale.US));
+
+            addRecipePermission(recipe.getName());
         }
     }
     public static void register(ImmersiveCraftingRecipe recipe, boolean overwrite){
@@ -207,6 +225,8 @@ public class CustomRecipeRegistry {
             Collection<ImmersiveCraftingRecipe> recipesByBlock = immersiveRecipesByBlock.getOrDefault(base, new HashSet<>());
             recipesByBlock.add(recipe);
             immersiveRecipesByBlock.put(base, recipesByBlock);
+
+            addRecipePermission(recipe.getName());
         }
     }
     public static void register(DynamicCookingRecipe recipe, boolean overwrite){
@@ -223,6 +243,8 @@ public class CustomRecipeRegistry {
             }
             CookingListener.campfireRecipeCache.clear();
             CookingListener.furnaceRecipeCache.clear();
+
+            addRecipePermission(recipe.getName());
         }
     }
     public static void register(DynamicGridRecipe recipe, boolean overwrite){
@@ -237,6 +259,8 @@ public class CustomRecipeRegistry {
             allKeyedRecipes.put(recipe.getKey(), recipe);
             allKeyedRecipesByName.put(recipe.getName(), recipe);
             recipe.registerRecipe();
+
+            addRecipePermission(recipe.getName());
         }
     }
     public static void register(DynamicSmithingRecipe recipe, boolean overwrite){
@@ -256,6 +280,8 @@ public class CustomRecipeRegistry {
             SmithingTableListener.smithingRecipeCache.clear();
             boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
             if (isTemplateCompatible) recipe.convertTemplate();
+
+            addRecipePermission(recipe.getName());
             Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
             while (iterator.hasNext()){
                 Recipe r = iterator.next();
@@ -284,8 +310,7 @@ public class CustomRecipeRegistry {
             recipesByBlock.remove(r);
             immersiveRecipesByBlock.put(base, recipesByBlock);
             immersiveRecipes.remove(recipe);
-        }
-        else {
+        } else {
             if (cookingRecipes.containsKey(recipe)) {
                 cookingRecipes.get(recipe).unregisterRecipe();
                 cookingRecipes.remove(recipe);
@@ -297,6 +322,7 @@ public class CustomRecipeRegistry {
                 smithingRecipes.remove(recipe);
             }
         }
+        removePermission(recipe);
     }
 
     public static Map<String, DynamicBrewingRecipe> getBrewingRecipes() {
