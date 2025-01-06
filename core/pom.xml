@@ -126,5 +126,12 @@
             <version>2.8.5</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>me.athlaeos</groupId>
+            <artifactId>lapi-core</artifactId>
+            <version>LoreAPI_ALPHA_1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/LoreAPI_ALPHA_1.0.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
