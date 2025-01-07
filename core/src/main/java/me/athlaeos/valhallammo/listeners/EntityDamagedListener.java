@@ -120,8 +120,7 @@ public class EntityDamagedListener implements Listener {
                 e.setDamage(0);
                 applyImmunity = true;
             }
-            if (e instanceof EntityDamageByEntityEvent d && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking() &&
-                    EntityUtils.isEntityFacing(p, d.getDamager().getLocation(), EntityAttackListener.getFacingAngleCos())) return; // blocking with shield damage reduction
+            if (e instanceof EntityDamageByEntityEvent && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking()) return; // blocking with shield damage reduction
             final double damage = customDamage;
             if (applyImmunity){
                 double iFrameMultiplier = 1 + AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_MULTIPLIER", l, lastDamager, 10000, true);

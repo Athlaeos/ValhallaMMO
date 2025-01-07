@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.parties;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
@@ -9,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class PartyChatListener implements Listener {
+    private static boolean consoleSpyEnabled = true;
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent e){
         if (!e.getMessage().startsWith("pc:") && !PartyManager.getPartyChatPlayers().contains(e.getPlayer().getUniqueId())) return;
@@ -51,5 +54,14 @@ public class PartyChatListener implements Listener {
             if (party.getLeader().equals(p.getUniqueId())) continue; // ... and neither to their leader
             p.sendMessage(String.format(Utils.chat(spyChatMessage), e.getPlayer().getDisplayName(), e.getMessage()));
         }
+        if (consoleSpyEnabled) Utils.sendMessage(
+                ValhallaMMO.getInstance().getServer().getConsoleSender(),
+                String.format(Utils.chat(spyChatMessage), e.getPlayer().getDisplayName(), e.getMessage())
+        );
+    }
+
+    public static boolean toggleConsoleSpyEnabled() {
+        consoleSpyEnabled = !consoleSpyEnabled;
+        return consoleSpyEnabled;
     }
 }
