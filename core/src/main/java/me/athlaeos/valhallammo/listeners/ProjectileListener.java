@@ -150,7 +150,6 @@ public class ProjectileListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onShoot(EntityShootBowEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getProjectile() instanceof Projectile pr)) return;
-        boolean wouldBeConsumed = e.shouldConsumeItem();
         ItemStack bow = e.getBow();
         if (e.getProjectile() instanceof AbstractArrow a && a.isShotFromCrossbow() && a.getPickupStatus() != AbstractArrow.PickupStatus.ALLOWED && !ItemUtils.isEmpty(bow) && bow.containsEnchantment(Enchantment.MULTISHOT)){
             setMultishotArrow(a); // it's safe to assume these are secondary multishot arrows
@@ -208,7 +207,8 @@ public class ProjectileListener implements Listener {
                     if (e.shouldConsumeItem() && !isShotFromMultishot(a)) a.setPickupStatus(AbstractArrow.PickupStatus.ALLOWED);
                     else a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
                     if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21)) {
-                        if (e.shouldConsumeItem() && !wouldBeConsumed && hasInfinity){
+                        boolean wouldBeConsumed = !hasInfinity || consumable.getType() != Material.ARROW;
+                        if (e.shouldConsumeItem() && !wouldBeConsumed){
                             // setConsumeItem does not function on 1.21+ apparently, so manually remove item
                             // Since the bow has infinity, the arrow is not consumed. But since it *should* be consumed,
                             // we have to manually remove the item

@@ -81,7 +81,7 @@ public class EnchantingItemPropertyManager {
      */
     public static int getScaledLevel(Enchantment enchantment, int skill, int originalLevel){
         Scaling scaling = getScaling(enchantment);
-        if (scaling == null || enchantment.getMaxLevel() <= 1) return originalLevel;
+        if (scaling == null || enchantment.getMaxLevel() <= 1) return 1;
         return (int) Math.max(1, Math.floor(scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf(skill)), originalLevel)));
     }
 

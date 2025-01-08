@@ -28,6 +28,7 @@ perks:
     required_lv: 0
     perk_rewards:
       alchemy_brewingtimereduction_add: 0.5
+      alchemy_genericbrewingskill_add: 20
     messages:
       - "<lang.alchemy_perk_1_messages>"
     custom_model_data_unlockable: -1
@@ -43,6 +44,7 @@ perks:
     required_lv: 20
     perk_rewards:
       alchemy_brewingingredientsavechance_add: 0.2
+      alchemy_genericbrewingskill_add: 30
     messages:
       - "<lang.alchemy_perk_2_messages>"
     requireperk_all:

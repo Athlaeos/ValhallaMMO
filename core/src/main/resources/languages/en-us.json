@@ -1597,9 +1597,9 @@
     "smithing_perk_bows_name": "&eAdvanced Fletching",
     "smithing_perk_bows_description": "&7Greatly buffs the quality of your &eBows&7 and &eCrossbows",
     "alchemy_perk_1_name": "&dStable Burn",
-    "alchemy_perk_1_description": "&7Speeds up your potion brewing by &d{alchemy_brewingtimereduction_add}",
+    "alchemy_perk_1_description": "&7Speeds up your potion brewing by &d{alchemy_brewingtimereduction_add}&7, and increases their quality slightly",
     "alchemy_perk_2_name": "&dPotent Ingredients",
-    "alchemy_perk_2_description": "&7Grants a &d{alchemy_brewingingredientsavechance_add} &7chance to not spend ingredients during brewing",
+    "alchemy_perk_2_description": "&7Grants a &d{alchemy_brewingingredientsavechance_add} &7chance to not spend ingredients during brewing, and increases potion quality further",
     "alchemy_perk_a1_name": "&dVolatile Poisons",
     "alchemy_perk_a1_description": "&7Enhances the quality of your poisons. Your indirect hits with splash potions become stronger",
     "alchemy_perk_a2_name": "&dChemical Artillery",
@@ -2817,11 +2817,13 @@
     ],
     "alchemy_perk_1_messages": [
       "&d✰ &5Stable Burn &d✰",
-      "&d{alchemy_brewingtimereduction_add} &7Brewing Speed"
+      "&d{alchemy_brewingtimereduction_add} &7Brewing Speed",
+      "&d{alchemy_genericbrewingskill_add} &7Potion Quality"
     ],
     "alchemy_perk_2_messages": [
       "&d✰ &5Potent Ingredients &d✰",
-      "&d{alchemy_brewingingredientsavechance_add} &7Ingredient Save Chance"
+      "&d{alchemy_brewingingredientsavechance_add} &7Ingredient Save Chance",
+      "&d{alchemy_genericbrewingskill_add} &7Potion Quality"
     ],
     "alchemy_perk_a1_messages": [
       "&d✰ &5Volatile Poisons &d✰",
