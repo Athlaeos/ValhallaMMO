@@ -335,7 +335,9 @@ perks:
       p:digging_diggingluck_add: 3
       p:digging_diggingspeedbonus_add: 0.25
       p:digging_diggingexpmultiplier_add: -0.5
-      p:perks_unlocked_add:
+      p:perks_permanently_unlocked_add:
+        - digging_perk_ng1
+      p:perks_unlocked_remove:
         - digging_perk_ng1
     messages:
       - "<lang.digging_perk_ng1_messages>"
@@ -356,8 +358,9 @@ perks:
       p:digging_diggingluck_add: 3
       p:digging_diggingspeedbonus_add: 0.25
       p:digging_diggingexpmultiplier_add: -0.17
-      p:perks_unlocked_add:
-        - digging_perk_ng1
+      p:perks_permanently_unlocked_add:
+        - digging_perk_ng2
+      p:perks_unlocked_remove:
         - digging_perk_ng2
     messages:
       - "<lang.digging_perk_ng2_messages>"

@@ -186,7 +186,8 @@ public class AlchemySkill extends Skill implements Listener {
         if (b != null && (b.getType() == Material.CAULDRON || b.getType().toString().equals("WATER_CAULDRON"))){
             ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
             if (ItemUtils.isEmpty(hand) || hand.getType() != Material.POTION) return;
-            hand.setType(Material.GLASS_BOTTLE);
+            hand = new ItemStack(Material.GLASS_BOTTLE, hand.getAmount());
+            e.getPlayer().getInventory().setItemInMainHand(hand);
             e.getClickedBlock().getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.BLOCK_BREWING_STAND_BREW, 1F, 1F);
             e.setCancelled(true);
         }

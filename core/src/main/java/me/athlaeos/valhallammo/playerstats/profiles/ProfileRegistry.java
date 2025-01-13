@@ -6,7 +6,12 @@ import me.athlaeos.valhallammo.persistence.*;
 import me.athlaeos.valhallammo.persistence.implementations.PDC;
 import me.athlaeos.valhallammo.persistence.implementations.SQL;
 import me.athlaeos.valhallammo.persistence.implementations.SQLite;
+import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
+import me.athlaeos.valhallammo.placeholder.placeholders.NumericProfileStatPlaceholder;
+import me.athlaeos.valhallammo.placeholder.placeholders.ProfileNextLevelEXPPlaceholder;
+import me.athlaeos.valhallammo.placeholder.placeholders.ProfileNextLevelPlaceholder;
 import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
+import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import org.bukkit.entity.Player;
@@ -14,6 +19,7 @@ import org.bukkit.entity.Player;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ProfileRegistry {
@@ -56,6 +62,14 @@ public class ProfileRegistry {
                 e.printStackTrace();
             }
         }
+
+        for (String numberStat : p.getNumberStatProperties().keySet()) {
+            StatFormat format = p.getNumberStatProperties().get(numberStat).getFormat();
+            if (format == null) continue;
+            PlaceholderRegistry.registerPlaceholder(new NumericProfileStatPlaceholder("%" + p.getClass().getSimpleName().toLowerCase(Locale.US) + "_" + numberStat.toLowerCase(Locale.US) + "%", p.getClass(), numberStat, format));
+        }
+        PlaceholderRegistry.registerPlaceholder(new ProfileNextLevelPlaceholder("%" + p.getClass().getSimpleName().toLowerCase(Locale.US) + "_next_level%", p.getClass(), StatFormat.INT));
+        PlaceholderRegistry.registerPlaceholder(new ProfileNextLevelEXPPlaceholder("%" + p.getClass().getSimpleName().toLowerCase(Locale.US) + "_next_level_exp%", p.getClass(), StatFormat.INT));
     }
 
     public static void setupDatabase(){

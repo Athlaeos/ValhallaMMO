@@ -55,24 +55,24 @@ public class ContentPackageManager {
         return null;
     }
 
-    public static void importContent(ContentPackage contentPackage, ExportMode... importModes){
+    public static void importContent(ContentPackage contentPackage, List<String> recipes, ExportMode... importModes){
         List<ExportMode> modes = List.of(importModes);
         if (modes.contains(ExportMode.ITEMS)) contentPackage.getCustomItems().values().forEach(i -> CustomItemRegistry.register(i.getId(), i));
         if (modes.contains(ExportMode.LOOT_TABLES)) contentPackage.getLootTables().values().forEach(l -> LootTableRegistry.registerLootTable(l, true));
         if (modes.contains(ExportMode.LOOT_CONFIGURATION)) LootTableRegistry.applyConfiguration(contentPackage.getLootTableConfiguration());
         if (modes.contains(ExportMode.REPLACEMENT_TABLES)) contentPackage.getReplacementTables().values().forEach(l -> LootTableRegistry.registerReplacementTable(l, true));
         if (modes.contains(ExportMode.REPLACEMENT_CONFIGURATION)) LootTableRegistry.applyConfiguration(contentPackage.getReplacementTableConfiguration());
-        if (modes.contains(ExportMode.RECIPES_IMMERSIVE)) contentPackage.getImmersiveRecipes().values().forEach(r -> CustomRecipeRegistry.register(r, true));
-        if (modes.contains(ExportMode.RECIPES_SMITHING)) contentPackage.getSmithingRecipes().values().forEach(r -> CustomRecipeRegistry.register(r, true));
-        if (modes.contains(ExportMode.RECIPES_GRID)) contentPackage.getGridRecipes().values().forEach(r -> CustomRecipeRegistry.register(r, true));
-        if (modes.contains(ExportMode.RECIPES_BREWING)) contentPackage.getBrewingRecipes().values().forEach(r -> CustomRecipeRegistry.register(r, true));
-        if (modes.contains(ExportMode.RECIPES_COOKING)) contentPackage.getCookingRecipes().values().forEach(r -> CustomRecipeRegistry.register(r, true));
-        if (modes.contains(ExportMode.RECIPES_CAULDRON)) contentPackage.getCauldronRecipes().values().forEach(r -> CustomRecipeRegistry.register(r, true));
+        if (modes.contains(ExportMode.RECIPES_IMMERSIVE)) contentPackage.getImmersiveRecipes().values().stream().filter(r -> recipes.isEmpty() || recipes.contains(r.getName())).forEach(r -> CustomRecipeRegistry.register(r, true));
+        if (modes.contains(ExportMode.RECIPES_SMITHING)) contentPackage.getSmithingRecipes().values().stream().filter(r -> recipes.isEmpty() || recipes.contains(r.getName())).forEach(r -> CustomRecipeRegistry.register(r, true));
+        if (modes.contains(ExportMode.RECIPES_GRID)) contentPackage.getGridRecipes().values().stream().filter(r -> recipes.isEmpty() || recipes.contains(r.getName())).forEach(r -> CustomRecipeRegistry.register(r, true));
+        if (modes.contains(ExportMode.RECIPES_BREWING)) contentPackage.getBrewingRecipes().values().stream().filter(r -> recipes.isEmpty() || recipes.contains(r.getName())).forEach(r -> CustomRecipeRegistry.register(r, true));
+        if (modes.contains(ExportMode.RECIPES_COOKING)) contentPackage.getCookingRecipes().values().stream().filter(r -> recipes.isEmpty() || recipes.contains(r.getName())).forEach(r -> CustomRecipeRegistry.register(r, true));
+        if (modes.contains(ExportMode.RECIPES_CAULDRON)) contentPackage.getCauldronRecipes().values().stream().filter(r -> recipes.isEmpty() || recipes.contains(r.getName())).forEach(r -> CustomRecipeRegistry.register(r, true));
         CustomRecipeRegistry.setChangesMade();
     }
 
     public static void importContent(ContentPackage contentPackage){
-        importContent(contentPackage, ExportMode.values());
+        importContent(contentPackage, new ArrayList<>(), ExportMode.values());
     }
 
     public static boolean exportContent(String packageName, List<ValhallaRecipe> recipes, boolean add, ExportMode... exportModes){

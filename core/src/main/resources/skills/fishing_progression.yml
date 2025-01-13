@@ -306,7 +306,9 @@ perks:
       p:fishing_fishingluck_add: 2.5
       p:fishing_fishingspeedbonus_add: 0.25
       p:fishing_fishingexpmultiplier_add: -0.5
-      p:perks_unlocked_add:
+      p:perks_permanently_unlocked_add:
+        - fishing_perk_ng1
+      p:perks_unlocked_remove:
         - fishing_perk_ng1
     messages:
       - "<lang.fishing_perk_ng1_messages>"
@@ -327,8 +329,9 @@ perks:
       p:fishing_fishingluck_add: 2.5
       p:fishing_fishingspeedbonus_add: 0.25
       p:fishing_fishingexpmultiplier_add: -0.17
-      p:perks_unlocked_add:
-        - fishing_perk_ng1
+      p:perks_permanently_unlocked_add:
+        - fishing_perk_ng2
+      p:perks_unlocked_remove:
         - fishing_perk_ng2
     messages:
       - "<lang.fishing_perk_ng2_messages>"

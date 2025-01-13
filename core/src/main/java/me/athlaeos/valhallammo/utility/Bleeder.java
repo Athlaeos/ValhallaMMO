@@ -175,7 +175,8 @@ public class Bleeder {
                     }
                     int immunityFramesBefore = bleedingEntity.getNoDamageTicks();
                     bleedingEntity.setNoDamageTicks(0);
-                    EntityUtils.damage(bleedingEntity, causedBy, bleedingDamage, "BLEED");
+                    if (!EntityUtils.hasActiveDamageProcess(bleedingEntity))
+                        EntityUtils.damage(bleedingEntity, causedBy, bleedingDamage, "BLEED");
                     bleedingEntity.setNoDamageTicks(immunityFramesBefore); // makes sure the entity doesn't immune attacks they shouldn't after taking bleed damage
 
                     int particleCount = (int) (3 * Math.min(10, bleedingDamage));

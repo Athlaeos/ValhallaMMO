@@ -104,7 +104,7 @@ public class ResourcePackCommand implements Command {
                     return true;
                 }
                 ResourcePack.generate();
-                sender.sendMessage(Utils.chat("&a" + ResourcePack.getLegacyPackLink()));
+                sender.sendMessage(Utils.chat("&a" + ResourcePack.getResourcePackURL()));
                 sender.sendMessage(Utils.chat(TranslationManager.getTranslation("status_command_resourcepack_setup")));
             } else {
                 boolean enabled;

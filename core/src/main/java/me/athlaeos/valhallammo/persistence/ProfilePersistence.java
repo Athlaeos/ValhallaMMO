@@ -31,10 +31,12 @@ public abstract class ProfilePersistence {
                     double totalEXP = persistentProfile.getTotalEXP();
                     double EXP = persistentProfile.getEXP();
                     int level = persistentProfile.getLevel();
+                    int ngPlus = persistentProfile.getNewGamePlus();
                     Profile resetProfile = profileType.getBlankProfile(p);
                     resetProfile.setTotalEXP(totalEXP);
                     resetProfile.setEXP(EXP);
                     resetProfile.setLevel(level);
+                    resetProfile.setNewGamePlus(ngPlus);
                     runPersistentStartingPerks = true;
                     setPersistentProfile(p, resetProfile, profileType.getClass());
                 }

@@ -46,3 +46,6 @@ scalings:
   sweeping: '(1/120) * %rating% - 1,ADD_ON_DEFAULT,none,none'
   thorns: '(1/120) * %rating% - 1,ADD_ON_DEFAULT,none,none'
   swift_sneak: '(1/120) * %rating% - 1,ADD_ON_DEFAULT,none,none'
+  density: '(2/120) * %rating% - 2,ADD_ON_DEFAULT,none,none'
+  wind_burst: '(1/120) * %rating% - 1,ADD_ON_DEFAULT,none,none'
+  breach: '(1/120) * %rating% - 1,ADD_ON_DEFAULT,none,none'

@@ -158,6 +158,7 @@ public class SkillTreeMenu extends Menu {
                                 PowerProfile account = ProfileRegistry.getPersistentProfile(target, PowerProfile.class);
 
                                 Collection<String> perks = account.getUnlockedPerks();
+                                perks.addAll(account.getPermanentlyUnlockedPerks());
                                 perks.add(p.getName());
                                 account.setUnlockedPerks(perks);
 

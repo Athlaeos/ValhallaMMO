@@ -25,16 +25,17 @@ public class ImportCommand implements Command {
             Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_import_file_not_found"));
             return true;
         }
-        List<ContentPackageManager.ExportMode> exportModes = new ArrayList<>();
+        List<ContentPackageManager.ExportMode> importModes = new ArrayList<>();
+        List<String> importRecipes = new ArrayList<>();
         if (args.length > 2){
             String[] modes = Arrays.copyOfRange(args, 2, args.length);
             for (String mode : modes){
                 ContentPackageManager.ExportMode m = Catch.catchOrElse(() -> ContentPackageManager.ExportMode.valueOf(mode.toUpperCase(java.util.Locale.US)), null);
-                if (m == null) Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_import_invalid_mode").replace("%mode%", mode));
-                else exportModes.add(m);
+                if (m == null) importRecipes.add(mode);
+                else importModes.add(m);
             }
-        } else exportModes.addAll(List.of(ContentPackageManager.ExportMode.values()));
-        ContentPackageManager.importContent(contentPackage, exportModes.toArray(new ContentPackageManager.ExportMode[0]));
+        } else importModes.addAll(List.of(ContentPackageManager.ExportMode.values()));
+        ContentPackageManager.importContent(contentPackage, importRecipes, importModes.toArray(new ContentPackageManager.ExportMode[0]));
         Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_import_success"));
         return true;
     }

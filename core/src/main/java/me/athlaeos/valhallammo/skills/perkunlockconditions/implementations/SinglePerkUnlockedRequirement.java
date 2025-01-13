@@ -10,6 +10,8 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 public class SinglePerkUnlockedRequirement implements UnlockCondition {
@@ -31,8 +33,10 @@ public class SinglePerkUnlockedRequirement implements UnlockCondition {
     @Override
     public boolean canUnlock(Player p, boolean forceTrue) {
         PowerProfile profile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
+        Collection<String> unlocked = new HashSet<>(profile.getUnlockedPerks());
+        unlocked.addAll(profile.getPermanentlyUnlockedPerks());
         return perks == null || perks.isEmpty() ||
-                profile.getUnlockedPerks().stream().anyMatch(perks::contains);
+                unlocked.stream().anyMatch(perks::contains);
     }
 
     @Override

@@ -20,20 +20,20 @@ public class ResourcePack {
      */
     private static File pack;
     private static final Map<MinecraftVersion, ResourcePackDetails> resourcePacks = new HashMap<>();
-    private static final String legacyPackLink = "https://github.com/user-attachments/files/16638849/ValhallaMMO.zip";
-    private static final String legacySha1 = "e4566478fb96695819f3e00f1caab90a75c74553";
+    private static final String legacyPackLink = "https://github.com/user-attachments/files/18387229/ValhallaMMO.zip";
+    private static final String legacySha1 = "953a74b0d0176b57ade56317454204a0ebea3049";
     static {
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_26, null, null);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_25, null, null);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_24, null, null);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_23, null, null);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_3, "https://github.com/user-attachments/files/18147390/ValhallaMMO.zip", "ec1ad7dbba407d6c483d151f038918440ffb419e");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_2, "https://github.com/user-attachments/files/18147390/ValhallaMMO.zip", "ec1ad7dbba407d6c483d151f038918440ffb419e");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_1, "https://github.com/user-attachments/files/18147390/ValhallaMMO.zip", "ec1ad7dbba407d6c483d151f038918440ffb419e");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22, "https://github.com/user-attachments/files/18147390/ValhallaMMO.zip", "ec1ad7dbba407d6c483d151f038918440ffb419e");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_5, "https://github.com/user-attachments/files/18147390/ValhallaMMO.zip", "ec1ad7dbba407d6c483d151f038918440ffb419e");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_4, "https://github.com/user-attachments/files/18147390/ValhallaMMO.zip", "ec1ad7dbba407d6c483d151f038918440ffb419e");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_3, "https://github.com/user-attachments/files/17790373/ValhallaMMO.zip", "ce18f41cabf4161d311dc4b1119c549e19b22203");
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_3, "https://github.com/user-attachments/files/18387235/ValhallaMMO.zip", "90e40d778e89e26a72716b9dd6513c12b75a1d2c");
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_2, "https://github.com/user-attachments/files/18387235/ValhallaMMO.zip", "90e40d778e89e26a72716b9dd6513c12b75a1d2c");
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_1, "https://github.com/user-attachments/files/18387235/ValhallaMMO.zip", "90e40d778e89e26a72716b9dd6513c12b75a1d2c");
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22, "https://github.com/user-attachments/files/18387235/ValhallaMMO.zip", "90e40d778e89e26a72716b9dd6513c12b75a1d2c");
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_5, "https://github.com/user-attachments/files/18387235/ValhallaMMO.zip", "90e40d778e89e26a72716b9dd6513c12b75a1d2c");
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_4, "https://github.com/user-attachments/files/18387235/ValhallaMMO.zip", "90e40d778e89e26a72716b9dd6513c12b75a1d2c");
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_3, "https://github.com/user-attachments/files/18387232/ValhallaMMO.zip", "266e7db9efa25603e550a619c7cb507c867fa965");
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_2, legacyPackLink, legacySha1);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_1, legacyPackLink, legacySha1);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21, legacyPackLink, legacySha1);

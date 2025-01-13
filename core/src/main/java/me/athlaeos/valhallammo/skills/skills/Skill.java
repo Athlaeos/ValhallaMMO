@@ -792,6 +792,7 @@ public abstract class Skill {
         }
 
         Collection<String> unlockedPerks = powerProfile.getUnlockedPerks();
+        unlockedPerks.addAll(powerProfile.getPermanentlyUnlockedPerks());
         Collection<String> fakeUnlockedPerks = powerProfile.getFakeUnlockedPerks();
         Collection<String> permanentlyLockedPerks = powerProfile.getPermanentlyLockedPerks();
         for (Perk perk : perks) {

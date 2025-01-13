@@ -9,9 +9,7 @@ experience:
   exp_per_damage: 10
   mace_exp_multiplier: 0.1 # When using "The Mace" to attack, exp rewarded is multiplied by this amount
   spawner_spawned_multiplier: 0.7
-  exp_enemies_nerfed: 
-    ENDERMAN: 0.01
-    ZOMBIFIED_PIGLIN: 0.02
+  exp_enemies_nerfed: []
 
 special_perks: []
 
@@ -273,7 +271,9 @@ perks:
       p:heavyweapons_powerattackfraction_add: 0.2
       p:heavyweapons_critchance_add: 0.1
       p:heavyweapons_heavyweaponsexpmultiplier_add: -0.5
-      p:perks_unlocked_add:
+      p:perks_permanently_unlocked_add:
+        - heavyweapons_perk_ng1
+      p:perks_unlocked_remove:
         - heavyweapons_perk_ng1
     messages:
       - "<lang.heavyweapons_perk_ng1_messages>"
@@ -294,8 +294,9 @@ perks:
       p:heavyweapons_powerattackfraction_add: 0.2
       p:heavyweapons_critchance_add: 0.1
       p:heavyweapons_heavyweaponsexpmultiplier_add: -0.17
-      p:perks_unlocked_add:
-        - heavyweapons_perk_ng1
+      p:perks_permanently_unlocked_add:
         - heavyweapons_perk_ng2
+      p:perks_unlocked_remove:
+        - lightarmor_perk_ng2
     messages:
       - "<lang.heavyweapons_perk_ng2_messages>"

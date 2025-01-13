@@ -502,7 +502,9 @@ perks:
       p:woodcutting_woodcuttingdrops_add: 0.3
       p:woodcutting_woodcuttingspeedbonus_add: 0.25
       p:woodcutting_woodcuttingexpmultiplier_add: -0.5
-      p:perks_unlocked_add:
+      p:perks_permanently_unlocked_add:
+        - woodcutting_perk_ng1
+      p:perks_unlocked_remove:
         - woodcutting_perk_ng1
     messages:
       - "<lang.woodcutting_perk_ng1_messages>"
@@ -522,8 +524,9 @@ perks:
       p:woodcutting_woodcuttingdrops_add: 0.3
       p:woodcutting_woodcuttingspeedbonus_add: 0.25
       p:woodcutting_woodcuttingexpmultiplier_add: -0.17
-      p:perks_unlocked_add:
-        - woodcutting_perk_ng1
+      p:perks_permanently_unlocked_add:
+        - woodcutting_perk_ng2
+      p:perks_unlocked_remove:
         - woodcutting_perk_ng2
     messages:
       - "<lang.woodcutting_perk_ng2_messages>"

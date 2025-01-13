@@ -366,7 +366,9 @@ perks:
       p:farming_farmingdrops_add: 0.3
       p:farming_butcherydrops_add: 0.3
       p:farming_farmingexpmultiplier_add: -0.5
-      p:perks_unlocked_add:
+      p:perks_permanently_unlocked_add:
+        - farming_perk_ng1
+      p:perks_unlocked_remove:
         - farming_perk_ng1
     messages:
       - "<lang.farming_perk_ng1_messages>"
@@ -386,8 +388,9 @@ perks:
       p:farming_farmingdrops_add: 0.3
       p:farming_butcherydrops_add: 0.3
       p:farming_farmingexpmultiplier_add: -0.17
-      p:perks_unlocked_add:
-        - farming_perk_ng1
+      p:perks_permanently_unlocked_add:
+        - farming_perk_ng2
+      p:perks_unlocked_remove:
         - farming_perk_ng2
     messages:
       - "<lang.farming_perk_ng2_messages>"

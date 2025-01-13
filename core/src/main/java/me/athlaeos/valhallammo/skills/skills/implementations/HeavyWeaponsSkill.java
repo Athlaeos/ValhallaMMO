@@ -147,7 +147,8 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
     public void onExpAttack(EntityDamageEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
                 EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE) ||
-                e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK || !(e.getEntity() instanceof Monster l)) return;
+                e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK || !(e.getEntity() instanceof LivingEntity l) ||
+                EntityClassification.matchesClassification(l.getType(), EntityClassification.PASSIVE)) return;
         Entity damager = EntityDamagedListener.getLastDamager(l);
         Player p = damager instanceof Player pl ? pl : damager instanceof Trident t && t.getShooter() instanceof Player pl ? pl : null;
         if (p != null){

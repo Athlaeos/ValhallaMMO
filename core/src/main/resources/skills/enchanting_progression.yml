@@ -568,7 +568,9 @@ perks:
       p:enchanting_anvilskill_add: 50
       p:enchanting_essencemultiplier_add: 0.5
       p:enchanting_enchantingexpmultiplier_add: -0.5
-      p:perks_unlocked_add:
+      p:perks_permanently_unlocked_add:
+        - enchanting_perk_ng1
+      p:perks_unlocked_remove:
         - enchanting_perk_ng1
     messages:
       - "<lang.enchanting_perk_ng1_messages>"
@@ -589,8 +591,9 @@ perks:
       p:enchanting_anvilskill_add: 50
       p:enchanting_essencemultiplier_add: 0.5
       p:enchanting_enchantingexpmultiplier_add: -0.17
-      p:perks_unlocked_add:
-        - enchanting_perk_ng1
+      p:perks_permanently_unlocked_add:
+        - enchanting_perk_ng2
+      p:perks_unlocked_remove:
         - enchanting_perk_ng2
     messages:
       - "<lang.enchanting_perk_ng2_messages>"

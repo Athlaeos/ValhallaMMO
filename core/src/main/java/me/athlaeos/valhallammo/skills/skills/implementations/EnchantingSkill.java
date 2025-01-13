@@ -268,7 +268,7 @@ public class EnchantingSkill extends Skill implements Listener {
                 !EntityDamagedListener.getEntityDamageCauses().contains(e.getCause().toString())) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
         if (!(trueDamager instanceof Player p) || !(e.getEntity() instanceof LivingEntity v) ||
-                !hasPermissionAccess(p)) return;
+                !hasPermissionAccess(p) || EntityUtils.hasActiveDamageProcess(v)) return;
         if (WorldGuardHook.inDisabledRegion(e.getDamager().getLocation(), p, WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         EnchantingProfile profile = ProfileCache.getOrCache(p, EnchantingProfile.class);
         if (profile.getElementalDamageTypes().isEmpty()) return;
@@ -322,7 +322,7 @@ public class EnchantingSkill extends Skill implements Listener {
     @SuppressWarnings("all")
     @EventHandler(priority = EventPriority.MONITOR)
     public void onHandSwap(PlayerSwapHandItemsEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() || !e.getPlayer().isSneaking()) return;
         if (WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_hand_swap")) return; // to prevent spam, a cooldown of 0.5 seconds is applied
         if (ItemUtils.isEmpty(e.getOffHandItem())) return;

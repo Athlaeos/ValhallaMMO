@@ -325,7 +325,9 @@ perks:
       p:archery_bowcritchance_add: 0.1
       p:archery_crossbowcritchance_add: 0.1
       p:archery_archeryexpmultiplier_add: -0.5
-      p:perks_unlocked_add:
+      p:perks_permanently_unlocked_add:
+        - archery_perk_ng1
+      p:perks_unlocked_remove:
         - archery_perk_ng1
     messages:
       - "<lang.archery_perk_ng1_messages>"
@@ -348,8 +350,9 @@ perks:
       p:archery_bowcritchance_add: 0.1
       p:archery_crossbowcritchance_add: 0.1
       p:archery_archeryexpmultiplier_add: -0.17
-      p:perks_unlocked_add:
-        - archery_perk_ng1
+      p:perks_permanently_unlocked_add:
+        - archery_perk_ng2
+      p:perks_unlocked_remove:
         - archery_perk_ng2
     messages:
       - "<lang.archery_perk_ng2_messages>"

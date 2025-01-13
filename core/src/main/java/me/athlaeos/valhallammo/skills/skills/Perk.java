@@ -101,8 +101,9 @@ public class Perk {
     }
 
     public boolean canUnlock(Player p){
-        PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class); // ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
+        PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
         if (profile.getUnlockedPerks().contains(this.name) ||
+                profile.getPermanentlyUnlockedPerks().contains(this.name) ||
                 profile.getPermanentlyLockedPerks().contains(this.name) ||
                 profile.getFakeUnlockedPerks().contains(this.name)) return false;
 
@@ -112,7 +113,8 @@ public class Perk {
 
     public boolean shouldLock(Player p){
         PowerProfile profile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
-        if (!profile.getUnlockedPerks().contains(this.name)) return false;
+        if (!profile.getUnlockedPerks().contains(this.name) &&
+                !profile.getPermanentlyUnlockedPerks().contains(this.name)) return false;
         return !metLevelRequirement(p) || !metConditionRequirements(p, false);
     }
 
@@ -127,7 +129,8 @@ public class Perk {
     public boolean shouldBeVisible(Player p){
         if (!isHiddenUntilRequirementsMet() || canUnlock(p)) return true;
         PowerProfile profile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
-        if (profile.getUnlockedPerks().contains(this.name)) return true;
+        if (profile.getUnlockedPerks().contains(this.name) ||
+                profile.getPermanentlyUnlockedPerks().contains(this.name)) return true;
         if (profile.getPermanentlyLockedPerks().contains(this.name)) return false;
         if (profile.getFakeUnlockedPerks().contains(this.name)) return true;
         return metConditionRequirements(p, true);
@@ -168,7 +171,7 @@ public class Perk {
 
     public boolean hasUnlocked(Player p){
         PowerProfile profile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
-        return profile.getUnlockedPerks().contains(this.name);
+        return profile.getUnlockedPerks().contains(this.name) || profile.getPermanentlyUnlockedPerks().contains(this.name);
     }
 
     public boolean hasPermanentlyLocked(Player p){

@@ -119,7 +119,8 @@ public class MonsterScalingManager {
      * @return the exp orb bonus, or 0 if the entity is lv <0 or invalid or if no scaling has been defined
      */
     public static double getExpOrbMultiplier(LivingEntity entity){
-        if (!enabled || (monstersOnly && !(entity instanceof Monster) && !(entity instanceof Boss)) || entity instanceof Player) return 0;
+        if (EntityClassification.matchesClassification(entity.getType(), EntityClassification.UNALIVE)) return 0;
+        if (!enabled || (monstersOnly && EntityClassification.matchesClassification(entity.getType(), EntityClassification.PASSIVE) && !(entity instanceof Boss)) || entity instanceof Player) return 0;
         int level = getLevel(entity);
         if (level < 0) return 0;
         if (entityExpOrbScaling.containsKey(entity.getType())){
@@ -138,7 +139,8 @@ public class MonsterScalingManager {
      * @return the exp orb bonus, or 0 if the entity is lv <0 or invalid or if no scaling has been defined
      */
     public static double getLootMultiplier(LivingEntity entity){
-        if (!enabled || (monstersOnly && !(entity instanceof Monster) && !(entity instanceof Boss)) || entity instanceof Player) return 0;
+        if (EntityClassification.matchesClassification(entity.getType(), EntityClassification.UNALIVE)) return 0;
+        if (!enabled || (monstersOnly && EntityClassification.matchesClassification(entity.getType(), EntityClassification.PASSIVE) && !(entity instanceof Boss)) || entity instanceof Player) return 0;
         int level = getLevel(entity);
         if (level < 0) return 0;
         if (entityLootScaling.containsKey(entity.getType())){
@@ -158,13 +160,13 @@ public class MonsterScalingManager {
      * @return the entity's stat, or 0 if the entity is a player, or is not a monster when only monsters are allowed.
      */
     public static double getStatValue(LivingEntity entity, String stat){
-        if (!enabled) return 0;
+        if (!enabled || EntityClassification.matchesClassification(entity.getType(), EntityClassification.UNALIVE)) return 0;
         int level = Math.max(0, getLevel(entity));
         if (entityStatScaling.containsKey(entity.getType())){
             Map<String, String> entityStats = entityStatScaling.getOrDefault(entity.getType(), new HashMap<>());
             if (!entityStats.containsKey(stat)) return 0;
             return Utils.eval(parseRand(entityStatScaling.get(entity.getType()).get(stat).replace("%level%", String.valueOf(level))));
-        } else if ((entity instanceof Monster || entity instanceof Boss || (wolfLeveling && entity instanceof Wolf)) && defaultStatScaling.containsKey(stat)) {
+        } else if ((!EntityClassification.matchesClassification(entity.getType(), EntityClassification.PASSIVE) || entity instanceof Boss || (wolfLeveling && entity instanceof Wolf)) && defaultStatScaling.containsKey(stat)) {
             return Utils.eval(parseRand(defaultStatScaling.get(stat).replace("%level%", String.valueOf(level))));
         } else if (globalStatScaling.containsKey(stat)) {
             return Utils.eval(parseRand(globalStatScaling.get(stat).replace("%level%", String.valueOf(level))));
@@ -203,7 +205,8 @@ public class MonsterScalingManager {
      * @return the level the plugin calculated they should be. Will return -1 if the entity is not a monster or no level scaling is available for them.
      */
     public static int getNewLevel(LivingEntity entity){
-        if (!enabled || (monstersOnly && !(entity instanceof Monster) && !(entity instanceof Boss)) || entity instanceof Player) return -1;
+        if (EntityClassification.matchesClassification(entity.getType(), EntityClassification.UNALIVE)) return -1;
+        if (!enabled || (monstersOnly && EntityClassification.matchesClassification(entity.getType(), EntityClassification.PASSIVE) && !(entity instanceof Boss)) || entity instanceof Player) return -1;
         int powerLevel = (int) Math.round(getAreaDifficultyLevel(entity.getLocation(), null));
         if (entityLevelScaling.containsKey(entity.getType())){
             return Math.max(0, (int) Utils.eval(parseRand(entityLevelScaling.get(entity.getType()).replace("%level%", String.valueOf(powerLevel)))));

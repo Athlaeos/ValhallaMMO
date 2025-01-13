@@ -3,7 +3,7 @@ starting_perks: []
 experience:
   max_level: 100
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
-  exp_multiplier_quality: 0.01 # Added experience multiplier for each point of quality of the potion
+  exp_multiplier_quality: 0.00334 # Added experience multiplier for each point of quality of the potion
 
 special_perks: []
 
@@ -262,7 +262,9 @@ perks:
       p:alchemy_genericbrewingskill_add: 50
       p:alchemy_brewingtimereduction_add: 0.75
       p:alchemy_alchemyexpmultiplier_add: -0.5
-      p:perks_unlocked_add:
+      p:perks_permanently_unlocked_add:
+        - alchemy_perk_ng1
+      p:perks_unlocked_remove:
         - alchemy_perk_ng1
     messages:
       - "<lang.alchemy_perk_ng1_messages>"
@@ -282,8 +284,9 @@ perks:
       p:alchemy_genericbrewingskill_add: 50
       p:alchemy_brewingtimereduction_add: 1.0
       p:alchemy_alchemyexpmultiplier_add: -0.17
-      p:perks_unlocked_add:
-        - alchemy_perk_ng1
+      p:perks_permanently_unlocked_add:
+        - alchemy_perk_ng2
+      p:perks_unlocked_remove:
         - alchemy_perk_ng2
     messages:
       - "<lang.alchemy_perk_ng2_messages>"

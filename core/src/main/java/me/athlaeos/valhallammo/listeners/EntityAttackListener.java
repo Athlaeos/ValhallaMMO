@@ -245,7 +245,7 @@ public class EntityAttackListener implements Listener {
                 e.setDamage(Math.max(0, e.getDamage() * damageMultiplier));
 
                 // damage reflecting mechanic
-                if (reflectDamageType != null && e.getCause() != reflectDamageType && trueDamager instanceof LivingEntity a){
+                if (reflectDamageType != null && !EntityUtils.hasActiveDamageProcess(v) && e.getCause() != reflectDamageType && trueDamager instanceof LivingEntity a){
                     if (!(v instanceof Player p) || !WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_REFLECT)){
                         if (Utils.proc(AccumulativeStatManager.getCachedRelationalStats("REFLECT_CHANCE", v, e.getDamager(), 10000, true), victimLuck - damagerLuck, false)){
                             double reflectFraction = AccumulativeStatManager.getCachedRelationalStats("REFLECT_FRACTION", v, e.getDamager(), 10000, true);
@@ -257,63 +257,65 @@ public class EntityAttackListener implements Listener {
                 }
 
                 final double finalDamageMultiplier = damageMultiplier;
-                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                    // custom bleed mechanics
-                    if (attackCooldown >= 0.9F){
-                        double bleedChance = AccumulativeStatManager.getCachedAttackerRelationalStats("BLEED_CHANCE", v, e.getDamager(), 10000, true);
-                        if (bleedNextAttack.contains(trueDamager.getUniqueId()) || Utils.proc(bleedChance, damagerLuck - victimLuck, false)){
-                            bleedNextAttack.remove(trueDamager.getUniqueId());
-                            Bleeder.inflictBleed(v, e.getDamager(), combatType);
-                        }
-                    }
-
-                    double lifeSteal = AccumulativeStatManager.getCachedAttackerRelationalStats("LIFE_STEAL", v, trueDamager, 10000, true);
-                    double lifeStealValue = e.getDamage() * lifeSteal;
-
-                    // custom power attack mechanics
-                    double powerAttackMultiplier = 1.5;
-                    // sweep attacks should not trigger custom power attack damage multipliers
-                    if (e.getDamager() instanceof LivingEntity a && a.getFallDistance() > 0 &&
-                            a instanceof Player p && !WorldGuardHook.inDisabledRegion(a.getLocation(), p, WorldGuardHook.VMMO_COMBAT_POWERATTACK)){
-                        powerAttackMultiplier += AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_DAMAGE_MULTIPLIER", v, a, 10000, true);
-
-                        double baseDamage = e.getDamage() / 1.5; // remove vanilla crit damage
-                        e.setDamage(baseDamage * powerAttackMultiplier); // set custom power attack damage
-
-                        double radius = AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_RADIUS", v, a, 10000, true);
-                        double fraction = AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_DAMAGE_FRACTION", v, a, 10000, true);
-                        double damage = e.getDamage() * fraction;
-                        if (damage > 0 && radius > 0){
-                            for (Entity entity : e.getEntity().getWorld().getNearbyEntities(e.getEntity().getLocation(), radius, radius, radius, (en) -> en instanceof LivingEntity)){
-                                if (EntityClassification.matchesClassification(entity.getType(), EntityClassification.UNALIVE) || entity.equals(a)) continue;
-                                EntityUtils.damage((LivingEntity) entity, a, damage, "ENTITY_SWEEP_ATTACK");
+                if (!EntityUtils.hasActiveDamageProcess(v)) {
+                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                        // custom bleed mechanics
+                        if (attackCooldown >= 0.9F){
+                            double bleedChance = AccumulativeStatManager.getCachedAttackerRelationalStats("BLEED_CHANCE", v, e.getDamager(), 10000, true);
+                            if (bleedNextAttack.contains(trueDamager.getUniqueId()) || Utils.proc(bleedChance, damagerLuck - victimLuck, false)){
+                                bleedNextAttack.remove(trueDamager.getUniqueId());
+                                Bleeder.inflictBleed(v, e.getDamager(), combatType);
                             }
                         }
-                    }
 
-                    // custom damage types mechanics
-                    EntityDamageEvent.DamageCause originalCause = e.getCause();
-                    double cooldownDamageMultiplier = EntityUtils.cooldownDamageMultiplier(attackCooldown);
-                    for (CustomDamageType damageType : CustomDamageType.getRegisteredTypes().values()){
-                        double baseDamage = damageType.damageAdder() == null ? 0 : AccumulativeStatManager.getCachedAttackerRelationalStats(damageType.damageAdder(), v, e.getDamager(), 10000, true);
-                        double elementalDamage = finalDamageMultiplier * baseDamage * cooldownDamageMultiplier;
-                        if (elementalDamage > 0) {
-                            EntityUtils.damage(v, e.getDamager(), elementalDamage, damageType.getType());
-                            v.setNoDamageTicks(0); // the entity should not receive immunity frames for these types of damage, as this will reduce or even nullify the entity attack damage taken afterwards
-                            if (damageType.canLifeSteal()) lifeStealValue += elementalDamage * lifeSteal;
-                        }
-                    }
-                    EntityDamagedListener.setCustomDamageCause(v.getUniqueId(), originalCause.toString());
+                        double lifeSteal = AccumulativeStatManager.getCachedAttackerRelationalStats("LIFE_STEAL", v, trueDamager, 10000, true);
+                        double lifeStealValue = e.getDamage() * lifeSteal;
 
-                    if (lifeStealValue > 0 && trueDamager instanceof LivingEntity td && !EntityClassification.matchesClassification(v.getType(), EntityClassification.UNALIVE)){
-                        EntityRegainHealthEvent healEvent = new EntityRegainHealthEvent(td, lifeStealValue, EntityRegainHealthEvent.RegainReason.CUSTOM);
-                        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(healEvent);
-                        if (!healEvent.isCancelled()){
-                            AttributeInstance maxHealth = td.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-                            if (maxHealth != null) td.setHealth(Math.min(maxHealth.getValue(), td.getHealth() + lifeStealValue));
+                        // custom power attack mechanics
+                        double powerAttackMultiplier = 1.5;
+                        // sweep attacks should not trigger custom power attack damage multipliers
+                        if (e.getDamager() instanceof LivingEntity a && a.getFallDistance() > 0 &&
+                                a instanceof Player p && !WorldGuardHook.inDisabledRegion(a.getLocation(), p, WorldGuardHook.VMMO_COMBAT_POWERATTACK)){
+                            powerAttackMultiplier += AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_DAMAGE_MULTIPLIER", v, a, 10000, true);
+
+                            double baseDamage = e.getDamage() / 1.5; // remove vanilla crit damage
+                            e.setDamage(baseDamage * powerAttackMultiplier); // set custom power attack damage
+
+                            double radius = AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_RADIUS", v, a, 10000, true);
+                            double fraction = AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_DAMAGE_FRACTION", v, a, 10000, true);
+                            double damage = e.getDamage() * fraction;
+                            if (damage > 0 && radius > 0){
+                                for (Entity entity : e.getEntity().getWorld().getNearbyEntities(e.getEntity().getLocation(), radius, radius, radius, (en) -> en instanceof LivingEntity)){
+                                    if (EntityClassification.matchesClassification(entity.getType(), EntityClassification.UNALIVE) || entity.equals(a)) continue;
+                                    EntityUtils.damage((LivingEntity) entity, a, damage, "ENTITY_SWEEP_ATTACK");
+                                }
+                            }
                         }
-                    }
-                }, 1L);
+
+                        // custom damage types mechanics
+                        EntityDamageEvent.DamageCause originalCause = e.getCause();
+                        double cooldownDamageMultiplier = EntityUtils.cooldownDamageMultiplier(attackCooldown);
+                        for (CustomDamageType damageType : CustomDamageType.getRegisteredTypes().values()){
+                            double baseDamage = damageType.damageAdder() == null ? 0 : AccumulativeStatManager.getCachedAttackerRelationalStats(damageType.damageAdder(), v, e.getDamager(), 10000, true);
+                            double elementalDamage = finalDamageMultiplier * baseDamage * cooldownDamageMultiplier;
+                            if (elementalDamage > 0) {
+                                EntityUtils.damage(v, e.getDamager(), elementalDamage, damageType.getType());
+                                v.setNoDamageTicks(0); // the entity should not receive immunity frames for these types of damage, as this will reduce or even nullify the entity attack damage taken afterwards
+                                if (damageType.canLifeSteal()) lifeStealValue += elementalDamage * lifeSteal;
+                            }
+                        }
+                        EntityDamagedListener.setCustomDamageCause(v.getUniqueId(), originalCause.toString());
+
+                        if (lifeStealValue > 0 && trueDamager instanceof LivingEntity td && !EntityClassification.matchesClassification(v.getType(), EntityClassification.UNALIVE)){
+                            EntityRegainHealthEvent healEvent = new EntityRegainHealthEvent(td, lifeStealValue, EntityRegainHealthEvent.RegainReason.CUSTOM);
+                            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(healEvent);
+                            if (!healEvent.isCancelled()){
+                                AttributeInstance maxHealth = td.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+                                if (maxHealth != null) td.setHealth(Math.min(maxHealth.getValue(), td.getHealth() + lifeStealValue));
+                            }
+                        }
+                    }, 1L);
+                }
             }
         }
 

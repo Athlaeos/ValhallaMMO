@@ -369,13 +369,23 @@ public class EntityUtils {
         damage(entity, null, amount, type);
     }
 
+    private static final Collection<UUID> activeDamageProcesses = new HashSet<>();
+
+    public static boolean hasActiveDamageProcess(Entity damaged){
+        return activeDamageProcesses.contains(damaged.getUniqueId());
+    }
+
     public static void damage(LivingEntity entity, Entity by, double amount, String type){
-        if (entity.isDead()) return;
+        if (entity.isDead() || activeDamageProcesses.contains(entity.getUniqueId())) return;
         int immunityBefore = entity.getNoDamageTicks();
         entity.setNoDamageTicks(0);
         EntityDamagedListener.setCustomDamageCause(entity.getUniqueId(), type);
-        if (by != null) EntityDamagedListener.setDamager(entity, by);
-        entity.damage(amount);
+        activeDamageProcesses.add(entity.getUniqueId());
+        if (by != null) {
+            EntityDamagedListener.setDamager(entity, by);
+            entity.damage(amount, by);
+        } else entity.damage(amount);
+        activeDamageProcesses.remove(entity.getUniqueId());
         entity.setNoDamageTicks(immunityBefore);
     }
 

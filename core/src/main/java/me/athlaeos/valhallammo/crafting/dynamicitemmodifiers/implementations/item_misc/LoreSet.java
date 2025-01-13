@@ -67,8 +67,7 @@ public class LoreSet extends DynamicItemModifier {
                                 "&6Or shift-click to reset",
                                 "&6the lore back to nothing.",
                                 "&eClick to set the mode"
-                        )
-                        .get()).map(new HashSet<>());
+                        ).get()).map(new HashSet<>());
     }
 
     @Override
@@ -103,7 +102,7 @@ public class LoreSet extends DynamicItemModifier {
     @Override
     public DynamicItemModifier copy() {
         LoreSet m = new LoreSet(getName());
-        m.setLore(this.lore);
+        m.setLore(new ArrayList<>(this.lore));
         m.setPriority(this.getPriority());
         return m;
     }

@@ -32,6 +32,10 @@ public class JumpListener implements Listener {
         JumpListener.multiJumpAnimation = multiJumpAnimation;
     }
 
+    public static Animation getMultiJumpAnimation() {
+        return multiJumpAnimation;
+    }
+
     @EventHandler
     public void onPlayerJump(PlayerJumpEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;

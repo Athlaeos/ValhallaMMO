@@ -48,7 +48,7 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
     private boolean unlockedForEveryone;
     private boolean hidden;
     private int cookTime;
-    private int experience;
+    private float experience;
     private Collection<String> validations;
     private String displayName;
     private String description;
@@ -105,8 +105,8 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
             .lore("&7How much EXP is rewarded on cooking.",
                     "&7Typically cooking recipes provide",
                     "&a1 experience &7per cook.",
-                    "&eClick to increase/decrease by 1",
-                    "&eShift-click to increase/decrease by 10 ticks")
+                    "&eClick to increase/decrease by 0.1",
+                    "&eShift-click to increase/decrease by 1")
             .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack modifierButton = new ItemBuilder(getButtonData("editor_recipe_cooking_modifiers", Material.WRITABLE_BOOK))
             .name("&dDynamic Item Modifiers")
@@ -350,7 +350,7 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
                 }
                 case "cookTimeButton" -> cookTime = Math.max(0, cookTime + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 20 : 1)));
                 case "toggleHiddenButton" -> hidden = !hidden;
-                case "experienceButton" -> experience = Math.max(0, experience + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 10 : 1)));
+                case "experienceButton" -> experience = Math.max(0, experience + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 1F : 0.1F)));
                 case "toggleValhallaToolRequirementButton" -> requireValhallaTools = !requireValhallaTools;
                 case "toggleTinkerButton" -> tinker = !tinker;
                 case "toggleUnlockedForEveryoneButton" -> unlockedForEveryone = !unlockedForEveryone;
@@ -429,7 +429,7 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
         inventory.setItem(20, recipeOptionsButton);
         inventory.setItem(24, new ItemBuilder(modifierButton).lore(modifierLore).get());
         inventory.setItem(30, new ItemBuilder(cookTimeButton).name(String.format("&fTime to cook: &e%d, %ss", cookTime, StringUtils.toTimeStamp2(cookTime, 20))).get());
-        inventory.setItem(32, new ItemBuilder(experienceButton).name(String.format("&fExperience: &e%d", experience)).get());
+        inventory.setItem(32, new ItemBuilder(experienceButton).name(String.format("&fExperience: &e%.1f", experience)).get());
         inventory.setItem(35, new ItemBuilder(toggleTinkerButton).name("&eTinker: " + (tinker ? "&aYes" : "&fNo")).get());
         inventory.setItem(45, confirmDeletion ? deleteConfirmButton : deleteButton);
         inventory.setItem(49, backToMenuButton);

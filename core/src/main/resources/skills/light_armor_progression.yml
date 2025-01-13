@@ -284,7 +284,9 @@ perks:
       p:lightarmor_damageresistanceperpiece_add: 0.0125
       p:lightarmor_movementspeedperpiece_add: 0.02
       p:lightarmor_lightarmorexpmultiplier_add: -0.5
-      p:perks_unlocked_add:
+      p:perks_permanently_unlocked_add:
+        - lightarmor_perk_ng1
+      p:perks_unlocked_remove:
         - lightarmor_perk_ng1
     messages:
       - "<lang.lightarmor_perk_ng1_messages>"
@@ -304,8 +306,9 @@ perks:
       p:lightarmor_damageresistanceperpiece_add: 0.0125
       p:lightarmor_movementspeedperpiece_add: 0.02
       p:lightarmor_lightarmorexpmultiplier_add: -0.17
-      p:perks_unlocked_add:
-        - lightarmor_perk_ng1
+      p:perks_permanently_unlocked_add:
+        - lightarmor_perk_ng2
+      p:perks_unlocked_remove:
         - lightarmor_perk_ng2
     messages:
       - "<lang.lightarmor_perk_ng2_messages>"

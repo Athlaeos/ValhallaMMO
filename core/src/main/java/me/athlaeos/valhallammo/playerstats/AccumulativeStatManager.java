@@ -7,6 +7,8 @@ import me.athlaeos.valhallammo.entities.MonsterScalingManager;
 import me.athlaeos.valhallammo.item.WeightClass;
 import me.athlaeos.valhallammo.listeners.MovementListener;
 import me.athlaeos.valhallammo.parties.PartyManager;
+import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
+import me.athlaeos.valhallammo.placeholder.placeholders.TotalStatPlaceholder;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.playerstats.statsources.*;
@@ -47,8 +49,8 @@ public class AccumulativeStatManager {
         registerOffensive("LIGHT_ARMOR_FRACTION_IGNORED", new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "penetrationFractionLight", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "penetrationFractionLight", WeightClass.LIGHT), new AttributeAttackerSource("LIGHT_ARMOR_PENETRATION_FRACTION").penalty("attribute"), new PotionEffectAttackerSource("LIGHT_ARMOR_PENETRATION_FRACTION"));
         registerOffensive("HEAVY_ARMOR_FLAT_IGNORED", new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "penetrationFlatHeavy", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "penetrationFlatHeavy", WeightClass.LIGHT), new AttributeAttackerSource("HEAVY_ARMOR_PENETRATION_FLAT").penalty("attribute"), new PotionEffectAttackerSource("HEAVY_ARMOR_PENETRATION_FLAT"));
         registerOffensive("HEAVY_ARMOR_FRACTION_IGNORED", new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "penetrationFractionHeavy", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "penetrationFractionHeavy", WeightClass.LIGHT), new AttributeAttackerSource("HEAVY_ARMOR_PENETRATION_FRACTION").penalty("attribute"), new PotionEffectAttackerSource("HEAVY_ARMOR_PENETRATION_FRACTION"));
-        registerOffensive("ARMOR_FLAT_IGNORED", new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "penetrationFlat", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "penetrationFlat", WeightClass.LIGHT), new GlobalBuffSource("armor_penetration"), new AttributeAttackerSource("ARMOR_PENETRATION_FLAT").penalty("attribute"), new PotionEffectAttackerSource("ARMOR_PENETRATION_FLAT"));
-        registerOffensive("ARMOR_FRACTION_IGNORED", new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "penetrationFraction", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "penetrationFraction", WeightClass.LIGHT), new GlobalBuffSource("fraction_armor_penetration"), new AttributeAttackerSource("ARMOR_PENETRATION_FRACTION").penalty("attribute"), new PotionEffectAttackerSource("ARMOR_PENETRATION_FRACTION"));
+        registerOffensive("ARMOR_FLAT_IGNORED", new ArmorPenetrationBreachEnchantmentSource(false), new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "penetrationFlat", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "penetrationFlat", WeightClass.LIGHT), new GlobalBuffSource("armor_penetration"), new AttributeAttackerSource("ARMOR_PENETRATION_FLAT").penalty("attribute"), new PotionEffectAttackerSource("ARMOR_PENETRATION_FLAT"));
+        registerOffensive("ARMOR_FRACTION_IGNORED", new ArmorPenetrationBreachEnchantmentSource(true), new ProfileStatAttackerWeightSource(HeavyWeaponsProfile.class, "penetrationFraction", WeightClass.HEAVY), new ProfileStatAttackerWeightSource(LightWeaponsProfile.class, "penetrationFraction", WeightClass.LIGHT), new GlobalBuffSource("fraction_armor_penetration"), new AttributeAttackerSource("ARMOR_PENETRATION_FRACTION").penalty("attribute"), new PotionEffectAttackerSource("ARMOR_PENETRATION_FRACTION"));
 
         // vanilla non-customized attributes (handled in MovementListener in the form of unique attributes), equipment does not need to be scanned
         register("HEALTH_BONUS", new SetBonusSource("GENERIC_MAX_HEALTH"), new ProfileStatSource(PowerProfile.class, "healthBonus"), new GlobalBuffSource("health_bonus"), new PotionEffectSource("MAX_HEALTH_FLAT"));
@@ -296,8 +298,10 @@ public class AccumulativeStatManager {
      */
     public static void register(String stat, AccumulativeStatSource... s){
         StatCollector existingSource = sources.get(stat);
-        if (existingSource == null) existingSource = new StatCollectorBuilder().addSources(s).build();
-        else existingSource.getStatSources().addAll(Arrays.asList(s));
+        if (existingSource == null) {
+            existingSource = new StatCollectorBuilder().addSources(s).build();
+            PlaceholderRegistry.registerPlaceholder(new TotalStatPlaceholder("%stat_source_" + stat.toLowerCase(java.util.Locale.US) + "%", stat));
+        } else existingSource.getStatSources().addAll(Arrays.asList(s));
         register(stat, existingSource);
     }
 

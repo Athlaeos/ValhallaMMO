@@ -223,7 +223,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerListener(new ItemConsumptionListener());
         registerListener(new ItemDamageListener());
         registerListener(new JoinLeaveListener());
-        registerListener(new JumpListener());
+        if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21_2)) registerListener(new JumpListener());
         registerListener(new LootListener());
         registerListener(new MenuListener());
         registerListener(new MovementListener());

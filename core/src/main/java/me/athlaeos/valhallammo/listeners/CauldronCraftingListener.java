@@ -447,7 +447,7 @@ public class CauldronCraftingListener implements Listener {
                     CauldronCompleteRecipeEvent completionEvent = new CauldronCompleteRecipeEvent(b, recipe, p, result.get());
                     ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(completionEvent);
                     for (int i = 0; i < quantity; i++)
-                        b.getWorld().dropItem(cauldron.add(0.5, 0.5, 0.5), completionEvent.getResult());
+                        b.getWorld().dropItem(cauldron.clone().add(0.5, 0.5, 0.5), completionEvent.getResult());
                     Animation animation = AnimationRegistry.getAnimation(AnimationRegistry.BLOCK_SPARKS_EXTINGUISH.id());
                     animation.animate(p, cauldron, null, duration);
 

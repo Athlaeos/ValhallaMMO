@@ -56,6 +56,7 @@ public final class NMS_v1_21_R2 implements NMS {
     public void onEnable() {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new VaultLootListener(), ValhallaMMO.getInstance());
+        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new JumpInputListener(), ValhallaMMO.getInstance());
     }
 
     @Override

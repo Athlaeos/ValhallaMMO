@@ -339,7 +339,9 @@ perks:
       p:smithing_genericcraftingskill_add: 50
       p:smithing_newgameplus_add: 1
       p:smithing_genericexpmultiplier_add: -0.5
-      p:perks_unlocked_add:
+      p:perks_permanently_unlocked_add:
+        - smithing_perk_ng1
+      p:perks_unlocked_remove:
         - smithing_perk_ng1
     messages:
       - "<lang.smithing_perk_ng1_messages>"
@@ -358,8 +360,9 @@ perks:
       p:smithing_genericcraftingskill_add: 50
       p:smithing_newgameplus_add: 1
       p:smithing_genericexpmultiplier_add: -0.17
-      p:perks_unlocked_add:
-        - smithing_perk_ng1
+      p:perks_permanently_unlocked_add:
+        - smithing_perk_ng2
+      p:perks_unlocked_remove:
         - smithing_perk_ng2
     messages:
       - "<lang.smithing_perk_ng2_messages>"
