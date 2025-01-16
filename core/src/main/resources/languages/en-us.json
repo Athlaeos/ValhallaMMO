@@ -305,6 +305,9 @@
     "perk_requirement_status_fake_unlocked": "&aPerk unlocked",
     "max_level": "MAX",
     "format_signature": "&8- %player%",
+    "format_time": "&8%time%",
+    "formatter_time": "dd-MM-yyyy hha",
+    "formatter_time_timezone": "UTC",
     "translation_durability": "&7Durability:",
     "damage_indicator_crit": "&4CRIT!",
 

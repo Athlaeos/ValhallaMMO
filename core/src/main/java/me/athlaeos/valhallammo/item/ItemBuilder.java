@@ -93,6 +93,11 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder longTag(NamespacedKey key, long tag){
+        meta.getPersistentDataContainer().set(key, PersistentDataType.LONG, tag);
+        return this;
+    }
+
     public ItemBuilder floatTag(NamespacedKey key, float tag){
         meta.getPersistentDataContainer().set(key, PersistentDataType.FLOAT, tag);
         return this;

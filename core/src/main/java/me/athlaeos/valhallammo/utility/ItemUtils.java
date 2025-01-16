@@ -530,6 +530,10 @@ public class ItemUtils {
         return i.getPersistentDataContainer().getOrDefault(key, PersistentDataType.DOUBLE, def);
     }
 
+    public static long getPDCLong(NamespacedKey key, ItemMeta i, long def){
+        return i.getPersistentDataContainer().getOrDefault(key, PersistentDataType.LONG, def);
+    }
+
     public static String getPDCString(NamespacedKey key, ItemMeta i, String def){
         String value = i.getPersistentDataContainer().get(key, PersistentDataType.STRING);
         return value == null ? def : value;

@@ -3,52 +3,57 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class PlayerSignatureAdd extends DynamicItemModifier {
-    private static final NamespacedKey SIGNATURE = new NamespacedKey(ValhallaMMO.getInstance(), "player_signature");
+public class TimeStampAdd extends DynamicItemModifier {
+    private static final NamespacedKey TIME_STAMP = new NamespacedKey(ValhallaMMO.getInstance(), "time_created");
 
     private boolean end = false;
     private boolean addLore = false;
 
-    public PlayerSignatureAdd(String name) {
+    public TimeStampAdd(String name) {
         super(name);
     }
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+        LocalDateTime date = LocalDateTime.now();
         if (addLore){
+            ZoneOffset timeZone = Catch.catchOrElse(() -> ZoneOffset.of(TranslationManager.getTranslation("formatter_time_timezone")), ZoneOffset.UTC);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TranslationManager.getTranslation("formatter_time"));
             List<String> lore = outputItem.getMeta().getLore() != null ? outputItem.getMeta().getLore() : new ArrayList<>();
-            String format = TranslationManager.getTranslation("format_signature");
-            if (end || lore.isEmpty()) lore.add(Utils.chat(format.replace("%player%", crafter.getName())));
-            else lore.set(0, Utils.chat(format.replace("%player%", crafter.getName())));
+            String loreFormat = TranslationManager.getTranslation("format_time");
+            if (end || lore.isEmpty()) lore.add(Utils.chat(loreFormat.replace("%time%", date.atOffset(timeZone).format(formatter))));
+            else lore.set(0, Utils.chat(loreFormat.replace("%time%", date.atOffset(timeZone).format(formatter))));
             outputItem.lore(lore);
         }
-        outputItem.stringTag(SIGNATURE, crafter.getUniqueId().toString());
+        outputItem.longTag(TIME_STAMP, date.toEpochSecond(ZoneOffset.UTC));
     }
 
-    public static UUID getSignature(ItemMeta i){
-        String value = ItemUtils.getPDCString(SIGNATURE, i, null);
-        if (StringUtils.isEmpty(value)) return null;
-        return UUID.fromString(value);
+    public static LocalDateTime getTime(ItemMeta i){
+        long value = ItemUtils.getPDCLong(TIME_STAMP, i, -1L);
+        return value < 0 ? null : LocalDateTime.ofEpochSecond(value, 0, ZoneOffset.UTC);
     }
 
-    public static UUID getSignature(ItemStack i){
-        return getSignature(ItemUtils.getItemMeta(i));
+    public static LocalDateTime getTime(ItemStack i){
+        return getTime(ItemUtils.getItemMeta(i));
     }
 
     @Override
@@ -63,15 +68,15 @@ public class PlayerSignatureAdd extends DynamicItemModifier {
                 new ItemBuilder(Material.PAPER)
                         .name("&fOrder: " + (end ? "&eappend to end" : "&eplace at start"))
                         .lore("&eClick to toggle whether you want",
-                                "&ethe signature to appear at the",
+                                "&ethe time stamp to appear at the",
                                 "&estart of the item's lore or at",
-                                "&eend")
+                                "&eend&f, if lore is enabled")
                         .get()).map(new HashSet<>(Set.of(
                 new Pair<>(13,
                         new ItemBuilder(Material.PAPER)
                                 .name("&fLore enabled: " + (addLore ? "&eYes" : "&eNo"))
                                 .lore("&eClick to toggle whether you want",
-                                        "&ethe signature to appear in the",
+                                        "&ethe time stamp to appear in the",
                                         "&elore at all. If not, it is only",
                                         "&eadded as NBT tag for external use")
                                 .get())
@@ -80,22 +85,22 @@ public class PlayerSignatureAdd extends DynamicItemModifier {
 
     @Override
     public ItemStack getModifierIcon() {
-        return new ItemBuilder(Material.WRITTEN_BOOK).get();
+        return new ItemBuilder(Material.CLOCK).get();
     }
 
     @Override
     public String getDisplayName() {
-        return "&bPlayer Signature";
+        return "&bCreation Timestamp";
     }
 
     @Override
     public String getDescription() {
-        return "&fAdds a player signature to the item.";
+        return "&fAdds a timestamp of the current time to the item.";
     }
 
     @Override
     public String getActiveDescription() {
-        return "&fAdds a player signature " + (addLore ? "to the " + (end ? "&eend of the&f" : "&estart of the&f") + " item's lore." : "invisibly onto the item's meta");
+        return "&fAdds a timestamp of the current time " + (addLore ? "to the " + (end ? "&eend of the&f" : "&estart of the&f") + " item's lore." : "invisibly to the item's meta");
     }
 
     @Override
@@ -113,7 +118,7 @@ public class PlayerSignatureAdd extends DynamicItemModifier {
 
     @Override
     public DynamicItemModifier copy() {
-        PlayerSignatureAdd m = new PlayerSignatureAdd(getName());
+        TimeStampAdd m = new TimeStampAdd(getName());
         m.setEnd(this.end);
         m.setPriority(this.getPriority());
         m.setAddLore(this.addLore);
@@ -122,7 +127,7 @@ public class PlayerSignatureAdd extends DynamicItemModifier {
 
     @Override
     public String parseCommand(CommandSender executor, String[] args) {
-        if (args.length != 1) return "You must indicate if you want the signature added at the &estart &cor &eend";
+        if (args.length != 1) return "You must indicate if you want the timestamp added at the &estart &cor &eend&c, or &enone";
         addLore = !args[0].equalsIgnoreCase("none");
         end = args[0].equalsIgnoreCase("end");
         return null;
