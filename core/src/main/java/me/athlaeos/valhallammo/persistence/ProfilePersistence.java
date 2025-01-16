@@ -21,6 +21,8 @@ public abstract class ProfilePersistence {
     public abstract <T extends Profile> T getPersistentProfile(Player p, Class<T> type);
     public abstract <T extends Profile> T getSkillProfile(Player p, Class<T> type);
 
+    public abstract void onProfileRegistration(Profile profile);
+
     public void resetProfile(Player p, ResetType resetType) {
         boolean runPersistentStartingPerks = false;
         switch (resetType){
@@ -50,6 +52,7 @@ public abstract class ProfilePersistence {
                     profile.setEXP(0);
                     profile.setTotalEXP(0);
                     profile.setLevel(0);
+                    profile.setNewGamePlus(0);
                     setPersistentProfile(p, profile, profileType.getClass());
 
                     Skill associatedSkill = SkillRegistry.getSkill(profileType.getSkillType());

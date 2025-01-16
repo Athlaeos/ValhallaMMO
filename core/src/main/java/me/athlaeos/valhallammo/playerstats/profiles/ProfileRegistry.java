@@ -16,7 +16,6 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import org.bukkit.entity.Player;
 
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -54,14 +53,7 @@ public class ProfileRegistry {
         registeredProfiles = Collections.unmodifiableMap(profiles);
         p.registerPerkRewards();
 
-        if (persistence instanceof Database){
-            try {
-                p.createTable((Database) persistence);
-            } catch (SQLException e){
-                ValhallaMMO.logSevere("SQLException when trying to create a table for profile type " + p.getClass().getSimpleName() + ". ");
-                e.printStackTrace();
-            }
-        }
+        persistence.onProfileRegistration(p);
 
         for (String numberStat : p.getNumberStatProperties().keySet()) {
             StatFormat format = p.getNumberStatProperties().get(numberStat).getFormat();
