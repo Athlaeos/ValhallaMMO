@@ -135,7 +135,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
             Player player = ValhallaMMO.getInstance().getServer().getPlayer(p);
             for (Profile profile : persistentProfiles.getOrDefault(p, new HashMap<>()).values()){
                 if (!shouldPersist(profile)) continue;
-                SQL.insertOrUpdateProfile(player, conn, profile);
+                SQL.insertOrUpdateProfile(p, conn, profile);
             }
             if (player == null || !player.isOnline()) persistentProfiles.remove(p);
         }
@@ -147,7 +147,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (Profile profile : persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>()).values()){
                     if (!shouldPersist(profile)) continue;
-                    SQL.insertOrUpdateProfile(p, conn, profile);
+                    SQL.insertOrUpdateProfile(p.getUniqueId(), conn, profile);
                 }
             });
         }

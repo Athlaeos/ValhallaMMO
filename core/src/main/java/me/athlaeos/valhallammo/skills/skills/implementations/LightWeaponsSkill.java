@@ -54,6 +54,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
     private double expPerDamage = 0;
     private double spawnerMultiplier = 0;
     private double maceExpMultiplier = 0;
+    private boolean maxHealthLimitation = false;
 
     public LightWeaponsSkill(String type) {
         super(type);
@@ -83,6 +84,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
         expPerDamage = progressionConfig.getDouble("experience.exp_per_damage");
         spawnerMultiplier = progressionConfig.getDouble("experience.spawner_spawned_multiplier");
         maceExpMultiplier = progressionConfig.getDouble("experience.mace_exp_multiplier");
+        maxHealthLimitation = progressionConfig.getBoolean("experience.max_health_limitation");
 
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
@@ -161,7 +163,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
                 double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);
                 addEXP(p,
-                        Math.min(EntityUtils.getMaxHP(l), e.getDamage()) *
+                        maxHealthLimitation ? (Math.min(EntityUtils.getMaxHP(l), e.getDamage())) : e.getDamage() *
                                 (weapon.getItem().getType().toString().equals("MACE") ? maceExpMultiplier : 1) *
                                 expPerDamage *
                                 entityExpMultiplier *

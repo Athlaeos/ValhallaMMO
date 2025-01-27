@@ -86,25 +86,8 @@ public class EntityDamagedListener implements Listener {
                 double resistance = AccumulativeStatManager.getCachedRelationalStats("PVP_RESISTANCE", dP, aP, 10000, true);
                 customDamage *= 1 - resistance;
             }
-
-            if (lastDamager == null || ((pvpOneShotProtection && lastDamager instanceof Player) || (pveOneShotProtection && !(lastDamager instanceof Player)))) {
-                double oneShotProtectionFraction = AccumulativeStatManager.getCachedRelationalStats("ONESHOT_PROTECTION_FRACTION", l, lastDamager, 10000, true);
-                if (oneShotProtectionFraction > 0){
-                    AttributeInstance healthAttribute = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-                    if (healthAttribute != null){
-                        double maxHealth = healthAttribute.getValue();
-                        double damageUntilOSP = maxHealth * (1 - oneShotProtectionFraction);
-                        if (maxHealth * oneShotProtectionCap >= customDamage && customDamage > damageUntilOSP && l.getHealth() > damageUntilOSP){
-                            customDamage = damageUntilOSP;
-                            if (l instanceof Player p){
-                                PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
-                                Timer.setCooldownIgnoreIfPermission(p, profile.getOneShotProtectionCooldown() * 50, "cooldown_oneshot_protection");
-                                Timer.sendCooldownStatus(p, "cooldown_oneshot_protection", TranslationManager.getTranslation("ability_oneshot_protection"));
-                                p.playSound(p, oneShotProtectionSound, 1F, 1F);
-                            }
-                        }
-                    }
-                }
+            if (!Timer.isCooldownPassed(l.getUniqueId(), "duration_oneshot_protection")){
+                customDamage = 0;
             }
 
             double damageAfterImmunity = !customDamageEnabled ? e.getDamage() : overrideImmunityFrames(customDamage, l);
@@ -121,6 +104,29 @@ public class EntityDamagedListener implements Listener {
                 applyImmunity = true;
             }
             if (e instanceof EntityDamageByEntityEvent && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking()) return; // blocking with shield damage reduction
+
+            if (lastDamager == null || ((pvpOneShotProtection && lastDamager instanceof Player) || (pveOneShotProtection && !(lastDamager instanceof Player)))) {
+                double oneShotProtectionFraction = AccumulativeStatManager.getCachedRelationalStats("ONESHOT_PROTECTION_FRACTION", l, lastDamager, 10000, true);
+                if (oneShotProtectionFraction > 0){
+                    AttributeInstance healthAttribute = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+                    if (healthAttribute != null){
+                        double maxHealth = healthAttribute.getValue();
+                        double damageUntilOSP = maxHealth * (1 - oneShotProtectionFraction);
+                        if (maxHealth * oneShotProtectionCap >= customDamage && customDamage > damageUntilOSP && l.getHealth() > damageUntilOSP){
+                            customDamage = damageUntilOSP;
+                            applyImmunity = true;
+                            Timer.setCooldown(l.getUniqueId(), 500, "duration_oneshot_protection");
+                            if (l instanceof Player p){
+                                PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
+                                Timer.setCooldownIgnoreIfPermission(p, profile.getOneShotProtectionCooldown() * 50, "cooldown_oneshot_protection");
+                                Timer.sendCooldownStatus(p, "cooldown_oneshot_protection", TranslationManager.getTranslation("ability_oneshot_protection"));
+                                p.playSound(p, oneShotProtectionSound, 1F, 1F);
+                            }
+                        }
+                    }
+                }
+            }
+
             final double damage = customDamage;
             if (applyImmunity){
                 double iFrameMultiplier = 1 + AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_MULTIPLIER", l, lastDamager, 10000, true);

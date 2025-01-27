@@ -5,22 +5,22 @@ experience:
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   digging_break:
     SNOW: 0.2
-    FARMLAND: 4
-    DIRT: 4
-    SAND: 4
-    RED_SAND: 4
-    COARSE_DIRT: 8
-    SNOW_BLOCK: 4
-    SOUL_SAND: 8
-    SOUL_SOIL: 8
-    GRASS_BLOCK: 8
-    DIRT_PATH: 8
-    MYCELIUM: 8
-    GRAVEL: 8
-    PODZOL: 8
-    CLAY: 12
-    CLAY_BALL: 3
-    MUD: 12
+    FARMLAND: 8
+    DIRT: 8
+    SAND: 8
+    RED_SAND: 8
+    COARSE_DIRT: 16
+    SNOW_BLOCK: 8
+    SOUL_SAND: 16
+    SOUL_SOIL: 16
+    GRASS_BLOCK: 16
+    DIRT_PATH: 16
+    MYCELIUM: 16
+    GRAVEL: 16
+    PODZOL: 16
+    CLAY: 24
+    CLAY_BALL: 6
+    MUD: 24
   archaeology_brush:
     SUSPICIOUS_STEW: 50
     EMERALD: 100

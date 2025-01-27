@@ -271,6 +271,7 @@ public class MiningSkill extends Skill implements Listener {
         recursionPrevention.remove(e.getEntity().getUniqueId());
 
         for (Block b : blockList){
+            if (b.getState() instanceof Container) continue;
             LootListener.addPreparedLuck(b, blastingLuck);
             if (b.getType().isAir() || (!tntPreventChaining && b.getType() == Material.TNT) || !BlockUtils.canReward(b)) continue;
             e.blockList().remove(b);

@@ -23,10 +23,8 @@ import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.loot.ReplacementTable;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
-import me.athlaeos.valhallammo.utility.BlockUtils;
-import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
-import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.ArchaeologyListener;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PaperLootRefillHandler;
@@ -212,7 +210,10 @@ public class LootListener implements Listener {
         UUID uuid = blockBreakerMap.get(e.getBlock().getLocation());
         blockBreakerMap.remove(e.getBlock().getLocation());
         Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
-        if (p == null) p = (Player) e.getBlock().getWorld().getNearbyEntities(e.getBlock().getLocation(), 20, 20, 20, en -> en instanceof Player).stream().findFirst().orElse(null);
+        if (p == null) {
+            List<Player> nearby = EntityUtils.getNearbyPlayers(e.getBlock().getLocation(), 100);
+            if (!nearby.isEmpty()) p = nearby.getFirst();
+        }
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
         double luck = details.getOne();

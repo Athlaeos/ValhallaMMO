@@ -83,12 +83,12 @@ public class LootTableEditor extends Menu {
 
     private static final ItemStack deleteButton = new ItemBuilder(getButtonData("editor_delete", Material.BARRIER))
             .stringTag(BUTTON_ACTION_KEY, "deleteButton")
-            .name("&cDelete Recipe").get();
+            .name("&cDelete Loot Table").get();
     private static final ItemStack deleteConfirmButton = new ItemBuilder(getButtonData("editor_deleteconfirm", Material.BARRIER))
-            .name("&cDelete Recipe")
+            .name("&cDelete Loot Table")
             .stringTag(BUTTON_ACTION_KEY, "deleteConfirmButton")
             .enchant(EnchantmentMappings.UNBREAKING.getEnchantment(), 1)
-            .lore("&aRight-click &7to confirm recipe deletion")
+            .lore("&aRight-click &7to confirm table deletion")
             .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS).wipeAttributes().get();
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .stringTag(BUTTON_ACTION_KEY, "backToMenuButton")

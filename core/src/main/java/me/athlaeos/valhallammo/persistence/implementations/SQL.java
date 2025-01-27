@@ -158,7 +158,6 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
     public void loadProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())) return; // stats are presumably already loaded in and so they do not
         // need to be loaded in from the database again
-        Database database = this;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             boolean runPersistentStartingPerks = false;
             Map<Class<? extends Profile>, Profile> profs = persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>());
@@ -212,7 +211,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
         return null;
     }
 
-    public static void insertOrUpdateProfile(Player owner, Connection conn, Profile profile){
+    public static void insertOrUpdateProfile(UUID owner, Connection conn, Profile profile){
         StringBuilder query = new StringBuilder("REPLACE INTO ").append(profile.getTableName()).append(" (owner");
         // stat names
         Map<Integer, String> indexMap = new HashMap<>();
@@ -251,7 +250,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
             if (!persistentProfiles.containsKey(p)) continue;
             Player player = ValhallaMMO.getInstance().getServer().getPlayer(p);
             for (Profile profile : persistentProfiles.getOrDefault(p, new HashMap<>()).values()){
-                insertOrUpdateProfile(player, conn, profile);
+                insertOrUpdateProfile(p, conn, profile);
             }
             if (player == null || !player.isOnline()) persistentProfiles.remove(p);
         }
@@ -262,7 +261,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
         if (persistentProfiles.containsKey(p.getUniqueId())){
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (Profile profile : persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>()).values()){
-                    insertOrUpdateProfile(p, conn, profile);
+                    insertOrUpdateProfile(p.getUniqueId(), conn, profile);
                 }
             });
         }

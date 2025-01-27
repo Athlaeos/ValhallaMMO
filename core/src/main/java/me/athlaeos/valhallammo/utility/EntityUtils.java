@@ -223,6 +223,17 @@ public class EntityUtils {
         return total;
     }
 
+    public static List<Player> getNearbyPlayers(Location from, double radius){
+        double squared = radius * radius;
+        List<Player> nearby = new ArrayList<>();
+        if (from.getWorld() == null) return nearby;
+        for (Player p : from.getWorld().getPlayers()){
+            if (from.distanceSquared(p.getLocation()) <= squared) nearby.add(p);
+        }
+        nearby.sort(Comparator.comparingDouble(p -> p.getLocation().distanceSquared(from)));
+        return nearby;
+    }
+
     private static final Attribute attackReachAttribute = Catch.catchOrElse(() -> Attribute.valueOf("PLAYER_ENTITY_INTERACTION_RANGE"), null);
     public static double getPlayerReach(Player p){
         if (attackReachAttribute == null) return 3.0;

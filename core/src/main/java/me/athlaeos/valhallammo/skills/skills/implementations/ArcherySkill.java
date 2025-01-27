@@ -72,6 +72,7 @@ public class ArcherySkill extends Skill implements Listener {
     private Animation chargedShotSonicBoomAnimation;
     private Animation chargedShotAmmoAnimation;
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
+    private boolean maxHealthLimitation = false;
 
     private Particle trail = null;
     private Particle.DustOptions trailOptions = null;
@@ -103,6 +104,7 @@ public class ArcherySkill extends Skill implements Listener {
         expDistanceLimit = progressionConfig.getInt("experience.distance_limit");
         expInfinityMultiplier = progressionConfig.getDouble("experience.infinity_multiplier");
         expSpawnerMultiplier = progressionConfig.getDouble("experience.spawner_spawned_multiplier");
+        maxHealthLimitation = progressionConfig.getBoolean("experience.max_health_limitation");
 
         ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.entity_exp_multipliers");
         if (entitySection != null){
@@ -217,8 +219,9 @@ public class ArcherySkill extends Skill implements Listener {
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(v.getType(), 1D);
             double exp = ((expDistanceMultiplierBase * baseExp) + (baseExp * expDistanceMultiplierBonus * expDistance)) * entityExpMultiplier * chunkNerf;
             if (hasInfinity) exp *= expInfinityMultiplier;
+            double damageTaken = EntityDamagedListener.getLastDamageTaken(v.getUniqueId(), e.getFinalDamage());
             addEXP(p,
-                    (1 + (expDamageBonus * Math.min(EntityUtils.getMaxHP(v), EntityDamagedListener.getLastDamageTaken(v.getUniqueId(), e.getFinalDamage())))) * exp *
+                    (1 + (expDamageBonus * (maxHealthLimitation ? (Math.min(EntityUtils.getMaxHP(v), damageTaken)) : damageTaken))) * exp *
                             entityExpMultiplier *
                             (EntitySpawnListener.getSpawnReason(v) == CreatureSpawnEvent.SpawnReason.SPAWNER ? expSpawnerMultiplier : 1),
                     false,

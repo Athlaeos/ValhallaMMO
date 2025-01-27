@@ -34,7 +34,7 @@ archaeology_common_loot_tables: # Common loot tables. Same as above, will spawn 
   - TRAIL_RUINS_ARCHAEOLOGY_COMMON
 
 archaeology_valid_vacinity_structures:
-  # Due to some unfortunate spigot functionality, detecting a structure  the normal way currently completely ignores the max range
+  # Due to some unfortunate spigot functionality, detecting a structure the normal way currently completely ignores the max range
   # it's supposedly given, and so it's possible for these structures to freeze the server if they happen to be thousands of blocks away.
   # I implemented a much faster method of structure detection, but it relies on NMS and is therefore not usable on every version. If you're on
   # a not-yet compatible version keep this in mind, and that you might have to disable this feature.
