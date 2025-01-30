@@ -434,7 +434,7 @@ public abstract class Skill {
         if (profile.getLevel() <= 0 && profile.getTotalEXP() < 0) profile.setTotalEXP(0);
 
         ProfileRegistry.setPersistentProfile(p, profile, getProfileType());
-        changePlayerLevel(p, currentLevel, nextLevel, silent);
+        changePlayerLevel(p, currentLevel, Math.max(0, nextLevel), silent);
 
         if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()) {
             showBossBar(p, profile, 0);
@@ -464,7 +464,7 @@ public abstract class Skill {
         // non-levelable skills should not gain exp
         if (!isLevelableSkill() || (requiredPermission != null && !p.hasPermission(requiredPermission))) return;
         // creative mode players should not gain skill-acquired exp
-        if (p.getGameMode() == GameMode.CREATIVE && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
+        if (!(this instanceof PowerSkill) && p.getGameMode() == GameMode.CREATIVE && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
         // only experience-scaling skills should scale with exp multipliers. By default, this only excludes PowerSkill
         if (isExperienceScaling() && (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION||
                 reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE)) amount *= (1 + AccumulativeStatManager.getStats("GLOBAL_EXP_GAIN", p, true));
@@ -761,8 +761,6 @@ public abstract class Skill {
         int level = persistentProfile.getLevel();
         PowerProfile powerProfile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
 
-        Profile skillProfile = ProfileRegistry.getBlankProfile(p, getProfileType());
-        ProfileRegistry.setSkillProfile(p, skillProfile, skillProfile.getClass());
         for (PerkReward r : startingPerks) {
             if (!runPersistentStartingPerks && r.isPersistent()) continue;
             r.apply(p);
@@ -813,7 +811,7 @@ public abstract class Skill {
         }
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
-                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, skillProfile.getClass())));
+                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, getProfileType())));
     }
 
     private final boolean perksForgettable = ConfigManager.getConfig("config.yml").reload().get().getBoolean("forgettable_perks");

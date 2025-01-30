@@ -106,7 +106,6 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
     public void loadProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())) return; // stats are presumably already loaded in, and so they do not
         // need to be loaded in from the database again
-        Database database = this;
         new BukkitRunnable(){
             @Override
             public void run() {

@@ -43,6 +43,7 @@ selectable_loot_modifiers: false # If true, the loot drops within selectable loo
 forgettable_perks: false # If true, if a player were to be leveled down and lose the ability to own a perk, they will.
 # Forgetting a perk may refund resources invested into it and will display a message that they've forgotten the perk
 forgettable_perks_refund_skillpoints: true # If true, skillpoints are refunded when a perk is forgotten
+forgettable_perks_refund_items: false # If true, items spent on perks can be refunded when a perk is forgotten
 forgettable_perks_refund_money: false # If true, (if Vault and an economy plugin are hooked) money is refunded when a perk is forgotten
 forgettable_perks_refund_exp: false # If true, enchanting experience is refunded when a perk is forgotten
 forgettable_perks_refund_prestigepoints: false # If true, prestige points are refunded when a perk is forgotten

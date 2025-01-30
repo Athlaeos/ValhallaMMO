@@ -78,7 +78,7 @@ public class BrewingStandListener implements Listener {
             }
 
             if (b.getLocation() != null) BlockUtils.setOwner(b.getLocation().getBlock(), p.getUniqueId());
-            updateStand(b, p);
+            updateStand(b, p, false);
         }
     }
 
@@ -90,7 +90,7 @@ public class BrewingStandListener implements Listener {
             ItemUtils.calculateDragEvent(e, 1, 0, 1, 2);
 
             if (b.getLocation() != null) BlockUtils.setOwner(b.getLocation().getBlock(), p.getUniqueId());
-            updateStand(b, p);
+            updateStand(b, p, false);
         }
     }
 
@@ -112,7 +112,7 @@ public class BrewingStandListener implements Listener {
                 return;
             }
             Player owner = BlockUtils.getOwner(b.getLocation().getBlock());
-            updateStand(b, owner);
+            updateStand(b, owner, true);
         }
     }
 
@@ -122,7 +122,7 @@ public class BrewingStandListener implements Listener {
         e.setCancelled(true);
     }
 
-    private void updateStand(BrewerInventory inventory, Player p){
+    private void updateStand(BrewerInventory inventory, Player p, boolean automated){
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             ItemStack i = inventory.getItem(ingredient);
             ActiveBrewingStand activeStand = activeStands.get(inventory.getLocation());
@@ -151,7 +151,7 @@ public class BrewingStandListener implements Listener {
 
                 double speedMultiplier = 1 + (p == null ? 0 : AccumulativeStatManager.getCachedStats("BREWING_SPEED_BONUS", p, 10000, true));
                 int duration = (int) (speedMultiplier <= 0 ? -1 : baseDuration / speedMultiplier); // negative speed = no brewing
-                ActiveBrewingStand newStand = new ActiveBrewingStand(p, inventory, recipes, duration);
+                ActiveBrewingStand newStand = new ActiveBrewingStand(p, inventory, recipes, duration, automated);
                 newStand.runTaskTimer(ValhallaMMO.getInstance(), 0, 1);
                 activeStands.put(brewingStand.getLocation(), newStand);
             }
@@ -160,6 +160,7 @@ public class BrewingStandListener implements Listener {
 
     private static class ActiveBrewingStand extends BukkitRunnable {
         private final boolean disabled;
+        private final boolean automated;
         private final Player p;
         private final BrewerInventory inventory;
         private Map<Integer, DynamicBrewingRecipe> recipes;
@@ -167,12 +168,13 @@ public class BrewingStandListener implements Listener {
         private double actualProgress = 400;
         private final double tickStep;
 
-        public ActiveBrewingStand(Player p, BrewerInventory inventory, Map<Integer, DynamicBrewingRecipe> recipes, int duration){
+        public ActiveBrewingStand(Player p, BrewerInventory inventory, Map<Integer, DynamicBrewingRecipe> recipes, int duration, boolean automated){
             this.p = p;
             this.inventory = inventory;
             this.recipes = recipes;
             disabled = duration < 0;
             this.tickStep = 400D / duration;
+            this.automated = automated;
         }
 
         @Override
@@ -229,8 +231,10 @@ public class BrewingStandListener implements Listener {
                 ItemStack slotItem = inventory.getItem(slot);
                 if (ItemUtils.isEmpty(slotItem) || recipe == null) continue;
 
+                if (automated) markAutomatedBrewing(p);
                 ItemBuilder result = (recipe.tinker() ? new ItemBuilder(slotItem) : new ItemBuilder(recipe.getResult()));
                 DynamicItemModifier.modify(result, p, recipe.getModifiers(), false, true, true);
+                unmarkAutomatedBrewing(p);
                 PlayerCustomBrewEvent event = new PlayerCustomBrewEvent(p, recipe, result.get(), stand, ItemUtils.isEmpty(result.getItem()) && !CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE));
                 ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
                 if (!event.isCancelled()) results[slot] = event.getResult();
@@ -264,6 +268,20 @@ public class BrewingStandListener implements Listener {
             activeStands.remove(stand.getLocation());
             cancel();
         }
+    }
+
+    private static final Collection<UUID> automatedBrewingPlayers = new HashSet<>();
+
+    public static void markAutomatedBrewing(Player player){
+        automatedBrewingPlayers.add(player.getUniqueId());
+    }
+
+    public static void unmarkAutomatedBrewing(Player player){
+        automatedBrewingPlayers.remove(player.getUniqueId());
+    }
+
+    public static boolean isMarkedAutomatedBrewing(Player player){
+        return automatedBrewingPlayers.contains(player.getUniqueId());
     }
 
     private Map<Integer, DynamicBrewingRecipe> getBrewingRecipes(BrewerInventory inventory, Player brewer) {

@@ -151,7 +151,12 @@ public class SkillTreeMenu extends Menu {
                     }
                     Perk p = PerkRegistry.getPerk(id);
                     if (p != null){
-                        if (p.canUnlock(target)){
+                        if (p.hasUnlocked(target)){
+                            for (String message : p.getMessages()){
+                                for (PerkReward reward : p.getRewards()) if (message != null) message = message.replace("{" + reward.getName() + "}", reward.rewardPlaceholder());
+                                target.sendMessage(Utils.chat(message));
+                            }
+                        } else if (p.canUnlock(target)){
                             if (perkConfirmation != null && perkConfirmation.equals(p.getName())){
                                 perkConfirmation = null;
                                 // persist perk as unlocked
@@ -337,7 +342,7 @@ public class SkillTreeMenu extends Menu {
                             if (unlockedStatus == 0 && !p.metConditionRequirements(target, false) && condition != null && !StringUtils.isEmpty(condition.getFailedConditionMessage())) lore.add(Utils.chat(condition.getFailedConditionMessage()));
                         } else if (ResourceExpenseRegistry.getExpenses().values().stream().anyMatch(con -> l.contains(con.getCostPlaceholder()))) { // if lore contains a cost placeholder
                             ResourceExpense condition = p.getExpenses().stream().filter(con -> l.contains(con.getCostPlaceholder())).findAny().orElse(null);
-                            if (unlockedStatus == 0 && condition != null && !StringUtils.isEmpty(condition.getCostMessage())) lore.add(Utils.chat(condition.getCostMessage()));
+                            if (unlockedStatus == 0 && condition != null && !StringUtils.isEmpty(condition.getCostMessage())) lore.addAll(StringUtils.separateStringIntoLines(Utils.chat(condition.getCostMessage()), 40));
                         } else if (ResourceExpenseRegistry.getExpenses().values().stream().anyMatch(con -> l.contains(con.getInsufficientCostPlaceholder()))) { // if lore contains a cost placeholder
                             ResourceExpense condition = p.getExpenses().stream().filter(con -> l.contains(con.getInsufficientCostPlaceholder())).findAny().orElse(null);
                             if (unlockedStatus == 0 && condition != null && !condition.canPurchase(target) && !StringUtils.isEmpty(condition.getInsufficientFundsMessage())) lore.add(Utils.chat(condition.getInsufficientFundsMessage()));

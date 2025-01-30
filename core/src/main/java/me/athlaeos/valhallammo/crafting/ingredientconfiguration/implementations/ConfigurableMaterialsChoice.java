@@ -1,6 +1,5 @@
 package me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations;
 
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -17,7 +16,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-public class ConfigurableMaterialsChoice extends RecipeOption implements IngredientChoice {
+public class ConfigurableMaterialsChoice extends RecipeOption {
     private Collection<Material> validChoices = new HashSet<>();
 
     @Override

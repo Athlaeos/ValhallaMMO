@@ -46,5 +46,7 @@ public class PAPIHook extends PluginHook{
                 return PlaceholderRegistry.parse("%" + params + "%", (Player) player);
             }
         }.register();
+
+        new PAPIRelationalPlaceholder().register();
     }
 }

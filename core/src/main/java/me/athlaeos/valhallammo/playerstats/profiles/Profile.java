@@ -1,8 +1,6 @@
 package me.athlaeos.valhallammo.playerstats.profiles;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.persistence.Database;
-import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
@@ -13,9 +11,6 @@ import me.athlaeos.valhallammo.skills.skills.Skill;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -128,30 +123,30 @@ public abstract class Profile {
     }
 
     public float getFloat(String stat) {
-        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with this name is registered under " + getClass().getSimpleName());
+        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
         return floats.get(stat).getValue();
     }
     public float getDefaultFloat(String stat) {
-        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with this name is registered under " + getClass().getSimpleName());
+        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
         return floats.get(stat).getDefault();
     }
     public void setFloat(String stat, float value){
-        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with this name is registered under " + getClass().getSimpleName());
+        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
         if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMin())) value = (float) Math.max(numberStatProperties.get(stat).getMin(), value);
         if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMax())) value = (float) Math.min(numberStatProperties.get(stat).getMax(), value);
         floats.get(stat).setValue(value);
     }
 
     public double getDouble(String stat) {
-        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with this name " + stat + " is registered under " + getClass().getSimpleName());
+        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
         return doubles.get(stat).getValue();
     }
     public double getDefaultDouble(String stat) {
-        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with this name " + stat + " is registered under " + getClass().getSimpleName());
+        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
         return doubles.get(stat).getDefault();
     }
     public void setDouble(String stat, double value){
-        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with this name " + stat + " is registered under " + getClass().getSimpleName());
+        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
         if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMin())) value = Math.max(numberStatProperties.get(stat).getMin(), value);
         if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMax())) value = Math.min(numberStatProperties.get(stat).getMax(), value);
         doubles.get(stat).setValue(value);

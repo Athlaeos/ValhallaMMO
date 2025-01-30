@@ -17,6 +17,7 @@ experience:
   infinity_multiplier: 0.7 # exp multiplier if infinity is used in shooting
   spawner_spawned_multiplier: 0.7 # exp multiplier if entity hit is spawned from a monster spawner
   max_health_limitation: false
+  pvp_multiplier: 0.1
 
 special_perks: []
 

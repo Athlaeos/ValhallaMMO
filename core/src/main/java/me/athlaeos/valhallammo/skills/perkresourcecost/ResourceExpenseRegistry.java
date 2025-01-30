@@ -16,6 +16,7 @@ public class ResourceExpenseRegistry {
         register("cost_levels", new ExperienceLevelsExpense());
         register("cost", new SkillPointsExpense());
         register("cost_prestige", new PrestigePointsExpense());
+        register("cost_items", new ItemExpense());
     }
 
     public static void register(String key, ResourceExpense expense){

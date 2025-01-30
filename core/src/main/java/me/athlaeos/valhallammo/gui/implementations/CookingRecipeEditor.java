@@ -452,7 +452,7 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
         if (!option.isCompatible(input.getItem()) || !option.isCompatibleWithInputItem(true)) {
             Utils.sendMessage(playerMenuUtility.getOwner(), "&cNot compatible with this item");
         } else {
-            if (option instanceof IngredientChoice c) input.setOption(c);
+            input.setOption(option);
         }
     }
 

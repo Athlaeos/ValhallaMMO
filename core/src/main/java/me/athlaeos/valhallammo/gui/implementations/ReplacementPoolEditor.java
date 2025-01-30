@@ -299,7 +299,7 @@ public class ReplacementPoolEditor extends Menu implements SetLootPredicatesMenu
         if (!option.isCompatible(pool.getToReplace().getItem()) || !option.isCompatibleWithInputItem(true)) {
             Utils.sendMessage(playerMenuUtility.getOwner(), "&cNot compatible with this item");
         } else {
-            if (option instanceof IngredientChoice c) pool.getToReplace().setOption(c);
+            pool.getToReplace().setOption(option);
         }
     }
 }

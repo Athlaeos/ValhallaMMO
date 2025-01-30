@@ -40,6 +40,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
     private double expPerDamage = 0;
     private double expPerCombatSecond = 0;
     private double expBonusPerPoint = 0;
+    private double pvpMultiplier = 0.1;
 
     private Animation rageActivation;
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
@@ -62,6 +63,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
         expPerDamage = progressionConfig.getDouble("experience.exp_damage_piece");
         expPerCombatSecond = progressionConfig.getDouble("experience.exp_second_piece");
         expBonusPerPoint = progressionConfig.getDouble("experience.exp_multiplier_point");
+        pvpMultiplier = progressionConfig.getDouble("experience.pvp_multiplier");
 
         ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.entity_exp_multipliers");
         if (entitySection != null){
@@ -110,7 +112,8 @@ public class HeavyArmorSkill extends Skill implements Listener {
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(trueDamager.getType(), 1D);
             double lastDamageTaken = e.getDamage();
             double exp = expPerDamage * lastDamageTaken * entityExpMultiplier * (1 + (totalHeavyArmor * expBonusPerPoint)) * chunkNerf;
-            addEXP(p, count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+            double pvpMult = trueDamager instanceof Player ? pvpMultiplier : 1;
+            addEXP(p, pvpMult * pvpMult * count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
             if (!hasPermissionAccess(p)) return;
             if (profile.isRageUnlocked() && profile.getRageLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_heavy_armor_rage") &&

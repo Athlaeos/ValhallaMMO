@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.listeners.BrewingStandListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
@@ -48,6 +49,8 @@ public class AlchemySkill extends Skill implements Listener {
     private static List<String> transmutationPotionLore = new ArrayList<>();
     private static String transmutationPotionName = null;
     private double qualityPotionExperienceMultiplier = 0;
+    private double expMultiplierAutomated = 0.25;
+    private double expMultiplierManual = 2;
 
     public AlchemySkill(String type) {
         super(type);
@@ -74,6 +77,8 @@ public class AlchemySkill extends Skill implements Listener {
         transmutationPotionName = Utils.chat(TranslationManager.translatePlaceholders(skillConfig.getString("transmutation_name")));
 
         qualityPotionExperienceMultiplier = progressionConfig.getDouble("experience.exp_multiplier_quality", 0.01);
+        expMultiplierAutomated = progressionConfig.getDouble("experience.multiplier_automated");
+        expMultiplierManual = progressionConfig.getDouble("experience.multiplier_manual");
 
         ConfigurationSection section = transmutationConfig.getConfigurationSection("transmutations");
         if (section != null){
@@ -111,7 +116,8 @@ public class AlchemySkill extends Skill implements Listener {
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
             amount *= (1 + AccumulativeStatManager.getStats("ALCHEMY_EXP_GAIN", p, true));
         }
-        super.addEXP(p, amount, silent, reason);
+        double multiplier = BrewingStandListener.isMarkedAutomatedBrewing(p) ? expMultiplierAutomated : expMultiplierManual;
+        super.addEXP(p, multiplier * amount, silent, reason);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

@@ -1,15 +1,13 @@
 package me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations;
 
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
-import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 
-public class MaterialChoice extends RecipeOption implements IngredientChoice {
+public class MaterialChoice extends RecipeOption {
 
     @Override
     public String getName() {

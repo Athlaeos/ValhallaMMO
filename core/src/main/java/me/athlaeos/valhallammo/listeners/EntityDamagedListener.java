@@ -9,7 +9,6 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.EffectResponsibility;
-import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -65,6 +64,7 @@ public class EntityDamagedListener implements Listener {
     }
 
     private final Map<UUID, Double> healthTracker = new HashMap<>();
+    private final Map<UUID, Double> absorptionTracker = new HashMap<>();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamageTaken(EntityDamageEvent e){
@@ -96,7 +96,7 @@ public class EntityDamagedListener implements Listener {
                 return; // entity is immune, and so damage doesn't need to be calculated further
             }
             lastDamageTakenMap.put(l.getUniqueId(), customDamage);
-            boolean applyImmunity = l.getHealth() - customDamage > 0;
+            boolean applyImmunity = (l.getHealth() + l.getAbsorptionAmount()) - customDamage > 0;
 
             if (DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage)) {
                 customDamage = 0;
@@ -132,7 +132,9 @@ public class EntityDamagedListener implements Listener {
                 double iFrameMultiplier = 1 + AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_MULTIPLIER", l, lastDamager, 10000, true);
                 int iFrameBonus = (int) AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_BONUS", l, lastDamager, 10000, true);
                 int iFrames = (int) Math.max(0, iFrameMultiplier * (Math.max(0, 10 + iFrameBonus)));
-                double predictedHealth = healthTracker.getOrDefault(l.getUniqueId(), l.getHealth()) - damage;
+                double predictedAbsorption = absorptionTracker.getOrDefault(l.getUniqueId(), l.getAbsorptionAmount()) - damage;
+                double predictedHealth = healthTracker.getOrDefault(l.getUniqueId(), l.getHealth()) - (predictedAbsorption >= 0 ? 0 : -predictedAbsorption);
+                absorptionTracker.put(l.getUniqueId(), predictedAbsorption);
                 healthTracker.put(l.getUniqueId(), predictedHealth); // if two damage instances occur in rapid succession (such as with bonus damage types)
                 // then the predicted health of the entity is recorded and used for additional damage instances. Without this, preceding damage instances
                 // would be ignored because the entity's health would not have changed yet at this point and their health would be set assuming they've only
@@ -145,10 +147,14 @@ public class EntityDamagedListener implements Listener {
                     if (customDamageEnabled && !e.isCancelled()){
                         AttributeInstance health = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
                         double maxHealth = health != null ? health.getValue() : -1;
-                        if (l.getHealth() > 0) l.setHealth(Math.max(damageCause.equals("POISON") ? 1 : 0, Math.min(maxHealth, predictedHealth)));
+                        if (l.getHealth() > 0) {
+                            l.setAbsorptionAmount(Math.max(0, predictedAbsorption));
+                            l.setHealth(Math.max(damageCause.equals("POISON") ? 1 : 0, Math.min(maxHealth, predictedHealth)));
+                        }
                     }
                     customDamageCauses.remove(l.getUniqueId());
                     healthTracker.remove(l.getUniqueId());
+                    absorptionTracker.remove(l.getUniqueId());
                 }, 1L);
             } else if (customDamageEnabled) {
                 // custom damage killed entity
@@ -159,8 +165,12 @@ public class EntityDamagedListener implements Listener {
                     return;
                 }
                 double previousHealth = l.getHealth();
+                double previousAbsorption = l.getAbsorptionAmount();
                 if (customDamage > 0) DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage);
-                if (l.getHealth() > 0) l.setHealth(0.0001); // attempt to ensure that this attack will kill
+                if (l.getHealth() + l.getAbsorptionAmount() > 0) {
+                    l.setAbsorptionAmount(0);
+                    l.setHealth(0.0001); // attempt to ensure that this attack will kill
+                }
                 if (e.getFinalDamage() == 0) { // if player wouldn't have died even with this little health, force a death (e.g. with resistance V)
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                         // l.setLastDamageCause(e);
@@ -168,7 +178,10 @@ public class EntityDamagedListener implements Listener {
                     }, 1L);
                 } else {
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                        if (e.isCancelled()) l.setHealth(previousHealth); // if the event was cancelled at this point, restore health to what it was previously
+                        if (e.isCancelled()) {
+                            l.setAbsorptionAmount(previousAbsorption);
+                            l.setHealth(previousHealth); // if the event was cancelled at this point, restore health to what it was previously
+                        }
                         customDamageCauses.remove(l.getUniqueId());
                     }, 1L);
                 }

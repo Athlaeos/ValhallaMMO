@@ -55,7 +55,8 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
     private double spawnerMultiplier = 0;
     private double maceExpMultiplier = 0;
     private boolean maxHealthLimitation = false;
-    
+    private double pvpMultiplier = 0.1;
+
     public HeavyWeaponsSkill(String type) {
         super(type);
     }
@@ -85,6 +86,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
         spawnerMultiplier = progressionConfig.getDouble("experience.spawner_spawned_multiplier");
         maceExpMultiplier = progressionConfig.getDouble("experience.mace_exp_multiplier");
         maxHealthLimitation = progressionConfig.getBoolean("experience.max_health_limitation");
+        pvpMultiplier = progressionConfig.getDouble("experience.pvp_multiplier");
 
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
@@ -162,10 +164,12 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
                 if (e.isCancelled() || !p.isOnline()) return;
                 double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);
+                double pvpMult = e.getEntity() instanceof Player ? pvpMultiplier : 1;
                 addEXP(p,
                         maxHealthLimitation ? (Math.min(EntityUtils.getMaxHP(l), e.getDamage())) : e.getDamage() *
                                 (weapon.getItem().getType().toString().equals("MACE") ? maceExpMultiplier : 1) *
                                 expPerDamage *
+                                pvpMult *
                                 entityExpMultiplier *
                                 chunkNerf *
                                 (EntitySpawnListener.getSpawnReason(l) == CreatureSpawnEvent.SpawnReason.SPAWNER ? spawnerMultiplier : 1),

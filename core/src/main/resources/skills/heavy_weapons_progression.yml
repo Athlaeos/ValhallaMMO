@@ -11,6 +11,7 @@ experience:
   spawner_spawned_multiplier: 0.7
   exp_enemies_nerfed: []
   max_health_limitation: false
+  pvp_multiplier: 0.1
 
 special_perks: []
 

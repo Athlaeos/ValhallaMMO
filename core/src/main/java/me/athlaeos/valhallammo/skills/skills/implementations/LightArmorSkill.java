@@ -47,6 +47,7 @@ public class LightArmorSkill extends Skill implements Listener {
     private double expPerDamage = 0;
     private double expPerCombatSecond = 0;
     private double expBonusPerPoint = 0;
+    private double pvpMultiplier = 0.1;
 
     private Animation adrenalineActivation;
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
@@ -69,6 +70,7 @@ public class LightArmorSkill extends Skill implements Listener {
         expPerDamage = progressionConfig.getDouble("experience.exp_damage_piece");
         expPerCombatSecond = progressionConfig.getDouble("experience.exp_second_piece");
         expBonusPerPoint = progressionConfig.getDouble("experience.exp_multiplier_point");
+        pvpMultiplier = progressionConfig.getDouble("experience.pvp_multiplier");
 
         ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.entity_exp_multipliers");
         if (entitySection != null){
@@ -117,7 +119,8 @@ public class LightArmorSkill extends Skill implements Listener {
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(trueDamager.getType(), 1D);
             double lastDamageTaken = e.getDamage();
             double exp = expPerDamage * lastDamageTaken * entityExpMultiplier * (1 + (totalLightArmor * expBonusPerPoint)) * chunkNerf;
-            addEXP(p, count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+            double pvpMult = trueDamager instanceof Player ? pvpMultiplier : 1;
+            addEXP(p,  pvpMult * count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
             if (!hasPermissionAccess(p)) return;
             if (profile.isAdrenalineUnlocked() && profile.getAdrenalineLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_light_armor_adrenaline") &&
