@@ -116,7 +116,7 @@ public class AlchemySkill extends Skill implements Listener {
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
             amount *= (1 + AccumulativeStatManager.getStats("ALCHEMY_EXP_GAIN", p, true));
         }
-        double multiplier = BrewingStandListener.isMarkedAutomatedBrewing(p) ? expMultiplierAutomated : expMultiplierManual;
+        double multiplier = reason != PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION ? 1 : BrewingStandListener.isMarkedAutomatedBrewing(p) ? expMultiplierAutomated : expMultiplierManual;
         super.addEXP(p, multiplier * amount, silent, reason);
     }
 

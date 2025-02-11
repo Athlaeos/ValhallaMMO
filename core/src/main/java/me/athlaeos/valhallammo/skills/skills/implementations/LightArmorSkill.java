@@ -23,6 +23,7 @@ import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
@@ -150,7 +151,10 @@ public class LightArmorSkill extends Skill implements Listener {
         LightArmorProfile profile = ProfileCache.getOrCache(p, LightArmorProfile.class);
         EntityProperties properties = EntityCache.getAndCacheProperties(p);
         if (properties.getLightArmorCount() < profile.getSetCount()) return;
-        if (profile.getImmuneEffects().contains(e.getNewEffect().getType().toString())) e.setCancelled(true);
+        PotionEffectMappings mapping = PotionEffectMappings.getEffect(e.getNewEffect().getType().getName());
+        if (mapping == null) return;
+        if (profile.getImmuneEffects().contains(mapping.getOldEffect()) ||
+                profile.getImmuneEffects().contains(mapping.getNewEffect())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

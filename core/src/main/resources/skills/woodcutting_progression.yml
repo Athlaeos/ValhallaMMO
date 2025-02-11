@@ -40,7 +40,7 @@ experience: # Everything about leveling and experience progression for Landscapi
     DARK_OAK_LOG: 40
     MANGROVE_LOG: 40
     CHERRY_LOG: 40
-    PALE_LOG: 40
+    PALE_OAK_LOG: 40
     WARPED_STEM: 60
     CRIMSON_STEM: 60
     OAK_WOOD: 60
@@ -50,7 +50,7 @@ experience: # Everything about leveling and experience progression for Landscapi
     ACACIA_WOOD: 60
     DARK_OAK_WOOD: 60
     MANGROVE_ROOTS: 60
-    PALE_WOOD: 60
+    PALE_OAK_WOOD: 60
     CHERRY_WOOD: 60
     MANGROVE_WOOD: 60
     WARPED_HYPHAE: 80

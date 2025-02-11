@@ -505,9 +505,9 @@ public abstract class Skill {
     public void addLevels(Player player, int levels, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (levels == 0) return;
         Profile p = ProfileRegistry.getPersistentProfile(player, getProfileType());
-        double expToGive = -p.getEXP();
+        double expToGive = 0;
         if (levels < 0) {
-            for (int level = p.getLevel() - 1; level >= p.getLevel() + levels; level--) {
+            for (int level = p.getLevel() + levels; level < p.getLevel(); level++) {
                 expToGive -= expForLevel(level);
             }
         } else {

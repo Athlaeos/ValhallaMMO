@@ -1,9 +1,12 @@
 package me.athlaeos.valhallammo.hooks;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.parties.Party;
 import me.athlaeos.valhallammo.parties.PartyManager;
+import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.clip.placeholderapi.expansion.Relational;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +23,17 @@ public class PAPIRelationalPlaceholder extends PlaceholderExpansion implements R
 
     @Override
     public @NotNull String getVersion() {
-        return "1.0";
+        return ValhallaMMO.getInstance().getDescription().getVersion();
+    }
+
+    @Override
+    public boolean persist() {
+        return true;
+    }
+
+    @Override
+    public String onRequest(OfflinePlayer player, @NotNull String params) {
+        return PlaceholderRegistry.parse("%" + params + "%", (Player) player);
     }
 
     @Override

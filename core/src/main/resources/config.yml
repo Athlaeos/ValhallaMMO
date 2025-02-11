@@ -120,6 +120,8 @@ inventory_repairing_valhalla: true # If false, players will no longer be able to
 oneshot_protection_players: true
 # If true, a player cannot be oneshot if the damage comes from a non-player
 oneshot_protection_mobs: true
+# If true, a player cannot be oneshot if the damage comes from the environment (fall damage, explosions, anvil, etc.)
+oneshot_protection_environment: true
 # Represents a multiplier applied on the victim's max hp. Oneshot protection is broken if damage exceeds this value
 # For example, if a player has 20 health, they need to take 60 damage in a single hit to not receive oneshot protection
 oneshot_protection_limit: 3

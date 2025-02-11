@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.listeners;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.CustomDamageType;
+import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.entities.damageindicators.DamageIndicatorRegistry;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -41,6 +42,7 @@ public class EntityDamagedListener implements Listener {
 
     private final boolean pvpOneShotProtection;
     private final boolean pveOneShotProtection;
+    private final boolean environmentalOneShotProtection;
     private final double oneShotProtectionCap;
     private final Sound oneShotProtectionSound;
 
@@ -53,6 +55,7 @@ public class EntityDamagedListener implements Listener {
 
         pvpOneShotProtection = c.getBoolean("oneshot_protection_players");
         pveOneShotProtection = c.getBoolean("oneshot_protection_mobs");
+        environmentalOneShotProtection = c.getBoolean("oneshot_protection_environment");
         oneShotProtectionCap = c.getDouble("oneshot_protection_limit");
         oneShotProtectionSound = Catch.catchOrElse(() -> Sound.valueOf(c.getString("oneshot_protection_sound")), Sound.ITEM_TOTEM_USE);
     }
@@ -105,7 +108,7 @@ public class EntityDamagedListener implements Listener {
             }
             if (e instanceof EntityDamageByEntityEvent && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking()) return; // blocking with shield damage reduction
 
-            if (lastDamager == null || ((pvpOneShotProtection && lastDamager instanceof Player) || (pveOneShotProtection && !(lastDamager instanceof Player)))) {
+            if (((lastDamager == null || EntityClassification.matchesClassification(lastDamager.getType(), EntityClassification.UNALIVE)) && environmentalOneShotProtection) || ((pvpOneShotProtection && lastDamager instanceof Player) || (pveOneShotProtection && lastDamager != null && !EntityClassification.matchesClassification(lastDamager.getType(), EntityClassification.UNALIVE)))) {
                 double oneShotProtectionFraction = AccumulativeStatManager.getCachedRelationalStats("ONESHOT_PROTECTION_FRACTION", l, lastDamager, 10000, true);
                 if (oneShotProtectionFraction > 0){
                     AttributeInstance healthAttribute = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
