@@ -456,6 +456,9 @@ weightless_knockback_resistance: 0.00 # Knockback reduced per piece of weightles
 # ValhallaMMO changes trident damage to instead scale off its melee damage
 trident_damage_ranged: 1.3 # Damage multiplier of tridents when thrown
 trident_damage_ranged_loyalty: 1.0 # Damage multiplier of tridents when thrown, but they have loyalty
+trident_impaling_damage_ranged: 2
+trident_impaling_damage_melee: 1
+trident_impaling_damage_water: true
 
 # CRAFTING
 

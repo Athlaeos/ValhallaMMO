@@ -64,6 +64,9 @@ public class EntityAttackListener implements Listener {
 
     private final double tridentThrownDamage = ValhallaMMO.getPluginConfig().getDouble("trident_damage_ranged");
     private final double tridentThrownLoyalDamage = ValhallaMMO.getPluginConfig().getDouble("trident_damage_ranged_loyalty");
+    private final double rangedDamage = ValhallaMMO.getPluginConfig().getDouble("trident_impaling_damage_ranged");
+    private final double meleeDamage = ValhallaMMO.getPluginConfig().getDouble("trident_impaling_damage_melee");
+    private final boolean tridentImpalingDamageOnlyInWater = ValhallaMMO.getPluginConfig().getBoolean("trident_impaling_damage_water");
     private final double velocityDamageConstant = ValhallaMMO.getPluginConfig().getDouble("velocity_damage_constant");
 
     private static final boolean multiplyDamageNumbers = ValhallaMMO.getPluginConfig().getBoolean("damage_multipliers_multiplicative");
@@ -137,12 +140,24 @@ public class EntityAttackListener implements Listener {
             }
 
             // trident damage overhaul
+            boolean isInWater = (e.getEntity().getLocation().getBlock().getLightFromSky() > (byte) 14 && !e.getEntity().getWorld().isClearWeather()) &&
+                    e.getEntity().getLocation().getBlock().getType() == Material.WATER;
             if (e.getDamager() instanceof Trident t){
                 ItemMeta tridentMeta = ItemUtils.getItemMeta(t.getItem());
                 AttributeWrapper damageWrapper = ItemAttributesRegistry.getAttribute(tridentMeta, "GENERIC_ATTACK_DAMAGE", false);
                 if (damageWrapper != null){
                     if (t.getItem().containsEnchantment(Enchantment.LOYALTY)) e.setDamage(damageWrapper.getValue() * tridentThrownLoyalDamage);
                     else e.setDamage(damageWrapper.getValue() * tridentThrownDamage);
+                }
+
+                int impalingLevel = t.getItem().getEnchantmentLevel(Enchantment.IMPALING);
+                if (impalingLevel > 0 && (!tridentImpalingDamageOnlyInWater || isInWater)) e.setDamage(e.getDamage() + (impalingLevel * rangedDamage));
+            }
+            if (e.getDamager() instanceof LivingEntity l && l.getEquipment() != null){
+                ItemStack hand = l.getEquipment().getItemInMainHand();
+                if (!ItemUtils.isEmpty(hand)) {
+                    int impalingLevel = hand.getEnchantmentLevel(Enchantment.IMPALING);
+                    if (impalingLevel > 0 && (!tridentImpalingDamageOnlyInWater || isInWater)) e.setDamage(e.getDamage() + (impalingLevel * meleeDamage));
                 }
             }
 
