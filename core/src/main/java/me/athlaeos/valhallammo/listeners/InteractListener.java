@@ -36,7 +36,7 @@ import java.util.UUID;
 
 public class InteractListener implements Listener {
     private static final Collection<UUID> attackedWithOffhand = new HashSet<>();
-    private static final boolean dualWieldingEnabled = ValhallaMMO.getPluginConfig().getBoolean("dual_wielding", true);
+    private static final boolean dualWieldingEnabled = false;// ValhallaMMO.getPluginConfig().getBoolean("dual_wielding", true);
     private static final UUID attackSpeedUUID = UUID.fromString("9bc1100a-0748-4476-ace4-603bf73585b1");
 
     @EventHandler(priority = EventPriority.MONITOR)

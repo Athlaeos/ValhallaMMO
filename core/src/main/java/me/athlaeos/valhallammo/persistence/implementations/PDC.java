@@ -47,6 +47,11 @@ public class PDC extends ProfilePersistence {
     }
 
     @Override
+    public void onProfileRegistration(Profile profile) {
+        // do nothing
+    }
+
+    @Override
     public void loadProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {

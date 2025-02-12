@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.SmithingTransformRecipeWrapper;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -120,30 +121,25 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
     public void setHiddenFromBook(boolean hiddenFromBook) { this.hiddenFromBook = hiddenFromBook; }
 
     /**
-     * Changes an item's type if its display name contains a formatted string telling the plugin it should be turned
-     * into another item if it exists
-     * @param i the item to convert
-     * @return the converted item
+     * Converts the recipe's template item to an updated item if possible
      */
-    private ItemStack convert(ItemStack i){
-        if (i == null) return null;
-        if (!i.hasItemMeta()) return i;
-        ItemMeta meta = i.getItemMeta();
-        if (meta == null) return null;
-        if (!meta.hasDisplayName()) return i;
+    public void convertTemplate(){
+        ItemStack t = template == null ? null : template.getItem();
+        if (t == null) return;
+        ItemMeta meta = t.getItemMeta();
+        if (meta == null) return;
+        if (!meta.hasDisplayName()) return;
         String displayName = meta.getDisplayName();
-        if (!displayName.contains("REPLACEWITH:")) return i;
+        if (!displayName.contains("REPLACEWITH:")) return;
         String[] args = displayName.split("REPLACEWITH:");
-        if (args.length != 2) return i;
+        if (args.length != 2) return;
         Material m = Catch.catchOrElse(() -> Material.valueOf(args[1]), null);
-        if (m == null) return i;
-        return new ItemStack(m);
+        if (m == null) return;
+        template.setExactIngredient(new ItemStack(m));
     }
 
     @SuppressWarnings("deprecation")
     public SmithingRecipe generateRecipe() {
-        if (template != null) template.setExactIngredient(convert(template.getItem()));
-
         RecipeChoice t = null;
         if (template != null) t = template.getOption() == null ?
                 new RecipeChoice.MaterialChoice(template.getItem().getType()) :
@@ -159,7 +155,9 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
 
         ItemStack i = result.clone();
         ResultChangingModifier changer = (ResultChangingModifier) resultModifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
-        if (changer != null) i = changer.getNewResult(null, new ItemBuilder(i));
+        if (changer != null) {
+            i = Utils.thisorDefault(changer.getNewResult(null, new ItemBuilder(i)), i);
+        }
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20) && t != null){
             return SmithingTransformRecipeWrapper.get(key, translate(i), t, b, a); // using a SmithingTransformRecipe directly results in a ClassNotFoundException on versions lower than 1.20
         } else return new SmithingRecipe(key, translate(i), b, a);

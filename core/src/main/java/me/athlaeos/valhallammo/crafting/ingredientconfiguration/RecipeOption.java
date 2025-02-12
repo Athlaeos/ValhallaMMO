@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 
-public abstract class RecipeOption {
+public abstract class RecipeOption implements IngredientChoice {
     /**
      * @return The name and identifier for this option
      */

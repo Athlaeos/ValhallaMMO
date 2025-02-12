@@ -1,19 +1,16 @@
 package me.athlaeos.valhallammo.playerstats.profiles;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.persistence.Database;
-import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.StatProperties;
+import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
+import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -90,6 +87,26 @@ public abstract class Profile {
 
     public abstract Class<? extends Skill> getSkillType();
 
+    public Collection<String> getInts() {
+        return ints.keySet();
+    }
+
+    public Collection<String> getDoubles() {
+        return doubles.keySet();
+    }
+
+    public Collection<String> getFloats() {
+        return floats.keySet();
+    }
+
+    public Collection<String> getStringSets() {
+        return stringSets.keySet();
+    }
+
+    public Collection<String> getBooleans() {
+        return booleans.keySet();
+    }
+
     public int getInt(String stat) {
         if (!ints.containsKey(stat)) throw new IllegalArgumentException("No int stat with this name is registered under " + getClass().getSimpleName());
         return ints.get(stat).getValue();
@@ -106,30 +123,30 @@ public abstract class Profile {
     }
 
     public float getFloat(String stat) {
-        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with this name is registered under " + getClass().getSimpleName());
+        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
         return floats.get(stat).getValue();
     }
     public float getDefaultFloat(String stat) {
-        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with this name is registered under " + getClass().getSimpleName());
+        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
         return floats.get(stat).getDefault();
     }
     public void setFloat(String stat, float value){
-        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with this name is registered under " + getClass().getSimpleName());
+        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
         if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMin())) value = (float) Math.max(numberStatProperties.get(stat).getMin(), value);
         if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMax())) value = (float) Math.min(numberStatProperties.get(stat).getMax(), value);
         floats.get(stat).setValue(value);
     }
 
     public double getDouble(String stat) {
-        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with this name " + stat + " is registered under " + getClass().getSimpleName());
+        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
         return doubles.get(stat).getValue();
     }
     public double getDefaultDouble(String stat) {
-        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with this name " + stat + " is registered under " + getClass().getSimpleName());
+        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
         return doubles.get(stat).getDefault();
     }
     public void setDouble(String stat, double value){
-        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with this name " + stat + " is registered under " + getClass().getSimpleName());
+        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
         if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMin())) value = Math.max(numberStatProperties.get(stat).getMin(), value);
         if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMax())) value = Math.min(numberStatProperties.get(stat).getMax(), value);
         doubles.get(stat).setValue(value);
@@ -256,95 +273,6 @@ public abstract class Profile {
         return numberStatProperties;
     }
 
-    public void createTable(Database conn) throws SQLException {
-        StringBuilder query = new StringBuilder("CREATE TABLE IF NOT EXISTS ");
-        query.append(getTableName()).append(" (");
-        query.append("owner VARCHAR(40) PRIMARY KEY");
-
-        // prepare table with all non-update stat names
-        for (String s : allStatNames){
-            if (tablesToUpdate.contains(s)) continue;
-            String lower = s.toLowerCase(java.util.Locale.US);
-            if (ints.containsKey(s)) query.append(", ").append(lower).append(" INTEGER default ").append(ints.get(s).def);
-            if (doubles.containsKey(s)) query.append(", ").append(lower).append(" DOUBLE(24,12) default ").append(doubles.get(s).def);
-            if (floats.containsKey(s)) query.append(", ").append(lower).append(" FLOAT default ").append(floats.get(s).def);
-            if (stringSets.containsKey(s)) query.append(", ").append(lower).append(" TEXT");
-            if (booleans.containsKey(s)) query.append(", ").append(lower).append(" BOOLEAN default ").append(booleans.get(s));
-        }
-        query.append(");");
-        conn.getConnection().prepareStatement(query.toString()).execute();
-
-        // edit table with new columns
-        for (String s : allStatNames){
-            String lower = s.toLowerCase(java.util.Locale.US);
-            if (ints.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "INTEGER default " + ints.get(s).def);
-            if (doubles.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "DOUBLE default " + doubles.get(s).def);
-            if (floats.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "FLOAT default " + floats.get(s).def);
-            if (stringSets.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "TEXT");
-            if (booleans.containsKey(s)) conn.addColumnIfNotExists(getTableName(), lower, "BOOLEAN default " + booleans.get(s).def);
-        }
-    }
-
-    public void insertOrUpdateProfile(Database conn) throws SQLException {
-        StringBuilder query = new StringBuilder("REPLACE INTO ").append(getTableName()).append(" (owner");
-        // stat names
-        Map<Integer, String> indexMap = new HashMap<>();
-        int index = 2;
-        for (String s : allStatNames){
-            query.append(", ").append(s);
-            indexMap.put(index, s);
-            index++;
-        }
-        query.append(") VALUES (?");
-        // param placeholders
-        query.append(", ?".repeat(allStatNames.size()));
-        query.append(");");
-        // populating param placeholders
-        PreparedStatement stmt = conn.getConnection().prepareStatement(query.toString());
-        stmt.setString(1, owner.toString());
-        for (int i : indexMap.keySet()){
-            String s = indexMap.get(i);
-            if (ints.containsKey(s)) stmt.setInt(i, ints.get(s).value);
-            else if (doubles.containsKey(s)) stmt.setDouble(i, doubles.get(s).value);
-            else if (floats.containsKey(s)) stmt.setFloat(i, floats.get(s).value);
-            else if (stringSets.containsKey(s)) stmt.setString(i, ProfilePersistence.serializeStringSet(stringSets.get(s)));
-            else if (booleans.containsKey(s)) stmt.setBoolean(i, booleans.get(s).getValue());
-            else ValhallaMMO.logWarning("Stat " + s + " from " + this.getClass().getSimpleName() + " did not belong to a valid data type");
-        }
-        stmt.execute();
-    }
-    public Profile fetchProfile(Player p, Database conn) throws SQLException{
-        PreparedStatement stmt = conn.getConnection().prepareStatement("SELECT * FROM " + getTableName() + " WHERE owner = ?;");
-        stmt.setString(1, p.getUniqueId().toString());
-        ResultSet result = stmt.executeQuery();
-        if (result.next()){
-            Profile profile = getBlankProfile(p);
-            for (String s : allStatNames){
-                String lower = s.toLowerCase(java.util.Locale.US);
-                if (ints.containsKey(s)) {
-                    profile.ints.get(s).value = result.getInt(lower);
-                    if (result.wasNull()) profile.ints.get(s).value = profile.ints.get(s).def;
-                }
-                else if (doubles.containsKey(s)) {
-                    profile.doubles.get(s).value = result.getDouble(lower);
-                    if (result.wasNull()) profile.doubles.get(s).value = profile.doubles.get(s).def;
-                }
-                else if (floats.containsKey(s)) {
-                    profile.floats.get(s).value = result.getFloat(lower);
-                    if (result.wasNull()) profile.floats.get(s).value = profile.floats.get(s).def;
-                }
-                else if (stringSets.containsKey(s)) profile.stringSets.put(s, ProfilePersistence.deserializeStringSet(Objects.requireNonNullElse(result.getString(lower), "")));
-                else if (booleans.containsKey(s)) {
-                    profile.booleans.get(s).value = result.getBoolean(lower);
-                    if (result.wasNull()) profile.booleans.get(s).value = profile.booleans.get(s).def;
-                }
-                else ValhallaMMO.logWarning("Stat " + s + " in " + this.getClass().getSimpleName() + " was not found in database");
-            }
-            return profile;
-        }
-        return null;
-    }
-
     public abstract Profile getBlankProfile(Player owner);
 
     /**
@@ -466,5 +394,33 @@ public abstract class Profile {
             return profile.getNumberStatProperties().get(i).getFormat();
         }
         return null;
+    }
+
+    public void registerPerkRewards(){
+        String skill = getSkillType().getSimpleName().toLowerCase(java.util.Locale.US).replace("skill", "");
+        if (getSkillType() == null) return;
+        for (String s : getAllStatNames()) {
+            StatProperties properties = getNumberStatProperties().get(s);
+            if (properties != null && properties.generatePerkRewards()) {
+                if (intStatNames().contains(s)) {
+                    PerkRewardRegistry.register(new ProfileIntAdd(skill + "_" + s + "_add", s, getClass()));
+                    PerkRewardRegistry.register(new ProfileIntSet(skill + "_" + s + "_set", s, getClass()));
+                } else if (floatStatNames().contains(s)) {
+                    PerkRewardRegistry.register(new ProfileFloatAdd(skill + "_" + s + "_add", s, getClass()));
+                    PerkRewardRegistry.register(new ProfileFloatSet(skill + "_" + s + "_set", s, getClass()));
+                } else if (doubleStatNames().contains(s)) {
+                    PerkRewardRegistry.register(new ProfileDoubleAdd(skill + "_" + s + "_add", s, getClass()));
+                    PerkRewardRegistry.register(new ProfileDoubleSet(skill + "_" + s + "_set", s, getClass()));
+                }
+            }
+            if (shouldBooleanStatHavePerkReward(s)){
+                PerkRewardRegistry.register(new ProfileBooleanSet(skill + "_" + s + "_set", s, getClass()));
+                PerkRewardRegistry.register(new ProfileBooleanToggle(skill + "_" + s + "_toggle", s, getClass()));
+            }
+        }
+    }
+
+    public Collection<String> getTablesToUpdate() {
+        return tablesToUpdate;
     }
 }

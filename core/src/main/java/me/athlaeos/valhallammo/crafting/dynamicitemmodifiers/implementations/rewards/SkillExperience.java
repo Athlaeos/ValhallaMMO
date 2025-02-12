@@ -4,8 +4,10 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
+import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.MaterialClass;
+import me.athlaeos.valhallammo.skills.skills.implementations.AlchemySkill;
 import me.athlaeos.valhallammo.skills.skills.implementations.SmithingSkill;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -41,8 +43,11 @@ public class SkillExperience extends DynamicItemModifier {
                 trueAmount += amount * multiplierBasedOnDurabilityTaken;
             } else trueAmount *= multiplierBasedOnDurabilityTaken;
             smithing.addEXP(crafter, trueAmount, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, MaterialClass.getMatchingClass(outputItem.getMeta()));
-        }
-        else s.addEXP(crafter, amount * timesExecuted, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+        } else if (s instanceof AlchemySkill a){
+            int quality = AlchemyItemPropertyManager.getQuality(outputItem.getMeta());
+            double multiplier = 1 + (quality * a.getQualityPotionExperienceMultiplier());
+            s.addEXP(crafter,  multiplier * amount * timesExecuted, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+        } else s.addEXP(crafter, amount * timesExecuted, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
     @Override

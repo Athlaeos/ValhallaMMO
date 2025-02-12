@@ -77,25 +77,27 @@ public class Bleeder {
         if (bleeder instanceof Player p && (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR)) return;
         if (bleeder instanceof Player p && WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_BLEED)) return;
         else if (WorldGuardHook.inDisabledRegion(bleeder.getLocation(), WorldGuardHook.VMMO_COMBAT_BLEED)) return;
-        BleedingInstance instance = bleedingEntities.get(bleeder.getUniqueId());
-        double resistance = AccumulativeStatManager.getRelationalStats("BLEED_RESISTANCE", bleeder, causedBy, true);
-        EntityBleedEvent event = new EntityBleedEvent(bleeder, causedBy, combatType, damage, resistance, duration, stacks);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
-        if (!event.isCancelled()){
-            if (event.getBleedResistance() >= 1) return;
-            if (instance == null) instance = new BleedingInstance(bleeder, causedBy, event.getDuration(), event.getBleedDamage() * (1 + event.getBleedResistance()));
-            else {
-                instance.setDuration(Math.max(event.getDuration(), instance.duration));
-                instance.setBleedingDamage(Math.max(event.getBleedDamage() * (1 + event.getBleedResistance()), instance.bleedingDamage));
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            BleedingInstance instance = bleedingEntities.get(bleeder.getUniqueId());
+            double resistance = AccumulativeStatManager.getRelationalStats("BLEED_RESISTANCE", bleeder, causedBy, true);
+            EntityBleedEvent event = new EntityBleedEvent(bleeder, causedBy, combatType, damage, resistance, duration, stacks);
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+            if (!event.isCancelled()){
+                if (event.getBleedResistance() >= 1) return;
+                if (instance == null) instance = new BleedingInstance(bleeder, causedBy, event.getDuration(), event.getBleedDamage() * (1 + event.getBleedResistance()));
+                else {
+                    instance.setDuration(Math.max(event.getDuration(), instance.duration));
+                    instance.setBleedingDamage(Math.max(event.getBleedDamage() * (1 + event.getBleedResistance()), instance.bleedingDamage));
+                }
+                instance.setStacks(event.getStack());
+                bleeder.getWorld().spawnParticle(Particle.valueOf(oldOrNew("BLOCK_DUST", "BLOCK")), bleeder.getEyeLocation().add(0, -(bleeder.getHeight()/2), 0),
+                        25, 0.4, 0.4, 0.4, Material.REDSTONE_BLOCK.createBlockData());
+                if (!bleedingEntities.containsKey(bleeder.getUniqueId())) {
+                    bleedingEntities.put(bleeder.getUniqueId(), instance);
+                    instance.runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
+                }
             }
-            instance.setStacks(event.getStack());
-            bleeder.getWorld().spawnParticle(Particle.valueOf(oldOrNew("BLOCK_DUST", "BLOCK")), bleeder.getEyeLocation().add(0, -(bleeder.getHeight()/2), 0),
-                    25, 0.4, 0.4, 0.4, Material.REDSTONE_BLOCK.createBlockData());
-            if (!bleedingEntities.containsKey(bleeder.getUniqueId())) {
-                bleedingEntities.put(bleeder.getUniqueId(), instance);
-                instance.runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
-            }
-        }
+        }, 1L);
     }
 
     /**
@@ -175,7 +177,8 @@ public class Bleeder {
                     }
                     int immunityFramesBefore = bleedingEntity.getNoDamageTicks();
                     bleedingEntity.setNoDamageTicks(0);
-                    EntityUtils.damage(bleedingEntity, causedBy, bleedingDamage, "BLEED");
+                    if (!EntityUtils.hasActiveDamageProcess(bleedingEntity))
+                        EntityUtils.damage(bleedingEntity, causedBy, bleedingDamage, "BLEED");
                     bleedingEntity.setNoDamageTicks(immunityFramesBefore); // makes sure the entity doesn't immune attacks they shouldn't after taking bleed damage
 
                     int particleCount = (int) (3 * Math.min(10, bleedingDamage));

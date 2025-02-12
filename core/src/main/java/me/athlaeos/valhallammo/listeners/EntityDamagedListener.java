@@ -3,12 +3,17 @@ package me.athlaeos.valhallammo.listeners;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.CustomDamageType;
+import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.entities.damageindicators.DamageIndicatorRegistry;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.EffectResponsibility;
-import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,7 +32,7 @@ import java.util.*;
 public class EntityDamagedListener implements Listener {
     private static final boolean customDamageEnabled = ValhallaMMO.getPluginConfig().getBoolean("custom_damage_system", true);
     private static final Collection<String> entityDamageCauses = new HashSet<>(Set.of("THORNS", "ENTITY_ATTACK", "ENTITY_SWEEP_ATTACK", "PROJECTILE", "ENTITY_EXPLOSION", "SONIC_BOOM"));
-    private static final Collection<String> trueDamage = new HashSet<>(Set.of("VOID", "SONIC_BOOM", "STARVATION", "SUICIDE", "WORLD_BORDER", "KILL", "GENERIC_KILL"));
+    private static final Collection<String> trueDamage = new HashSet<>(Set.of("VOID", "SONIC_BOOM", "STARVATION", "DROWNING", "SUICIDE", "WORLD_BORDER", "KILL", "GENERIC_KILL"));
 
     private static final Map<UUID, String> customDamageCauses = new HashMap<>();
     private static final Map<UUID, UUID> lastDamagedByMap = new HashMap<>();
@@ -35,12 +40,24 @@ public class EntityDamagedListener implements Listener {
 
     private static final Map<String, Double> physicalDamageTypes = new HashMap<>();
 
+    private final boolean pvpOneShotProtection;
+    private final boolean pveOneShotProtection;
+    private final boolean environmentalOneShotProtection;
+    private final double oneShotProtectionCap;
+    private final Sound oneShotProtectionSound;
+
     public EntityDamagedListener(){
         YamlConfiguration c = ValhallaMMO.getPluginConfig();
         for (String type : c.getStringList("armor_effective_types")){
             String[] args = type.split(":");
             physicalDamageTypes.put(args[0], args.length > 1 ? Catch.catchOrElse(() -> StringUtils.parseDouble(args[1]), 1D) : 1D);
         }
+
+        pvpOneShotProtection = c.getBoolean("oneshot_protection_players");
+        pveOneShotProtection = c.getBoolean("oneshot_protection_mobs");
+        environmentalOneShotProtection = c.getBoolean("oneshot_protection_environment");
+        oneShotProtectionCap = c.getDouble("oneshot_protection_limit");
+        oneShotProtectionSound = Catch.catchOrElse(() -> Sound.valueOf(c.getString("oneshot_protection_sound")), Sound.ITEM_TOTEM_USE);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -50,6 +67,7 @@ public class EntityDamagedListener implements Listener {
     }
 
     private final Map<UUID, Double> healthTracker = new HashMap<>();
+    private final Map<UUID, Double> absorptionTracker = new HashMap<>();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamageTaken(EntityDamageEvent e){
@@ -66,10 +84,13 @@ public class EntityDamagedListener implements Listener {
             if (e.getEntity() instanceof Player dP && lastDamager instanceof Player aP){
                 // pvp damage bonus and resistance mechanic
                 double bonus = AccumulativeStatManager.getCachedAttackerRelationalStats("PLAYER_DAMAGE_DEALT", dP, aP, 10000, true);
-                e.setDamage(e.getDamage() * (1 + bonus));
+                customDamage *= 1 + bonus;
 
                 double resistance = AccumulativeStatManager.getCachedRelationalStats("PVP_RESISTANCE", dP, aP, 10000, true);
-                e.setDamage(e.getDamage() * (1 - resistance));
+                customDamage *= 1 - resistance;
+            }
+            if (!Timer.isCooldownPassed(l.getUniqueId(), "duration_oneshot_protection")){
+                customDamage = 0;
             }
 
             double damageAfterImmunity = !customDamageEnabled ? e.getDamage() : overrideImmunityFrames(customDamage, l);
@@ -78,22 +99,45 @@ public class EntityDamagedListener implements Listener {
                 return; // entity is immune, and so damage doesn't need to be calculated further
             }
             lastDamageTakenMap.put(l.getUniqueId(), customDamage);
-            boolean applyImmunity = l.getHealth() - customDamage > 0;
+            boolean applyImmunity = (l.getHealth() + l.getAbsorptionAmount()) - customDamage > 0;
 
             if (DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage)) {
                 customDamage = 0;
                 e.setDamage(0);
                 applyImmunity = true;
             }
-            if (e instanceof EntityDamageByEntityEvent d && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking() &&
-                    EntityUtils.isEntityFacing(p, d.getDamager().getLocation(), EntityAttackListener.getFacingAngleCos())) return; // blocking with shield damage reduction
+            if (e instanceof EntityDamageByEntityEvent && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking()) return; // blocking with shield damage reduction
+
+            if (((lastDamager == null || EntityClassification.matchesClassification(lastDamager.getType(), EntityClassification.UNALIVE)) && environmentalOneShotProtection) || ((pvpOneShotProtection && lastDamager instanceof Player) || (pveOneShotProtection && lastDamager != null && !EntityClassification.matchesClassification(lastDamager.getType(), EntityClassification.UNALIVE)))) {
+                double oneShotProtectionFraction = AccumulativeStatManager.getCachedRelationalStats("ONESHOT_PROTECTION_FRACTION", l, lastDamager, 10000, true);
+                if (oneShotProtectionFraction > 0){
+                    AttributeInstance healthAttribute = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+                    if (healthAttribute != null){
+                        double maxHealth = healthAttribute.getValue();
+                        double damageUntilOSP = maxHealth * (1 - oneShotProtectionFraction);
+                        if (maxHealth * oneShotProtectionCap >= customDamage && customDamage > damageUntilOSP && l.getHealth() > damageUntilOSP){
+                            customDamage = damageUntilOSP;
+                            applyImmunity = true;
+                            Timer.setCooldown(l.getUniqueId(), 500, "duration_oneshot_protection");
+                            if (l instanceof Player p){
+                                PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
+                                Timer.setCooldownIgnoreIfPermission(p, profile.getOneShotProtectionCooldown() * 50, "cooldown_oneshot_protection");
+                                Timer.sendCooldownStatus(p, "cooldown_oneshot_protection", TranslationManager.getTranslation("ability_oneshot_protection"));
+                                p.playSound(p, oneShotProtectionSound, 1F, 1F);
+                            }
+                        }
+                    }
+                }
+            }
+
             final double damage = customDamage;
             if (applyImmunity){
-
                 double iFrameMultiplier = 1 + AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_MULTIPLIER", l, lastDamager, 10000, true);
                 int iFrameBonus = (int) AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_BONUS", l, lastDamager, 10000, true);
                 int iFrames = (int) Math.max(0, iFrameMultiplier * (Math.max(0, 10 + iFrameBonus)));
-                double predictedHealth = healthTracker.getOrDefault(l.getUniqueId(), l.getHealth()) - damage;
+                double predictedAbsorption = absorptionTracker.getOrDefault(l.getUniqueId(), l.getAbsorptionAmount()) - damage;
+                double predictedHealth = healthTracker.getOrDefault(l.getUniqueId(), l.getHealth()) - (predictedAbsorption >= 0 ? 0 : -predictedAbsorption);
+                absorptionTracker.put(l.getUniqueId(), predictedAbsorption);
                 healthTracker.put(l.getUniqueId(), predictedHealth); // if two damage instances occur in rapid succession (such as with bonus damage types)
                 // then the predicted health of the entity is recorded and used for additional damage instances. Without this, preceding damage instances
                 // would be ignored because the entity's health would not have changed yet at this point and their health would be set assuming they've only
@@ -106,10 +150,14 @@ public class EntityDamagedListener implements Listener {
                     if (customDamageEnabled && !e.isCancelled()){
                         AttributeInstance health = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
                         double maxHealth = health != null ? health.getValue() : -1;
-                        if (l.getHealth() > 0) l.setHealth(Math.max(damageCause.equals("POISON") ? 1 : 0, Math.min(maxHealth, predictedHealth)));
+                        if (l.getHealth() > 0) {
+                            l.setAbsorptionAmount(Math.max(0, predictedAbsorption));
+                            l.setHealth(Math.max(damageCause.equals("POISON") ? 1 : 0, Math.min(maxHealth, predictedHealth)));
+                        }
                     }
                     customDamageCauses.remove(l.getUniqueId());
                     healthTracker.remove(l.getUniqueId());
+                    absorptionTracker.remove(l.getUniqueId());
                 }, 1L);
             } else if (customDamageEnabled) {
                 // custom damage killed entity
@@ -120,8 +168,12 @@ public class EntityDamagedListener implements Listener {
                     return;
                 }
                 double previousHealth = l.getHealth();
+                double previousAbsorption = l.getAbsorptionAmount();
                 if (customDamage > 0) DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage);
-                if (l.getHealth() > 0) l.setHealth(0.0001); // attempt to ensure that this attack will kill
+                if (l.getHealth() + l.getAbsorptionAmount() > 0) {
+                    l.setAbsorptionAmount(0);
+                    l.setHealth(0.0001); // attempt to ensure that this attack will kill
+                }
                 if (e.getFinalDamage() == 0) { // if player wouldn't have died even with this little health, force a death (e.g. with resistance V)
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                         // l.setLastDamageCause(e);
@@ -129,7 +181,10 @@ public class EntityDamagedListener implements Listener {
                     }, 1L);
                 } else {
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                        if (e.isCancelled()) l.setHealth(previousHealth); // if the event was cancelled at this point, restore health to what it was previously
+                        if (e.isCancelled()) {
+                            l.setAbsorptionAmount(previousAbsorption);
+                            l.setHealth(previousHealth); // if the event was cancelled at this point, restore health to what it was previously
+                        }
                         customDamageCauses.remove(l.getUniqueId());
                     }, 1L);
                 }

@@ -54,7 +54,9 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
     private double expPerDamage = 0;
     private double spawnerMultiplier = 0;
     private double maceExpMultiplier = 0;
-    
+    private boolean maxHealthLimitation = false;
+    private double pvpMultiplier = 0.1;
+
     public HeavyWeaponsSkill(String type) {
         super(type);
     }
@@ -83,6 +85,8 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
         expPerDamage = progressionConfig.getDouble("experience.exp_per_damage");
         spawnerMultiplier = progressionConfig.getDouble("experience.spawner_spawned_multiplier");
         maceExpMultiplier = progressionConfig.getDouble("experience.mace_exp_multiplier");
+        maxHealthLimitation = progressionConfig.getBoolean("experience.max_health_limitation");
+        pvpMultiplier = progressionConfig.getDouble("experience.pvp_multiplier");
 
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
@@ -93,6 +97,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
                 !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_heavy_coating_attempts") ||
                 WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_HEAVYWEAPONS)) return;
         if (!(e.getClickedInventory() instanceof PlayerInventory) || !e.isRightClick()) return; // player inventory must be right-clicked
+        if (!hasPermissionAccess((Player) e.getWhoClicked())) return;
         Timer.setCooldown(e.getWhoClicked().getUniqueId(), 500, "delay_heavy_coating_attempts"); // setting cooldown between attempts so this can't be spammed with some macro
         if (ItemUtils.isEmpty(e.getCurrentItem()) || ItemUtils.isEmpty(e.getCursor())) return; // neither items must be empty
         if (!validCoatingItems.contains(e.getCursor().getType())) return; // must be a valid item for coating
@@ -146,7 +151,8 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
     public void onExpAttack(EntityDamageEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
                 EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE) ||
-                e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK || !(e.getEntity() instanceof Monster l)) return;
+                e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK || !(e.getEntity() instanceof LivingEntity l) ||
+                EntityClassification.matchesClassification(l.getType(), EntityClassification.PASSIVE)) return;
         Entity damager = EntityDamagedListener.getLastDamager(l);
         Player p = damager instanceof Player pl ? pl : damager instanceof Trident t && t.getShooter() instanceof Player pl ? pl : null;
         if (p != null){
@@ -158,10 +164,12 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
                 if (e.isCancelled() || !p.isOnline()) return;
                 double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);
+                double pvpMult = e.getEntity() instanceof Player ? pvpMultiplier : 1;
                 addEXP(p,
-                        Math.min(EntityUtils.getMaxHP(l), e.getDamage()) *
+                        maxHealthLimitation ? (Math.min(EntityUtils.getMaxHP(l), e.getDamage())) : e.getDamage() *
                                 (weapon.getItem().getType().toString().equals("MACE") ? maceExpMultiplier : 1) *
                                 expPerDamage *
+                                pvpMult *
                                 entityExpMultiplier *
                                 chunkNerf *
                                 (EntitySpawnListener.getSpawnReason(l) == CreatureSpawnEvent.SpawnReason.SPAWNER ? spawnerMultiplier : 1),

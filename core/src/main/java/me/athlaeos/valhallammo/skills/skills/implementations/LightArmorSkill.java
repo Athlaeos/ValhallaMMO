@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.event.EntityCustomPotionEffectEvent;
 import me.athlaeos.valhallammo.event.PlayerLeaveCombatEvent;
@@ -22,6 +23,7 @@ import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
@@ -46,6 +48,7 @@ public class LightArmorSkill extends Skill implements Listener {
     private double expPerDamage = 0;
     private double expPerCombatSecond = 0;
     private double expBonusPerPoint = 0;
+    private double pvpMultiplier = 0.1;
 
     private Animation adrenalineActivation;
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
@@ -68,6 +71,7 @@ public class LightArmorSkill extends Skill implements Listener {
         expPerDamage = progressionConfig.getDouble("experience.exp_damage_piece");
         expPerCombatSecond = progressionConfig.getDouble("experience.exp_second_piece");
         expBonusPerPoint = progressionConfig.getDouble("experience.exp_multiplier_point");
+        pvpMultiplier = progressionConfig.getDouble("experience.pvp_multiplier");
 
         ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.entity_exp_multipliers");
         if (entitySection != null){
@@ -109,15 +113,17 @@ public class LightArmorSkill extends Skill implements Listener {
         LightArmorProfile profile = ProfileCache.getOrCache(p, LightArmorProfile.class);
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            if (e.isCancelled() || !p.isOnline()) return;
+            if (e.isCancelled() || !p.isOnline() || e.getDamage() <= 0) return;
             double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(p.getLocation().getChunk(), p, "armors");
             int count = EntityCache.getAndCacheProperties(p).getLightArmorCount();
             double totalLightArmor = AccumulativeStatManager.getCachedStats("TOTAL_LIGHT_ARMOR", p, 10000, false);
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(trueDamager.getType(), 1D);
             double lastDamageTaken = e.getDamage();
             double exp = expPerDamage * lastDamageTaken * entityExpMultiplier * (1 + (totalLightArmor * expBonusPerPoint)) * chunkNerf;
-            addEXP(p, count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+            double pvpMult = trueDamager instanceof Player ? pvpMultiplier : 1;
+            addEXP(p,  pvpMult * count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
+            if (!hasPermissionAccess(p)) return;
             if (profile.isAdrenalineUnlocked() && profile.getAdrenalineLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_light_armor_adrenaline") &&
                     !WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_ADRENALINE)){
 
@@ -129,6 +135,8 @@ public class LightArmorSkill extends Skill implements Listener {
                 adrenalinePotionEffects.forEach(r -> r.applyPotionEffect(p, profile.getAdrenalineLevel()));
                 if (adrenalineActivation != null) adrenalineActivation.animate(p, p.getLocation(), p.getEyeLocation().getDirection(), 0);
                 Timer.setCooldownIgnoreIfPermission(p, profile.getAdrenalineCooldown() * 50, "cooldown_light_armor_adrenaline");
+            } else {
+                if (!Timer.isCooldownPassed(p.getUniqueId(), "cooldown_light_armor_adrenaline")) Timer.sendCooldownStatus(p, "cooldown_light_armor_adrenaline", TranslationManager.getTranslation("ability_adrenaline"));
             }
             ChunkEXPNerf.increment(p.getLocation().getChunk(), p, "armors");
         }, 2L);
@@ -138,17 +146,22 @@ public class LightArmorSkill extends Skill implements Listener {
     public void onPotionEffect(EntityPotionEffectEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getNewEffect() == null) return;
         if (!(e.getEntity() instanceof Player p)) return;
+        if (!hasPermissionAccess(p)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTARMOR)) return;
         LightArmorProfile profile = ProfileCache.getOrCache(p, LightArmorProfile.class);
         EntityProperties properties = EntityCache.getAndCacheProperties(p);
         if (properties.getLightArmorCount() < profile.getSetCount()) return;
-        if (profile.getImmuneEffects().contains(e.getNewEffect().getType().toString())) e.setCancelled(true);
+        PotionEffectMappings mapping = PotionEffectMappings.getEffect(e.getNewEffect().getType().getName());
+        if (mapping == null) return;
+        if (profile.getImmuneEffects().contains(mapping.getOldEffect()) ||
+                profile.getImmuneEffects().contains(mapping.getNewEffect())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPotionEffect(EntityCustomPotionEffectEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getNewEffect() == null || e.getCause() == EntityPotionEffectEvent.Cause.POTION_DRINK) return;
         if (!(e.getEntity() instanceof Player p)) return;
+        if (!hasPermissionAccess(p)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTARMOR) ||
                 WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_POTIONIMMUNITY)) return;
         LightArmorProfile profile = ProfileCache.getOrCache(p, LightArmorProfile.class);
@@ -164,8 +177,11 @@ public class LightArmorSkill extends Skill implements Listener {
 
         int armorCount = properties.getLightArmorCount();
         int expRewardTimes = (int) (timeInCombat / 1000D);
+
+        double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(e.getPlayer().getLocation().getChunk(), e.getPlayer(), "armors");
+        ChunkEXPNerf.increment(e.getPlayer().getLocation().getChunk(), e.getPlayer(), "armors");
         
-        addEXP(e.getPlayer(), expRewardTimes * armorCount * expPerCombatSecond, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+        addEXP(e.getPlayer(), expRewardTimes * chunkNerf * armorCount * expPerCombatSecond, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
     @Override

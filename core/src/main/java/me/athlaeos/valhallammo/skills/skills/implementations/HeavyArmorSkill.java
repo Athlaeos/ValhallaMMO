@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.event.EntityCustomPotionEffectEvent;
 import me.athlaeos.valhallammo.event.PlayerLeaveCombatEvent;
@@ -21,6 +22,7 @@ import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.*;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
@@ -39,6 +41,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
     private double expPerDamage = 0;
     private double expPerCombatSecond = 0;
     private double expBonusPerPoint = 0;
+    private double pvpMultiplier = 0.1;
 
     private Animation rageActivation;
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
@@ -61,6 +64,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
         expPerDamage = progressionConfig.getDouble("experience.exp_damage_piece");
         expPerCombatSecond = progressionConfig.getDouble("experience.exp_second_piece");
         expBonusPerPoint = progressionConfig.getDouble("experience.exp_multiplier_point");
+        pvpMultiplier = progressionConfig.getDouble("experience.pvp_multiplier");
 
         ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.entity_exp_multipliers");
         if (entitySection != null){
@@ -102,15 +106,17 @@ public class HeavyArmorSkill extends Skill implements Listener {
         HeavyArmorProfile profile = ProfileCache.getOrCache(p, HeavyArmorProfile.class);
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            if (e.isCancelled() || !p.isOnline()) return;
+            if (e.isCancelled() || !p.isOnline() || e.getDamage() <= 0) return;
             double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(p.getLocation().getChunk(), p, "armors");
             int count = EntityCache.getAndCacheProperties(p).getHeavyArmorCount();
             double totalHeavyArmor = AccumulativeStatManager.getCachedStats("TOTAL_HEAVY_ARMOR", p, 10000, false);
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(trueDamager.getType(), 1D);
             double lastDamageTaken = e.getDamage();
             double exp = expPerDamage * lastDamageTaken * entityExpMultiplier * (1 + (totalHeavyArmor * expBonusPerPoint)) * chunkNerf;
-            addEXP(p, count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+            double pvpMult = trueDamager instanceof Player ? pvpMultiplier : 1;
+            addEXP(p, pvpMult * pvpMult * count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
+            if (!hasPermissionAccess(p)) return;
             if (profile.isRageUnlocked() && profile.getRageLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_heavy_armor_rage") &&
                     !WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_RAGE)){
                 EntityProperties properties = EntityCache.getAndCacheProperties(p);
@@ -121,6 +127,8 @@ public class HeavyArmorSkill extends Skill implements Listener {
                 ragePotionEffects.forEach(r -> r.applyPotionEffect(p, profile.getRageLevel()));
                 if (rageActivation != null) rageActivation.animate(p, p.getLocation(), p.getEyeLocation().getDirection(), 0);
                 Timer.setCooldownIgnoreIfPermission(p, profile.getRageCooldown() * 50, "cooldown_heavy_armor_rage");
+            } else {
+                if (!Timer.isCooldownPassed(p.getUniqueId(), "cooldown_heavy_armor_rage")) Timer.sendCooldownStatus(p, "cooldown_heavy_armor_rage", TranslationManager.getTranslation("ability_rage"));
             }
             ChunkEXPNerf.increment(p.getLocation().getChunk(), p, "armors");
         }, 2L);
@@ -130,17 +138,22 @@ public class HeavyArmorSkill extends Skill implements Listener {
     public void onPotionEffect(EntityPotionEffectEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getNewEffect() == null || e.getCause() == EntityPotionEffectEvent.Cause.POTION_DRINK) return;
         if (!(e.getEntity() instanceof Player p)) return;
+        if (!hasPermissionAccess(p)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_HEAVYARMOR)) return;
         HeavyArmorProfile profile = ProfileCache.getOrCache(p, HeavyArmorProfile.class);
         EntityProperties properties = EntityCache.getAndCacheProperties(p);
         if (properties.getHeavyArmorCount() < profile.getSetCount()) return;
-        if (profile.getImmuneEffects().contains(e.getNewEffect().getType().toString())) e.setCancelled(true);
+        PotionEffectMappings mapping = PotionEffectMappings.getEffect(e.getNewEffect().getType().getName());
+        if (mapping == null) return;
+        if (profile.getImmuneEffects().contains(mapping.getOldEffect()) ||
+                profile.getImmuneEffects().contains(mapping.getNewEffect())) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPotionEffect(EntityCustomPotionEffectEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getNewEffect() == null) return;
         if (!(e.getEntity() instanceof Player p)) return;
+        if (!hasPermissionAccess(p)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_HEAVYARMOR) ||
                 WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_POTIONIMMUNITY)) return;
         HeavyArmorProfile profile = ProfileCache.getOrCache(p, HeavyArmorProfile.class);
@@ -157,7 +170,10 @@ public class HeavyArmorSkill extends Skill implements Listener {
         int armorCount = properties.getHeavyArmorCount();
         int expRewardTimes = (int) (timeInCombat / 1000D);
 
-        addEXP(e.getPlayer(), expRewardTimes * armorCount * expPerCombatSecond, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+        double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(e.getPlayer().getLocation().getChunk(), e.getPlayer(), "armors");
+        ChunkEXPNerf.increment(e.getPlayer().getLocation().getChunk(), e.getPlayer(), "armors");
+
+        addEXP(e.getPlayer(), expRewardTimes * chunkNerf * armorCount * expPerCombatSecond, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
     @Override

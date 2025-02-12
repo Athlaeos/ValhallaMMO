@@ -16,6 +16,8 @@ experience: # Everything about leveling and experience progression for Landscapi
     STRIPPED_ACACIA_LOG: 20
     STRIPPED_DARK_OAK_LOG: 20
     STRIPPED_MANGROVE_LOG: 20
+    STRIPPED_CHERRY_LOG: 20
+    STRIPPED_PALE_OAK_LOG: 20
     STRIPPED_WARPED_STEM: 30
     STRIPPED_CRIMSON_STEM: 30
     STRIPPED_OAK_WOOD: 30
@@ -25,6 +27,7 @@ experience: # Everything about leveling and experience progression for Landscapi
     STRIPPED_ACACIA_WOOD: 30
     STRIPPED_DARK_OAK_WOOD: 30
     STRIPPED_MANGROVE_WOOD: 30
+    STRIPPED_PALE_OAK_WOOD: 30
     STRIPPED_CHERRY_WOOD: 30
     STRIPPED_WARPED_HYPHAE: 40
     STRIPPED_CRIMSON_HYPHAE: 40
@@ -37,6 +40,7 @@ experience: # Everything about leveling and experience progression for Landscapi
     DARK_OAK_LOG: 40
     MANGROVE_LOG: 40
     CHERRY_LOG: 40
+    PALE_OAK_LOG: 40
     WARPED_STEM: 60
     CRIMSON_STEM: 60
     OAK_WOOD: 60
@@ -46,6 +50,7 @@ experience: # Everything about leveling and experience progression for Landscapi
     ACACIA_WOOD: 60
     DARK_OAK_WOOD: 60
     MANGROVE_ROOTS: 60
+    PALE_OAK_WOOD: 60
     CHERRY_WOOD: 60
     MANGROVE_WOOD: 60
     WARPED_HYPHAE: 80
@@ -501,8 +506,10 @@ perks:
       p:woodcutting_newgameplus_add: 1
       p:woodcutting_woodcuttingdrops_add: 0.3
       p:woodcutting_woodcuttingspeedbonus_add: 0.25
-      p:woodcutting_woodcuttingexpmultiplier_add: -0.25
-      p:perks_unlocked_add:
+      p:woodcutting_woodcuttingexpmultiplier_add: -0.5
+      p:perks_permanently_unlocked_add:
+        - woodcutting_perk_ng1
+      p:perks_unlocked_remove:
         - woodcutting_perk_ng1
     messages:
       - "<lang.woodcutting_perk_ng1_messages>"
@@ -521,9 +528,10 @@ perks:
       p:woodcutting_newgameplus_add: 1
       p:woodcutting_woodcuttingdrops_add: 0.3
       p:woodcutting_woodcuttingspeedbonus_add: 0.25
-      p:woodcutting_woodcuttingexpmultiplier_add: -0.25
-      p:perks_unlocked_add:
-        - woodcutting_perk_ng1
+      p:woodcutting_woodcuttingexpmultiplier_add: -0.17
+      p:perks_permanently_unlocked_add:
+        - woodcutting_perk_ng2
+      p:perks_unlocked_remove:
         - woodcutting_perk_ng2
     messages:
       - "<lang.woodcutting_perk_ng2_messages>"

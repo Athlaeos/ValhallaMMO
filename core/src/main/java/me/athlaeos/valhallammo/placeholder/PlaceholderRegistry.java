@@ -18,21 +18,6 @@ public class PlaceholderRegistry {
     private static final Map<String, Placeholder> placeholders = new HashMap<>();
 
     static {
-        // auto-registering profile stat placeholders
-        for (Profile profile : ProfileRegistry.getRegisteredProfiles().values()){
-            for (String numberStat : profile.getNumberStatProperties().keySet()) {
-                StatFormat format = profile.getNumberStatProperties().get(numberStat).getFormat();
-                if (format == null) continue;
-                registerPlaceholder(new NumericProfileStatPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase(java.util.Locale.US) + "_" + numberStat.toLowerCase(java.util.Locale.US) + "%", profile.getClass(), numberStat, format));
-            }
-            registerPlaceholder(new ProfileNextLevelPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase(java.util.Locale.US) + "_next_level%", profile.getClass(), StatFormat.INT));
-            registerPlaceholder(new ProfileNextLevelEXPPlaceholder("%" + profile.getClass().getSimpleName().toLowerCase(java.util.Locale.US) + "_next_level_exp%", profile.getClass(), StatFormat.INT));
-        }
-
-        for (String statSource : AccumulativeStatManager.getSources().keySet()) {
-            registerPlaceholder(new TotalStatPlaceholder("%stat_source_" + statSource.toLowerCase(java.util.Locale.US) + "%", statSource));
-        }
-
         registerPlaceholder(new SpendableSkillPointsPlaceholder("%skillpoints%"));
         registerPlaceholder(new SpendablePrestigePointsPlaceholder("%prestigepoints%"));
         registerPlaceholder(new RegionalDifficultyLevelPlaceholder("%difficulty_regional%"));

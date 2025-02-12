@@ -78,6 +78,7 @@ public class DiggingSkill extends Skill implements Listener {
                 !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING)) return;
 
+        if (!hasPermissionAccess(e.getPlayer())) return;
         DiggingProfile profile = ProfileCache.getOrCache(e.getPlayer(), DiggingProfile.class);
         e.setExpToDrop(e.getExpToDrop() + Utils.randomAverage(profile.getBlockExperienceRate()));
         LootListener.addPreparedLuck(e.getBlock(), AccumulativeStatManager.getCachedStats("DIGGING_LUCK", e.getPlayer(), 10000, true));

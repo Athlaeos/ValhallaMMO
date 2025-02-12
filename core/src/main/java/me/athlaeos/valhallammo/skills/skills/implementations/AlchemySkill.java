@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.listeners.BrewingStandListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
@@ -47,6 +48,9 @@ public class AlchemySkill extends Skill implements Listener {
     private Sound transmutationSound = null;
     private static List<String> transmutationPotionLore = new ArrayList<>();
     private static String transmutationPotionName = null;
+    private double qualityPotionExperienceMultiplier = 0;
+    private double expMultiplierAutomated = 0.25;
+    private double expMultiplierManual = 2;
 
     public AlchemySkill(String type) {
         super(type);
@@ -71,6 +75,10 @@ public class AlchemySkill extends Skill implements Listener {
         validCombiningItems.addAll(ItemUtils.getMaterialSet(skillConfig.getStringList("valid_combining_items")));
         transmutationPotionLore = Utils.chat(TranslationManager.translateListPlaceholders(skillConfig.getStringList("transmutation_lore")));
         transmutationPotionName = Utils.chat(TranslationManager.translatePlaceholders(skillConfig.getString("transmutation_name")));
+
+        qualityPotionExperienceMultiplier = progressionConfig.getDouble("experience.exp_multiplier_quality", 0.01);
+        expMultiplierAutomated = progressionConfig.getDouble("experience.multiplier_automated");
+        expMultiplierManual = progressionConfig.getDouble("experience.multiplier_manual");
 
         ConfigurationSection section = transmutationConfig.getConfigurationSection("transmutations");
         if (section != null){
@@ -108,14 +116,16 @@ public class AlchemySkill extends Skill implements Listener {
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
             amount *= (1 + AccumulativeStatManager.getStats("ALCHEMY_EXP_GAIN", p, true));
         }
-        super.addEXP(p, amount, silent, reason);
+        double multiplier = reason != PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION ? 1 : BrewingStandListener.isMarkedAutomatedBrewing(p) ? expMultiplierAutomated : expMultiplierManual;
+        super.addEXP(p, multiplier * amount, silent, reason);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPotionCombine(InventoryClickEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() || !e.isRightClick() ||
                 !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_combining_attempts") ||
-                WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_ALCHEMY)) return;
+                WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_ALCHEMY) ||
+                !hasPermissionAccess((Player) e.getWhoClicked())) return;
         if (!(e.getClickedInventory() instanceof PlayerInventory) || !e.isRightClick()) return; // player inventory must be right-clicked
         Timer.setCooldown(e.getWhoClicked().getUniqueId(), 500, "delay_combining_attempts"); // setting cooldown between attempts so this can't be spammed with some macro
         if (ItemUtils.isEmpty(e.getCurrentItem()) || ItemUtils.isEmpty(e.getCursor())) return; // neither items must be empty
@@ -182,7 +192,8 @@ public class AlchemySkill extends Skill implements Listener {
         if (b != null && (b.getType() == Material.CAULDRON || b.getType().toString().equals("WATER_CAULDRON"))){
             ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
             if (ItemUtils.isEmpty(hand) || hand.getType() != Material.POTION) return;
-            hand.setType(Material.GLASS_BOTTLE);
+            hand = new ItemStack(Material.GLASS_BOTTLE, hand.getAmount());
+            e.getPlayer().getInventory().setItemInMainHand(hand);
             e.getClickedBlock().getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.BLOCK_BREWING_STAND_BREW, 1F, 1F);
             e.setCancelled(true);
         }
@@ -193,7 +204,8 @@ public class AlchemySkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
                 e.getHitBlock() == null ||
                 !(e.getEntity().getShooter() instanceof Player p) ||
-                WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ALCHEMY)) return;
+                WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ALCHEMY) ||
+                !hasPermissionAccess(p)) return;
         ItemMeta potionMeta = ItemUtils.getItemMeta(e.getPotion().getItem());
         if (!isTransmutationPotion(potionMeta)) return;
 
@@ -230,4 +242,8 @@ public class AlchemySkill extends Skill implements Listener {
     }
 
     private record Transmutation(String key, Material from, Material to){}
+
+    public double getQualityPotionExperienceMultiplier() {
+        return qualityPotionExperienceMultiplier;
+    }
 }

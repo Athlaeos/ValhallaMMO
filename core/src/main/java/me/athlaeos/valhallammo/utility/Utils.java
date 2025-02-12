@@ -1,10 +1,7 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.dom.Catch;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
-import me.athlaeos.valhallammo.dom.Pair;
-import me.athlaeos.valhallammo.dom.Weighted;
+import me.athlaeos.valhallammo.dom.*;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -24,6 +21,8 @@ import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static me.athlaeos.valhallammo.hooks.MiniMessageHook.convertMiniMessage;
 
 public class Utils {
 
@@ -296,6 +295,18 @@ public class Utils {
         return messages.stream().map(Utils::chat).toList();
     }
 
+    private static boolean miniMessageSupported;
+    static {
+        try {
+            Class.forName("net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer");
+            miniMessageSupported = true;
+            ValhallaMMO.logInfo("MiniMessage support initialized");
+        } catch (ClassNotFoundException ignored){
+            miniMessageSupported = false;
+            ValhallaMMO.logInfo("MiniMessage support could not be initialized");
+        }
+    }
+
     /**
      * Converts all color codes to ChatColor. Works with hex codes.
      * Hex code format is triggered with &#123456
@@ -303,6 +314,12 @@ public class Utils {
      * @return the converted message
      */
     public static String chat(String message) {
+        if (StringUtils.isEmpty(message)) return "";
+        if (miniMessageSupported) message = convertMiniMessage(message);
+        return vanillaChat(message);
+    }
+
+    public static String vanillaChat(String message) {
         if (StringUtils.isEmpty(message)) return "";
         char COLOR_CHAR = ChatColor.COLOR_CHAR;
         Matcher matcher = hexPattern.matcher(message);
@@ -405,5 +422,19 @@ public class Utils {
      */
     public static String oldOrNew(String o, String n){
         return hasNewMappings() ? n : o;
+    }
+
+    public static <T> T thisorDefault(T input, T def){
+        return input == null ? def : input;
+    }
+
+    public static <T> T random(Collection<T> coll) {
+        int num = (int) (Math.random() * coll.size());
+        for(T t: coll) if (--num < 0) return t;
+        throw new AssertionError();
+    }
+
+    public static void repeat(int times, Action<Integer> what){
+        for (int i = 0; i < times; i++) what.act(i);
     }
 }

@@ -6,10 +6,12 @@ import me.athlaeos.valhallammo.dom.Fetcher;
 import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.event.ValhallaLootPopulateEvent;
+import me.athlaeos.valhallammo.event.ValhallaLootReplacementEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.listeners.LootListener;
 import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
+import me.athlaeos.valhallammo.loot.ReplacementTable;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
@@ -107,6 +109,7 @@ public class FishingSkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() ||
                 !(e.getState() == PlayerFishEvent.State.FISHING || e.getState() == PlayerFishEvent.State.CAUGHT_FISH) ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FISHING)) return;
+
         FishingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FishingProfile.class);
         if (e.getState() == PlayerFishEvent.State.FISHING) {
             double multiplier = (1 / (1 + Math.max(-0.999, profile.getFishingSpeedBonus())));
@@ -231,6 +234,20 @@ public class FishingSkill extends Skill implements Listener {
                 LootListener.prepareFishingDrops(p.getUniqueId(), loottableEvent.getDrops());
             }
         }
+
+        ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(pickedEntry.vanillaTable);
+        ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
+        ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
+        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable == null || !event.isCancelled()){
+            ItemStack item = i.getItemStack();
+            if (ItemUtils.isEmpty(item)) return;
+            ItemStack replacement = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.FISH, item);
+            if (!ItemUtils.isEmpty(replacement)) item = replacement;
+            ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.FISH, item);
+            if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
+            if (!ItemUtils.isEmpty(item)) i.setItemStack(item);
+        }
     }
 
     private static final Collection<FishingTableEntry> fishingTables = Set.of(
@@ -267,9 +284,28 @@ public class FishingSkill extends Skill implements Listener {
                     case CLEAR_UNLESS_EMPTY -> !loottableEvent.getDrops().isEmpty();
                     case KEEP -> false;
                 };
-                if (!clearVanilla) LootListener.prepareFishingDrops(p.getUniqueId(), vanillaLoot);
+                if (!clearVanilla) prepareReplacedVanillaLoot(p, vanillaLoot, pickedEntry, context);
                 LootListener.prepareFishingDrops(p.getUniqueId(), loottableEvent.getDrops());
             }
-        } else LootListener.prepareFishingDrops(p.getUniqueId(), vanillaLoot);
+        } else prepareReplacedVanillaLoot(p, vanillaLoot, pickedEntry, context);
+    }
+
+    private static void prepareReplacedVanillaLoot(Player fisherman, List<ItemStack> vanillaLoot, FishingTableEntry entry, LootContext context){
+        ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(entry.vanillaTable);
+        ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
+        ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
+        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable == null || !event.isCancelled()){
+            for (int i = 0; i < vanillaLoot.size(); i++){
+                ItemStack item = vanillaLoot.get(i);
+                if (ItemUtils.isEmpty(item)) continue;
+                ItemStack replacement = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.FISH, item);
+                if (!ItemUtils.isEmpty(replacement)) item = replacement;
+                ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.FISH, item);
+                if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
+                if (!ItemUtils.isEmpty(item)) vanillaLoot.set(i, item);
+            }
+        }
+        LootListener.prepareFishingDrops(fisherman.getUniqueId(), vanillaLoot);
     }
 }

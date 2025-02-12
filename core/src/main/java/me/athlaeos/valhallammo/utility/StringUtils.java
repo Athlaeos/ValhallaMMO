@@ -1,11 +1,13 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 public class StringUtils {
 
@@ -97,23 +99,24 @@ public class StringUtils {
                 .replace("%seconds%", String.format("%." + (decimal ? 1 : 0) + "f", seconds));
     }
 
+    static final Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
     public static List<String> separateStringIntoLines(String string, int maxLength){
         List<String> lines = new ArrayList<>();
-        String[] words = string.split(" ");
-        if (words.length == 0) return lines;
-        StringBuilder sentence = new StringBuilder(words[0]);
-        for (String w : Arrays.copyOfRange(words, 1, words.length)){
-            if (sentence.length() + w.length() > maxLength || w.contains("/n")){
-                w = w.replace("/n", "");
-                lines.add(sentence.toString());
-                String previousSentence = sentence.toString();
-                sentence = new StringBuilder();
-                sentence.append(Utils.chat(org.bukkit.ChatColor.getLastColors(Utils.chat(previousSentence)))).append(w);
-            } else {
-                sentence.append(" ").append(w);
+        String[] byNewLines = string.split("/n");
+        for (String line : byNewLines){
+            String[] words = line.split(" ");
+            StringBuilder sentence = new StringBuilder(words[0]);
+            for (String word : Arrays.copyOfRange(words, 1, words.length)){
+                String rawWord = ChatColor.stripColor(Utils.chat(word.replaceAll(hexPattern.pattern(), "")));
+                String rawSentence = ChatColor.stripColor(Utils.chat(sentence.toString().replaceAll(hexPattern.pattern(), "")));
+                if (rawSentence.length() + rawWord.length() > maxLength){
+                    lines.add(sentence.toString());
+                    String previousSentence = sentence.toString();
+                    sentence = new StringBuilder(Utils.vanillaChat(org.bukkit.ChatColor.getLastColors(Utils.vanillaChat(previousSentence)))).append(word);
+                } else sentence.append(" ").append(word);
             }
+            lines.add(sentence.toString());
         }
-        lines.add(sentence.toString());
         return lines;
     }
 

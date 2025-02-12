@@ -6,14 +6,19 @@ import me.athlaeos.valhallammo.persistence.*;
 import me.athlaeos.valhallammo.persistence.implementations.PDC;
 import me.athlaeos.valhallammo.persistence.implementations.SQL;
 import me.athlaeos.valhallammo.persistence.implementations.SQLite;
+import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
+import me.athlaeos.valhallammo.placeholder.placeholders.NumericProfileStatPlaceholder;
+import me.athlaeos.valhallammo.placeholder.placeholders.ProfileNextLevelEXPPlaceholder;
+import me.athlaeos.valhallammo.placeholder.placeholders.ProfileNextLevelPlaceholder;
 import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
+import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import org.bukkit.entity.Player;
 
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ProfileRegistry {
@@ -21,7 +26,7 @@ public class ProfileRegistry {
     private static final int delay_profile_saving = ConfigManager.getConfig("config.yml").reload().get().getInt("db_persist_delay");
     private static Map<Class<? extends Profile>, Profile> registeredProfiles = Collections.unmodifiableMap(new HashMap<>());
 
-    static {
+    public static void registerDefaultProfiles(){
         registerProfileType(new PowerProfile(null));
         registerProfileType(new AlchemyProfile(null));
         registerProfileType(new SmithingProfile(null));
@@ -48,6 +53,17 @@ public class ProfileRegistry {
         Map<Class<? extends Profile>, Profile> profiles = new HashMap<>(registeredProfiles);
         profiles.put(p.getClass(), p);
         registeredProfiles = Collections.unmodifiableMap(profiles);
+        p.registerPerkRewards();
+
+        persistence.onProfileRegistration(p);
+
+        for (String numberStat : p.getNumberStatProperties().keySet()) {
+            StatFormat format = p.getNumberStatProperties().get(numberStat).getFormat();
+            if (format == null) continue;
+            PlaceholderRegistry.registerPlaceholder(new NumericProfileStatPlaceholder("%" + p.getClass().getSimpleName().toLowerCase(Locale.US) + "_" + numberStat.toLowerCase(Locale.US) + "%", p.getClass(), numberStat, format));
+        }
+        PlaceholderRegistry.registerPlaceholder(new ProfileNextLevelPlaceholder("%" + p.getClass().getSimpleName().toLowerCase(Locale.US) + "_next_level%", p.getClass(), StatFormat.INT));
+        PlaceholderRegistry.registerPlaceholder(new ProfileNextLevelEXPPlaceholder("%" + p.getClass().getSimpleName().toLowerCase(Locale.US) + "_next_level_exp%", p.getClass(), StatFormat.INT));
     }
 
     public static void setupDatabase(){
@@ -56,19 +72,8 @@ public class ProfileRegistry {
         if (((Database) persistence).getConnection() == null) persistence = new SQLite(); // if SQL connection fails, choose SQLite
         if (((Database) persistence).getConnection() == null) persistence = new PDC(); // if SQLite fails, choose PDC
 
-        if (persistence instanceof Database){
-            for (Profile s : registeredProfiles.values()){
-                try {
-                    s.createTable((Database) persistence);
-                } catch (SQLException e){
-                    ValhallaMMO.logSevere("SQLException when trying to create a table for profile type " + s.getClass().getSimpleName() + ". ");
-                    e.printStackTrace();
-                }
-            }
-        }
-
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(ValhallaMMO.getInstance(), () -> {
-            ProfileRegistry.saveAll();
+            saveAll();
             LeaderboardManager.refreshLeaderboards();
         }, delay_profile_saving, delay_profile_saving);
     }

@@ -89,7 +89,7 @@ public class SmithingSkill extends Skill implements Listener {
     }
 
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason, MaterialClass material) {
-        double multiplier = (1 + AccumulativeStatManager.getStats("SMITHING_EXP_GAIN_" + material, p, true));
+        double multiplier = material == null ? 1 : (1 + AccumulativeStatManager.getStats("SMITHING_EXP_GAIN_" + material, p, true));
         amount *= multiplier;
         addEXP(p, amount, silent, reason);
     }

@@ -1,6 +1,5 @@
 package me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations;
 
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class MeleeWeaponChoice extends RecipeOption implements IngredientChoice {
+public class MeleeWeaponChoice extends RecipeOption {
     private static Collection<Material> weapons;
 
     static {

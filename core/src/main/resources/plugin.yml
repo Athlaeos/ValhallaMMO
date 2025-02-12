@@ -91,6 +91,12 @@ permissions:
   valhalla.give:
     default: op
     description: "Access to the /valhalla give command, which allows users to give themselves or a player a custom item registered in the item registry"
+  valhalla.drop:
+    default: op
+    description: "Access to the /valhalla drop command, which allows users to drop a custom item registered in the item registry at a specific location"
+  valhalla.spawn:
+    default: op
+    description: "Access to the /valhalla spawn command, which allows users to spawn a monster at a given level at a specific location"
   valhalla.resourcepack:
     default: op
     description: "Allows the user to download the ValhallaMMO resource pack for the server, and to disable or enable certain config settings to be overridden to show the custom textures"

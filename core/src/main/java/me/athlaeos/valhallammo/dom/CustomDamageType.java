@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.dom;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.animations.Animation;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -20,67 +21,83 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
             .additiveDamage("FIRE_DAMAGE_BONUS").multiplicativeDamage("FIRE_DAMAGE_DEALT")
             .resistance("FIRE_RESISTANCE")
             .immuneable()
+            .translation(TranslationManager.getTranslation("damage_type_fire"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_fire")).i("&f\uEE6B&c").register();
     public static final CustomDamageType MAGIC = new CustomDamageType("MAGIC", "MAGIC", "THORNS", "DRAGON_BREATH")
             .additiveDamage("MAGIC_DAMAGE_BONUS").multiplicativeDamage("MAGIC_DAMAGE_DEALT")
             .resistance("MAGIC_RESISTANCE")
             .immuneable()
             .lifeStealable()
+            .translation(TranslationManager.getTranslation("damage_type_magic"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_magic")).i("&f\uEE6C&d").register();
     public static final CustomDamageType PROJECTILE = new CustomDamageType("PROJECTILE", "PROJECTILE")
             .multiplicativeDamage("RANGED_DAMAGE_DEALT")
             .resistance("PROJECTILE_RESISTANCE")
             .lifeStealable()
+            .translation(TranslationManager.getTranslation("damage_type_projectile"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_projectile")).i("&f\uEE05&c").register();
     public static final CustomDamageType EXPLOSION = new CustomDamageType("EXPLOSION", "ENTITY_EXPLOSION", "BLOCK_EXPLOSION")
             .additiveDamage("EXPLOSION_DAMAGE_BONUS").multiplicativeDamage("EXPLOSION_DAMAGE_DEALT")
             .resistance("EXPLOSION_RESISTANCE")
+            .translation(TranslationManager.getTranslation("damage_type_explosion"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_explosion")).i("&f\uEE6A&6").register();
     public static final CustomDamageType POISON = new CustomDamageType("POISON", "POISON")
             .additiveDamage("POISON_DAMAGE_BONUS").multiplicativeDamage("POISON_DAMAGE_DEALT").setFatal(false)
             .resistance("POISON_RESISTANCE")
             .immuneable()
+            .translation(TranslationManager.getTranslation("damage_type_poison"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_poison")).i("&f\uEE6D&2").register();
     public static final CustomDamageType FALLING = new CustomDamageType("FALLING", "FALL", "FLY_INTO_WALL")
             .resistance("FALLING_RESISTANCE")
+            .translation(TranslationManager.getTranslation("damage_type_falling"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_falling")).i("&f\uEE98&c").register();
     public static final CustomDamageType MELEE = new CustomDamageType("MELEE", "CONTACT", "ENTITY_ATTACK", "ENTITY_SWEEP_ATTACK")
             .multiplicativeDamage("MELEE_DAMAGE_DEALT")
             .resistance("MELEE_RESISTANCE")
             .lifeStealable()
+            .translation(TranslationManager.getTranslation("damage_type_melee"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_melee")).i("&f\uEE54&c").register();
     public static final CustomDamageType BLEED = new CustomDamageType("BLEED", "BLEED")
             .resistance("BLEED_RESISTANCE")
             .immuneable()
             .lifeStealable()
+            .translation(TranslationManager.getTranslation("damage_type_bleeding"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_bleeding")).i("&f\uEE09&4").register();
     public static final CustomDamageType FREEZING = new CustomDamageType("FREEZING", "FREEZE")
             .additiveDamage("FREEZING_DAMAGE_BONUS").multiplicativeDamage("FREEZING_DAMAGE_DEALT")
             .resistance("FREEZING_RESISTANCE")
             .immuneable()
+            .translation(TranslationManager.getTranslation("damage_type_freezing"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_freezing")).i("&f\uEE70&b").register();
     public static final CustomDamageType LIGHTNING = new CustomDamageType("LIGHTNING", "LIGHTNING")
             .additiveDamage("LIGHTNING_DAMAGE_BONUS").multiplicativeDamage("LIGHTNING_DAMAGE_DEALT")
             .resistance("LIGHTNING_RESISTANCE")
             .immuneable()
+            .translation(TranslationManager.getTranslation("damage_type_lightning"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_lightning")).i("&f\uEE6F&e").register();
     public static final CustomDamageType BLUDGEONING = new CustomDamageType("BLUDGEONING", "FALLING_BLOCK", "BLUDGEONING")
             .additiveDamage("BLUDGEONING_DAMAGE_BONUS").multiplicativeDamage("BLUDGEONING_DAMAGE_DEALT").powerAttacks(true)
             .resistance("BLUDGEONING_RESISTANCE")
             .lifeStealable()
+            .translation(TranslationManager.getTranslation("damage_type_bludgeoning"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_bludgeoning")).i("&f\uEE6E&c").register();
     public static final CustomDamageType RADIANT = new CustomDamageType("RADIANT", "RADIANT")
             .additiveDamage("RADIANT_DAMAGE_BONUS").multiplicativeDamage("RADIANT_DAMAGE_DEALT")
             .resistance("RADIANT_RESISTANCE")
             .immuneable()
             .lifeStealable()
+            .translation(TranslationManager.getTranslation("damage_type_radiant"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_radiant")).i("&f\uEE71&f").register();
     public static final CustomDamageType NECROTIC = new CustomDamageType("NECROTIC", "NECROTIC", "WITHER")
             .additiveDamage("NECROTIC_DAMAGE_BONUS").multiplicativeDamage("NECROTIC_DAMAGE_DEALT")
             .resistance("NECROTIC_RESISTANCE")
             .immuneable()
             .lifeStealable()
+            .translation(TranslationManager.getTranslation("damage_type_necrotic"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_necrotic")).i("&f\uEE72&7").register();
+    public static final CustomDamageType OTHER = new CustomDamageType("OTHER", "SUFFOCATION", "CRAMMING", "CUSTOM")
+            .i("\uED18")
+            .immuneable().register();
 
     public static Map<String, CustomDamageType> getRegisteredTypes() {
         return registeredTypes;
@@ -91,6 +108,7 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
     private Animation hurtAnimation = null;
     private String resistanceStatSource = null;
     private String additiveDamageStatSource = null;
+    private String translation = null;
     private String multiplicativeDamageStatSource = null;
     private String indicatorIcon = null;
     private String hardCodedIndicatorIcon = null;
@@ -124,11 +142,11 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
     }
 
     public String getIndicatorIcon() {
-        return indicatorIcon;
+        return indicatorIcon == null ? "" : indicatorIcon;
     }
 
     public String getHardCodedIndicatorIcon() {
-        return hardCodedIndicatorIcon;
+        return hardCodedIndicatorIcon == null ? "" : hardCodedIndicatorIcon;
     }
 
     public void setHurtAnimation(Animation hurtAnimation) {
@@ -149,6 +167,11 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
 
     public CustomDamageType resistance(String resistanceStatSource) {
         this.resistanceStatSource = resistanceStatSource;
+        return this;
+    }
+
+    public CustomDamageType translation(String translation){
+        this.translation = translation;
         return this;
     }
 
@@ -198,6 +221,10 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
 
     public boolean isImmuneable() {
         return immuneable;
+    }
+
+    public String getTranslation() {
+        return translation;
     }
 
     public boolean benefitsFromPowerAttacks() {

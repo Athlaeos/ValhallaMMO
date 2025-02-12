@@ -134,15 +134,24 @@ public class BlockListener implements Listener {
         e.setRadius((float) (e.getRadius() * (1 + multiplier)));
     }
 
+    private static final float EXPLOSION_IMMUNE_HARDNESS = 10;
+    private static final float EXPLOSION_IMMUNE_BLAST_RESISTANCE = 30;
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onExplosion(BlockExplodeEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
-        e.blockList().removeIf(b -> BlockUtils.getHardness(b) < 0);
+        e.blockList().removeIf(b -> {
+            float hardness = BlockUtils.getHardness(b);
+            return hardness < 0 || hardness >= EXPLOSION_IMMUNE_HARDNESS || b.getType().getBlastResistance() >= EXPLOSION_IMMUNE_BLAST_RESISTANCE;
+        });
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onExplosion(EntityExplodeEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
-        e.blockList().removeIf(b -> BlockUtils.getHardness(b) < 0);
+        e.blockList().removeIf(b -> {
+            float hardness = BlockUtils.getHardness(b);
+            return hardness < 0 || hardness >= EXPLOSION_IMMUNE_HARDNESS || b.getType().getBlastResistance() >= EXPLOSION_IMMUNE_BLAST_RESISTANCE;
+        });
     }
 }

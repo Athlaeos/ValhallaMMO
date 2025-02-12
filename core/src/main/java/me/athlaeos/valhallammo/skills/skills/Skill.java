@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.skills.skills;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillLevelUpEvent;
 import me.athlaeos.valhallammo.event.ValhallaUpdatedStatsEvent;
@@ -35,6 +36,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -398,7 +400,7 @@ public abstract class Skill {
                     nextLevel--;
                     EXP += expForLevel;
                 } else {
-                    EXP = expForLevel - EXP;
+                    EXP += expForLevel;
                     break; // player does not have enough negative experience to level down
                 }
             }
@@ -432,7 +434,7 @@ public abstract class Skill {
         if (profile.getLevel() <= 0 && profile.getTotalEXP() < 0) profile.setTotalEXP(0);
 
         ProfileRegistry.setPersistentProfile(p, profile, getProfileType());
-        changePlayerLevel(p, currentLevel, nextLevel, silent);
+        changePlayerLevel(p, currentLevel, Math.max(0, nextLevel), silent);
 
         if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()) {
             showBossBar(p, profile, 0);
@@ -462,9 +464,10 @@ public abstract class Skill {
         // non-levelable skills should not gain exp
         if (!isLevelableSkill() || (requiredPermission != null && !p.hasPermission(requiredPermission))) return;
         // creative mode players should not gain skill-acquired exp
-        if (p.getGameMode() == GameMode.CREATIVE && !(this instanceof PowerSkill) && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
+        if (!(this instanceof PowerSkill) && p.getGameMode() == GameMode.CREATIVE && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
         // only experience-scaling skills should scale with exp multipliers. By default, this only excludes PowerSkill
-        if (isExperienceScaling()) amount *= (1 + AccumulativeStatManager.getStats("GLOBAL_EXP_GAIN", p, true));
+        if (isExperienceScaling() && (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION||
+                reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE)) amount *= (1 + AccumulativeStatManager.getStats("GLOBAL_EXP_GAIN", p, true));
 
         PlayerSkillExperienceGainEvent event = new PlayerSkillExperienceGainEvent(p, amount, this, reason);
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
@@ -502,9 +505,9 @@ public abstract class Skill {
     public void addLevels(Player player, int levels, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (levels == 0) return;
         Profile p = ProfileRegistry.getPersistentProfile(player, getProfileType());
-        double expToGive = -p.getEXP();
+        double expToGive = 0;
         if (levels < 0) {
-            for (int level = p.getLevel() - 1; level >= p.getLevel() + levels; level--) {
+            for (int level = p.getLevel() + levels; level < p.getLevel(); level++) {
                 expToGive -= expForLevel(level);
             }
         } else {
@@ -512,11 +515,11 @@ public abstract class Skill {
                 expToGive += expForLevel(level);
             }
         }
-        addEXP(player, expToGive, silent, reason);
-        // make sure the player ends up at 0 exp for the level
-        if (p.getLevel() < levels) addEXP(player, expForLevel(p.getLevel() + 1) - p.getEXP(), silent, reason);
-        else if (p.getLevel() == levels) addEXP(player, -p.getEXP(), silent, reason);
-        else addEXP(player, expForLevel(p.getLevel()) + p.getEXP(), silent, reason);
+        addEXP(player, Math.ceil(expToGive), silent, reason);
+//        // make sure the player ends up at 0 exp for the level
+//        if (p.getLevel() < levels) addEXP(player, expForLevel(p.getLevel() + 1) - p.getEXP(), silent, reason);
+//        else if (p.getLevel() == levels) addEXP(player, -p.getEXP(), silent, reason);
+//        else addEXP(player, expForLevel(p.getLevel()) + p.getEXP(), silent, reason);
     }
 
     private final Map<UUID, EXPStatusStruct> expTracker = new HashMap<>();
@@ -607,7 +610,7 @@ public abstract class Skill {
      *
      * @param p the player to level up
      */
-    public void changePlayerLevel(Player p, int from, int to, boolean silent) {
+    private void changePlayerLevel(Player p, int from, int to, boolean silent) {
         if (!isLevelableSkill()) return;
         if (to < from) {
             // level down
@@ -647,7 +650,7 @@ public abstract class Skill {
                 for (PerkReward reward : levelingPerks) {
                     if (reward instanceof MultiplicativeReward r) {
                         if (reward.isPersistent()) continue;
-                        r.remove(p, to - from);
+                        r.remove(p, from - to);
                     } else reward.remove(p);
                 }
 
@@ -671,7 +674,7 @@ public abstract class Skill {
                 if (!silent) {
                     if (specialLevelingMessages.containsKey(i)) {
                         for (String message : specialLevelingMessages.get(i)) {
-                            p.sendMessage(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(Utils.chat(message), p), p));
+                            p.sendMessage(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(Utils.chat(message.replace("%player%", p.getName())), p), p));
                         }
                     }
                 }
@@ -693,8 +696,39 @@ public abstract class Skill {
             }
 
             if (!silent) {
-                for (String message : levelingMessages) {
-                    Utils.sendMessage(p, TranslationManager.translatePlaceholders(message).replace("%level%", String.valueOf(to)));
+                Map<Integer, List<String>> messages = new HashMap<>();
+                int lastDelay = 0;
+                for (String message : levelingMessages){
+                    String[] matches = message.startsWith("DELAY(") ? org.apache.commons.lang.StringUtils.substringsBetween(message, "DELAY(", ")") : new String[0];
+                    int delay = Math.max(0, matches == null || matches.length == 0 ? 0 : Catch.catchOrElse(() -> Integer.parseInt(matches[0]), 0));
+
+                    lastDelay += delay;
+                    List<String> thisDelayMessages = messages.getOrDefault(lastDelay, new ArrayList<>());
+                    thisDelayMessages.add(message);
+                    messages.put(lastDelay, thisDelayMessages);
+                }
+                if (lastDelay == 0){
+                    levelingMessages.forEach(message ->
+                            Utils.sendMessage(p, TranslationManager.translatePlaceholders(message).replace("%player%", p.getName()).replace("%level%", String.valueOf(to)))
+                    );
+                } else {
+                    int finalDuration = lastDelay;
+                    new BukkitRunnable(){
+                        int timer = 0;
+                        @Override
+                        public void run() {
+                            if (timer >= finalDuration || !p.isOnline()) {
+                                cancel();
+                                return;
+                            }
+
+                            messages.getOrDefault(timer, new ArrayList<>())
+                                    .forEach(message ->
+                                            Utils.sendMessage(p, TranslationManager.translatePlaceholders(message).replace("%player%", p.getName()).replace("%level%", String.valueOf(to)))
+                                    );
+                            timer++;
+                        }
+                    }.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
                 }
             }
 
@@ -727,8 +761,6 @@ public abstract class Skill {
         int level = persistentProfile.getLevel();
         PowerProfile powerProfile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
 
-        Profile skillProfile = ProfileRegistry.getBlankProfile(p, getProfileType());
-        ProfileRegistry.setSkillProfile(p, skillProfile, skillProfile.getClass());
         for (PerkReward r : startingPerks) {
             if (!runPersistentStartingPerks && r.isPersistent()) continue;
             r.apply(p);
@@ -758,6 +790,7 @@ public abstract class Skill {
         }
 
         Collection<String> unlockedPerks = powerProfile.getUnlockedPerks();
+        unlockedPerks.addAll(powerProfile.getPermanentlyUnlockedPerks());
         Collection<String> fakeUnlockedPerks = powerProfile.getFakeUnlockedPerks();
         Collection<String> permanentlyLockedPerks = powerProfile.getPermanentlyLockedPerks();
         for (Perk perk : perks) {
@@ -778,7 +811,7 @@ public abstract class Skill {
         }
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
-                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, skillProfile.getClass())));
+                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, getProfileType())));
     }
 
     private final boolean perksForgettable = ConfigManager.getConfig("config.yml").reload().get().getBoolean("forgettable_perks");
@@ -862,5 +895,9 @@ public abstract class Skill {
 
     public boolean isPerksForgettable() {
         return perksForgettable;
+    }
+
+    public boolean hasPermissionAccess(Player p){
+        return requiredPermission == null || p.hasPermission(requiredPermission);
     }
 }

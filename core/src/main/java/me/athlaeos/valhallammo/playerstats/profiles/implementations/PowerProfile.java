@@ -141,8 +141,11 @@ public class PowerProfile extends Profile {
         booleanStat("badFoodImmune", new BooleanProperties(true, true));
         booleanStat("miningAffinityWater", new BooleanProperties(true, true));
         booleanStat("miningAffinityAir", new BooleanProperties(true, true));
+        floatStat("oneShotProtectionFraction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        intStat("oneShotProtectionCooldown", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
 
         stringSetStat("unlockedPerks");
+        stringSetStat("permanentlyUnlockedPerks"); // if a perk is really permanently unlocked, it will persist through soft resets as well
         stringSetStat("fakeUnlockedPerks"); // if a perk is "fake unlocked" it will be excluded from stat calculation, as if the player hasn't unlocked it at all
         stringSetStat("permanentlyLockedPerks"); // permanently locked perks will be considered unlocked regardless if it's actually in unlockedPerks, essentially permanently preventing it from unlocking
         stringSetStat("unlockedRecipes");
@@ -154,6 +157,8 @@ public class PowerProfile extends Profile {
         booleanStat("hideExperienceGain");
         booleanStat("hideGlobalBuffs");
         floatStat("craftingEffectVolume", 1F, new PropertyBuilder().min(0).max(10).create());
+
+        booleanStat("inventoryRepairingKeepEnchanting", new BooleanProperties(true, true));
     } // TODO an annotation to automate getters and setters for all these properties?
 
     public float getShieldDisarming() { return getFloat("shieldDisarming"); }
@@ -202,6 +207,9 @@ public class PowerProfile extends Profile {
     public boolean hasAquaAffinity() { return getBoolean("miningAffinityWater"); }
     public void setAquaAffinity(boolean affinity) { setBoolean("miningAffinityWater", affinity); }
 
+    public boolean hasInventoryRepairingKeepEnchanting() { return getBoolean("inventoryRepairingKeepEnchanting"); }
+    public void setInventoryRepairingKeepEnchanting(boolean affinity) { setBoolean("inventoryRepairingKeepEnchanting", affinity); }
+
     public boolean hasAerialAffinity() { return getBoolean("miningAffinityAir"); }
     public void setAerialAffinity(boolean affinity) { setBoolean("miningAffinityAir", affinity); }
 
@@ -221,6 +229,9 @@ public class PowerProfile extends Profile {
     public boolean hideGlobalBuffs() { return getBoolean("hideGlobalBuffs"); }
     public void toggleGlobalBuffs() { setBoolean("hideGlobalBuffs", !hideGlobalBuffs()); }
 
+    public float getOneShotProtectionFraction() { return getFloat("oneShotProtectionFraction"); }
+    public void setOneShotProtectionFraction(float volume) { setFloat("oneShotProtectionFraction", volume); }
+
     public float getCraftingSoundVolume() { return getFloat("craftingEffectVolume"); }
     public void setCraftingSoundVolume(float volume) { setFloat("craftingEffectVolume", volume); }
 
@@ -229,6 +240,9 @@ public class PowerProfile extends Profile {
 
     public int getSpendableSkillPoints(){ return getInt("spendableSkillPoints");}
     public void setSpendableSkillPoints(int value){ setInt("spendableSkillPoints", value);}
+
+    public int getOneShotProtectionCooldown(){ return getInt("oneShotProtectionCooldown"); }
+    public void setOneShotProtectionCooldown(int points){ setInt("oneShotProtectionCooldown", points); }
 
     public int getSpentSkillPoints(){ return getInt("spentSkillPoints"); }
     public void setSpentSkillPoints(int points){ setInt("spentSkillPoints", points); }
@@ -517,6 +531,9 @@ public class PowerProfile extends Profile {
 
     public Collection<String> getUnlockedPerks(){ return getStringSet("unlockedPerks");}
     public void setUnlockedPerks(Collection<String> value){ setStringSet("unlockedPerks", value);}
+
+    public Collection<String> getPermanentlyUnlockedPerks(){ return getStringSet("permanentlyUnlockedPerks");}
+    public void setPermanentlyUnlockedPerks(Collection<String> value){ setStringSet("permanentlyUnlockedPerks", value);}
 
     public Collection<String> getFakeUnlockedPerks(){ return getStringSet("fakeUnlockedPerks");}
     public void setFakeUnlockedPerks(Collection<String> value){ setStringSet("fakeUnlockedPerks", value);}

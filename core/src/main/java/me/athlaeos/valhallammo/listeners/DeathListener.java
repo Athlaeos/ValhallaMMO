@@ -1,5 +1,7 @@
 package me.athlaeos.valhallammo.listeners;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.CustomDamageType;
 import me.athlaeos.valhallammo.entities.MonsterScalingManager;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -20,13 +22,46 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import java.util.*;
 
 public class DeathListener implements Listener {
+    private final String deathStatus;
+    private final String deathStatusNoDamageType;
+    private final String killedStatus;
+    private final String killedStatusNoDamageType;
+
+    public DeathListener(){
+        deathStatus = TranslationManager.getTranslation("death_status");
+        killedStatus = TranslationManager.getTranslation("death_status_killer");
+        deathStatusNoDamageType = TranslationManager.getTranslation("death_status_no_damage_type");
+        killedStatusNoDamageType = TranslationManager.getTranslation("death_status_killer_no_damage_type");
+    }
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDeath(PlayerDeathEvent e){
         PotionEffectRegistry.removePotionEffects(e.getEntity(), EntityPotionEffectEvent.Cause.DEATH, eff -> eff.getWrapper().isRemovable());
 
         String cause = EntityDamagedListener.getLastDamageCause(e.getEntity());
         if (cause == null) return;
+
         Entity lastDamager = EntityDamagedListener.getLastDamager(e.getEntity());
+
+        double lastDamageTaken = EntityDamagedListener.getLastDamageTaken(e.getEntity().getUniqueId());
+        CustomDamageType type = CustomDamageType.getCustomType(cause);
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            if (type != null && !StringUtils.isEmpty(type.getTranslation())){
+                if (lastDamager == null) Utils.sendMessage(e.getEntity(), deathStatus
+                        .replace("%damage%", String.format("%.1f", lastDamageTaken))
+                        .replace("%type%", type.getTranslation()));
+                else Utils.sendMessage(e.getEntity(), killedStatus
+                        .replace("%damage%", String.format("%.1f", lastDamageTaken))
+                        .replace("%type%", type.getTranslation())
+                        .replace("%killer%", lastDamager.getName()));
+            } else {
+                if (lastDamager == null) Utils.sendMessage(e.getEntity(), deathStatusNoDamageType
+                        .replace("%damage%", String.format("%.1f", lastDamageTaken)));
+                else Utils.sendMessage(e.getEntity(), killedStatusNoDamageType
+                        .replace("%damage%", String.format("%.1f", lastDamageTaken))
+                        .replace("%killer%", lastDamager.getName()));
+            }
+        }, 20L);
 
         List<String> deathMessages = lastDamager != null ?
                 TranslationManager.getListTranslation("death_message_" + cause.toLowerCase(java.util.Locale.US) + "_enemy") :

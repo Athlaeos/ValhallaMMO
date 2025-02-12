@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.commands;
 
+import me.athlaeos.valhallammo.parties.PartyChatListener;
 import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.Command;
@@ -15,7 +16,11 @@ public class PartySpyCommand implements CommandExecutor {
             PartyManager.ErrorStatus.NO_PERMISSION.sendErrorMessage(sender);
             return true;
         }
-        if (!(sender instanceof Player p)) return true;
+        if (!(sender instanceof Player p)) {
+            if (PartyChatListener.toggleConsoleSpyEnabled()) Utils.sendMessage(sender, "status_command_party_spy_enabled");
+            else Utils.sendMessage(sender, "status_command_party_spy_disabled");
+            return true;
+        }
         if (PartyManager.togglePartySpy(p)) Utils.sendMessage(sender, "status_command_party_spy_enabled");
         else Utils.sendMessage(sender, "status_command_party_spy_disabled");
         return true;

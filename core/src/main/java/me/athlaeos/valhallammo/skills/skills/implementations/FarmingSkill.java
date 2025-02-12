@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import me.athlaeos.valhallammo.listeners.LootListener;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
@@ -171,6 +172,8 @@ public class FarmingSkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING) ||
                 !blockDropExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+        if (!hasPermissionAccess(e.getPlayer())) return;
+
         FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
         int experience = e.getExpToDrop() + Utils.randomAverage(profile.getFarmingExperienceRate());
         e.setExpToDrop(experience);
@@ -205,6 +208,7 @@ public class FarmingSkill extends Skill implements Listener {
                 e.useInteractedBlock() == Event.Result.DENY || e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getHand() == EquipmentSlot.OFF_HAND ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
 
+        if (!hasPermissionAccess(e.getPlayer())) return;
         Block clickedBlock = e.getClickedBlock();
         FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
         if (clickedBlock.getBlockData() instanceof Ageable a && a.getAge() >= a.getMaximumAge() && harvestableCrops.contains(clickedBlock.getType())) {
@@ -230,13 +234,17 @@ public class FarmingSkill extends Skill implements Listener {
                     }, (b) -> fieldHarvestingPlayers.remove(b.getUniqueId()));
                 Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getFieldHarvestCooldown() * 50, "farming_field_harvest");
             } else if (profile.isInstantHarvesting()) {
+                if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "farming_field_harvest")) Timer.sendCooldownStatus(e.getPlayer(), "farming_field_harvest", TranslationManager.getTranslation("ability_field_harvest"));
+
                 instantHarvest(e.getPlayer(), clickedBlock, profile);
                 e.getPlayer().swingMainHand();
             }
         }
         if (clickedBlock.getBlockData() instanceof Beehive b && b.getHoneyLevel() >= b.getMaximumHoneyLevel()) {
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                if (b.getHoneyLevel() < b.getMaximumHoneyLevel()){
+                Beehive newHive = clickedBlock.getBlockData() instanceof Beehive bee ? bee : null;
+                if (newHive == null) return;
+                if (newHive.getHoneyLevel() < newHive.getMaximumHoneyLevel()){
                     // hive is empty after 5 ticks, so it can be assumed it was harvested
                     if (blockInteractExpValues.containsKey(clickedBlock.getType())) {
                         double amount = blockInteractExpValues.get(clickedBlock.getType());
@@ -250,8 +258,8 @@ public class FarmingSkill extends Skill implements Listener {
                     }
 
                     if (Utils.proc(e.getPlayer(), profile.getHiveHoneySaveChance(), false)) {
-                        b.setHoneyLevel(b.getMaximumHoneyLevel());
-                        clickedBlock.setBlockData(b);
+                        newHive.setHoneyLevel(newHive.getMaximumHoneyLevel());
+                        clickedBlock.setBlockData(newHive);
                     }
                 }
             }, 5L);
@@ -295,6 +303,7 @@ public class FarmingSkill extends Skill implements Listener {
         }
         addEXP(e.getPlayer(), amount, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
+        if (!hasPermissionAccess(e.getPlayer())) return;
         FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
         int exp = Utils.randomAverage(profile.getFarmingExperienceRate());
         if (exp > 0) {
@@ -329,6 +338,8 @@ public class FarmingSkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof Bee) ||
                 !(e.getTarget() instanceof Player p) || e.getReason() != EntityTargetEvent.TargetReason.CLOSEST_PLAYER ||
                 WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_FARMING)) return;
+
+        if (!hasPermissionAccess(p)) return;
         FarmingProfile profile = ProfileCache.getOrCache(p, FarmingProfile.class);
         if (!profile.hasBeeAggroImmunity()) return;
         e.setCancelled(true);
@@ -363,6 +374,7 @@ public class FarmingSkill extends Skill implements Listener {
         double multiplier = AccumulativeStatManager.getCachedStats("BUTCHERY_DROP_MULTIPLIER", killer, 10000, true);
         ItemUtils.multiplyItems(e.getDrops(), 1 + multiplier, forgivingDropMultipliers, (i) -> entityDropExpValues.containsKey(i.getType()));
 
+        if (!hasPermissionAccess(killer)) return;
         double exp = 0;
         for (ItemStack i : e.getDrops()){
             if (ItemUtils.isEmpty(i)) continue;
@@ -377,6 +389,8 @@ public class FarmingSkill extends Skill implements Listener {
                 !EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.ANIMAL)) return;
         if (!(e.getBreeder() instanceof Player p) || !(e.getEntity() instanceof org.bukkit.entity.Ageable a)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_FARMING)) return;
+
+        if (!hasPermissionAccess(p)) return;
         FarmingProfile profile = ProfileCache.getOrCache(p, FarmingProfile.class);
         int newAge = (int) Math.ceil(a.getAge() * (1 / (Math.max(-0.999, profile.getGrowUpTimeMultiplier()) + 1)));
         a.setAge(newAge);

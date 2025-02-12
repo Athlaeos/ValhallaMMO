@@ -223,6 +223,17 @@ public class EntityUtils {
         return total;
     }
 
+    public static List<Player> getNearbyPlayers(Location from, double radius){
+        double squared = radius * radius;
+        List<Player> nearby = new ArrayList<>();
+        if (from.getWorld() == null) return nearby;
+        for (Player p : from.getWorld().getPlayers()){
+            if (from.distanceSquared(p.getLocation()) <= squared) nearby.add(p);
+        }
+        nearby.sort(Comparator.comparingDouble(p -> p.getLocation().distanceSquared(from)));
+        return nearby;
+    }
+
     private static final Attribute attackReachAttribute = Catch.catchOrElse(() -> Attribute.valueOf("PLAYER_ENTITY_INTERACTION_RANGE"), null);
     public static double getPlayerReach(Player p){
         if (attackReachAttribute == null) return 3.0;
@@ -239,25 +250,25 @@ public class EntityUtils {
         return 1.0;
     }
 
-    public static double combinedAttributeValue(LivingEntity entity, Attribute attribute, AttributeModifier.Operation operation, WeightClass weightFilter, String equipmentPenalty, boolean mainHandOnly){
+    public static double combinedAttributeValue(LivingEntity entity, String attribute, AttributeModifier.Operation operation, WeightClass weightFilter, String equipmentPenalty, boolean mainHandOnly){
         double total = 0;
         EntityProperties properties = EntityCache.getAndCacheProperties(entity);
         if (properties.getHelmet() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter))
-            total += getValue(entity, equipmentPenalty, properties.getHelmet().getMeta(), properties.getHelmetAttributes(), attribute.toString(), operation);
+            total += getValue(entity, equipmentPenalty, properties.getHelmet().getMeta(), properties.getHelmetAttributes(), attribute, operation);
         if (properties.getChestplate() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter))
-            total += getValue(entity, equipmentPenalty, properties.getChestplate().getMeta(), properties.getChestPlateAttributes(), attribute.toString(), operation);
+            total += getValue(entity, equipmentPenalty, properties.getChestplate().getMeta(), properties.getChestPlateAttributes(), attribute, operation);
         if (properties.getLeggings() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter))
-            total += getValue(entity, equipmentPenalty, properties.getLeggings().getMeta(), properties.getLeggingsAttributes(), attribute.toString(), operation);
+            total += getValue(entity, equipmentPenalty, properties.getLeggings().getMeta(), properties.getLeggingsAttributes(), attribute, operation);
         if (properties.getBoots() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter))
-            total += getValue(entity, equipmentPenalty, properties.getBoots().getMeta(), properties.getBootsAttributes(), attribute.toString(), operation);
+            total += getValue(entity, equipmentPenalty, properties.getBoots().getMeta(), properties.getBootsAttributes(), attribute, operation);
 
         if (properties.getMainHand() != null && ItemUtils.usedMainHand(properties.getMainHand(), properties.getOffHand()))
-            total += getValue(entity, equipmentPenalty, properties.getMainHand().getMeta(), properties.getMainHandAttributes(), attribute.toString(), operation);
-        else if (!mainHandOnly && properties.getOffHand() != null) total += getValue(entity, equipmentPenalty, properties.getOffHand().getMeta(), properties.getOffHandAttributes(), attribute.toString(), operation);
+            total += getValue(entity, equipmentPenalty, properties.getMainHand().getMeta(), properties.getMainHandAttributes(), attribute, operation);
+        else if (!mainHandOnly && properties.getOffHand() != null) total += getValue(entity, equipmentPenalty, properties.getOffHand().getMeta(), properties.getOffHandAttributes(), attribute, operation);
 
         for (ItemBuilder extra : properties.getMiscEquipment()){
             if (WeightClass.getWeightClass(extra.getMeta()) != weightFilter) continue;
-            total += getValue(entity, equipmentPenalty, extra.getMeta(), properties.getMiscEquipmentAttributes().get(extra), attribute.toString(), operation);
+            total += getValue(entity, equipmentPenalty, extra.getMeta(), properties.getMiscEquipmentAttributes().get(extra), attribute, operation);
         }
         return total;
     }
@@ -369,13 +380,23 @@ public class EntityUtils {
         damage(entity, null, amount, type);
     }
 
+    private static final Collection<UUID> activeDamageProcesses = new HashSet<>();
+
+    public static boolean hasActiveDamageProcess(Entity damaged){
+        return activeDamageProcesses.contains(damaged.getUniqueId());
+    }
+
     public static void damage(LivingEntity entity, Entity by, double amount, String type){
-        if (entity.isDead()) return;
+        if (entity.isDead() || activeDamageProcesses.contains(entity.getUniqueId())) return;
         int immunityBefore = entity.getNoDamageTicks();
         entity.setNoDamageTicks(0);
         EntityDamagedListener.setCustomDamageCause(entity.getUniqueId(), type);
-        if (by != null) EntityDamagedListener.setDamager(entity, by);
-        entity.damage(amount);
+        activeDamageProcesses.add(entity.getUniqueId());
+        if (by != null) {
+            EntityDamagedListener.setDamager(entity, by);
+            entity.damage(amount, by);
+        } else entity.damage(amount);
+        activeDamageProcesses.remove(entity.getUniqueId());
         entity.setNoDamageTicks(immunityBefore);
     }
 
@@ -389,5 +410,18 @@ public class EntityUtils {
         Vector dir = at.toVector().subtract(who.getEyeLocation().toVector()).normalize();
         double dot = dir.dot(who.getEyeLocation().getDirection());
         return dot >= cos_angle;
+    }
+
+    public static boolean isUnarmed(LivingEntity player){
+        EntityProperties properties = EntityCache.getAndCacheProperties(player);
+
+        // player is holding something that's not weightless, not unarmed!
+        if (properties.getMainHand() != null && WeightClass.getWeightClass(properties.getMainHand().getMeta()) != WeightClass.WEIGHTLESS) return false;
+
+        // player is not holding anything, unarmed!
+        if (properties.getMainHand() == null) return true;
+        AttributeWrapper damageAttribute = ItemAttributesRegistry.getAnyAttribute(properties.getMainHand().getMeta(), "GENERIC_ATTACK_DAMAGE");
+        // Has a damage attribute, but not a defined weight class. That means that it must be a damaging item not explicitly marked weightless
+        return damageAttribute == null || WeightClass.hasDefinedWeightClass(properties.getMainHand().getMeta());
     }
 }

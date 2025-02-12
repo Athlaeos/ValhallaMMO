@@ -460,7 +460,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
                                         if (choice != null && choice.equals(selectedOption)) items.get(k).setOption(null);
                                         Utils.sendMessage(e.getWhoClicked(), "Because this option is only allowed once, " + k + " had its option removed");
                                     });
-                                    if (selectedOption instanceof IngredientChoice c) items.get(index).setOption(c);
+                                    items.get(index).setOption(selectedOption);
                                     e.getWhoClicked().setItemOnCursor(null);
                                 }
                             } else {

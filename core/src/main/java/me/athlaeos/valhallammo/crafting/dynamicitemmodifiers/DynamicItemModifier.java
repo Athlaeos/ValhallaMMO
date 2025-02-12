@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -96,7 +97,7 @@ public abstract class DynamicItemModifier {
      */
     public static void modify(ItemBuilder i, Player p, List<DynamicItemModifier> modifiers, boolean sort, boolean use, boolean validate, int count){
         ItemModificationEvent event = new ItemModificationEvent(p, i, modifiers, sort, use, validate, count);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (Bukkit.isPrimaryThread()) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
         if (event.sort()) sortModifiers(event.getModifiers());
         for (DynamicItemModifier modifier : event.getModifiers()){
             if (modifier instanceof RelationalItemModifier) continue;
@@ -129,7 +130,7 @@ public abstract class DynamicItemModifier {
      */
     public static void modify(ItemBuilder i1, ItemBuilder i2, Player p, List<DynamicItemModifier> modifiers, boolean sort, boolean use, boolean validate, int count){
         AdvancedItemModificationEvent event = new AdvancedItemModificationEvent(p, i1, i2, modifiers, sort, use, validate, count);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (Bukkit.isPrimaryThread()) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
         RelationalItemModifier.RelationalResult result = new RelationalItemModifier.RelationalResult(event.getItem(), event.getItem2());
         if (event.sort()) sortModifiers(event.getModifiers());
         for (DynamicItemModifier modifier : event.getModifiers()){

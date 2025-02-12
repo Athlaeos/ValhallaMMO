@@ -5,22 +5,22 @@ experience:
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   digging_break:
     SNOW: 0.2
-    FARMLAND: 4
-    DIRT: 4
-    SAND: 4
-    RED_SAND: 4
-    COARSE_DIRT: 8
-    SNOW_BLOCK: 4
-    SOUL_SAND: 8
-    SOUL_SOIL: 8
-    GRASS_BLOCK: 8
-    DIRT_PATH: 8
-    MYCELIUM: 8
-    GRAVEL: 8
-    PODZOL: 8
-    CLAY: 12
-    CLAY_BALL: 3
-    MUD: 12
+    FARMLAND: 8
+    DIRT: 8
+    SAND: 8
+    RED_SAND: 8
+    COARSE_DIRT: 16
+    SNOW_BLOCK: 8
+    SOUL_SAND: 16
+    SOUL_SOIL: 16
+    GRASS_BLOCK: 16
+    DIRT_PATH: 16
+    MYCELIUM: 16
+    GRAVEL: 16
+    PODZOL: 16
+    CLAY: 24
+    CLAY_BALL: 6
+    MUD: 24
   archaeology_brush:
     SUSPICIOUS_STEW: 50
     EMERALD: 100
@@ -120,6 +120,9 @@ perks:
         - craft_flint
         - craft_clay
         - craft_mud
+        - craft_grass
+        - craft_soul_sand
+        - craft_soul_soil
         - craft_concrete_white
         - craft_concrete_orange
         - craft_concrete_magenta
@@ -331,8 +334,10 @@ perks:
       p:digging_diggingdrops_add: 0.3
       p:digging_diggingluck_add: 3
       p:digging_diggingspeedbonus_add: 0.25
-      p:digging_diggingexpmultiplier_add: -0.25
-      p:perks_unlocked_add:
+      p:digging_diggingexpmultiplier_add: -0.5
+      p:perks_permanently_unlocked_add:
+        - digging_perk_ng1
+      p:perks_unlocked_remove:
         - digging_perk_ng1
     messages:
       - "<lang.digging_perk_ng1_messages>"
@@ -352,9 +357,10 @@ perks:
       p:digging_diggingdrops_add: 0.3
       p:digging_diggingluck_add: 3
       p:digging_diggingspeedbonus_add: 0.25
-      p:digging_diggingexpmultiplier_add: -0.25
-      p:perks_unlocked_add:
-        - digging_perk_ng1
+      p:digging_diggingexpmultiplier_add: -0.17
+      p:perks_permanently_unlocked_add:
+        - digging_perk_ng2
+      p:perks_unlocked_remove:
         - digging_perk_ng2
     messages:
       - "<lang.digging_perk_ng2_messages>"

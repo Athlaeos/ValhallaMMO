@@ -61,12 +61,18 @@ public class EntityAttributeStats {
 
     public static void updateStats(LivingEntity e){
         for (AttributeDataHolder holder : attributesToUpdate.values()){
-            EntityUtils.removeUniqueAttribute(e, holder.name, holder.type);
-            double value = AccumulativeStatManager.getCachedStats(holder.statSource(), e, 10000, true);
-            if (holder.statSource.equals("JUMP_HEIGHT_MULTIPLIER")){
-                EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type(), 0.15 * value, holder.operation());
-            } else EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type(), value, holder.operation());
+            updateSingleStat(e, holder.name);
         }
+    }
+
+    public static void updateSingleStat(LivingEntity e, String stat){
+        AttributeDataHolder holder = attributesToUpdate.get(stat);
+        if (holder == null) return;
+        EntityUtils.removeUniqueAttribute(e, holder.name, holder.type);
+        double value = AccumulativeStatManager.getCachedStats(holder.statSource(), e, 10000, true);
+        if (holder.statSource.equals("JUMP_HEIGHT_MULTIPLIER")){
+            EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type(), 0.15 * value, holder.operation());
+        } else EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type(), value, holder.operation());
     }
 
     public static void removeStats(LivingEntity e){

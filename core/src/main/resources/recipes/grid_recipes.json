@@ -36263,6 +36263,215 @@
   {
     "shapedKey": {
       "namespace": "valhallammo",
+      "key": "gridrecipe_craft_soul_sand_shaped"
+    },
+    "shapelessKey": {
+      "namespace": "valhallammo",
+      "key": "gridrecipe_craft_soul_sand_shapeless"
+    },
+    "name": "craft_soul_sand",
+    "items": {
+      "3": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AApORVRIRVJSQUNL\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "4": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAtDT0FSU0VfRElSVA==\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "6": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AARTQU5E\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
+          "DATA": {
+            "validChoices": [
+              "SAND",
+              "RED_SAND"
+            ],
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "7": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AARCT05F\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAlTT1VMX1NBTkRzcQB+AA4AAAAD\r\n",
+    "requireValhallaTools": false,
+    "tinker": false,
+    "tinkerGridIndex": -1,
+    "toolIndex": -1,
+    "shapeless": true,
+    "hiddenFromBook": false,
+    "modifiers": [],
+    "unlockedForEveryone": false,
+    "toolRequirement": {
+      "toolRequirementType": "NOT_REQUIRED",
+      "requiredToolID": -1
+    },
+    "validations": []
+  },
+  {
+    "shapedKey": {
+      "namespace": "valhallammo",
+      "key": "gridrecipe_craft_soul_soil_shaped"
+    },
+    "shapelessKey": {
+      "namespace": "valhallammo",
+      "key": "gridrecipe_craft_soul_soil_shapeless"
+    },
+    "name": "craft_soul_soil",
+    "items": {
+      "3": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AApORVRIRVJSQUNL\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "4": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AARESVJU\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "6": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AARTQU5E\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
+          "DATA": {
+            "validChoices": [
+              "SAND",
+              "RED_SAND"
+            ],
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "7": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AARCT05F\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAlTT1VMX1NBTkRzcQB+AA4AAAAD\r\n",
+    "requireValhallaTools": false,
+    "tinker": false,
+    "tinkerGridIndex": -1,
+    "toolIndex": -1,
+    "shapeless": true,
+    "hiddenFromBook": false,
+    "modifiers": [],
+    "unlockedForEveryone": false,
+    "toolRequirement": {
+      "toolRequirementType": "NOT_REQUIRED",
+      "requiredToolID": -1
+    },
+    "validations": []
+  },
+  {
+    "shapedKey": {
+      "namespace": "valhallammo",
+      "key": "gridrecipe_craft_grass_shaped"
+    },
+    "shapelessKey": {
+      "namespace": "valhallammo",
+      "key": "gridrecipe_craft_grass_shapeless"
+    },
+    "name": "craft_grass",
+    "items": {
+      "4": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAVHUkFTUw==\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "7": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AARESVJU\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAtHUkFTU19CTE9DSw==\r\n",
+    "requireValhallaTools": false,
+    "tinker": false,
+    "tinkerGridIndex": -1,
+    "toolIndex": -1,
+    "shapeless": true,
+    "hiddenFromBook": false,
+    "modifiers": [],
+    "unlockedForEveryone": false,
+    "toolRequirement": {
+      "toolRequirementType": "NOT_REQUIRED",
+      "requiredToolID": -1
+    },
+    "validations": []
+  },
+  {
+    "shapedKey": {
+      "namespace": "valhallammo",
       "key": "gridrecipe_craft_vial_hurt_shaped"
     },
     "shapelessKey": {

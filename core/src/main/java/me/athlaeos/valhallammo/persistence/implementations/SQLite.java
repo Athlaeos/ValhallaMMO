@@ -98,27 +98,26 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
     }
 
     @Override
+    public void onProfileRegistration(Profile profile) {
+        SQL.createTable(profile, this);
+    }
+
+    @Override
     public void loadProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())) return; // stats are presumably already loaded in, and so they do not
         // need to be loaded in from the database again
-        Database database = this;
         new BukkitRunnable(){
             @Override
             public void run() {
                 Map<Class<? extends Profile>, Profile> profs = persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>());
                 boolean runPersistentStartingPerks = false;
-                for (Profile pr : ProfileRegistry.getRegisteredProfiles().values()){
-                    try {
-                        Profile profile = pr.fetchProfile(p, database);
-                        if (profile == null) {
-                            profile = ProfileRegistry.getBlankProfile(p, pr.getClass());
-                            runPersistentStartingPerks = true;
-                        }
-                        profs.put(profile.getClass(), profile);
-                    } catch (SQLException e){
-                        ValhallaMMO.logSevere("SQLException when trying to fetch " + p.getName() + "'s profile of type " + pr.getClass().getSimpleName() + ". ");
-                        e.printStackTrace();
+                for (Class<? extends Profile> pr : ProfileRegistry.getRegisteredProfiles().keySet()){
+                    Profile profile = SQL.queryProfile(p, conn, pr);
+                    if (profile == null) {
+                        profile = ProfileRegistry.getBlankProfile(p, pr);
+                        runPersistentStartingPerks = true;
                     }
+                    profs.put(profile.getClass(), profile);
                 }
                 persistentProfiles.put(p.getUniqueId(), profs);
                 Utils.sendMessage(p, TranslationManager.getTranslation("status_profiles_loaded"));
@@ -135,12 +134,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
             Player player = ValhallaMMO.getInstance().getServer().getPlayer(p);
             for (Profile profile : persistentProfiles.getOrDefault(p, new HashMap<>()).values()){
                 if (!shouldPersist(profile)) continue;
-                try {
-                    profile.insertOrUpdateProfile(this);
-                } catch (SQLException e){
-                    ValhallaMMO.getInstance().getServer().getLogger().severe("SQLException when trying to save profile for profile type " + profile.getClass().getName() + ". ");
-                    e.printStackTrace();
-                }
+                SQL.insertOrUpdateProfile(p, conn, profile);
             }
             if (player == null || !player.isOnline()) persistentProfiles.remove(p);
         }
@@ -152,12 +146,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (Profile profile : persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>()).values()){
                     if (!shouldPersist(profile)) continue;
-                    try {
-                        profile.insertOrUpdateProfile(this);
-                    } catch (SQLException e){
-                        ValhallaMMO.getInstance().getServer().getLogger().severe("SQLException when trying to save profile for profile type " + profile.getClass().getName() + ". ");
-                        e.printStackTrace();
-                    }
+                    SQL.insertOrUpdateProfile(p.getUniqueId(), conn, profile);
                 }
             });
         }

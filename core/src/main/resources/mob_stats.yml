@@ -5,7 +5,7 @@ monsters_only: true # If true, only monsters can receive levels and stats. If fa
 # their power level, but with multiple players it will be a bit higher than the average.
 # Example, a level 10 and 50 player: their true average would be 30, but with the formula 60*1.2-0.2 = 72, 72/2 = 36 their area level will be about 36
 # If undefined, the true average will be used.
-regional_player_level: "(%combined_player_level% * 1.2 - 0.2) / %nearby_player_count%"
+regional_player_level: "(%combined_player_level% * 1.2) / %nearby_player_count%"
 # Other valid placeholders are %min_player_level% for the lowest surrounding player level, and %max_player_level% for the higher surrounding player level
 # rand() cannot be used here
 

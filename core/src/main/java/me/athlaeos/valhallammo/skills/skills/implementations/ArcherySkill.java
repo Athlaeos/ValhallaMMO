@@ -15,6 +15,7 @@ import me.athlaeos.valhallammo.listeners.EntityAttackListener;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
 import me.athlaeos.valhallammo.listeners.EntitySpawnListener;
 import me.athlaeos.valhallammo.listeners.ProjectileListener;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.particle.implementations.GenericParticle;
 import me.athlaeos.valhallammo.particle.implementations.RedstoneParticle;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -71,6 +72,8 @@ public class ArcherySkill extends Skill implements Listener {
     private Animation chargedShotSonicBoomAnimation;
     private Animation chargedShotAmmoAnimation;
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
+    private boolean maxHealthLimitation = false;
+    private double pvpMultiplier = 0.1;
 
     private Particle trail = null;
     private Particle.DustOptions trailOptions = null;
@@ -102,6 +105,8 @@ public class ArcherySkill extends Skill implements Listener {
         expDistanceLimit = progressionConfig.getInt("experience.distance_limit");
         expInfinityMultiplier = progressionConfig.getDouble("experience.infinity_multiplier");
         expSpawnerMultiplier = progressionConfig.getDouble("experience.spawner_spawned_multiplier");
+        maxHealthLimitation = progressionConfig.getBoolean("experience.max_health_limitation");
+        pvpMultiplier = progressionConfig.getDouble("experience.pvp_multiplier");
 
         ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.entity_exp_multipliers");
         if (entitySection != null){
@@ -135,9 +140,12 @@ public class ArcherySkill extends Skill implements Listener {
         if (ItemUtils.isEmpty(e.getCurrentItem()) || e.getCurrentItem().getType() != Material.CROSSBOW) return; // neither items must be empty
         ItemBuilder clicked = new ItemBuilder(e.getCurrentItem());
         if (clicked.getMeta() instanceof CrossbowMeta m){
-            List<ItemStack> projectiles = m.getChargedProjectiles();
-            if (projectiles.isEmpty()) return;
-            projectiles.forEach(i -> ItemUtils.addItem((Player) e.getWhoClicked(), i, true));
+            ItemStack projectile = m.getChargedProjectiles().stream().findFirst().orElse(null);
+            if (ItemUtils.isEmpty(projectile)) return;
+            projectile = projectile.clone();
+            projectile.setAmount(1);
+            ItemUtils.addItem((Player) e.getWhoClicked(), projectile, true);
+
             e.getWhoClicked().getWorld().playSound(e.getWhoClicked().getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1F, 1F);
             m.setChargedProjectiles(new ArrayList<>());
             e.setCurrentItem(clicked.get());
@@ -150,14 +158,18 @@ public class ArcherySkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.getHand() == EquipmentSlot.OFF_HAND ||
                 e.useItemInHand() == Event.Result.DENY || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_charged_shot_attempts") ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ARCHERY) ||
-                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_COMBAT_CHARGEDSHOT)) return;
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_COMBAT_CHARGEDSHOT) ||
+                !hasPermissionAccess(e.getPlayer())) return;
         Timer.setCooldown(e.getPlayer().getUniqueId(), 500, "delay_charged_shot_attempts");
         if (!e.getPlayer().isSneaking() && e.getAction() != Action.LEFT_CLICK_AIR && e.getAction() != Action.LEFT_CLICK_BLOCK) return;
         ItemStack mainHand = e.getPlayer().getInventory().getItemInMainHand();
         if (ItemUtils.isEmpty(mainHand) || !e.getPlayer().isSneaking()) return;
         if (mainHand.getType() != Material.BOW && mainHand.getType() != Material.CROSSBOW) return;
         ArcheryProfile profile = ProfileCache.getOrCache(e.getPlayer(), ArcheryProfile.class);
-        if (!profile.isChargedShotUnlocked() || profile.getChargedShotCharges() <= 0 || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_charged_shot")) return;
+        if (!profile.isChargedShotUnlocked() || profile.getChargedShotCharges() <= 0 || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_charged_shot")) {
+            if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_charged_shot")) Timer.sendCooldownStatus(e.getPlayer(), "cooldown_charged_shot", TranslationManager.getTranslation("ability_charged_shot"));
+            return;
+        }
         chargedShotUsers.put(e.getPlayer().getUniqueId(), new ChargedShotUser(
                 profile.getChargedShotCharges(), profile.getChargedShotVelocityBonus(),
                 profile.getChargedShotDamageMultiplier(), profile.getChargedShotKnockback(),
@@ -209,8 +221,10 @@ public class ArcherySkill extends Skill implements Listener {
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(v.getType(), 1D);
             double exp = ((expDistanceMultiplierBase * baseExp) + (baseExp * expDistanceMultiplierBonus * expDistance)) * entityExpMultiplier * chunkNerf;
             if (hasInfinity) exp *= expInfinityMultiplier;
+            double damageTaken = EntityDamagedListener.getLastDamageTaken(v.getUniqueId(), e.getFinalDamage());
+            double pvpMult = e.getEntity() instanceof Player ? pvpMultiplier : 1;
             addEXP(p,
-                    (1 + (expDamageBonus * Math.min(EntityUtils.getMaxHP(v), EntityDamagedListener.getLastDamageTaken(v.getUniqueId(), e.getFinalDamage())))) * exp *
+                    pvpMult * (1 + (expDamageBonus * (maxHealthLimitation ? (Math.min(EntityUtils.getMaxHP(v), damageTaken)) : damageTaken))) * exp *
                             entityExpMultiplier *
                             (EntitySpawnListener.getSpawnReason(v) == CreatureSpawnEvent.SpawnReason.SPAWNER ? expSpawnerMultiplier : 1),
                     false,

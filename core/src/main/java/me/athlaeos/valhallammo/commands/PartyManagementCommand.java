@@ -122,8 +122,8 @@ public class PartyManagementCommand implements TabExecutor {
                 Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_party_name_updated"));
                 return true;
             }
-            case "transferleadership" -> {
-                if (args.length <= 2) return badUsage(sender, "/parties transferleadership <party> <newleader>");
+            case "transferleader" -> {
+                if (args.length <= 2) return badUsage(sender, "/parties transferleader <party> <newleader>");
                 Party party = PartyManager.getAllParties().get(args[1]);
                 if (party == null){
                     PartyManager.ErrorStatus.PARTY_DOES_NOT_EXIST.sendErrorMessage(sender);
@@ -271,7 +271,7 @@ public class PartyManagementCommand implements TabExecutor {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("valhalla.manageparties")) return new ArrayList<>();
         if (args.length == 1) return List.of("create", "kickmember", "addmember", "setdescription", "setname",
-                "transferleadership", "setboolstat", "setintstat", "setfloatstat", "addcompanystat", "delete", "exp");
+                "transferleader", "setboolstat", "setintstat", "setfloatstat", "addcompanystat", "delete", "exp");
         if (args.length == 2){
             return switch (args[0]){
                 case "create" -> List.of("<name>");

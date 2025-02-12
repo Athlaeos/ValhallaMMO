@@ -1,11 +1,12 @@
 package me.athlaeos.valhallammo.item;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Color;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.AttributeModifier;
@@ -13,7 +14,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
-import org.bukkit.material.Colorable;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
@@ -69,6 +69,22 @@ public class ItemBuilder {
     public ItemBuilder data(int data){
         if (data > 0) meta.setCustomModelData(data);
         else meta.setCustomModelData(null);
+        return this;
+    }
+
+    /**
+     * Attempts to parse the given model to an integer. If it parses successfully, it is assumed
+     * the model is custom model data. If it doesn't parse, it is instead set as the item's
+     * model namespacedkey (this only works on Minecraft 1.21.3 and newer).
+     * @param model the model or custom model data
+     */
+    public ItemBuilder model(String model){
+        int asInteger = Catch.catchOrElse(() -> Integer.parseInt(model), -1);
+        if (asInteger < 0 || MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21_4)) {
+            ValhallaMMO.getNms().setItemModel(meta, model);
+        } else {
+            meta.setCustomModelData(asInteger);
+        }
         return this;
     }
 

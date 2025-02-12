@@ -55,46 +55,45 @@ tag_error_disallowed:
   7: '<lang.smithing-tag-disallowed-unfit>'
   8: '<lang.smithing-tag-upgrade-slots>' # all tools and armor get some upgrade slots on creation
   9: '<lang.smithing-upgrade-extra-upgrades>' # all tools and armor may have their upgrade slots expanded further
-  10: '<lang.smithing-upgrade-mining-speed>' # axes, pickaxes, shovels, hoes only
-  11: '<lang.smithing-upgrade-mining-drops>' # axes, pickaxes, shovels, hoes only
-  12: '<lang.smithing-upgrade-mining-luck>' # axes, pickaxes, shovels, hoes only
-  13: '<lang.smithing-upgrade-attack-damage>' # all melee items
-  14: '<lang.smithing-upgrade-crit-chance>' # all weapons
-  16: '<lang.smithing-upgrade-attack-reach>' # all melee items
-  17: '<lang.smithing-upgrade-bleed-chance>' # all weapons
-  18: '<lang.smithing-upgrade-armor-penetration>' # all weapons
-  19: '<lang.smithing-upgrade-immunity-reduction>' # all weapons
-  20: '<lang.smithing-upgrade-dismount-chance>' # all weapons
-  21: '<lang.smithing-upgrade-deepslate-mining>' # pickaxes only
-  22: '<lang.smithing-upgrade-durability>' # all items
-  23: '<lang.smithing-upgrade-entity-drops>' # all weapons
-  24: '<lang.smithing-upgrade-lifesteal>' # all weapons
-  25: '<lang.smithing-upgrade-shield-disarming>' # all weapons
-  26: '<lang.smithing-upgrade-ammo-consumption>' # (cross)bows only
-  27: '<lang.smithing-upgrade-stun-chance>' # all weapons
-  28: '<lang.smithing-upgrade-immunity>' # armors only
-  29: '<lang.smithing-upgrade-healing-bonus>' # armors only
-  30: '<lang.smithing-upgrade-cooldown-reduction>' # armors only
-  31: '<lang.smithing-upgrade-dodge-chance>' # armors only
-  32: '<lang.smithing-upgrade-skill-exp>' # armors only
-  33: '<lang.smithing-upgrade-vanilla-exp>' # armors only
-  34: '<lang.smithing-upgrade-knockback-resistance>' # armors only
-  35: '<lang.smithing-upgrade-bleeding-resistance>' # armors only
-  36: '<lang.smithing-upgrade-crit-resistance>' # armors only
-  37: '<lang.smithing-upgrade-stun-resistance>' # armors only
-  38: '<lang.smithing-upgrade-sneak-speed>' # leggings only
-  39: '<lang.smithing-upgrade-sprint-speed>' # leggings only
-  40: '<lang.smithing-upgrade-jumps-bonus>' # boots only
-  41: '<lang.smithing-upgrade-jump-height>' # boots only
-  42: '<lang.smithing-upgrade-fire-damage-multiplier>' # chestplates only
-  43: '<lang.smithing-upgrade-magic-damage-multiplier>' # chestplates only
-  44: '<lang.smithing-upgrade-poison-damage-multiplier>' # chestplates only
-  45: '<lang.smithing-upgrade-radiant-damage-multiplier>' # chestplates only
-  46: '<lang.smithing-upgrade-necrotic-damage-multiplier>' # chestplates only
-  47: '<lang.smithing-upgrade-damage-multiplier>' # chestplates only
-  48: '<lang.smithing-upgrade-smithing-quality>' # helmets only
-  49: '<lang.smithing-upgrade-alchemy-quality>' # helmets only
-  50: '<lang.smithing-upgrade-enchanting-quality>' # helmets only
+  10: '<lang.smithing-upgrade-disallowed-mining-speed>' # axes, pickaxes, shovels, hoes only
+  11: '<lang.smithing-upgrade-disallowed-mining-drops>' # axes, pickaxes, shovels, hoes only
+  12: '<lang.smithing-upgrade-disallowed-mining-luck>' # axes, pickaxes, shovels, hoes only
+  13: '<lang.smithing-upgrade-disallowed-attack-damage>' # all melee items
+  14: '<lang.smithing-upgrade-disallowed-crit-chance>' # all weapons
+  16: '<lang.smithing-upgrade-disallowed-attack-reach>' # all melee items
+  17: '<lang.smithing-upgrade-disallowed-bleed-chance>' # all weapons
+  18: '<lang.smithing-upgrade-disallowed-armor-penetration>' # all weapons
+  19: '<lang.smithing-upgrade-disallowed-immunity-reduction>' # all weapons
+  20: '<lang.smithing-upgrade-disallowed-dismount-chance>' # all weapons
+  22: '<lang.smithing-upgrade-disallowed-durability>' # all items
+  23: '<lang.smithing-upgrade-disallowed-entity-drops>' # all weapons
+  24: '<lang.smithing-upgrade-disallowed-lifesteal>' # all weapons
+  25: '<lang.smithing-upgrade-disallowed-shield-disarming>' # all weapons
+  26: '<lang.smithing-upgrade-disallowed-ammo-consumption>' # (cross)bows only
+  27: '<lang.smithing-upgrade-disallowed-stun-chance>' # all weapons
+  28: '<lang.smithing-upgrade-disallowed-immunity>' # armors only
+  29: '<lang.smithing-upgrade-disallowed-healing-bonus>' # armors only
+  30: '<lang.smithing-upgrade-disallowed-cooldown-reduction>' # armors only
+  31: '<lang.smithing-upgrade-disallowed-dodge-chance>' # armors only
+  32: '<lang.smithing-upgrade-disallowed-skill-exp>' # armors only
+  33: '<lang.smithing-upgrade-disallowed-vanilla-exp>' # armors only
+  34: '<lang.smithing-upgrade-disallowed-knockback-resistance>' # armors only
+  35: '<lang.smithing-upgrade-disallowed-bleeding-resistance>' # armors only
+  36: '<lang.smithing-upgrade-disallowed-crit-resistance>' # armors only
+  37: '<lang.smithing-upgrade-disallowed-stun-resistance>' # armors only
+  38: '<lang.smithing-upgrade-disallowed-sneak-speed>' # leggings only
+  39: '<lang.smithing-upgrade-disallowed-sprint-speed>' # leggings only
+  40: '<lang.smithing-upgrade-disallowed-jumps-bonus>' # boots only
+  41: '<lang.smithing-upgrade-disallowed-jump-height>' # boots only
+  42: '<lang.smithing-upgrade-disallowed-fire-damage-multiplier>' # chestplates only
+  43: '<lang.smithing-upgrade-disallowed-magic-damage-multiplier>' # chestplates only
+  44: '<lang.smithing-upgrade-disallowed-poison-damage-multiplier>' # chestplates only
+  45: '<lang.smithing-upgrade-disallowed-radiant-damage-multiplier>' # chestplates only
+  46: '<lang.smithing-upgrade-disallowed-necrotic-damage-multiplier>' # chestplates only
+  47: '<lang.smithing-upgrade-disallowed-damage-multiplier>' # chestplates only
+  48: '<lang.smithing-upgrade-disallowed-smithing-quality>' # helmets only
+  49: '<lang.smithing-upgrade-disallowed-alchemy-quality>' # helmets only
+  50: '<lang.smithing-upgrade-disallowed-enchanting-quality>' # helmets only
 # 51, 52, and 53 are by default occupied by upgrade slots 1, 2, and 3 respectively. Avoid using.
 
 # Error messages that are notified to the player if their item doesn't have a tag it needs to have

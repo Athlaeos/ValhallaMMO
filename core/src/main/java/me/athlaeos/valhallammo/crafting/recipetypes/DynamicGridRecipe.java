@@ -153,9 +153,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     private ItemStack recipeBookIcon(ItemStack i){
         ResultChangingModifier changer = (ResultChangingModifier) modifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
         if (changer != null) {
-            ItemBuilder builder = new ItemBuilder(i);
-            ItemStack item = changer.getNewResult(null, builder);
-            if (item != null) i = item;
+            i = Utils.thisorDefault(changer.getNewResult(null, new ItemBuilder(i)), i);
         }
         List<String> gridDetails = new ArrayList<>();
         if (shapeless){

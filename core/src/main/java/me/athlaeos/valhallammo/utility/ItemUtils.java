@@ -45,7 +45,7 @@ public class ItemUtils {
     private static final Collection<Tag<Material>> materialTags = new HashSet<>(Arrays.asList(Tag.PLANKS, Tag.LOGS, Tag.ITEMS_STONE_TOOL_MATERIALS, Tag.ANVIL, Tag.CAULDRONS,
     Tag.WOOL, Tag.BEDS, Tag.SAPLINGS, Tag.ITEMS_BANNERS, Tag.CANDLES, Tag.COAL_ORES, Tag.GOLD_ORES, Tag.IRON_ORES, Tag.LAPIS_ORES, Tag.COPPER_ORES, Tag.DIAMOND_ORES,
     Tag.EMERALD_ORES, Tag.REDSTONE_ORES, Tag.DOORS, Tag.FENCES, Tag.FENCE_GATES, Tag.SMALL_FLOWERS, Tag.ITEMS_BOATS, Tag.ITEMS_FISHES, Tag.LEAVES,
-    Tag.PRESSURE_PLATES, Tag.SAND, Tag.SIGNS, Tag.TALL_FLOWERS, Tag.TRAPDOORS, Tag.WALLS));
+    Tag.PRESSURE_PLATES, Tag.SAND, Tag.SIGNS, Tag.TRAPDOORS, Tag.WALLS));
     
     private static final Map<Material, Tag<Material>> similarItemsMap = new HashMap<>();
     private static final Map<Material, String> itemCategoryTranslation = new HashMap<>();
@@ -447,10 +447,21 @@ public class ItemUtils {
         if (i1Meta == null && i2Meta == null) return true;
         if (i1Meta == null || i2Meta == null) return false;
         ItemStack i1Clone = i1.clone();
+        i1Clone.setAmount(1);
         ItemStack i2Clone = i2.clone();
+        i2Clone.setAmount(1);
         i1Clone.setItemMeta(i1Meta);
         i2Clone.setItemMeta(i2Meta);
-        return i1Clone.toString().equals(i2Clone.toString());
+        String i1String = i1Clone.toString();
+        String i2String = i2Clone.toString();
+        // unhandled remover
+        if (i1String.contains(" unhandled=") || i2String.contains(" unhandled=")){
+            String match = StringUtils.substringBetween(i1String, " unhandled=", ",");
+            if (match != null) i1String = i1String.replace(" unhandled=" + match + ",", "");
+            String match2 = StringUtils.substringBetween(i2String, " unhandled=", ",");
+            if (match2 != null) i2String = i2String.replace(" unhandled=" + match2 + ",", "");
+        }
+        return i1String.equals(i2String);
     }
 
     public static ItemMeta reSetItemText(ItemMeta meta){

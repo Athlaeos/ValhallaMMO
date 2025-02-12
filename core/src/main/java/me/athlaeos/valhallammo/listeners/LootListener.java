@@ -23,10 +23,8 @@ import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.loot.ReplacementTable;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
-import me.athlaeos.valhallammo.utility.BlockUtils;
-import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
-import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.ArchaeologyListener;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PaperLootRefillHandler;
@@ -34,7 +32,6 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
 import org.bukkit.block.Container;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -213,7 +210,10 @@ public class LootListener implements Listener {
         UUID uuid = blockBreakerMap.get(e.getBlock().getLocation());
         blockBreakerMap.remove(e.getBlock().getLocation());
         Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
-        if (p == null) p = (Player) e.getBlock().getWorld().getNearbyEntities(e.getBlock().getLocation(), 20, 20, 20, en -> en instanceof Player).stream().findFirst().orElse(null);
+        if (p == null) {
+            List<Player> nearby = EntityUtils.getNearbyPlayers(e.getBlock().getLocation(), 100);
+            if (!nearby.isEmpty()) p = nearby.getFirst();
+        }
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
         double luck = details.getOne();
@@ -623,7 +623,7 @@ public class LootListener implements Listener {
     public void onChestCartOpen(PlayerInteractAtEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getRightClicked().getWorld().getName()) || e.isCancelled() || e.getHand() == EquipmentSlot.OFF_HAND) return;
         Entity entity = e.getRightClicked();
-        if (!(entity instanceof Lootable l) || !(entity instanceof InventoryHolder c) || l.getLootTable() == null) return;
+        if (entity.getType() != EntityType.MINECART_CHEST || !(entity instanceof Lootable l) || !(entity instanceof InventoryHolder c) || l.getLootTable() == null) return;
         if (ValhallaMMO.isUsingPaperMC() && !PaperLootRefillHandler.canGenerateLoot(entity, e.getPlayer())) return;
         LootTable table = LootTableRegistry.getLootTable(l.getLootTable().getKey());
         AttributeInstance luckInstance = e.getPlayer().getAttribute(Attribute.GENERIC_LUCK);
@@ -664,7 +664,7 @@ public class LootListener implements Listener {
             }
         }
 
-        ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(l.getLootTable().getKey());
+        ReplacementTable replacementTable = l.getLootTable() == null ? null : LootTableRegistry.getReplacementTable(l.getLootTable().getKey());
         ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
         ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
         if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
@@ -819,12 +819,14 @@ public class LootListener implements Listener {
         Collection<Material> droppedHandTypes = new HashSet<>();
         EntityEquipment equipment = entity.getEquipment();
         if (equipment != null){
-            if (!ItemUtils.isEmpty(equipment.getItemInMainHand())) droppedHandTypes.add(equipment.getItemInMainHand().getType());
-            if (!ItemUtils.isEmpty(equipment.getItemInOffHand())) droppedHandTypes.add(equipment.getItemInOffHand().getType());
-            if (!ItemUtils.isEmpty(equipment.getHelmet())) droppedHandTypes.add(equipment.getHelmet().getType());
-            if (!ItemUtils.isEmpty(equipment.getChestplate())) droppedHandTypes.add(equipment.getChestplate().getType());
-            if (!ItemUtils.isEmpty(equipment.getLeggings())) droppedHandTypes.add(equipment.getLeggings().getType());
-            if (!ItemUtils.isEmpty(equipment.getBoots())) droppedHandTypes.add(equipment.getBoots().getType());
+            // it is assumed that items with a >95% drop chance are items that have explicitly been given to the killed entity, as they'll have a 100% drop chance
+            // such items cannot be duplicated or edited
+            if (!ItemUtils.isEmpty(equipment.getItemInMainHand()) && equipment.getItemInMainHandDropChance() >= 0.95F) droppedHandTypes.add(equipment.getItemInMainHand().getType());
+            if (!ItemUtils.isEmpty(equipment.getItemInOffHand()) && equipment.getItemInOffHandDropChance() >= 0.95F) droppedHandTypes.add(equipment.getItemInOffHand().getType());
+            if (!ItemUtils.isEmpty(equipment.getHelmet()) && equipment.getHelmetDropChance() >= 0.95F) droppedHandTypes.add(equipment.getHelmet().getType());
+            if (!ItemUtils.isEmpty(equipment.getChestplate()) && equipment.getChestplateDropChance() >= 0.95F) droppedHandTypes.add(equipment.getChestplate().getType());
+            if (!ItemUtils.isEmpty(equipment.getLeggings()) && equipment.getLeggingsDropChance() >= 0.95F) droppedHandTypes.add(equipment.getLeggings().getType());
+            if (!ItemUtils.isEmpty(equipment.getBoots()) && equipment.getBootsDropChance() >= 0.95F) droppedHandTypes.add(equipment.getBoots().getType());
         }
         double dropMultiplier = killer == null || entity instanceof Player ? 0 : (AccumulativeStatManager.getCachedStats("ENTITY_DROPS", killer, 10000, true) + MonsterScalingManager.getLootMultiplier(e.getEntity()));
         ItemUtils.multiplyItems(e.getDrops(), 1D + dropMultiplier, false, i -> itemDuplicationWhitelist.contains(i.getType()) && !droppedHandTypes.contains(i.getType()));
@@ -875,6 +877,7 @@ public class LootListener implements Listener {
                 ItemStack item = e.getDrops().get(i);
                 if (droppedHandTypes.contains(item.getType())) continue;
                 if (ItemUtils.isEmpty(item)) continue;
+                item = item.clone();
                 ItemStack replacement = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.KILL, item);
                 if (!ItemUtils.isEmpty(replacement)) item = replacement;
                 ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.KILL, item);

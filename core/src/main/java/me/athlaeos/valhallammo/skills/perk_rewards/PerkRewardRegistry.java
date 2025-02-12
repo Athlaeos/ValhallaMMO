@@ -8,9 +8,6 @@ import me.athlaeos.valhallammo.dom.BiAction;
 import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
-import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
-import me.athlaeos.valhallammo.playerstats.profiles.properties.StatProperties;
 import me.athlaeos.valhallammo.skills.skills.implementations.AlchemySkill;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -24,30 +21,6 @@ public class PerkRewardRegistry {
     private static final Map<String, PerkReward> registry = new HashMap<>();
 
     static {
-        for (Profile profile : ProfileRegistry.getRegisteredProfiles().values()){
-            String skill = profile.getSkillType().getSimpleName().toLowerCase(java.util.Locale.US).replace("skill", "");
-            if (profile.getSkillType() == null) continue;
-            for (String s : profile.getAllStatNames()) {
-                StatProperties properties = profile.getNumberStatProperties().get(s);
-                if (properties != null && properties.generatePerkRewards()) {
-                    if (profile.intStatNames().contains(s)) {
-                        register(new ProfileIntAdd(skill + "_" + s + "_add", s, profile.getClass()));
-                        register(new ProfileIntSet(skill + "_" + s + "_set", s, profile.getClass()));
-                    } else if (profile.floatStatNames().contains(s)) {
-                        register(new ProfileFloatAdd(skill + "_" + s + "_add", s, profile.getClass()));
-                        register(new ProfileFloatSet(skill + "_" + s + "_set", s, profile.getClass()));
-                    } else if (profile.doubleStatNames().contains(s)) {
-                        register(new ProfileDoubleAdd(skill + "_" + s + "_add", s, profile.getClass()));
-                        register(new ProfileDoubleSet(skill + "_" + s + "_set", s, profile.getClass()));
-                    }
-                }
-                if (profile.shouldBooleanStatHavePerkReward(s)){
-                    register(new ProfileBooleanSet(skill + "_" + s + "_set", s, profile.getClass()));
-                    register(new ProfileBooleanToggle(skill + "_" + s + "_toggle", s, profile.getClass()));
-                }
-            }
-        }
-
         for (ResetType type : ResetType.values()){
             register(new ProgressReset("reset_" + type.toString().toLowerCase(java.util.Locale.US), type));
         }
@@ -63,8 +36,10 @@ public class PerkRewardRegistry {
             p.discoverRecipe(recipe.getKey());
         });
 
-        register(new ProfileStringListAdd("perks_unlocked_add", "unlockedPerks", PowerProfile.class));
-        register(new ProfileStringListRemove("perks_unlocked_remove", "unlockedPerks", PowerProfile.class));
+        register(new ProfileStringListAdd("perks_unlocked_add", "unlockedPerks", PowerProfile.class, true));
+        register(new ProfileStringListRemove("perks_unlocked_remove", "unlockedPerks", PowerProfile.class, true));
+        register(new ProfileStringListAdd("perks_permanently_unlocked_add", "permanentlyUnlockedPerks", PowerProfile.class, true));
+        register(new ProfileStringListRemove("perks_permanently_unlocked_remove", "permanentlyUnlockedPerks", PowerProfile.class, true));
         register(new ProfileStringListAdd("perks_fake_unlock_add", "fakeUnlockedPerks", PowerProfile.class));
         register(new ProfileStringListRemove("perks_fake_unlock_remove", "fakeUnlockedPerks", PowerProfile.class));
         register(new ProfileStringListClear("perks_fake_unlock_clear", "fakeUnlockedPerks", PowerProfile.class));

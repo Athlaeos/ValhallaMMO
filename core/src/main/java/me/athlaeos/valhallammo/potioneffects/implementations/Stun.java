@@ -21,7 +21,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
@@ -102,7 +101,7 @@ public class Stun extends PotionEffectWrapper {
      */
     public static void stunTarget(LivingEntity entity, LivingEntity causedBy, int duration, boolean force){
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            if (!entity.isValid() || entity.isDead()) return;
+            if (!entity.isValid() || entity.isDead() || !entity.hasAI()) return;
             double durationMultiplier = force ? 1 : Math.max(0, 1 - AccumulativeStatManager.getRelationalStats("STUN_RESISTANCE", entity, causedBy, true));
             int newDuration = (int) Math.round(duration * durationMultiplier);
             EntityStunEvent event = new EntityStunEvent(entity, causedBy, newDuration);
@@ -116,7 +115,7 @@ public class Stun extends PotionEffectWrapper {
                         PotionEffectRegistry.addEffect(l, causedBy, new CustomPotionEffect(e, newDuration, e.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
                     }
                 }
-                EntityCache.resetPotionEffects((LivingEntity) event.getEntity()); // adding/removing an effect as a result of this method should reset the entity's potion effect cache
+                EntityCache.resetPotionEffects(l); // adding/removing an effect as a result of this method should reset the entity's potion effect cache
                 Timer.setCooldown(entity.getUniqueId(), stunImmunityDuration * 50, "stun_immunity");
             }
         }, 1L);

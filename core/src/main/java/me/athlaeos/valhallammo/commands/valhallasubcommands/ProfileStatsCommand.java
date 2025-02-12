@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class ProfileStatsCommand implements Command {
@@ -36,7 +37,7 @@ public class ProfileStatsCommand implements Command {
             return true;
         }
 
-        Skill skill = SkillRegistry.getSkill(args[1]);
+        Skill skill = SkillRegistry.getSkill(args[1].toUpperCase(Locale.US));
         if (skill == null) {
             Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_invalid_skill")));
             return true;

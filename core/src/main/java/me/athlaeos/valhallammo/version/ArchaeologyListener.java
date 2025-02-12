@@ -110,7 +110,7 @@ public class ArchaeologyListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBrush(BlockDropItemEvent e){
-        if (e.getBlock().getState() instanceof BrushableBlock) {
+        if (e.getBlockState() instanceof BrushableBlock) {
             BlockFace face = EntityUtils.getSelectedBlockFace(e.getPlayer());
             List<ItemStack> extraDrops = LootListener.getPreparedExtraDrops(e.getBlock());
             for (ItemStack i : extraDrops)

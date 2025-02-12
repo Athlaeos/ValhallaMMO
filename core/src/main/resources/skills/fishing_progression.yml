@@ -207,7 +207,7 @@ perks:
     description: "<lang.fishing_perk_combo_description>"
     cost: 1
     hidden: false
-    required_lv: 90
+    required_lv: 50
     perk_rewards:
       recipes_unlock:
         - salvage_leather_helmet
@@ -235,32 +235,62 @@ perks:
         - salvage_wooden_axe
         - salvage_wooden_shovel
         - salvage_wooden_hoe
+        - salvage_wooden_dagger
+        - salvage_wooden_mace
+        - salvage_wooden_rapier
+        - salvage_wooden_greataxe
+        - salvage_wooden_warhammer
+        - salvage_wooden_spear
         - salvage_stone_sword
         - salvage_stone_pickaxe
         - salvage_stone_axe
         - salvage_stone_shovel
         - salvage_stone_hoe
+        - salvage_stone_dagger
+        - salvage_stone_mace
+        - salvage_stone_rapier
+        - salvage_stone_greataxe
+        - salvage_stone_warhammer
+        - salvage_stone_spear
         - salvage_golden_sword
         - salvage_golden_pickaxe
         - salvage_golden_axe
         - salvage_golden_shovel
         - salvage_golden_hoe
+        - salvage_golden_dagger
+        - salvage_golden_mace
+        - salvage_golden_rapier
+        - salvage_golden_greataxe
+        - salvage_golden_warhammer
+        - salvage_golden_spear
         - salvage_iron_sword
         - salvage_iron_pickaxe
         - salvage_iron_axe
         - salvage_iron_shovel
         - salvage_iron_hoe
+        - salvage_iron_dagger
+        - salvage_iron_mace
+        - salvage_iron_rapier
+        - salvage_iron_greataxe
+        - salvage_iron_warhammer
+        - salvage_iron_spear
         - salvage_diamond_sword
         - salvage_diamond_pickaxe
         - salvage_diamond_axe
         - salvage_diamond_shovel
         - salvage_diamond_hoe
+        - salvage_diamond_dagger
+        - salvage_diamond_mace
+        - salvage_diamond_rapier
+        - salvage_diamond_greataxe
+        - salvage_diamond_warhammer
+        - salvage_diamond_spear
     messages:
       - "<lang.fishing_perk_combo_messages>"
     requireperk_all:
       - fishing_perk_1
     other_levels_required:
-      - SMITHING:90
+      - SMITHING:70
   fishing_perk_ng1:
     icon: TOTEM_OF_UNDYING
     coords: "1,6"
@@ -275,8 +305,10 @@ perks:
       p:fishing_fishingdrops_add: 0.5
       p:fishing_fishingluck_add: 2.5
       p:fishing_fishingspeedbonus_add: 0.25
-      p:fishing_fishingexpmultiplier_add: -0.25
-      p:perks_unlocked_add:
+      p:fishing_fishingexpmultiplier_add: -0.5
+      p:perks_permanently_unlocked_add:
+        - fishing_perk_ng1
+      p:perks_unlocked_remove:
         - fishing_perk_ng1
     messages:
       - "<lang.fishing_perk_ng1_messages>"
@@ -296,9 +328,10 @@ perks:
       p:fishing_fishingdrops_add: 0.5
       p:fishing_fishingluck_add: 2.5
       p:fishing_fishingspeedbonus_add: 0.25
-      p:fishing_fishingexpmultiplier_add: -0.25
-      p:perks_unlocked_add:
-        - fishing_perk_ng1
+      p:fishing_fishingexpmultiplier_add: -0.17
+      p:perks_permanently_unlocked_add:
+        - fishing_perk_ng2
+      p:perks_unlocked_remove:
         - fishing_perk_ng2
     messages:
       - "<lang.fishing_perk_ng2_messages>"

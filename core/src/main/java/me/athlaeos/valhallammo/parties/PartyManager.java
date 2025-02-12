@@ -616,7 +616,9 @@ public class PartyManager {
         boolean def = defaultBools.getOrDefault(stat, false);
         Pair<PartyLevel, Double> partyLevel = getPartyLevel(p);
         if (partyLevel == null || def) return def;
-        for (int i = 0; i <= partyLevel.getOne().level; i++) if (partyLevel.getOne().boolStats.getOrDefault(stat, false)) return true;
+        for (int i = 0; i <= partyLevel.getOne().level; i++) {
+            if (partyLevels.containsKey(i) && partyLevels.get(i).boolStats.getOrDefault(stat, false)) return true;
+        }
         return false;
     }
 
@@ -789,6 +791,7 @@ public class PartyManager {
 
     @SuppressWarnings("all")
     public static void saveParties(){
+        if (!enabledParties) return;
         File f = new File(ValhallaMMO.getInstance().getDataFolder(), "/parties.json");
         try {
             f.createNewFile();

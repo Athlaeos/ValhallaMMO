@@ -69,7 +69,7 @@ public class EffectResponsibility {
      */
     public static double getResponsibleDamageBuff(Entity victim, CustomDamageType damageType){
         Entity responsible = getResponsible(victim.getUniqueId(), damageType);
-        if (responsible == null) return 0D;
+        if (responsible == null || damageType.damageMultiplier() == null) return 0D;
         else return AccumulativeStatManager.getCachedAttackerRelationalStats(damageType.damageMultiplier(), victim, responsible, 10000, true);
     }
 

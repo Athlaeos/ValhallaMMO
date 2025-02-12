@@ -5,7 +5,7 @@ import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SkillRequirementAdd;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience;
-import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
 import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.implementations.*;
@@ -90,6 +90,10 @@ public class SkillRegistry {
 
     public static void updateSkillProgression(Player p, boolean runPersistentStartingPerks){
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            allSkills.values().forEach(s -> {
+                ProfileRegistry.setSkillProfile(p, ProfileRegistry.getBlankProfile(p, s.getProfileType()), s.getProfileType());
+            });
+
             getSkill(PowerSkill.class).updateSkillStats(p, runPersistentStartingPerks);
             allSkills.values().forEach(s -> {
                 if (s instanceof PowerSkill) return;

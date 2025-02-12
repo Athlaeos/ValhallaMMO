@@ -26,10 +26,13 @@ public class Item extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!use || !ValhallaMMO.isHookFunctional(VaultHook.class)) return;
+        if (!use) return;
         Map<ItemStack, Integer> compressed = ItemUtils.compressStacks(rewards);
-        compressed.replaceAll((i, v) -> v * timesExecuted);
-        List<ItemStack> decompressed = ItemUtils.decompressStacks(compressed);
+        Map<ItemStack, Integer> afterMultiplication = new HashMap<>();
+        for (ItemStack item : compressed.keySet()){
+            afterMultiplication.put(item, compressed.get(item) * timesExecuted);
+        }
+        List<ItemStack> decompressed = ItemUtils.decompressStacks(afterMultiplication);
         decompressed.forEach(i -> ItemUtils.addItem(crafter, i, true));
     }
 

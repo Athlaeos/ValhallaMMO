@@ -49,6 +49,9 @@ public class EnchantingItemPropertyManager {
         registerScaling("sweeping", Scaling.fromConfig(config, "scalings.sweeping"));
         registerScaling("thorns", Scaling.fromConfig(config, "scalings.thorns"));
         registerScaling("swift_sneak", Scaling.fromConfig(config, "scalings.swift_sneak"));
+        registerScaling("breach", Scaling.fromConfig(config, "scalings.breach"));
+        registerScaling("wind_burst", Scaling.fromConfig(config, "scalings.wind_burst"));
+        registerScaling("density", Scaling.fromConfig(config, "scalings.density"));
     }
 
     /**
@@ -81,7 +84,7 @@ public class EnchantingItemPropertyManager {
      */
     public static int getScaledLevel(Enchantment enchantment, int skill, int originalLevel){
         Scaling scaling = getScaling(enchantment);
-        if (scaling == null || enchantment.getMaxLevel() <= 1) return originalLevel;
+        if (scaling == null || enchantment.getMaxLevel() <= 1) return 1;
         return (int) Math.max(1, Math.floor(scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf(skill)), originalLevel)));
     }
 

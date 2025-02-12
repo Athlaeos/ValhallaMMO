@@ -17,11 +17,19 @@ public class ProfileStringListRemove extends PerkReward {
     private final Class<? extends Profile> type;
     private BiAction<String, Player> addAction = null;
     private BiAction<String, Player> removeAction = null;
+    private boolean alwaysPersistent = false;
 
     public ProfileStringListRemove(String name, String stat, Class<? extends Profile> type) {
         super(name);
         this.stat = stat;
         this.type = type;
+    }
+
+    public ProfileStringListRemove(String name, String stat, Class<? extends Profile> type, boolean alwaysPersistent) {
+        super(name);
+        this.stat = stat;
+        this.type = type;
+        this.alwaysPersistent = alwaysPersistent;
     }
 
     public ProfileStringListRemove(String name, String stat, Class<? extends Profile> type, BiAction<String, Player> removeAction, BiAction<String, Player> addAction) {
@@ -32,16 +40,25 @@ public class ProfileStringListRemove extends PerkReward {
         this.addAction = addAction;
     }
 
+    public ProfileStringListRemove(String name, String stat, Class<? extends Profile> type, boolean alwaysPersistent, BiAction<String, Player> removeAction, BiAction<String, Player> addAction) {
+        super(name);
+        this.stat = stat;
+        this.type = type;
+        this.alwaysPersistent = alwaysPersistent;
+        this.removeAction = removeAction;
+        this.addAction = addAction;
+    }
+
     @Override
     public void apply(Player player) {
-        Profile profile = isPersistent() ? ProfileRegistry.getPersistentProfile(player, type) : ProfileRegistry.getSkillProfile(player, type);
+        Profile profile = isPersistent() || alwaysPersistent ? ProfileRegistry.getPersistentProfile(player, type) : ProfileRegistry.getSkillProfile(player, type);
 
         Collection<String> existing = profile.getStringSet(stat);
         existing.removeAll(value);
         profile.setStringSet(stat, existing);
         if (removeAction != null) value.forEach(s -> removeAction.act(s, player));
 
-        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
+        if (isPersistent() || alwaysPersistent) ProfileRegistry.setPersistentProfile(player, profile, type);
         else ProfileRegistry.setSkillProfile(player, profile, type);
 
         AccumulativeStatManager.updateStats(player);
@@ -49,14 +66,14 @@ public class ProfileStringListRemove extends PerkReward {
 
     @Override
     public void remove(Player player) {
-        Profile profile = isPersistent() ? ProfileRegistry.getPersistentProfile(player, type) : ProfileRegistry.getSkillProfile(player, type);
+        Profile profile = isPersistent() || alwaysPersistent ? ProfileRegistry.getPersistentProfile(player, type) : ProfileRegistry.getSkillProfile(player, type);
 
         Collection<String> existing = profile.getStringSet(stat);
         existing.addAll(value);
         profile.setStringSet(stat, existing);
         if (addAction != null) value.forEach(s -> addAction.act(s, player));
 
-        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
+        if (isPersistent() || alwaysPersistent) ProfileRegistry.setPersistentProfile(player, profile, type);
         else ProfileRegistry.setSkillProfile(player, profile, type);
 
         AccumulativeStatManager.updateStats(player);

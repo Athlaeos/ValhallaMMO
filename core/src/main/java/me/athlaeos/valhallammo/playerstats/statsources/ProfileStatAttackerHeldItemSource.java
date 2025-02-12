@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -76,6 +77,8 @@ public class ProfileStatAttackerHeldItemSource implements AccumulativeStatSource
             boolean mainHand = properties.getMainHand() != null && heldItems.contains(properties.getMainHand().getItem().getType());
             if (!mainHand && (properties.getOffHand() == null || heldItems.contains(properties.getOffHand().getItem().getType()))) return def;
             Profile profile = ProfileCache.getOrCache(pl, type);
+            String requiredPermission = SkillRegistry.isRegistered(profile.getSkillType()) ? SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission() : null;
+            if (requiredPermission != null && !pl.hasPermission(requiredPermission)) return def;
             if (numberType.equals(Integer.class)) return (negative ? -1 : 1) * profile.getInt(stat);
             if (numberType.equals(Float.class)) return (negative ? -1 : 1) * profile.getFloat(stat);
             return (negative ? -1 : 1) * profile.getDouble(stat);

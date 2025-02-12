@@ -274,10 +274,12 @@ public class CraftingTableListener implements Listener {
                 }
                 // first non-empty item will be used as result
                 if (!ItemUtils.isEmpty(firstItem)){
-                    firstItem.getEnchantments().keySet().forEach(firstItem::removeEnchantment);
                     int newDurability = Math.min(combinedDurability + (int) Math.floor(0.05 * firstItemMaxDurability), firstItemMaxDurability);
                     CustomDurabilityManager.setDurability(firstMeta, newDurability, firstItemMaxDurability);
                     ItemUtils.setItemMeta(firstItem, firstMeta);
+
+                    PowerProfile profile = crafter == null ? null : ProfileCache.getOrCache(crafter, PowerProfile.class);
+                    if (profile == null || !profile.hasInventoryRepairingKeepEnchanting()) firstItem.getEnchantments().keySet().forEach(firstItem::removeEnchantment);
                     inventory.setResult(firstItem);
                 }
             } else {
@@ -287,13 +289,12 @@ public class CraftingTableListener implements Listener {
             return;
         }
 
-        if (crafted instanceof Keyed k && !CustomRecipeRegistry.getGridRecipesByKey().containsKey(k.getKey())) return;
+        if (crafted instanceof Keyed k && !(crafted instanceof ComplexRecipe) && !CustomRecipeRegistry.getGridRecipesByKey().containsKey(k.getKey())) return;
 
         if ((crafted instanceof ShapedRecipe || crafted instanceof ShapelessRecipe) && !e.getViewers().isEmpty()){
             DynamicGridRecipe recipe = CustomRecipeRegistry.getGridRecipesByKey().get(((Keyed) crafted).getKey());
-            if (recipe == null) {
-                return; // not a valhalla recipe, don't do anything
-            }
+            if (recipe == null) return; // not a valhalla recipe, don't do anything
+
             if (crafter == null){
                 inventory.setResult(null);
                 return;
@@ -349,18 +350,21 @@ public class CraftingTableListener implements Listener {
                     PotionMeta arrowMeta = (PotionMeta) ItemUtils.getItemMeta(arrow);
                     ItemStack potion = m[4].clone();
                     PotionMeta potionMeta = (PotionMeta) ItemUtils.getItemMeta(potion);
+                    if (arrowMeta == null || potionMeta == null) return;
+                    if (CustomFlag.hasFlag(potionMeta, CustomFlag.DISPLAY_ATTRIBUTES)) CustomFlag.addItemFlag(arrowMeta, CustomFlag.DISPLAY_ATTRIBUTES);
+                    if (potionMeta.hasItemFlag(ItemFlag.HIDE_POTION_EFFECTS)) arrowMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+
                     Map<String, PotionEffectWrapper> defaultEffects = PotionEffectRegistry.getStoredEffects(potionMeta, true);
                     Map<String, PotionEffectWrapper> actualEffects = PotionEffectRegistry.getStoredEffects(potionMeta, false);
                     if (defaultEffects.isEmpty()) return; // potion is vanilla
+
                     PotionEffectRegistry.setDefaultStoredEffects(arrowMeta, defaultEffects);
                     PotionEffectRegistry.setActualStoredEffects(arrowMeta, actualEffects);
                     PotionEffectRegistry.updateItemName(arrowMeta, true, false);
 
-                    if (arrowMeta != null && potionMeta != null){
-                        arrowMeta.setColor(potionMeta.getColor());
-                        arrowMeta.addItemFlags(potionMeta.getItemFlags().toArray(new org.bukkit.inventory.ItemFlag[0]));
-                        ItemUtils.setItemMeta(arrow, arrowMeta);
-                    }
+                    arrowMeta.setColor(potionMeta.getColor());
+                    arrowMeta.addItemFlags(potionMeta.getItemFlags().toArray(new org.bukkit.inventory.ItemFlag[0]));
+                    ItemUtils.setItemMeta(arrow, arrowMeta);
 
                     inventory.setResult(arrow);
                 } else {

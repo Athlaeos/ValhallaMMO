@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -42,8 +43,10 @@ public class ProfileStatSource implements AccumulativeStatSource {
 
     @Override
     public double fetch(Entity p, boolean use) {
-        if (p instanceof Player){
-            Profile profile = ProfileCache.getOrCache((Player) p, type);
+        if (p instanceof Player pl){
+            Profile profile = ProfileCache.getOrCache(pl, type);
+            String requiredPermission = SkillRegistry.isRegistered(profile.getSkillType()) ? SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission() : null;
+            if (requiredPermission != null && !pl.hasPermission(requiredPermission)) return def;
             if (numberType.equals(Integer.class)) return profile.getInt(stat);
             if (numberType.equals(Float.class)) return profile.getFloat(stat);
             return profile.getDouble(stat);

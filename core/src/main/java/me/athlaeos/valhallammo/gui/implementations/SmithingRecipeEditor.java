@@ -375,17 +375,17 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
                         if (selectedChoice != null) {
                             if (e.getRawSlot() == templateIndex){
                                 if (selectedChoice.isCompatible(template.getItem()) && selectedChoice.isCompatibleWithInputItem(false)){
-                                    if (selectedChoice instanceof IngredientChoice c) template.setOption(c);
+                                    template.setOption(selectedChoice);
                                     e.getWhoClicked().setItemOnCursor(null);
                                 } else Utils.sendMessage(e.getWhoClicked(), "&cNot compatible with this item");
                             } else if (e.getRawSlot() == baseIndex){
                                 if (selectedChoice.isCompatible(base.getItem()) && selectedChoice.isCompatibleWithInputItem(false)){
-                                    if (selectedChoice instanceof IngredientChoice c) base.setOption(c);
+                                    base.setOption(selectedChoice);
                                     e.getWhoClicked().setItemOnCursor(null);
                                 } else Utils.sendMessage(e.getWhoClicked(), "&cNot compatible with this item");
                             } else if (e.getRawSlot() == additionIndex){
                                 if (selectedChoice.isCompatible(addition.getItem()) && selectedChoice.isCompatibleWithInputItem(true)){
-                                    if (selectedChoice instanceof IngredientChoice c) addition.setOption(c);
+                                    addition.setOption(selectedChoice);
                                     e.getWhoClicked().setItemOnCursor(null);
                                 } else Utils.sendMessage(e.getWhoClicked(), "&cNot compatible with this item");
                             }

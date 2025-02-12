@@ -9,6 +9,8 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
+import me.athlaeos.valhallammo.utility.EntityUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -65,8 +67,20 @@ public class ProfileStatAttackerWeightSource implements AccumulativeStatSource, 
     public double fetch(Entity victim, Entity attackedBy, boolean use) {
         if (attackedBy instanceof Player pl){
             EntityProperties properties = EntityCache.getAndCacheProperties(pl);
-            if (properties.getMainHand() == null || WeightClass.getWeightClass(properties.getMainHand().getMeta()) != weightClass) return def;
+
+            if (weightClass != WeightClass.WEIGHTLESS){
+                if (properties.getMainHand() == null || WeightClass.getWeightClass(properties.getMainHand().getMeta()) != weightClass) return def;
+            } else {
+                // weightless is handled differently
+                // if the item has a defined weight class, but it's not weightless, invalid item
+                if (properties.getMainHand() != null && WeightClass.hasDefinedWeightClass(properties.getMainHand().getMeta()) && WeightClass.getWeightClass(properties.getMainHand().getMeta()) != WeightClass.WEIGHTLESS) return def;
+                // if the item has no defined weight class, the player must be unarmed
+                else if (!EntityUtils.isUnarmed(pl)) return def;
+            }
+
             Profile profile = ProfileCache.getOrCache(pl, type);
+            String requiredPermission = SkillRegistry.isRegistered(profile.getSkillType()) ? SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission() : null;
+            if (requiredPermission != null && !pl.hasPermission(requiredPermission)) return def;
 
             if (numberType.equals(Integer.class)) return (negative ? -1 : 1) * profile.getInt(stat);
             if (numberType.equals(Float.class)) return (negative ? -1 : 1) * profile.getFloat(stat);

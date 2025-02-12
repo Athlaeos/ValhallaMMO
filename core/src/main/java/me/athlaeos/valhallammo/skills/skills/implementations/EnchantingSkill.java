@@ -16,6 +16,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.EnchantingProfile;
+import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
@@ -56,9 +57,8 @@ public class EnchantingSkill extends Skill implements Listener {
     private double diminishingReturnsMultiplier = 0;
     private int diminishingReturnsCount = 0;
     private boolean anvilDowngrading = false;
-    private final Collection<EntityType> diminishingReturnsEntities = new HashSet<>();
     private final Map<EntityType, Double> entityEXPMultipliers = new HashMap<>();
-    private final Map<UUID, Integer> diminishingReturnTallyCounter = new HashMap<>();
+    private final Map<UUID, Map<EntityType, Integer>> diminishingReturnTallyCounter = new HashMap<>();
 
     private Animation elementalBladeActivationAnimation = AnimationRegistry.ELEMENTAL_BLADE_ACTIVATION;
     private Animation elementaBladeExpirationAnimation = AnimationRegistry.ELEMENTAL_BLADE_EXPIRATION;
@@ -89,11 +89,6 @@ public class EnchantingSkill extends Skill implements Listener {
         this.anvilDowngrading = skillConfig.getBoolean("anvil_downgrading");
         this.diminishingReturnsMultiplier = progressionConfig.getDouble("experience.diminishing_returns.multiplier");
         this.diminishingReturnsCount = progressionConfig.getInt("experience.diminishing_returns.amount");
-        progressionConfig.getStringList("experience.diminishing_returns.mobs").forEach(s -> {
-            EntityType e = Catch.catchOrElse(() -> EntityType.valueOf(s), null, "Invalid entity type given in skills/enchanting_progression.yml experience.diminishing_returns.on." + s);
-            if (e == null) return;
-            this.diminishingReturnsEntities.add(e);
-        });
 
         ConfigurationSection expReducedEntitySection = progressionConfig.getConfigurationSection("experience.diminishing_returns.mob_experience");
         if (expReducedEntitySection != null){
@@ -236,8 +231,9 @@ public class EnchantingSkill extends Skill implements Listener {
         double chance = AccumulativeStatManager.getCachedStats("ENCHANTING_AMPLIFY_CHANCE", enchanter, 10000, true);
 
         EnchantingProfile profile = ProfileCache.getOrCache(enchanter, EnchantingProfile.class);
+        boolean accessible = hasPermissionAccess(e.getEnchanter());
         for (Enchantment en : e.getEnchantsToAdd().keySet()){
-            int enchantmentBonus = profile.getEnchantmentBonus(en) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(en));
+            int enchantmentBonus = accessible ? profile.getEnchantmentBonus(en) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(en)) : 0;
             if (Utils.proc(chance, 0, false)) {
                 e.getEnchantsToAdd().put(en, Math.max(1, EnchantingItemPropertyManager.getScaledLevel(en, skill, e.getEnchantsToAdd().get(en)) + enchantmentBonus));
             } else e.getEnchantsToAdd().put(en, Math.max(1, e.getEnchantsToAdd().get(en) + enchantmentBonus));
@@ -271,7 +267,8 @@ public class EnchantingSkill extends Skill implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
                 !EntityDamagedListener.getEntityDamageCauses().contains(e.getCause().toString())) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
-        if (!(trueDamager instanceof Player p) || !(e.getEntity() instanceof LivingEntity v)) return;
+        if (!(trueDamager instanceof Player p) || !(e.getEntity() instanceof LivingEntity v) ||
+                !hasPermissionAccess(p) || EntityUtils.hasActiveDamageProcess(v)) return;
         if (WorldGuardHook.inDisabledRegion(e.getDamager().getLocation(), p, WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         EnchantingProfile profile = ProfileCache.getOrCache(p, EnchantingProfile.class);
         if (profile.getElementalDamageTypes().isEmpty()) return;
@@ -325,11 +322,12 @@ public class EnchantingSkill extends Skill implements Listener {
     @SuppressWarnings("all")
     @EventHandler(priority = EventPriority.MONITOR)
     public void onHandSwap(PlayerSwapHandItemsEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() || !e.getPlayer().isSneaking()) return;
         if (WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_hand_swap")) return; // to prevent spam, a cooldown of 0.5 seconds is applied
         if (ItemUtils.isEmpty(e.getOffHandItem())) return;
         if (!EquipmentClass.isHandHeld(ItemUtils.getItemMeta(e.getOffHandItem()))) return;
+        if (!hasPermissionAccess(e.getPlayer())) return;
         EnchantingProfile profile = ProfileCache.getOrCache(e.getPlayer(), EnchantingProfile.class);
         if (profile.getActiveElementalDamageMultiplier() == 0 && profile.getActiveElementalDamageConversion() == 0) return;
         // if the player gains no benefit from enhanced attacks, it is considered not unlocked
@@ -351,7 +349,18 @@ public class EnchantingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityKilled(EntityDeathEvent e) {
         if (e.getEntity().getKiller() == null) return;
-        if (diminishingReturnsEntities.contains(e.getEntityType())) incrementMobTally(e.getEntity().getKiller(), e.getEntityType());
+
+        if (ChunkEXPNerf.doesChunkEXPNerfApply(
+                e.getEntity().getLocation().getChunk(),
+                e.getEntity().getKiller(),
+                "enchanting_mob_tally_" + e.getEntityType().toString().toLowerCase(),
+                diminishingReturnsCount)
+        ) incrementMobTally(e.getEntity().getKiller(), e.getEntityType());
+        else ChunkEXPNerf.increment(
+                e.getEntity().getLocation().getChunk(),
+                e.getEntity().getKiller(),
+                "enchanting_mob_tally_" + e.getEntityType().toString().toLowerCase()
+        );
 
         e.setDroppedExp(Utils.randomAverage(e.getDroppedExp() * entityEXPMultipliers.getOrDefault(e.getEntityType(), 1D)));
     }
@@ -426,8 +435,9 @@ public class EnchantingSkill extends Skill implements Listener {
                 skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY_ANVIL", combiner, 10000, true)));
 
                 EnchantingProfile profile = ProfileCache.getOrCache(combiner, EnchantingProfile.class);
+                boolean skillAccess = hasPermissionAccess(combiner);
                 for (Enchantment en : Enchantment.values()) {
-                    int enchantmentBonus = profile.getEnchantmentBonus(en) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(en));
+                    int enchantmentBonus = skillAccess ? profile.getEnchantmentBonus(en) + profile.getEnchantmentBonus(EnchantmentClassification.getClassification(en)) : 0;
                     maxLevels.put(en, en.getMaxLevel() == 1 ? 1 : creative ? Integer.MAX_VALUE : (EnchantingItemPropertyManager.getScaledAnvilLevel(en, skill) + enchantmentBonus));
                 }
                 anvilMaxLevelCache.put(combiner.getUniqueId(), maxLevels);
@@ -494,19 +504,25 @@ public class EnchantingSkill extends Skill implements Listener {
 
     private void incrementMobTally(Player p, EntityType type){
         if (p.hasPermission("valhalla.ignorediminishingreturns")) return;
-        if (!diminishingReturnsEntities.contains(type)) return;
-        diminishingReturnTallyCounter.put(p.getUniqueId(), diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), 0) + 1);
+        Map<EntityType, Integer> entityMap = diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), new HashMap<>());
+        entityMap.put(type, entityMap.getOrDefault(type, 0) + 1);
+        diminishingReturnTallyCounter.put(p.getUniqueId(), diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), entityMap));
     }
 
     private void reduceTallyCounter(Player p){
-        int count = diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), 0);
-        if (count < diminishingReturnsCount) return;
+        Map<EntityType, Integer> entityMap = diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), new HashMap<>());
+        EntityType highest = entityMap.keySet().stream().filter(e -> entityMap.getOrDefault(e, 0) >= diminishingReturnsCount).findFirst().orElse(null);
+        if (highest == null) return;
+        int count = entityMap.get(highest);
         count -= diminishingReturnsCount;
-        diminishingReturnTallyCounter.put(p.getUniqueId(), count);
+        entityMap.put(highest, count);
+        diminishingReturnTallyCounter.put(p.getUniqueId(), entityMap);
     }
 
     private boolean doDiminishingReturnsApply(Player p){
         if (p.hasPermission("valhalla.ignorediminishingreturns")) return false;
-        return diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), 0) >= diminishingReturnsCount;
+        Map<EntityType, Integer> entityMap = diminishingReturnTallyCounter.getOrDefault(p.getUniqueId(), new HashMap<>());
+        EntityType highest = entityMap.keySet().stream().filter(e -> entityMap.getOrDefault(e, 0) >= diminishingReturnsCount).findFirst().orElse(null);
+        return highest != null;
     }
 }

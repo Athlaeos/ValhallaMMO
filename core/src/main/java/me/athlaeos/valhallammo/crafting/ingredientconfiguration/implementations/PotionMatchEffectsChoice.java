@@ -1,7 +1,6 @@
 package me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -21,7 +20,7 @@ import org.bukkit.potion.PotionType;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class PotionMatchEffectsChoice extends RecipeOption implements IngredientChoice {
+public class PotionMatchEffectsChoice extends RecipeOption {
 
     private static final Map<PotionType, Collection<PotionEffectMappings>> typeMapping = new HashMap<>();
     static {
@@ -46,7 +45,6 @@ public class PotionMatchEffectsChoice extends RecipeOption implements Ingredient
         map(Set.of("WATER"), new HashSet<>());
         map(Set.of("WATER_BREATHING", "LONG_WATER_BREATHING"), Set.of(PotionEffectMappings.WATER_BREATHING));
         map(Set.of("WEAKNESS", "LONG_WEAKNESS"), Set.of(PotionEffectMappings.WEAKNESS));
-
     }
     private static void map(Collection<String> potionTypes, Collection<PotionEffectMappings> effects){
         for (String t : potionTypes){

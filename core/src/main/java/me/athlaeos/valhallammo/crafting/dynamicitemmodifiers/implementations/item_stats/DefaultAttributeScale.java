@@ -272,7 +272,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
     @Override
     public String getActiveDescription() {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        return String.format("&fScales the item's %s stat according to the formula /n%s, using the mode %s. %s%s",
+        return String.format("&fScales the item's %s stat according to the formula /n&e%s&f, using the mode %s. %s%s",
                 attribute.getAttribute().toLowerCase(java.util.Locale.US).replace("_", " "),
                 buildScaling(), mode,
                 lowerBound == null ? "" : "&fResult cannot go below " + lowerBound + ". ",

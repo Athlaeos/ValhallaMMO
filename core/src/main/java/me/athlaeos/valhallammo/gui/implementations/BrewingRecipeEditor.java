@@ -346,12 +346,12 @@ public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
                         if (selectedChoice != null) {
                             if (e.getRawSlot() == ingredientIndex){
                                 if (selectedChoice.isCompatible(ingredient.getItem()) && selectedChoice.isCompatibleWithInputItem(false)){
-                                    if (selectedChoice instanceof IngredientChoice c) ingredient.setOption(c);
+                                    ingredient.setOption(selectedChoice);
                                     e.getWhoClicked().setItemOnCursor(null);
                                 } else Utils.sendMessage(e.getWhoClicked(), "&cNot compatible with this item");
                             } else if (applyOnIndexes.contains(e.getRawSlot())){
                                 if (selectedChoice.isCompatible(applyOn.getItem()) && selectedChoice.isCompatibleWithInputItem(true)){
-                                    if (selectedChoice instanceof IngredientChoice c) applyOn.setOption(c);
+                                    applyOn.setOption(selectedChoice);
                                     e.getWhoClicked().setItemOnCursor(null);
                                 } else Utils.sendMessage(e.getWhoClicked(), "&cNot compatible with this item");
                             }

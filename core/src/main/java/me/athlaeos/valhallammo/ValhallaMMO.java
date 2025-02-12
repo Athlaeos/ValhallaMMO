@@ -181,6 +181,8 @@ public class ValhallaMMO extends JavaPlugin {
 
         ResourcePack.tryStart();
 
+        ProfileRegistry.setupDatabase();
+        ProfileRegistry.registerDefaultProfiles();
         ItemAttributesRegistry.registerAttributes();
         PotionEffectRegistry.registerEffects();
         SmithingItemPropertyManager.loadConfig();
@@ -192,10 +194,7 @@ public class ValhallaMMO extends JavaPlugin {
         BlockInteractConversions.loadConversions();
         ModifierScalingPresets.loadScalings();
 
-        ProfileRegistry.setupDatabase();
         ProfilePersistence connection = ProfileRegistry.getPersistence();
-
-        for (PluginHook hook : activeHooks.values()) hook.whenPresent();
 
         if (ConfigManager.getConfig("config.yml").get().getBoolean("metrics", true)){
             new Metrics(this, 14942).addCustomChart(new Metrics.SimplePie("using_database_for_player_data", () -> connection instanceof SQL db && db.getConnection() != null ? "Yes" : "No"));
@@ -205,6 +204,7 @@ public class ValhallaMMO extends JavaPlugin {
         PlayerJumpEvent.register(this);
         registerListener(new AnvilListener());
         registerListener(new ArmorSwitchListener());
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) && !customMiningSystem) registerListener(new BlockDamageListener());
         registerListener(new BlockListener());
         registerListener(new BrewingStandListener());
         registerListener(new CauldronCraftingListener());
@@ -224,7 +224,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerListener(new ItemConsumptionListener());
         registerListener(new ItemDamageListener());
         registerListener(new JoinLeaveListener());
-        registerListener(new JumpListener());
+        if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21_2)) registerListener(new JumpListener());
         registerListener(new LootListener());
         registerListener(new MenuListener());
         registerListener(new MovementListener());
@@ -285,6 +285,8 @@ public class ValhallaMMO extends JavaPlugin {
             logInfo("Alpha files found and conversion enabled! Enabling data transfer from Alpha to Beta");
             registerListener(new AlphaToBetaConversionHandler());
         }
+
+        for (PluginHook hook : activeHooks.values()) hook.whenPresent();
     }
 
     @Override
@@ -325,8 +327,8 @@ public class ValhallaMMO extends JavaPlugin {
             }
 
             return nms != null;
-        } catch (Exception | Error ignored) {
-            ignored.printStackTrace();
+        } catch (Exception | Error e) {
+            e.printStackTrace();
             return false;
         }
     }

@@ -1,6 +1,5 @@
 package me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations;
 
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.item.CustomID;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -10,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class MaterialWithIDChoice extends RecipeOption implements IngredientChoice {
+public class MaterialWithIDChoice extends RecipeOption {
 
     @Override
     public String getName() {

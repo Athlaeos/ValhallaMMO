@@ -9,9 +9,9 @@ experience:
   exp_per_damage: 7
   mace_exp_multiplier: 0.1 # When using "The Mace" to attack, exp rewarded is multiplied by this amount
   spawner_spawned_multiplier: 0.7
-  exp_enemies_nerfed:
-    ENDERMAN: 0.01
-    ZOMBIFIED_PIGLIN: 0.02
+  exp_enemies_nerfed: []
+  max_health_limitation: false
+  pvp_multiplier: 0.1
 
 special_perks: []
 
@@ -247,8 +247,10 @@ perks:
       p:lightweapons_damagemultiplier_add: 0.15
       p:lightweapons_attackspeedmultiplier_add: 0.2
       p:lightweapons_critchance_add: 0.1
-      p:lightweapons_lightweaponsexpmultiplier_add: -0.25
-      p:perks_unlocked_add:
+      p:lightweapons_lightweaponsexpmultiplier_add: -0.5
+      p:perks_permanently_unlocked_add:
+        - lightweapons_perk_ng1
+      p:perks_unlocked_remove:
         - lightweapons_perk_ng1
     messages:
       - "<lang.lightweapons_perk_ng1_messages>"
@@ -268,9 +270,10 @@ perks:
       p:lightweapons_damagemultiplier_add: 0.15
       p:lightweapons_attackspeedmultiplier_add: 0.2
       p:lightweapons_critchance_add: 0.1
-      p:lightweapons_lightweaponsexpmultiplier_add: -0.25
-      p:perks_unlocked_add:
-        - lightweapons_perk_ng1
+      p:lightweapons_lightweaponsexpmultiplier_add: -0.17
+      p:perks_permanently_unlocked_add:
+        - lightweapons_perk_ng2
+      p:perks_unlocked_remove:
         - lightweapons_perk_ng2
     messages:
       - "<lang.lightweapons_perk_ng2_messages>"

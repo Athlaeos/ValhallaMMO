@@ -26,7 +26,7 @@ resourcepack_version: 1.0
 # Misc
 admin_gui_filler_removal: true # If true, admin-visible menus like recipe editor menus will have their filler material removed. Normally this filler material is here
 # to better indicate and distinguish clickable buttons and slots from non-functional slots, but if a custom GUI for example is used then this filler material is not required
-resource_pack_config_override: true # If true, certain config options are overridden by hard-coded values that work with the ValhallaMMO resource pack
+resource_pack_config_override: false # If true, certain config options are overridden by hard-coded values that work with the ValhallaMMO resource pack
 # This option can be toggled in-game with /val resourcepack <enable/disable>
 
 # GENERAL
@@ -43,6 +43,7 @@ selectable_loot_modifiers: false # If true, the loot drops within selectable loo
 forgettable_perks: false # If true, if a player were to be leveled down and lose the ability to own a perk, they will.
 # Forgetting a perk may refund resources invested into it and will display a message that they've forgotten the perk
 forgettable_perks_refund_skillpoints: true # If true, skillpoints are refunded when a perk is forgotten
+forgettable_perks_refund_items: false # If true, items spent on perks can be refunded when a perk is forgotten
 forgettable_perks_refund_money: false # If true, (if Vault and an economy plugin are hooked) money is refunded when a perk is forgotten
 forgettable_perks_refund_exp: false # If true, enchanting experience is refunded when a perk is forgotten
 forgettable_perks_refund_prestigepoints: false # If true, prestige points are refunded when a perk is forgotten
@@ -52,6 +53,11 @@ language: 'en-us' # The language file used. Language files can be found in Valha
 
 world_blacklist: # If a world name is in this list, ValhallaMMO has no influence here except for custom recipe mechanics.
   - exampleworldlol
+
+# A duration of >0 repeats the message every game tick, updating the duration along the way.
+# A duration of ==0 shows the message only once
+# A duration of <0 doesn't show any message
+cooldown_status_duration: 100 # Duration (in ticks) for which the cooldown message is sent to the player to display their cooldown
 
 armor_scale: 40 # Defines the "maximum" armor displayed in the armor bar. Whatever number is defined here equals 10 full armor icons,
 # so by default 20 armor points will grant roughly 5 armor icons. Of course, players can still exceed this value, it will just not be displayed.
@@ -110,6 +116,17 @@ block_recovery_speed: 0.015 # The amount of health (of max 1, per tick) at which
 inventory_repairing_vanilla: true # If false, players will no longer be able to repair vanilla items in their inventories
 inventory_repairing_valhalla: true # If false, players will no longer be able to repair valhalla items in their inventories
 
+# If true, a player cannot be oneshot if the damage comes from a player
+oneshot_protection_players: true
+# If true, a player cannot be oneshot if the damage comes from a non-player
+oneshot_protection_mobs: true
+# If true, a player cannot be oneshot if the damage comes from the environment (fall damage, explosions, anvil, etc.)
+oneshot_protection_environment: true
+# Represents a multiplier applied on the victim's max hp. Oneshot protection is broken if damage exceeds this value
+# For example, if a player has 20 health, they need to take 60 damage in a single hit to not receive oneshot protection
+oneshot_protection_limit: 3
+oneshot_protection_sound: ITEM_TOTEM_USE
+
 item_duplication_whitelist: # The plugin features a "drop rate bonus" stat which duplicates enemy drops on death. Any item listed here will be be affected by this stat
   - STRING
   - CHICKEN
@@ -155,7 +172,7 @@ item_duplication_whitelist: # The plugin features a "drop rate bonus" stat which
 lightning_draw_range: 128 # When lightning strikes, if the player has NEGATIVE lightning resistance, lightning spawns closer to that player depending on their lightning resistance
 # To turn this mechanic off, set range to 0
 
-skill_gap_pvp_prevention: true # If true, if two players fought each-other and their power levels are too far apart, they will not be able to fight
+skill_gap_pvp_prevention: false # If true, if two players fought each-other and their power levels are too far apart, they will not be able to fight
 skill_gap_pvp_level: 20 # The maximum level difference allowed until players are able to fight each-other again
 
 # Adds an additional effect to the luck stat. Chance-based effects will now roll once extra for each point of luck the player has.
@@ -266,7 +283,7 @@ stun_immunity_duration: 100
 default_stun_duration: 20
 
 # Time frame after a combat action the player will still be considered "in combat" in
-combat_time_frame: 5000
+combat_time_frame: 15000
 
 # Various abilities can cause targets to bleed, how long should the delay between bleed damage ticks be (in minecraft ticks) with 1 stack of bleeding
 bleed_delay: 40
@@ -274,6 +291,9 @@ bleed_delay: 40
 # damage ticks from 40 to 20, and so the bleeding is doubled. 40-35-30-25-20
 bleed_stacked_delay: -5
 bleed_max_stacks: 4 # The maximum amount of stacks of bleed entities can take
+
+breach_armor_penetration: 10%
+tp_arrow_out_of_combat_only: true # If true, arrows with the "teleport to location" behavior cannot teleport players that are in combat
 
 # ValhallaMMO features a parry system, where a successful parry heavily debuffs the parried enemy and reduces the damage
 # taken from the attack, while a failed one puts the parrier at a temporary vulnerability
@@ -305,7 +325,7 @@ custom_damage_system: true # If false, there is no custom damage system
 # and further reduces heavy damage with toughness. Toughness is not very effective if the player doesn't have
 # a lot of armor or if the player doesn't take very heavy damage. This formula normally breaks at extreme damage numbers,
 # but damage reduction cannot go below a certain fraction to make sure the formula can never go into the negatives
-damage_formula_physical: '%damage% * (15 / (15 + %armor%)) - (%toughness% * 0.15)'
+damage_formula_physical: '%damage% * (15 / (15 + %armor%)) * (1 / (1 + (0.001 * %toughness% * %damage%)))'
 damage_formula_mode: SET # Valid modes are SET and MULTIPLY
 # SET sets physical damage to the outcome of this formula. The outcome cannot go below 0
 # MULTIPLY multiplies the original damage and sets that as the final damage. The outcome cannot go below 0
@@ -347,32 +367,32 @@ crit_particle_effect: true
 # Damage mitigation obtained from specific enchantments. These mitigations reduce damage before armor comes into play.
 # These mitigations also stack on top of any additional damage mitigation attributes the armor may be given,
 # as example: a protection V chestplate that also has +15% damage mitigations will effectively have 22.5% damage mitigation
-protection_effectiveness: 0.015 # 1.5% up to 30%
-protection_cap: 0.3
-protection_magic_effectiveness: 0.03 # 3% up to 60%
-protection_magic_cap: 0.6
-protection_poison_effectiveness: 0.03 # 3% up to 60%
-protection_poison_cap: 0.6
+protection_effectiveness: 0.015 # 1.5% up to 45%
+protection_cap: 0.45
+protection_magic_effectiveness: 0.03 # 3% up to 90%
+protection_magic_cap: 0.9
+protection_poison_effectiveness: 0.03 # 3% up to 90%
+protection_poison_cap: 0.9
 protection_bludgeoning_effectiveness: 0 # no benefit
 protection_bludgeoning_cap: 0
 protection_melee_effectiveness: 0 # no benefit
 protection_melee_cap: 0
-protection_lightning_effectiveness: 0.03 # 3% up to 60%
-protection_lightning_cap: 0.6
-protection_freezing_effectiveness: 0.03 # 3% up to 60%
-protection_freezing_cap: 0.6
-protection_radiant_effectiveness: 0.04 # 4% up to 80%
-protection_radiant_cap: 0.8
-protection_necrotic_effectiveness: 0.04 # 4% up to 80%
-protection_necrotic_cap: 0.8
+protection_lightning_effectiveness: 0.03 # 3% up to 90%
+protection_lightning_cap: 0.9
+protection_freezing_effectiveness: 0.03 # 3% up to 90%
+protection_freezing_cap: 0.9
+protection_radiant_effectiveness: 0.04 # 4% up to 100%
+protection_radiant_cap: 1.0
+protection_necrotic_effectiveness: 0.04 # 4% up to 100%
+protection_necrotic_cap: 1.0
 fire_protection_effectiveness: 0.05 # 5% up to 100%
 fire_protection_cap: 1
-projectile_protection_effectiveness: 0.03 # 3% up to 60%
-projectile_protection_cap: 0.6
-blast_protection_effectiveness: 0.04 # 4% up to 80%
+projectile_protection_effectiveness: 0.03 # 3% up to 90%
+projectile_protection_cap: 0.9
+blast_protection_effectiveness: 0.04 # 4% up to 100%
 blast_protection_cap: 1
-feather_falling_effectiveness: 0.15 # 15% up to 75%
-feather_falling_cap: 0.75
+feather_falling_effectiveness: 0.15 # 15% up to 90%
+feather_falling_cap: 0.9
 
 buff_resistance_reduction: 0.2 # Damage reduction per level of the Resistance buff (vanilla value: 0.2)
 
@@ -460,78 +480,3 @@ model_data_tinker_view: 3511002
 # If true, items crafted with a custom crafting method will be dropped on top of the crafting block. If false, they will
 # be added to the player's inventory.
 craft_item_drop: true
-
-# PARTIES
-
-parties: true # If disabled, all party functionality is disabled
-item_sharing: true # If disabled, item sharing will not be possible
-exp_sharing: true # If disabled, exp sharing will not be possible
-
-party_creation_cooldown: 86400000 # Cooldown to create a party, so it can't be spammed (default 1d)
-item_share_cooldown: 3600000 # Cooldown between item shares (default 1hr)
-
-name_character_minimum: 2
-name_character_limit: 24 # Name limit of party names
-description_character_limit: 256 # Description limit of party descriptions
-party_chat_format: '&2[PC] &a[%rank%&a] %s &f> %s'
-party_spy_chat_format: '&4[PS] &c[%party%] %s &7> %s'
-name_allow_colors: true # If true, party creators may add colors to their party name
-description_allow_colors: true # If true, party creators may add colors to their description
-
-party_capacity_default: 50 # Default member capacity of a party
-exp_sharing_default: true # If false, party exp sharing will be disabled by default
-item_sharing_default: true # If false, party item sharing will be disabled by default
-
-exp_sharing_radius: 25 # Default exp sharing radius
-exp_sharing_multiplier: 1.0 # Default exp sharing fraction
-# Exp gained by 1 player is shared equally among nearby allies within the radius, and then multiplied by this amount
-
-# The default rank each member will get upon joining
-default_rank: rookie # The rank here must be present in the below "ranks", if not the party system will be disabled
-leader_title: '<lang.party-rank-leader>'
-ranks: # Ranks may be distributed by the party leader, each rank has a title and may have additional permissions
-  rookie:
-    rating: 0
-    title: '<lang.party-rank-rookie>'
-    permissions: # Valid permissions are
-    # party_chat, item_share, exp_share, open_party, invite_member, kick_members, manage_roles, manage_description
-      - party_chat
-  member:
-    rating: 1
-    title: '<lang.party-rank-member>'
-    permissions:
-      - item_sharing
-      - party_chat
-  trusted:
-    rating: 2
-    title: '<lang.party-rank-trusted>'
-    permissions:
-      - invite_member
-      - item_sharing
-      - party_chat
-  inner_circle:
-    rating: 3
-    title: '<lang.party-rank-inner-circle>'
-    permissions:
-      - invite_member
-      - item_sharing
-      - party_chat
-      - manage_roles
-      - open_party
-      - exp_share
-      - kick_members
-      - manage_description
-# party_chat: access to party chat
-# item_share: ability to share items with other party members
-# exp_share: ability to toggle exp share on and off for the party
-# open_party: ability to open party or to have party invite only (closed = invite only, open = free join + invite)
-# toggle_item_sharing: ability to toggle item sharing
-# toggle_exp_sharing: ability to toggle exp sharing
-# invite_members: ability to invite other people to the party
-# manage_roles: ability to take and give roles that are below the member's own rank to people with rankings lower than that of their own
-# kick_members: ability to remove members from the party with rankings lower than that of their own
-# manage_description: ability to change the party's description
-# The leader by default has all permissions and is the only one who can transfer leadership
-
-party_info: # This information is displayed in the command /party info, and mostly intended for the creator of the party
-  - '<lang.party-info-format>'
