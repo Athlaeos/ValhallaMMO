@@ -19,7 +19,7 @@ public class Config {
     }
 
     public Config save() {
-        if ((this.config == null) || (this.file == null))
+        if ((this.config == null) || (this.file == null) || file.exists())
             return this;
         try {
             ConfigurationSection section = config.getConfigurationSection("");
@@ -52,16 +52,6 @@ public class Config {
 
         this.config = YamlConfiguration.loadConfiguration(file);
 
-        Reader defConfigStream;
-        try {
-            InputStream resource = plugin.getResource(this.name);
-            if (resource != null) {
-                defConfigStream = new InputStreamReader(resource, StandardCharsets.UTF_8);
-                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-                this.config.setDefaults(defConfig);
-            }
-        } catch (NullPointerException ignored) {
-        }
         return this;
     }
 

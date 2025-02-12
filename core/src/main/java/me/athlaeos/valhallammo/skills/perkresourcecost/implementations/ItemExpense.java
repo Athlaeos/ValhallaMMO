@@ -14,14 +14,11 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.regex.Pattern;
 
 public class ItemExpense implements ResourceExpense {
-    private static final Logger log = LoggerFactory.getLogger(ItemExpense.class);
     private final Map<String, ItemCost> valhallaItemCost = new HashMap<>();
     private final Map<ItemStack, Integer> vanillaItemCost = new HashMap<>();
 
@@ -113,7 +110,7 @@ public class ItemExpense implements ResourceExpense {
 
     @Override
     public String getCostPlaceholder() {
-        return "%item_cost%";
+        return "%cost_items%";
     }
 
     @Override
@@ -129,7 +126,7 @@ public class ItemExpense implements ResourceExpense {
         for (ItemStack i : vanillaItemCost.keySet()){
             costBuilder.append(entry
                     .replace("%item%", ItemUtils.getItemName(ItemUtils.getItemMeta(i)))
-                    .replace("%amount%", String.valueOf(vanillaItemCost.get(i)))
+                    .replace("%quantity%", String.valueOf(vanillaItemCost.get(i)))
             );
         }
         for (String i : valhallaItemCost.keySet()){
@@ -138,7 +135,7 @@ public class ItemExpense implements ResourceExpense {
             ItemCost cost = valhallaItemCost.get(i);
             costBuilder.append(entry
                     .replace("%item%", cost.matcher.ingredientDescription(processed))
-                    .replace("%amount%", String.valueOf(cost.quantity))
+                    .replace("%quantity%", String.valueOf(cost.quantity))
             );
         }
         return format.replace("%items%", costBuilder.toString());
