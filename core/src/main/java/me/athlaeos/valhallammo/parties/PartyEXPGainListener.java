@@ -31,6 +31,8 @@ public class PartyEXPGainListener implements Listener {
         if (expSharingMultiplier <= 0) return;
         double fraction = (e.getAmount() / (nearbyMembers.size())) * expSharingMultiplier;
         e.setCancelled(true);
-        nearbyMembers.forEach(p -> e.getLeveledSkill().addEXP(p, fraction, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE));
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            nearbyMembers.forEach(p -> e.getLeveledSkill().addEXP(p, fraction, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE));
+        });
     }
 }

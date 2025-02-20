@@ -119,9 +119,19 @@ public class EntityAttackListener implements Listener {
         if (v instanceof Player p && p.getCooldown(Material.SHIELD) <= 0 && p.isBlocking() && e.getFinalDamage() == 0 &&
                 (!(e.getDamager() instanceof Player a) || a.getAttackCooldown() >= 0.9)){ // Shield disabling may only occur if the shield is being held up
             int shieldDisabling = (int) Math.round(AccumulativeStatManager.getCachedAttackerRelationalStats("SHIELD_DISARMING", p, trueDamager, 10000, true));
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
-                p.setCooldown(Material.SHIELD, p.getCooldown(Material.SHIELD) + shieldDisabling)
-            , 1L);
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                        p.setCooldown(Material.SHIELD, p.getCooldown(Material.SHIELD) + shieldDisabling);
+                        p.playEffect(EntityEffect.SHIELD_BREAK);
+                        ItemStack temp = ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ? null : p.getInventory().getItemInMainHand().clone();
+                        p.getInventory().setItemInMainHand(p.getInventory().getItemInOffHand());
+                        p.getInventory().setItemInOffHand(temp);
+                        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                            ItemStack temp2 = ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ? null : p.getInventory().getItemInMainHand().clone();
+                            p.getInventory().setItemInMainHand(p.getInventory().getItemInOffHand());
+                            p.getInventory().setItemInOffHand(temp2);
+                            }, 1L);
+                        },
+                    1L);
         }
         if (!sweep){
             boolean facing = EntityUtils.isEntityFacing(v, e.getDamager().getLocation(), facingAngleCos);
@@ -266,13 +276,24 @@ public class EntityAttackListener implements Listener {
                             double reflectFraction = AccumulativeStatManager.getCachedRelationalStats("REFLECT_FRACTION", v, e.getDamager(), 10000, true);
                             double reflectDamage = e.getDamage() * reflectFraction;
                             a.playEffect(EntityEffect.THORNS_HURT);
-                            EntityUtils.damage(a, v, reflectDamage, reflectDamageType.toString());
+                            EntityUtils.damage(a, v, reflectDamage, reflectDamageType.toString(), true);
                         }
                     }
                 }
 
-                final double finalDamageMultiplier = damageMultiplier;
                 if (!EntityUtils.hasActiveDamageProcess(v)) {
+                    EntityDamageEvent.DamageCause originalCause = e.getCause();
+                    double cooldownDamageMultiplier = EntityUtils.cooldownDamageMultiplier(attackCooldown);
+                    List<Pair<CustomDamageType, Double>> damageInstances = new ArrayList<>();
+                    for (CustomDamageType damageType : CustomDamageType.getRegisteredTypes().values()){
+                        double baseDamage = damageType.damageAdder() == null ? 0 : AccumulativeStatManager.getCachedAttackerRelationalStats(damageType.damageAdder(), v, e.getDamager(), 10000, true);
+                        double elementalDamage = baseDamage * cooldownDamageMultiplier;
+                        if (elementalDamage > 0) {
+                            damageInstances.add(new Pair<>(damageType, elementalDamage));
+                        }
+                    }
+                    if (!damageInstances.isEmpty()) EntityDamagedListener.markNextDamageInstanceNoImmunity(v, e.getCause().toString());
+
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                         // custom bleed mechanics
                         if (attackCooldown >= 0.9F){
@@ -287,11 +308,11 @@ public class EntityAttackListener implements Listener {
                         double lifeStealValue = e.getDamage() * lifeSteal;
 
                         // custom power attack mechanics
-                        double powerAttackMultiplier = 1.5;
+                        double powerAttackMultiplier = 1;
                         // sweep attacks should not trigger custom power attack damage multipliers
                         if (e.getDamager() instanceof LivingEntity a && a.getFallDistance() > 0 &&
                                 a instanceof Player p && !WorldGuardHook.inDisabledRegion(a.getLocation(), p, WorldGuardHook.VMMO_COMBAT_POWERATTACK)){
-                            powerAttackMultiplier += AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_DAMAGE_MULTIPLIER", v, a, 10000, true);
+                            powerAttackMultiplier = 1.5 + AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_DAMAGE_MULTIPLIER", v, a, 10000, true);
 
                             double baseDamage = e.getDamage() / 1.5; // remove vanilla crit damage
                             e.setDamage(baseDamage * powerAttackMultiplier); // set custom power attack damage
@@ -302,23 +323,24 @@ public class EntityAttackListener implements Listener {
                             if (damage > 0 && radius > 0){
                                 for (Entity entity : e.getEntity().getWorld().getNearbyEntities(e.getEntity().getLocation(), radius, radius, radius, (en) -> en instanceof LivingEntity)){
                                     if (EntityClassification.matchesClassification(entity.getType(), EntityClassification.UNALIVE) || entity.equals(a)) continue;
-                                    EntityUtils.damage((LivingEntity) entity, a, damage, "ENTITY_SWEEP_ATTACK");
+                                    EntityUtils.damage((LivingEntity) entity, a, damage, "ENTITY_SWEEP_ATTACK", false);
                                 }
                             }
                         }
 
                         // custom damage types mechanics
-                        EntityDamageEvent.DamageCause originalCause = e.getCause();
-                        double cooldownDamageMultiplier = EntityUtils.cooldownDamageMultiplier(attackCooldown);
-                        for (CustomDamageType damageType : CustomDamageType.getRegisteredTypes().values()){
-                            double baseDamage = damageType.damageAdder() == null ? 0 : AccumulativeStatManager.getCachedAttackerRelationalStats(damageType.damageAdder(), v, e.getDamager(), 10000, true);
-                            double elementalDamage = finalDamageMultiplier * baseDamage * cooldownDamageMultiplier;
-                            if (elementalDamage > 0) {
-                                EntityUtils.damage(v, e.getDamager(), elementalDamage, damageType.getType());
-                                v.setNoDamageTicks(0); // the entity should not receive immunity frames for these types of damage, as this will reduce or even nullify the entity attack damage taken afterwards
-                                if (damageType.canLifeSteal()) lifeStealValue += elementalDamage * lifeSteal;
-                            }
+                        for (int i = 0; i < damageInstances.size(); i++){
+                            Pair<CustomDamageType, Double> pair = damageInstances.get(i);
+                            if (i < damageInstances.size() - 1) EntityDamagedListener.markNextDamageInstanceNoImmunity(v, pair.getOne().getType());
+                            double damage = pair.getTwo();
+                            if (pair.getOne().benefitsFromPowerAttacks()) damage *= powerAttackMultiplier;
+                            EntityDamagedListener.prepareDamageInstance(v, pair.getOne().getType(), damage);
+                            // dealing damage using the LivingEntity#damage(double, Entity) method suffers from inconsistencies
+                            // such as attack cooldown. So we forcefully set the damage to the appropriate calculated amount
+                            EntityUtils.damage(v, e.getDamager(), damage, pair.getOne().getType(), false);
+                            if (pair.getOne().canLifeSteal()) lifeStealValue += pair.getTwo() * lifeSteal;
                         }
+
                         EntityDamagedListener.setCustomDamageCause(v.getUniqueId(), originalCause.toString());
 
                         if (lifeStealValue > 0 && trueDamager instanceof LivingEntity td && !EntityClassification.matchesClassification(v.getType(), EntityClassification.UNALIVE)){
@@ -329,7 +351,7 @@ public class EntityAttackListener implements Listener {
                                 if (maxHealth != null) td.setHealth(Math.min(maxHealth.getValue(), td.getHealth() + lifeStealValue));
                             }
                         }
-                    }, 1L);
+                    }, 2L);
                 }
             }
         }

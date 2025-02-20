@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.nms;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.PlayerJumpEvent;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.listeners.JumpListener;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
@@ -32,7 +33,8 @@ public class JumpInputListener implements Listener {
         } else if (holdingSpace.contains(e.getPlayer().getUniqueId())) return;
         holdingSpace.add(e.getPlayer().getUniqueId());
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || jumpsLeft.getOrDefault(e.getPlayer().getUniqueId(), 0) <= 0 ||
-                e.getPlayer().getGameMode() == GameMode.CREATIVE || e.getPlayer().getGameMode() == GameMode.SPECTATOR || EntityUtils.isOnGround(e.getPlayer())) return;
+                e.getPlayer().getGameMode() == GameMode.CREATIVE || e.getPlayer().getGameMode() == GameMode.SPECTATOR || EntityUtils.isOnGround(e.getPlayer()) ||
+                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_DOUBLE_JUMPING)) return;
         double jumpHeightBonus = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? 0 : AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getPlayer(), 10000, true);
 
         PotionEffect jumpEffect = e.getPlayer().getPotionEffect(PotionEffectMappings.JUMP_BOOST.getPotionEffectType());

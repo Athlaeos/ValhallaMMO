@@ -104,13 +104,17 @@ public class PotionEffectRegistry {
         }
     }
 
-    private static void markAsUnaffected(LivingEntity entity){
+    public static void markAsUnaffected(LivingEntity entity){
         entitiesWithEffects.remove(entity.getUniqueId());
         if (entity instanceof Player p) SideBarUtils.hideSideBarFromPlayer(p, "valhalla_effects");
     }
 
     public static void updatePlayerAffectedStatus(Player p){
-        if (!getActiveEffects(p).isEmpty()) entitiesWithEffects.add(p.getUniqueId());
+        if (!getActiveEffects(p).isEmpty()) {
+            entitiesWithEffects.add(p.getUniqueId());
+        } else {
+            markAsUnaffected(p);
+        }
     }
 
     public static void registerEffects() {
@@ -565,6 +569,7 @@ public class PotionEffectRegistry {
      */
     public static Map<String, CustomPotionEffect> getActiveEffects(LivingEntity p){
         Map<String, CustomPotionEffect> effects = new HashMap<>();
+        if (p instanceof Player pl && !pl.isOnline() || !p.isValid() || p.isDead()) return effects;
         String encodedEffects = p.getPersistentDataContainer().getOrDefault(POTION_EFFECTS, PersistentDataType.STRING, "");
         if (!StringUtils.isEmpty(encodedEffects)){
             for (String encodedEffect : encodedEffects.split(";")){
@@ -582,7 +587,6 @@ public class PotionEffectRegistry {
                 }
             }
         }
-        if (effects.isEmpty()) markAsUnaffected(p);
 
         return effects;
     }

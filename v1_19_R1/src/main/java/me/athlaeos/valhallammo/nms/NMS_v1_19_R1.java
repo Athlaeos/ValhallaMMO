@@ -1,12 +1,11 @@
 package me.athlaeos.valhallammo.nms;
 
 import io.netty.channel.Channel;
-import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -230,6 +229,29 @@ public final class NMS_v1_19_R1 implements NMS {
     @Override
     public PotionEffectType getPotionEffectType(PotionEffectMappings mappedTo) {
         return oldMappings(mappedTo);
+    }
+
+    @Override
+    public Attribute getAttribute(AttributeMappings mappedTo) {
+        return getMappedAttribute(mappedTo);
+    }
+
+    public static Attribute getMappedAttribute(AttributeMappings mappedTo){
+        return switch (mappedTo){
+            case LUCK -> Attribute.GENERIC_LUCK;
+            case ARMOR -> Attribute.GENERIC_ARMOR;
+            case MAX_HEALTH -> Attribute.GENERIC_MAX_HEALTH;
+            case ATTACK_SPEED -> Attribute.GENERIC_ATTACK_SPEED;
+            case FLYING_SPEED -> Attribute.GENERIC_FLYING_SPEED;
+            case ATTACK_DAMAGE -> Attribute.GENERIC_ATTACK_DAMAGE;
+            case MOVEMENT_SPEED -> Attribute.GENERIC_MOVEMENT_SPEED;
+            case ARMOR_TOUGHNESS -> Attribute.GENERIC_ARMOR_TOUGHNESS;
+            case ATTACK_KNOCKBACK -> Attribute.GENERIC_ATTACK_KNOCKBACK;
+            case HORSE_JUMP_STRENGTH -> Attribute.HORSE_JUMP_STRENGTH;
+            case KNOCKBACK_RESISTANCE -> Attribute.GENERIC_KNOCKBACK_RESISTANCE;
+            case SPAWN_REINFORCEMENTS -> Attribute.ZOMBIE_SPAWN_REINFORCEMENTS;
+            default -> null;
+        };
     }
 
     @Override

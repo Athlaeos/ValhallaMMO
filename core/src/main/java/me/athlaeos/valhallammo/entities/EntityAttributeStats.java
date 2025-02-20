@@ -1,9 +1,9 @@
 package me.athlaeos.valhallammo.entities;
 
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.LivingEntity;
@@ -38,25 +38,23 @@ public class EntityAttributeStats {
     public static final UUID JUMP_HEIGHT_MULTIPLIER = UUID.fromString("7a57e7db-5f30-4f57-a9fb-332ea5cc9226");
 
     static{
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_movement_modifier", MOVEMENT_SPEED_BONUS, "MOVEMENT_SPEED_BONUS", Attribute.GENERIC_MOVEMENT_SPEED, AttributeModifier.Operation.ADD_SCALAR));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_health_modifier", HEALTH_BONUS, "HEALTH_BONUS", Attribute.GENERIC_MAX_HEALTH, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_health_multiplier_modifier", HEALTH_MULTIPLIER_BONUS, "HEALTH_MULTIPLIER_BONUS", Attribute.GENERIC_MAX_HEALTH, AttributeModifier.Operation.ADD_SCALAR));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_toughness_modifier", TOUGHNESS_BONUS, "TOUGHNESS_BONUS", Attribute.GENERIC_ARMOR_TOUGHNESS, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_luck_modifier", LUCK_BONUS, "LUCK_BONUS", Attribute.GENERIC_LUCK, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_attack_damage_modifier", ATTACK_DAMAGE_BONUS, "ATTACK_DAMAGE_BONUS", Attribute.GENERIC_ATTACK_DAMAGE, AttributeModifier.Operation.ADD_NUMBER));
-        registerAttributeToUpdate(new AttributeDataHolder("valhalla_attack_speed_modifier", ATTACK_SPEED_BONUS, "ATTACK_SPEED_BONUS", Attribute.GENERIC_ATTACK_SPEED, AttributeModifier.Operation.ADD_SCALAR));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_movement_modifier", MOVEMENT_SPEED_BONUS, "MOVEMENT_SPEED_BONUS", AttributeMappings.MOVEMENT_SPEED, AttributeModifier.Operation.ADD_SCALAR));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_health_modifier", HEALTH_BONUS, "HEALTH_BONUS", AttributeMappings.MAX_HEALTH, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_health_multiplier_modifier", HEALTH_MULTIPLIER_BONUS, "HEALTH_MULTIPLIER_BONUS", AttributeMappings.MAX_HEALTH, AttributeModifier.Operation.ADD_SCALAR));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_toughness_modifier", TOUGHNESS_BONUS, "TOUGHNESS_BONUS", AttributeMappings.ARMOR_TOUGHNESS, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_luck_modifier", LUCK_BONUS, "LUCK_BONUS", AttributeMappings.LUCK, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_attack_damage_modifier", ATTACK_DAMAGE_BONUS, "ATTACK_DAMAGE_BONUS", AttributeMappings.ATTACK_DAMAGE, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_attack_speed_modifier", ATTACK_SPEED_BONUS, "ATTACK_SPEED_BONUS", AttributeMappings.ATTACK_SPEED, AttributeModifier.Operation.ADD_SCALAR));
 
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_block_reach_modifier", BLOCK_REACH, "BLOCK_REACH", Attribute.valueOf("PLAYER_BLOCK_INTERACTION_RANGE"), AttributeModifier.Operation.ADD_NUMBER));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_entity_reach_modifier", ATTACK_REACH_BONUS, "ATTACK_REACH_BONUS", Attribute.valueOf("PLAYER_ENTITY_INTERACTION_RANGE"), AttributeModifier.Operation.ADD_NUMBER));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_entity_reach_multiplier_modifier", ATTACK_REACH_MULTIPLIER, "ATTACK_REACH_MULTIPLIER", Attribute.valueOf("PLAYER_ENTITY_INTERACTION_RANGE"), AttributeModifier.Operation.ADD_SCALAR));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_step_height_modifier", STEP_HEIGHT, "STEP_HEIGHT", Attribute.valueOf("GENERIC_STEP_HEIGHT"), AttributeModifier.Operation.ADD_NUMBER));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_scale_modifier", SCALE, "SCALE", Attribute.valueOf("GENERIC_SCALE"), AttributeModifier.Operation.ADD_SCALAR));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_gravity_modifier", GRAVITY, "GRAVITY", Attribute.valueOf("GENERIC_GRAVITY"), AttributeModifier.Operation.ADD_SCALAR));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_safe_fall_distance_modifier", SAFE_FALLING_DISTANCE, "SAFE_FALLING_DISTANCE", Attribute.valueOf("GENERIC_SAFE_FALL_DISTANCE"), AttributeModifier.Operation.ADD_NUMBER));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_fall_damage_multiplier_modifier", FALL_DAMAGE_MULTIPLIER, "FALL_DAMAGE_MULTIPLIER", Attribute.valueOf("GENERIC_FALL_DAMAGE_MULTIPLIER"), AttributeModifier.Operation.ADD_SCALAR));
-            registerAttributeToUpdate(new AttributeDataHolder("valhalla_jump_height_multiplier_modifier", JUMP_HEIGHT_MULTIPLIER, "JUMP_HEIGHT_MULTIPLIER", Attribute.valueOf("GENERIC_JUMP_STRENGTH"), AttributeModifier.Operation.ADD_NUMBER));
-        }
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_block_reach_modifier", BLOCK_REACH, "BLOCK_REACH", AttributeMappings.BLOCK_INTERACTION_RANGE, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_entity_reach_modifier", ATTACK_REACH_BONUS, "ATTACK_REACH_BONUS", AttributeMappings.ENTITY_INTERACTION_RANGE, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_entity_reach_multiplier_modifier", ATTACK_REACH_MULTIPLIER, "ATTACK_REACH_MULTIPLIER", AttributeMappings.ENTITY_INTERACTION_RANGE, AttributeModifier.Operation.ADD_SCALAR));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_step_height_modifier", STEP_HEIGHT, "STEP_HEIGHT", AttributeMappings.STEP_HEIGHT, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_scale_modifier", SCALE, "SCALE", AttributeMappings.SCALE, AttributeModifier.Operation.ADD_SCALAR));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_gravity_modifier", GRAVITY, "GRAVITY", AttributeMappings.GRAVITY, AttributeModifier.Operation.ADD_SCALAR));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_safe_fall_distance_modifier", SAFE_FALLING_DISTANCE, "SAFE_FALLING_DISTANCE", AttributeMappings.SAFE_FALL_DISTANCE, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_fall_damage_multiplier_modifier", FALL_DAMAGE_MULTIPLIER, "FALL_DAMAGE_MULTIPLIER", AttributeMappings.FALL_DAMAGE_MULTIPLIER, AttributeModifier.Operation.ADD_SCALAR));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_jump_height_multiplier_modifier", JUMP_HEIGHT_MULTIPLIER, "JUMP_HEIGHT_MULTIPLIER", AttributeMappings.JUMP_STRENGTH, AttributeModifier.Operation.ADD_NUMBER));
     }
 
     public static void updateStats(LivingEntity e){
@@ -68,16 +66,16 @@ public class EntityAttributeStats {
     public static void updateSingleStat(LivingEntity e, String stat){
         AttributeDataHolder holder = attributesToUpdate.get(stat);
         if (holder == null) return;
-        EntityUtils.removeUniqueAttribute(e, holder.name, holder.type);
+        EntityUtils.removeUniqueAttribute(e, holder.name, holder.type.getAttribute());
         double value = AccumulativeStatManager.getCachedStats(holder.statSource(), e, 10000, true);
         if (holder.statSource.equals("JUMP_HEIGHT_MULTIPLIER")){
-            EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type(), 0.15 * value, holder.operation());
-        } else EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type(), value, holder.operation());
+            EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type().getAttribute(), 0.15 * value, holder.operation());
+        } else EntityUtils.addUniqueAttribute(e, holder.uuid, holder.name(), holder.type().getAttribute(), value, holder.operation());
     }
 
     public static void removeStats(LivingEntity e){
         for (AttributeDataHolder holder : attributesToUpdate.values()){
-            EntityUtils.removeUniqueAttribute(e, holder.name(), holder.type());
+            EntityUtils.removeUniqueAttribute(e, holder.name(), holder.type().getAttribute());
         }
 
         EntityUtils.removeUniqueAttribute(e, "armor_nullifier", Attribute.GENERIC_ARMOR);
@@ -87,6 +85,7 @@ public class EntityAttributeStats {
     }
 
     private static void registerAttributeToUpdate(AttributeDataHolder holder){
+        if (holder.type.getAttribute() == null) return;
         attributesToUpdate.put(holder.name, holder);
     }
 
@@ -94,5 +93,5 @@ public class EntityAttributeStats {
         return attributesToUpdate;
     }
 
-    public record AttributeDataHolder(String name, UUID uuid, String statSource, Attribute type, AttributeModifier.Operation operation) { }
+    public record AttributeDataHolder(String name, UUID uuid, String statSource, AttributeMappings type, AttributeModifier.Operation operation) { }
 }

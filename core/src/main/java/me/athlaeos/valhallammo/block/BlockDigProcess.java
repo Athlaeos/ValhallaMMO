@@ -51,10 +51,12 @@ public class BlockDigProcess {
         if (instantBlockBreakerTask != null && !done) return;
         done = false;
         instantBlockBreakerTask = ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-            new HashSet<>(blocksToBreakInstantly.entrySet()).forEach(e -> {
+            Iterator<Map.Entry<UUID, Location>> iterator = blocksToBreakInstantly.entrySet().iterator();
+            while (iterator.hasNext()){
+                Map.Entry<UUID, Location> e = iterator.next();
                 Player p = ValhallaMMO.getInstance().getServer().getPlayer(e.getKey());
                 if (p == null || !p.isOnline()){
-                    blocksToBreakInstantly.remove(e.getKey());
+                    iterator.remove();
                     return;
                 }
                 Block b = e.getValue().getBlock();
@@ -80,7 +82,8 @@ public class BlockDigProcess {
                 DigPacketInfo.resetBlockSpecificCache(p.getUniqueId());
                 BlockUtils.removeCustomHardness(b);
                 sendCracks(b, -1);
-            });
+            }
+
             blocksToBreakInstantly.clear();
             done = true;
         });

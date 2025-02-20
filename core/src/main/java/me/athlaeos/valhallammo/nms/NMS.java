@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -54,6 +55,7 @@ public interface NMS extends Listener {
     Enchantment getEnchantment(EnchantmentMappings mappedTo);
     PotionType getPotionType(PotionMeta meta);
     PotionEffectType getPotionEffectType(PotionEffectMappings mappedTo);
+    Attribute getAttribute(AttributeMappings mappedTo);
     boolean isUpgraded(PotionMeta meta);
     boolean isExtended(PotionMeta meta);
     void setPotionType(PotionMeta meta, PotionType type);

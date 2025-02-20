@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -289,6 +290,44 @@ public final class NMS_v1_21_R3 implements NMS {
     @Override
     public PotionEffectType getPotionEffectType(PotionEffectMappings mappedTo){
         return NMS_v1_20_R4.newMappings(mappedTo);
+    }
+
+    @Override
+    public Attribute getAttribute(AttributeMappings mappedTo) {
+        return switch (mappedTo){
+            case LUCK -> Attribute.LUCK;
+            case ARMOR -> Attribute.ARMOR;
+            case SCALE -> Attribute.SCALE;
+            case GRAVITY -> Attribute.GRAVITY;
+            case MAX_HEALTH -> Attribute.MAX_HEALTH;
+            case STEP_HEIGHT -> Attribute.STEP_HEIGHT;
+            case TEMPT_RANGE -> Attribute.TEMPT_RANGE;
+            case ATTACK_SPEED -> Attribute.ATTACK_SPEED;
+            case BURNING_TIME -> Attribute.BURNING_TIME;
+            case FLYING_SPEED -> Attribute.FLYING_SPEED;
+            case FOLLOW_RANGE -> Attribute.FOLLOW_RANGE;
+            case OXYGEN_BONUS -> Attribute.OXYGEN_BONUS;
+            case ATTACK_DAMAGE -> Attribute.ATTACK_DAMAGE;
+            case JUMP_STRENGTH, HORSE_JUMP_STRENGTH -> Attribute.JUMP_STRENGTH;
+            case MAX_ABSORPTION -> Attribute.MAX_ABSORPTION;
+            case MOVEMENT_SPEED -> Attribute.MOVEMENT_SPEED;
+            case SNEAKING_SPEED -> Attribute.SNEAKING_SPEED;
+            case ARMOR_TOUGHNESS -> Attribute.ARMOR_TOUGHNESS;
+            case ATTACK_KNOCKBACK -> Attribute.ATTACK_KNOCKBACK;
+            case BLOCK_BREAK_SPEED -> Attribute.BLOCK_BREAK_SPEED;
+            case MINING_EFFICIENCY -> Attribute.MINING_EFFICIENCY;
+            case SAFE_FALL_DISTANCE -> Attribute.SAFE_FALL_DISTANCE;
+            case MOVEMENT_EFFICIENCY -> Attribute.MOVEMENT_EFFICIENCY;
+            case KNOCKBACK_RESISTANCE -> Attribute.KNOCKBACK_RESISTANCE;
+            case SPAWN_REINFORCEMENTS -> Attribute.SPAWN_REINFORCEMENTS;
+            case SWEEPING_DAMAGE_RATIO -> Attribute.SWEEPING_DAMAGE_RATIO;
+            case FALL_DAMAGE_MULTIPLIER -> Attribute.FALL_DAMAGE_MULTIPLIER;
+            case SUBMERGED_MINING_SPEED -> Attribute.SUBMERGED_MINING_SPEED;
+            case BLOCK_INTERACTION_RANGE -> Attribute.BLOCK_INTERACTION_RANGE;
+            case ENTITY_INTERACTION_RANGE -> Attribute.ENTITY_INTERACTION_RANGE;
+            case WATER_MOVEMENT_EFFICIENCY -> Attribute.WATER_MOVEMENT_EFFICIENCY;
+            case EXPLOSION_KNOCKBACK_RESISTANCE -> Attribute.EXPLOSION_KNOCKBACK_RESISTANCE;
+        };
     }
 
     @SuppressWarnings("UnstableApiUsage")

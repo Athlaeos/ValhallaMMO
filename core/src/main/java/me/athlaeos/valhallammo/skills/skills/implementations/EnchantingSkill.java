@@ -310,7 +310,7 @@ public class EnchantingSkill extends Skill implements Listener {
         final boolean en = enhanced;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             for (String damageType : profile.getElementalDamageTypes()){
-                EntityUtils.damage(v, p, damagePerType, damageType);
+                EntityUtils.damage(v, p, damagePerType, damageType, false);
                 if (en) {
                     Animation a = elementalHitAnimation.get(damageType);
                     if (a != null) a.animate(v, e.getDamager() instanceof Projectile pr ? pr.getLocation() : v.getEyeLocation(), p.getEyeLocation().getDirection(), 0);

@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -102,6 +103,11 @@ public final class NMS_v1_19_R2 implements NMS {
     @Override
     public PotionEffectType getPotionEffectType(PotionEffectMappings mappedTo) {
         return NMS_v1_19_R1.oldMappings(mappedTo);
+    }
+
+    @Override
+    public Attribute getAttribute(AttributeMappings mappedTo) {
+        return NMS_v1_19_R1.getMappedAttribute(mappedTo);
     }
 
     @Override

@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -285,6 +286,48 @@ public final class NMS_v1_21_R1 implements NMS {
     @Override
     public PotionEffectType getPotionEffectType(PotionEffectMappings mappedTo){
         return NMS_v1_20_R4.newMappings(mappedTo);
+    }
+
+    @Override
+    public Attribute getAttribute(AttributeMappings mappedTo) {
+        return getMappedAttribute(mappedTo);
+    }
+
+    public static Attribute getMappedAttribute(AttributeMappings mappedTo){
+        return switch (mappedTo){
+            case LUCK -> Attribute.GENERIC_LUCK;
+            case ARMOR -> Attribute.GENERIC_ARMOR;
+            case SCALE -> Attribute.GENERIC_SCALE;
+            case GRAVITY -> Attribute.GENERIC_GRAVITY;
+            case MAX_HEALTH -> Attribute.GENERIC_MAX_HEALTH;
+            case STEP_HEIGHT -> Attribute.GENERIC_STEP_HEIGHT;
+            case ATTACK_SPEED -> Attribute.GENERIC_ATTACK_SPEED;
+            case BURNING_TIME -> Attribute.GENERIC_BURNING_TIME;
+            case FLYING_SPEED -> Attribute.GENERIC_FLYING_SPEED;
+            case FOLLOW_RANGE -> Attribute.GENERIC_FOLLOW_RANGE;
+            case OXYGEN_BONUS -> Attribute.GENERIC_OXYGEN_BONUS;
+            case ATTACK_DAMAGE -> Attribute.GENERIC_ATTACK_DAMAGE;
+            case JUMP_STRENGTH, HORSE_JUMP_STRENGTH -> Attribute.GENERIC_JUMP_STRENGTH;
+            case MAX_ABSORPTION -> Attribute.GENERIC_MAX_ABSORPTION;
+            case MOVEMENT_SPEED -> Attribute.GENERIC_MOVEMENT_SPEED;
+            case SNEAKING_SPEED -> Attribute.PLAYER_SNEAKING_SPEED;
+            case ARMOR_TOUGHNESS -> Attribute.GENERIC_ARMOR_TOUGHNESS;
+            case ATTACK_KNOCKBACK -> Attribute.GENERIC_ATTACK_KNOCKBACK;
+            case BLOCK_BREAK_SPEED -> Attribute.PLAYER_BLOCK_BREAK_SPEED;
+            case MINING_EFFICIENCY -> Attribute.PLAYER_MINING_EFFICIENCY;
+            case SAFE_FALL_DISTANCE -> Attribute.GENERIC_SAFE_FALL_DISTANCE;
+            case MOVEMENT_EFFICIENCY -> Attribute.GENERIC_MOVEMENT_EFFICIENCY;
+            case KNOCKBACK_RESISTANCE -> Attribute.GENERIC_KNOCKBACK_RESISTANCE;
+            case SPAWN_REINFORCEMENTS -> Attribute.ZOMBIE_SPAWN_REINFORCEMENTS;
+            case SWEEPING_DAMAGE_RATIO -> Attribute.PLAYER_SWEEPING_DAMAGE_RATIO;
+            case FALL_DAMAGE_MULTIPLIER -> Attribute.GENERIC_FALL_DAMAGE_MULTIPLIER;
+            case SUBMERGED_MINING_SPEED -> Attribute.PLAYER_SUBMERGED_MINING_SPEED;
+            case BLOCK_INTERACTION_RANGE -> Attribute.PLAYER_BLOCK_INTERACTION_RANGE;
+            case ENTITY_INTERACTION_RANGE -> Attribute.PLAYER_ENTITY_INTERACTION_RANGE;
+            case WATER_MOVEMENT_EFFICIENCY -> Attribute.GENERIC_WATER_MOVEMENT_EFFICIENCY;
+            case EXPLOSION_KNOCKBACK_RESISTANCE -> Attribute.GENERIC_EXPLOSION_KNOCKBACK_RESISTANCE;
+            default -> null;
+        };
     }
 
     public static void addAttribute(LivingEntity e, String identifier, Attribute type, double amount, AttributeModifier.Operation operation){

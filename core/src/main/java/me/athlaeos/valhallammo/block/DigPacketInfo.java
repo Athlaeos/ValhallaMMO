@@ -14,6 +14,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.MathUtils;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.Location;
@@ -137,8 +138,9 @@ public class DigPacketInfo {
             if (canSwimMine) cachedSwimmingMiners.add(digger.getUniqueId());
             if (profile.hasAerialAffinity()) cachedAirMiners.add(digger.getUniqueId());
 
-            if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) && CustomBreakSpeedListener.isFatigued(digger))
-                additionalMultiplier *= (float) -EntityUtils.getUniqueAttributeValue(digger, CustomBreakSpeedListener.FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"));
+            Attribute miningSpeed = AttributeMappings.BLOCK_BREAK_SPEED.getAttribute();
+            if (miningSpeed != null && CustomBreakSpeedListener.isFatigued(digger))
+                additionalMultiplier *= (float) -EntityUtils.getUniqueAttributeValue(digger, CustomBreakSpeedListener.FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", miningSpeed);
             // if on newer versions the player's mining speed is nullified by having an opposite mining speed modifier added to prevent cracks from appearing the normal way.
             // during actual mining speed calculations this nullification is then removed.
             // this is in an attempt to keep mining speed attributes working
