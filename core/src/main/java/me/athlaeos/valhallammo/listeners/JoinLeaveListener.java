@@ -7,7 +7,6 @@ import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.GlobalEffect;
-import me.athlaeos.valhallammo.utility.EntityUtils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -56,6 +55,7 @@ public class JoinLeaveListener implements Listener {
         // stuck on the player.
         e.getPlayer().getPersistentDataContainer().set(HEALTH, PersistentDataType.DOUBLE, e.getPlayer().getHealth());
         EntityAttributeStats.removeStats(e.getPlayer());
+        PotionEffectRegistry.markAsUnaffected(e.getPlayer());
 
         if (loadedProfiles.contains(e.getPlayer().getUniqueId())) {
             ProfileRegistry.getPersistence().saveProfile(e.getPlayer());

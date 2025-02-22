@@ -178,43 +178,45 @@ permissions:
   valhalla.exp:
     default: op
     description: "Access to the /valhalla exp command, which allows the user to freely give exp to anyone"
-  valhalla.exp.general.#:
+  valhalla.exp.all.#:
     default: false
-    description: "Adds (or subtracts) from the player's experience multiplier. valhalla.exp.general.100 gives the player +100% more experience in everything."
+    description: "Adds (or subtracts) from the player's experience multiplier. valhalla.exp.all.100 gives the player +100% more experience in everything. For optimization reasons, the player should have valhalla.exp.all as well"
   valhalla.exp.smithing.#:
     default: false
-    description: "Adds (or subtracts) from the player's smithing experience multiplier. valhalla.exp.smithing.100 gives the player +100% more experience in smithing."
+    description: "Adds (or subtracts) from the player's smithing experience multiplier. valhalla.exp.smithing.100 gives the player +100% more experience in smithing. For optimization reasons, the player should have valhalla.exp.smithing as well"
   valhalla.exp.alchemy.#:
     default: false
-    description: "Adds (or subtracts) from the player's alchemy experience multiplier. valhalla.exp.alchemy.100 gives the player +100% more experience in alchemy."
+    description: "Adds (or subtracts) from the player's alchemy experience multiplier. valhalla.exp.alchemy.100 gives the player +100% more experience in alchemy. For optimization reasons, the player should have valhalla.exp.alchemy as well"
   valhalla.exp.enchanting.#:
     default: false
-    description: "Adds (or subtracts) from the player's enchanting experience multiplier. valhalla.exp.enchanting.100 gives the player +100% more experience in enchanting."
+    description: "Adds (or subtracts) from the player's enchanting experience multiplier. valhalla.exp.enchanting.100 gives the player +100% more experience in enchanting. For optimization reasons, the player should have valhalla.exp.enchanting as well"
   valhalla.exp.farming.#:
     default: false
-    description: "Adds (or subtracts) from the player's farming experience multiplier. valhalla.exp.farming.100 gives the player +100% more experience in farming."
+    description: "Adds (or subtracts) from the player's farming experience multiplier. valhalla.exp.farming.100 gives the player +100% more experience in farming. For optimization reasons, the player should have valhalla.exp.farming as well"
+  valhalla.exp.fishing.#:
+    default: false
+    description: "Adds (or subtracts) from the player's fishing experience multiplier. valhalla.exp.fishing.100 gives the player +100% more experience in fishing. For optimization reasons, the player should have valhalla.exp.fishing as well"
   valhalla.exp.mining.#:
     default: false
-    description: "Adds (or subtracts) from the player's mining experience multiplier. valhalla.exp.mining.100 gives the player +100% more experience in mining."
+    description: "Adds (or subtracts) from the player's mining experience multiplier. valhalla.exp.mining.100 gives the player +100% more experience in mining. For optimization reasons, the player should have valhalla.exp.mining as well"
+  valhalla.exp.digging.#:
+    default: false
+    description: "Adds (or subtracts) from the player's digging experience multiplier. valhalla.exp.digging.100 gives the player +100% more experience in digging. For optimization reasons, the player should have valhalla.exp.digging as well"
   valhalla.exp.woodcutting.#:
     default: false
-    description: "Adds (or subtracts) from the player's woodcutting experience multiplier. valhalla.exp.woodcutting.100 gives the player +100% more experience in woodcutting."
+    description: "Adds (or subtracts) from the player's woodcutting experience multiplier. valhalla.exp.woodcutting.100 gives the player +100% more experience in woodcutting. For optimization reasons, the player should have valhalla.exp.woodcutting as well"
   valhalla.exp.archery.#:
     default: false
-    description: "Adds (or subtracts) from the player's archery experience multiplier. valhalla.exp.archery.100 gives the player +100% more experience in archery."
-  valhalla.exp.weapons_light.#:
+    description: "Adds (or subtracts) from the player's archery experience multiplier. valhalla.exp.archery.100 gives the player +100% more experience in archery. For optimization reasons, the player should have valhalla.exp.archery as well"
+  valhalla.exp.light_weapons.#:
     default: false
-    description: "Adds (or subtracts) from the player's light weapons experience multiplier. valhalla.exp.weapons_light.100 gives the player +100% more experience in light weapons."
-  valhalla.exp.weapons_heavy.#:
+    description: "Adds (or subtracts) from the player's light weapons experience multiplier. valhalla.exp.weapons_light.100 gives the player +100% more experience in light weapons. For optimization reasons, the player should have valhalla.exp.light_weapons as well"
+  valhalla.exp.heavy_weapons.#:
     default: false
-    description: "Adds (or subtracts) from the player's heavy weapons experience multiplier. valhalla.exp.weapons_heavy.100 gives the player +100% more experience in heavy weapons."
-  valhalla.exp.armor_light.#:
+    description: "Adds (or subtracts) from the player's heavy weapons experience multiplier. valhalla.exp.weapons_heavy.100 gives the player +100% more experience in heavy weapons. For optimization reasons, the player should have valhalla.exp.heavy_weapons as well"
+  valhalla.exp.light_armor.#:
     default: false
-    description: "Adds (or subtracts) from the player's light armor experience multiplier. valhalla.exp.armor_light.100 gives the player +100% more experience in light armor."
-  valhalla.exp.armor_heavy.#:
+    description: "Adds (or subtracts) from the player's light armor experience multiplier. valhalla.exp.armor_light.100 gives the player +100% more experience in light armor. For optimization reasons, the player should have valhalla.exp.light_armor as well"
+  valhalla.exp.heavy_armor.#:
     default: false
-    description: "Adds (or subtracts) from the player's heavy armor experience multiplier. valhalla.exp.armor_heavy.100 gives the player +100% more experience in heavy armor."
-  valhalla.exp.unarmed.#:
-    default: false
-    description: "Adds (or subtracts) from the player's unarmed experience multiplier. valhalla.exp.unarmed.100 gives the player +100% more experience in unarmed."
-
+    description: "Adds (or subtracts) from the player's heavy armor experience multiplier. valhalla.exp.armor_heavy.100 gives the player +100% more experience in heavy armor. For optimization reasons, the player should have valhalla.exp.heavy_armor as well"

@@ -1,9 +1,8 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.dom.Catch;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.event.EventHandler;
@@ -15,12 +14,7 @@ import java.util.UUID;
 
 public class BlockDamageListener implements Listener {
     private static final UUID UUID_DIG_SPEED = UUID.fromString("ba599501-275e-4cd3-b369-97f7e1f48798");
-    private static final Attribute BLOCK_BREAK_SPEED = Catch.catchOrElse(() ->
-            Attribute.valueOf(MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ?
-                    "PLAYER_BLOCK_BREAK_SPEED" :
-                    "BLOCK_BREAK_SPEED"),
-            null
-    );
+    private static final Attribute BLOCK_BREAK_SPEED = AttributeMappings.BLOCK_BREAK_SPEED.getAttribute();
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockDamage(BlockDamageEvent e){

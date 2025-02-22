@@ -90,8 +90,8 @@ public enum PotionEffectMappings {
     }
 
     /**
-     * Returns the version-specific enchantment for the given mapping. <br>
-     * May be null if enchantment doesn't exist yet
+     * Returns the version-specific potion effect type for the given mapping. <br>
+     * May be null if potion effect doesn't exist yet
      */
     public PotionEffectType getPotionEffectType(){
         return ValhallaMMO.getNms().getPotionEffectType(this);

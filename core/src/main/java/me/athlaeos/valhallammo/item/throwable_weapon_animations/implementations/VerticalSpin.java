@@ -78,7 +78,7 @@ public class VerticalSpin extends ThrowableWeaponAnimation {
             AttributeWrapper damageWrapper = ItemAttributesRegistry.getAnyAttribute(item.getItem().getMeta(), "GENERIC_ATTACK_DAMAGE");
             item.getHitEntities().add(result.getHitEntity().getUniqueId());
             double damage = damageWrapper == null ? 1 : damageWrapper.getValue();
-            EntityUtils.damage((LivingEntity) result.getHitEntity(), item.getThrower(), damage, "PROJECTILE"); // TODO damage modification and/or extra hits
+            EntityUtils.damage((LivingEntity) result.getHitEntity(), item.getThrower(), damage, "PROJECTILE", false); // TODO damage modification and/or extra hits
             item.setPiercingLeft(item.getPiercingLeft() - 1);
         }
 

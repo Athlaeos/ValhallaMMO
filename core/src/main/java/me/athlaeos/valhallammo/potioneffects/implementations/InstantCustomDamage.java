@@ -60,7 +60,7 @@ public class InstantCustomDamage extends PotionEffectWrapper {
 
     @Override
     public void onInflict(LivingEntity p, LivingEntity causedBy, double amplifier, int duration, double intensity) {
-        EntityUtils.damage(p, causedBy, intensity * amplifier, damageType);
+        EntityUtils.damage(p, causedBy, intensity * amplifier, damageType, false);
     }
 
     @Override

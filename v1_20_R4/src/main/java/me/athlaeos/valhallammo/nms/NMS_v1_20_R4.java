@@ -4,9 +4,11 @@ import io.netty.channel.Channel;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
+import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.trading.GossipTypeWrapper;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -42,8 +44,10 @@ import org.bukkit.craftbukkit.v1_20_R4.entity.CraftVillager;
 import org.bukkit.craftbukkit.v1_20_R4.generator.structure.CraftStructureType;
 import org.bukkit.craftbukkit.v1_20_R4.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -334,6 +338,11 @@ public final class NMS_v1_20_R4 implements NMS {
         return newMappings(mappedTo);
     }
 
+    @Override
+    public Attribute getAttribute(AttributeMappings mappedTo) {
+        return NMS_v1_19_R1.getMappedAttribute(mappedTo);
+    }
+
     public static Enchantment newMappings(EnchantmentMappings mapping){
         return switch (mapping){
             case FLAME -> Enchantment.FLAME;
@@ -442,5 +451,38 @@ public final class NMS_v1_20_R4 implements NMS {
     @Override
     public void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type) {
         NMS_v1_19_R1.removeAttribute(e, identifier, type);
+    }
+
+    @Override
+    public void setItemModel(ItemMeta meta, String model){
+        // not compatible
+    }
+
+    @Override
+    public void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
+        // not compatible
+    }
+
+    @Override
+    public void setToolTipStyle(ItemMeta meta, String namespacedKey){
+        // not compatible
+    }
+
+    @Override
+    public String getItemModel(ItemMeta meta) {
+        // not compatible
+        return null;
+    }
+
+    @Override
+    public EquippableWrapper getEquippable(ItemMeta meta) {
+        // not compatible
+        return null;
+    }
+
+    @Override
+    public String getToolTipStyle(ItemMeta meta) {
+        // not compatible
+        return null;
     }
 }

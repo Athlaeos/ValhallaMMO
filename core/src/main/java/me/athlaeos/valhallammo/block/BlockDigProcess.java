@@ -47,41 +47,47 @@ public class BlockDigProcess {
     }
 
     public static void breakBlockInstantly(Player by, Block block){
-        blocksToBreakInstantly.put(by.getUniqueId(), block.getLocation());
+        if (!blocksToBreakInstantly.isEmpty()) blocksToBreakInstantly.put(by.getUniqueId(), block.getLocation());
+        else blocksToBreakInstantly2.put(by.getUniqueId(), block.getLocation());
+
         if (instantBlockBreakerTask != null && !done) return;
         done = false;
         instantBlockBreakerTask = ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-            new HashSet<>(blocksToBreakInstantly.entrySet()).forEach(e -> {
-                Player p = ValhallaMMO.getInstance().getServer().getPlayer(e.getKey());
-                if (p == null || !p.isOnline()){
-                    blocksToBreakInstantly.remove(e.getKey());
-                    return;
-                }
-                Block b = e.getValue().getBlock();
-                ItemBuilder tool = null;
-                ItemBuilder originalTool = null;
-                if (ItemUtils.isEmpty(p.getInventory().getItemInMainHand())) {
-                    MiningProfile profile = ProfileCache.getOrCache(p, MiningProfile.class);
-                    if (profile.getEmptyHandTool() != null) tool = profile.getEmptyHandTool();
-                } else {
-                    tool = EntityCache.getAndCacheProperties(p).getMainHand();
-                    originalTool = tool;
-                }
-                if (tool != null && !tool.getEmbeddedTools().isEmpty()) {
-                    ItemBuilder optimalTool = MiningSpeed.getOptimalEmbeddedTool(tool.getEmbeddedTools(), tool.getMeta(), b);
-                    if (optimalTool != null) tool = optimalTool;
-                }
-                if (tool != null && !BlockUtils.hasDrops(b, p, originalTool == null ? null : originalTool.getItem()) && ValhallaMMO.getNms().toolPower(tool.getItem(), b) > 1)
-                    LootListener.prepareBlockDrops(b, new ArrayList<>(b.getDrops(tool.get())));
-                ValhallaMMO.getNms().breakBlock(p, b);
-                CustomBreakSpeedListener.getBlockDigProcesses().remove(b.getLocation());
-                for (UUID uuid : CustomBreakSpeedListener.getTotalMiningBlocks().getOrDefault(b.getLocation(), new HashSet<>())) CustomBreakSpeedListener.getMiningPlayers().remove(uuid);
-                CustomBreakSpeedListener.getTotalMiningBlocks().remove(b.getLocation());
-                DigPacketInfo.resetBlockSpecificCache(p.getUniqueId());
-                BlockUtils.removeCustomHardness(b);
-                sendCracks(b, -1);
-            });
-            blocksToBreakInstantly.clear();
+            try {
+                new HashSet<>((blocksToBreakInstantly.isEmpty() ? blocksToBreakInstantly2 : blocksToBreakInstantly).entrySet()).forEach(e -> {
+                    Player p = ValhallaMMO.getInstance().getServer().getPlayer(e.getKey());
+                    if (p == null || !p.isOnline()){
+                        (blocksToBreakInstantly.isEmpty() ? blocksToBreakInstantly2 : blocksToBreakInstantly).remove(e.getKey());
+                        return;
+                    }
+                    Block b = e.getValue().getBlock();
+                    ItemBuilder tool = null;
+                    ItemBuilder originalTool = null;
+                    if (ItemUtils.isEmpty(p.getInventory().getItemInMainHand())) {
+                        MiningProfile profile = ProfileCache.getOrCache(p, MiningProfile.class);
+                        if (profile.getEmptyHandTool() != null) tool = profile.getEmptyHandTool();
+                    } else {
+                        tool = EntityCache.getAndCacheProperties(p).getMainHand();
+                        originalTool = tool;
+                    }
+                    if (tool != null && !tool.getEmbeddedTools().isEmpty()) {
+                        ItemBuilder optimalTool = MiningSpeed.getOptimalEmbeddedTool(tool.getEmbeddedTools(), tool.getMeta(), b);
+                        if (optimalTool != null) tool = optimalTool;
+                    }
+                    if (tool != null && !BlockUtils.hasDrops(b, p, originalTool == null ? null : originalTool.getItem()) && ValhallaMMO.getNms().toolPower(tool.getItem(), b) > 1)
+                        LootListener.prepareBlockDrops(b, new ArrayList<>(b.getDrops(tool.get())));
+                    ValhallaMMO.getNms().breakBlock(p, b);
+                    CustomBreakSpeedListener.getBlockDigProcesses().remove(b.getLocation());
+                    for (UUID uuid : CustomBreakSpeedListener.getTotalMiningBlocks().getOrDefault(b.getLocation(), new HashSet<>())) CustomBreakSpeedListener.getMiningPlayers().remove(uuid);
+                    CustomBreakSpeedListener.getTotalMiningBlocks().remove(b.getLocation());
+                    DigPacketInfo.resetBlockSpecificCache(p.getUniqueId());
+                    BlockUtils.removeCustomHardness(b);
+                    sendCracks(b, -1);
+                });
+            } catch (ConcurrentModificationException ignored){
+                ValhallaMMO.logWarning("Caught CME on block breakage, not good but better than nothing");
+            }
+            (blocksToBreakInstantly.isEmpty() ? blocksToBreakInstantly2 : blocksToBreakInstantly).clear();
             done = true;
         });
     }
@@ -89,6 +95,7 @@ public class BlockDigProcess {
     private static boolean done = false;
     private static BukkitTask instantBlockBreakerTask = null;
     private static final Map<UUID, Location> blocksToBreakInstantly = new HashMap<>();
+    private static final Map<UUID, Location> blocksToBreakInstantly2 = new HashMap<>();
 
     public int getTicksSinceUpdate() {
         return ticksSinceUpdate;

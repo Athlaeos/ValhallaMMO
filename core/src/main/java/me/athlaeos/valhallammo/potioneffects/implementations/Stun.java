@@ -101,7 +101,7 @@ public class Stun extends PotionEffectWrapper {
      */
     public static void stunTarget(LivingEntity entity, LivingEntity causedBy, int duration, boolean force){
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            if (!entity.isValid() || entity.isDead() || !entity.hasAI()) return;
+            if (!entity.isValid() || entity.isDead()) return;
             double durationMultiplier = force ? 1 : Math.max(0, 1 - AccumulativeStatManager.getRelationalStats("STUN_RESISTANCE", entity, causedBy, true));
             int newDuration = (int) Math.round(duration * durationMultiplier);
             EntityStunEvent event = new EntityStunEvent(entity, causedBy, newDuration);

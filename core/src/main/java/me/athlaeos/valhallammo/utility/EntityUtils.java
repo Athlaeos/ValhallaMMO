@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -234,7 +235,7 @@ public class EntityUtils {
         return nearby;
     }
 
-    private static final Attribute attackReachAttribute = Catch.catchOrElse(() -> Attribute.valueOf("PLAYER_ENTITY_INTERACTION_RANGE"), null);
+    private static final Attribute attackReachAttribute = AttributeMappings.ENTITY_INTERACTION_RANGE.getAttribute();
     public static double getPlayerReach(Player p){
         if (attackReachAttribute == null) return 3.0;
         AttributeInstance reach = p.getAttribute(attackReachAttribute);
@@ -242,7 +243,7 @@ public class EntityUtils {
         return 3.0;
     }
 
-    private static final Attribute miningSpeedAttribute = Catch.catchOrElse(() -> Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"), null);
+    private static final Attribute miningSpeedAttribute = AttributeMappings.BLOCK_BREAK_SPEED.getAttribute();
     public static double getPlayerMiningSpeed(Player p){
         if (miningSpeedAttribute == null) return 1.0;
         AttributeInstance speed = p.getAttribute(miningSpeedAttribute);
@@ -376,8 +377,8 @@ public class EntityUtils {
         return Math.min(1, 0.2 + MathUtils.pow((cooldown + 0.05F), 2) * 0.8);
     }
 
-    public static void damage(LivingEntity entity, double amount, String type){
-        damage(entity, null, amount, type);
+    public static void damage(LivingEntity entity, double amount, String type, boolean ignoreImmunity){
+        damage(entity, null, amount, type, ignoreImmunity);
     }
 
     private static final Collection<UUID> activeDamageProcesses = new HashSet<>();
@@ -386,10 +387,10 @@ public class EntityUtils {
         return activeDamageProcesses.contains(damaged.getUniqueId());
     }
 
-    public static void damage(LivingEntity entity, Entity by, double amount, String type){
+    public static void damage(LivingEntity entity, Entity by, double amount, String type, boolean ignoreImmunity){
         if (entity.isDead() || activeDamageProcesses.contains(entity.getUniqueId())) return;
         int immunityBefore = entity.getNoDamageTicks();
-        entity.setNoDamageTicks(0);
+        if (ignoreImmunity) entity.setNoDamageTicks(0);
         EntityDamagedListener.setCustomDamageCause(entity.getUniqueId(), type);
         activeDamageProcesses.add(entity.getUniqueId());
         if (by != null) {

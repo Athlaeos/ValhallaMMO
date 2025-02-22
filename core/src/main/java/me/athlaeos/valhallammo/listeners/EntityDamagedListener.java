@@ -40,6 +40,9 @@ public class EntityDamagedListener implements Listener {
 
     private static final Map<String, Double> physicalDamageTypes = new HashMap<>();
 
+    private static final Map<UUID, Collection<String>> noImmunityNextDamage = new HashMap<>();
+    private static final Map<UUID, Map<String, Double>> preparedDamageInstances = new HashMap<>();
+
     private final boolean pvpOneShotProtection;
     private final boolean pveOneShotProtection;
     private final boolean environmentalOneShotProtection;
@@ -68,6 +71,17 @@ public class EntityDamagedListener implements Listener {
 
     private final Map<UUID, Double> healthTracker = new HashMap<>();
     private final Map<UUID, Double> absorptionTracker = new HashMap<>();
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void prepareDamageInstances(EntityDamageEvent e){
+//        Map<String, Double> preparedInstances = getPreparedInstances(e.getEntity());
+//        if (preparedInstances.isEmpty()) return;
+//        String damageCause = customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString());
+//        if (!preparedInstances.containsKey(damageCause)) return;
+//        e.setDamage(preparedInstances.get(damageCause));
+//        preparedInstances.remove(damageCause);
+//        preparedDamageInstances.put(e.getEntity().getUniqueId(), preparedInstances);
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamageTaken(EntityDamageEvent e){
@@ -134,7 +148,8 @@ public class EntityDamagedListener implements Listener {
             if (applyImmunity){
                 double iFrameMultiplier = 1 + AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_MULTIPLIER", l, lastDamager, 10000, true);
                 int iFrameBonus = (int) AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_BONUS", l, lastDamager, 10000, true);
-                int iFrames = (int) Math.max(0, iFrameMultiplier * (Math.max(0, 10 + iFrameBonus)));
+                int iFrames = isMarkedNoImmunityOnNextDamageInstance(l, damageCause) ? 0 : (int) Math.max(0, iFrameMultiplier * (Math.max(0, 10 + iFrameBonus)));
+                unmarkNextDamageInstanceNoImmunity(l, damageCause);
                 double predictedAbsorption = absorptionTracker.getOrDefault(l.getUniqueId(), l.getAbsorptionAmount()) - damage;
                 double predictedHealth = healthTracker.getOrDefault(l.getUniqueId(), l.getHealth()) - (predictedAbsorption >= 0 ? 0 : -predictedAbsorption);
                 absorptionTracker.put(l.getUniqueId(), predictedAbsorption);
@@ -265,9 +280,7 @@ public class EntityDamagedListener implements Listener {
             // the last. In this case the entity takes the difference between the last damage and current damage.
             EntityDamageEvent previousEvent = l.getLastDamageCause();
             double lastDamage = lastDamageTakenMap.getOrDefault(l.getUniqueId(), previousEvent == null ? 0 : previousEvent.getDamage());
-            if (customDamage > lastDamage) {
-                return customDamage - lastDamage;
-            }
+            if (customDamage > lastDamage) return customDamage - lastDamage;
             return -1; // entity remains immune, return false
         }
         return customDamage;
@@ -307,5 +320,47 @@ public class EntityDamagedListener implements Listener {
 
     public static Collection<String> getEntityDamageCauses() {
         return entityDamageCauses;
+    }
+
+    public static void markNextDamageInstanceNoImmunity(Entity entity, String toDamageType){
+        Collection<String> damageTypes = noImmunityNextDamage.getOrDefault(entity.getUniqueId(), new HashSet<>());
+        damageTypes.add(toDamageType);
+        noImmunityNextDamage.put(entity.getUniqueId(), damageTypes);
+    }
+
+    public static void unmarkNextDamageInstanceNoImmunity(Entity entity, String toDamageType){
+        Collection<String> damageTypes = noImmunityNextDamage.getOrDefault(entity.getUniqueId(), new HashSet<>());
+        damageTypes.remove(toDamageType);
+        if (damageTypes.isEmpty()) noImmunityNextDamage.remove(entity.getUniqueId());
+        else noImmunityNextDamage.put(entity.getUniqueId(), damageTypes);
+    }
+
+    public static Collection<String> getNoImmunityToNextDamageInstances(Entity entity){
+        return noImmunityNextDamage.getOrDefault(entity.getUniqueId(), new HashSet<>());
+    }
+
+    public static boolean isMarkedNoImmunityOnNextDamageInstance(Entity entity, String toDamageType){
+        return noImmunityNextDamage.getOrDefault(entity.getUniqueId(), new HashSet<>()).contains(toDamageType);
+    }
+
+    public static void prepareDamageInstance(Entity against, String type, double amount){
+        Map<String, Double> preparedInstances = preparedDamageInstances.getOrDefault(against.getUniqueId(), new HashMap<>());
+        preparedInstances.put(type, amount);
+        preparedDamageInstances.put(against.getUniqueId(), preparedInstances);
+    }
+
+    public static void removeDamageInstance(Entity against, String type){
+        Map<String, Double> preparedInstances = preparedDamageInstances.getOrDefault(against.getUniqueId(), new HashMap<>());
+        preparedInstances.remove(type);
+        if (preparedInstances.isEmpty()) preparedDamageInstances.remove(against.getUniqueId());
+        else preparedDamageInstances.put(against.getUniqueId(), preparedInstances);
+    }
+
+    public static double getPreparedInstance(Entity against, String type){
+        return preparedDamageInstances.getOrDefault(against.getUniqueId(), new HashMap<>()).getOrDefault(type, 0D);
+    }
+
+    public static Map<String, Double> getPreparedInstances(Entity against){
+        return preparedDamageInstances.getOrDefault(against.getUniqueId(), new HashMap<>());
     }
 }

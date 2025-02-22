@@ -28,7 +28,10 @@ public class SideBarUtils {
     }
 
     public static void hideSideBarFromPlayer(final Player player, String key){
-        if (player.getScoreboard().getObjective(key) != null && manager != null) player.setScoreboard(manager.getNewScoreboard());
+        if (player.getScoreboard().getObjective(key) != null && manager != null) {
+            player.setScoreboard(manager.getMainScoreboard());
+            activeSidebars.remove(player.getUniqueId());
+        }
     }
 
     private static class Sidebar {

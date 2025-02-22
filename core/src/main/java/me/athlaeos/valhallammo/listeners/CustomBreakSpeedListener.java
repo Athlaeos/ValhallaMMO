@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.PrepareBlockBreakEvent;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -215,19 +216,21 @@ public class CustomBreakSpeedListener implements Listener {
         }
     }
 
+    private static final Attribute BREAK_SPEED = AttributeMappings.BLOCK_BREAK_SPEED.getAttribute();
+
     public static void fatiguePlayer(Player p, boolean force){
         if (isFatigued(p) && !force) return;
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) {
+        if (BREAK_SPEED != null) {
             // for some reason once doesn't work and right now i really don't feel like figuring out why
             double miningSpeed = EntityUtils.getPlayerMiningSpeed(p);
-            EntityUtils.addUniqueAttribute(p, FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"), -miningSpeed, AttributeModifier.Operation.ADD_NUMBER);
-            EntityUtils.addUniqueAttribute(p, FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"), -miningSpeed, AttributeModifier.Operation.ADD_NUMBER);
+            EntityUtils.addUniqueAttribute(p, FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", BREAK_SPEED, -miningSpeed, AttributeModifier.Operation.ADD_NUMBER);
+            EntityUtils.addUniqueAttribute(p, FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", BREAK_SPEED, -miningSpeed, AttributeModifier.Operation.ADD_NUMBER);
         } else p.addPotionEffect(fatigueEffect);
     }
 
     public static void removeFatiguedPlayer(Player p){
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) {
-            EntityUtils.removeUniqueAttribute(p, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"));
+        if (BREAK_SPEED != null) {
+            EntityUtils.removeUniqueAttribute(p, "valhalla_mining_speed_nullifier", BREAK_SPEED);
         } else {
             PotionEffect effect = p.getPotionEffect(PotionEffectMappings.MINING_FATIGUE.getPotionEffectType());
             if (effect != null && effect.getAmplifier() >= 0 && effect.getAmplifier() < 5) return;
@@ -236,8 +239,8 @@ public class CustomBreakSpeedListener implements Listener {
     }
 
     public static boolean isFatigued(Player p){
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) {
-            return EntityUtils.hasUniqueAttribute(p, FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", Attribute.valueOf("PLAYER_BLOCK_BREAK_SPEED"));
+        if (BREAK_SPEED != null) {
+            return EntityUtils.hasUniqueAttribute(p, FATIGUE_MODIFIER_UUID, "valhalla_mining_speed_nullifier", BREAK_SPEED);
         } else return p.hasPotionEffect(PotionEffectMappings.MINING_FATIGUE.getPotionEffectType());
     }
 

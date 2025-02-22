@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -287,6 +288,11 @@ public final class NMS_v1_21_R2 implements NMS {
     @Override
     public PotionEffectType getPotionEffectType(PotionEffectMappings mappedTo){
         return NMS_v1_20_R4.newMappings(mappedTo);
+    }
+
+    @Override
+    public Attribute getAttribute(AttributeMappings mappedTo) {
+        return NMS_v1_21_R1.getMappedAttribute(mappedTo);
     }
 
     @Override
