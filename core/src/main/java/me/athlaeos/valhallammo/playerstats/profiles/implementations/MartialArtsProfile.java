@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.implementations.MartialArtsSkill;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 

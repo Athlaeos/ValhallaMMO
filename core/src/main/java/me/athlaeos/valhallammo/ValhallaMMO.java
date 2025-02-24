@@ -183,6 +183,7 @@ public class ValhallaMMO extends JavaPlugin {
 
         ProfileRegistry.setupDatabase();
         ProfileRegistry.registerDefaultProfiles();
+        PotionBelt.loadFromFile();
         ItemAttributesRegistry.registerAttributes();
         PotionEffectRegistry.registerEffects();
         SmithingItemPropertyManager.loadConfig();
@@ -224,6 +225,8 @@ public class ValhallaMMO extends JavaPlugin {
         registerListener(new ItemConsumptionListener());
         registerListener(new ItemDamageListener());
         registerListener(new JoinLeaveListener());
+        registerListener(new PotionBeltListener());
+        registerListener(new PacificationListener());
         if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21_2)) registerListener(new JumpListener());
         registerListener(new LootListener());
         registerListener(new MenuListener());
@@ -312,6 +315,7 @@ public class ValhallaMMO extends JavaPlugin {
         GlobalEffect.saveActiveGlobalEffects();
         PartyManager.saveParties();
         JumpListener.onServerStop();
+        PotionBelt.saveToFile();
         if (packetListener != null) packetListener.closeAll();
         Host.stop();
     }

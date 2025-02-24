@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
@@ -44,6 +45,7 @@ import org.bukkit.craftbukkit.v1_21_R1.entity.CraftVillager;
 import org.bukkit.craftbukkit.v1_21_R1.generator.structure.CraftStructureType;
 import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -222,6 +224,39 @@ public final class NMS_v1_21_R1 implements NMS {
             ValhallaMMO.logSevere("Could not construct EntityGossip, disabling reputation features for villagers");
             entityGossipsEntries = null;
         }
+    }
+
+    @Override
+    public void setItemModel(ItemMeta meta, String model){
+        // not compatible
+    }
+
+    @Override
+    public void setEquippable(ItemMeta meta, String modelKey, org.bukkit.inventory.EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
+        // not compatible
+    }
+
+    @Override
+    public void setToolTipStyle(ItemMeta meta, String namespacedKey){
+        // not compatible
+    }
+
+    @Override
+    public String getItemModel(ItemMeta meta) {
+        // not compatible
+        return null;
+    }
+
+    @Override
+    public EquippableWrapper getEquippable(ItemMeta meta) {
+        // not compatible
+        return null;
+    }
+
+    @Override
+    public String getToolTipStyle(ItemMeta meta) {
+        // not compatible
+        return null;
     }
 
     @Override

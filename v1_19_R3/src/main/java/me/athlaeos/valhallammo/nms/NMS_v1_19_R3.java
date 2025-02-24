@@ -28,7 +28,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.gossip.GossipContainer;
 import net.minecraft.world.entity.ai.gossip.GossipType;
-import net.minecraft.world.entity.ai.village.ReputationEventType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -51,7 +50,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -370,7 +368,7 @@ public final class NMS_v1_19_R3 implements NMS {
     }
 
     @Override
-    public void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
+    public void setEquippable(ItemMeta meta, String modelKey, org.bukkit.inventory.EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
         // not compatible
     }
 

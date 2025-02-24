@@ -48,6 +48,7 @@ public class ModifierRegistry {
         register(new LootTableSet("loot_table"));
         register(new ItemDummyHelmet("dummy_helmet"));
         register(new PlayerHead("player_head"));
+        register(new PotionBeltModifier("potion_belt"));
 
         // All the attribute modifiers are registered in the attribute registry
 

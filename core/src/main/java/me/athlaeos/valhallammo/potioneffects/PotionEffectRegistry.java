@@ -330,6 +330,7 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("PVP_RESISTANCE", (i) -> i >= 0, "\uEEA3", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.IRON_CHESTPLATE));
         registerNewEffect(new GenericWrapper("DAMAGE_PLAYER", (i) -> i >= 0, "\uEEA4", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.IRON_SWORD));
         registerNewEffect(new GenericWrapper("DAMAGE_MOUNTED", (i) -> i >= 0, "\uEEA5", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.SADDLE));
+        registerNewEffect(new Pacification()); // \uED1A
     }
 
     public static void reload(){

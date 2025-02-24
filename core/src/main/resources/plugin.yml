@@ -220,3 +220,6 @@ permissions:
   valhalla.exp.heavy_armor.#:
     default: false
     description: "Adds (or subtracts) from the player's heavy armor experience multiplier. valhalla.exp.armor_heavy.100 gives the player +100% more experience in heavy armor. For optimization reasons, the player should have valhalla.exp.heavy_armor as well"
+  valhalla.exp.martial_arts.#:
+    default: false
+    description: "Adds (or subtracts) from the player's martial arts experience multiplier. valhalla.exp.martial_arts.100 gives the player +100% more experience in martial arts. For optimization reasons, the player should have valhalla.exp.martial_arts as well"

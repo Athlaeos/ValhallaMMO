@@ -83,6 +83,20 @@ public class PerkRewardRegistry {
         register(new ProfileStringListAdd("permanent_effects_add", "permanentPotionEffects", PowerProfile.class));
         register(new ProfileStringListRemove("permanent_effects_remove", "permanentPotionEffects", PowerProfile.class));
         register(new ProfileStringListClear("permanent_effects_clear", "permanentPotionEffects", PowerProfile.class));
+        register(new ProfileStringListAdd("martialarts_grappling_debuffs_add", "grapplingEnemyEffects", MartialArtsProfile.class));
+        register(new ProfileStringListRemove("martialarts_grappling_debuffs_remove", "grapplingEnemyEffects", MartialArtsProfile.class));
+        register(new ProfileStringListAdd("martialarts_grappling_buffs_add", "grapplingSelfEffects", MartialArtsProfile.class));
+        register(new ProfileStringListRemove("martialarts_grappling_buffs_remove", "grapplingSelfEffects", MartialArtsProfile.class));
+        register(new ProfileStringListAdd("martialarts_disarming_debuffs_add", "disarmingDebuffs", MartialArtsProfile.class));
+        register(new ProfileStringListRemove("martialarts_disarming_debuffs_remove", "disarmingDebuffs", MartialArtsProfile.class));
+        register(new ProfileStringListAdd("martialarts_disarming_buffs_add", "disarmingBuffs", MartialArtsProfile.class));
+        register(new ProfileStringListRemove("martialarts_disarming_buffs_remove", "disarmingBuffs", MartialArtsProfile.class));
+        register(new ProfileStringListAdd("martialarts_meditation_sitting_materials_add", "meditationSittingMaterials", MartialArtsProfile.class));
+        register(new ProfileStringListRemove("martialarts_meditation_sitting_materials_remove", "meditationSittingMaterials", MartialArtsProfile.class));
+        register(new ProfileStringListAdd("martialarts_meditation_buffs_add", "meditationBuffs", MartialArtsProfile.class));
+        register(new ProfileStringListRemove("martialarts_meditation_buffs_remove", "meditationBuffs", MartialArtsProfile.class));
+        register(new ProfileStringListAdd("martialarts_dropkick_damage_type_add", "dropKickDamageType", MartialArtsProfile.class));
+        register(new ProfileStringListRemove("martialarts_dropkick_damage_type_remove", "dropKickDamageType", MartialArtsProfile.class));
         register(new FlightReward());
     }
 

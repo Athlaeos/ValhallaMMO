@@ -713,6 +713,7 @@
     "potion_name_damage_player": "Abhorrence",
     "potion_name_damage_mounted": "Stampeding",
     "potion_name_milk": "Milk",
+    "potion_name_pacification": "Peace",
 
     "effect_name_heal": "%icon% Instant Health %value%",
     "effect_name_bad_omen": "%icon% Bad Omen %value% %duration%",
@@ -915,6 +916,7 @@
     "effect_name_generic_gravity": "%icon% Gravity %value% %duration%",
     "effect_name_generic_safe_fall_distance": "%icon% Fall Capacity %value% %duration%",
     "effect_name_generic_fall_damage_multiplier": "%icon% Fall Damage %value% %duration%",
+    "effect_name_pacification": "%icon% Pacifying %duration%",
     "stat_potion_positive_prefix": "&a",
     "stat_potion_negative_prefix": "&c",
 
@@ -1123,6 +1125,7 @@
     "stat_icon_freezing_resistance": "",
     "stat_icon_radiant_resistance": "",
     "stat_icon_necrotic_resistance": "",
+    "stat_icon_pacification": "",
 
     "translation_next_page": "&7&lNext Page",
     "translation_previous_page": "&7&lPrevious Page",
@@ -1913,6 +1916,9 @@
     "smithing_perk_ng1_description": "&7Resets your smithing level back to 0, and reduces experience gained by &c{smithing_genericexpmultiplier_add}&7. In exchange, you gain a permanent &e{smithing_genericcraftingskill_add} &7bonus to all your creations",
     "smithing_perk_ng2_name": "&e&lNew Game II",
     "smithing_perk_ng2_description": "&7Resets your smithing level back to 0, and reduces experience gained by &c{smithing_genericexpmultiplier_add}&7. In exchange, you again gain a permanent &e{smithing_genericcraftingskill_add} &7bonus to all your creations"
+    "potion_belt_entry_format_selected": "&d&l> %potion%",
+    "potion_belt_entry_format_deselected": "&f> %potion%",
+    "potion_belt_name_format": "&dPotion Belt: &f%item_name%"
   },
   "stringListTranslations": {
     "valhallammo_command_plain": [
@@ -1921,6 +1927,12 @@
       "&7/skills",
       "&r",
       "&7Wiki: &ehttps://github.com/Athlaeos/ValhallaMMO/wiki"
+    ],
+    "potion_belt_lore_format": [
+      "%item_lore%",
+      "",
+      "&5Stored potions &7(&d%current_count%&7/&d%max_count%&7)",
+      "%entries%"
     ],
     "heavyarmor_perk_ng1_messages": [
       "&c✰ &4New Game I &c✰",

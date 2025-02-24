@@ -47,7 +47,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -459,7 +458,7 @@ public final class NMS_v1_20_R4 implements NMS {
     }
 
     @Override
-    public void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
+    public void setEquippable(ItemMeta meta, String modelKey, org.bukkit.inventory.EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
         // not compatible
     }
 

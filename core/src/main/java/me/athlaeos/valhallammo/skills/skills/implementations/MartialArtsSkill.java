@@ -27,6 +27,8 @@ import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.*;
+import me.athlaeos.valhallammo.version.AttributeMappings;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -124,6 +126,7 @@ public class MartialArtsSkill extends Skill implements Listener {
     }
 
     private static final Map<UUID, GrappleDetails> grappleDetails = new HashMap<>();
+    private static final Attribute interactionReachAttribute = AttributeMappings.ENTITY_INTERACTION_RANGE.getAttribute();
 
     @EventHandler(priority = EventPriority.LOW)
     public void onAttemptedAttack(PlayerInteractEvent e){
@@ -131,7 +134,7 @@ public class MartialArtsSkill extends Skill implements Listener {
         if (e.getAction().toString().contains("LEFT_")) {
             // left click
             MartialArtsProfile profile = ProfileCache.getOrCache(e.getPlayer(), MartialArtsProfile.class);
-            AttributeInstance reachAttribute = e.getPlayer().getAttribute(Attribute.PLAYER_ENTITY_INTERACTION_RANGE);
+            AttributeInstance reachAttribute = interactionReachAttribute == null ? null : e.getPlayer().getAttribute(interactionReachAttribute);
             if (reachAttribute == null) return;
             double reach = reachAttribute.getValue();
 
@@ -185,7 +188,7 @@ public class MartialArtsSkill extends Skill implements Listener {
         if (details.grapple(grapplerProfile.getStacksUntilDisarming())){
             if ((playerDisarming && l instanceof Player p &&
                     (!ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ||
-                    !ItemUtils.isEmpty(p.getInventory().getItemInOffHand()))) ||
+                            !ItemUtils.isEmpty(p.getInventory().getItemInOffHand()))) ||
                     (mobDisarming &&
                             EntityClassification.matchesClassification(l.getType(), EntityClassification.HOSTILE) &&
                             l.getEquipment() != null && !ItemUtils.isEmpty(l.getEquipment().getItemInMainHand())
@@ -264,8 +267,8 @@ public class MartialArtsSkill extends Skill implements Listener {
                 if (knockBackResistance != null) knockUpMagnitude *= Math.max(0, 1 - knockBackResistance.getValue());
                 final double magnitude = knockUpMagnitude;
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
-                    l.setVelocity(l.getVelocity().add(new Vector(0, magnitude, 0)))
-                , 1L);
+                                l.setVelocity(l.getVelocity().add(new Vector(0, magnitude, 0)))
+                        , 1L);
 
                 Timer.setCooldownIgnoreIfPermission(p,
                         (l instanceof Player ? profile.getUppercutPVPCooldown() : profile.getUppercutPVECooldown()) * 50,
@@ -293,10 +296,10 @@ public class MartialArtsSkill extends Skill implements Listener {
                         if (hitEntity != null){
                             double damage = profile.getDropKickWallHitDamage() + (length * profile.getDropKickWallHitDamagePerVelocity());
                             String damageType = profile.getDropKickDamageType().stream().findFirst().orElse("ENTITY_HIT");
-                            l.getWorld().playSound(l.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.3F, 1F);
+                            l.getWorld().playSound(l.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.1F, 1F);
                             l.setVelocity(new Vector(0, l.getVelocity().getY(), 0));
-                            EntityUtils.damage(l, p, damage, damageType);
-                            EntityUtils.damage((LivingEntity) hitEntity, p, damage, damageType);
+                            EntityUtils.damage(l, p, damage, damageType, true);
+                            EntityUtils.damage((LivingEntity) hitEntity, p, damage, damageType, true);
                             cancel();
                             return;
                         }
@@ -305,10 +308,10 @@ public class MartialArtsSkill extends Skill implements Listener {
                         if (hitBlock == null || !hitBlock.getType().isSolid() || !hitBlock.getType().isOccluding()) return;
                         double damage = profile.getDropKickWallHitDamage() + (length * profile.getDropKickWallHitDamagePerVelocity());
                         String damageType = profile.getDropKickDamageType().stream().findFirst().orElse("ENTITY_HIT");
-                        l.getWorld().playSound(l.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.3F, 1F);
-                        l.getWorld().spawnParticle(Particle.BLOCK, l.getEyeLocation().add(0.5, 0.5, 0.5), 100, 0.1, 0.1, 0.1, 4, hitBlock.getBlockData());
+                        l.getWorld().playSound(l.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.1F, 1F);
+                        ValhallaMMO.getNms().blockParticleAnimation(hitBlock);
                         l.setVelocity(new Vector(0, l.getVelocity().getY(), 0));
-                        EntityUtils.damage(l, p, damage, damageType);
+                        EntityUtils.damage(l, p, damage, damageType, true);
                         cancel();
                     }
                 }.runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
@@ -412,17 +415,14 @@ public class MartialArtsSkill extends Skill implements Listener {
                         double pitch = e.getPlayer().getEyeLocation().getPitch();
                         @Override
                         public void run() {
-                            System.out.println("running");
                             if (!e.getPlayer().isOnline() || e.getPlayer().isDead()) {
                                 endMeditation(e.getPlayer());
-                                System.out.println("player is dead or offline");
                                 return;
                             }
                             Location eye = e.getPlayer().getEyeLocation();
                             if (Math.abs(eye.getYaw() - yaw) > 0.1 || Math.abs(eye.getPitch() - pitch) > 0.1){
                                 // moved eyes
                                 resetMeditation(e.getPlayer());
-                                System.out.println("reset timer");
                             }
                             yaw = eye.getYaw();
                             pitch = eye.getPitch();
@@ -431,13 +431,11 @@ public class MartialArtsSkill extends Skill implements Listener {
 
                             if (cancelMeditation.contains(e.getPlayer().getUniqueId())){
                                 cancel();
-                                System.out.println("cancelled meditation");
                                 cancelMeditation.remove(e.getPlayer().getUniqueId());
                                 return;
                             }
                             if (getMeditationVehicle(p) == null) {
                                 endMeditation(p);
-                                System.out.println("no vehicle");
                                 cancel();
                                 return;
                             }
@@ -452,7 +450,6 @@ public class MartialArtsSkill extends Skill implements Listener {
                                 Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getMeditationCooldown() * 50, "cooldown_meditation");
                                 endMeditation(e.getPlayer());
                                 cancel();
-                                System.out.println("finished meditating");
                             } else {
                                 if (meditatingFor > 100 && meditatingFor <= 200){
                                     if (meditatingFor % 10 == 0) p.playSound(p, Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1F, meditatingFor / 100F);
@@ -462,8 +459,8 @@ public class MartialArtsSkill extends Skill implements Listener {
                                     ValhallaMMO.getNms().addUniqueAttribute(p, MEDITATION_FOV_UUID, "meditation_fov_changer", Attribute.GENERIC_MOVEMENT_SPEED, -1, AttributeModifier.Operation.MULTIPLY_SCALAR_1);
                                     p.stopAllSounds();
                                     if (meditatingFor == 221){
-                                        p.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 180, 0, true, false, false));
-                                        p.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 180, 0, true, false, false));
+                                        p.addPotionEffect(new PotionEffect(PotionEffectMappings.DARKNESS.getPotionEffectType(), 180, 0, true, false, false));
+                                        p.addPotionEffect(new PotionEffect(PotionEffectMappings.NAUSEA.getPotionEffectType(), 180, 0, true, false, false));
                                     }
                                 }
 
@@ -498,8 +495,8 @@ public class MartialArtsSkill extends Skill implements Listener {
         player.leaveVehicle();
         vehicle.remove();
         player.teleport(player.getLocation().add(0, 1, 0));
-        player.removePotionEffect(PotionEffectType.NAUSEA);
-        player.removePotionEffect(PotionEffectType.DARKNESS);
+        player.removePotionEffect(PotionEffectMappings.NAUSEA.getPotionEffectType());
+        player.removePotionEffect(PotionEffectMappings.DARKNESS.getPotionEffectType());
     }
 
     private final Map<UUID, Integer> meditationTimeTracker = new HashMap<>();
@@ -507,7 +504,7 @@ public class MartialArtsSkill extends Skill implements Listener {
 
     public static final NamespacedKey KEY_MEDITATION_VEHICLE = new NamespacedKey(ValhallaMMO.getInstance(), "meditation_vehicle");
     public ArmorStand getMeditationVehicle(Player player){
-        return player.getVehicle() instanceof ArmorStand a && a.getPersistentDataContainer().has(KEY_MEDITATION_VEHICLE) ? a : null;
+        return player.getVehicle() instanceof ArmorStand a && a.getPersistentDataContainer().has(KEY_MEDITATION_VEHICLE, PersistentDataType.STRING) ? a : null;
     }
 
     @Override
