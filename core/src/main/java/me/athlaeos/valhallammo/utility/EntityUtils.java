@@ -286,12 +286,11 @@ public class EntityUtils {
         if (e.getEquipment() != null) {
             properties.getPermanentPotionEffects().clear();
             List<List<PotionEffect>> permanentEffects = new ArrayList<>();
+            if (e instanceof Player p) {
+                PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
+                permanentEffects.add(PermanentPotionEffects.fromString(String.join(";", profile.getPermanentPotionEffects())));
+            }
             if (equipment){
-                if (e instanceof Player p) {
-                    PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
-                    permanentEffects.add(PermanentPotionEffects.fromString(String.join(";", profile.getPermanentPotionEffects())));
-                }
-
                 properties.getCombinedEnchantments().clear();
                 properties.setHelmet(e.getEquipment().getHelmet());
                 properties.setChestplate(e.getEquipment().getChestplate());

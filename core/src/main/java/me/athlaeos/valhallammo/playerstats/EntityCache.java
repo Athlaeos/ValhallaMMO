@@ -19,6 +19,7 @@ public class EntityCache {
         if (lastCacheRefreshMap.getOrDefault(entity.getUniqueId(), 0L) + CACHE_REFRESH_DELAY <= System.currentTimeMillis()){
             // delay expired, cache properties
             cachedProperties.put(entity.getUniqueId(), EntityUtils.getEntityProperties(entity, true, true, true));
+            lastCacheRefreshMap.put(entity.getUniqueId(), System.currentTimeMillis());
         }
         return cachedProperties.get(entity.getUniqueId());
     }
