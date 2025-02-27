@@ -33,6 +33,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.craftbukkit.v1_21_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R2.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.v1_21_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R2.generator.structure.CraftStructureType;
 import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftItemStack;
@@ -58,6 +59,11 @@ public final class NMS_v1_21_R2 implements NMS {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new VaultLootListener(), ValhallaMMO.getInstance());
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new JumpInputListener(), ValhallaMMO.getInstance());
+    }
+
+    @Override
+    public void forceAttack(Player player, LivingEntity victim) {
+        ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
     }
 
     @Override

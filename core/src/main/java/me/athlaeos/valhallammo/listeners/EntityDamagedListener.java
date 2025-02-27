@@ -85,13 +85,13 @@ public class EntityDamagedListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamageTaken(EntityDamageEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !customDamageEnabled) return;
         if (e.getEntity() instanceof LivingEntity l){
             String damageCause = customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString());
             CustomDamageType type = CustomDamageType.getCustomType(damageCause);
             if (type != null) e.setDamage(e.getDamage() * (1 + EffectResponsibility.getResponsibleDamageBuff(e.getEntity(), type)));
             double originalDamage = e.getDamage();
-            double customDamage = !customDamageEnabled ? e.getDamage() : type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
+            double customDamage = type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
 
             // custom damage did not kill entity
             Entity lastDamager = lastDamager(e);
@@ -107,7 +107,7 @@ public class EntityDamagedListener implements Listener {
                 customDamage = 0;
             }
 
-            double damageAfterImmunity = !customDamageEnabled ? e.getDamage() : overrideImmunityFrames(customDamage, l);
+            double damageAfterImmunity = overrideImmunityFrames(customDamage, l);
             if (damageAfterImmunity < 0 && e.getEntityType() != EntityType.ARMOR_STAND) {
                 e.setCancelled(true);
                 return; // entity is immune, and so damage doesn't need to be calculated further
@@ -159,10 +159,10 @@ public class EntityDamagedListener implements Listener {
                 // taken the last damage instance
 
                 if ((type != null && type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
-                if (customDamageEnabled && l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0);
+                if (l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0);
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                     l.setNoDamageTicks(iFrames);
-                    if (customDamageEnabled && !e.isCancelled()){
+                    if (!e.isCancelled()){
                         AttributeInstance health = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
                         double maxHealth = health != null ? health.getValue() : -1;
                         if (l.getHealth() > 0) {
@@ -174,36 +174,37 @@ public class EntityDamagedListener implements Listener {
                     healthTracker.remove(l.getUniqueId());
                     absorptionTracker.remove(l.getUniqueId());
                 }, 1L);
-            } else if (customDamageEnabled) {
-                // custom damage killed entity
-                if (damageCause.equals("POISON")) {
-                    e.setDamage(0);
-                    l.setHealth(Math.min(l.getHealth(), 1));
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> customDamageCauses.remove(l.getUniqueId()), 1L);
-                    return;
-                }
-                double previousHealth = l.getHealth();
-                double previousAbsorption = l.getAbsorptionAmount();
-                if (customDamage > 0) DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage);
-                if (l.getHealth() + l.getAbsorptionAmount() > 0) {
-                    l.setAbsorptionAmount(0);
-                    l.setHealth(0.0001); // attempt to ensure that this attack will kill
-                }
-                if (e.getFinalDamage() == 0) { // if player wouldn't have died even with this little health, force a death (e.g. with resistance V)
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                        // l.setLastDamageCause(e);
-                        if (l.getHealth() > 0) l.setHealth(0);
-                    }, 1L);
-                } else {
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                        if (e.isCancelled()) {
-                            l.setAbsorptionAmount(previousAbsorption);
-                            l.setHealth(previousHealth); // if the event was cancelled at this point, restore health to what it was previously
-                        }
-                        customDamageCauses.remove(l.getUniqueId());
-                    }, 1L);
-                }
             }
+//            else if (customDamageEnabled) {
+//                // custom damage killed entity
+//                if (damageCause.equals("POISON")) {
+//                    e.setDamage(0);
+//                    l.setHealth(Math.min(l.getHealth(), 1));
+//                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> customDamageCauses.remove(l.getUniqueId()), 1L);
+//                    return;
+//                }
+//                double previousHealth = l.getHealth();
+//                double previousAbsorption = l.getAbsorptionAmount();
+//                if (customDamage > 0) DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage);
+//                if (l.getHealth() + l.getAbsorptionAmount() > 0) {
+//                    l.setAbsorptionAmount(0);
+//                    l.setHealth(0.0001); // attempt to ensure that this attack will kill
+//                }
+//                if (e.getFinalDamage() == 0) { // if player wouldn't have died even with this little health, force a death (e.g. with resistance V)
+//                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+//                        // l.setLastDamageCause(e);
+//                        if (l.getHealth() > 0) l.setHealth(0);
+//                    }, 1L);
+//                } else {
+//                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+//                        if (e.isCancelled()) {
+//                            l.setAbsorptionAmount(previousAbsorption);
+//                            l.setHealth(previousHealth); // if the event was cancelled at this point, restore health to what it was previously
+//                        }
+//                        customDamageCauses.remove(l.getUniqueId());
+//                    }, 1L);
+//                }
+//            }
         }
     }
 

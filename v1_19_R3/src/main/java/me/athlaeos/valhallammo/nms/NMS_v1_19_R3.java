@@ -33,6 +33,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.craftbukkit.v1_19_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R3.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_19_R3.generator.strucutre.CraftStructure;
 import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftItemStack;
@@ -51,6 +52,11 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public final class NMS_v1_19_R3 implements NMS {
+
+    @Override
+    public void forceAttack(Player player, LivingEntity victim) {
+        ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
+    }
 
     @Override
     @SuppressWarnings("all")

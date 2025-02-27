@@ -30,6 +30,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.craftbukkit.v1_20_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R4.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.v1_20_R4.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_20_R4.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_20_R4.generator.structure.CraftStructureType;
 import org.bukkit.craftbukkit.v1_20_R4.inventory.CraftItemStack;
@@ -47,6 +48,11 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public final class NMS_v1_20_R4 implements NMS {
+
+    @Override
+    public void forceAttack(Player player, LivingEntity victim) {
+        ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
+    }
 
     @Override
     public Pair<Location, Structures> getNearestStructure(World world, Location location, Map<Structures, Integer> structuresToFind){

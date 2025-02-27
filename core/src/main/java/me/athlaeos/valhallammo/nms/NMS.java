@@ -67,6 +67,7 @@ public interface NMS extends Listener {
     default void onEnable(){
         // do nothing by default
     }
+    void forceAttack(Player player, LivingEntity victim);
 
     void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes);
     void setItemModel(ItemMeta meta, String model);
