@@ -92,11 +92,6 @@ public final class NMS_v1_21_R1 implements NMS {
     }
 
     @Override
-    public void forceAttack(Player player, LivingEntity victim) {
-        ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
-    }
-
-    @Override
     public void onEnable() {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
     }

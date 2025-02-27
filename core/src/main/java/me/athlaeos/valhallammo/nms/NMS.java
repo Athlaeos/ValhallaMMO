@@ -67,7 +67,6 @@ public interface NMS extends Listener {
     boolean hasUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type);
     double getUniqueAttributeValue(LivingEntity e, UUID uuid, String identifier, Attribute type);
     void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type);
-    void forceAttack(Player player, LivingEntity victim);
 
     void sendArmorChange(LivingEntity entity, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots);
     default void resetArmorChange(LivingEntity entity){

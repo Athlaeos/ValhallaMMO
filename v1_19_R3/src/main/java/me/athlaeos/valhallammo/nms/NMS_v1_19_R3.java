@@ -97,11 +97,6 @@ public final class NMS_v1_19_R3 implements NMS {
     }
 
     @Override
-    public void forceAttack(Player player, LivingEntity victim) {
-        ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
-    }
-
-    @Override
     @SuppressWarnings("all")
     public Channel channel(Player p) {
         try {
