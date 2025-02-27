@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.entities.Dummy;
 import me.athlaeos.valhallammo.entities.damageindicators.DamageIndicatorStrategy;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.EntityEffect;
 import org.bukkit.entity.*;
@@ -18,6 +19,7 @@ import java.util.*;
 public class TextDisplayDPSIndicator implements DamageIndicatorStrategy {
     private static final boolean dummiesOnly = ValhallaMMO.getPluginConfig().getBoolean("dummies_only");
     private static final String actionBarFormat = TranslationManager.translatePlaceholders(ValhallaMMO.getPluginConfig().getString("damage_indicator_actionbar_format"));
+    private static final int indicatorPerChunkLimit = ValhallaMMO.getPluginConfig().getInt("damage_indicator_chunk_limit", 5);
 
     @Override
     public boolean sendDamage(LivingEntity l, CustomDamageType damageType, double damage, double mitigated) {
@@ -60,7 +62,7 @@ public class TextDisplayDPSIndicator implements DamageIndicatorStrategy {
         Map<CustomDamageType, DPSInstance> instances = damageIndicatorMap.getOrDefault(damaged.getUniqueId(), new TreeMap<>());
         if (instances.containsKey(damageType) && !expiredInstances.containsKey(instances.get(damageType).id)) {
             instances.get(damageType).update(damage, mitigated, crit);
-        } else {
+        } else if (ChunkEXPNerf.getCount(damaged.getLocation().getChunk(), null, "damage_indicator_limiter") <= indicatorPerChunkLimit) {
             DPSInstance instance = new DPSInstance(damaged, damageType, damage, mitigated, crit);
             instances.put(damageType, instance);
             damageIndicatorMap.put(damaged.getUniqueId(), instances);
@@ -91,6 +93,7 @@ public class TextDisplayDPSIndicator implements DamageIndicatorStrategy {
             this.damage = damage;
             this.mitigated = mitigated;
             this.id = UUID.randomUUID();
+            ChunkEXPNerf.increment(damaged.getLocation().getChunk(), null, "damage_indicator_limiter");
             this.priority = damageIndicatorMap.get(damaged.getUniqueId()) == null ? 0 : damageIndicatorMap.get(damaged.getUniqueId()).size();
             if (format != null){
                 isCrit = crit;
@@ -165,6 +168,7 @@ public class TextDisplayDPSIndicator implements DamageIndicatorStrategy {
                 damageIndicatorMap.remove(damaged.getUniqueId());
                 display.remove();
                 cancel();
+                ChunkEXPNerf.increment(damaged.getLocation().getChunk(), null, "damage_indicator_limiter", -1);
                 return;
             }
 
@@ -185,6 +189,7 @@ public class TextDisplayDPSIndicator implements DamageIndicatorStrategy {
             } else {
                 display.remove();
                 cancel();
+                ChunkEXPNerf.increment(damaged.getLocation().getChunk(), null, "damage_indicator_limiter", -1);
                 expiredInstances.remove(id);
                 damageIndicatorMap.get(damaged.getUniqueId()).remove(type, this);
 
