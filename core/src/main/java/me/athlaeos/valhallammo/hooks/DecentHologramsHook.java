@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.dom.CustomDamageType;
 import me.athlaeos.valhallammo.entities.Dummy;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -19,6 +20,7 @@ import java.util.*;
 public class DecentHologramsHook extends PluginHook implements Listener {
     private static final Map<UUID, Map<CustomDamageType, DPSInstance>> damageIndicatorMap = new HashMap<>();
     private static final Map<UUID, DPSInstance> expiredInstances = new HashMap<>();
+    private static final int indicatorPerChunkLimit = ValhallaMMO.getPluginConfig().getInt("damage_indicator_chunk_limit", 5);
 
     private static final String format = TranslationManager.translatePlaceholders(ValhallaMMO.getPluginConfig().getString("damage_indicator_format", ""));
     private static final String critFormat = TranslationManager.translatePlaceholders(ValhallaMMO.getPluginConfig().getString("damage_indicator_crit", ""));
@@ -47,7 +49,7 @@ public class DecentHologramsHook extends PluginHook implements Listener {
         Map<CustomDamageType, DPSInstance> instances = damageIndicatorMap.getOrDefault(damaged.getUniqueId(), new TreeMap<>());
         if (instances.containsKey(damageType) && !expiredInstances.containsKey(instances.get(damageType).id)) {
             instances.get(damageType).update(damage, mitigated, crit);
-        } else {
+        } else if (ChunkEXPNerf.getCount(damaged.getLocation().getChunk(), null, "damage_indicator_limiter") <= indicatorPerChunkLimit) {
             DPSInstance instance = new DPSInstance(damaged, damageType, damage, mitigated, crit);
             instances.put(damageType, instance);
             damageIndicatorMap.put(damaged.getUniqueId(), instances);
@@ -79,6 +81,7 @@ public class DecentHologramsHook extends PluginHook implements Listener {
             this.mitigated = mitigated;
             this.id = UUID.randomUUID();
             this.priority = damageIndicatorMap.get(damaged.getUniqueId()) == null ? 0 : damageIndicatorMap.get(damaged.getUniqueId()).size();
+            ChunkEXPNerf.increment(damaged.getLocation().getChunk(), null, "damage_indicator_limiter");
             if (format != null){
                 isCrit = crit;
                 String mitigationString = mitigated < -0.05 || mitigated > 0.05 ? String.format("(%s%,.1f)", mitigated > 0 ? "+" : "", mitigated) : "";
@@ -145,6 +148,7 @@ public class DecentHologramsHook extends PluginHook implements Listener {
                 damageIndicatorMap.remove(damaged.getUniqueId());
                 hologram.delete();
                 cancel();
+                ChunkEXPNerf.increment(damaged.getLocation().getChunk(), null, "damage_indicator_limiter", -1);
                 return;
             }
 
@@ -166,6 +170,7 @@ public class DecentHologramsHook extends PluginHook implements Listener {
                 DHAPI.removeHologram(hologram.getName());
                 hologram.delete();
                 cancel();
+                ChunkEXPNerf.increment(damaged.getLocation().getChunk(), null, "damage_indicator_limiter", -1);
                 expiredInstances.remove(id);
                 damageIndicatorMap.get(damaged.getUniqueId()).remove(type, this);
 

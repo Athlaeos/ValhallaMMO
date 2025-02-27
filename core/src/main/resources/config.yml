@@ -231,6 +231,7 @@ damage_indicator_format: "&c%icon%%dps%%mitigated%%crit%"
 damage_indicator_crit: " <lang.damage_indicator_crit>" # The placeholder for
 dummies_only: true # If true, damage indicators will only appear over armor stands marked by the plugin as dummies. If you want no damage indicators at all, empty the format.
 damage_indicator_actionbar_format: "&c%icon%%dps%%mitigated%%crit%" # The action bar display format. Since action bars can only have 1 line of text, they do not work with multiple damage types
+damage_indicator_chunk_limit: 5
 
 damage_indicator_fire: "&c🔥"
 damage_indicator_magic: "&d🎆"

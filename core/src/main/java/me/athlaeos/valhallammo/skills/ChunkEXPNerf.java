@@ -14,6 +14,7 @@ public class ChunkEXPNerf {
     private static final double expOrbsNerfFactor = ValhallaMMO.getPluginConfig().getDouble("chunk_exp_orbs_nerf_factor", 0.3);
 
     private static final Map<UUID, Map<String, Map<Integer, Integer>>> chunkEXPEventMap = new HashMap<>();
+    private static final Map<String, Map<Integer, Integer>> genericChunkEventMap = new HashMap<>();
 
     public static boolean doesChunkEXPNerfApply(Chunk chunk, Player player, String key, int customLimit){
         return getCount(chunk, player, key) >= customLimit;
@@ -41,17 +42,17 @@ public class ChunkEXPNerf {
     }
 
     public static void increment(Chunk chunk, Player player, String key, int quantity){
-        Map<String, Map<Integer, Integer>> byKey = chunkEXPEventMap.getOrDefault(player.getUniqueId(), new HashMap<>());
+        Map<String, Map<Integer, Integer>> byKey = player == null ? genericChunkEventMap : chunkEXPEventMap.getOrDefault(player.getUniqueId(), new HashMap<>());
         Map<Integer, Integer> countMap = byKey.getOrDefault(key, new HashMap<>());
         int counter = countMap.getOrDefault(id(chunk), 0);
         counter += quantity;
         countMap.put(id(chunk), counter);
         byKey.put(key, countMap);
-        chunkEXPEventMap.put(player.getUniqueId(), byKey);
+        if (player != null) chunkEXPEventMap.put(player.getUniqueId(), byKey);
     }
 
     public static int getCount(Chunk chunk, Player player, String key){
-        Map<Integer, Integer> countMap = chunkEXPEventMap.getOrDefault(player.getUniqueId(), new HashMap<>()).getOrDefault(key, new HashMap<>());
+        Map<Integer, Integer> countMap = player == null ? genericChunkEventMap.getOrDefault(key, new HashMap<>()) : chunkEXPEventMap.getOrDefault(player.getUniqueId(), new HashMap<>()).getOrDefault(key, new HashMap<>());
         return countMap.getOrDefault(id(chunk), 0);
     }
 
