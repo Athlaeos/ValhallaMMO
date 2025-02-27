@@ -39,6 +39,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.craftbukkit.v1_20_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R2.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftVillager;
 import org.bukkit.craftbukkit.v1_20_R2.generator.structure.CraftStructureType;
@@ -86,6 +87,11 @@ public final class NMS_v1_20_R2 implements NMS {
         } catch (NoSuchFieldException ignored){
             ValhallaMMO.logSevere("Could not find field name 'entries' in GossipContainer$GossipEntry, some villager reputation-related functionality may not work");
         }
+    }
+
+    @Override
+    public void forceAttack(Player player, LivingEntity victim) {
+        ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
     }
 
     @Override
