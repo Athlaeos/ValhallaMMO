@@ -105,6 +105,11 @@ public final class NMS_v1_21_R2 implements NMS {
     }
 
     @Override
+    public void forceAttack(Player player, LivingEntity victim) {
+        ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
+    }
+
+    @Override
     public Pair<Location, Structures> getNearestStructure(World world, Location location, Map<Structures, Integer> structuresToFind){
         Collection<Pair<Integer, Integer>> chunksToScan = new HashSet<>();
         int cX = location.getChunk().getX();

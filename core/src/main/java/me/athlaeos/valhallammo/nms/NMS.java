@@ -78,6 +78,7 @@ public interface NMS extends Listener {
     default void onEnable(){
         // do nothing by default
     }
+    void forceAttack(Player player, LivingEntity victim);
 
     int getReputation(Player player, Villager villager);
     void modifyReputation(Player player, Villager villager, GossipTypeWrapper reason);

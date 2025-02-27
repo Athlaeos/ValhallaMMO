@@ -754,7 +754,7 @@ public abstract class Skill {
                 }
             });
         }
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new PlayerSkillLevelUpEvent(p, this, from, to));
+        if (Bukkit.isPrimaryThread()) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new PlayerSkillLevelUpEvent(p, this, from, to));
     }
 
     public void updateSkillStats(Player p, boolean runPersistentStartingPerks) {
