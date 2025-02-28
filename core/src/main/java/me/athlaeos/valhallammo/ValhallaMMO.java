@@ -141,6 +141,8 @@ public class ValhallaMMO extends JavaPlugin {
         saveConfig("skills/smithing_progression.yml");
         saveConfig("skills/woodcutting.yml");
         saveConfig("skills/woodcutting_progression.yml");
+        saveConfig("skills/martial_arts.yml");
+        saveConfig("skills/martial_arts_progression.yml");
         TranslationManager.load(lang);
 
         if (!setupNMS()){

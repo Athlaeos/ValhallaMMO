@@ -1,0 +1,570 @@
+starting_perks:
+  martialarts_stunchance_add: 0.1
+
+experience:
+  max_level: 100
+  exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
+  exp_per_damage: 10
+  spawner_spawned_multiplier: 0.7
+  exp_enemies_nerfed: # mostly here as examples
+    ENDERMAN: 1
+    ZOMBIFIED_PIGLIN: 1
+  max_health_limitation: false
+
+special_perks: []
+
+commands: []
+
+messages:
+  - '&aUnarmed&7 leveled up to &a%level%'
+
+leveling_perks:
+  martialarts_damagebonus_add: 0.05
+  martialarts_grapplingpower_add: 1
+
+starting_coordinates: '4,4' 
+
+perks:
+  martialarts_perk_1:
+    icon: LIGHT_GRAY_CONCRETE
+    coords: "4,4"
+    name: "&aHands of Stone"
+    description: "&7Grants you &a+{martialarts_damagebonus_add} &7extra unarmed damage"
+    cost: 1
+    hidden: false
+    required_lv: 0
+    perk_rewards:
+      martialarts_damagebonus_add: 1
+    messages:
+      - "&a✰ &2Hands of Stone &a✰"
+      - "&a+{martialarts_damagebonus_add} &7Unarmed Damage"
+    custom_model_data_unlockable: -1
+    custom_model_data_unlocked: -1
+    custom_model_data_visible: -1
+  martialarts_perk_a1:
+    icon: LIGHT_GRAY_CONCRETE
+    coords: "6,2"
+    name: "&aDiscipline"
+    description: "&7Your punches have an additional &a+{martialarts_stunchance_add} &7chance to stun. &aHolding your punches increases their damage"
+    cost: 1
+    hidden: false
+    required_lv: 20
+    perk_rewards:
+      martialarts_stunchance_add: 0.1
+      martialarts_delayedpunchtimeminimum_add: 20 # After 20 ticks (1s), start accumulating stacks
+      martialarts_delayedpunchdamagepertick_add: 0.3
+      martialarts_delayedpunchdamagecap_add: 6
+    messages:
+      - "&a✰ &2Discipline &a✰"
+      - "&a+{martialarts_stunchance_add} &7Stun Chance"
+      - "&7Holding your punches for &a1-2 seconds"
+      - "&7increases its damage by &a0-6"
+    requireperk_all:
+      - martialarts_perk_1
+    connection_line:
+      '1':
+        position: '5,4'
+        locked: GRAY_DYE:1172709
+        unlockable: ORANGE_DYE:1172809
+        unlocked: LIME_DYE:1172909
+      '2':
+        position: '6,4'
+        locked: GRAY_DYE:1172722
+        unlockable: ORANGE_DYE:1172822
+        unlocked: LIME_DYE:1172922
+      '3':
+        position: '6,3'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
+  martialarts_perk_a2:
+    icon: WHITE_DYE
+    coords: "4,0"
+    name: "&aSuppress and Control"
+    description: "&7Unlocks &aGrappling&7, allows you to grapple on to enemies to slow and weaken them. Allows &aDisarming"
+    cost: 1
+    hidden: false
+    required_lv: 40
+    perk_rewards:
+      martialarts_grapplingunlocked_toggle: []
+      martialarts_grapplingeffectinterval_add: 10
+      martialarts_grapplingattackcooldown_add: 20
+      martialarts_stacksuntildisarming_add: 10
+      martialarts_stackduration_add: 20
+      martialarts_disarmingduration_add: 200
+      martialarts_disarmingcooldown_add: 400
+      martialarts_grappling_debuffs_add: # Vanilla potion effect amplifiers here are NOT indexed, they start at 1 (reduced by 1 internally)
+        - "SLOW:20:1 + (0.5 * %stacks%):10"
+        - "WEAKNESS:20:0.2 * %stacks%:10"
+      martialarts_disarming_debuffs_add:
+        - "SLOW:200:5"
+        - "WEAKNESS:200:5"
+        - "DAMAGE_TAKEN:200:0.5"
+    messages:
+      - "&a✰ &2Suppress and Control &a✰"
+      - "&a+Grappling"
+      - "&7Hold &aRight-Click &7on entities to"
+      - "&aGrapple &7them. Attacking interrupts"
+      - "&7your ability to grapple."
+      - "&7Grappling &aslows and weakens&7 the entity,"
+      - "&7doing this for &a5 seconds&7 disarms them."
+      - "&aDisarming &7prevents weapon usage, slows,"
+      - "&7weakens, and makes them take &a50%&7 more damage."
+      - "&aLasts 10 seconds, &cbut has a 20 second cooldown"
+    requireperk_all:
+      - martialarts_perk_a1
+    connection_line:
+      '1':
+        position: '6,1'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+      '2':
+        position: '6,0'
+        locked: GRAY_DYE:1172723
+        unlockable: ORANGE_DYE:1172823
+        unlocked: LIME_DYE:1172923
+      '3':
+        position: '5,0'
+        locked: GRAY_DYE:1172709
+        unlockable: ORANGE_DYE:1172809
+        unlocked: LIME_DYE:1172909
+  martialarts_perk_a3:
+    icon: WHITE_CONCRETE
+    coords: "1,1"
+    name: "&aSoul Tether"
+    description: "&7Grappling applies its effects twice as fast, and while doing so you gain a &a30% &7chance to dodge their attacks. Fully disarming an enemy additionally grants you &a50% Life-Steal &afor 8 seconds"
+    cost: 1
+    hidden: false
+    required_lv: 60
+    perk_rewards:
+      martialarts_grappling_buffs_add:
+        - "DODGE_CHANCE:20:0.3"
+      martialarts_disarming_buffs_add:
+        - "LIFE_STEAL:160:0.5"
+      martialarts_grapplingeffectinterval_add: -5
+    messages:
+      - "&a✰ &2Soul Tether &a✰"
+      - "&aGrappling"
+      - "&a+30% Dodge Chance &7while grappling"
+      - "&a+50% Life Steal &7on disarming"
+    requireperk_all:
+      - martialarts_perk_a2
+    connection_line:
+      '1':
+        position: '3,0'
+        locked: GRAY_DYE:1172708
+        unlockable: ORANGE_DYE:1172808
+        unlocked: LIME_DYE:1172908
+      '2':
+        position: '2,0'
+        locked: GRAY_DYE:1172721
+        unlockable: ORANGE_DYE:1172821
+        unlocked: LIME_DYE:1172921
+      '3':
+        position: '2,1'
+        locked: GRAY_DYE:1172714
+        unlockable: ORANGE_DYE:1172814
+        unlocked: LIME_DYE:1172914
+  martialarts_perk_a4:
+    icon: WHITE_CONCRETE
+    coords: "0,4"
+    name: "&aLightning Reflexes"
+    description: "&7While not attacking, you gain &a+{martialarts_basedodgechance_add} &7dodge chance. If you're not wearing armor, this effect &atriples"
+    cost: 1
+    hidden: false
+    required_lv: 80
+    perk_rewards:
+      martialarts_basedodgechance_add: 0.3
+      martialarts_defenselessdodgechancemultiplier_add: 3
+    messages:
+      - "&a✰ &2Lightning Reflexes &a✰"
+      - "&a+30% Dodge Chance &7while not attacking"
+      - "&a90% Dodge Chance &7if also unarmored"
+    requireperk_all:
+      - martialarts_perk_a3
+    connection_line:
+      '1':
+        position: '1,2'
+        locked: GRAY_DYE:1172718
+        unlockable: ORANGE_DYE:1172818
+        unlocked: LIME_DYE:1172918
+      '2':
+        position: '0,2'
+        locked: GRAY_DYE:1172721
+        unlockable: ORANGE_DYE:1172821
+        unlocked: LIME_DYE:1172921
+      '3':
+        position: '0,3'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+      '4':
+        position: '0,5'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
+      '5':
+        position: '0,6'
+        locked: GRAY_DYE:1172720
+        unlockable: ORANGE_DYE:1172820
+        unlocked: LIME_DYE:1172920
+      '6':
+        position: '1,6'
+        locked: GRAY_DYE:1172723
+        unlockable: ORANGE_DYE:1172823
+        unlocked: LIME_DYE:1172923
+      '7':
+        position: '1,7'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+  martialarts_perk_a5:
+    icon: BLACK_CONCRETE
+    coords: "4,2"
+    name: "&aOm Mani Padmé Hum"
+    description: "&7Unlocks &aMeditation&7. Once per (in-game) day, meditate at the top of a mountain and choose between ? powerful long-lasting effects"
+    cost: 1
+    hidden: false
+    required_lv: 100
+    perk_rewards:
+      martialarts_meditationunlocked_toggle: []
+      martialarts_meditation_buffs_add:
+        - "combat:ARMOR_PENETRATION_FLAT:18000:10"
+        - "combat:DAMAGE_UNARMED:18000:0.5"
+        - "combat:DAMAGE_MELEE:18000:0.2"
+        - "combat:DAMAGE_RANGED:18000:0.2"
+        - "skill:ALCHEMY_QUALITY_FRACTION:18000:0.2"
+        - "skill:ENCHANTING_QUALITY_FRACTION:18000:0.2"
+        - "skill:ANVIL_QUALITY_FRACTION:18000:0.2"
+        - "skill:SMITHING_QUALITY_FRACTION:18000:0.2"
+        - "bounty:MINING_DROPS:18000:0.5"
+        - "bounty:WOODCUTTING_DROPS:18000:0.5"
+        - "bounty:FARMING_DROPS:18000:0.5"
+        - "bounty:DIGGING_RARE_DROPS:18000:1"
+        - "bounty:FISHING_LUCK:18000:3"
+        - "nothing:SKILL_EXP_GAIN:18000:0.3"
+        - "nothing:VANILLA_EXP_GAIN:18000:1"
+        - "peace:PACIFICATION:12000:1"
+      martialarts_meditationelevationrequirement_add: 200
+      martialarts_meditationskylightrequirement_toggle: []
+      martialarts_meditationcooldown_add: 18000
+      martialarts_meditation_sitting_materials_add:
+        - "WHITE_CARPET"
+        - "PINK_CARPET"
+        - "RED_CARPET"
+        - "ORANGE_CARPET"
+        - "YELLOW_CARPET"
+        - "LIME_CARPET"
+        - "GREEN_CARPET"
+        - "CYAN_CARPET"
+        - "BLUE_CARPET"
+        - "LIGHT_BLUE_CARPET"
+        - "MAGENTA_CARPET"
+        - "PURPLE_CARPET"
+        - "LIGHT_GRAY_CARPET"
+        - "GRAY_CARPET"
+        - "BLACK_CARPET"
+        - "BROWN_CARPET"
+        - "SNOW_LAYER"
+        - "MOSS_CARPET"
+    messages:
+      - "&a✰ &2Om Mani Padmé Hum &a✰"
+      - "&a+Meditation"
+      - "&7Allows you to meditate on ? ambitions."
+      - "&7Meditation must be done high in the"
+      - "&7mountains, on top of carpet."
+      - "&7Right click on this carpet and answer"
+      - "&7what you want to meditate on,"
+      - "&7then sit still."
+    requireperk_all:
+      - martialarts_perk_a4
+  martialarts_perk_b1:
+    icon: LIGHT_GRAY_CONCRETE
+    coords: "2,6"
+    name: "&aRuthless Blows"
+    description: "&7Increases attack damage by &a{martialarts_damagebonus_add}&7 and critical strike chance by &a{martialarts_critchance_add}"
+    cost: 1
+    hidden: false
+    required_lv: 20
+    perk_rewards:
+      martialarts_damagebonus_add: 2
+      martialarts_critchance_add: 0.1
+    messages:
+      - "&a✰ &2Ruthless Blows &a✰"
+      - "&a+{martialarts_damagebonus_add} &7Attack Damage"
+      - "&a+{martialarts_critchance_add} &7Crit Chance"
+    requireperk_all:
+      - martialarts_perk_1
+    connection_line:
+      '1':
+        position: '3,4'
+        locked: GRAY_DYE:1172708
+        unlockable: ORANGE_DYE:1172808
+        unlocked: LIME_DYE:1172908
+      '2':
+        position: '2,4'
+        locked: GRAY_DYE:1172721
+        unlockable: ORANGE_DYE:1172821
+        unlocked: LIME_DYE:1172921
+      '3':
+        position: '2,5'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+  martialarts_perk_b2:
+    icon: BLACK_DYE
+    coords: "4,8"
+    name: "&aThunderous Strikes"
+    description: "&7Unlocks &aUppercut&7, and increases critical strike chance by &a{martialarts_critchance_add}&7. Your punches disarm shields for &a{martialarts_shielddisarming_add} seconds."
+    cost: 1
+    hidden: false
+    required_lv: 40
+    perk_rewards:
+      martialarts_critchance_add: 0.15
+      martialarts_uppercutunlocked_toggle: []
+      martialarts_uppercutknockupstrength_add: 0.5
+      martialarts_uppercutdamage_add: 6
+      martialarts_uppercutpvecooldown_add: 100
+      martialarts_uppercutpvpcooldown_add: 200
+      martialarts_shielddisarming_add: 40
+    messages:
+      - "&a✰ &2Thunderous Strikes &a✰"
+      - "&a+{martialarts_critchance_add} &7Crit Chance"
+      - "&a+{martialarts_shielddisarming_add} &7Shield Disarming"
+      - "&a+Uppercut"
+      - "&aSneak-Punch &7to uppercut something"
+      - "&7into the air. This uppercut deals"
+      - "&a{martialarts_uppercutdamage_add} &7extra damage and has a cooldown"
+      - "&7of &a5 seconds&7, or 10 if used"
+      - "&7against players"
+    requireperk_all:
+      - martialarts_perk_b1
+    connection_line:
+      '1':
+        position: '2,7'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
+      '2':
+        position: '2,8'
+        locked: GRAY_DYE:1172720
+        unlockable: ORANGE_DYE:1172820
+        unlocked: LIME_DYE:1172920
+      '3':
+        position: '3,8'
+        locked: GRAY_DYE:1172708
+        unlockable: ORANGE_DYE:1172808
+        unlocked: LIME_DYE:1172908
+  martialarts_perk_b3:
+    icon: BLACK_CONCRETE
+    coords: "7,7"
+    name: "&aDefenestration"
+    description: "&7Punching an airborne target &athrows them at great velocity&7. If they hit a wall soon after &athey take bludgeoning damage correspondent to their velocity"
+    cost: 1
+    hidden: false
+    required_lv: 70
+    requireperk_all:
+      - martialarts_perk_b2
+    perk_rewards:
+      martialarts_dropkickunlocked_toggle: []
+      martialarts_dropkickknockbackstrength_add: 1.5
+      martialarts_dropkickdamage_add: 2
+      martialarts_dropkickwallhitdamage_add: 10
+      martialarts_dropkickwallhitdamagepervelocity_add: 10
+      martialarts_dropkick_damage_type_add:
+        - BLUDGEONING
+    messages:
+      - "&a✰ &2Defenestration &a✰"
+      - "&a+{martialarts_critchance_add} &7Crit Chance"
+      - "&a+{martialarts_shielddisarming_add} &7Shield Disarming"
+      - "&a+Dropkick"
+      - "&7Punching an airborne target"
+      - "&aDropkicks &7it, dealing great knockback"
+      - "&7and dealing &a{martialarts_dropkickdamage_add} &7more damage."
+      - "&7If the entity hits a wall it takes"
+      - "&a{martialarts_dropkickwallhitdamage_add} &7Bludgeoning damage."
+      - "&7If the entity hits another entity,"
+      - "&7it will take that damage as well."
+    connection_line:
+      '1':
+        position: '5,8'
+        locked: GRAY_DYE:1172709
+        unlockable: ORANGE_DYE:1172809
+        unlocked: LIME_DYE:1172909
+      '2':
+        position: '6,8'
+        locked: GRAY_DYE:1172722
+        unlockable: ORANGE_DYE:1172822
+        unlocked: LIME_DYE:1172922
+      '3':
+        position: '6,7'
+        locked: GRAY_DYE:1172713
+        unlockable: ORANGE_DYE:1172813
+        unlocked: LIME_DYE:1172913
+  martialarts_perk_final:
+    icon: WHITE_CONCRETE
+    coords: "4,6"
+    name: "&a&lNirvana"
+    description: "&7&kRealize your ultimate potential"
+    other_levels_required:
+      - SMITHING:100
+      - ALCHEMY:100
+      - ENCHANTING:100
+      - LIGHT_WEAPONS:100
+      - HEAVY_WEAPONS:100
+      - LIGHT_ARMOR:100
+      - HEAVY_ARMOR:100
+      - ARCHERY:100
+      - MINING:100
+      - FISHING:100
+      - FARMING:100
+      - WOODCUTTING:100
+      - DIGGING:100
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      enable_flight: []
+      p:alchemy_genericbrewingskill_add: 50
+      p:archery_bowdamagemultiplier_add: 0.3
+      p:digging_diggingdrops_add: 0.3
+      p:digging_diggingluck_add: 3
+      p:enchanting_enchantingskill_add: 50
+      p:enchanting_anvilskill_add: 50
+      p:farming_farmingdrops_add: 0.3
+      p:farming_butcherydrops_add: 0.3
+      p:fishing_fishingdrops_add: 0.5
+      p:heavyweapons_damagemultiplier_add: 0.15
+      p:heavyarmor_damageresistanceperpiece_add: 0.01875
+      p:lightarmor_damageresistanceperpiece_add: 0.0125
+      p:lightweapons_damagemultiplier_add: 0.15
+      p:mining_blastingdrops_add: 0.25
+      p:mining_miningdrops_add: 0.25
+      p:smithing_genericcraftingskill_add: 50
+      p:perks_fake_unlock_add:
+        - martialarts_perk_final
+    messages:
+      - "&aThank you for playing"
+      - "&7(maybe you should go outside)"
+  martialarts_perk_ng1:
+    icon: BLACK_CONCRETE
+    coords: "8,4"
+    name: "&a&lNew Game I"
+    description: "&7Resets your martial arts level back to 0, and reduces experience gained by &4{martialarts_martialartsexpmultiplier_add}&7. In exchange, you gain a permanent &a{martialarts_damagebonus_add} &7Attack Damage, &a{martialarts_attackreachbonus_add} &7Attack Reach, and &a{martialarts_immunityreductionfraction_add} &7Immunity Reduction"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    perk_rewards:
+      reset_skill_martial_arts: 0
+      p:martialarts_newgameplus_add: 1
+      p:martialarts_attackreachbonus_add: 0.5
+      p:martialarts_immunityreductionfraction_add: 0.2
+      p:martialarts_damagebonus_add: 2
+      p:martialarts_martialartsexpmultiplier_add: -0.5
+      p:perks_unlocked_add:
+        - martialarts_perk_ng1
+    connection_line:
+      '1':
+        position: '7,6'
+        locked: GRAY_DYE:1172717
+        unlockable: ORANGE_DYE:1172817
+        unlocked: LIME_DYE:1172917
+      '2':
+        position: '8,6'
+        locked: GRAY_DYE:1172722
+        unlockable: ORANGE_DYE:1172822
+        unlocked: LIME_DYE:1172922
+      '3':
+        position: '8,5'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
+      '4':
+        position: '8,3'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+      '5':
+        position: '8,2'
+        locked: GRAY_DYE:1172723
+        unlockable: ORANGE_DYE:1172823
+        unlocked: LIME_DYE:1172923
+      '6':
+        position: '7,2'
+        locked: GRAY_DYE:1172720
+        unlockable: ORANGE_DYE:1172820
+        unlocked: LIME_DYE:1172920
+      '7':
+        position: '7,1'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
+    messages:
+      - "&a✰ &2New Game I &a✰"
+      - "&a{martialarts_damagebonus_add} &7&lPermanent &7Attack Damage"
+      - "&a{martialarts_attackreachbonus_add} &7&lPermanent &7Attack Reach"
+      - "&a{martialarts_immunityreductionfraction_add} &7&lPermanent &7Immunity Reduction"
+      - "&a{martialarts_martialartsexpmultiplier_add} &7Martial Arts EXP"
+  martialarts_perk_ng2:
+    icon: BLACK_CONCRETE
+    coords: "8,4"
+    name: "&a&lNew Game II"
+    description: "&7Resets your martial arts level back to 0, and reduces experience gained by &4{martialarts_martialartsexpmultiplier_add}&7. In exchange, you gain a permanent &a{martialarts_damagebonus_add} &7Attack Damage, &a{martialarts_attackreachbonus_add} &7Attack Reach, and &a{martialarts_immunityreductionfraction_add} &7Immunity Reduction"
+    cost: 0
+    hidden: true
+    required_lv: 100
+    requireperk_all:
+      - martialarts_perk_ng1
+    perk_rewards:
+      reset_skill_martial_arts: 0
+      p:martialarts_newgameplus_add: 1
+      p:martialarts_attackreachbonus_add: 0.5
+      p:martialarts_immunityreductionfraction_add: 0.2
+      p:martialarts_damagebonus_add: 4
+      p:martialarts_martialartsexpmultiplier_add: -0.25
+      p:perks_unlocked_add:
+        - martialarts_perk_ng1
+        - martialarts_perk_ng2
+    messages:
+      - "&a✰ &2New Game II &a✰"
+      - "&a{martialarts_damagebonus_add} &7&lPermanent &7Attack Damage"
+      - "&a{martialarts_attackreachbonus_add} &7&lPermanent &7Attack Reach"
+      - "&a{martialarts_immunityreductionfraction_add} &7&lPermanent &7Immunity Reduction"
+      - "&a{martialarts_martialartsexpmultiplier_add} &7Martial Arts EXP"
+    connection_line:
+      '1':
+        position: '7,6'
+        locked: GRAY_DYE:1172717
+        unlockable: ORANGE_DYE:1172817
+        unlocked: LIME_DYE:1172917
+      '2':
+        position: '8,6'
+        locked: GRAY_DYE:1172722
+        unlockable: ORANGE_DYE:1172822
+        unlocked: LIME_DYE:1172922
+      '3':
+        position: '8,5'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910
+      '4':
+        position: '8,3'
+        locked: GRAY_DYE:1172711
+        unlockable: ORANGE_DYE:1172811
+        unlocked: LIME_DYE:1172911
+      '5':
+        position: '8,2'
+        locked: GRAY_DYE:1172723
+        unlockable: ORANGE_DYE:1172823
+        unlocked: LIME_DYE:1172923
+      '6':
+        position: '7,2'
+        locked: GRAY_DYE:1172720
+        unlockable: ORANGE_DYE:1172820
+        unlocked: LIME_DYE:1172920
+      '7':
+        position: '7,1'
+        locked: GRAY_DYE:1172710
+        unlockable: ORANGE_DYE:1172810
+        unlocked: LIME_DYE:1172910

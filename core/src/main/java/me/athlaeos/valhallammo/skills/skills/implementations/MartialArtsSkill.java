@@ -85,11 +85,11 @@ public class MartialArtsSkill extends Skill implements Listener {
 
     @Override
     public void loadConfiguration() {
-        ValhallaMMO.getInstance().save("martial_arts_progression.yml");
-        ValhallaMMO.getInstance().save("martial_arts.yml");
+        ValhallaMMO.getInstance().save("skills/martial_arts_progression.yml");
+        ValhallaMMO.getInstance().save("skills/martial_arts.yml");
 
-        YamlConfiguration skillConfig = ConfigManager.getConfig("martial_arts.yml").get();
-        YamlConfiguration progressionConfig = ConfigManager.getConfig("martial_arts_progression.yml").get();
+        YamlConfiguration skillConfig = ConfigManager.getConfig("skills/martial_arts.yml").get();
+        YamlConfiguration progressionConfig = ConfigManager.getConfig("skills/martial_arts_progression.yml").get();
 
         loadCommonConfig(skillConfig, progressionConfig);
 

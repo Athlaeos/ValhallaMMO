@@ -1,0 +1,29 @@
+display_name: '&7Martial Arts'
+icon: IRON_SWORD
+icon_data: 3510001
+description: '&8Level other skills to get exp for your power level. Level up to get skill points to spend on other any perk'
+
+levelbar_title: '&7Martial Arts &aLV %lv_current% &2%exp_current%&7/&2%exp_next% &7(&a%exp%&7)'
+levelbar_color: GREEN # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
+levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID
+
+grapple_too_strong_message: "&cYou tried to overpower your enemy, but it failed!"
+
+meditation_question: "&dWhat will you meditate on? &cCombat, &aSkill, or &eBounty? &7(answer in chat)"
+meditation_incorrect_answer: "&cWe can't help you with that"
+
+mob_disarming: true # If true, mobs getting disarmed drop their weapon
+player_disarming: false # If true, players getting disarmed will drop their weapon
+player_disarming_item_ownership: true # If disarmed players drop their weapon, and this option is true,
+  # only the disarmed player will be able to pick up their weapon again
+
+
+meditation_answer:
+  combat: "&cYou dream of power..."
+  skill: "&aYou dream of perfection..."
+  bounty: "&eYou dream of plenty..."
+  nothing: "&dRejecting a material connection, the cosmos opens up to you"
+  peace: "&fOne with nature, nature is one with you"
+
+disarming_cooldown_type: "&7Disarming"
+meditation_cooldown_type: "&aMeditation"

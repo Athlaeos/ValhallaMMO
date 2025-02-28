@@ -1915,7 +1915,7 @@
     "smithing_perk_ng1_name": "&e&lNew Game I",
     "smithing_perk_ng1_description": "&7Resets your smithing level back to 0, and reduces experience gained by &c{smithing_genericexpmultiplier_add}&7. In exchange, you gain a permanent &e{smithing_genericcraftingskill_add} &7bonus to all your creations",
     "smithing_perk_ng2_name": "&e&lNew Game II",
-    "smithing_perk_ng2_description": "&7Resets your smithing level back to 0, and reduces experience gained by &c{smithing_genericexpmultiplier_add}&7. In exchange, you again gain a permanent &e{smithing_genericcraftingskill_add} &7bonus to all your creations"
+    "smithing_perk_ng2_description": "&7Resets your smithing level back to 0, and reduces experience gained by &c{smithing_genericexpmultiplier_add}&7. In exchange, you again gain a permanent &e{smithing_genericcraftingskill_add} &7bonus to all your creations",
     "potion_belt_entry_format_selected": "&d&l> %potion%",
     "potion_belt_entry_format_deselected": "&f> %potion%",
     "potion_belt_name_format": "&dPotion Belt: &f%item_name%"
