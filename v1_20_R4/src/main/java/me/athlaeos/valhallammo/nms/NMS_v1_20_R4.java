@@ -391,6 +391,7 @@ public final class NMS_v1_20_R4 implements NMS {
             case BREACH -> Enchantment.BREACH;
             case DENSITY -> Enchantment.DENSITY;
             case WIND_BURST -> Enchantment.WIND_BURST;
+            case SWIFT_SNEAK -> Enchantment.SWIFT_SNEAK;
         };
     }
 

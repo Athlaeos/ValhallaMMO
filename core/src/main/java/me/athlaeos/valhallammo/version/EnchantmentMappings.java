@@ -44,6 +44,7 @@ public enum EnchantmentMappings {
     CURSE_OF_VANISHING,
     AQUA_AFFINITY,
     BREACH,
+    SWIFT_SNEAK,
     DENSITY,
     WIND_BURST;
 
