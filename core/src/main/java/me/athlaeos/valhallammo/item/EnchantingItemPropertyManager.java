@@ -1,70 +1,64 @@
 package me.athlaeos.valhallammo.item;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.utility.Utils;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
+import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentOffer;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
-
 public class EnchantingItemPropertyManager {
     private static final Map<Enchantment, Scaling> enchantmentScaling = new HashMap<>();
 
     static {
         String config = "skills/enchanting.yml";
-        registerScaling("power", Scaling.fromConfig(config, "scalings.power"));
-        registerScaling("punch", Scaling.fromConfig(config, "scalings.punch"));
-        registerScaling("sharpness", Scaling.fromConfig(config, "scalings.sharpness"));
-        registerScaling("bane_of_arthropods", Scaling.fromConfig(config, "scalings.bane_of_arthropods"));
-        registerScaling("smite", Scaling.fromConfig(config, "scalings.smite"));
-        registerScaling("depth_strider", Scaling.fromConfig(config, "scalings.depth_strider"));
-        registerScaling("efficiency", Scaling.fromConfig(config, "scalings.efficiency"));
-        registerScaling("unbreaking", Scaling.fromConfig(config, "scalings.unbreaking"));
-        registerScaling("fire_aspect", Scaling.fromConfig(config, "scalings.fire_aspect"));
-        registerScaling("frost_walker", Scaling.fromConfig(config, "scalings.frost_walker"));
-        registerScaling("impaling", Scaling.fromConfig(config, "scalings.impaling"));
-        registerScaling("knockback", Scaling.fromConfig(config, "scalings.knockback"));
-        registerScaling("fortune", Scaling.fromConfig(config, "scalings.fortune"));
-        registerScaling("looting", Scaling.fromConfig(config, "scalings.looting"));
-        registerScaling("loyalty", Scaling.fromConfig(config, "scalings.loyalty"));
-        registerScaling("luck_of_the_sea", Scaling.fromConfig(config, "scalings.luck"));
-        registerScaling("lure", Scaling.fromConfig(config, "scalings.lure"));
-        registerScaling("respiration", Scaling.fromConfig(config, "scalings.respiration"));
-        registerScaling("piercing", Scaling.fromConfig(config, "scalings.piercing"));
-        registerScaling("protection", Scaling.fromConfig(config, "scalings.protection"));
-        registerScaling("projectile_protection", Scaling.fromConfig(config, "scalings.projectile_protection"));
-        registerScaling("blast_protection", Scaling.fromConfig(config, "scalings.blast_protection"));
-        registerScaling("fire_protection", Scaling.fromConfig(config, "scalings.fire_protection"));
-        registerScaling("feather_falling", Scaling.fromConfig(config, "scalings.feather_falling"));
-        registerScaling("quick_charge", Scaling.fromConfig(config, "scalings.quick_charge"));
-        registerScaling("riptide", Scaling.fromConfig(config, "scalings.riptide"));
-        registerScaling("soul_speed", Scaling.fromConfig(config, "scalings.soul_speed"));
-        registerScaling("sweeping", Scaling.fromConfig(config, "scalings.sweeping"));
-        registerScaling("thorns", Scaling.fromConfig(config, "scalings.thorns"));
-        registerScaling("swift_sneak", Scaling.fromConfig(config, "scalings.swift_sneak"));
-        registerScaling("breach", Scaling.fromConfig(config, "scalings.breach"));
-        registerScaling("wind_burst", Scaling.fromConfig(config, "scalings.wind_burst"));
-        registerScaling("density", Scaling.fromConfig(config, "scalings.density"));
+        registerScaling(EnchantmentMappings.POWER.getEnchantment(), Scaling.fromConfig(config, "scalings.power"));
+        registerScaling(EnchantmentMappings.PUNCH.getEnchantment(), Scaling.fromConfig(config, "scalings.punch"));
+        registerScaling(EnchantmentMappings.SHARPNESS.getEnchantment(), Scaling.fromConfig(config, "scalings.sharpness"));
+        registerScaling(EnchantmentMappings.BANE_OF_ARTHROPODS.getEnchantment(), Scaling.fromConfig(config, "scalings.bane_of_arthropods"));
+        registerScaling(EnchantmentMappings.SMITE.getEnchantment(), Scaling.fromConfig(config, "scalings.smite"));
+        registerScaling(EnchantmentMappings.DEPTH_STRIDER.getEnchantment(), Scaling.fromConfig(config, "scalings.depth_strider"));
+        registerScaling(EnchantmentMappings.EFFICIENCY.getEnchantment(), Scaling.fromConfig(config, "scalings.efficiency"));
+        registerScaling(EnchantmentMappings.UNBREAKING.getEnchantment(), Scaling.fromConfig(config, "scalings.unbreaking"));
+        registerScaling(EnchantmentMappings.FIRE_ASPECT.getEnchantment(), Scaling.fromConfig(config, "scalings.fire_aspect"));
+        registerScaling(EnchantmentMappings.FROST_WALKER.getEnchantment(), Scaling.fromConfig(config, "scalings.frost_walker"));
+        registerScaling(EnchantmentMappings.IMPALING.getEnchantment(), Scaling.fromConfig(config, "scalings.impaling"));
+        registerScaling(EnchantmentMappings.KNOCKBACK.getEnchantment(), Scaling.fromConfig(config, "scalings.knockback"));
+        registerScaling(EnchantmentMappings.FORTUNE.getEnchantment(), Scaling.fromConfig(config, "scalings.fortune"));
+        registerScaling(EnchantmentMappings.LOOTING.getEnchantment(), Scaling.fromConfig(config, "scalings.looting"));
+        registerScaling(EnchantmentMappings.LOYALTY.getEnchantment(), Scaling.fromConfig(config, "scalings.loyalty"));
+        registerScaling(EnchantmentMappings.LUCK_OF_THE_SEA.getEnchantment(), Scaling.fromConfig(config, "scalings.luck"));
+        registerScaling(EnchantmentMappings.LURE.getEnchantment(), Scaling.fromConfig(config, "scalings.lure"));
+        registerScaling(EnchantmentMappings.RESPIRATION.getEnchantment(), Scaling.fromConfig(config, "scalings.respiration"));
+        registerScaling(EnchantmentMappings.PIERCING.getEnchantment(), Scaling.fromConfig(config, "scalings.piercing"));
+        registerScaling(EnchantmentMappings.PROTECTION.getEnchantment(), Scaling.fromConfig(config, "scalings.protection"));
+        registerScaling(EnchantmentMappings.PROJECTILE_PROTECTION.getEnchantment(), Scaling.fromConfig(config, "scalings.projectile_protection"));
+        registerScaling(EnchantmentMappings.BLAST_PROTECTION.getEnchantment(), Scaling.fromConfig(config, "scalings.blast_protection"));
+        registerScaling(EnchantmentMappings.FIRE_PROTECTION.getEnchantment(), Scaling.fromConfig(config, "scalings.fire_protection"));
+        registerScaling(EnchantmentMappings.FEATHER_FALLING.getEnchantment(), Scaling.fromConfig(config, "scalings.feather_falling"));
+        registerScaling(EnchantmentMappings.QUICK_CHARGE.getEnchantment(), Scaling.fromConfig(config, "scalings.quick_charge"));
+        registerScaling(EnchantmentMappings.RIPTIDE.getEnchantment(), Scaling.fromConfig(config, "scalings.riptide"));
+        registerScaling(EnchantmentMappings.SOUL_SPEED.getEnchantment(), Scaling.fromConfig(config, "scalings.soul_speed"));
+        registerScaling(EnchantmentMappings.SWEEPING_EDGE.getEnchantment(), Scaling.fromConfig(config, "scalings.sweeping"));
+        registerScaling(EnchantmentMappings.THORNS.getEnchantment(), Scaling.fromConfig(config, "scalings.thorns"));
+        registerScaling(EnchantmentMappings.SWIFT_SNEAK.getEnchantment(), Scaling.fromConfig(config, "scalings.swift_sneak"));
+        registerScaling(EnchantmentMappings.BREACH.getEnchantment(), Scaling.fromConfig(config, "scalings.breach"));
+        registerScaling(EnchantmentMappings.WIND_BURST.getEnchantment(), Scaling.fromConfig(config, "scalings.wind_burst"));
+        registerScaling(EnchantmentMappings.DENSITY.getEnchantment(), Scaling.fromConfig(config, "scalings.density"));
     }
 
     /**
      * Registers an enchantment scalings for a custom enchantment type.
-     * @param enchantment the enchantment to set its amplifier scalings for
+     * @param e the enchantment to set its amplifier scalings for
      * @param scaling the scaling formula for the material
      */
-    @SuppressWarnings("deprecation")
-    public static void registerScaling(String enchantment, Scaling scaling){
-        if (enchantment.equalsIgnoreCase("sweeping")) enchantment = oldOrNew("sweeping", "sweeping_edge");
-        Enchantment e = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? Registry.ENCHANTMENT.get(NamespacedKey.minecraft(enchantment)) : Enchantment.getByKey(NamespacedKey.minecraft(enchantment));
-        if (e == null || scaling == null) {
-            ValhallaMMO.logWarning("Could not register scaling for " + enchantment + ", it's not a valid enchantment!");
+    public static void registerScaling(Enchantment e, Scaling scaling){
+        if (e == null) return;
+        if (scaling == null) {
+            ValhallaMMO.logWarning("Could not register scaling for " + e + ", it's not a valid enchantment!");
             return;
         }
         enchantmentScaling.put(e, scaling);

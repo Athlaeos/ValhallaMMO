@@ -57,7 +57,7 @@ public class CustomBreakSpeedListener implements Listener {
             public void run() {
                 for (Location l : new HashSet<>(blockDigProcesses.keySet())){
                     Block b = l.getBlock();
-                    BlockDigProcess process = blockDigProcesses.get(l);
+                    BlockDigProcess process = blockDigProcesses.getOrDefault(l, new BlockDigProcess(b));
                     if (totalMiningBlocks.containsKey(l)){
                         // block is in the process of being mined
                         for (UUID uuid : new HashMap<>(totalMiningBlocks).getOrDefault(l, new HashSet<>())){
