@@ -1,6 +1,9 @@
 starting_perks:
   heavyarmor_heavyarmormultiplier_add: -0.3
-  heavyarmor_movementspeedperpiece_add: -0.0375
+  heavyarmor_movementspeedperpiece_add: -0.05
+  heavyarmor_hungersavechanceperpiece_add: -0.125
+  heavyarmor_healingbonusperpiece_add: -0.125
+  archery_inaccuracy_add: 3
 
 experience:
   max_level: 100
@@ -47,7 +50,10 @@ perks:
     hidden: false
     required_lv: 20
     perk_rewards:
-      heavyarmor_movementspeedperpiece_add: 0.0175
+      heavyarmor_movementspeedperpiece_add: 0.01875
+      heavyarmor_hungersavechanceperpiece_add: 0.025
+      heavyarmor_healingbonusperpiece_add: 0.025
+      archery_inaccuracy_add: -1
     messages:
       - "<lang.heavyarmor_perk_1a_messages>"
     requireperk_all:
@@ -73,7 +79,10 @@ perks:
     required_lv: 60
     perk_rewards:
       heavyarmor_setamount_add: -1
-      heavyarmor_movementspeedperpiece_add: 0.02
+      heavyarmor_movementspeedperpiece_add: 0.01875
+      heavyarmor_hungersavechanceperpiece_add: 0.05
+      heavyarmor_healingbonusperpiece_add: 0.05
+      archery_inaccuracy_add: -1
     messages:
       - "<lang.heavyarmor_perk_2a_messages>"
     requireperk_all:
@@ -108,7 +117,7 @@ perks:
     hidden: false
     required_lv: 40
     perk_rewards:
-      heavyarmor_sethealingbonus_add: 0.2
+      heavyarmor_sethealingbonus_add: 0.4
       heavyarmor_heavyarmormultiplier_add: 0.1
     messages:
       - "<lang.heavyarmor_perk_1b_messages>"
@@ -134,8 +143,8 @@ perks:
     hidden: false
     required_lv: 80
     perk_rewards:
-      heavyarmor_setreflectchance_add: 0.2
-      heavyarmor_setreflectfraction_add: 0.4
+      heavyarmor_setreflectchance_add: 0.1
+      heavyarmor_setreflectfraction_add: 0.2
       heavyarmor_heavyarmormultiplier_add: 0.1
     messages:
       - "<lang.heavyarmor_perk_2b_messages>"

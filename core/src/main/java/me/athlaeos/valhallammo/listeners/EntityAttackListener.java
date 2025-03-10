@@ -134,7 +134,7 @@ public class EntityAttackListener implements Listener {
                     1L);
         }
         if (!sweep){
-            boolean facing = EntityUtils.isEntityFacing(v, e.getDamager().getLocation(), facingAngleCos);
+            boolean facing = EntityUtils.isEntityFacing(v, e.getDamager().getLocation(), facingAngleCos) || (e.getDamager() instanceof LivingEntity le && EntityUtils.isEntityFacing(v, le.getEyeLocation(), facingAngleCos));
 
             // dodging mechanic
             // for this and following mechanics where the victim is hit by a sweep attack the mechanic does not activate, because large clusters of victims will cause a lag spike

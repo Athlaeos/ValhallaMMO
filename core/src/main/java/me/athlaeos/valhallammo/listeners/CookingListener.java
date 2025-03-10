@@ -256,6 +256,7 @@ public class CookingListener implements Listener {
                             return false;
                         }))){
                     c.getWorld().playEffect(c.getLocation(), Effect.EXTINGUISH, 0);
+                    ejectCampfire(c);
                     e.setCancelled(true);
                     return;
                 }
@@ -354,6 +355,7 @@ public class CookingListener implements Listener {
             c.getWorld().dropItemNaturally(c.getLocation(), item);
             c.setItem(i, null);
         }
+        c.update();
     }
 
     private int firstEmpty(Campfire campfire){
