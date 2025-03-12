@@ -14,6 +14,7 @@ import me.athlaeos.valhallammo.item.WeightClass;
 import me.athlaeos.valhallammo.listeners.EntityAttackListener;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
 import me.athlaeos.valhallammo.listeners.EntitySpawnListener;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
@@ -93,11 +94,11 @@ public class MartialArtsSkill extends Skill implements Listener {
 
         loadCommonConfig(skillConfig, progressionConfig);
 
-        grappleTooStrongMessage = skillConfig.getString("grapple_too_strong_message");
-        meditationPromptQuestion = skillConfig.getString("meditation_question");
-        meditationInvalidAnswer = skillConfig.getString("meditation_incorrect_answer");
-        meditationCooldownType = skillConfig.getString("meditation_cooldown_type");
-        disarmingCooldownType = skillConfig.getString("disarming_cooldown_type");
+        grappleTooStrongMessage = TranslationManager.translatePlaceholders(skillConfig.getString("grapple_too_strong_message"));
+        meditationPromptQuestion = TranslationManager.translatePlaceholders(skillConfig.getString("meditation_question"));
+        meditationInvalidAnswer = TranslationManager.translatePlaceholders(skillConfig.getString("meditation_incorrect_answer"));
+        meditationCooldownType = TranslationManager.translatePlaceholders(skillConfig.getString("meditation_cooldown_type"));
+        disarmingCooldownType = TranslationManager.translatePlaceholders(skillConfig.getString("disarming_cooldown_type"));
         mobDisarming = skillConfig.getBoolean("mob_disarming");
         playerDisarming = skillConfig.getBoolean("player_disarming");
         playerDisarmedItemOwnership = skillConfig.getBoolean("player_disarming_item_ownership");
@@ -239,7 +240,6 @@ public class MartialArtsSkill extends Skill implements Listener {
         }
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     @EventHandler(priority = EventPriority.LOW)
     public void onAttack(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
@@ -296,7 +296,10 @@ public class MartialArtsSkill extends Skill implements Listener {
                         if (hitEntity != null){
                             double damage = profile.getDropKickWallHitDamage() + (length * profile.getDropKickWallHitDamagePerVelocity());
                             String damageType = profile.getDropKickDamageType().stream().findFirst().orElse("ENTITY_HIT");
-                            l.getWorld().playSound(l.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.1F, 1F);
+                            if (Timer.isCooldownPassed(p.getUniqueId(), "cooldown_dropkick_sound")) {
+                                l.getWorld().playSound(l.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.1F, 1F);
+                                Timer.setCooldown(p.getUniqueId(), 1000, "cooldown_dropkick_sound");
+                            }
                             l.setVelocity(new Vector(0, l.getVelocity().getY(), 0));
                             EntityUtils.damage(l, p, damage, damageType, true);
                             EntityUtils.damage((LivingEntity) hitEntity, p, damage, damageType, true);
@@ -308,7 +311,10 @@ public class MartialArtsSkill extends Skill implements Listener {
                         if (hitBlock == null || !hitBlock.getType().isSolid() || !hitBlock.getType().isOccluding()) return;
                         double damage = profile.getDropKickWallHitDamage() + (length * profile.getDropKickWallHitDamagePerVelocity());
                         String damageType = profile.getDropKickDamageType().stream().findFirst().orElse("ENTITY_HIT");
-                        l.getWorld().playSound(l.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.1F, 1F);
+                        if (Timer.isCooldownPassed(p.getUniqueId(), "cooldown_dropkick_sound")) {
+                            l.getWorld().playSound(l.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.1F, 1F);
+                            Timer.setCooldown(p.getUniqueId(), 1000, "cooldown_dropkick_sound");
+                        }
                         ValhallaMMO.getNms().blockParticleAnimation(hitBlock);
                         l.setVelocity(new Vector(0, l.getVelocity().getY(), 0));
                         EntityUtils.damage(l, p, damage, damageType, true);

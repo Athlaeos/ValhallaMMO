@@ -148,6 +148,7 @@ public class PotionBelt {
         ItemMeta potionMeta = selectedPotion.getItemMeta();
         if (potionMeta == null) return beltItem;
         List<String> format = TranslationManager.getListTranslation("potion_belt_lore_format");
+        format = ItemUtils.setListPlaceholder(format, "%belt_lore%", beltMeta != null && beltMeta.hasLore() && beltMeta.getLore() != null ? beltMeta.getLore() : new ArrayList<>());
         format = ItemUtils.setListPlaceholder(format, "%item_lore%", potionMeta.hasLore() && potionMeta.getLore() != null ? potionMeta.getLore() : new ArrayList<>());
         format = ItemUtils.setListPlaceholder(format, "%current_count%", String.valueOf(potions.size()));
         format = ItemUtils.setListPlaceholder(format, "%max_count%", String.valueOf(getCapacity(belt.getMeta())));

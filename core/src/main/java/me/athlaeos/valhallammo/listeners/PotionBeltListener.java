@@ -84,7 +84,7 @@ public class PotionBeltListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDrop(PlayerDropItemEvent e){
-        if (e.isCancelled()) return;
+        if (e.isCancelled() || (!e.getItemDrop().getItemStack().equals(e.getPlayer().getInventory().getItemInMainHand()))) return;
         ItemStack dropped = e.getItemDrop().getItemStack();
         if (ItemUtils.isEmpty(dropped)) return;
         ItemBuilder item = new ItemBuilder(dropped);
