@@ -1456,9 +1456,6 @@
     "trinket-tag-pin": "&8Pin",
     "trinket-tag-circlet": "&8Circlet",
     "material-potion-belt": "&dAlchemist Belt",
-    "potion-belt-entry-unselected": "&5Stored potions &7(&d%contained%&7/&d%capacity%&7)",
-    "potion-belt-entry-selected": "&5Stored potions &7(&d%contained%&7/&d%capacity%&7)",
-    "potion-belt-name-format": "%belt_name% %potion_name%",
     "material-dummy-head": "&fDummy Head",
     "material-crystal-apple": "&aCrystal Apple",
     "material-diamond-shard": "&fDiamond Shard",
@@ -1537,6 +1534,13 @@
     "material-copper-chestplate": "&fCopper Chestplate",
     "material-copper-leggings": "&fCopper Leggings",
     "material-copper-boots": "&fCopper Boots",
+    "material-wooden-knuckles": "&fWooden Knuckles",
+    "material-stone-knuckles": "&fStone Knuckles",
+    "material-copper-knuckles": "&fCopper Knuckles",
+    "material-golden-knuckles": "&fGolden Knuckles",
+    "material-iron-knuckles": "&fIron Knuckles",
+    "material-diamond-knuckles": "&fDiamond Knuckles",
+    "material-netherite-knuckles": "&fNetherite Knuckles",
     "material-wooden-dagger": "&fWooden Dagger",
     "material-stone-dagger": "&fStone Dagger",
     "material-copper-dagger": "&fCopper Dagger",
@@ -3367,12 +3371,6 @@
       "%ingredients%",
       "",
       "&eProduces %result%"
-    ],
-    "potion-belt-lore-format": [
-      "%belt_lore%",
-      "",
-      "&5Stored potions &7(&d%contained%&7/&d%capacity%&7)",
-      "%entries%"
     ]
   },
   "stringIndex": {},
