@@ -646,13 +646,4 @@ public class MartialArtsSkill extends Skill implements Listener {
             return stackableEffects.values();
         }
     }
-
-    @Override
-    public ItemStack getIcon() {
-        ItemBuilder item = new ItemBuilder(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) item.getMeta();
-        PlayerProfile profile = ValhallaMMO.getInstance().getServer().createPlayerProfile(UUID.fromString("fdee323e-7f0c-4c15-8d1c-0f277442342a"), "Fit");
-        meta.setOwnerProfile(profile);
-        return item.get();
-    }
 }
