@@ -106,6 +106,7 @@ public class DiggingSkill extends Skill implements Listener {
     public void onItemsDropped(BlockDropItemEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING) ||
+                !dropsExpValues.containsKey(e.getBlockState().getType()) ||
                 e.getBlockState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("DIGGING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops

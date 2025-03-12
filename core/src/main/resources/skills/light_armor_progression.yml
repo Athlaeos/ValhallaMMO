@@ -1,6 +1,9 @@
 starting_perks:
   lightarmor_lightarmormultiplier_add: -0.3
   lightarmor_movementspeedperpiece_add: -0.025
+  lightarmor_hungersavechanceperpiece_add: -0.0625
+  lightarmor_healingbonusperpiece_add: -0.0625
+  lightarmor_dodgechanceperpiece_add: 0.025
 
 experience: 
   max_level: 100 
@@ -48,6 +51,8 @@ perks:
     required_lv: 20
     perk_rewards:
       lightarmor_movementspeedperpiece_add: 0.01
+      lightarmor_hungersavechanceperpiece_add: 0.035
+      lightarmor_healingbonusperpiece_add: 0.035
     messages:
       - "<lang.lightarmor_perk_1a_messages>"
     requireperk_all:
@@ -74,6 +79,8 @@ perks:
     perk_rewards:
       lightarmor_setamount_add: -1
       lightarmor_movementspeedperpiece_add: 0.015
+      lightarmor_hungersavechanceperpiece_add: 0.0275
+      lightarmor_healingbonusperpiece_add: 0.0275
     messages:
       - "<lang.lightarmor_perk_2a_messages>"
     requireperk_all:
