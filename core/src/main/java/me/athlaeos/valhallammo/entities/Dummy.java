@@ -48,7 +48,9 @@ public class Dummy implements Listener {
         ItemMeta meta = ItemUtils.getItemMeta(interactedWith);
         if (meta == null || !isDummyItem(meta) || !ItemUtils.isEmpty(a.getEquipment().getHelmet())) return;
         e.setCancelled(true);
-        a.getEquipment().setHelmet(interactedWith.clone());
+        ItemStack clone = interactedWith.clone();
+        clone.setAmount(1);
+        a.getEquipment().setHelmet(clone);
         if (interactedWith.getAmount() <= 1) e.getPlayer().getInventory().setItemInMainHand(null);
         else interactedWith.setAmount(interactedWith.getAmount() - 1);
     }

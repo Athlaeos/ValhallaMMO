@@ -1442,6 +1442,7 @@
     "trinket-tag-mask": "&8Mask",
     "trinket-tag-pin": "&8Pin",
     "trinket-tag-circlet": "&8Circlet",
+    "material-potion-belt": "&dAlchemist Belt",
     "material-dummy-head": "&fDummy Head",
     "material-crystal-apple": "&aCrystal Apple",
     "material-diamond-shard": "&fDiamond Shard",
@@ -1563,6 +1564,26 @@
     "material-diamond-spear": "&fDiamond Spear",
     "material-netherite-spear": "&fNetherite Spear",
     "recipe-displayname-salvage": "&fSalvage %item%",
+    "martialarts_perk_1_name": "&aHands of Stone",
+    "martialarts_perk_1_description": "&7Grants you &a+{martialarts_damagebonus_add} &7extra unarmed damage",
+    "martialarts_perk_a1_name": "&aDiscipline",
+    "martialarts_perk_a1_description": "&7Your punches have an additional &a+{martialarts_stunchance_add} &7chance to stun. &aHolding your punches increases their damage",
+    "martialarts_perk_a2_name": "&aSuppress and Control",
+    "martialarts_perk_a2_description": "&7Unlocks &aGrappling&7, allows you to grapple on to enemies to slow and weaken them. Allows &aDisarming",
+    "martialarts_perk_a3_name": "&aSoul Tether",
+    "martialarts_perk_a3_description": "&7Grappling applies its effects twice as fast, and while doing so you gain a &a30% &7chance to dodge their attacks. Fully disarming an enemy additionally grants you &a50% Life-Steal &afor 8 seconds",
+    "martialarts_perk_a4_name": "&aLightning Reflexes",
+    "martialarts_perk_a4_description": "&7While not attacking, you gain &a+{martialarts_basedodgechance_add} &7dodge chance. If you're not wearing armor, this effect &atriples",
+    "martialarts_perk_a5_name": "&aOm Mani Padmé Hum",
+    "martialarts_perk_a5_description": "&7Unlocks &aMeditation&7. Once per (in-game) day, meditate at the top of a mountain and choose between ? powerful long-lasting effects",
+    "martialarts_perk_b1_name": "&aRuthless Blows",
+    "martialarts_perk_b1_description": "&7Increases attack damage by &a{martialarts_damagebonus_add}&7 and critical strike chance by &a{martialarts_critchance_add}",
+    "martialarts_perk_b2_name": "&aUppercut",
+    "martialarts_perk_b2_description": "&7Unlocks &aUppercut&7, and increases critical strike chance by &a{martialarts_critchance_add}&7. Your punches disarm shields for &a{martialarts_shielddisarming_add} seconds",
+    "martialarts_perk_b3_name": "&aDefenestration",
+    "martialarts_perk_b3_description": "&7Punching an airborne target &athrows them at great velocity&7. If they hit a wall soon after &athey take bludgeoning damage correspondent to their velocity",
+    "martialarts_perk_final_name": "&a&lNirvana",
+    "martialarts_perk_final_description": "&7&kRealize your ultimate potential",
     "woodcutting_perk_1_name": "&aNovice Woodcutting",
     "woodcutting_perk_1_description": "&7Speeds up your woodcutting by &a10%&7, and you gain a few experience orbs per block",
     "woodcutting_perk_2_name": "&aGolden Leaves",
@@ -1861,6 +1882,10 @@
     "power_perk_2g_description": "&7Ability Cooldown Reduction &b{power_cooldownreduction_add}",
     "power_perk_3g_name": "&bAmbition III",
     "power_perk_3g_description": "&7Ability Cooldown Reduction &b{power_cooldownreduction_add}",
+    "martialarts_perk_ng1_name": "&a&lNew Game I",
+    "martialarts_perk_ng1_description": "&7Resets your martial arts level back to 0, and reduces experience gained by &4{martialarts_martialartsexpmultiplier_add}&7. In exchange, you gain a permanent &a{martialarts_damagebonus_add} &7Attack Damage, &a{martialarts_attackreachbonus_add} &7Attack Reach, and &a{martialarts_immunityreductionfraction_add} &7Immunity Reduction",
+    "martialarts_perk_ng2_name": "&a&lNew Game II",
+    "martialarts_perk_ng2_description": "&7Resets your martial arts level back to 0, and reduces experience gained by &4{martialarts_martialartsexpmultiplier_add}&7. In exchange, you gain a permanent &a{martialarts_damagebonus_add} &7Attack Damage, &a{martialarts_attackreachbonus_add} &7Attack Reach, and &a{martialarts_immunityreductionfraction_add} &7Immunity Reduction",
     "heavyarmor_perk_ng1_name": "&c&lNew Game I",
     "heavyarmor_perk_ng1_description": "&7Resets your heavy armor level back to 0, and reduces experience gained by &4{heavyarmor_heavyarmorexpmultiplier_add}&7. In exchange, you gain a permanent &c{heavyarmor_damageresistanceperpiece_add} &7damage resistance, and &c{heavyarmor_critchanceresistanceperpiece_add} &7crit resistance per piece of heavy armor",
     "heavyarmor_perk_ng2_name": "&c&lNew Game II",
@@ -2027,6 +2052,20 @@
       "&a{digging_diggingdrops_add} &7&lPermanent &7Digging Drops",
       "&a{digging_diggingluck_add} &7&lPermanent &7Digging Luck",
       "&a{digging_diggingspeedbonus_add} &7&lPermanent &7Digging Speed"
+    ],
+    "martialarts_perk_ng1_messages": [
+      "&a✰ &2New Game I &a✰",
+      "&a{martialarts_damagebonus_add} &7&lPermanent &7Attack Damage",
+      "&a{martialarts_attackreachbonus_add} &7&lPermanent &7Attack Reach",
+      "&a{martialarts_immunityreductionfraction_add} &7&lPermanent &7Immunity Reduction",
+      "&a{martialarts_martialartsexpmultiplier_add} &7Martial Arts EXP"
+    ],
+    "martialarts_perk_ng2_messages": [
+      "&a✰ &2New Game II &a✰",
+      "&a{martialarts_damagebonus_add} &7&lPermanent &7Attack Damage",
+      "&a{martialarts_attackreachbonus_add} &7&lPermanent &7Attack Reach",
+      "&a{martialarts_immunityreductionfraction_add} &7&lPermanent &7Immunity Reduction",
+      "&a{martialarts_martialartsexpmultiplier_add} &7Martial Arts EXP"
     ],
     "woodcutting_perk_ng1_messages": [
       "&a✰ &2New Game I &a✰",
@@ -2931,6 +2970,80 @@
       "&e{smithing_bowcraftingskill_add} &7Bow Quality",
       "&e{smithing_crossbowcraftingskill_add} &7Crossbow Quality"
     ],
+    "martialarts_perk_1_messages": [
+      "&a✰ &2Hands of Stone &a✰",
+      "&a+{martialarts_damagebonus_add} &7Unarmed Damage"
+    ],
+    "martialarts_perk_1a_messages": [
+      "&a✰ &2Discipline &a✰",
+      "&a+{martialarts_stunchance_add} &7Stun Chance",
+      "&7Holding your punches for &a1-2 seconds",
+      "&7increases its damage by &a0-6"
+    ],
+    "martialarts_perk_2a_messages": [
+      "&a✰ &2Suppress and Control &a✰",
+      "&a+Grappling",
+      "&7Hold &aRight-Click &7on entities to",
+      "&aGrapple &7them. Attacking interrupts",
+      "&7your ability to grapple.",
+      "&7Grappling &aslows and weakens&7 the entity,",
+      "&7doing this for &a5 seconds&7 disarms them.",
+      "&aDisarming &7prevents weapon usage, slows,",
+      "&7weakens, and makes them take &a50%&7 more damage.",
+      "&aLasts 10 seconds, &cbut has a 20 second cooldown"
+    ],
+    "martialarts_perk_3a_messages": [
+      "&a✰ &2Soul Tether &a✰",
+      "&aGrappling",
+      "&a+30% Dodge Chance &7while grappling",
+      "&a+50% Life Steal &7on disarming"
+    ],
+    "martialarts_perk_4a_messages": [
+      "&a✰ &2Lightning Reflexes &a✰",
+      "&a+30% Dodge Chance &7while not attacking",
+      "&a90% Dodge Chance &7if also unarmored"
+    ],
+    "martialarts_perk_5a_messages": [
+      "&a✰ &2Om Mani Padmé Hum &a✰",
+      "&a+Meditation",
+      "&7Allows you to meditate on ? ambitions.",
+      "&7Meditation must be done high in the",
+      "&7mountains, on top of carpet.",
+      "&7Right click on this carpet and answer",
+      "&7what you want to meditate on,",
+      "&7then sit still."
+    ],
+    "martialarts_perk_1b_messages": [
+      "&a✰ &2Ruthless Blows &a✰",
+      "&a+{martialarts_damagebonus_add} &7Attack Damage",
+      "&a+{martialarts_critchance_add} &7Crit Chance"
+    ],
+    "martialarts_perk_2b_messages": [
+      "&a✰ &2Thunderous Strikes &a✰",
+      "&a+{martialarts_critchance_add} &7Crit Chance",
+      "&a+{martialarts_shielddisarming_add} &7Shield Disarming",
+      "&a+Uppercut",
+      "&aSneak-Punch &7to uppercut something",
+      "&7into the air. This uppercut deals",
+      "&a{martialarts_uppercutdamage_add} &7extra damage and has a cooldown",
+      "&7of &a5 seconds&7, or 10 if used",
+      "&7against players"
+    ],
+    "martialarts_perk_3b_messages": [
+      "&a✰ &2Defenestration &a✰",
+      "&a+Dropkick",
+      "&7Punching an airborne target",
+      "&aDropkicks &7it, dealing great knockback",
+      "&7and dealing &a{martialarts_dropkickdamage_add} &7more damage.",
+      "&7If the entity hits a wall it takes",
+      "&a{martialarts_dropkickwallhitdamage_add} &7Bludgeoning damage.",
+      "&7If the entity hits another entity,",
+      "&7it will take that damage as well."
+    ],
+    "martialarts_perk_final_messages": [
+      "&aThank you for playing",
+      "&7(maybe you should go outside)"
+    ],
     "woodcutting_perk_1_messages": [
       "&a✰ &2Novice Woodcutting &a✰",
       "&a+10% &7Log Digging Speed",
@@ -3145,6 +3258,10 @@
     ],
     "skill-level-up-power": [
       "TITLE(&7You leveled up to &e%level%&7;&7Check &e/skills &7for available perks;40;5)"
+    ],
+    "skill-level-up-martial-arts": [
+      "TITLE(&r;&aUnarmed&7 leveled up to &a%level%)",
+      "&aUnarmed&7 leveled up to &a%level%"
     ],
     "skill-level-up-smithing": [
       "TITLE(&r;&eSmithing&7 leveled up to &e%level%)",
