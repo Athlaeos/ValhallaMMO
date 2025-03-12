@@ -5,6 +5,8 @@ import me.athlaeos.valhallammo.content.ContentPackageManager;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.recipetypes.ValhallaRecipe;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.item.CustomItem;
+import me.athlaeos.valhallammo.item.CustomItemRegistry;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandSender;
@@ -25,6 +27,7 @@ public class ExportCommand implements Command {
         boolean addToExisting = false;
         List<ContentPackageManager.ExportMode> exportModes = new ArrayList<>();
         List<ValhallaRecipe> exportRecipes = new ArrayList<>();
+        List<CustomItem> exportItems = new ArrayList<>();
         if (args.length > 2){
             List<String> invalidModes = new ArrayList<>();
             String[] modes = Arrays.copyOfRange(args, 2, args.length);
@@ -53,13 +56,17 @@ public class ExportCommand implements Command {
                 else if (CustomRecipeRegistry.getImmersiveRecipes().containsKey(r))
                     recipe = CustomRecipeRegistry.getImmersiveRecipes().get(r);
                 if (recipe != null) exportRecipes.add(recipe);
+                else {
+                    CustomItem item = CustomItemRegistry.getItem(r);
+                    if (item != null) exportItems.add(item);
+                }
             }
             if (exportRecipes.isEmpty() && !invalidModes.isEmpty()){
                 Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_import_invalid_mode").replace("%mode%", String.join(", ", invalidModes)));
             }
         } else exportModes.addAll(List.of(ContentPackageManager.ExportMode.values()));
 
-        if (ContentPackageManager.exportContent(file, exportRecipes, addToExisting, exportModes.toArray(new ContentPackageManager.ExportMode[0])))
+        if (ContentPackageManager.exportContent(file, exportRecipes, exportItems, addToExisting, exportModes.toArray(new ContentPackageManager.ExportMode[0])))
             Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_export_success").replace("%path%", "/export/" + file + " .json"));
         else Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_export"));
         return true;

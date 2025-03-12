@@ -13,6 +13,7 @@ import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.crafting.recipetypes.*;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Weighted;
+import me.athlaeos.valhallammo.item.CustomItem;
 import me.athlaeos.valhallammo.item.CustomItemRegistry;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
@@ -75,7 +76,7 @@ public class ContentPackageManager {
         importContent(contentPackage, new ArrayList<>(), ExportMode.values());
     }
 
-    public static boolean exportContent(String packageName, List<ValhallaRecipe> recipes, boolean add, ExportMode... exportModes){
+    public static boolean exportContent(String packageName, List<ValhallaRecipe> recipes, List<CustomItem> items, boolean add, ExportMode... exportModes){
         ContentPackage contentPackage = add ? Utils.thisorDefault(fromFile(packageName), new ContentPackage()) : new ContentPackage();
         for (ExportMode mode : exportModes) mode.act(contentPackage);
         for (ValhallaRecipe recipe : recipes){
@@ -86,6 +87,7 @@ public class ContentPackageManager {
             else if (recipe instanceof DynamicBrewingRecipe r) contentPackage.getBrewingRecipes().put(r.getName(), r);
             else if (recipe instanceof DynamicSmithingRecipe r) contentPackage.getSmithingRecipes().put(r.getName(), r);
         }
+        items.forEach(i -> contentPackage.getCustomItems().put(i.getId(), i));
 
         File f = new File(ValhallaMMO.getInstance().getDataFolder(), "/export/" + packageName + ".json");
         try {
@@ -110,7 +112,7 @@ public class ContentPackageManager {
     }
 
     public static void exportContent(String path){
-        exportContent(path, new ArrayList<>(), false, ExportMode.values());
+        exportContent(path, new ArrayList<>(), new ArrayList<>(), false, ExportMode.values());
     }
 
     public enum ExportMode{
