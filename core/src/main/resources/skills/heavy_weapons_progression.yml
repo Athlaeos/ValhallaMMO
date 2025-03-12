@@ -1,7 +1,6 @@
 starting_perks:
   heavyweapons_attackspeedmultiplier_add: -0.3
   heavyweapons_damagemultiplier_add: -0.3
-  heavyweapons_knockbackmultiplier_add: -0.3
 
 experience: 
   max_level: 100 

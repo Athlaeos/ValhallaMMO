@@ -1,7 +1,7 @@
 starting_perks:
-  lightweapons_attackspeedmultiplier_add: -0.3
   lightweapons_damagemultiplier_add: -0.3
   lightweapons_knockbackmultiplier_add: -0.3
+  lightweapons_immunityreductionfraction_add: 0.2
 
 experience:
   max_level: 100
@@ -37,6 +37,7 @@ perks:
     required_lv: 0
     perk_rewards:
       lightweapons_damagemultiplier_add: 0.1
+      lightweapons_bleedchance_add: 0.1
     messages:
       - "<lang.lightweapons_perk_1_messages>"
     custom_model_data_unlockable: -1
@@ -101,6 +102,7 @@ perks:
     perk_rewards:
       lightweapons_attackspeedmultiplier_add: 0.2
       lightweapons_immunityreductionfraction_add: 0.1
+      lightweapons_bleedchance_add: 0.1
     messages:
       - "<lang.lightweapons_perk_4_messages>"
     requireperk_all:
@@ -120,6 +122,7 @@ perks:
     hidden: false
     required_lv: 80
     perk_rewards:
+      lightweapons_bleedchance_add: 0.1
       lightweapons_damagemultiplier_add: 0.1
       lightweapons_immunityreductionfraction_add: 0.2
       lightweapons_parryeffectiveduration_add: 7
@@ -151,7 +154,7 @@ perks:
       lightweapons_critchance_add: 0.1
       lightweapons_critdamage_add: 0.3
       lightweapons_bleedoncrit_toggle: 0
-      lightweapons_bleeddamage_add: 1
+      lightweapons_bleeddamage_add: 2
     messages:
       - "<lang.lightweapons_perk_6_messages>"
     requireperk_all:

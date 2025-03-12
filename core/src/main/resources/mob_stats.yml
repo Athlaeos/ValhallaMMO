@@ -30,6 +30,7 @@ default: # Stats for all monsters
   ARMOR_FRACTION_IGNORED: "0.005 * %level%" # Gives mobs up to 50% armor penetration at level 100
   CRIT_CHANCE: "0.005 * %level%" # Gives mobs up to 50% crit chance at level 100
   CRIT_DAMAGE: "0.5" # Gives mobs +50% crit damage
+  BLEED_RESISTANCE: -4 # Mobs are 5x more vulnerable to bleeding by default
 
 entity:
   ZOMBIE: # All undead monsters are configured to take double radiant damage
