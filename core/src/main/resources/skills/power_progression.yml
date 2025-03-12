@@ -87,6 +87,32 @@ experience:
 
 commands: []
 
+special_perks:
+  10:
+    perk_rewards:
+      power_pvpresistance_add: 0.1
+  20:
+    perk_rewards:
+      power_pvpresistance_add: 0.1
+  30:
+    perk_rewards:
+      power_pvpresistance_add: 0.1
+  40:
+    perk_rewards:
+      power_pvpresistance_add: 0.1
+  50:
+    perk_rewards:
+      power_pvpresistance_add: 0.1
+  60:
+    perk_rewards:
+      power_pvpresistance_add: 0.1
+  70:
+    perk_rewards:
+      power_pvpresistance_add: 0.1
+  80:
+    perk_rewards:
+      power_pvpresistance_add: 0.1
+
 messages: 
   - '<lang.skill-level-up-power>'
 
