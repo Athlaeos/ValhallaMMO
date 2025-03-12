@@ -1755,15 +1755,15 @@
     "enchanting_perk_combo_name": "&bHalfling Luck",
     "enchanting_perk_combo_description": "&7Increases luck by &b{power_luckbonus_add}",
     "lightweapons_perk_1_name": "&ePage",
-    "lightweapons_perk_1_description": "&7Increases damage by &e{lightweapons_damagemultiplier_add}&7. ",
+    "lightweapons_perk_1_description": "&7Increases damage by &e{lightweapons_damagemultiplier_add}&7, and adds a &e{lightweapons_bleedchance_add} to inflict bleeding.",
     "lightweapons_perk_2_name": "&eSquire",
     "lightweapons_perk_2_description": "&7Increases attack speed by &e{lightweapons_attackspeedmultiplier_add}&7, and grants &e{lightweapons_critchance_add} &7critical strike chance. ",
     "lightweapons_perk_3_name": "&eKnight",
     "lightweapons_perk_3_description": "&7Unlocks &eParry&7. Increases damage by &e{lightweapons_damagemultiplier_add}",
     "lightweapons_perk_4_name": "&ePaladin",
-    "lightweapons_perk_4_description": "&7Increases attack speed by &e{lightweapons_attackspeedmultiplier_add}&7, and enemies are immune for &e{lightweapons_immunityreductionfraction_add} &7less",
+    "lightweapons_perk_4_description": "&7Increases attack speed by &e{lightweapons_attackspeedmultiplier_add}&7, enemies are immune for &e{lightweapons_immunityreductionfraction_add} &7less, and adds a &e{lightweapons_bleedchance_add} to inflict bleeding.",
     "lightweapons_perk_5_name": "&eTemplar",
-    "lightweapons_perk_5_description": "&7Increases damage by &e{lightweapons_damagemultiplier_add}&7, &eParry &7becomes much easier and stronger, and enemies are immune for &e{lightweapons_immunityreductionfraction_add} &7less. ",
+    "lightweapons_perk_5_description": "&7Increases damage by &e{lightweapons_damagemultiplier_add}&7, &eParry &7becomes much easier and stronger, enemies are immune for &e{lightweapons_immunityreductionfraction_add} &7less, and adds a &e{lightweapons_bleedchance_add} to inflict bleeding.",
     "lightweapons_perk_6_name": "&eWarlord",
     "lightweapons_perk_6_description": "&7Increases critical strike chance by &e{lightweapons_critchance_add}&7, and critical strikes deal &e{lightweapons_critdamage_add} &7more damage. Critical strikes now inflict &eBleeding&7, and bleeding deals &e{lightweapons_bleeddamage_add} &7more damage",
     "lightweapons_perk_a1_name": "&eWeapon Coating",
@@ -2487,7 +2487,8 @@
     ],
     "lightweapons_perk_1_messages": [
       "&e✰ &6Page &e✰",
-      "&e{lightweapons_damagemultiplier_add} &7Light Weapons Damage"
+      "&e{lightweapons_damagemultiplier_add} &7Light Weapons Damage",
+      "&e{lightweapons_bleedchance_add} &7Bleed Chance"
     ],
     "lightweapons_perk_2_messages": [
       "&e✰ &6Squire &e✰",
@@ -2509,12 +2510,14 @@
     "lightweapons_perk_4_messages": [
       "&e✰ &6Paladin &e✰",
       "&e{lightweapons_attackspeedmultiplier_add} &7Attack Speed",
-      "&e{lightweapons_immunityreductionfraction_add} &7Immunity Reduction"
+      "&e{lightweapons_immunityreductionfraction_add} &7Immunity Reduction",
+      "&e{lightweapons_bleedchance_add} &7Bleed Chance"
     ],
     "lightweapons_perk_5_messages": [
       "&e✰ &6Templar &e✰",
       "&e{lightweapons_damagemultiplier_add} &7Light Weapons Damage",
       "&e{lightweapons_immunityreductionfraction_add} &7Immunity Reduction",
+      "&e{lightweapons_bleedchance_add} &7Bleed Chance",
       "&eParry",
       "&7- 0.7s Duration",
       "&7- 2s Cooldown",
