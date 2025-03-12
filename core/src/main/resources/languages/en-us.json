@@ -3006,13 +3006,13 @@
       "&a✰ &2Hands of Stone &a✰",
       "&a+{martialarts_damagebonus_add} &7Unarmed Damage"
     ],
-    "martialarts_perk_1a_messages": [
+    "martialarts_perk_a1_messages": [
       "&a✰ &2Discipline &a✰",
       "&a+{martialarts_stunchance_add} &7Stun Chance",
       "&7Holding your punches for &a1-2 seconds",
       "&7increases its damage by &a0-6"
     ],
-    "martialarts_perk_2a_messages": [
+    "martialarts_perk_a2_messages": [
       "&a✰ &2Suppress and Control &a✰",
       "&a+Grappling",
       "&7Hold &aRight-Click &7on entities to",
@@ -3024,18 +3024,18 @@
       "&7weakens, and makes them take &a50%&7 more damage.",
       "&aLasts 10 seconds, &cbut has a 20 second cooldown"
     ],
-    "martialarts_perk_3a_messages": [
+    "martialarts_perk_a3_messages": [
       "&a✰ &2Soul Tether &a✰",
       "&aGrappling",
       "&a+30% Dodge Chance &7while grappling",
       "&a+50% Life Steal &7on disarming"
     ],
-    "martialarts_perk_4a_messages": [
+    "martialarts_perk_a4_messages": [
       "&a✰ &2Lightning Reflexes &a✰",
       "&a+30% Dodge Chance &7while not attacking",
       "&a90% Dodge Chance &7if also unarmored"
     ],
-    "martialarts_perk_5a_messages": [
+    "martialarts_perk_a5_messages": [
       "&a✰ &2Om Mani Padmé Hum &a✰",
       "&a+Meditation",
       "&7Allows you to meditate on ? ambitions.",
@@ -3045,12 +3045,12 @@
       "&7what you want to meditate on,",
       "&7then sit still."
     ],
-    "martialarts_perk_1b_messages": [
+    "martialarts_perk_b1_messages": [
       "&a✰ &2Ruthless Blows &a✰",
       "&a+{martialarts_damagebonus_add} &7Attack Damage",
       "&a+{martialarts_critchance_add} &7Crit Chance"
     ],
-    "martialarts_perk_2b_messages": [
+    "martialarts_perk_b2_messages": [
       "&a✰ &2Thunderous Strikes &a✰",
       "&a+{martialarts_critchance_add} &7Crit Chance",
       "&a+{martialarts_shielddisarming_add} &7Shield Disarming",
@@ -3061,7 +3061,7 @@
       "&7of &a5 seconds&7, or 10 if used",
       "&7against players"
     ],
-    "martialarts_perk_3b_messages": [
+    "martialarts_perk_b3_messages": [
       "&a✰ &2Defenestration &a✰",
       "&a+Dropkick",
       "&7Punching an airborne target",
