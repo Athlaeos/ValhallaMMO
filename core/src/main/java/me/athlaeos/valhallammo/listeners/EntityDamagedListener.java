@@ -83,6 +83,8 @@ public class EntityDamagedListener implements Listener {
 //        preparedDamageInstances.put(e.getEntity().getUniqueId(), preparedInstances);
     }
 
+    private static final Map<UUID, Runnable> damageProcesses = new HashMap<>();
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamageTaken(EntityDamageEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !customDamageEnabled) return;
@@ -152,7 +154,7 @@ public class EntityDamagedListener implements Listener {
                 unmarkNextDamageInstanceNoImmunity(l, damageCause);
                 double predictedAbsorption = absorptionTracker.getOrDefault(l.getUniqueId(), l.getAbsorptionAmount()) - damage;
                 double predictedHealth = healthTracker.getOrDefault(l.getUniqueId(), l.getHealth()) - (predictedAbsorption >= 0 ? 0 : -predictedAbsorption);
-                absorptionTracker.put(l.getUniqueId(), predictedAbsorption);
+                if (predictedAbsorption > 0) absorptionTracker.put(l.getUniqueId(), predictedAbsorption);
                 healthTracker.put(l.getUniqueId(), predictedHealth); // if two damage instances occur in rapid succession (such as with bonus damage types)
                 // then the predicted health of the entity is recorded and used for additional damage instances. Without this, preceding damage instances
                 // would be ignored because the entity's health would not have changed yet at this point and their health would be set assuming they've only
@@ -160,7 +162,8 @@ public class EntityDamagedListener implements Listener {
 
                 if ((type != null && type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
                 if (l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0);
-                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                double healthBefore = l.getHealth();
+                damageProcesses.put(l.getUniqueId(), () -> {
                     l.setNoDamageTicks(iFrames);
                     if (!e.isCancelled()){
                         AttributeInstance health = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
@@ -173,6 +176,11 @@ public class EntityDamagedListener implements Listener {
                     customDamageCauses.remove(l.getUniqueId());
                     healthTracker.remove(l.getUniqueId());
                     absorptionTracker.remove(l.getUniqueId());
+                    damageProcesses.remove(l.getUniqueId());
+                });
+                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                    Runnable r = damageProcesses.get(l.getUniqueId());
+                    if (r != null) r.run();
                 }, 1L);
             }
 //            else if (customDamageEnabled) {
