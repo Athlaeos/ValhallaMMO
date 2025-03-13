@@ -4138,7 +4138,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
         "DATA": {
-          "weightClass": "HEAVY",
+          "weightClass": "LIGHT",
           "name": "weight_class",
           "priority": "SOONEST"
         }
@@ -4187,7 +4187,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_DAMAGE",
-          "value": 8.0,
+          "value": 6.0,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -4200,7 +4200,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 0.8,
+          "value": 1.2,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -4239,7 +4239,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
+          "amplifier": 0.4,
           "skillRange": 185.0,
           "rangeOffset": 115.0,
           "minimum": 0.0,
@@ -6972,6 +6972,19 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "value": 8,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "IRON_SWORD",
+          "name": "attribute_add_generic_attack_damage",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -7041,7 +7054,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "ATTACK_REACH",
-          "value": -1.0,
+          "value": -0.5,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -7054,7 +7067,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
+          "amplifier": 0.4,
           "skillRange": 245.0,
           "rangeOffset": 55.0,
           "minimum": 0.0,
@@ -7071,7 +7084,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
+          "amplifier": 6.0,
           "skillRange": 245.0,
           "rangeOffset": 55.0,
           "minimum": 0.0,
@@ -7464,6 +7477,19 @@
           "bigIncrement": 1.0,
           "icon": "COBBLESTONE",
           "name": "attribute_add_extra_bludgeoning_damage",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "EXTRA_RADIANT_DAMAGE",
+          "value": 4.5,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "GOLD_INGOT",
+          "name": "attribute_add_extra_radiant_damage",
           "priority": "SOON"
         }
       },
@@ -8934,6 +8960,19 @@
           "flag": "HIDE_ATTRIBUTES",
           "name": "flag_hide_attributes",
           "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "ATTACK_REACH",
+          "value": 0.5,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "ENDER_PEARL",
+          "name": "attribute_add_attack_reach",
+          "priority": "SOON"
         }
       },
       {
@@ -12096,6 +12135,19 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "ATTACK_REACH",
+          "value": 0.5,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "ENDER_PEARL",
+          "name": "attribute_add_attack_reach",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -12951,6 +13003,19 @@
           "amount": 2,
           "name": "amount_set",
           "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "ATTACK_REACH",
+          "value": 0.5,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "ENDER_PEARL",
+          "name": "attribute_add_attack_reach",
+          "priority": "SOON"
         }
       },
       {
@@ -14806,7 +14871,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
         "DATA": {
-          "weightClass": "HEAVY",
+          "weightClass": "LIGHT",
           "name": "weight_class",
           "priority": "SOONEST"
         }
@@ -14855,7 +14920,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_DAMAGE",
-          "value": 6.0,
+          "value": 4.0,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -14868,7 +14933,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 0.8,
+          "value": 1.2,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -14907,7 +14972,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
+          "amplifier": 0.4,
           "skillRange": 245.0,
           "rangeOffset": 55.0,
           "minimum": 0.0,
@@ -15022,6 +15087,19 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "value": 9,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "IRON_SWORD",
+          "name": "attribute_add_generic_attack_damage",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -15091,7 +15169,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "ATTACK_REACH",
-          "value": -1.0,
+          "value": -0.5,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -15104,7 +15182,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
+          "amplifier": 0.4,
           "skillRange": 215.0,
           "rangeOffset": 85.0,
           "minimum": 0.0,
@@ -15121,7 +15199,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
+          "amplifier": 6.0,
           "skillRange": 215.0,
           "rangeOffset": 85.0,
           "minimum": 0.0,
@@ -15264,6 +15342,19 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "value": 7.0,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "IRON_SWORD",
+          "name": "attribute_add_generic_attack_damage",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -15333,7 +15424,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "ATTACK_REACH",
-          "value": -1.0,
+          "value": -0.5,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -15346,7 +15437,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
+          "amplifier": 6.0,
           "skillRange": 275.0,
           "rangeOffset": 25.0,
           "minimum": 0.0,
@@ -15363,7 +15454,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
+          "amplifier": 0.4,
           "skillRange": 275.0,
           "rangeOffset": 25.0,
           "minimum": 0.0,
@@ -16226,6 +16317,19 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "EXTRA_RADIANT_DAMAGE",
+          "value": 1.5,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "GOLD_INGOT",
+          "name": "attribute_add_extra_radiant_damage",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -16465,6 +16569,19 @@
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
           "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "EXTRA_RADIANT_DAMAGE",
+          "value": 10.0,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "GOLD_INGOT",
+          "name": "attribute_add_extra_radiant_damage",
+          "priority": "SOON"
         }
       },
       {
@@ -20824,6 +20941,19 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "value": 10.0,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "IRON_SWORD",
+          "name": "attribute_add_generic_attack_damage",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -20893,7 +21023,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "ATTACK_REACH",
-          "value": -1.0,
+          "value": -0.5,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -20906,7 +21036,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
+          "amplifier": 0.4,
           "skillRange": 185.0,
           "rangeOffset": 115.0,
           "minimum": 0.0,
@@ -20923,7 +21053,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
+          "amplifier": 6.0,
           "skillRange": 185.0,
           "rangeOffset": 115.0,
           "minimum": 0.0,
@@ -23191,6 +23321,19 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "EXTRA_RADIANT_DAMAGE",
+          "value": 2.5,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "GOLD_INGOT",
+          "name": "attribute_add_extra_radiant_damage",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -25365,7 +25508,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
         "DATA": {
-          "weightClass": "HEAVY",
+          "weightClass": "LIGHT",
           "name": "weight_class",
           "priority": "SOONEST"
         }
@@ -25414,7 +25557,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 0.8,
+          "value": 1.2,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -25427,7 +25570,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_DAMAGE",
-          "value": 5.0,
+          "value": 3.0,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -25466,7 +25609,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
+          "amplifier": 0.4,
           "skillRange": 215.0,
           "rangeOffset": 85.0,
           "minimum": 0.0,
@@ -27551,6 +27694,19 @@
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
           "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "ATTACK_REACH",
+          "value": 0.5,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "ENDER_PEARL",
+          "name": "attribute_add_attack_reach",
+          "priority": "SOON"
         }
       },
       {
@@ -30493,6 +30649,19 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "EXTRA_RADIANT_DAMAGE",
+          "value": 3.5,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "GOLD_INGOT",
+          "name": "attribute_add_extra_radiant_damage",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -30891,7 +31060,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
         "DATA": {
-          "weightClass": "HEAVY",
+          "weightClass": "LIGHT",
           "name": "weight_class",
           "priority": "SOONEST"
         }
@@ -30940,7 +31109,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_DAMAGE",
-          "value": 7.0,
+          "value": 5.0,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -30953,7 +31122,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 0.8,
+          "value": 1.2,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -30992,7 +31161,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
+          "amplifier": 0.4,
           "skillRange": 215.0,
           "rangeOffset": 85.0,
           "minimum": 0.0,
@@ -32309,7 +32478,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
         "DATA": {
-          "weightClass": "HEAVY",
+          "weightClass": "LIGHT",
           "name": "weight_class",
           "priority": "SOONEST"
         }
@@ -32358,7 +32527,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_DAMAGE",
-          "value": 5.0,
+          "value": 3.0,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -32371,7 +32540,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 0.8,
+          "value": 1.2,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -32427,7 +32596,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
+          "amplifier": 0.4,
           "skillRange": 275.0,
           "rangeOffset": 25.0,
           "minimum": 0.0,
@@ -34011,6 +34180,19 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "ATTACK_REACH",
+          "value": 0.5,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "ENDER_PEARL",
+          "name": "attribute_add_attack_reach",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -34162,6 +34344,19 @@
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
           "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "ATTACK_REACH",
+          "value": 0.5,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "ENDER_PEARL",
+          "name": "attribute_add_attack_reach",
+          "priority": "SOON"
         }
       },
       {
@@ -36812,6 +37007,19 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "value": 7.0,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "IRON_SWORD",
+          "name": "attribute_add_generic_attack_damage",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -36881,7 +37089,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "ATTACK_REACH",
-          "value": -1.0,
+          "value": -0.5,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -36894,7 +37102,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
+          "amplifier": 0.4,
           "skillRange": 215.0,
           "rangeOffset": 85.0,
           "minimum": 0.0,
@@ -36911,7 +37119,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
+          "amplifier": 6.0,
           "skillRange": 215.0,
           "rangeOffset": 85.0,
           "minimum": 0.0,

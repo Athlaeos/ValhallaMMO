@@ -373,7 +373,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 1.1,
+          "value": 1.2,
           "operation": "ADD_NUMBER",
           "smallIncrement": 0.1,
           "bigIncrement": 1.0,
@@ -386,7 +386,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.19999999999999996,
+          "amplifier": 0.4,
           "skillRange": 185.0,
           "rangeOffset": 115.0,
           "minimum": 0.0,
@@ -2080,6 +2080,19 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "GENERIC_ATTACK_DAMAGE",
+          "value": 11,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "IRON_SWORD",
+          "name": "attribute_add_generic_attack_damage",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
         "DATA": {
           "neutral": 170,
@@ -2107,7 +2120,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.19999999999999996,
+          "amplifier": 0.4,
           "skillRange": 185.0,
           "rangeOffset": 115.0,
           "minimum": 0.0,
@@ -2124,7 +2137,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
+          "amplifier": 6.0,
           "skillRange": 185.0,
           "rangeOffset": 115.0,
           "minimum": 0.0,
@@ -2220,6 +2233,19 @@
           "neutral": 170,
           "name": "smithing_neutral_quality_set",
           "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "DATA": {
+          "attribute": "EXTRA_RADIANT_DAMAGE",
+          "value": 5.5,
+          "operation": "ADD_NUMBER",
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "GOLD_INGOT",
+          "name": "attribute_add_extra_radiant_damage",
+          "priority": "SOON"
         }
       },
       {
