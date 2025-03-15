@@ -1,15 +1,11 @@
 package me.athlaeos.valhallammo.nms;
 
 import io.netty.channel.Channel;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
-import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
 import me.athlaeos.valhallammo.version.AttributeMappings;
-import me.athlaeos.valhallammo.trading.GossipTypeWrapper;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -25,8 +21,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.gossip.GossipContainer;
-import net.minecraft.world.entity.ai.gossip.GossipType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -43,54 +37,24 @@ import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftVillager;
 import org.bukkit.craftbukkit.v1_19_R1.generator.strucutre.CraftStructure;
 import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import static me.athlaeos.valhallammo.utility.ItemUtils.itemOrAir;
 
 public final class NMS_v1_19_R1 implements NMS {
-    Class<GossipContainer> gossipContainerClass = null;
-    Class<?> gossipEntryClass = null;
-    Field gossipContainerGossips = null;
-    Field entityGossipsEntries = null;
-    Constructor<?>[] entityGossipConstructors = null;
-
-    public NMS_v1_19_R1(){
-        try {
-            gossipContainerClass = GossipContainer.class;
-            gossipContainerGossips = gossipContainerClass.getDeclaredField("c");
-            gossipContainerGossips.setAccessible(true);
-        } catch (NoSuchFieldException ignored){
-            ValhallaMMO.logSevere("Could not find field name 'gossips' in GossipContainer, some villager reputation-related functionality may not work");
-        }
-        try {
-            gossipEntryClass = Class.forName("net.minecraft.world.entity.ai.gossip.GossipContainer$EntityGossips");
-            entityGossipConstructors = gossipEntryClass.getConstructors();
-            entityGossipsEntries = gossipEntryClass.getDeclaredField("a");
-            entityGossipsEntries.setAccessible(true);
-        } catch (ClassNotFoundException ignored){
-            ValhallaMMO.logSevere("Could not find class for GossipContainer$GossipEntry, some villager reputation-related functionality may not work");
-        } catch (NoSuchFieldException ignored){
-            ValhallaMMO.logSevere("Could not find field name 'entries' in GossipContainer$GossipEntry, some villager reputation-related functionality may not work");
-        }
-    }
-
     @Override
     public void forceAttack(Player player, LivingEntity victim) {
         ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
@@ -113,38 +77,6 @@ public final class NMS_v1_19_R1 implements NMS {
         equipment.add(new com.mojang.datafixers.util.Pair<>(EquipmentSlot.FEET, CraftItemStack.asNMSCopy(itemOrAir(boots))));
         ClientboundSetEquipmentPacket packet = new ClientboundSetEquipmentPacket(entity.getEntityId(), equipment);
         PacketListener.broadcastPlayerPacket(entity, packet, true);
-    }
-
-    @Override
-    public int getReputation(Player player, Villager villager) {
-        return Math.max(-30, Math.min(30, ((CraftVillager) villager).getHandle().getPlayerReputation(((CraftPlayer) player).getHandle())));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void modifyReputation(Player player, Villager villager, GossipTypeWrapper reason) {
-        if (entityGossipsEntries == null || gossipContainerGossips == null) return;
-        GossipType type = Catch.catchOrElse(() -> GossipType.valueOf(reason.toString()), null);
-        if (type == null) return;
-        try {
-            int oldrep = getReputation(player, villager);
-            Map<UUID, Object> gossipsMap = (Map<UUID, Object>) gossipContainerGossips.get(((CraftVillager) villager).getHandle().getGossips());
-            if (gossipsMap == null) gossipsMap = new HashMap<>();
-            if (!gossipsMap.containsKey(player.getUniqueId())) {
-                Object o = entityGossipConstructors[0].newInstance();
-                gossipsMap.put(player.getUniqueId(), o);
-            }
-            Object2IntMap<GossipType> gossipMap = (Object2IntMap<GossipType>) entityGossipsEntries.get(gossipsMap.get(player.getUniqueId()));
-            int current = gossipMap.getOrDefault(type, 0) + 1;
-            gossipMap.put(type, current);
-            System.out.println("changed reputation from " + oldrep + " to " + getReputation(player, villager));
-        } catch (IllegalAccessException ignored){
-            ValhallaMMO.logSevere("Could not access gossip map for GossipContainer, disabling reputation features for villagers");
-            entityGossipsEntries = null;
-        } catch (InvocationTargetException | InstantiationException e) {
-            ValhallaMMO.logSevere("Could not construct EntityGossip, disabling reputation features for villagers");
-            entityGossipsEntries = null;
-        }
     }
 
     @Override

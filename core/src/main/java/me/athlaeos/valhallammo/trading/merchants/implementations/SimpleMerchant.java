@@ -1,11 +1,11 @@
-package me.athlaeos.valhallammo.trading;
+package me.athlaeos.valhallammo.trading.merchants.implementations;
 
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
-import me.athlaeos.valhallammo.listeners.LootListener;
-import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
-import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.TradingProfile;
+import me.athlaeos.valhallammo.trading.CustomMerchantManager;
+import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
+import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Villager;
@@ -26,25 +26,19 @@ public class SimpleMerchant extends VirtualMerchant {
         for (MerchantRecipe recipe : recipes){
             ItemMeta meta = recipe.getResult().getItemMeta();
             if (meta == null) {
-                System.out.println("no meta");
                 toRemove.add(recipe);
                 continue;
             }
-            MerchantTrade trade = CustomTradeRegistry.tradeFromKeyedMeta(meta);
+            MerchantTrade trade = CustomMerchantManager.tradeFromKeyedMeta(meta);
             if (trade == null){
-                System.out.println("no trade");
                 toRemove.add(recipe);
                 continue;
             }
             AttributeInstance luckAttribute = utility.getOwner().getAttribute(Attribute.GENERIC_LUCK);
             double luck = 0; // TODO AccumulativeStatManager.getCachedStats("TRADING_LUCK", utility.getOwner(), 10000, true);
             if (luckAttribute != null) luck += luckAttribute.getValue();
-            System.out.println("added " + trade.getId());
             LootContext context = new LootContext.Builder(villager.getLocation()).killer(utility.getOwner()).lootedEntity(null).lootingModifier(0).luck((float) luck).build();
-            if (trade.failsPredicates(trade.getPredicateSelection(), context) || (trade.isExclusive() && !profile.getExclusiveTrades().contains(trade.getId()))) {
-                System.out.println("fails predicates");
-                toRemove.add(recipe);
-            }
+            if (trade.failsPredicates(trade.getPredicateSelection(), context) || (trade.isExclusive() && !profile.getExclusiveTrades().contains(trade.getId()))) toRemove.add(recipe);
         }
         getRecipes().removeIf(toRemove::contains);
     }

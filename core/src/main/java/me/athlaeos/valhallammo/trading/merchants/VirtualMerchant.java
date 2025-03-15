@@ -1,8 +1,8 @@
-package me.athlaeos.valhallammo.trading;
-import me.athlaeos.valhallammo.ValhallaMMO;
+package me.athlaeos.valhallammo.trading.merchants;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
+import me.athlaeos.valhallammo.trading.dom.MerchantData;
+import me.athlaeos.valhallammo.trading.listeners.MerchantListener;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Villager;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 
@@ -12,22 +12,28 @@ import java.util.UUID;
 
 public abstract class VirtualMerchant {
     private final Merchant merchant;
-    private final UUID villager;
+    private final UUID merchantID;
+    private final MerchantData data;
     private final PlayerMenuUtility playerMenuUtility;
     private List<MerchantRecipe> recipes = new ArrayList<>();
     private int expToGrant = 0;
 
     private boolean changeRecipes = true;
 
-    public VirtualMerchant(PlayerMenuUtility utility, Villager villager, List<MerchantRecipe> recipes){
+    public VirtualMerchant(PlayerMenuUtility utility, UUID merchantID, MerchantData data, List<MerchantRecipe> recipes){
         this.playerMenuUtility = utility;
-        this.villager = villager.getUniqueId();
+        this.merchantID = merchantID;
         this.merchant = Bukkit.createMerchant(getMenuName());
+        this.data = data;
         this.recipes = recipes;
     }
 
-    public Villager getVillager() {
-        return (Villager) ValhallaMMO.getInstance().getServer().getEntity(villager);
+    public UUID getMerchantID() {
+        return merchantID;
+    }
+
+    public MerchantData getData() {
+        return data;
     }
 
     public void setExpToGrant(int expToGrant) {

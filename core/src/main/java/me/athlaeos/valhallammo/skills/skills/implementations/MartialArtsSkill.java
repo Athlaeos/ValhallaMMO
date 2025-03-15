@@ -474,7 +474,7 @@ public class MartialArtsSkill extends Skill implements Listener {
                                 meditationTimeTracker.put(e.getPlayer().getUniqueId(), meditatingFor);
                             }
                         }
-                    }.runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
+                    }.runTaskTimer(ValhallaMMO.getInstance(), 10L, 1L);
                 };
             }
         };
@@ -510,7 +510,7 @@ public class MartialArtsSkill extends Skill implements Listener {
 
     public static final NamespacedKey KEY_MEDITATION_VEHICLE = new NamespacedKey(ValhallaMMO.getInstance(), "meditation_vehicle");
     public ArmorStand getMeditationVehicle(Player player){
-        return player.getVehicle() instanceof ArmorStand a && a.getPersistentDataContainer().has(KEY_MEDITATION_VEHICLE, PersistentDataType.STRING) ? a : null;
+        return player.getVehicle() instanceof ArmorStand a && a.getPersistentDataContainer().has(KEY_MEDITATION_VEHICLE, PersistentDataType.BYTE) ? a : null;
     }
 
     @Override

@@ -2,18 +2,23 @@ package me.athlaeos.valhallammo.trading;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet;
 import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
+import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
-import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.trading.data.MerchantDataPersistence;
+import me.athlaeos.valhallammo.trading.data.implementations.SQLite;
+import me.athlaeos.valhallammo.trading.dom.*;
+import me.athlaeos.valhallammo.utility.Callback;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
@@ -23,9 +28,11 @@ import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class CustomTradeRegistry {
+public class CustomMerchantManager {
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LootPredicate.class, new GsonAdapter<LootPredicate>("PRED_TYPE"))
             .registerTypeAdapter(DynamicItemModifier.class, new GsonAdapter<DynamicItemModifier>("MOD_TYPE"))
@@ -36,64 +43,28 @@ public class CustomTradeRegistry {
             .enableComplexMapKeySerialization()
             .create();
     private static final NamespacedKey KEY_TRADE_ID = new NamespacedKey(ValhallaMMO.getInstance(), "trade_id");
+    private static final NamespacedKey KEY_CUSTOM_VILLAGER = new NamespacedKey(ValhallaMMO.getInstance(), "is_custom_villager");
 
-    private int delayUntilWorking = 24000; // the time it takes for a villager who just got a profession to be able to work/be interacted with, in game time
+    private final int delayUntilWorking = ValhallaMMO.getPluginConfig().getInt("delay_until_working"); // the time it takes for a villager who just got a profession to be able to work/be interacted with, in game time
+    private static MerchantDataPersistence merchantDataPersistence;
 
     private static final Map<String, MerchantConfiguration> registeredMerchantConfigurations = new HashMap<>();
     private static final Map<Villager.Profession, MerchantConfiguration> merchantConfigurationByProfession = new HashMap<>();
     private static final Map<String, MerchantType> registeredMerchantTypes = new HashMap<>();
     private static final Map<String, MerchantTrade> registeredMerchantTrades = new HashMap<>();
 
-    static {
-        DisplayNameSet m1 = new DisplayNameSet("rename");
-        m1.setDisplayName("&cTest");
-
-        MerchantConfiguration configuration = new MerchantConfiguration("test", Villager.Profession.NONE);
-        MerchantType type = new MerchantType("test");
-        MerchantTrade t1 = new MerchantTrade("test1");
-        t1.setScalingCostItem(new ItemStack(Material.EMERALD, 10));
-        t1.setOptionalCostItem(new ItemStack(Material.DIAMOND, 1));
-        t1.setMaxUses(3);
-        t1.setResult(new ItemStack(Material.NETHER_STAR));
-        t1.setModifiers(new ArrayList<>(List.of(m1)));
-        t1.setVillagerExperience(10);
-        MerchantTrade t2 = new MerchantTrade("test2");
-        t2.setScalingCostItem(new ItemStack(Material.REDSTONE, 10));
-        t2.setOptionalCostItem(new ItemStack(Material.DIAMOND, 1));
-        t2.setMaxUses(3);
-        t2.setResult(new ItemStack(Material.ECHO_SHARD));
-        t2.setVillagerExperience(10);
-        MerchantTrade t3 = new MerchantTrade("test3");
-        t3.setScalingCostItem(new ItemStack(Material.LAPIS_LAZULI, 10));
-        t3.setOptionalCostItem(new ItemStack(Material.DIAMOND, 1));
-        t3.setMaxUses(3);
-        t3.setResult(new ItemStack(Material.QUARTZ));
-        t3.setVillagerExperience(10);
-        registerTrade(t1);
-        type.addTrade(MerchantLevel.NOVICE, t1);
-        type.addTrade(MerchantLevel.APPRENTICE, t2);
-        type.addTrade(MerchantLevel.JOURNEYMAN, t3);
-        registerMerchantType(type);
-        configuration.getMerchantTypes().add(type.getType());
-        registerConfiguration(configuration);
-    }
-
     /**
-     * Takes a villager and turns them into a custom trader. <br>
+     * Takes a villager and turns them into a custom trader, of a type fitting their profession. <br>
      * During this trade selection the individual trade's conditions will be ignored, and so the villager will have
      * every trade accessible to them *after* the weighted selection procedure is done. <br>
-     * If `persist` is true, the villager will have {@link MerchantData} persisted to their PersistentDataContainer during this. <br>
      * If a villager already has custom trades, they will be overwritten.
      * @param villager The villager to be granted custom trades
-     * @param persist If true, the returned MerchantData is also saved to the villager. If false, it is only returned
      * @return The new MerchantData representing all trades the villager has been granted, or null if no recipes were added
      */
-    public static MerchantData createCustomTrader(Villager villager, boolean persist){
+    public static MerchantData convertToRandomMerchant(Villager villager){
+        villager.getPersistentDataContainer().set(KEY_CUSTOM_VILLAGER, PersistentDataType.BYTE, (byte) 0);
         MerchantConfiguration configuration = merchantConfigurationByProfession.get(villager.getProfession());
-        if (configuration == null) {
-            System.out.println("no configuration");
-            return null;
-        }
+        if (configuration == null) return null; // No configuration available, do not do anything
         Collection<MerchantType> types = new HashSet<>();
         for (String type : new HashSet<>(configuration.getMerchantTypes())) {
             if (registeredMerchantTypes.containsKey(type)) types.add(registeredMerchantTypes.get(type));
@@ -103,25 +74,26 @@ public class CustomTradeRegistry {
             }
         }
         MerchantType selectedType = Utils.weightedSelection(types, 1, 0, 0).stream().findFirst().orElse(null);
-        if (selectedType == null) {
-            System.out.println("no type for " + villager.getProfession());
-            return null;
-        }
+        if (selectedType == null) return null; // No merchant type selected
+
+        return createMerchant(villager.getUniqueId(), selectedType);
+    }
+
+    public static MerchantData createMerchant(UUID id, MerchantType type){
         List<MerchantData.TradeData> trades = new ArrayList<>();
-        for (MerchantLevel level : selectedType.getTrades().keySet()){
-            System.out.println("checking trades for level " + level);
-            MerchantType.MerchantLevelTrades levelTrades = selectedType.getTrades(level);
+        for (MerchantLevel level : type.getTrades().keySet()){
+            MerchantType.MerchantLevelTrades levelTrades = type.getTrades(level);
             Collection<MerchantTrade> merchantTrades = new HashSet<>();
             for (String trade : new HashSet<>(levelTrades.getTrades())) {
                 if (registeredMerchantTrades.containsKey(trade)) merchantTrades.add(registeredMerchantTrades.get(trade));
                 else {
                     levelTrades.getTrades().remove(trade);
-                    ValhallaMMO.logWarning("Merchant Type " + selectedType.getType() + " had trade " + trade + " added to it, but it doesn't exist! Removed.");
+                    ValhallaMMO.logWarning("Merchant Type " + type.getType() + " had trade " + trade + " added to it, but it doesn't exist! Removed.");
                 }
             }
             Collection<MerchantTrade> selectedTrades = new HashSet<>(merchantTrades.stream().filter(t -> t.getWeight() == -1).toList());
             merchantTrades.removeIf(t -> t.getWeight() == -1);
-            selectedTrades.addAll(Utils.weightedSelection(merchantTrades, Utils.randomAverage(selectedType.getRolls(level)), 0, 0));
+            selectedTrades.addAll(Utils.weightedSelection(merchantTrades, Utils.randomAverage(type.getRolls(level)), 0, 0));
             selectedTrades.forEach(t -> {
                 ItemBuilder result = new ItemBuilder(t.getResult());
                 DynamicItemModifier.modify(result, null, t.getModifiers(), false, true, true);
@@ -129,48 +101,53 @@ public class CustomTradeRegistry {
                 trades.add(new MerchantData.TradeData(t.getId(), level.getLevel(), result.get(), t.getMaxUses(), t.getMaxUses(), 0));
             });
         }
-        MerchantData data = new MerchantData(selectedType, trades.toArray(new MerchantData.TradeData[0]));
-        System.out.println("gave villager " + trades.size() + " trades");
-        if (persist) data.serialize(villager);
+        MerchantData data = new MerchantData(type, trades.toArray(new MerchantData.TradeData[0]));
+        merchantDataPersistence.setData(id, data);
         return data;
     }
 
-    public static MerchantData getCustomTrader(Villager villager, boolean createIfAbsent){
-        MerchantData data = MerchantData.deserialize(villager);
-        if (createIfAbsent && data == null) data = createCustomTrader(villager, true);
-        return data;
+    public static void getMerchantData(Villager villager, Callback<MerchantData> whenReady){
+        merchantDataPersistence.getData(villager.getUniqueId(), whenReady);
     }
 
-    public static List<MerchantRecipe> recipesFromVillager(Villager villager, Player player){
-        MerchantData data = MerchantData.deserialize(villager);
-        if (data == null) return null;
+    public static void getMerchantData(UUID id, Callback<MerchantData> whenReady){
+        merchantDataPersistence.getData(id, whenReady);
+    }
+
+    public static MerchantLevel getLevel(MerchantData data){
+        MerchantType merchantType = registeredMerchantTypes.get(data.getType());
+        if (merchantType == null) return null;
+        MerchantLevel currentLevel = null;
+        for (MerchantLevel level : MerchantLevel.values()){
+            MerchantType.MerchantLevelTrades trades = merchantType.getTrades(level);
+            if (trades == null) continue;
+            if (data.getExp() >= trades.getExpRequirement() || currentLevel == null) currentLevel = level;
+        }
+        return currentLevel;
+    }
+
+    public static List<MerchantRecipe> recipesFromData(MerchantData data, Player player){
         MerchantType type = registeredMerchantTypes.get(data.getType());
-        if (type == null || data.getTypeVersion() < type.getVersion()) data = createCustomTrader(villager, true);
-        if (data == null) return null;
+        MerchantLevel level = getLevel(data);
+        if (type == null || level == null) return null;
         List<MerchantRecipe> recipes = new ArrayList<>();
-        boolean modified = false;
         List<MerchantTrade> trades = new ArrayList<>();
         for (String tradeName : new HashSet<>(data.getTrades().keySet())){
             MerchantTrade trade = registeredMerchantTrades.get(tradeName);
             if (trade == null){
                 data.getTrades().remove(tradeName);
-                modified = true;
-                String error = String.format("Villager at %d, %d, %d had a trade that no longer exists! Removed now", villager.getLocation().getBlockX(), villager.getLocation().getBlockY(), villager.getLocation().getBlockZ());
+                String error = "Villager data had trade " + tradeName + " that no longer exists! Removed now";
                 ValhallaMMO.logWarning(error);
                 player.sendMessage(Utils.chat("&c" + error + ", please notify admin"));
                 continue;
             }
-            System.out.println("moasdsd trad "+ trade.getId());
             trades.add(trade);
         }
         for (MerchantTrade trade : trades){
             MerchantData.TradeData tradeData = data.getTrades().get(trade.getId());
-            if (tradeData.getLevel() > villager.getVillagerLevel()) {
-                System.out.println("this trade is beyond the villagers level " + tradeData.getLevel() + "/" + villager.getVillagerLevel());
-                continue;
-            }
+            if (tradeData.level() > level.getLevel()) continue;
             double maxUses = trade.getMaxUses();
-            double remainingUses = tradeData.getSalesLeft();
+            double remainingUses = tradeData.salesLeft();
             if (!trade.hasFixedUseCount()){
                 double tradeCountMultiplier = 1; // TODO AccumulativeStatManager.getCachedStats("TRADE_USE_MULTIPLIER", player, 10000, true);
                 maxUses *= tradeCountMultiplier;
@@ -178,15 +155,13 @@ public class CustomTradeRegistry {
             }
             if (remainingUses > maxUses) remainingUses = maxUses;
             int uses = (int) Math.floor(maxUses - remainingUses);
-            MerchantRecipe recipe = new MerchantRecipe(tradeData.getItem(), uses, (int) Math.floor(maxUses), trade.rewardsExperience(), trade.getVillagerExperience(), trade.getDemandMultiplier(), tradeData.getDemand(), trade.getSpecialPrice());
+            MerchantRecipe recipe = new MerchantRecipe(tradeData.item(), uses, (int) Math.floor(maxUses), trade.rewardsExperience(), trade.getVillagerExperience(), trade.getDemandMultiplier(), tradeData.demand(), trade.getSpecialPrice());
             List<ItemStack> ingredients = new ArrayList<>();
             ingredients.add(trade.getScalingCostItem());
             if (!ItemUtils.isEmpty(trade.getOptionalCostItem())) ingredients.add(trade.getOptionalCostItem());
             recipe.setIngredients(ingredients);
             recipes.add(recipe);
-            System.out.println("added " + trade.getId());
         }
-        if (modified) data.serialize(villager);
         return recipes;
     }
 
@@ -233,5 +208,55 @@ public class CustomTradeRegistry {
 
     public static MerchantTrade tradeFromKeyedMeta(ItemMeta meta){
         return registeredMerchantTrades.get(meta.getPersistentDataContainer().getOrDefault(KEY_TRADE_ID, PersistentDataType.STRING, ""));
+    }
+
+    @SuppressWarnings("all")
+    public static void loadTradesFromFile(File f){
+        try {
+            f.createNewFile();
+        } catch (IOException ignored){}
+        try (BufferedReader setsReader = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
+            MerchantConfiguration[] merchantConfigs = gson.fromJson(setsReader, MerchantConfiguration[].class);
+            if (merchantConfigs == null) return;
+            for (MerchantConfiguration merchant : merchantConfigs) registerConfiguration(merchant);
+        } catch (IOException | JsonSyntaxException exception){
+            ValhallaMMO.logSevere("Could not load merchant configurations from merchant_configurations.json, " + exception.getMessage());
+        } catch (NoClassDefFoundError ignored){}
+    }
+
+    @SuppressWarnings("all")
+    public static void saveMerchantConfigurations(){
+        File f = new File(ValhallaMMO.getInstance().getDataFolder(), "/merchant_configurations.json");
+        try {
+            f.createNewFile();
+        } catch (IOException ignored){}
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(f, StandardCharsets.UTF_8))){
+            JsonElement element = gson.toJsonTree(new ArrayList<>(registeredMerchantConfigurations.values()), new TypeToken<ArrayList<MerchantConfiguration>>(){}.getType());
+            gson.toJson(element, writer);
+            writer.flush();
+        } catch (IOException | JsonSyntaxException exception){
+            ValhallaMMO.logSevere("Could not save items to merchant_configurations.json, " + exception.getMessage());
+        }
+    }
+
+    public static void setupDatabase(){
+        SQLite sqlite = new SQLite();
+        if (sqlite.getConnection() != null) merchantDataPersistence = sqlite;
+
+        if (merchantDataPersistence instanceof Database db) db.createTable();
+    }
+
+    public static void setMerchantDataPersistence(MerchantDataPersistence merchantDataPersistence) {
+        CustomMerchantManager.merchantDataPersistence = merchantDataPersistence;
+
+        if (merchantDataPersistence instanceof Database db) db.createTable();
+    }
+
+    public static MerchantDataPersistence getMerchantDataPersistence() {
+        return merchantDataPersistence;
+    }
+
+    public static boolean isCustomMerchant(Villager villager){
+        return villager.getPersistentDataContainer().has(KEY_CUSTOM_VILLAGER, PersistentDataType.BYTE);
     }
 }

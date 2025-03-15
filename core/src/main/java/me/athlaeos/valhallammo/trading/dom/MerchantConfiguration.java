@@ -1,4 +1,4 @@
-package me.athlaeos.valhallammo.trading;
+package me.athlaeos.valhallammo.trading.dom;
 
 import org.bukkit.entity.Villager;
 

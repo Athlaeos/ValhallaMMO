@@ -1,4 +1,4 @@
-package me.athlaeos.valhallammo.trading;
+package me.athlaeos.valhallammo.trading.dom;
 
 public enum GossipTypeWrapper {
     MAJOR_NEGATIVE,

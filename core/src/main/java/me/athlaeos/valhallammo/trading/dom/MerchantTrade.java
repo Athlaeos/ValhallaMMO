@@ -1,4 +1,4 @@
-package me.athlaeos.valhallammo.trading;
+package me.athlaeos.valhallammo.trading.dom;
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.dom.Weighted;

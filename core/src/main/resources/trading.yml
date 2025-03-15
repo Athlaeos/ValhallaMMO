@@ -1,0 +1,12 @@
+# The time (in game ticks) it takes for a villager to be able to trade after getting an obsession
+# Meant to counter repeat-refreshing until desired trades are obtained
+delay_until_working: 24000
+
+# If true, all villagers interacted with are tagged as custom villagers. From that moment,
+# their trades will be customized, and they'll be affected by the plugin's overhauling mechanics.
+# If false, villagers will not be tagged, and they won't be customized
+# As reminder, the villager's trades are not actually changed. Removing the tag or the plugin
+# will restore their trades back to normal.
+customize_all_villagers: false
+
+disable_nitwits: true

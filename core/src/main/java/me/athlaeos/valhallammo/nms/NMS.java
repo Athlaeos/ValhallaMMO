@@ -5,7 +5,7 @@ import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
-import me.athlaeos.valhallammo.trading.GossipTypeWrapper;
+import me.athlaeos.valhallammo.trading.dom.GossipTypeWrapper;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
@@ -78,9 +78,6 @@ public interface NMS extends Listener {
         // do nothing by default
     }
     void forceAttack(Player player, LivingEntity victim);
-
-    int getReputation(Player player, Villager villager);
-    void modifyReputation(Player player, Villager villager, GossipTypeWrapper reason);
 
     void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes);
     void setItemModel(ItemMeta meta, String model);

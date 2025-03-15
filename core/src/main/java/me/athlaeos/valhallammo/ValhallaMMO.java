@@ -35,7 +35,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockConditionRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.tools.BlockHardnessStick;
-import me.athlaeos.valhallammo.trading.MerchantListener;
+import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.utility.GlobalEffect;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -96,12 +96,14 @@ public class ValhallaMMO extends JavaPlugin {
         save("recipes/cauldron_recipes.json");
         save("recipes/smithing_recipes.json");
         save("items.json");
+        save("merchant_configurations.json");
         save("loot_table_config.json");
         save("loot_tables/digging.json");
         save("loot_tables/fishing.json");
         save("loot_tables/woodcutting.json");
         save("replacement_table_config.json");
         save("replacement_tables/loot_valhallafication.json");
+        saveConfig("trading.yml");
         saveConfig("recipes/disabled_recipes.yml");
         saveConfig("leaderboards.yml");
         saveConfig("mob_stats.yml");
@@ -241,7 +243,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerListener(new WorldSaveListener());
 //        registerListener(new ThrownWeaponListener()); // might end up not using
 
-        registerListener(new MerchantListener());
+        // registerListener(new MerchantListener());
         registerListener(new BlockHardnessStick());
 
         registerCommand(new CommandManager(), "valhalla");
@@ -272,6 +274,7 @@ public class ValhallaMMO extends JavaPlugin {
         LootTableRegistry.loadFiles();
         ArmorSetRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/armor_sets.json"));
         CustomItemRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/items.json"));
+        CustomMerchantManager.loadTradesFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/merchant_configurations.json"));
         LeaderboardManager.refreshLeaderboards();
 
         // During reloads profiles are persisted. This makes sure profiles of players who are already online are ensured
@@ -305,6 +308,14 @@ public class ValhallaMMO extends JavaPlugin {
                 logSevere("Could not close connection");
             }
         }
+        CustomMerchantManager.getMerchantDataPersistence().saveAllData();
+        if (CustomMerchantManager.getMerchantDataPersistence() instanceof Database database) {
+            try {
+                database.getConnection().close();
+            } catch (SQLException ignored){
+                logSevere("Could not close connection");
+            }
+        }
         for (Player p : getServer().getOnlinePlayers()) {
             EntityAttributeStats.removeStats(p);
             CustomBreakSpeedListener.removeFatiguedPlayer(p);
@@ -314,6 +325,7 @@ public class ValhallaMMO extends JavaPlugin {
         LootTableRegistry.saveAll();
         ArmorSetRegistry.saveArmorSets();
         CustomItemRegistry.saveItems();
+        CustomMerchantManager.saveMerchantConfigurations();
         GlobalEffect.saveActiveGlobalEffects();
         PartyManager.saveParties();
         JumpListener.onServerStop();
