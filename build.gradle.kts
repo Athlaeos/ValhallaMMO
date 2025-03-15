@@ -7,12 +7,10 @@ plugins {
     id("com.gradleup.shadow") version "8.3.5"
 }
 
-group = "me.athlaeos"
-description = "A very big skills/leveling plugin with plenty of useful tools to make a unique experience"
+java.disableAutoTargetJvm()
 
 //repos
 allprojects {
-
     repositories {
         mavenCentral()
         maven {
@@ -58,27 +56,39 @@ subprojects {
         set("paperCompiler", ReobfArtifactConfiguration.REOBF_PRODUCTION)
     }
 
+    //common dependencies
     dependencies {
         compileOnly("io.netty:netty-all:4.1.87.Final")
+    }
 
-        //if we are an NMS module
-        if (this@subprojects.name.startsWith("v1_")) {
-            compileOnly(project(":core"))
-            this@subprojects.tasks.assemble {
+    //if we are an NMS module
+    if (this@subprojects.name.startsWith("v1_")) {
+        //apply paper weight
+        apply(plugin = "io.papermc.paperweight.userdev")
+
+        //make sure it requires core
+        dependencies.implementation(project(":core"))
+
+        //make assemble require the re-obfuscated jar
+        this@subprojects.tasks {
+            assemble {
                 dependsOn("reobfJar")
+            }
+            withType<Javadoc>().configureEach {
+                options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
+            }
+            withType<JavaCompile>().configureEach {
+                // Defaults to java 17, needs to be overridden in newer versions!
+                options.release = 17
             }
         }
     }
 }
 
-//tasks
-allprojects {
-    tasks.build {
+tasks {
+    assemble {
         dependsOn("shadowJar")
     }
-}
-
-tasks {
     runServer {
         version("1.21.4")
     }
@@ -86,7 +96,12 @@ tasks {
 
 dependencies {
     subprojects.forEach {
-        implementation(it)
+        //if its a version jar we want the reobf variant
+        if (it.name.startsWith("v1_")) {
+            runtimeOnly(project(":${it.name}", configuration = "reobf"))
+        } else {
+            implementation(it)
+        }
     }
 }
 
