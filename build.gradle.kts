@@ -70,17 +70,18 @@ subprojects {
         dependencies.implementation(project(":core"))
 
         //make assemble require the re-obfuscated jar
-        this@subprojects.tasks {
-            assemble {
-                dependsOn("reobfJar")
-            }
-            withType<Javadoc>().configureEach {
-                options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
-            }
-            withType<JavaCompile>().configureEach {
-                // Defaults to java 17, needs to be overridden in newer versions!
-                options.release = 17
-            }
+        this@subprojects.tasks.assemble {
+            dependsOn("reobfJar")
+        }
+    }
+
+    tasks {
+        withType<Javadoc>().configureEach {
+            options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
+        }
+        withType<JavaCompile>().configureEach {
+            // Defaults to java 17, needs to be overridden in newer versions!
+            options.release = 17
         }
     }
 }

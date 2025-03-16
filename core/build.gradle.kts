@@ -1,11 +1,14 @@
 plugins {
-    java
     `maven-publish`
 }
 
 dependencies {
     compileOnly("org.spigotmc", "spigot-api", "1.20.1-R0.1-SNAPSHOT")
     compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
+
+    //playforms
+    implementation(project(":platform_api"))
+    implementation(project(":platform_folia"))
 
     implementation("com.jeff-media:MorePersistentDataTypes:2.4.0")
     implementation("com.jeff-media:custom-block-data:2.2.2")
@@ -19,6 +22,7 @@ dependencies {
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.1.0-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("net.kyori:adventure-text-minimessage:4.17.0")
+    compileOnly("net.kyori:adventure-text-serializer-legacy:4.17.0")
     compileOnly("commons-io:commons-io:2.17.0")
     compileOnly("org.bstats:bstats-bukkit:3.0.3")
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.5")
