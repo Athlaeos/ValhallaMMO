@@ -3,9 +3,12 @@ package me.athlaeos.valhallammo.gui;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.player.PlayerBedEnterEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +19,23 @@ public class MenuListener implements Listener {
 
     public static void setActiveMenu(Player p, Menu menu){
         activeMenus.put(p.getUniqueId(), menu);
+    }
+
+    /**
+     * There exists a bug in spigot that prevents InventoryClickEvents while the player
+     * is sleeping, so to patch this we prevent inventories opening while the player
+     * is sleeping.
+     */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onMenuOpen(InventoryOpenEvent e){
+        if (!e.getPlayer().isSleeping() || e.isCancelled()) return;
+        e.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerSleep(PlayerBedEnterEvent e){
+        if (e.isCancelled()) return;
+        e.getPlayer().closeInventory();
     }
 
     @EventHandler
