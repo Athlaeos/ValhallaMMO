@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.trading.dom.*;
 import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
 import me.athlaeos.valhallammo.trading.merchants.implementations.SimpleMerchant;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
@@ -35,26 +36,25 @@ public class MerchantListener implements Listener {
         if (virtualMerchant == null) return;
         setActiveTradingMenu(p, null);
         virtualMerchant.onClose();
-        Villager villager = virtualMerchant.getMerchantID();
-        if (villager == null) return;
-        villager.setVillagerExperience(villager.getVillagerExperience() + virtualMerchant.getExpToGrant());
-        System.out.println("granted " + virtualMerchant.getExpToGrant() + " experience");
+        UUID villager = virtualMerchant.getMerchantID();
+        if (villager == null || !(ValhallaMMO.getInstance().getServer().getEntity(villager) instanceof Villager v)) return;
+        v.setVillagerExperience(v.getVillagerExperience() + virtualMerchant.getExpToGrant());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPrepareTrade(TradeSelectEvent e){
-        if (e.getMerchant().getTrader() == null || e.isCancelled()) return;
-        VirtualMerchant merchantInterface = activeTradingMenus.get(e.getMerchant().getTrader().getUniqueId());
-        if (merchantInterface == null) return;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            ItemStack result = e.getInventory().getItem(2);
-            if (ItemUtils.isEmpty(result)) return;
-            ItemMeta meta = result.getItemMeta();
-            if (meta == null) return;
-            CustomMerchantManager.removeTradeKey(meta);
-            result.setItemMeta(meta);
-        }, 1L); // don't forget that this key must still be added to trades
-    }
+//    @EventHandler(priority = EventPriority.MONITOR)
+//    public void onPrepareTrade(TradeSelectEvent e){
+//        if (e.getMerchant().getTrader() == null || e.isCancelled()) return;
+//        VirtualMerchant merchantInterface = activeTradingMenus.get(e.getMerchant().getTrader().getUniqueId());
+//        if (merchantInterface == null) return;
+//        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+//            ItemStack result = e.getInventory().getItem(2);
+//            if (ItemUtils.isEmpty(result)) return;
+//            ItemMeta meta = result.getItemMeta();
+//            if (meta == null) return;
+//            CustomMerchantManager.removeTradeKey(meta);
+//            result.setItemMeta(meta);
+//        }, 1L); // TODO don't forget that this key must still be added to trades
+//    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onTrade(InventoryClickEvent e){
@@ -67,9 +67,9 @@ public class MerchantListener implements Listener {
         ItemMeta meta = ItemUtils.isEmpty(result) ? null : result.getItemMeta();
         if (meta == null) return;
         MerchantTrade trade = CustomMerchantManager.tradeFromKeyedMeta(meta);
-        if (trade == null) {
-
-        }
+        if (trade == null) return;
+        CustomMerchantManager.removeTradeKey(meta);
+        result.setItemMeta(meta);
 
         ItemStack item1 = m.getItem(0);
         ItemStack item2 = m.getItem(1);
@@ -127,7 +127,7 @@ public class MerchantListener implements Listener {
 
         int finalTimesTraded = timesTraded;
         CustomMerchantManager.getMerchantData(merchantID, data -> {
-            PlayerTradeItemEvent event = new PlayerTradeItemEvent((Player) e.getWhoClicked(), merchantID, data, m.getMerchant(), recipe, result, finalTimesTraded, GossipTypeWrapper.TRADING);
+            PlayerTradeItemEvent event = new PlayerTradeItemEvent((Player) e.getWhoClicked(), merchantID, data, m.getMerchant(), recipe, trade, result, finalTimesTraded);
             ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
             if (event.isCancelled() || event.getTimesTraded() <= 0){
                 e.setCancelled(true);
@@ -136,11 +136,12 @@ public class MerchantListener implements Listener {
 
             m.setItem(2, event.getResult());
             if (merchantID != null){
-                for (int i = 0; i < event.getTimesTraded(); i++){
-                    ValhallaMMO.getNms().modifyReputation((Player) e.getWhoClicked(), merchantID, event.getReputationInfluence());
-                    System.out.println("granted " + event.getReputationInfluence() + " reputation");
-                }
-                merchantInterface.setExpToGrant(merchantInterface.getExpToGrant() + (event.getTimesTraded() * event.getRecipeTraded().getVillagerExperience()));
+                int reputationQuantity = event.getTimesTraded();
+                MerchantData.MerchantPlayerMemory memory = event.getMerchantData().getPlayerMemory(e.getWhoClicked().getUniqueId());
+                // TODO calculate trading reputation based on current happiness
+                memory.setTradingReputation(memory.getTradingReputation() + reputationQuantity);
+                int exp = Utils.randomAverage(event.getTimesTraded() * event.getCustomTrade().getVillagerExperience());
+                merchantInterface.setExpToGrant(merchantInterface.getExpToGrant() + exp);
             }
         });
     }
@@ -152,14 +153,14 @@ public class MerchantListener implements Listener {
             CustomMerchantManager.getMerchantData(v, data -> {
                 if (data == null && convertAllVillagers) data = CustomMerchantManager.convertToRandomMerchant(v);
                 if (data == null) return;
-                MerchantData.MerchantPlayerMemory reputation = data.getPlayerMemory().getOrDefault(e.getPlayer().getUniqueId(), new MerchantData.MerchantPlayerMemory());
+                MerchantData.MerchantPlayerMemory reputation = data.getPlayerMemory(e.getPlayer().getUniqueId());
                 // TODO actually do something with reputation data
                 MerchantConfiguration configuration = CustomMerchantManager.getMerchantConfigurationByProfession().get(v.getProfession());
                 if (configuration == null) return;
                 List<MerchantRecipe> recipes = CustomMerchantManager.recipesFromData(data, e.getPlayer());
                 if (recipes != null) {
                     // TODO data driven custom merchants instead of hardcoded simple ones
-                    VirtualMerchant merchant = new SimpleMerchant(PlayerMenuUtilManager.getPlayerMenuUtility(e.getPlayer()), v, recipes);
+                    VirtualMerchant merchant = new SimpleMerchant(PlayerMenuUtilManager.getPlayerMenuUtility(e.getPlayer()), v.getUniqueId(), data, recipes);
                     if (merchant.getRecipes().isEmpty()) v.shakeHead();
                     else merchant.open();
                 } else v.shakeHead();

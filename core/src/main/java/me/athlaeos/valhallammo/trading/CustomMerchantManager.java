@@ -155,7 +155,7 @@ public class CustomMerchantManager {
             }
             if (remainingUses > maxUses) remainingUses = maxUses;
             int uses = (int) Math.floor(maxUses - remainingUses);
-            MerchantRecipe recipe = new MerchantRecipe(tradeData.item(), uses, (int) Math.floor(maxUses), trade.rewardsExperience(), trade.getVillagerExperience(), trade.getDemandMultiplier(), tradeData.demand(), trade.getSpecialPrice());
+            MerchantRecipe recipe = new MerchantRecipe(tradeData.item(), uses, (int) Math.floor(maxUses), trade.rewardsExperience(), Math.round(trade.getVillagerExperience()), trade.getDemandMultiplier(), tradeData.demand(), trade.getSpecialPrice());
             List<ItemStack> ingredients = new ArrayList<>();
             ingredients.add(trade.getScalingCostItem());
             if (!ItemUtils.isEmpty(trade.getOptionalCostItem())) ingredients.add(trade.getOptionalCostItem());

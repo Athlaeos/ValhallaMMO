@@ -45,7 +45,10 @@ public class MerchantData {
     public void setHappiness(float happiness) { this.happiness = happiness; }
     public int getExp() { return exp; }
     public void setExp(int exp) { this.exp = exp; }
-    public Map<UUID, MerchantPlayerMemory> getPlayerMemory() { return playerMemory; }
+    public MerchantPlayerMemory getPlayerMemory(UUID player) {
+        if (!playerMemory.containsKey(player)) playerMemory.put(player, new MerchantPlayerMemory());
+        return playerMemory.get(player);
+    }
 
     public static MerchantData deserialize(String data){
         return gson.fromJson(data, MerchantData.class);

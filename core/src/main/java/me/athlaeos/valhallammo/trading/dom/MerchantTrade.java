@@ -25,7 +25,7 @@ public class MerchantTrade implements Weighted {
     private double weight = 10; // the weight determines how likely this trade is to be picked as a villager's trade. a weight of exactly -1 means the trade is ALWAYS SELECTED and not included in the random selection
     private double weightQuality = 0; // quality is really a weight modifier scaling with luck, the formula for total weight is finalWeight = weight + (quality * luck). generally speaking, better luck = better trades. this stat may never bring weight below 0
     private boolean fixedPrice = false; // if price is fixed, it will not change regardless of reputation
-    private int villagerExperience = 1; // amount of experience the villager gets from this trade
+    private float villagerExperience = 1F; // amount of experience the villager gets from this trade
     private boolean rewardsExperience = true;
     private int specialPrice = 1;
     private float demandMultiplier = 1;
@@ -56,7 +56,7 @@ public class MerchantTrade implements Weighted {
     public LootTable.PredicateSelection getPredicateSelection() { return predicateSelection; }
     public double getWeightQuality() { return weightQuality; }
     public boolean isFixedPrice() { return fixedPrice; }
-    public int getVillagerExperience() { return villagerExperience; }
+    public float getVillagerExperience() { return villagerExperience; }
     public int getSpecialPrice() { return specialPrice; }
     public float getDemandMultiplier() { return demandMultiplier; }
     public int getMaxUses() { return maxUses; }
