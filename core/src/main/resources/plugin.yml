@@ -42,6 +42,8 @@ commands:
     description: "Shorter command for /val profile light_weapons, allowing players to view their light weapon stats"
   heavyweapons:
     description: "Shorter command for /val profile heavy_weapons, allowing players to view their heavy weapon stats"
+  martialarts:
+    description: "Shorter command for /val profile martial_arts, allowing players to view their martial arts stats"
   lightarmor:
     description: "Shorter command for /val profile light_armor, allowing players to view their light armor stats"
   heavyarmor:

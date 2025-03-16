@@ -5,7 +5,6 @@ import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
-import me.athlaeos.valhallammo.trading.dom.GossipTypeWrapper;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;

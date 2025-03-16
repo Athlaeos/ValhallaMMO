@@ -268,13 +268,14 @@ public class ValhallaMMO extends JavaPlugin {
         registerCommand(new ProfileCommand(WoodcuttingProfile.class), "woodcutting");
         registerCommand(new ProfileCommand(DiggingProfile.class), "digging");
         registerCommand(new ProfileCommand(FishingProfile.class), "fishing");
+        registerCommand(new ProfileCommand(MartialArtsProfile.class), "martialarts");
 
         LeaderboardManager.loadFile();
         CustomRecipeRegistry.loadFiles();
         LootTableRegistry.loadFiles();
         ArmorSetRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/armor_sets.json"));
         CustomItemRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/items.json"));
-        CustomMerchantManager.loadTradesFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/merchant_configurations.json"));
+//       TODO CustomMerchantManager.loadTradesFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/merchant_configurations.json"));
         LeaderboardManager.refreshLeaderboards();
 
         // During reloads profiles are persisted. This makes sure profiles of players who are already online are ensured
@@ -325,7 +326,7 @@ public class ValhallaMMO extends JavaPlugin {
         LootTableRegistry.saveAll();
         ArmorSetRegistry.saveArmorSets();
         CustomItemRegistry.saveItems();
-        CustomMerchantManager.saveMerchantConfigurations();
+//      TODO  CustomMerchantManager.saveMerchantConfigurations();
         GlobalEffect.saveActiveGlobalEffects();
         PartyManager.saveParties();
         JumpListener.onServerStop();
