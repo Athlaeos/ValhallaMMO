@@ -13,6 +13,7 @@ import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
+import me.athlaeos.valhallammo.trading.data.MerchantConfigurationData;
 import me.athlaeos.valhallammo.trading.data.MerchantDataPersistence;
 import me.athlaeos.valhallammo.trading.data.implementations.SQLite;
 import me.athlaeos.valhallammo.trading.dom.*;
@@ -48,8 +49,7 @@ public class CustomMerchantManager {
     private final int delayUntilWorking = ValhallaMMO.getPluginConfig().getInt("delay_until_working"); // the time it takes for a villager who just got a profession to be able to work/be interacted with, in game time
     private static MerchantDataPersistence merchantDataPersistence;
 
-    private static final Map<String, MerchantConfiguration> registeredMerchantConfigurations = new HashMap<>();
-    private static final Map<Villager.Profession, MerchantConfiguration> merchantConfigurationByProfession = new HashMap<>();
+    private static final Map<Villager.Profession, MerchantConfiguration> merchantConfigurations = new HashMap<>();
     private static final Map<String, MerchantType> registeredMerchantTypes = new HashMap<>();
     private static final Map<String, MerchantTrade> registeredMerchantTrades = new HashMap<>();
 
@@ -63,14 +63,14 @@ public class CustomMerchantManager {
      */
     public static MerchantData convertToRandomMerchant(Villager villager){
         villager.getPersistentDataContainer().set(KEY_CUSTOM_VILLAGER, PersistentDataType.BYTE, (byte) 0);
-        MerchantConfiguration configuration = merchantConfigurationByProfession.get(villager.getProfession());
-        if (configuration == null) return null; // No configuration available, do not do anything
+        MerchantConfiguration configuration = merchantConfigurations.get(villager.getProfession());
+        if (configuration == null || configuration.getMerchantTypes().isEmpty()) return null; // No configuration available, do not do anything
         Collection<MerchantType> types = new HashSet<>();
         for (String type : new HashSet<>(configuration.getMerchantTypes())) {
             if (registeredMerchantTypes.containsKey(type)) types.add(registeredMerchantTypes.get(type));
             else {
                 configuration.getMerchantTypes().remove(type);
-                ValhallaMMO.logWarning("Merchant Configuration " + configuration.getId() + " had Merchant sub-type " + type + " added to it, but it doesn't exist! Removed.");
+                ValhallaMMO.logWarning("Merchant Configuration for " + configuration.getType() + " had Merchant sub-type " + type + " added to it, but it doesn't exist! Removed.");
             }
         }
         MerchantType selectedType = Utils.weightedSelection(types, 1, 0, 0).stream().findFirst().orElse(null);
@@ -174,20 +174,15 @@ public class CustomMerchantManager {
     }
 
     public static void registerConfiguration(MerchantConfiguration configuration){
-        registeredMerchantConfigurations.put(configuration.getId(), configuration);
-        merchantConfigurationByProfession.put(configuration.getType(), configuration);
+        merchantConfigurations.put(configuration.getType(), configuration);
     }
 
     public int getDelayUntilWorking() {
         return delayUntilWorking;
     }
 
-    public static Map<Villager.Profession, MerchantConfiguration> getMerchantConfigurationByProfession() {
-        return new HashMap<>(merchantConfigurationByProfession);
-    }
-
-    public static Map<String, MerchantConfiguration> getRegisteredMerchantConfigurations() {
-        return new HashMap<>(registeredMerchantConfigurations);
+    public static Map<Villager.Profession, MerchantConfiguration> getMerchantConfigurations() {
+        return new HashMap<>(merchantConfigurations);
     }
 
     public static Map<String, MerchantTrade> getRegisteredMerchantTrades() {
@@ -216,9 +211,11 @@ public class CustomMerchantManager {
             f.createNewFile();
         } catch (IOException ignored){}
         try (BufferedReader setsReader = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
-            MerchantConfiguration[] merchantConfigs = gson.fromJson(setsReader, MerchantConfiguration[].class);
-            if (merchantConfigs == null) return;
-            for (MerchantConfiguration merchant : merchantConfigs) registerConfiguration(merchant);
+            MerchantConfigurationData data = gson.fromJson(setsReader, MerchantConfigurationData.class);
+            if (data == null) return;
+            for (MerchantConfiguration merchant : data.getMerchantConfigurations()) registerConfiguration(merchant);
+            for (MerchantTrade merchant : data.getRegisteredMerchantTrades()) registerTrade(merchant);
+            for (MerchantType merchant : data.getRegisteredMerchantTypes()) registerMerchantType(merchant);
         } catch (IOException | JsonSyntaxException exception){
             ValhallaMMO.logSevere("Could not load merchant configurations from merchant_configurations.json, " + exception.getMessage());
         } catch (NoClassDefFoundError ignored){}
@@ -231,7 +228,7 @@ public class CustomMerchantManager {
             f.createNewFile();
         } catch (IOException ignored){}
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(f, StandardCharsets.UTF_8))){
-            JsonElement element = gson.toJsonTree(new ArrayList<>(registeredMerchantConfigurations.values()), new TypeToken<ArrayList<MerchantConfiguration>>(){}.getType());
+            JsonElement element = gson.toJsonTree(new MerchantConfigurationData(registeredMerchantTrades.values(), registeredMerchantTypes.values(), merchantConfigurations.values()), MerchantConfigurationData.class);
             gson.toJson(element, writer);
             writer.flush();
         } catch (IOException | JsonSyntaxException exception){
@@ -243,13 +240,13 @@ public class CustomMerchantManager {
         SQLite sqlite = new SQLite();
         if (sqlite.getConnection() != null) merchantDataPersistence = sqlite;
 
-        if (merchantDataPersistence instanceof Database db) db.createTable();
+        if (merchantDataPersistence instanceof Database db) db.createTable(null);
     }
 
     public static void setMerchantDataPersistence(MerchantDataPersistence merchantDataPersistence) {
         CustomMerchantManager.merchantDataPersistence = merchantDataPersistence;
 
-        if (merchantDataPersistence instanceof Database db) db.createTable();
+        if (merchantDataPersistence instanceof Database db) db.createTable(null);
     }
 
     public static MerchantDataPersistence getMerchantDataPersistence() {
@@ -258,5 +255,14 @@ public class CustomMerchantManager {
 
     public static boolean isCustomMerchant(Villager villager){
         return villager.getPersistentDataContainer().has(KEY_CUSTOM_VILLAGER, PersistentDataType.BYTE);
+    }
+
+    public static MerchantConfiguration getMerchantConfiguration(Villager.Profession ofProfession){
+        if (merchantConfigurations.get(ofProfession) == null) merchantConfigurations.put(ofProfession, new MerchantConfiguration(ofProfession));
+        return merchantConfigurations.get(ofProfession);
+    }
+
+    public static MerchantType getMerchantType(String id){
+        return registeredMerchantTypes.get(id);
     }
 }

@@ -155,7 +155,7 @@ public class MerchantListener implements Listener {
                 if (data == null) return;
                 MerchantData.MerchantPlayerMemory reputation = data.getPlayerMemory(e.getPlayer().getUniqueId());
                 // TODO actually do something with reputation data
-                MerchantConfiguration configuration = CustomMerchantManager.getMerchantConfigurationByProfession().get(v.getProfession());
+                MerchantConfiguration configuration = CustomMerchantManager.getMerchantConfigurations().get(v.getProfession());
                 if (configuration == null) return;
                 List<MerchantRecipe> recipes = CustomMerchantManager.recipesFromData(data, e.getPlayer());
                 if (recipes != null) {

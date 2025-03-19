@@ -309,14 +309,14 @@ public class ValhallaMMO extends JavaPlugin {
                 logSevere("Could not close connection");
             }
         }
-        CustomMerchantManager.getMerchantDataPersistence().saveAllData();
-        if (CustomMerchantManager.getMerchantDataPersistence() instanceof Database database) {
-            try {
-                database.getConnection().close();
-            } catch (SQLException ignored){
-                logSevere("Could not close connection");
-            }
-        }
+//        CustomMerchantManager.getMerchantDataPersistence().saveAllData();
+//        if (CustomMerchantManager.getMerchantDataPersistence() instanceof Database database) {
+//            try {
+//                database.getConnection().close();
+//            } catch (SQLException ignored){
+//                logSevere("Could not close connection");
+//            }
+//        }
         for (Player p : getServer().getOnlinePlayers()) {
             EntityAttributeStats.removeStats(p);
             CustomBreakSpeedListener.removeFatiguedPlayer(p);

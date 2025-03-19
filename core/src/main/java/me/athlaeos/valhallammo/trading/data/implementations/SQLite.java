@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.trading.data.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.persistence.Database;
+import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.trading.data.MerchantDataPersistence;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.utility.Callback;
@@ -40,7 +41,7 @@ public class SQLite extends MerchantDataPersistence implements Database {
     }
 
     @Override
-    public void createTable() {
+    public void createTable(Profile profileType) {
         String query = "CREATE TABLE IF NOT EXISTS merchants (id VARCHAR(40) PRIMARY KEY, data TEXT);";
 
         try (PreparedStatement stmt = getConnection().prepareStatement(query)){

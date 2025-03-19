@@ -53,6 +53,11 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
     }
 
     @Override
+    public void createTable(Profile profileType) {
+        SQL.createTable(profileType, this);
+    }
+
+    @Override
     public void addColumnIfNotExists(String tableName, String columnName, String columnType) {
         try {
             PreparedStatement procedureCreationStatement = conn.prepareStatement(
