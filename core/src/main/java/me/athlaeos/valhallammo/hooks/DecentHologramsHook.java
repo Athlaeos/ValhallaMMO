@@ -172,7 +172,7 @@ public class DecentHologramsHook extends PluginHook implements Listener {
                 cancel();
                 ChunkEXPNerf.increment(damaged.getLocation().getChunk(), null, "damage_indicator_limiter", -1);
                 expiredInstances.remove(id);
-                damageIndicatorMap.get(damaged.getUniqueId()).remove(type, this);
+                damageIndicatorMap.getOrDefault(damaged.getUniqueId(), new HashMap<>()).remove(type, this);
 
                 int index = 0;
                 for (CustomDamageType type : damageIndicatorMap.get(damaged.getUniqueId()).keySet()){
