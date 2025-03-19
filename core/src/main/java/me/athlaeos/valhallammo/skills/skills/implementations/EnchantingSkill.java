@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.item.EnchantmentClassification;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
+import me.athlaeos.valhallammo.listeners.EntitySpawnListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
@@ -348,7 +349,7 @@ public class EnchantingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityKilled(EntityDeathEvent e) {
-        if (e.getEntity().getKiller() == null) return;
+        if (e.getEntity().getKiller() == null || EntitySpawnListener.isTrialSpawned(e.getEntity())) return;
 
         if (ChunkEXPNerf.doesChunkEXPNerfApply(
                 e.getEntity().getLocation().getChunk(),

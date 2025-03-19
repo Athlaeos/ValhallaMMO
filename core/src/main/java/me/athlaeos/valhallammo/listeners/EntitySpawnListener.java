@@ -121,4 +121,9 @@ public class EntitySpawnListener implements Listener {
         if (metadata.isEmpty()) return null;
         return Catch.catchOrElse(() -> CreatureSpawnEvent.SpawnReason.valueOf(metadata.get(0).asString()), null);
     }
+
+    public static boolean isTrialSpawned(Entity e){
+        CreatureSpawnEvent.SpawnReason reason = getSpawnReason(e);
+        return reason != null && reason.toString().equalsIgnoreCase("TRIAL_SPAWNER");
+    }
 }

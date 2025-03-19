@@ -217,7 +217,7 @@ public class ArcherySkill extends Skill implements Listener {
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (e.isCancelled() || !p.isOnline()) return;
-            double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(v.getLocation().getChunk(), p, "archery");
+            double chunkNerf = EntitySpawnListener.isTrialSpawned(v) ? 1 : ChunkEXPNerf.getChunkEXPNerf(v.getLocation().getChunk(), p, "archery");
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(v.getType(), 1D);
             double exp = ((expDistanceMultiplierBase * baseExp) + (baseExp * expDistanceMultiplierBonus * expDistance)) * entityExpMultiplier * chunkNerf;
             if (hasInfinity) exp *= expInfinityMultiplier;
@@ -229,7 +229,7 @@ public class ArcherySkill extends Skill implements Listener {
                             (EntitySpawnListener.getSpawnReason(v) == CreatureSpawnEvent.SpawnReason.SPAWNER ? expSpawnerMultiplier : 1),
                     false,
                     PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
-            ChunkEXPNerf.increment(v.getLocation().getChunk(), p, "archery");
+            if (!EntitySpawnListener.isTrialSpawned(v)) ChunkEXPNerf.increment(v.getLocation().getChunk(), p, "archery");
         }, 2L);
     }
 
