@@ -142,3 +142,5 @@ editor_loottable_entry_predicates: HOPPER:-1
 editor_loottable_descriptionlabel: PAPER:-1
 editor_loottable_villager_entry: EMERALD:-1
 editor_loottable_toggletinker: ANVIL:1829130
+
+editor_trademanager_add: LIME_DYE:1829130

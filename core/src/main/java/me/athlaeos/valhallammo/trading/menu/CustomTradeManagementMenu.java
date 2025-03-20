@@ -4,26 +4,29 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
+import me.athlaeos.valhallammo.trading.dom.MerchantLevel;
 import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
 import me.athlaeos.valhallammo.trading.dom.MerchantType;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class CustomTradeManagementMenu extends Menu {
     private static final NamespacedKey KEY_PROFESSION = new NamespacedKey(ValhallaMMO.getInstance(), "button_profession");
+    private static final NamespacedKey KEY_SUBTYPE = new NamespacedKey(ValhallaMMO.getInstance(), "button_subtype");
     private static final NamespacedKey KEY_BUTTON = new NamespacedKey(ValhallaMMO.getInstance(), "button_functionality");
 
     private View view = View.PROFESSIONS;
+    private int page = 0;
     private Villager.Profession currentProfession = null;
     private MerchantType currentSubType = null;
     private MerchantTrade currentTrade = null;
@@ -74,9 +77,52 @@ public class CustomTradeManagementMenu extends Menu {
                 inventory.setItem(33, professionButton(Villager.Profession.BUTCHER));
             }
             case SUBTYPES -> {
-                List<MerchantType> types = new ArrayList<>(CustomMerchantManager.getMerchantConfiguration(currentProfession).getMerchantTypes().stream().map(CustomMerchantManager::getMerchantType).filter(Objects::nonNull).toList());
-                types.sort(Comparator.comparing(MerchantType::getType));
+                if (currentProfession != null){
+                    List<MerchantType> types = new ArrayList<>(CustomMerchantManager.getMerchantConfiguration(currentProfession).getMerchantTypes().stream().map(CustomMerchantManager::getMerchantType).filter(Objects::nonNull).toList());
+                    types.sort(Comparator.comparing(MerchantType::getType));
+                    List<ItemStack> buttons = new ArrayList<>();
 
+                    double totalWeight = types.stream().map(MerchantType::getWeight).mapToDouble(d -> d).sum();
+                    for (MerchantType type : types){
+                        ItemStack icon = new ItemBuilder(Material.PAPER)
+                                .name("&e" + TranslationManager.translatePlaceholders(type.getName()) + " &7v" + type.getVersion())
+                                .lore(
+                                        String.format("&7Chance of occurrence: &e%.1f%% &7(&e%.1f&7)", Math.max(0, Math.min(100, (type.getWeight() / totalWeight) * 100)), type.getWeight()),
+                                        "&7Trades:",
+                                        "    Novice:     &e" + type.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
+                                        "    Apprentice: &b" + type.getTrades().get(MerchantLevel.APPRENTICE).getTrades().size(),
+                                        "    Journeyman: &a" + type.getTrades().get(MerchantLevel.JOURNEYMAN).getTrades().size(),
+                                        "    Expert:     &c" + type.getTrades().get(MerchantLevel.EXPERT).getTrades().size(),
+                                        "    Master:     &d" + type.getTrades().get(MerchantLevel.MASTER).getTrades().size())
+                                .stringTag(KEY_SUBTYPE, type.getType())
+                                .get();
+                        buttons.add(icon);
+                    }
+                    if (types.isEmpty()){
+                        ItemStack icon = new ItemBuilder(Material.BARRIER)
+                                .name("&cNo subtypes registered")
+                                .lore("&7No custom trades assigned to", "&7this profession type")
+                                .get();
+                        buttons.add(icon);
+                    }
+                    buttons.add(Buttons.createNewButton);
+
+                    Map<Integer, List<ItemStack>> pages = Utils.paginate(45, buttons);
+                    page = Math.max(0, Math.min(pages.size() - 1, page));
+                    for (ItemStack i : pages.get(page)){
+                        inventory.addItem(i);
+                    }
+
+                    if (page < pages.size() - 1) inventory.setItem(53, Buttons.pageForwardButton);
+                    if (page > 0) inventory.setItem(45, Buttons.pageBackButton);
+                }
+                inventory.setItem(49, Buttons.backToMenuButton);
+            }
+            case SUBTYPE -> {
+                if (currentSubType != null){
+
+                }
+                inventory.setItem(49, Buttons.backToMenuButton);
             }
         }
     }
@@ -121,6 +167,20 @@ public class CustomTradeManagementMenu extends Menu {
                         .name("&fBack")
                         .stringTag(KEY_BUTTON, "backToMenuButton")
                         .get();
+        private static final ItemStack pageBackButton =
+                new ItemBuilder(Material.ARROW)
+                        .name("&fPrevious Page")
+                        .stringTag(KEY_BUTTON, "pageBackButton")
+                        .get();
+        private static final ItemStack pageForwardButton =
+                new ItemBuilder(Material.ARROW)
+                        .name("&fNext Page")
+                        .stringTag(KEY_BUTTON, "pageForwardButton")
+                        .get();
+        private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_trademanager_add", Material.LIME_DYE))
+                .name("&b&lNew Entry")
+                .stringTag(KEY_BUTTON, "createNewButton")
+                .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
 
         private static final ItemBuilder professionArmorer =
                 new ItemBuilder(Material.BLAST_FURNACE)
