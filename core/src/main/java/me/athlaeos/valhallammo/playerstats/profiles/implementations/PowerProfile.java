@@ -143,6 +143,7 @@ public class PowerProfile extends Profile {
         booleanStat("miningAffinityAir", new BooleanProperties(true, true));
         floatStat("oneShotProtectionFraction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         intStat("oneShotProtectionCooldown", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
+        booleanStat("flight", new BooleanProperties(true, false));
 
         stringSetStat("unlockedPerks");
         stringSetStat("permanentlyUnlockedPerks"); // if a perk is really permanently unlocked, it will persist through soft resets as well
