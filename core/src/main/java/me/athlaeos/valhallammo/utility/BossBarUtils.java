@@ -5,7 +5,6 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +46,7 @@ public class BossBarUtils {
         bossBar.setText(title);
     }
 
-    public static class TemporaryBossBar extends BukkitRunnable {
+    public static class TemporaryBossBar extends ValhallaRunnable {
         private int timer;
         private double fraction;
         private String text;

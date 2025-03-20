@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.Scripts;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Question;
 import me.athlaeos.valhallammo.dom.Questionnaire;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,7 +21,7 @@ public class ChatListener implements Listener {
             Question q = questionaire.nextQuestion();
             if (q != null) {
                 e.setCancelled(true);
-                ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+                Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getPlayer(), () -> {
                     q.answer(e.getPlayer(), e.getMessage());
                     if (questionaire.allAnswered()) questionaire.finish();
                 });

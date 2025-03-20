@@ -17,6 +17,7 @@ import me.athlaeos.valhallammo.gui.*;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
@@ -504,8 +505,9 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
     public void setRecipeOption(RecipeOption option) {
         this.selectedChoice = option;
         if (option == null) return;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
-                playerMenuUtility.getOwner().setItemOnCursor(new ItemBuilder(option.getIcon()).stringTag(KEY_OPTION_ID, option.getName()).get()), 1L);
+        Scheduling.runTaskLater(ValhallaMMO.getInstance(), 1L, () ->
+                playerMenuUtility.getOwner().setItemOnCursor(new ItemBuilder(option.getIcon()).stringTag(KEY_OPTION_ID, option.getName()).get())
+        );
     }
 
     @Override

@@ -212,7 +212,7 @@ public class LootListener implements Listener {
         Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
         if (p == null) {
             List<Player> nearby = EntityUtils.getNearbyPlayers(e.getBlock().getLocation(), 100);
-            if (!nearby.isEmpty()) p = nearby.getFirst();
+//            if (!nearby.isEmpty()) p = nearby.getFirst();
         }
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
@@ -988,13 +988,13 @@ public class LootListener implements Listener {
     }
 
     public static void clear(Block b){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskLater(ValhallaMMO.getInstance(), 1L, () -> {
             transferToInventory.remove(b.getLocation());
             preparedBlockDrops.remove(b.getLocation());
             preparedLuckBuffs.remove(b.getLocation());
             explodedBlocks.remove(b.getLocation());
             exploded.remove(b);
-        }, 1L);
+        });
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

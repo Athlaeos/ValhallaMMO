@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.EffectResponsibility;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -178,10 +179,10 @@ public class EntityDamagedListener implements Listener {
                     absorptionTracker.remove(l.getUniqueId());
                     damageProcesses.remove(l.getUniqueId());
                 });
-                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                Scheduling.runTaskLater(ValhallaMMO.getInstance(), 1L, () -> {
                     Runnable r = damageProcesses.get(l.getUniqueId());
                     if (r != null) r.run();
-                }, 1L);
+                });
             }
 //            else if (customDamageEnabled) {
 //                // custom damage killed entity

@@ -7,6 +7,8 @@ import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.PrepareBlockBreakEvent;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.GameMode;
@@ -23,7 +25,6 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,7 +53,7 @@ public class CustomBreakSpeedListener implements Listener {
         disabled = false;
         fatigueEffect = new PotionEffect(PotionEffectMappings.MINING_FATIGUE.getPotionEffectType(), Integer.MAX_VALUE, -1, false, false, false);
 
-        new BukkitRunnable(){
+        new ValhallaRunnable(){
             @Override
             public void run() {
                 for (Location l : new HashSet<>(blockDigProcesses.keySet())){
@@ -193,10 +194,10 @@ public class CustomBreakSpeedListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent e){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskLater(ValhallaMMO.getInstance(), 10L, () -> {
             fatiguePlayer(e.getPlayer(), true);
             fatiguePlayer(e.getPlayer(), true);
-        }, 10L);
+        });
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -212,7 +213,7 @@ public class CustomBreakSpeedListener implements Listener {
             e.setOverride(true);
         } else if ((e.getAction() == EntityPotionEffectEvent.Action.REMOVED || e.getAction() == EntityPotionEffectEvent.Action.CLEARED) &&
                 e.getOldEffect() != null && e.getOldEffect().getType() == PotionEffectMappings.MINING_FATIGUE.getPotionEffectType() && (e.getOldEffect().getAmplifier() < 0 || e.getOldEffect().getAmplifier() > 4)) {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> fatiguePlayer(p, true), 2L);
+            Scheduling.runTaskLater(ValhallaMMO.getInstance(), 2L, () -> fatiguePlayer(p, true));
         }
     }
 

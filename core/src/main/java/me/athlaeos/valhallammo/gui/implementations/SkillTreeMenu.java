@@ -23,6 +23,7 @@ import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.skills.skills.implementations.PowerSkill;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.ConventionUtils;
@@ -175,7 +176,7 @@ public class SkillTreeMenu extends Menu {
                                 // remove resources
                                 for (ResourceExpense expense : p.getExpenses()) expense.purchase(target, true);
 
-                                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), this::setMenuItems, 2L);
+                                Scheduling.runTaskLater(ValhallaMMO.getInstance(), 2L, this::setMenuItems);
                             } else perkConfirmation = p.getName();
                         } else {
                             for (ResourceExpense expense : p.getExpenses()){
@@ -413,7 +414,7 @@ public class SkillTreeMenu extends Menu {
     }
 
     private void buildSkillTrees(){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskAsync(ValhallaMMO.getInstance(), () -> {
             List<Skill> skills = new ArrayList<>(SkillRegistry.getAllSkills().values());
             skills.sort(Comparator.comparingInt(Skill::getSkillTreeMenuOrderPriority));
             for (Skill s : skills){

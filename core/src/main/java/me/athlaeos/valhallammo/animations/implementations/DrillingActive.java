@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -17,7 +18,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
@@ -47,7 +47,7 @@ public class DrillingActive extends Animation {
         if (entity instanceof Player p && particle != null) new DrillingAnimation(p).runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
     }
 
-    private static class DrillingAnimation extends BukkitRunnable{
+    private static class DrillingAnimation extends ValhallaRunnable {
         private final Player p;
         public DrillingAnimation(Player p){
             this.p = p;

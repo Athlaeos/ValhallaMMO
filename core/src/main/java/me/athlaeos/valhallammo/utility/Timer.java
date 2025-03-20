@@ -8,7 +8,6 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,14 +44,14 @@ public class Timer {
         }
     }
 
-    private static final Map<UUID, BukkitRunnable> cooldownStatusRunnables = new HashMap<>();
+    private static final Map<UUID, ValhallaRunnable> cooldownStatusRunnables = new HashMap<>();
 
     public static void sendCooldownStatus(Player player, String cooldownKey, String type){
         int ticks = ConfigManager.getConfig("config.yml").get().getInt("cooldown_status_duration", 0);
         if (ticks > 0){
-            BukkitRunnable existingRunnable = cooldownStatusRunnables.get(player.getUniqueId());
+            ValhallaRunnable existingRunnable = cooldownStatusRunnables.get(player.getUniqueId());
             if (existingRunnable != null) existingRunnable.cancel();
-            existingRunnable = new BukkitRunnable() {
+            existingRunnable = new ValhallaRunnable() {
                 int ticksRemaining = ticks;
                 @Override
                 public void run() {

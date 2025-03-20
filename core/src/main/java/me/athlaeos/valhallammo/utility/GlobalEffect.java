@@ -8,12 +8,11 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GlobalEffect extends BukkitRunnable {
+public class GlobalEffect extends ValhallaRunnable {
     private static GlobalEffect runnable = null;
     private static final Map<String, EffectProperties> activeGlobalEffects = new HashMap<>();
     private static final Collection<String> validEffects = new HashSet<>();
@@ -81,7 +80,7 @@ public class GlobalEffect extends BukkitRunnable {
 
     public static void temporarilyRevealBossBar(Player p){
         temporarilyExcludePlayers.add(p);
-        new BukkitRunnable(){
+        new ValhallaRunnable(){
             private List<EffectProperties> currentLoopEffects = new ArrayList<>();
             private int currentLoopIndex = 0;
             private int timer = 0;

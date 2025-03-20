@@ -30,9 +30,23 @@ public class Scheduling {
     }
 
     /**
+     * Run a task after [delay] of ticks
+     */
+    public static TaskHolder<?> runTaskLater(Plugin plugin, Runnable toRun, long delay) {
+        return getScheduler().runTaskLater(plugin, delay, toRun);
+    }
+
+    /**
      * Repeat a task every [repeat] ticks after [delay] ticks
      */
     public static TaskHolder<?> runTaskTimer(Plugin plugin, long delay, long repeat, Runnable toRun) {
+        return getScheduler().runTaskTimer(plugin, delay, repeat, toRun);
+    }
+
+    /**
+     * Repeat a task every [repeat] ticks after [delay] ticks
+     */
+    public static TaskHolder<?> runTaskTimer(Plugin plugin, Runnable toRun, long delay, long repeat) {
         return getScheduler().runTaskTimer(plugin, delay, repeat, toRun);
     }
 

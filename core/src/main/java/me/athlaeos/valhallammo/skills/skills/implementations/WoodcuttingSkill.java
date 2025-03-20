@@ -153,7 +153,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                     e.getPlayer().breakBlock(b);
                 }, (b) -> {
                     treeCapitatingPlayers.remove(e.getPlayer().getUniqueId());
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                    Scheduling.runLocationTask(ValhallaMMO.getInstance(), e.getBlock().getLocation(), 20L, () -> {
                         List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, bl -> isLeaves(bl) && (!(bl.getBlockData() instanceof Leaves l) || l.getDistance() > 3), treeCapitatorLeavesScanArea));
                         Collections.shuffle(leaves);
                         BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, bl -> {
@@ -161,7 +161,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                             LootListener.setResponsibleBreaker(bl, e.getPlayer());
                             BlockUtils.decayBlock(bl);
                         }, null);
-                    }, 20L);
+                    });
                 });
             else
                 BlockUtils.processBlocksPulse(e.getPlayer(), e.getBlock(), vein, p -> {
@@ -173,7 +173,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                     e.getPlayer().breakBlock(b);
                 }, (b) -> {
                     treeCapitatingPlayers.remove(e.getPlayer().getUniqueId());
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                    Scheduling.runLocationTask(ValhallaMMO.getInstance(), e.getBlock().getLocation(), 20L, () -> {
                         List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, bl -> isLeaves(bl) && (!(bl.getBlockData() instanceof Leaves l) || l.getDistance() > 3), treeCapitatorLeavesScanArea));
                         Collections.shuffle(leaves);
                         BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, bl -> {
@@ -181,7 +181,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                             LootListener.setResponsibleBreaker(bl, e.getPlayer());
                             BlockUtils.decayBlock(bl);
                         }, null);
-                    }, 20L);
+                    });
                 });
             Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getTreeCapitatorCooldown() * 50, "woodcutting_tree_capitator");
         } else {

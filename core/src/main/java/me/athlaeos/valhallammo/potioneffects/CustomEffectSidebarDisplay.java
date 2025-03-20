@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.SideBarUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class CustomEffectSidebarDisplay implements CustomEffectDisplay{
     @Override
     public void start() {
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskTimer(ValhallaMMO.getInstance(), () -> {
             for (UUID uuid : new HashSet<>(PotionEffectRegistry.affectedEntityTracker())){
                 Entity e = ValhallaMMO.getInstance().getServer().getEntity(uuid);
                 if (!(e instanceof Player p)) continue;

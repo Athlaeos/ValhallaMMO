@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
@@ -54,7 +55,7 @@ public class PDC extends ProfilePersistence {
     @Override
     public void loadProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())) return;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskAsync(ValhallaMMO.getInstance(), () -> {
             Map<Class<? extends Profile>, Profile> profiles = persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>());
             for (Profile pr : ProfileRegistry.getRegisteredProfiles().values()) {
                 String jsonProfile = p.getPersistentDataContainer().get(pr.getKey(), PersistentDataType.STRING);

@@ -9,11 +9,11 @@ import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -64,7 +64,7 @@ public class DecentHologramsHook extends PluginHook implements Listener {
         return Dummy.isDummy(damaged);
     }
 
-    private static class DPSInstance extends BukkitRunnable {
+    private static class DPSInstance extends ValhallaRunnable {
         private final UUID id;
         private final LivingEntity damaged;
         private final CustomDamageType type;

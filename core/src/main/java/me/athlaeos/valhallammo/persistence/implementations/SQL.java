@@ -12,11 +12,12 @@ import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.*;
 import java.util.*;
@@ -55,7 +56,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
             return null;
         }
         if (conn != null){
-            new BukkitRunnable(){
+            new ValhallaRunnable(){
                 @Override
                 public void run() {
                     try {
@@ -65,7 +66,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
                         cancel();
                     }
                 }
-            }.runTaskTimerAsynchronously(ValhallaMMO.getInstance(), ping_delay, ping_delay);
+            }.runTaskTimerAsync(ValhallaMMO.getInstance(), ping_delay, ping_delay);
         }
         return conn;
     }
@@ -158,7 +159,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
     public void loadProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())) return; // stats are presumably already loaded in and so they do not
         // need to be loaded in from the database again
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskAsync(ValhallaMMO.getInstance(), () -> {
             boolean runPersistentStartingPerks = false;
             Map<Class<? extends Profile>, Profile> profs = persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>());
             for (Class<? extends Profile> pr : ProfileRegistry.getRegisteredProfiles().keySet()){
@@ -259,7 +260,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
     @Override
     public void saveProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())){
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            Scheduling.runTaskAsync(ValhallaMMO.getInstance(), () -> {
                 if (!JoinLeaveListener.getLoadedProfiles().contains(p.getUniqueId())) return;
                 for (Profile profile : persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>()).values()){
                     insertOrUpdateProfile(p.getUniqueId(), conn, profile);

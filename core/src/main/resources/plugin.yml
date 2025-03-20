@@ -4,6 +4,7 @@ main: me.athlaeos.valhallammo.ValhallaMMO
 author: Athlaeos
 api-version: "1.16"
 load: POSTWORLD
+folia-supported: true
 softdepend:
 - Vault
 - WorldEdit

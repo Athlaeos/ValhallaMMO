@@ -12,6 +12,7 @@ import me.athlaeos.valhallammo.placeholder.placeholders.TotalStatPlaceholder;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.playerstats.statsources.*;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.Material;
@@ -474,7 +475,7 @@ public class AccumulativeStatManager {
     }
 
     private static void attemptMapCleanup(){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTask(ValhallaMMO.getInstance(), () -> {
             if (lastMapCleanup + 120000 < System.currentTimeMillis()){
                 // cleaning up map every 2 minutes
                 new HashSet<>(statCache.keySet()).stream().filter(u -> {

@@ -2,12 +2,12 @@ package me.athlaeos.valhallammo.item.arrow_attributes.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.item_attributes.ArrowBehavior;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class NoGravityArrow extends ArrowBehavior {
 
@@ -18,7 +18,7 @@ public class NoGravityArrow extends ArrowBehavior {
     @Override
     public void onShoot(EntityShootBowEvent e, double... args) {
         e.getProjectile().setGravity(false);
-        new BukkitRunnable(){
+        new ValhallaRunnable(){
             @Override
             public void run() {
                 e.getProjectile().remove();

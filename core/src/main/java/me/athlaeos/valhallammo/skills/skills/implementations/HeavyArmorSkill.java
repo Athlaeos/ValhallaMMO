@@ -107,7 +107,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
 
         HeavyArmorProfile profile = ProfileCache.getOrCache(p, HeavyArmorProfile.class);
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (e.isCancelled() || !p.isOnline() || e.getDamage() <= 0) return;
             double chunkNerf = isChunkNerfed ? ChunkEXPNerf.getChunkEXPNerf(p.getLocation().getChunk(), p, "armors") : 1;
             int count = EntityCache.getAndCacheProperties(p).getHeavyArmorCount();

@@ -93,6 +93,7 @@ tasks {
     runServer {
         version("1.21.4")
     }
+    runPaper.folia.registerTask()
 }
 
 dependencies {

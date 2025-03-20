@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.potioneffects.EffectClass;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -60,7 +61,7 @@ public class ItemConsumptionListener implements Listener {
 
             int finalFoodToReplenish = foodToReplenish;
             float finalSaturationToReplenish = saturationBefore + saturationToReplenish;
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getPlayer(), 1L, () -> {
                 cancelNextFoodEffects.remove(e.getPlayer().getUniqueId());
                 cancelNextFoodEvent.remove(e.getPlayer().getUniqueId());
                 FoodLevelChangeEvent event = new FoodLevelChangeEvent(e.getPlayer(), Math.max(0, Math.min(20, hungerBefore + finalFoodToReplenish)), item);
@@ -69,9 +70,9 @@ public class ItemConsumptionListener implements Listener {
                     e.getPlayer().setFoodLevel(Math.max(0, Math.min(20, event.getFoodLevel())));
                     e.getPlayer().setSaturation(Math.max(0, Math.min(20, finalSaturationToReplenish)));
                 }
-            }, 1L);
+            });
         } else {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getPlayer(), 1L, () -> {
                 int hungerDifference = e.getPlayer().getFoodLevel() - hungerBefore;
                 float saturationDifference = e.getPlayer().getSaturation() - saturationBefore;
                 int newFoodLevel = hungerBefore + (int) Math.round(hungerDifference * multiplier);
@@ -82,7 +83,7 @@ public class ItemConsumptionListener implements Listener {
                     e.getPlayer().setFoodLevel(Math.max(0, Math.min(20, event.getFoodLevel())));
                     e.getPlayer().setSaturation(Math.max(0, Math.min(20, newSaturationLevel)));
                 }
-            }, 1L);
+            });
         }
     }
 

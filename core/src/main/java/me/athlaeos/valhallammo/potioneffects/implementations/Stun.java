@@ -12,10 +12,7 @@ import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.EffectClass;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
-import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.StringUtils;
-import me.athlaeos.valhallammo.utility.Timer;
-import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -100,7 +97,7 @@ public class Stun extends PotionEffectWrapper {
      * @param force true if the entity should be stunned regardless of immunity, false otherwise
      */
     public static void stunTarget(LivingEntity entity, LivingEntity causedBy, int duration, boolean force){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (!entity.isValid() || entity.isDead()) return;
             double durationMultiplier = force ? 1 : Math.max(0, 1 - AccumulativeStatManager.getRelationalStats("STUN_RESISTANCE", entity, causedBy, true));
             int newDuration = (int) Math.round(duration * durationMultiplier);

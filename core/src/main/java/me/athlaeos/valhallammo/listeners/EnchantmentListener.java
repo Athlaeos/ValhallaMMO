@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -45,7 +46,7 @@ public class EnchantmentListener implements Listener {
         if (e.getEnchanter().getGameMode() != GameMode.CREATIVE){
             double saveChance = AccumulativeStatManager.getCachedStats("ENCHANTING_LAPIS_SAVE_CHANCE", enchanter, 10000, true);
             if (Utils.proc(enchanter, saveChance, false)){
-                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getEnchanter(), 1L, () -> {
                     ItemStack lapisSlot = e.getInventory().getItem(1);
                     ItemStack newLapis = new ItemStack(Material.LAPIS_LAZULI, lapisConsumed);
                     if (!ItemUtils.isEmpty(lapisSlot)){
@@ -64,7 +65,7 @@ public class EnchantmentListener implements Listener {
                     } else {
                         e.getInventory().setItem(1, newLapis);
                     }
-                }, 1L);
+                });
             }
         }
 

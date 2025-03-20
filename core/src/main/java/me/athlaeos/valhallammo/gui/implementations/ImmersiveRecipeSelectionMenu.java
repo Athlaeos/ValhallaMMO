@@ -19,6 +19,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import net.md_5.bungee.api.ChatMessageType;
@@ -233,7 +234,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
         List<String> defaultFormat = TranslationManager.getListTranslation("immersive_recipe_button_format");
         String ingredientFormat = TranslationManager.getTranslation("recipe_ingredient_format");
         double craftingTimeReduction = AccumulativeStatManager.getCachedStats("CRAFTING_TIME_REDUCTION", playerMenuUtility.getOwner(), 10000, true);
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runEntityTaskAsync(ValhallaMMO.getInstance(), playerMenuUtility.getOwner(), () -> {
             List<ItemStack> icons = new ArrayList<>();
             for (ImmersiveCraftingRecipe recipe : recipes){
                 if (!view.shouldShow(playerMenuUtility.getOwner(), recipe)) continue;
@@ -294,7 +295,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                                 displayName)).lore(lore).stringTag(BUTTON_RECIPE_KEY, recipe.getName()).translate().get());
             }
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> callback.onItemsBuilt(icons));
+            Scheduling.runEntityTaskAsync(ValhallaMMO.getInstance(), playerMenuUtility.getOwner(), () -> callback.onItemsBuilt(icons));
         });
 
     }

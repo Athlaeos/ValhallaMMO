@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.parties;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,7 +32,7 @@ public class PartyEXPGainListener implements Listener {
         if (expSharingMultiplier <= 0) return;
         double fraction = (e.getAmount() / (nearbyMembers.size())) * expSharingMultiplier;
         e.setCancelled(true);
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskAsync(ValhallaMMO.getInstance(), () -> {
             nearbyMembers.forEach(p -> e.getLeveledSkill().addEXP(p, fraction, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE));
         });
     }

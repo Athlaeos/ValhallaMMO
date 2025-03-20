@@ -11,10 +11,11 @@ import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
@@ -106,7 +107,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
     public void loadProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())) return; // stats are presumably already loaded in, and so they do not
         // need to be loaded in from the database again
-        new BukkitRunnable(){
+        new ValhallaRunnable(){
             @Override
             public void run() {
                 Map<Class<? extends Profile>, Profile> profs = persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>());
@@ -125,7 +126,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
                 JoinLeaveListener.getLoadedProfiles().add(p.getUniqueId());
                 SkillRegistry.updateSkillProgression(p, runPersistentStartingPerks);
             }
-        }.runTaskAsynchronously(ValhallaMMO.getInstance());
+        }.runTaskAsync(ValhallaMMO.getInstance());
     }
 
     @Override
@@ -143,7 +144,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
     @Override
     public void saveProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())){
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            Scheduling.runTaskAsync(ValhallaMMO.getInstance(), () -> {
                 for (Profile profile : persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>()).values()){
                     if (!shouldPersist(profile)) continue;
                     SQL.insertOrUpdateProfile(p.getUniqueId(), conn, profile);

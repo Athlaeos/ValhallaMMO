@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.entities.EntityAttributeStats;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -24,7 +25,7 @@ public class MovementListener implements Listener {
     private static final Map<UUID, Vector> lastMovementVectors = new HashMap<>();
 
     public MovementListener(){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskTimer(ValhallaMMO.getInstance(), 20L, 20L, () -> {
             for (Player p : ValhallaMMO.getInstance().getServer().getOnlinePlayers()){
                 if (Timer.isCooldownPassed(p.getUniqueId(), "delay_combat_update")) { // combat status is checked every half second
                     EntityAttackListener.updateCombatStatus(p);
@@ -51,7 +52,7 @@ public class MovementListener implements Listener {
                     Timer.setCooldown(p.getUniqueId(), 10000, "delay_movement_update");
                 }
             }
-        }, 20L, 20L);
+        });
     }
 
     @EventHandler

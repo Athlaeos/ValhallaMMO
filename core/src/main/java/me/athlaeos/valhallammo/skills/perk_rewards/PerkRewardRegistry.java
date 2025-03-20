@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.implementations.AlchemySkill;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.entity.Player;
@@ -25,12 +26,12 @@ public class PerkRewardRegistry {
             register(new ProgressReset("reset_" + type.toString().toLowerCase(java.util.Locale.US), type));
         }
 
-        BiAction<String, Player> forget = (s, p) -> ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+        BiAction<String, Player> forget = (s, p) -> Scheduling.runTask(ValhallaMMO.getInstance(), () -> {
             ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
             if (recipe == null) return;
             p.undiscoverRecipe(recipe.getKey());
         });
-        BiAction<String, Player> discover = (s, p) -> ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+        BiAction<String, Player> discover = (s, p) -> Scheduling.runTask(ValhallaMMO.getInstance(), () -> {
             ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
             if (recipe == null) return;
             p.discoverRecipe(recipe.getKey());

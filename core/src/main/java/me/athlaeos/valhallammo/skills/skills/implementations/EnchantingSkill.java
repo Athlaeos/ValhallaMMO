@@ -311,7 +311,7 @@ public class EnchantingSkill extends Skill implements Listener {
         e.setDamage(e.getDamage() * (1 - conversion)); // damage is reduced by the fraction of it that is converted
 
         final boolean en = enhanced;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> {
             for (String damageType : profile.getElementalDamageTypes()){
                 EntityUtils.damage(v, p, damagePerType, damageType, false);
                 if (en) {
@@ -346,7 +346,7 @@ public class EnchantingSkill extends Skill implements Listener {
             if (elementalBladeActivationAnimation != null) elementalBladeActivationAnimation.animate(e.getPlayer(), e.getPlayer().getLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
         }
         e.setCancelled(true);
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> e.getPlayer().updateInventory(), 1L);
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getPlayer(), 1L, () -> e.getPlayer().updateInventory());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -447,7 +447,7 @@ public class EnchantingSkill extends Skill implements Listener {
             } else {
                 maxLevels = anvilMaxLevelCache.get(combiner.getUniqueId());
                 if (Timer.isCooldownPassed(combiner.getUniqueId(), "delay_anvil_cache_reset")){
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(
+                    Scheduling.runTaskLater(
                             ValhallaMMO.getInstance(),
                             () -> anvilMaxLevelCache.remove(combiner.getUniqueId()),
                             5L);
