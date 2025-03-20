@@ -348,7 +348,7 @@ public class MartialArtsSkill extends Skill implements Listener {
         if (p != null && EntityUtils.isUnarmed(p)){
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 if (e.isCancelled() || !p.isOnline()) return;
-                double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
+                double chunkNerf = EntitySpawnListener.isTrialSpawned(l) ? 1 : ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);
                 addEXP(p,
                         maxHealthLimitation ? (Math.min(EntityUtils.getMaxHP(l), e.getDamage())) : e.getDamage() *
@@ -358,7 +358,7 @@ public class MartialArtsSkill extends Skill implements Listener {
                                 (EntitySpawnListener.getSpawnReason(l) == CreatureSpawnEvent.SpawnReason.SPAWNER ? spawnerMultiplier : 1),
                         false,
                         PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
-                ChunkEXPNerf.increment(l.getLocation().getChunk(), p, "weapons");
+                if (!EntitySpawnListener.isTrialSpawned(l)) ChunkEXPNerf.increment(l.getLocation().getChunk(), p, "weapons");
             }, 2L);
         }
     }
