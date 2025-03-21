@@ -4,8 +4,11 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.entities.EntityAttributeStats;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import me.athlaeos.valhallammo.skills.perk_rewards.implementations.FlightReward;
 import me.athlaeos.valhallammo.utility.GlobalEffect;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -46,6 +49,8 @@ public class JoinLeaveListener implements Listener {
                 e.getPlayer().setHealth(health);
             }
         }
+
+        FlightReward.setFlight(e.getPlayer(), true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -61,5 +66,7 @@ public class JoinLeaveListener implements Listener {
             ProfileRegistry.getPersistence().saveProfile(e.getPlayer());
             loadedProfiles.remove(e.getPlayer().getUniqueId());
         }
+
+        FlightReward.setFlight(e.getPlayer(), false);
     }
 }
