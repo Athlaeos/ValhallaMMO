@@ -52,11 +52,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.profile.PlayerProfile;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
@@ -251,7 +248,7 @@ public class MartialArtsSkill extends Skill implements Listener {
             ItemBuilder weapon = e.getDamager() instanceof Trident t && !ItemUtils.isEmpty(t.getItem()) ? new ItemBuilder(t.getItem()) : EntityCache.getAndCacheProperties(p).getMainHand();
             if (weapon != null && WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.WEIGHTLESS) return;
             MartialArtsProfile profile = ProfileCache.getOrCache(p, MartialArtsProfile.class);
-
+            if (profile.getDropKickDamageType().stream().findFirst().orElse("ENTITY_HIT").equals(EntityUtils.getCustomDamageType(l))) return;
             double bonusDamage = 0;
             long timeSinceLastPunch = Timer.getTimerResult(p.getUniqueId(), "time_since_punch");
             int ticks = (int) Math.floor(timeSinceLastPunch / 50D);
