@@ -11,7 +11,7 @@ public class MerchantType implements Weighted {
     private final String type;
     private int version = 0; // if the version saved on the villager is lower than that of their type, their trades are reset
     private String name = null;
-    private boolean realistic = false; // if realistic, villagers reset their trades when they restock
+    private boolean resetTradesOnRestock = false; // if realistic, villagers reset their trades when they restock
     private boolean canLoseProfession = true; // if true, villagers with this merchant type may lose their profession if they have no exp or levels
     private boolean perPlayerStock = false; // if perPlayerStock, each player can trade up to the trade's limit times
     private double weight = 10; // the weight determines how likely this merchant type is to be picked as a new villager's type
@@ -29,13 +29,13 @@ public class MerchantType implements Weighted {
 
     public String getType() { return type; }
     public void setName(String name) { this.name = name; }
-    public void setRealistic(boolean realistic) { this.realistic = realistic; }
+    public void setResetTradesOnRestock(boolean resetTradesOnRestock) { this.resetTradesOnRestock = resetTradesOnRestock; }
     public void setPerPlayerStock(boolean perPlayerStock) { this.perPlayerStock = perPlayerStock; }
     public void setWeight(double weight) { this.weight = weight; }
     public void setVersion(int version) { this.version = version; }
     public void setCanLoseProfession(boolean canLoseProfession) { this.canLoseProfession = canLoseProfession; }
     public String getName() { return name; }
-    public boolean isRealistic() { return realistic; }
+    public boolean isResetTradesOnRestock() { return resetTradesOnRestock; }
     public boolean isPerPlayerStock() { return perPlayerStock; }
     public double getWeight() { return weight; }
 

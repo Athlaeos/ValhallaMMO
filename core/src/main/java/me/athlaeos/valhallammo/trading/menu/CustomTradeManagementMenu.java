@@ -143,21 +143,21 @@ public class CustomTradeManagementMenu extends Menu {
 
     private ItemStack professionButton(Villager.Profession profession){
         return switch (profession){
-            case NONE -> Buttons.professionNone.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.NONE).getMerchantTypes().size())).get();
-            case NITWIT -> Buttons.professionNitwit.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.NITWIT).getMerchantTypes().size())).get();
-            case ARMORER -> Buttons.professionArmorer.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.ARMORER).getMerchantTypes().size())).get();
-            case TOOLSMITH -> Buttons.professionToolsmith.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.TOOLSMITH).getMerchantTypes().size())).get();
-            case WEAPONSMITH -> Buttons.professionWeaponsmith.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.WEAPONSMITH).getMerchantTypes().size())).get();
-            case FLETCHER -> Buttons.professionFletcher.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.FLETCHER).getMerchantTypes().size())).get();
-            case CARTOGRAPHER -> Buttons.professionCartographer.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.CARTOGRAPHER).getMerchantTypes().size())).get();
-            case LIBRARIAN -> Buttons.professionLibrarian.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.LIBRARIAN).getMerchantTypes().size())).get();
-            case CLERIC -> Buttons.professionCleric.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.CLERIC).getMerchantTypes().size())).get();
-            case MASON -> Buttons.professionMason.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.MASON).getMerchantTypes().size())).get();
-            case LEATHERWORKER -> Buttons.professionLeatherworker.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.LEATHERWORKER).getMerchantTypes().size())).get();
-            case SHEPHERD -> Buttons.professionShepherd.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.SHEPHERD).getMerchantTypes().size())).get();
-            case FARMER -> Buttons.professionFarmer.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.FARMER).getMerchantTypes().size())).get();
-            case FISHERMAN -> Buttons.professionFisherman.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.FISHERMAN).getMerchantTypes().size())).get();
-            case BUTCHER -> Buttons.professionButcher.appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.BUTCHER).getMerchantTypes().size())).get();
+            case NONE -> new ItemBuilder(Buttons.professionNone).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.NONE).getMerchantTypes().size())).get();
+            case NITWIT -> new ItemBuilder(Buttons.professionNitwit).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.NITWIT).getMerchantTypes().size())).get();
+            case ARMORER -> new ItemBuilder(Buttons.professionArmorer).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.ARMORER).getMerchantTypes().size())).get();
+            case TOOLSMITH -> new ItemBuilder(Buttons.professionToolsmith).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.TOOLSMITH).getMerchantTypes().size())).get();
+            case WEAPONSMITH -> new ItemBuilder(Buttons.professionWeaponsmith).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.WEAPONSMITH).getMerchantTypes().size())).get();
+            case FLETCHER -> new ItemBuilder(Buttons.professionFletcher).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.FLETCHER).getMerchantTypes().size())).get();
+            case CARTOGRAPHER -> new ItemBuilder(Buttons.professionCartographer).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.CARTOGRAPHER).getMerchantTypes().size())).get();
+            case LIBRARIAN -> new ItemBuilder(Buttons.professionLibrarian).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.LIBRARIAN).getMerchantTypes().size())).get();
+            case CLERIC -> new ItemBuilder(Buttons.professionCleric).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.CLERIC).getMerchantTypes().size())).get();
+            case MASON -> new ItemBuilder(Buttons.professionMason).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.MASON).getMerchantTypes().size())).get();
+            case LEATHERWORKER -> new ItemBuilder(Buttons.professionLeatherworker).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.LEATHERWORKER).getMerchantTypes().size())).get();
+            case SHEPHERD -> new ItemBuilder(Buttons.professionShepherd).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.SHEPHERD).getMerchantTypes().size())).get();
+            case FARMER -> new ItemBuilder(Buttons.professionFarmer).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.FARMER).getMerchantTypes().size())).get();
+            case FISHERMAN -> new ItemBuilder(Buttons.professionFisherman).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.FISHERMAN).getMerchantTypes().size())).get();
+            case BUTCHER -> new ItemBuilder(Buttons.professionButcher).appendLore(String.format("&7(&e%d subtypes&7)", CustomMerchantManager.getMerchantConfiguration(Villager.Profession.BUTCHER).getMerchantTypes().size())).get();
         };
     }
 
@@ -182,81 +182,171 @@ public class CustomTradeManagementMenu extends Menu {
                 .stringTag(KEY_BUTTON, "createNewButton")
                 .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
 
-        private static final ItemBuilder professionArmorer =
+        private static final ItemStack professionArmorer =
                 new ItemBuilder(Material.BLAST_FURNACE)
                         .name("&fArmorer")
                         .lore("&7Subtypes assigned to the Armorer profession")
-                        .stringTag(KEY_PROFESSION, "ARMORER");
-        private static final ItemBuilder professionButcher =
+                        .stringTag(KEY_PROFESSION, "ARMORER")
+                        .get();
+        private static final ItemStack professionButcher =
                 new ItemBuilder(Material.PORKCHOP)
                         .name("&fButcher")
                         .lore("&7Subtypes assigned to the Butcher profession")
-                        .stringTag(KEY_PROFESSION, "BUTCHER");
-        private static final ItemBuilder professionCartographer =
+                        .stringTag(KEY_PROFESSION, "BUTCHER")
+                        .get();
+        private static final ItemStack professionCartographer =
                 new ItemBuilder(Material.MAP)
                         .name("&fCartographer")
                         .lore("&7Subtypes assigned to the Cartographer profession")
-                        .stringTag(KEY_PROFESSION, "CARTOGRAPHER");
-        private static final ItemBuilder professionCleric =
+                        .stringTag(KEY_PROFESSION, "CARTOGRAPHER")
+                        .get();
+        private static final ItemStack professionCleric =
                 new ItemBuilder(Material.BREWING_STAND)
                         .name("&fCleric")
                         .lore("&7Subtypes assigned to the Cleric profession")
-                        .stringTag(KEY_PROFESSION, "CLERIC");
-        private static final ItemBuilder professionFarmer =
+                        .stringTag(KEY_PROFESSION, "CLERIC")
+                        .get();
+        private static final ItemStack professionFarmer =
                 new ItemBuilder(Material.WHEAT)
                         .name("&fFarmer")
                         .lore("&7Subtypes assigned to the Farmer profession")
-                        .stringTag(KEY_PROFESSION, "FARMER");
-        private static final ItemBuilder professionFisherman =
+                        .stringTag(KEY_PROFESSION, "FARMER")
+                        .get();
+        private static final ItemStack professionFisherman =
                 new ItemBuilder(Material.COD)
                         .name("&fFisherman")
                         .lore("&7Subtypes assigned to the Fisherman profession")
-                        .stringTag(KEY_PROFESSION, "FISHERMAN");
-        private static final ItemBuilder professionFletcher =
+                        .stringTag(KEY_PROFESSION, "FISHERMAN")
+                        .get();
+        private static final ItemStack professionFletcher =
                 new ItemBuilder(Material.BOW)
                         .name("&fFletcher")
                         .lore("&7Subtypes assigned to the Fletcher profession")
-                        .stringTag(KEY_PROFESSION, "FLETCHER");
-        private static final ItemBuilder professionLeatherworker =
+                        .stringTag(KEY_PROFESSION, "FLETCHER")
+                        .get();
+        private static final ItemStack professionLeatherworker =
                 new ItemBuilder(Material.LEATHER)
                         .name("&fLeatherworker")
                         .lore("&7Subtypes assigned to the Leatherworker profession")
-                        .stringTag(KEY_PROFESSION, "LEATHERWORKER");
-        private static final ItemBuilder professionLibrarian =
+                        .stringTag(KEY_PROFESSION, "LEATHERWORKER")
+                        .get();
+        private static final ItemStack professionLibrarian =
                 new ItemBuilder(Material.BOOKSHELF)
                         .name("&fLibrarian")
                         .lore("&7Subtypes assigned to the Librarian profession")
-                        .stringTag(KEY_PROFESSION, "LIBRARIAN");
-        private static final ItemBuilder professionMason =
+                        .stringTag(KEY_PROFESSION, "LIBRARIAN")
+                        .get();
+        private static final ItemStack professionMason =
                 new ItemBuilder(Material.STONECUTTER)
                         .name("&fMason")
                         .lore("&7Subtypes assigned to the Mason profession")
-                        .stringTag(KEY_PROFESSION, "MASON");
-        private static final ItemBuilder professionNitwit =
+                        .stringTag(KEY_PROFESSION, "MASON")
+                        .get();
+        private static final ItemStack professionNitwit =
                 new ItemBuilder(Material.GREEN_WOOL)
                         .name("&fNitwit")
                         .lore("&7Subtypes assigned to the Nitwit profession")
-                        .stringTag(KEY_PROFESSION, "NITWIT");
-        private static final ItemBuilder professionShepherd =
+                        .stringTag(KEY_PROFESSION, "NITWIT")
+                        .get();
+        private static final ItemStack professionShepherd =
                 new ItemBuilder(Material.SHEARS)
                         .name("&fShepherd")
                         .lore("&7Subtypes assigned to the Shepherd profession")
-                        .stringTag(KEY_PROFESSION, "SHEPHERD");
-        private static final ItemBuilder professionToolsmith =
+                        .stringTag(KEY_PROFESSION, "SHEPHERD")
+                        .get();
+        private static final ItemStack professionToolsmith =
                 new ItemBuilder(Material.SMITHING_TABLE)
                         .name("&fToolsmith")
                         .lore("&7Subtypes assigned to the Toolsmith profession")
-                        .stringTag(KEY_PROFESSION, "TOOLSMITH");
-        private static final ItemBuilder professionWeaponsmith =
+                        .stringTag(KEY_PROFESSION, "TOOLSMITH")
+                        .get();
+        private static final ItemStack professionWeaponsmith =
                 new ItemBuilder(Material.GRINDSTONE)
                         .name("&fWeaponsmith")
                         .lore("&7Subtypes assigned to the Weaponsmith profession")
-                        .stringTag(KEY_PROFESSION, "WEAPONSMITH");
-        private static final ItemBuilder professionNone =
+                        .stringTag(KEY_PROFESSION, "WEAPONSMITH")
+                        .get();
+        private static final ItemStack professionNone =
                 new ItemBuilder(Material.BROWN_WOOL)
                         .name("&fNone")
                         .lore("&7Subtypes assigned to villagers without profession")
-                        .stringTag(KEY_PROFESSION, "NONE");
+                        .stringTag(KEY_PROFESSION, "NONE")
+                        .get();
 
+        private static final ItemStack subtypeNameButton =
+                new ItemBuilder(Material.WRITABLE_BOOK)
+                        .lore("&7This is what the trading",
+                                "&7inventory title will display",
+                                "&7during trading, if the villager",
+                                "&7has no display name of their own",
+                                "",
+                                "&6Click to edit")
+                        .stringTag(KEY_BUTTON, "subtypeNameButton")
+                        .get();
+        private static final ItemStack subtypeVersionButton =
+                new ItemBuilder(Material.REDSTONE_TORCH)
+                        .lore("&7Determines the version of this",
+                                "&7merchant type. ",
+                                "&7If the version of existing villagers",
+                                "&7does not match this version, ",
+                                "&7(i.e. when the version number is updated)",
+                                "&7their trades are reset",
+                                "",
+                                "&6Click to add/subtract 1")
+                        .stringTag(KEY_BUTTON, "subtypeVersionButton")
+                        .get();
+        private static final ItemStack subtypeProfessionLossButton =
+                new ItemBuilder(Material.BARRIER)
+                        .lore("&7If enabled, villagers of this type",
+                                "&7will be able to lose their profession",
+                                "&7if their work station becomes unavailable",
+                                "&7to them (like in vanilla).",
+                                "&7If not, this profession is permanent",
+                                "&7when obtained",
+                                "",
+                                "&6Click to toggle")
+                        .stringTag(KEY_BUTTON, "subtypeProfessionLossButton")
+                        .get();
+        private static final ItemStack subtypeTradesButton =
+                new ItemBuilder(Material.EMERALD)
+                        .name("&fTrades")
+                        .lore("",
+                                "&6Click to edit")
+                        .stringTag(KEY_BUTTON, "subtypeTradesButton")
+                        .get();
+        private static final ItemStack subtypeWeightButton =
+                new ItemBuilder(Material.EMERALD)
+                        .name("&fWeight")
+                        .lore("",
+                                "&7Determines how rare this villager",
+                                "&7subtype is.",
+                                "",
+                                "&6Click to add/subtract 1",
+                                "&6Shift-Click to add/subtract 25")
+                        .stringTag(KEY_BUTTON, "subtypeWeightButton")
+                        .get();
+        private static final ItemStack subtypePerPlayerStockButton =
+                new ItemBuilder(Material.ENDER_CHEST)
+                        .lore("&7If enabled, each villager has a",
+                                "&7separate stock of items for each",
+                                "&7player. ",
+                                "&7If disabled, a villager keeps a single",
+                                "&7stock of goods for every player to",
+                                "&7have to share.",
+                                "",
+                                "&6Click to toggle")
+                        .stringTag(KEY_BUTTON, "subtypePerPlayerStockButton")
+                        .get();
+        private static final ItemStack subtypeRealisticButton =
+                new ItemBuilder(Material.EMERALD)
+                        .lore("&7If enabled, when a villager restocks ",
+                                "&7at their work station, their trade ",
+                                "&7selection resets.",
+                                "&7If disabled, their selection of trades",
+                                "&7remains the same (vanilla)",
+                                "",
+                                "&6Click to toggle")
+                        .stringTag(KEY_BUTTON, "subtypeRealisticButton")
+                        .get();
     }
 }
