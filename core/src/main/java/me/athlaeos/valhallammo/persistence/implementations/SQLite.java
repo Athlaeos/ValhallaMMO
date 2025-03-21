@@ -133,7 +133,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
         for (UUID p : new HashSet<>(persistentProfiles.keySet())){
             Player player = ValhallaMMO.getInstance().getServer().getPlayer(p);
             for (Profile profile : persistentProfiles.getOrDefault(p, new HashMap<>()).values()){
-                if (!shouldPersist(profile)) continue;
+                if (!shouldPersist(profile) || !JoinLeaveListener.getLoadedProfiles().contains(profile.getOwner())) continue;
                 SQL.insertOrUpdateProfile(p, conn, profile);
             }
             if (player == null || !player.isOnline()) persistentProfiles.remove(p);

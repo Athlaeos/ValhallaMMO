@@ -95,6 +95,7 @@ public class PDC extends ProfilePersistence {
         if (persistentProfiles.containsKey(p.getUniqueId()) &&
                 JoinLeaveListener.getLoadedProfiles().contains(p.getUniqueId())){
             for (Profile pr : persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>()).values()){
+                if (!JoinLeaveListener.getLoadedProfiles().contains(pr.getOwner())) continue;
                 PersistableProfile tempProfile = new PersistableProfile();
 
                 for (String s : pr.intStatNames()) tempProfile.intStats.put(s, pr.getInt(s));
