@@ -165,9 +165,9 @@ public class Equippable extends DynamicItemModifier {
 
     @Override
     public List<String> commandSuggestions(CommandSender executor, int currentArg) {
-        if (currentArg == 0) return List.of("<model>", "minecraft:");
+        if (currentArg == 0) return List.of("<model>", "minecraft:", "reset");
         if (currentArg == 1) return List.of("HEAD", "CHEST", "LEGS", "FEET");
-        if (currentArg == 2) return List.of("<cameraOverlay>", "minecraft:");
+        if (currentArg == 2) return List.of("<cameraOverlay>", "minecraft:", "reset");
         return null;
     }
 
