@@ -22,15 +22,19 @@ import org.bukkit.inventory.ItemStack;
 public class PotionBeltListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onConsumeItem(PlayerItemConsumeEvent e){
-        if (e.isCancelled() || e.getItem().getType() != Material.POTION) return;
-        ItemStack consumed = e.getItem();
+        if (e.isCancelled() || e.getItem().getType() != Material.POTION || ItemUtils.isEmpty(e.getItem())) return;
+        EquipmentSlot hand;
+        if (e.getItem().equals(e.getPlayer().getInventory().getItemInMainHand())) hand = EquipmentSlot.HAND;
+        else if (e.getItem().equals(e.getPlayer().getInventory().getItemInOffHand())) hand = EquipmentSlot.OFF_HAND;
+        else return;
+        ItemStack consumed = hand == EquipmentSlot.HAND ? e.getPlayer().getInventory().getItemInMainHand() : e.getPlayer().getInventory().getItemInOffHand();
         if (ItemUtils.isEmpty(consumed)) return;
         ItemBuilder consumableBuilder = new ItemBuilder(consumed);
         if (!PotionBelt.isPotionBelt(consumableBuilder.getMeta())) return;
 
         ItemStack replacement = PotionBelt.deleteSelectedPotion(consumableBuilder);
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            if (e.getHand() == EquipmentSlot.HAND) e.getPlayer().getInventory().setItemInMainHand(replacement);
+            if (hand == EquipmentSlot.HAND) e.getPlayer().getInventory().setItemInMainHand(replacement);
             else e.getPlayer().getInventory().setItemInOffHand(replacement);
             ItemUtils.addItem(e.getPlayer(), new ItemStack(Material.GLASS_BOTTLE), false);
             e.getPlayer().playSound(e.getPlayer(), Sound.ITEM_BOTTLE_FILL, 1F, 1F);

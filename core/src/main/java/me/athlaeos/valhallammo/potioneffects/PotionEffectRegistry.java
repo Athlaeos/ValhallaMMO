@@ -818,6 +818,30 @@ public class PotionEffectRegistry {
         }
     }
 
+    public static String getItemName(ItemMeta meta, boolean combined){
+        Material base = ItemUtils.getStoredType(meta);
+        if (base == null) return null;
+        String c = combined ? "combined_" : "";
+        String key = switch (base) {
+            case SPLASH_POTION -> "potion_splash_format";
+            case LINGERING_POTION -> "potion_lingering_format";
+            case TIPPED_ARROW -> "tipped_arrow_format";
+            case POTION -> "potion_base_format";
+            default -> "item_generic_format";
+        };
+        String plainFormat = TranslationManager.getTranslation(key);
+        String format = TranslationManager.getTranslation(c + key);
+        // if the meta has no display name, override is enabled, or the display name already contains the format it was previously, set the new display name
+        if (ChatColor.stripColor(meta.getDisplayName()).contains(ChatColor.stripColor(Utils.chat(plainFormat.replace("%effect%", ""))))){
+            Map<String, PotionEffectWrapper> effects = getStoredEffects(meta, true);
+            if (effects.isEmpty()) return null;
+            PotionEffectWrapper effectForName = effects.values().stream().findAny().orElse(null);
+            String effectName = effectForName.getPotionName();
+            return Utils.chat(format.replace("%icon%", effectForName.getEffectIcon()).replace("%effect%", effectName).replace("%item%", ItemUtils.getItemName(meta)));
+        }
+        return null;
+    }
+
     private static class PotionTypeEffectWrapper {
         private final String potionEffectType;
         private int durationBase = 0;

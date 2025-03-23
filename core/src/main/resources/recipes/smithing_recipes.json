@@ -2636,6 +2636,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "WEIGHTLESS",
+          "name": "weight_class",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
