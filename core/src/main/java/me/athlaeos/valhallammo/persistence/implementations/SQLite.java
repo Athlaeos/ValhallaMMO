@@ -164,6 +164,7 @@ public class SQLite extends ProfilePersistence implements Database, LeaderboardC
                 double value = set.getDouble("main_stat");
                 UUID uuid = UUID.fromString(set.getString("owner"));
                 OfflinePlayer player = ValhallaMMO.getInstance().getServer().getOfflinePlayer(uuid);
+                if (LeaderboardManager.getExcludedPlayers().contains(player.getName())) continue;
                 Map<String, Double> extraStat = new HashMap<>();
                 for (String e : leaderboard.extraStats().values()) extraStat.put(e, set.getDouble(e));
                 entries.put(rank, new LeaderboardEntry(player.getName(), player.getUniqueId(), value, rank, extraStat));

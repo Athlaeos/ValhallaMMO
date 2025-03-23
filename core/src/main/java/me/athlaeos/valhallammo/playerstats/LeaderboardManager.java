@@ -24,6 +24,7 @@ public class LeaderboardManager {
     private static final Map<Integer, String> placementPrefixes = new HashMap<>();
     private static final Map<String, Map<Integer, LeaderboardEntry>> cachedLeaderboardsByRank = new HashMap<>();
     private static final Map<String, Map<UUID, LeaderboardEntry>> cachedLeaderboardsByPlayer = new HashMap<>();
+    private static final Collection<String> excludedPlayers = new HashSet<>(ConfigManager.getConfig("leaderboards.yml").get().getStringList("excluded"));
     private static int pageEntryLimit = 10;
     private static String personalEntryPrefix;
 
@@ -178,4 +179,8 @@ public class LeaderboardManager {
     }
 
     public record Leaderboard(String key, Class<? extends Profile> profile, String mainStat, String displayName, String placeholderDisplay, String entryFormat, Map<String, String> extraStats, double lowerLimit){}
+
+    public static Collection<String> getExcludedPlayers() {
+        return excludedPlayers;
+    }
 }
