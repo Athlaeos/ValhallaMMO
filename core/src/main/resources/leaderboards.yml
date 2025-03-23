@@ -7,6 +7,9 @@ placement_prefixes: # The prefixes (usually colors, but can be emojis or whateve
 
 personal_entry_prefix: "<lang.leaderboard_personal_prefix>"
 
+excluded:
+  - Athlaeos
+
 leaderboards:
   power:
     display_name: "<lang.leaderboard_power_level>" # The display name of the leaderboard when displayed in chat from the /valtop command
