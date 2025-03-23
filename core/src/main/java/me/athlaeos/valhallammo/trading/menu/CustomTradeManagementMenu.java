@@ -120,7 +120,8 @@ public class CustomTradeManagementMenu extends Menu {
             }
             case SUBTYPE -> {
                 if (currentSubType != null){
-
+                    inventory.setItem(0, new ItemBuilder(Buttons.subtypeNameButton).name(currentSubType.getName() == null ? "&7No name" : currentSubType.getName()).get());
+                    inventory.setItem(8, new ItemBuilder(Buttons.subtypeVersionButton).name("&fVersion: " + currentSubType.getVersion()).get());
                 }
                 inventory.setItem(49, Buttons.backToMenuButton);
             }
@@ -342,6 +343,10 @@ public class CustomTradeManagementMenu extends Menu {
                         .lore("&7If enabled, when a villager restocks ",
                                 "&7at their work station, their trade ",
                                 "&7selection resets.",
+                                "&7This also features a demand mechanic,",
+                                "&7where frequently purchased items also",
+                                "&7increase the likelihood for it to",
+                                "&7re-occur.",
                                 "&7If disabled, their selection of trades",
                                 "&7remains the same (vanilla)",
                                 "",
