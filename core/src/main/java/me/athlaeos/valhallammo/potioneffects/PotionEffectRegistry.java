@@ -838,27 +838,23 @@ public class PotionEffectRegistry {
             case POTION -> "potion_base_format";
             default -> "item_generic_format";
         };
-        String plainFormat = TranslationManager.getTranslation(key);
         String format = TranslationManager.getTranslation(c + key);
         // if the meta has no display name, override is enabled, or the display name already contains the format it was previously, set the new display name
-        if (ChatColor.stripColor(meta.getDisplayName()).contains(ChatColor.stripColor(Utils.chat(plainFormat.replace("%effect%", ""))))){
-            Map<String, PotionEffectWrapper> effects = getStoredEffects(meta, true);
-            if (effects.isEmpty()) {
-                PotionType type = meta instanceof PotionMeta pm ? ValhallaMMO.getNms().getPotionType(pm) : null;
-                if (type != null) {
-                    for (PotionTypeEffectWrapper typeWrapper : typeToEffectWrappings.getOrDefault(type, new HashMap<>()).values()){
-                        PotionEffectWrapper effectWrapper = typeWrapper.potionEffectType == null ? null : getEffect(typeWrapper.potionEffectType);
-                        if (effectWrapper == null) continue;
-                        effects.put(effectWrapper.getEffect(), effectWrapper);
-                    }
+        Map<String, PotionEffectWrapper> effects = getStoredEffects(meta, true);
+        if (effects.isEmpty()) {
+            PotionType type = meta instanceof PotionMeta pm ? ValhallaMMO.getNms().getPotionType(pm) : null;
+            if (type != null) {
+                for (PotionTypeEffectWrapper typeWrapper : typeToEffectWrappings.getOrDefault(type, new HashMap<>()).values()){
+                    PotionEffectWrapper effectWrapper = typeWrapper.potionEffectType == null ? null : getEffect(typeWrapper.potionEffectType);
+                    if (effectWrapper == null) continue;
+                    effects.put(effectWrapper.getEffect(), effectWrapper);
                 }
             }
-            if (effects.isEmpty()) return null;
-            PotionEffectWrapper effectForName = effects.values().stream().findAny().orElse(null);
-            String effectName = effectForName.getPotionName();
-            return Utils.chat(format.replace("%icon%", effectForName.getEffectIcon()).replace("%effect%", effectName).replace("%item%", ItemUtils.getItemName(meta)));
         }
-        return null;
+        if (effects.isEmpty()) return null;
+        PotionEffectWrapper effectForName = effects.values().stream().findAny().orElse(null);
+        String effectName = effectForName.getPotionName();
+        return Utils.chat(format.replace("%icon%", effectForName.getEffectIcon()).replace("%effect%", effectName).replace("%item%", ItemUtils.getItemName(meta)));
     }
 
     private static class PotionTypeEffectWrapper {
