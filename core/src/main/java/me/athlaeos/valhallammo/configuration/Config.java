@@ -19,7 +19,7 @@ public class Config {
     }
 
     public Config save() {
-        if ((this.config == null) || (this.file == null) || file.exists())
+        if ((this.config == null) || (this.file == null) || !file.exists())
             return this;
         try {
             ConfigurationSection section = config.getConfigurationSection("");

@@ -265,8 +265,8 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
     public void saveProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())){
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+                if (!JoinLeaveListener.getLoadedProfiles().contains(p.getUniqueId())) return;
                 for (Profile profile : persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>()).values()){
-                    if (!JoinLeaveListener.getLoadedProfiles().contains(profile.getOwner())) continue;
                     insertOrUpdateProfile(p.getUniqueId(), conn, profile);
                 }
             });

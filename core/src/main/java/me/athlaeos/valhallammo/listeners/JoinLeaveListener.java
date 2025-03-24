@@ -62,10 +62,10 @@ public class JoinLeaveListener implements Listener {
         EntityAttributeStats.removeStats(e.getPlayer());
         PotionEffectRegistry.markAsUnaffected(e.getPlayer());
 
-        if (loadedProfiles.contains(e.getPlayer().getUniqueId())) {
-            ProfileRegistry.getPersistence().saveProfile(e.getPlayer());
-            loadedProfiles.remove(e.getPlayer().getUniqueId());
-        }
+//        if (loadedProfiles.contains(e.getPlayer().getUniqueId())) {
+//            ProfileRegistry.getPersistence().saveProfile(e.getPlayer());
+//            loadedProfiles.remove(e.getPlayer().getUniqueId());
+//        }
 
         FlightReward.setFlight(e.getPlayer(), false);
     }
