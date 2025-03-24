@@ -120,8 +120,24 @@ public class CustomTradeManagementMenu extends Menu {
             }
             case SUBTYPE -> {
                 if (currentSubType != null){
+                    List<MerchantType> types = new ArrayList<>(CustomMerchantManager.getMerchantConfiguration(currentProfession).getMerchantTypes().stream().map(CustomMerchantManager::getMerchantType).filter(Objects::nonNull).toList());
+                    double totalWeight = types.stream().map(MerchantType::getWeight).mapToDouble(d -> d).sum();
                     inventory.setItem(0, new ItemBuilder(Buttons.subtypeNameButton).name(currentSubType.getName() == null ? "&7No name" : currentSubType.getName()).get());
                     inventory.setItem(8, new ItemBuilder(Buttons.subtypeVersionButton).name("&fVersion: " + currentSubType.getVersion()).get());
+                    inventory.setItem(11, new ItemBuilder(Buttons.subtypeRealisticButton).name("&fRestocking Resets: " + (currentSubType.isResetTradesOnRestock() ? "Yes" : "No")).get());
+                    inventory.setItem(13, new ItemBuilder(Buttons.subtypeProfessionLossButton).name("&fPermanent Profession: " + (currentSubType.canLoseProfession() ? "No" : "Yes")).get());
+                    inventory.setItem(15, new ItemBuilder(Buttons.subtypePerPlayerStockButton).name("&fPer Player Stock: " + (currentSubType.isPerPlayerStock() ? "Yes" : "No")).get());
+                    inventory.setItem(21, new ItemBuilder(Buttons.subtypeWeightButton).name("&fWeight: " + currentSubType.getWeight()).prependLore(
+                            String.format("&7Chance of occurrence: &e%.1f%% &7(&e%.1f&7)", Math.max(0, Math.min(100, (currentSubType.getWeight() / totalWeight) * 100)), currentSubType.getWeight())
+                    ).get());
+                    inventory.setItem(23, new ItemBuilder(Buttons.subtypeTradesButton).prependLore(
+                            "&7Trades:",
+                            "    Novice:     &e" + currentSubType.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
+                            "    Apprentice: &b" + currentSubType.getTrades().get(MerchantLevel.APPRENTICE).getTrades().size(),
+                            "    Journeyman: &a" + currentSubType.getTrades().get(MerchantLevel.JOURNEYMAN).getTrades().size(),
+                            "    Expert:     &c" + currentSubType.getTrades().get(MerchantLevel.EXPERT).getTrades().size(),
+                            "    Master:     &d" + currentSubType.getTrades().get(MerchantLevel.MASTER).getTrades().size()
+                    ).get());
                 }
                 inventory.setItem(49, Buttons.backToMenuButton);
             }
