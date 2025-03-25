@@ -10,12 +10,11 @@ import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataType;
 
-public class FlightReward extends PerkReward {
+public class FlightRemoveReward extends PerkReward {
     private static final NamespacedKey KEY_GRANTED_FLIGHT = new NamespacedKey(ValhallaMMO.getInstance(), "granted_flight");
-    public FlightReward() {
-        super("enable_flight");
+    public FlightRemoveReward() {
+        super("disable_flight");
     }
 
     @Override
@@ -28,7 +27,7 @@ public class FlightReward extends PerkReward {
         else ProfileRegistry.setSkillProfile(player, profile, PowerProfile.class);
         ProfileCache.resetCache(player);
 
-        setFlight(player, true);
+        FlightReward.setFlight(player, true);
     }
 
     @Override
@@ -41,24 +40,7 @@ public class FlightReward extends PerkReward {
         else ProfileRegistry.setSkillProfile(player, profile, PowerProfile.class);
         ProfileCache.resetCache(player);
 
-        setFlight(player, false);
-    }
-
-    public static void setFlight(Player p, boolean flight){
-        if (flight){
-            PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
-            if (!p.getAllowFlight() && profile.getBoolean("flight")) {
-                // player may not fly
-                p.setAllowFlight(true);
-                p.getPersistentDataContainer().set(KEY_GRANTED_FLIGHT, PersistentDataType.BYTE, (byte) 0);
-            }
-        } else {
-            if (p.getAllowFlight() && p.getPersistentDataContainer().has(KEY_GRANTED_FLIGHT, PersistentDataType.BYTE)){
-                // player may fly, and it's because they've been granted it through this reward
-                p.setAllowFlight(false);
-                p.getPersistentDataContainer().remove(KEY_GRANTED_FLIGHT);
-            }
-        }
+        FlightReward.setFlight(player, false);
     }
 
     @Override

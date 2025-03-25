@@ -84,6 +84,7 @@ public class PerkRewardRegistry {
         register(new ProfileStringListRemove("permanent_effects_remove", "permanentPotionEffects", PowerProfile.class));
         register(new ProfileStringListClear("permanent_effects_clear", "permanentPotionEffects", PowerProfile.class));
         register(new FlightReward());
+        register(new FlightRemoveReward());
     }
 
     public static void register(PerkReward reward){
