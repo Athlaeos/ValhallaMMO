@@ -69,7 +69,6 @@ messages:
 leveling_perks:
   mining_miningdrops_add: 0.01
   mining_blastingdrops_add: 0.01
-  mining_miningspeedbonus_add: 0.005
 
 starting_coordinates: '4,9' # The coordinates in the skill tree the player sees first when switching to the skill tree
 
@@ -406,7 +405,7 @@ perks:
     perk_rewards:
       reset_skill_mining: 0
       p:mining_newgameplus_add: 1
-      p:mining_miningspeedbonus_add: 0.25
+      p:mining_miningspeedbonus_add: 0.15
       p:mining_blastingdrops_add: 0.25
       p:mining_miningdrops_add: 0.25
       p:mining_miningexpmultiplier_add: -0.5
@@ -429,7 +428,7 @@ perks:
     perk_rewards:
       reset_skill_mining: 0
       p:mining_newgameplus_add: 1
-      p:mining_miningspeedbonus_add: 0.25
+      p:mining_miningspeedbonus_add: 0.15
       p:mining_blastingdrops_add: 0.25
       p:mining_miningdrops_add: 0.25
       p:mining_miningexpmultiplier_add: -0.17
