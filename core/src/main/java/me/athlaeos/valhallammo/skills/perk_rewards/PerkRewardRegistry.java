@@ -98,6 +98,7 @@ public class PerkRewardRegistry {
         register(new ProfileStringListAdd("martialarts_dropkick_damage_type_add", "dropKickDamageType", MartialArtsProfile.class));
         register(new ProfileStringListRemove("martialarts_dropkick_damage_type_remove", "dropKickDamageType", MartialArtsProfile.class));
         register(new FlightReward());
+        register(new FlightRemoveReward());
     }
 
     public static void register(PerkReward reward){

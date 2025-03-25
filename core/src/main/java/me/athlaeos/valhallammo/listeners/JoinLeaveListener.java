@@ -38,7 +38,6 @@ public class JoinLeaveListener implements Listener {
         EntityCache.getAndCacheProperties(e.getPlayer());
         PotionEffectRegistry.updatePlayerAffectedStatus(e.getPlayer());
         GlobalEffect.temporarilyRevealBossBar(e.getPlayer());
-        EntityAttributeStats.updateStats(e.getPlayer());
         PlayerMenuUtilManager.removePlayerMenuUtility(e.getPlayer().getUniqueId());
 
         double health = e.getPlayer().getPersistentDataContainer().getOrDefault(HEALTH, PersistentDataType.DOUBLE, -1D);
@@ -50,7 +49,10 @@ public class JoinLeaveListener implements Listener {
             }
         }
 
-        FlightReward.setFlight(e.getPlayer(), true);
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            EntityAttributeStats.updateStats(e.getPlayer());
+            FlightReward.setFlight(e.getPlayer(), true);
+        }, 40L);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
