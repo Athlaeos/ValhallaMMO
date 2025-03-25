@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.PotionBelt;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -109,12 +111,13 @@ public class PotionBeltListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onClick(InventoryClickEvent e){
-        if (e.isCancelled() || !e.isRightClick() || e.isShiftClick()) return;
+        if (e.isCancelled() || !e.isRightClick() || e.isShiftClick() || e.getClick() == ClickType.DOUBLE_CLICK || !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "cooldown_potion_insertion")) return;
         ItemStack clicked = e.getCurrentItem();
         ItemStack cursor = e.getCursor();
         if (ItemUtils.isEmpty(clicked)) return;
         ItemBuilder item = new ItemBuilder(clicked);
         if (!PotionBelt.isPotionBelt(item.getMeta())) return;
+        Timer.setCooldown(e.getWhoClicked().getUniqueId(), 500, "cooldown_potion_insertion");
         if (ItemUtils.isEmpty(cursor)){
             PotionBelt.PotionExtractionDetails details = PotionBelt.removeSelectedPotion(item);
             if (details == null || ItemUtils.isEmpty(details.newBelt()) || ItemUtils.isEmpty(details.removed())) return;

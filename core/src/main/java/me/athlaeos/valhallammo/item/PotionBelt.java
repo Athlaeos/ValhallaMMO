@@ -145,6 +145,8 @@ public class PotionBelt {
             setStoredBelt(beltMeta, beltItem);
             ItemUtils.setItemMeta(beltItem, beltMeta);
         }
+
+        UUID beltID = beltMeta == null ? UUID.randomUUID() : getPotionBeltID(beltMeta, false);
         ItemStack selectedPotion = getSelectedPotion(belt.getMeta());
         if (ItemUtils.isEmpty(selectedPotion)) return belt.get();
         List<ItemStack> potions = getPotions(belt.getMeta());
@@ -170,6 +172,7 @@ public class PotionBelt {
         String name = getName(potionMeta, selectedPotion);
         potionMeta.setLore(Utils.chat(format));
         potionMeta.setDisplayName(Utils.chat(TranslationManager.getTranslation("potion_belt_name_format").replace("%item_name%", name)));
+        setPotionBeltID(potionMeta, beltID);
         setPotions(potionMeta, potions);
         setIndex(potionMeta, selectedIndex);
         setStoredBelt(potionMeta, beltItem);
@@ -225,7 +228,9 @@ public class PotionBelt {
 
     public static UUID getPotionBeltID(ItemMeta meta, boolean addIfAbsent){
         if (meta.getPersistentDataContainer().get(KEY_BELT_ID, PersistentDataType.STRING) == null) {
-            if (addIfAbsent) meta.getPersistentDataContainer().set(KEY_BELT_ID, PersistentDataType.STRING, UUID.randomUUID().toString());
+            if (addIfAbsent) {
+                meta.getPersistentDataContainer().set(KEY_BELT_ID, PersistentDataType.STRING, UUID.randomUUID().toString());
+            }
             else return null;
         }
         return UUID.fromString(meta.getPersistentDataContainer().getOrDefault(KEY_BELT_ID, PersistentDataType.STRING, ""));
