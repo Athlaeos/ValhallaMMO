@@ -26,10 +26,16 @@ public class CustomTradeManagementMenu extends Menu {
     private static final NamespacedKey KEY_BUTTON = new NamespacedKey(ValhallaMMO.getInstance(), "button_functionality");
 
     private View view = View.PROFESSIONS;
-    private int page = 0;
+    private int subTypePage = 0;
     private Villager.Profession currentProfession = null;
     private MerchantType currentSubType = null;
     private MerchantTrade currentTrade = null;
+
+    private int tradesNovicePage = 0;
+    private int tradesApprenticePage = 0;
+    private int tradesJourneymanPage = 0;
+    private int tradesExpertPage = 0;
+    private int tradesMasterPage = 0;
 
     public CustomTradeManagementMenu(PlayerMenuUtility playerMenuUtility) {
         super(playerMenuUtility);
@@ -108,13 +114,13 @@ public class CustomTradeManagementMenu extends Menu {
                     buttons.add(Buttons.createNewButton);
 
                     Map<Integer, List<ItemStack>> pages = Utils.paginate(45, buttons);
-                    page = Math.max(0, Math.min(pages.size() - 1, page));
-                    for (ItemStack i : pages.get(page)){
+                    subTypePage = Math.max(0, Math.min(pages.size() - 1, subTypePage));
+                    for (ItemStack i : pages.get(subTypePage)){
                         inventory.addItem(i);
                     }
 
-                    if (page < pages.size() - 1) inventory.setItem(53, Buttons.pageForwardButton);
-                    if (page > 0) inventory.setItem(45, Buttons.pageBackButton);
+                    if (subTypePage < pages.size() - 1) inventory.setItem(53, Buttons.pageForwardButton);
+                    if (subTypePage > 0) inventory.setItem(45, Buttons.pageBackButton);
                 }
                 inventory.setItem(49, Buttons.backToMenuButton);
             }
@@ -127,19 +133,25 @@ public class CustomTradeManagementMenu extends Menu {
                     inventory.setItem(11, new ItemBuilder(Buttons.subtypeRealisticButton).name("&fRestocking Resets: " + (currentSubType.isResetTradesOnRestock() ? "Yes" : "No")).get());
                     inventory.setItem(13, new ItemBuilder(Buttons.subtypeProfessionLossButton).name("&fPermanent Profession: " + (currentSubType.canLoseProfession() ? "No" : "Yes")).get());
                     inventory.setItem(15, new ItemBuilder(Buttons.subtypePerPlayerStockButton).name("&fPer Player Stock: " + (currentSubType.isPerPlayerStock() ? "Yes" : "No")).get());
-                    inventory.setItem(21, new ItemBuilder(Buttons.subtypeWeightButton).name("&fWeight: " + currentSubType.getWeight()).prependLore(
-                            String.format("&7Chance of occurrence: &e%.1f%% &7(&e%.1f&7)", Math.max(0, Math.min(100, (currentSubType.getWeight() / totalWeight) * 100)), currentSubType.getWeight())
-                    ).get());
-                    inventory.setItem(23, new ItemBuilder(Buttons.subtypeTradesButton).prependLore(
-                            "&7Trades:",
-                            "    Novice:     &e" + currentSubType.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
-                            "    Apprentice: &b" + currentSubType.getTrades().get(MerchantLevel.APPRENTICE).getTrades().size(),
-                            "    Journeyman: &a" + currentSubType.getTrades().get(MerchantLevel.JOURNEYMAN).getTrades().size(),
-                            "    Expert:     &c" + currentSubType.getTrades().get(MerchantLevel.EXPERT).getTrades().size(),
-                            "    Master:     &d" + currentSubType.getTrades().get(MerchantLevel.MASTER).getTrades().size()
-                    ).get());
+                    inventory.setItem(21, new ItemBuilder(Buttons.subtypeWeightButton)
+                            .name("&fWeight: " + currentSubType.getWeight())
+                            .prependLore(
+                                    String.format("&7Chance of occurrence: &e%.1f%% &7(&e%.1f&7)", Math.max(0, Math.min(100, (currentSubType.getWeight() / totalWeight) * 100)), currentSubType.getWeight())
+                            ).get());
+                    inventory.setItem(23, new ItemBuilder(Buttons.subtypeTradesButton)
+                            .prependLore(
+                                    "&7Trades:",
+                                    "    Novice:     &e" + currentSubType.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
+                                    "    Apprentice: &b" + currentSubType.getTrades().get(MerchantLevel.APPRENTICE).getTrades().size(),
+                                    "    Journeyman: &a" + currentSubType.getTrades().get(MerchantLevel.JOURNEYMAN).getTrades().size(),
+                                    "    Expert:     &c" + currentSubType.getTrades().get(MerchantLevel.EXPERT).getTrades().size(),
+                                    "    Master:     &d" + currentSubType.getTrades().get(MerchantLevel.MASTER).getTrades().size()
+                            ).get());
                 }
                 inventory.setItem(49, Buttons.backToMenuButton);
+            }
+            case TRADES -> {
+
             }
         }
     }
