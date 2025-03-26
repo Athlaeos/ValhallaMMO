@@ -12,6 +12,7 @@ experience:
   exp_enemies_nerfed: []
   max_health_limitation: false
   pvp_multiplier: 0.1
+  is_chunk_nerfed: true
 
 special_perks: []
 

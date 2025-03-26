@@ -12,6 +12,7 @@ experience:
   exp_second_piece: 5 # Exp per second spent in combat, per piece of light armor. Players enter combat when hit, or when hitting entities, for a specified duration in config.yml
   exp_multiplier_point: 0.05 # Exp multiplier bonus for each point of armor the player has. With 0.05 and 40 armor points the player gains +200% exp
   pvp_multiplier: 0.1
+  is_chunk_nerfed: true
 
 special_perks: []
 

@@ -74,6 +74,7 @@ public class ArcherySkill extends Skill implements Listener {
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
     private boolean maxHealthLimitation = false;
     private double pvpMultiplier = 0.1;
+    private boolean isChunkNerfed = true;
 
     private Particle trail = null;
     private Particle.DustOptions trailOptions = null;
@@ -107,6 +108,7 @@ public class ArcherySkill extends Skill implements Listener {
         expSpawnerMultiplier = progressionConfig.getDouble("experience.spawner_spawned_multiplier");
         maxHealthLimitation = progressionConfig.getBoolean("experience.max_health_limitation");
         pvpMultiplier = progressionConfig.getDouble("experience.pvp_multiplier");
+        isChunkNerfed = progressionConfig.getBoolean("experience.is_chunk_nerfed", true);
 
         ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.entity_exp_multipliers");
         if (entitySection != null){
@@ -217,7 +219,7 @@ public class ArcherySkill extends Skill implements Listener {
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (e.isCancelled() || !p.isOnline()) return;
-            double chunkNerf = EntitySpawnListener.isTrialSpawned(v) ? 1 : ChunkEXPNerf.getChunkEXPNerf(v.getLocation().getChunk(), p, "archery");
+            double chunkNerf = !isChunkNerfed || EntitySpawnListener.isTrialSpawned(v) ? 1 : ChunkEXPNerf.getChunkEXPNerf(v.getLocation().getChunk(), p, "archery");
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(v.getType(), 1D);
             double exp = ((expDistanceMultiplierBase * baseExp) + (baseExp * expDistanceMultiplierBonus * expDistance)) * entityExpMultiplier * chunkNerf;
             if (hasInfinity) exp *= expInfinityMultiplier;
@@ -229,7 +231,7 @@ public class ArcherySkill extends Skill implements Listener {
                             (EntitySpawnListener.getSpawnReason(v) == CreatureSpawnEvent.SpawnReason.SPAWNER ? expSpawnerMultiplier : 1),
                     false,
                     PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
-            if (!EntitySpawnListener.isTrialSpawned(v)) ChunkEXPNerf.increment(v.getLocation().getChunk(), p, "archery");
+            if (isChunkNerfed && !EntitySpawnListener.isTrialSpawned(v)) ChunkEXPNerf.increment(v.getLocation().getChunk(), p, "archery");
         }, 2L);
     }
 

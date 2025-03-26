@@ -56,6 +56,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
     private double maceExpMultiplier = 0;
     private boolean maxHealthLimitation = false;
     private double pvpMultiplier = 0.1;
+    private boolean isChunkNerfed = true;
 
     public LightWeaponsSkill(String type) {
         super(type);
@@ -87,6 +88,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
         maceExpMultiplier = progressionConfig.getDouble("experience.mace_exp_multiplier");
         maxHealthLimitation = progressionConfig.getBoolean("experience.max_health_limitation");
         pvpMultiplier = progressionConfig.getDouble("experience.pvp_multiplier");
+        isChunkNerfed = progressionConfig.getBoolean("experience.is_chunk_nerfed");
 
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
@@ -162,7 +164,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 if (e.isCancelled() || !p.isOnline()) return;
-                double chunkNerf = EntitySpawnListener.isTrialSpawned(l) ? 1 : ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
+                double chunkNerf = !isChunkNerfed || EntitySpawnListener.isTrialSpawned(l) ? 1 : ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);
                 double pvpMult = e.getEntity() instanceof Player ? pvpMultiplier : 1;
                 addEXP(p,
@@ -175,7 +177,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
                                 (EntitySpawnListener.getSpawnReason(l) == CreatureSpawnEvent.SpawnReason.SPAWNER ? spawnerMultiplier : 1),
                         false,
                         PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
-                if (!EntitySpawnListener.isTrialSpawned(l)) ChunkEXPNerf.increment(l.getLocation().getChunk(), p, "weapons");
+                if (isChunkNerfed && !EntitySpawnListener.isTrialSpawned(l)) ChunkEXPNerf.increment(l.getLocation().getChunk(), p, "weapons");
             }, 2L);
         }
     }
