@@ -220,8 +220,6 @@ item_skill_requirement_warning_delay: 600000 # Players are warned of their equip
 
 # COMBAT & DAMAGE
 
-dual_wielding: true # If true, players can attack with the item in their offhand in addition to main hand
-
 # If true, damage multipliers (such as crit, power attacks, ranged multipliers, etc.) are multiplied with eachother as
 # opposed to added on top of eachother. Having multipliers be multiplied with eachother results in much greater damage
 # compared to additive multipliers.

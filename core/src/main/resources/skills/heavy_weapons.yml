@@ -14,9 +14,3 @@ valid_coating_items:
   - SPLASH_POTION
   - LINGERING_POTION
   - SNOWBALL
-
-require_empty_offhand: true # If true, players will require an empty off-hand while holding heavy weapons or have an attack speed debuff applied
-attack_speed_reduction_occupied_offhand: 0.0 # The attack speed debuff applied to the player when they have something in their offhand while using a heavy weapon
-attack_speed_reduction_heavyweapon_in_offhand: -0.5 # The additional attack speed debuff if said item happens to be a heavy weapon itself
-# In total, holding two heavy weapons will reduce attack speed by 50%
-warning_dual_wielding: '<lang.heavy-weapons-warning-dual-wielding>' # Message sent to the player when debuffed due to dual wielding heavy weapons (one time)
