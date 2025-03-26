@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.gui.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.commands.valhallasubcommands.ExportCommand;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Question;
@@ -117,7 +118,10 @@ public class CustomItemManagementMenu extends Menu implements SetModifiersMenu {
         if (StringUtils.isEmpty(storedValue)) return;
         CustomItem clicked = CustomItemRegistry.getItem(storedValue);
         if (clicked != null){
-            if (e.isLeftClick()){
+            if (e.getClick() == ClickType.MIDDLE){
+                if (ExportCommand.prepareOrUnprepareItem(storedValue)) Utils.sendMessage(e.getWhoClicked(), "&aPrepared " + storedValue + " for export");
+                else Utils.sendMessage(e.getWhoClicked(), "&cRemoved " + storedValue + " from export");
+            } else if (e.isLeftClick()){
                 currentItem = clicked;
                 if (!e.isShiftClick()){
                     playerMenuUtility.setPreviousMenu(this);
@@ -165,7 +169,10 @@ public class CustomItemManagementMenu extends Menu implements SetModifiersMenu {
                     .lore("&fClick to edit its modifiers",
                             "&fShift-Click to get a copy",
                             "&cRight-Click with nothing to delete",
-                            "&cRight-Click with item to overwrite").stringTag(BUTTON_DATA, item);
+                            "&cRight-Click with item to overwrite")
+                    .prependLore(ExportCommand.isPrepared(item) ? (new String[]{
+                            "&aPrepared for export", ""
+                    }) : new String[0]).stringTag(BUTTON_DATA, item);
             if (deleteConfirm != null && deleteConfirm.equals(item)) icon.prependLore("&cRight-Click to confirm deletion");
             if (reApplyConfirm != null && reApplyConfirm.equals(item)) icon.prependLore("&cRight-Click to overwrite item");
             buttons.add(icon.get());

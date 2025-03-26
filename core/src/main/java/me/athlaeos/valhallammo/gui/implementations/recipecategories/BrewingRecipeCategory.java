@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.gui.implementations.recipecategories;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.commands.valhallasubcommands.ExportCommand;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicBrewingRecipe;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
@@ -46,6 +47,9 @@ public class BrewingRecipeCategory extends RecipeCategory{
             icons.add(new ItemBuilder(recipe.getIngredient().getItem())
                     .name("&f" + recipe.getName())
                     .lore(lore)
+                    .prependLore(ExportCommand.isPrepared(recipe.getName()) ? (new String[]{
+                            "&aPrepared for export", ""
+                    }) : new String[0])
                     .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
                     .color(Color.fromRGB(210, 60, 200)).stringTag(RecipeOverviewMenu.KEY_RECIPE, recipe.getName()).get());
         }

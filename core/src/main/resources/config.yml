@@ -104,7 +104,7 @@ enabled_skills:
 # The plugin features customizable mining speeds, which requires packet listening and sending to work. If you have other
 # plugins that affect block mining speed, they will clash! Turn this off if you're absolutely sure you want to use the other
 # plugin's custom mining speed mechanics, but keep in mind ValhallaMMO's dig speed attributes and mechanics will stop doing anything.
-custom_mining_speeds: true
+custom_mining_speeds: false
 block_break_delay: true # If true, after not instantly breaking a block a 6-tick delay will be applied to the player in which they can't break a block.
 # Having this enabled is more true to vanilla, which also has this mechanic, but the option to disable it is here regardless.
 block_recovery: true # If true, blocks will gradually recover after being damaged. If false, blocks will instantly recover after being damaged (like in vanilla)
