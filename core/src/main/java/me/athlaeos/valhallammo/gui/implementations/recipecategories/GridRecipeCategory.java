@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.gui.implementations.recipecategories;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.commands.valhallasubcommands.ExportCommand;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.ToolRequirementType;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
@@ -84,6 +85,9 @@ public class GridRecipeCategory extends RecipeCategory{
             icons.add(new ItemBuilder(recipe.tinker() ? Objects.requireNonNullElse(tinkerEntry.getItem(), new ItemStack(Material.BARRIER)) : recipe.getResult())
                     .name("&f" + recipe.getName())
                     .lore(lore)
+                    .prependLore(ExportCommand.isPrepared(recipe.getName()) ? (new String[]{
+                            "&aPrepared for export", ""
+                    }) : new String[0])
                     .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
                     .stringTag(RecipeOverviewMenu.KEY_RECIPE, recipe.getName()).get());
         }

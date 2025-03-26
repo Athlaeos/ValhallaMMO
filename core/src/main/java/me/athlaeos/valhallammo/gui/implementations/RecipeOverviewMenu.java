@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.gui.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.commands.valhallasubcommands.ExportCommand;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Question;
@@ -136,7 +137,10 @@ public class RecipeOverviewMenu extends Menu {
         }
         String clickedRecipe = ItemUtils.getPDCString(KEY_RECIPE, clickedItem, null);
         if (!StringUtils.isEmpty(clickedRecipe)){
-            if (currentCategory != null) {
+            if (e.getClick() == ClickType.MIDDLE) {
+                if (ExportCommand.prepareOrUnprepareItem(clickedRecipe)) Utils.sendMessage(e.getWhoClicked(), "&aPrepared " + clickedRecipe + " for exporting");
+                else Utils.sendMessage(e.getWhoClicked(), "&cRemoved " + clickedRecipe + " from exporting");
+            } else if (currentCategory != null) {
                 currentCategory.onRecipeButtonClick(clickedRecipe, (Player) e.getWhoClicked());
             }
         }

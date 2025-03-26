@@ -11,11 +11,25 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandSender;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ExportCommand implements Command {
+    private static final Collection<String> preparedItems = new HashSet<>();
+
+    public static boolean prepareOrUnprepareItem(String item){
+        if (preparedItems.contains(item)) {
+            preparedItems.remove(item);
+            return false;
+        } else {
+            preparedItems.add(item);
+            return true;
+        }
+    }
+
+    public static boolean isPrepared(String item){
+        return preparedItems.contains(item);
+    }
+
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (args.length < 2) {
@@ -30,10 +44,14 @@ public class ExportCommand implements Command {
         List<CustomItem> exportItems = new ArrayList<>();
         if (args.length > 2){
             List<String> invalidModes = new ArrayList<>();
-            String[] modes = Arrays.copyOfRange(args, 2, args.length);
+            List<String> modes = new ArrayList<>(List.of(Arrays.copyOfRange(args, 2, args.length)));
             for (String mode : modes){
                 if (mode.equalsIgnoreCase("add")) {
                     addToExisting = true;
+                    continue;
+                } else if (mode.equalsIgnoreCase("prepared")) {
+                    modes.addAll(preparedItems);
+                    preparedItems.clear();
                     continue;
                 }
                 ContentPackageManager.ExportMode m = Catch.catchOrElse(() -> ContentPackageManager.ExportMode.valueOf(mode.toUpperCase(java.util.Locale.US)), null);
@@ -100,7 +118,13 @@ public class ExportCommand implements Command {
     @Override
     public List<String> getSubcommandArgs(CommandSender sender, String[] args) {
         if (args.length == 2) return List.of("name");
-        if (args.length >= 3) return Arrays.stream(ContentPackageManager.ExportMode.values()).map(ContentPackageManager.ExportMode::toString).map(String::toLowerCase).toList();
+        if (args.length >= 3) {
+            List<String> returns = new ArrayList<>(Arrays.stream(ContentPackageManager.ExportMode.values()).map(ContentPackageManager.ExportMode::toString).map(String::toLowerCase).toList());
+            returns.add("<item_or_recipe>");
+            returns.add("prepared");
+            returns.add("add");
+            return returns;
+        }
         return null;
     }
 }
