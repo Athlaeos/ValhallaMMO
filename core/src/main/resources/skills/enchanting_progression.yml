@@ -6,6 +6,7 @@ starting_perks:
 experience:
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   max_level: 100
+  is_chunk_nerfed: true
   exp_gain:
     experience_spent_conversion: 0.5 # The fraction of spent experience during enchanting that's converted into additional enchanting skill experience
     enchantment_base:

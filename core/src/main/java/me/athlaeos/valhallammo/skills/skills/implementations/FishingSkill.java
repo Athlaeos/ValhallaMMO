@@ -45,6 +45,7 @@ public class FishingSkill extends Skill implements Listener {
     private final Collection<String> baitMaterials = new HashSet<>();
 
     private boolean forgivingDropMultipliers = true; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
+    private boolean isChunkNerfed = true;
 
     public FishingSkill(String type) {
         super(type);
@@ -62,6 +63,7 @@ public class FishingSkill extends Skill implements Listener {
 
         forgivingDropMultipliers = skillConfig.getBoolean("forgiving_multipliers");
         baitMaterials.addAll(skillConfig.getStringList("fishing_bait_materials"));
+        isChunkNerfed = progressionConfig.getBoolean("experience.is_chunk_nerfed", true);
 
         Collection<String> invalidMaterials = new HashSet<>();
         ConfigurationSection blockBreakSection = progressionConfig.getConfigurationSection("experience.fishing_catch");
@@ -145,10 +147,10 @@ public class FishingSkill extends Skill implements Listener {
                 if (ItemUtils.isEmpty(i)) return;
                 exp += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
             }
-            double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(e.getHook().getLocation().getChunk(), e.getPlayer(), "fishing");
+            double chunkNerf = isChunkNerfed ? ChunkEXPNerf.getChunkEXPNerf(e.getHook().getLocation().getChunk(), e.getPlayer(), "fishing") : 1;
             if (exp > 0) {
                 addEXP(e.getPlayer(), exp * chunkNerf, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
-                ChunkEXPNerf.increment(e.getHook().getLocation().getChunk(), e.getPlayer(), "fishing");
+                if (isChunkNerfed) ChunkEXPNerf.increment(e.getHook().getLocation().getChunk(), e.getPlayer(), "fishing");
             }
         }
     }
