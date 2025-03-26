@@ -18,6 +18,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
+import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -54,6 +55,8 @@ import org.bukkit.tag.DamageTypeTags;
 
 import java.lang.reflect.Field;
 import java.util.*;
+
+import static me.athlaeos.valhallammo.utility.ItemUtils.itemOrAir;
 
 public final class NMS_v1_21_R4 implements NMS {
     @Override
@@ -151,6 +154,20 @@ public final class NMS_v1_21_R4 implements NMS {
     @Override
     public void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type) {
         NMS_v1_21_R1.removeAttribute(e, identifier, type);
+    }
+
+    @Override
+    public void sendArmorChange(LivingEntity entity, org.bukkit.inventory.ItemStack helmet, org.bukkit.inventory.ItemStack chestplate, org.bukkit.inventory.ItemStack leggings, org.bukkit.inventory.ItemStack boots) {
+        List<com.mojang.datafixers.util.Pair<net.minecraft.world.entity.EquipmentSlot, ItemStack>> equipment = new ArrayList<>();
+        if (entity.getEquipment() == null) return;
+        equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.MAINHAND, CraftItemStack.asNMSCopy(itemOrAir(entity.getEquipment().getItemInMainHand()))));
+        equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.OFFHAND, CraftItemStack.asNMSCopy(itemOrAir(entity.getEquipment().getItemInOffHand()))));
+        equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.HEAD, CraftItemStack.asNMSCopy(itemOrAir(helmet))));
+        equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.CHEST, CraftItemStack.asNMSCopy(itemOrAir(chestplate))));
+        equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.LEGS, CraftItemStack.asNMSCopy(itemOrAir(leggings))));
+        equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.FEET, CraftItemStack.asNMSCopy(itemOrAir(boots))));
+        ClientboundSetEquipmentPacket packet = new ClientboundSetEquipmentPacket(entity.getEntityId(), equipment);
+        PacketListener.broadcastPlayerPacket(entity, packet, true);
     }
 
     @Override
