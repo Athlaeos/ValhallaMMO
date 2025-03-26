@@ -60,6 +60,7 @@ public class EnchantingSkill extends Skill implements Listener {
     private boolean anvilDowngrading = false;
     private final Map<EntityType, Double> entityEXPMultipliers = new HashMap<>();
     private final Map<UUID, Map<EntityType, Integer>> diminishingReturnTallyCounter = new HashMap<>();
+    private boolean isChunkNerfed = true;
 
     private Animation elementalBladeActivationAnimation = AnimationRegistry.ELEMENTAL_BLADE_ACTIVATION;
     private Animation elementaBladeExpirationAnimation = AnimationRegistry.ELEMENTAL_BLADE_EXPIRATION;
@@ -90,6 +91,7 @@ public class EnchantingSkill extends Skill implements Listener {
         this.anvilDowngrading = skillConfig.getBoolean("anvil_downgrading");
         this.diminishingReturnsMultiplier = progressionConfig.getDouble("experience.diminishing_returns.multiplier");
         this.diminishingReturnsCount = progressionConfig.getInt("experience.diminishing_returns.amount");
+        this.isChunkNerfed = progressionConfig.getBoolean("experience.mob_exp_chunk_nerfed", true);
 
         ConfigurationSection expReducedEntitySection = progressionConfig.getConfigurationSection("experience.diminishing_returns.mob_experience");
         if (expReducedEntitySection != null){
@@ -349,7 +351,7 @@ public class EnchantingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityKilled(EntityDeathEvent e) {
-        if (e.getEntity().getKiller() == null || EntitySpawnListener.isTrialSpawned(e.getEntity())) return;
+        if (!isChunkNerfed || e.getEntity().getKiller() == null || EntitySpawnListener.isTrialSpawned(e.getEntity())) return;
 
         if (ChunkEXPNerf.doesChunkEXPNerfApply(
                 e.getEntity().getLocation().getChunk(),

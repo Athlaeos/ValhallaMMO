@@ -49,6 +49,7 @@ public class LightArmorSkill extends Skill implements Listener {
     private double expPerCombatSecond = 0;
     private double expBonusPerPoint = 0;
     private double pvpMultiplier = 0.1;
+    private boolean isChunkNerfed = true;
 
     private Animation adrenalineActivation;
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
@@ -72,6 +73,7 @@ public class LightArmorSkill extends Skill implements Listener {
         expPerCombatSecond = progressionConfig.getDouble("experience.exp_second_piece");
         expBonusPerPoint = progressionConfig.getDouble("experience.exp_multiplier_point");
         pvpMultiplier = progressionConfig.getDouble("experience.pvp_multiplier");
+        isChunkNerfed = progressionConfig.getBoolean("experience.is_chunk_nerfed", true);
 
         ConfigurationSection entitySection = progressionConfig.getConfigurationSection("experience.entity_exp_multipliers");
         if (entitySection != null){
@@ -114,7 +116,7 @@ public class LightArmorSkill extends Skill implements Listener {
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (e.isCancelled() || !p.isOnline() || e.getDamage() <= 0) return;
-            double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(p.getLocation().getChunk(), p, "armors");
+            double chunkNerf = isChunkNerfed ? ChunkEXPNerf.getChunkEXPNerf(p.getLocation().getChunk(), p, "armors") : 1;
             int count = EntityCache.getAndCacheProperties(p).getLightArmorCount();
             double totalLightArmor = AccumulativeStatManager.getCachedStats("TOTAL_LIGHT_ARMOR", p, 10000, false);
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(trueDamager.getType(), 1D);
@@ -138,7 +140,7 @@ public class LightArmorSkill extends Skill implements Listener {
             } else {
                 if (!Timer.isCooldownPassed(p.getUniqueId(), "cooldown_light_armor_adrenaline")) Timer.sendCooldownStatus(p, "cooldown_light_armor_adrenaline", TranslationManager.getTranslation("ability_adrenaline"));
             }
-            ChunkEXPNerf.increment(p.getLocation().getChunk(), p, "armors");
+            if (isChunkNerfed) ChunkEXPNerf.increment(p.getLocation().getChunk(), p, "armors");
         }, 2L);
     }
 
@@ -178,8 +180,8 @@ public class LightArmorSkill extends Skill implements Listener {
         int armorCount = properties.getLightArmorCount();
         int expRewardTimes = (int) (timeInCombat / 1000D);
 
-        double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(e.getPlayer().getLocation().getChunk(), e.getPlayer(), "armors");
-        ChunkEXPNerf.increment(e.getPlayer().getLocation().getChunk(), e.getPlayer(), "armors");
+        double chunkNerf = isChunkNerfed ? ChunkEXPNerf.getChunkEXPNerf(e.getPlayer().getLocation().getChunk(), e.getPlayer(), "armors") : 1;
+        if (isChunkNerfed) ChunkEXPNerf.increment(e.getPlayer().getLocation().getChunk(), e.getPlayer(), "armors");
         
         addEXP(e.getPlayer(), expRewardTimes * chunkNerf * armorCount * expPerCombatSecond, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
