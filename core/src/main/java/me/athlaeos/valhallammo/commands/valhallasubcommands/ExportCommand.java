@@ -50,7 +50,7 @@ public class ExportCommand implements Command {
                     addToExisting = true;
                     continue;
                 } else if (mode.equalsIgnoreCase("prepared")) {
-                    modes.addAll(preparedItems);
+                    invalidModes.addAll(preparedItems);
                     preparedItems.clear();
                     continue;
                 }
