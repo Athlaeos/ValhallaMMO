@@ -59,7 +59,7 @@ public class AttributeAttackerSource implements AccumulativeStatSource, EvEAccum
 
         // gather stats from real attacker, and include only main hand if it was a melee attack (not a projectile)
         value += (negative ? -1 : 1) * (!(trueAttacker instanceof Projectile) ?
-                EntityUtils.combinedAttackerAttributeValue(trueAttacker, attribute, weightClass, statPenalty, !InteractListener.attackedWithOffhand(attackedBy)) :
+                EntityUtils.combinedAttackerAttributeValue(trueAttacker, attribute, weightClass, statPenalty, true) :
                 EntityUtils.combinedAttributeValue(trueAttacker, attribute, weightClass, statPenalty, false));
 
         if (!ignoreProjectiles && attackedBy instanceof Projectile p){
