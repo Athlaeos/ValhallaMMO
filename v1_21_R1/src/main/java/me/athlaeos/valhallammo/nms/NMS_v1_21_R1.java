@@ -389,8 +389,8 @@ public final class NMS_v1_21_R1 implements NMS {
     }
 
     @Override
-    public void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
-        // not compatible
+    public void setEquippable(ItemMeta meta, String modelKey, org.bukkit.inventory.EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes) {
+
     }
 
     @Override
