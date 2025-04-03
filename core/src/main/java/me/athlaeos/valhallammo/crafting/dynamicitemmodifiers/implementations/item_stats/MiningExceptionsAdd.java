@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.dom.Pair;
@@ -29,6 +30,7 @@ public class MiningExceptionsAdd extends DynamicItemModifier {
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         for (Material m : exceptions.keySet()){
             MiningSpeed.addException(outputItem.getMeta(), m, exceptions.get(m));
+            ValhallaMMO.getNms().addToolBlockRule(outputItem.getMeta(), m, exceptions.get(m).floatValue());
         }
     }
 
