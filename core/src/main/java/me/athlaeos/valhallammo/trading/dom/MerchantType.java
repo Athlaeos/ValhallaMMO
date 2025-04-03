@@ -18,9 +18,9 @@ public class MerchantType implements Weighted {
     private final Map<MerchantLevel, MerchantLevelTrades> trades = new HashMap<>(Map.of(
             MerchantLevel.NOVICE, new MerchantLevelTrades(0, 2, 0, new HashSet<>()),
             MerchantLevel.APPRENTICE, new MerchantLevelTrades(10, 2, 0, new HashSet<>()),
-            MerchantLevel.JOURNEYMAN, new MerchantLevelTrades(50, 2, 0, new HashSet<>()),
-            MerchantLevel.EXPERT, new MerchantLevelTrades(210, 2, 0, new HashSet<>()),
-            MerchantLevel.MASTER, new MerchantLevelTrades(850, 2, 0, new HashSet<>())
+            MerchantLevel.JOURNEYMAN, new MerchantLevelTrades(40, 2, 0, new HashSet<>()),
+            MerchantLevel.EXPERT, new MerchantLevelTrades(160, 2, 0, new HashSet<>()),
+            MerchantLevel.MASTER, new MerchantLevelTrades(640, 2, 0, new HashSet<>())
     ));
 
     public MerchantType(String type){
@@ -62,6 +62,26 @@ public class MerchantType implements Weighted {
     public double getRolls(MerchantLevel level){
         return Math.max(0, trades.get(level).getRolls());
     }
+    public double getRollQuality(MerchantLevel level){
+        return Math.max(0, trades.get(level).getRollQuality());
+    }
+    public double getExpRequirement(MerchantLevel level){
+        double accumulated = 0;
+        for (MerchantLevel l : MerchantLevel.values()) {
+            if (l.getLevel() > level.getLevel()) break;
+            accumulated += Math.max(0, trades.get(l).getExpRequirement());
+        }
+        return accumulated;
+    }
+    public void setRolls(MerchantLevel level, double rolls) {
+        trades.get(level).setRolls(rolls);
+    }
+    public void setRollQuality(MerchantLevel level, double rollQuality) {
+        trades.get(level).setRollQuality(rollQuality);
+    }
+    public void setExpRequirement(MerchantLevel level, int expRequirement) {
+        trades.get(level).setExpRequirement(expRequirement);
+    }
 
     public static class MerchantLevelTrades{
         private double rolls;
@@ -78,6 +98,8 @@ public class MerchantType implements Weighted {
 
         public double getRolls() { return rolls; }
         public void setRolls(double rolls) { this.rolls = rolls; }
+        public void setExpRequirement(int expRequirement) { this.expRequirement = expRequirement; }
+        public void setRollQuality(double rollQuality) { this.rollQuality = rollQuality; }
         public Collection<String> getTrades() { return trades; }
         public double getRollQuality() { return rollQuality; }
         public int getExpRequirement() { return expRequirement; }

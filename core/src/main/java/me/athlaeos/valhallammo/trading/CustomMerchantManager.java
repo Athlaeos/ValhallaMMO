@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.dom.Weighted;
@@ -98,7 +97,7 @@ public class CustomMerchantManager {
                 ItemBuilder result = new ItemBuilder(t.getResult());
                 DynamicItemModifier.modify(result, null, t.getModifiers(), false, true, true);
                 setTradeKey(result.getMeta(), t);
-                trades.add(new MerchantData.TradeData(t.getId(), level.getLevel(), result.get(), t.getMaxUses(), t.getMaxUses(), 0));
+                trades.add(new MerchantData.TradeData(t.getId(), level.getLevel(), result.get(), t.getMaxUses()));
             });
         }
         MerchantData data = new MerchantData(type, trades.toArray(new MerchantData.TradeData[0]));
@@ -143,19 +142,23 @@ public class CustomMerchantManager {
             }
             trades.add(trade);
         }
+        double expVanillaToCustomModifier = level.getDefaultExpRequirement() / type.getExpRequirement(level);
         for (MerchantTrade trade : trades){
             MerchantData.TradeData tradeData = data.getTrades().get(trade.getId());
-            if (tradeData.level() > level.getLevel()) continue;
+            if (tradeData.getLevel() > level.getLevel()) continue;
             double maxUses = trade.getMaxUses();
-            double remainingUses = tradeData.salesLeft();
+            double remainingUses = tradeData.getSalesLeft();
             if (!trade.hasFixedUseCount()){
                 double tradeCountMultiplier = 1; // TODO AccumulativeStatManager.getCachedStats("TRADE_USE_MULTIPLIER", player, 10000, true);
+                maxUses += (Math.round(Math.min(trade.getDemandMaxUsesMaxQuantity(), trade.getDemandMaxUsesModifier() * tradeData.getDemand())));
                 maxUses *= tradeCountMultiplier;
                 remainingUses *= tradeCountMultiplier;
             }
             if (remainingUses > maxUses) remainingUses = maxUses;
             int uses = (int) Math.floor(maxUses - remainingUses);
-            MerchantRecipe recipe = new MerchantRecipe(tradeData.item(), uses, (int) Math.floor(maxUses), trade.rewardsExperience(), Math.round(trade.getVillagerExperience()), trade.getDemandMultiplier(), tradeData.demand(), trade.getSpecialPrice());
+            int specialPrice = Math.round(trade.getScalingCostItem().getAmount() * (1 + (tradeData.getDemand() * trade.getDemandPriceMultiplier())));
+            int villagerExperience = (int) Math.round(trade.getVillagerExperience() * (1) * expVanillaToCustomModifier); // TODO player villager experience multiplier
+            MerchantRecipe recipe = new MerchantRecipe(tradeData.getItem(), uses, (int) Math.floor(maxUses), trade.rewardsExperience(), villagerExperience, 1, 0, specialPrice);
             List<ItemStack> ingredients = new ArrayList<>();
             ingredients.add(trade.getScalingCostItem());
             if (!ItemUtils.isEmpty(trade.getOptionalCostItem())) ingredients.add(trade.getOptionalCostItem());
@@ -264,5 +267,9 @@ public class CustomMerchantManager {
 
     public static MerchantType getMerchantType(String id){
         return registeredMerchantTypes.get(id);
+    }
+
+    public static MerchantTrade getTrade(String id){
+        return registeredMerchantTrades.get(id);
     }
 }

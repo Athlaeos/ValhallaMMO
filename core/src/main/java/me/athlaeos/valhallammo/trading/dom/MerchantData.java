@@ -25,13 +25,13 @@ public class MerchantData {
     public MerchantData(MerchantType type, TradeData... data){
         this.type = type.getType();
         this.typeVersion = type.getVersion();
-        for (TradeData datum : data) trades.put(datum.id, datum);
+        for (TradeData datum : data) trades.put(datum.getTrade(), datum);
     }
 
     public MerchantData(MerchantType type, Collection<TradeData> data){
         this.type = type.getType();
         this.typeVersion = type.getVersion();
-        for (TradeData datum : data) trades.put(datum.id, datum);
+        for (TradeData datum : data) trades.put(datum.getTrade(), datum);
     }
 
     @NotNull
@@ -58,7 +58,41 @@ public class MerchantData {
         return gson.toJson(this);
     }
 
-    public record TradeData(String id, int level, ItemStack item, int maxSales, double salesLeft, int demand) { }
+    // TODO reset demand of all trades on restock and have it affect
+    public static class TradeData{
+        private final String trade;
+        private final int level;
+        private final ItemStack item;
+        private final int maxSales;
+        private double salesLeft;
+        private int demand = 0; // TODO on restock, set demand to tradesUntilRestock and reset tradesUntilRestock
+        private int tradesUntilRestock = 0;
+        public TradeData(String trade, int level, ItemStack item, int maxSales){
+            this.trade = trade;
+            this.level = level;
+            this.item = item;
+            this.maxSales = maxSales;
+            this.salesLeft = maxSales;
+        }
+
+        public int getTradesUntilRestock() { return tradesUntilRestock; }
+        public double getSalesLeft() { return salesLeft; }
+        public int getDemand() { return demand; }
+        public int getLevel() { return level; }
+        public int getMaxSales() { return maxSales; }
+        public ItemStack getItem() { return item; }
+        public String getTrade() { return trade; }
+
+        public void setDemand(int demand) { this.demand = demand; }
+        public void setTradesUntilRestock(int tradesUntilRestock) { this.tradesUntilRestock = tradesUntilRestock; }
+        public void setSalesLeft(double salesLeft) { this.salesLeft = salesLeft; }
+
+        public void restock(){
+            this.demand = tradesUntilRestock;
+            tradesUntilRestock = 0;
+            salesLeft = maxSales;
+        }
+    }
 
     public static class MerchantPlayerMemory{
         private int timesTraded = 0;

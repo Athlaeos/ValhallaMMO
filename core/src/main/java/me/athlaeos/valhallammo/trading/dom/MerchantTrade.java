@@ -22,13 +22,15 @@ public class MerchantTrade implements Weighted {
     private List<DynamicItemModifier> modifiers = new ArrayList<>(); // modifiers executed on the result item before inserted as trade
     private Collection<LootPredicate> predicates = new HashSet<>(); // predicates that must be met for this trade to be a viable option
     private LootTable.PredicateSelection predicateSelection = LootTable.PredicateSelection.ANY;
-    private double weight = 10; // the weight determines how likely this trade is to be picked as a villager's trade. a weight of exactly -1 means the trade is ALWAYS SELECTED and not included in the random selection
-    private double weightQuality = 0; // quality is really a weight modifier scaling with luck, the formula for total weight is finalWeight = weight + (quality * luck). generally speaking, better luck = better trades. this stat may never bring weight below 0
-    private boolean fixedPrice = false; // if price is fixed, it will not change regardless of reputation
-    private float villagerExperience = 1F; // amount of experience the villager gets from this trade
+    private float weight = 10; // the weight determines how likely this trade is to be picked as a villager's trade. a weight of exactly -1 means the trade is ALWAYS SELECTED and not included in the random selection
+    private float weightQuality = 0; // quality is really a weight modifier scaling with luck, the formula for total weight is finalWeight = weight + (quality * luck). generally speaking, better luck = better trades. this stat may never bring weight below 0
+    private float demandWeightModifier = 0; // determines how much more/less rare a trade is depending on how many times it's been traded in the past
+    private int demandWeightMaxQuantity = 0; // determines the max amount of weight a trade's rarity can be offset with at maximum demand
+    private float demandMaxUsesModifier = 0; // determines how many more/less times a trade can be traded depending on how many times it's been traded in the past
+    private int demandMaxUsesMaxQuantity = 0; // determines the max amount of extra times a trade can be traded with at maximum demand
+    private int villagerExperience = 1; // amount of experience the villager gets from this trade
     private boolean rewardsExperience = true;
-    private int specialPrice = 1;
-    private float demandMultiplier = 1;
+    private float demandPriceMultiplier = 0;
     private int maxUses = 6;
     private boolean fixedUseCount = false; // if true, the maxUses property may be scaled by the player's "TRADE_USE_MULTIPLIER" stat
     private boolean exclusive = false; // if true, the player must have this trade in their "exclusive trades" list in their TradingProfile to be able to access this trade
@@ -54,32 +56,36 @@ public class MerchantTrade implements Weighted {
     public List<DynamicItemModifier> getModifiers() { return modifiers; }
     public Collection<LootPredicate> getPredicates() { return predicates; }
     public LootTable.PredicateSelection getPredicateSelection() { return predicateSelection; }
-    public double getWeightQuality() { return weightQuality; }
-    public boolean isFixedPrice() { return fixedPrice; }
-    public float getVillagerExperience() { return villagerExperience; }
-    public int getSpecialPrice() { return specialPrice; }
-    public float getDemandMultiplier() { return demandMultiplier; }
+    public float getWeightQuality() { return weightQuality; }
+    public int getVillagerExperience() { return villagerExperience; }
+    public float getDemandPriceMultiplier() { return demandPriceMultiplier; }
     public int getMaxUses() { return maxUses; }
+    public float getDemandWeightModifier() { return demandWeightModifier; }
+    public int getDemandWeightMaxQuantity() { return demandWeightMaxQuantity; }
+    public float getDemandMaxUsesModifier() { return demandMaxUsesModifier; }
+    public int getDemandMaxUsesMaxQuantity() { return demandMaxUsesMaxQuantity; }
+
     public void setFixedUseCount(boolean fixedUseCount) { this.fixedUseCount = fixedUseCount; }
+    public void setResult(ItemStack result) { this.result = result; }
     public void setRewardsExperience(boolean rewardsExperience) { this.rewardsExperience = rewardsExperience; }
     public void setExclusive(boolean exclusive) { this.exclusive = exclusive; }
-
-    public void setResult(ItemStack result) { this.result = result; }
+    public void setDemandWeightMaxQuantity(int demandWeightMaxQuantity) { this.demandWeightMaxQuantity = demandWeightMaxQuantity; }
+    public void setDemandWeightModifier(float demandWeightModifier) { this.demandWeightModifier = demandWeightModifier; }
     public void setScalingCostItem(ItemStack scalingCostItem) { this.scalingCostItem = scalingCostItem; }
     public void setOptionalCostItem(ItemStack optionalCostItem) { this.optionalCostItem = optionalCostItem; }
     public void setModifiers(List<DynamicItemModifier> modifiers) { this.modifiers = modifiers; DynamicItemModifier.sortModifiers(this.modifiers); }
     public void setPredicates(Collection<LootPredicate> predicates) { this.predicates = predicates; }
     public void setPredicateSelection(LootTable.PredicateSelection predicateSelection) { this.predicateSelection = predicateSelection; }
-    public void setWeight(double weight) { this.weight = weight; }
-    public void setWeightQuality(double weightQuality) { this.weightQuality = weightQuality; }
-    public void setFixedPrice(boolean fixedPrice) { this.fixedPrice = fixedPrice; }
+    public void setWeight(float weight) { this.weight = weight; }
+    public void setWeightQuality(float weightQuality) { this.weightQuality = weightQuality; }
     public void setVillagerExperience(int villagerExperience) { this.villagerExperience = villagerExperience; }
-    public void setSpecialPrice(int specialPrice) { this.specialPrice = specialPrice; }
-    public void setDemandMultiplier(float demandMultiplier) { this.demandMultiplier = demandMultiplier; }
+    public void setDemandPriceMultiplier(float demandPriceMultiplier) { this.demandPriceMultiplier = demandPriceMultiplier; }
     public void setMaxUses(int maxUses) { this.maxUses = maxUses; }
     public boolean hasFixedUseCount() { return fixedUseCount; }
     public boolean rewardsExperience() { return rewardsExperience; }
     public boolean isExclusive() { return exclusive; }
+    public void setDemandMaxUsesMaxQuantity(int demandMaxUsesMaxQuantity) { this.demandMaxUsesMaxQuantity = demandMaxUsesMaxQuantity; }
+    public void setDemandMaxUsesModifier(float demandMaxUsesModifier) { this.demandMaxUsesModifier = demandMaxUsesModifier; }
 
     public boolean failsPredicates(LootTable.PredicateSelection predicateSelection, LootContext context){
         if (predicates.isEmpty()) return false;
