@@ -47,6 +47,7 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.components.FoodComponent;
+import org.bukkit.inventory.meta.components.ToolComponent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
@@ -56,9 +57,11 @@ import java.util.*;
 import static me.athlaeos.valhallammo.utility.ItemUtils.itemOrAir;
 
 public final class NMS_v1_21_R1 implements NMS {
+
     @Override
     public void onEnable() {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
+        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new VaultLootListener(), ValhallaMMO.getInstance());
     }
 
     @Override
@@ -109,7 +112,7 @@ public final class NMS_v1_21_R1 implements NMS {
     }
 
     /**
-     * Since 1.20.5 PotionTypes are added for extended and amplified potions as well, which are accounted for in {@link PotionEffectRegistry}.
+     * Since 1.20.5 PotionTypes are added for extended and amplified potions as well, which are accounted for in {@link me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry}.
      * Because of this, these methods can always return false because the difference is no longer needed
      */
     @Override
@@ -118,7 +121,7 @@ public final class NMS_v1_21_R1 implements NMS {
     }
 
     /**
-     * Since 1.20.5 PotionTypes are added for extended and amplified potions as well, which are accounted for in {@link PotionEffectRegistry}.
+     * Since 1.20.5 PotionTypes are added for extended and amplified potions as well, which are accounted for in {@link me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry}.
      * Because of this, these methods can always return false because the difference is no longer needed
      */
     @Override
@@ -163,39 +166,6 @@ public final class NMS_v1_21_R1 implements NMS {
         equipment.add(new com.mojang.datafixers.util.Pair<>(EquipmentSlot.FEET, CraftItemStack.asNMSCopy(itemOrAir(boots))));
         ClientboundSetEquipmentPacket packet = new ClientboundSetEquipmentPacket(entity.getEntityId(), equipment);
         PacketListener.broadcastPlayerPacket(entity, packet, true);
-    }
-
-    @Override
-    public void setItemModel(ItemMeta meta, String model){
-        // not compatible
-    }
-
-    @Override
-    public void setEquippable(ItemMeta meta, String modelKey, org.bukkit.inventory.EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
-        // not compatible
-    }
-
-    @Override
-    public void setToolTipStyle(ItemMeta meta, String namespacedKey){
-        // not compatible
-    }
-
-    @Override
-    public String getItemModel(ItemMeta meta) {
-        // not compatible
-        return null;
-    }
-
-    @Override
-    public EquippableWrapper getEquippable(ItemMeta meta) {
-        // not compatible
-        return null;
-    }
-
-    @Override
-    public String getToolTipStyle(ItemMeta meta) {
-        // not compatible
-        return null;
     }
 
     @Override
@@ -292,6 +262,7 @@ public final class NMS_v1_21_R1 implements NMS {
         entityPlayer.resetAttackStrengthTicker();
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void setEdible(ItemMeta meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {
         if (edible){
@@ -313,8 +284,8 @@ public final class NMS_v1_21_R1 implements NMS {
     }
 
     @Override
-    public int getMaxStackSize(ItemMeta meta, Material defaultType) {
-        return meta.getMaxStackSize();
+    public int getMaxStackSize(ItemMeta meta, Material baseMaterial) {
+        return meta.hasMaxStackSize() ? meta.getMaxStackSize() : baseMaterial.getMaxStackSize();
     }
 
     @Override
@@ -410,5 +381,54 @@ public final class NMS_v1_21_R1 implements NMS {
         AttributeInstance instance = e.getAttribute(type);
         NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), identifier);
         if (instance != null) instance.getModifiers().stream().filter(m -> m != null && (m.getKey().equals(key) || m.getName().equals(identifier))).forEach(instance::removeModifier);
+    }
+
+    @Override
+    public void setItemModel(ItemMeta meta, String model){
+        // not compatible
+    }
+
+    @Override
+    public void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
+        // not compatible
+    }
+
+    @Override
+    public void setToolTipStyle(ItemMeta meta, String namespacedKey){
+        // not compatible
+    }
+
+    @Override
+    public String getItemModel(ItemMeta meta) {
+        // not compatible
+        return null;
+    }
+
+    @Override
+    public EquippableWrapper getEquippable(ItemMeta meta) {
+        // not compatible
+        return null;
+    }
+
+    @Override
+    public String getToolTipStyle(ItemMeta meta) {
+        // not compatible
+        return null;
+    }
+
+    @Override
+    @SuppressWarnings("UnstableApiUsage")
+    public void addToolBlockRule(ItemMeta meta, Material blockType, float efficiency){
+        ToolComponent tool = meta.getTool();
+        tool.addRule(blockType, efficiency, true);
+        meta.setTool(tool);
+    }
+
+    @Override
+    @SuppressWarnings("UnstableApiUsage")
+    public void setTool(ItemMeta meta, float miningSpeed, boolean canDestroyInCreative){
+        ToolComponent tool = meta.getTool();
+        tool.setDefaultMiningSpeed(miningSpeed);
+        meta.setTool(tool);
     }
 }

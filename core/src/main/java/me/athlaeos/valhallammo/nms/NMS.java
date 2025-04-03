@@ -84,6 +84,12 @@ public interface NMS extends Listener {
     String getItemModel(ItemMeta meta);
     EquippableWrapper getEquippable(ItemMeta meta);
     String getToolTipStyle(ItemMeta meta);
+    default void addToolBlockRule(ItemMeta meta, Material blockType, float efficiency){
+        // do nothing
+    }
+    default void setTool(ItemMeta meta, float miningSpeed, boolean canDestroyInCreative){
+        // do nothing
+    }
 
     default void setCMDFloatList(ItemMeta meta, List<Float> floats){
         // do nothing

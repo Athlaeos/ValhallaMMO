@@ -47,6 +47,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.bukkit.inventory.meta.components.FoodComponent;
+import org.bukkit.inventory.meta.components.ToolComponent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.bukkit.tag.DamageTypeTags;
@@ -361,5 +362,21 @@ public final class NMS_v1_21_R2 implements NMS {
         equipment.add(new com.mojang.datafixers.util.Pair<>(EquipmentSlot.FEET, CraftItemStack.asNMSCopy(itemOrAir(boots))));
         ClientboundSetEquipmentPacket packet = new ClientboundSetEquipmentPacket(entity.getEntityId(), equipment);
         PacketListener.broadcastPlayerPacket(entity, packet, true);
+    }
+
+    @Override
+    @SuppressWarnings("UnstableApiUsage")
+    public void addToolBlockRule(ItemMeta meta, Material blockType, float efficiency){
+        ToolComponent tool = meta.getTool();
+        tool.addRule(blockType, efficiency, true);
+        meta.setTool(tool);
+    }
+
+    @Override
+    @SuppressWarnings("UnstableApiUsage")
+    public void setTool(ItemMeta meta, float miningSpeed, boolean canDestroyInCreative){
+        ToolComponent tool = meta.getTool();
+        tool.setDefaultMiningSpeed(miningSpeed);
+        meta.setTool(tool);
     }
 }

@@ -49,6 +49,8 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.bukkit.inventory.meta.components.FoodComponent;
+import org.bukkit.inventory.meta.components.ToolComponent;
+import org.bukkit.inventory.meta.components.consumable.ConsumableComponent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.bukkit.tag.DamageTypeTags;
@@ -60,15 +62,15 @@ import static me.athlaeos.valhallammo.utility.ItemUtils.itemOrAir;
 
 public final class NMS_v1_21_R3 implements NMS {
     @Override
-    public void forceAttack(Player player, LivingEntity victim) {
-        ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
-    }
-
-    @Override
     public void onEnable() {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new VaultLootListener(), ValhallaMMO.getInstance());
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new JumpInputListener(), ValhallaMMO.getInstance());
+    }
+
+    @Override
+    public void forceAttack(Player player, LivingEntity victim) {
+        ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
     }
 
     @Override
@@ -257,6 +259,11 @@ public final class NMS_v1_21_R3 implements NMS {
             FoodComponent food = meta.getFood();
             food.setCanAlwaysEat(canAlwaysEat);
             meta.setFood(food);
+            ConsumableComponent consumable = meta.getConsumable();
+            consumable.setConsumeSeconds(eatTimeSeconds);
+            consumable.setAnimation(ConsumableComponent.Animation.EAT);
+            consumable.setSound(Sound.ENTITY_GENERIC_EAT);
+            meta.setConsumable(consumable);
         } else meta.setFood(null);
     }
 
@@ -463,5 +470,21 @@ public final class NMS_v1_21_R3 implements NMS {
         equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.FEET, CraftItemStack.asNMSCopy(itemOrAir(boots))));
         ClientboundSetEquipmentPacket packet = new ClientboundSetEquipmentPacket(entity.getEntityId(), equipment);
         PacketListener.broadcastPlayerPacket(entity, packet, true);
+    }
+
+    @Override
+    @SuppressWarnings("UnstableApiUsage")
+    public void addToolBlockRule(ItemMeta meta, Material blockType, float efficiency){
+        ToolComponent tool = meta.getTool();
+        tool.addRule(blockType, efficiency, true);
+        meta.setTool(tool);
+    }
+
+    @Override
+    @SuppressWarnings("UnstableApiUsage")
+    public void setTool(ItemMeta meta, float miningSpeed, boolean canDestroyInCreative){
+        ToolComponent tool = meta.getTool();
+        tool.setDefaultMiningSpeed(miningSpeed);
+        meta.setTool(tool);
     }
 }
