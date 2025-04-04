@@ -35,13 +35,13 @@ public class BlockStore {
      */
     public static void setPlaced(Block b, boolean placed){
         PersistentDataContainer customBlockData = new CustomBlockData(b, ValhallaMMO.getInstance());
-//        if (placed){
-//            customBlockData.set(blockPlacedKey, PersistentDataType.INTEGER, 1);
-//            placedBlockCache.add(b.getLocation());
-//        } else {
-//            customBlockData.remove(blockPlacedKey);
-//            placedBlockCache.remove(b.getLocation());
-//        } todo persistent data containers not supported
+        if (placed){
+            customBlockData.set(blockPlacedKey, PersistentDataType.INTEGER, 1);
+            placedBlockCache.add(b.getLocation());
+        } else {
+            customBlockData.remove(blockPlacedKey);
+            placedBlockCache.remove(b.getLocation());
+        }
     }
 
     /**

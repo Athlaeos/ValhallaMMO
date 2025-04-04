@@ -14,7 +14,7 @@ dependencies {
     implementation(project(":platform_folia"))
 
     implementation("com.jeff-media:MorePersistentDataTypes:2.4.0")
-    implementation("com.jeff-media:custom-block-data:2.2.2")
+    implementation("com.jeff-media:custom-block-data:2.2.5")
 
     compileOnly("me.lauriichan.spigot.justlootit:justlootit-core:1.7.0")
     compileOnly("me.lauriichan.spigot.justlootit:justlootit-nms-api:1.7.0") {

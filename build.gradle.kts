@@ -45,6 +45,7 @@ allprojects {
             name = "codemc-repo"
             url = uri("https://repo.codemc.io/repository/maven-public/")
         }
+        mavenLocal()
     }
 }
 
