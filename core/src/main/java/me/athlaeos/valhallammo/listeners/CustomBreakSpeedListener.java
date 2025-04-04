@@ -194,7 +194,7 @@ public class CustomBreakSpeedListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent e){
-        Scheduling.runTaskLater(ValhallaMMO.getInstance(), 10L, () -> {
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getPlayer(), 10L, () -> {
             fatiguePlayer(e.getPlayer(), true);
             fatiguePlayer(e.getPlayer(), true);
         });

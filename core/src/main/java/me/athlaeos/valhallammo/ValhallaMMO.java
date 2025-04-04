@@ -75,6 +75,7 @@ public class ValhallaMMO extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        instance = this;
         // save and update configs
         pluginConfig = saveAndUpdateConfig("config.yml");
 
@@ -171,7 +172,7 @@ public class ValhallaMMO extends JavaPlugin {
         saveAndUpdateConfig("gui_details.yml");
 
         customMiningSystem = pluginConfig.getBoolean("custom_mining_speeds", true);
-        if (customMiningSystem){
+        if (customMiningSystem && !platform.supportsFolia()) { //todo breaks on folia
             packetListener = new PacketListener(new BlockBreakNetworkHandlerImpl());
             packetListener.addAll();
             registerListener(new CustomBreakSpeedListener());
@@ -322,6 +323,7 @@ public class ValhallaMMO extends JavaPlugin {
             Class<?> clazz = Class.forName("me.athlaeos.valhallammo.nms.NMS_" + nmsVersion);
 
             if (NMS.class.isAssignableFrom(clazz)) {
+                getLogger().info("Loading for version " + nmsVersion);
                 nms = (NMS) clazz.getDeclaredConstructor().newInstance();
             }
 

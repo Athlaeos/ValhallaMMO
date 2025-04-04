@@ -26,12 +26,12 @@ public class PerkRewardRegistry {
             register(new ProgressReset("reset_" + type.toString().toLowerCase(java.util.Locale.US), type));
         }
 
-        BiAction<String, Player> forget = (s, p) -> Scheduling.runTask(ValhallaMMO.getInstance(), () -> {
+        BiAction<String, Player> forget = (s, p) -> Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, () -> {
             ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
             if (recipe == null) return;
             p.undiscoverRecipe(recipe.getKey());
         });
-        BiAction<String, Player> discover = (s, p) -> Scheduling.runTask(ValhallaMMO.getInstance(), () -> {
+        BiAction<String, Player> discover = (s, p) -> Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, () -> {
             ValhallaKeyedRecipe recipe = CustomRecipeRegistry.getAllKeyedRecipesByName().get(s);
             if (recipe == null) return;
             p.discoverRecipe(recipe.getKey());

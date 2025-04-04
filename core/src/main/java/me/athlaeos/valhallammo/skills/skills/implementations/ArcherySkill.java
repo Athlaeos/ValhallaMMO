@@ -216,7 +216,7 @@ public class ArcherySkill extends Skill implements Listener {
         }
         e.setDamage(damage);
 
-        Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runLocationTask(ValhallaMMO.getInstance(), v.getLocation(), 2L, () -> {
             if (e.isCancelled() || !p.isOnline()) return;
             double damageTaken = EntityDamagedListener.getLastDamageTaken(v.getUniqueId(), e.getFinalDamage());
             if (damageTaken > 1000000) return;
@@ -232,7 +232,7 @@ public class ArcherySkill extends Skill implements Listener {
                     false,
                     PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
             if (isChunkNerfed && !EntitySpawnListener.isTrialSpawned(v)) ChunkEXPNerf.increment(v.getLocation().getChunk(), p, "archery");
-        }, 2L);
+        });
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

@@ -179,7 +179,7 @@ public class EntityDamagedListener implements Listener {
                     absorptionTracker.remove(l.getUniqueId());
                     damageProcesses.remove(l.getUniqueId());
                 });
-                Scheduling.runTaskLater(ValhallaMMO.getInstance(), 1L, () -> {
+                Scheduling.runEntityTask(ValhallaMMO.getInstance(), l, 1L, () -> {
                     Runnable r = damageProcesses.get(l.getUniqueId());
                     if (r != null) r.run();
                 });

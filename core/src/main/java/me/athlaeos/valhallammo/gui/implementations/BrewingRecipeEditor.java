@@ -446,7 +446,7 @@ public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
     public void setRecipeOption(RecipeOption option) {
         this.selectedChoice = option;
         if (option == null) return;
-        Scheduling.runTaskLater(ValhallaMMO.getInstance(), 1L, () ->
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), playerMenuUtility.getOwner(), 1L, () ->
                 playerMenuUtility.getOwner().setItemOnCursor(new ItemBuilder(option.getIcon()).stringTag(KEY_OPTION_ID, option.getName()).get())
         );
     }

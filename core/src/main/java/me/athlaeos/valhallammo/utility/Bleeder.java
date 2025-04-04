@@ -75,7 +75,7 @@ public class Bleeder {
         if (bleeder instanceof Player p && (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR)) return;
         if (bleeder instanceof Player p && WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_BLEED)) return;
         else if (WorldGuardHook.inDisabledRegion(bleeder.getLocation(), WorldGuardHook.VMMO_COMBAT_BLEED)) return;
-        Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), bleeder, 1L, () -> {
             BleedingInstance instance = bleedingEntities.get(bleeder.getUniqueId());
             double resistance = AccumulativeStatManager.getRelationalStats("BLEED_RESISTANCE", bleeder, causedBy, true);
             EntityBleedEvent event = new EntityBleedEvent(bleeder, causedBy, combatType, damage, resistance, duration, stacks);
@@ -95,7 +95,7 @@ public class Bleeder {
                     instance.runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
                 }
             }
-        }, 1L);
+        });
     }
 
     /**

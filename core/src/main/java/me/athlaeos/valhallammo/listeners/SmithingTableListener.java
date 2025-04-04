@@ -116,8 +116,8 @@ public class SmithingTableListener implements Listener {
                 if (ItemUtils.isEmpty(finalAddition) || CustomFlag.hasFlag(addition.getMeta(), CustomFlag.UNCRAFTABLE) || ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                     e.setCancelled(true);
                 } else {
-                    Scheduling.runTaskLater(ValhallaMMO.getInstance(), () ->
-                            e.getInventory().setItem(additionIndex, finalAddition), 1L
+                    Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, 1L, () ->
+                            e.getInventory().setItem(additionIndex, finalAddition)
                     );
                 }
             } else {

@@ -540,16 +540,18 @@ public class LootTableRegistry {
     }
 
     public static void setLootTable(Block b, LootTable table){
-        PersistentDataContainer customBlockData = new CustomBlockData(b, ValhallaMMO.getInstance());
-        if (table == null) customBlockData.remove(STORED_LOOT_TABLE);
-        else customBlockData.set(STORED_LOOT_TABLE, PersistentDataType.STRING, table.getKey());
+        return; //todo fix for folia
+//        PersistentDataContainer customBlockData = new CustomBlockData(b, ValhallaMMO.getInstance());
+//        if (table == null) customBlockData.remove(STORED_LOOT_TABLE);
+//        else customBlockData.set(STORED_LOOT_TABLE, PersistentDataType.STRING, table.getKey());
     }
 
     public static void setFreeSelectionTable(ItemMeta meta, boolean freeSelection, boolean allowRepeats){
-        if (freeSelection) meta.getPersistentDataContainer().set(FREE_SELECTION_TABLE, PersistentDataType.BYTE, (byte) 1);
-        else meta.getPersistentDataContainer().remove(FREE_SELECTION_TABLE);
-        if (allowRepeats) meta.getPersistentDataContainer().set(FREE_SELECTION_ALLOW_DUPLICATES, PersistentDataType.BYTE, (byte) 1);
-        else meta.getPersistentDataContainer().remove(FREE_SELECTION_ALLOW_DUPLICATES);
+        return; //todo fix for folia
+//        if (freeSelection) meta.getPersistentDataContainer().set(FREE_SELECTION_TABLE, PersistentDataType.BYTE, (byte) 1);
+//        else meta.getPersistentDataContainer().remove(FREE_SELECTION_TABLE);
+//        if (allowRepeats) meta.getPersistentDataContainer().set(FREE_SELECTION_ALLOW_DUPLICATES, PersistentDataType.BYTE, (byte) 1);
+//        else meta.getPersistentDataContainer().remove(FREE_SELECTION_ALLOW_DUPLICATES);
     }
 
     /**

@@ -143,7 +143,8 @@ public class ProjectileListener implements Listener {
     }
 
     public static void removeBow(Projectile projectile){
-        Scheduling.runTaskLater(ValhallaMMO.getInstance(), 2L, () -> projectileShotByMap.remove(projectile.getUniqueId()));
+        UUID uuid = projectile.getUniqueId();
+        Scheduling.runTaskLater(ValhallaMMO.getInstance(), 2L, () -> projectileShotByMap.remove(uuid));
     }
 
     private final Map<UUID, Integer> crossbowReloads = new HashMap<>();
@@ -184,13 +185,13 @@ public class ProjectileListener implements Listener {
                         int currentReloads = crossbowReloads.getOrDefault(p.getUniqueId(), 0); // reload, increment magazine
                         if (currentReloads + 1 <= allowedReloads){
                             crossbowReloads.put(p.getUniqueId(), currentReloads + 1);
-                            Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> {
+                            Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, 1L, () -> {
                                 boolean mainHand = !ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) && p.getInventory().getItemInMainHand().getType() == Material.CROSSBOW;
                                 ItemStack crossbow = mainHand ? p.getInventory().getItemInMainHand() : p.getInventory().getItemInOffHand();
                                 if (ItemUtils.isEmpty(crossbow) || !(crossbow.getItemMeta() instanceof CrossbowMeta crossbowMeta)) return;
                                 crossbowMeta.addChargedProjectile(consumable);
                                 crossbow.setItemMeta(crossbowMeta);
-                            }, 1L);
+                            });
                             if (e.getProjectile() instanceof AbstractArrow a) a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
                         } else {
                             crossbowReloads.remove(p.getUniqueId()); // do not reload, but reset magazine

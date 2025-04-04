@@ -75,7 +75,7 @@ public class AlphaToBetaConversionHandler implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void expConversion(PlayerJoinEvent e){
         if (expConversion <= 0 || e.getPlayer().getPersistentDataContainer().has(CONVERTED_FROM_ALPHA_KEY, PersistentDataType.BYTE)) return;
-        Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getPlayer(), 20L, () -> {
             if (!e.getPlayer().isOnline()) return;
             ValhallaMMO.logInfo("Player " + e.getPlayer().getName() + " had alpha data, converting to beta");
             for (String profileType : alphaKeyMappings.keySet()){
@@ -97,7 +97,7 @@ public class AlphaToBetaConversionHandler implements Listener {
                 e.getPlayer().getPersistentDataContainer().remove(key);
             }
             e.getPlayer().getPersistentDataContainer().set(CONVERTED_FROM_ALPHA_KEY, PersistentDataType.BYTE, (byte) 1);
-        }, 20L);
+        });
     }
 
 }

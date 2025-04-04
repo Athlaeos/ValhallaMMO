@@ -32,13 +32,25 @@ import java.util.stream.Collectors;
 public class BlockListener implements Listener {
 
     public BlockListener(){
-        Scheduling.runTaskTimer(ValhallaMMO.getInstance(), 0L, 5L, () -> {
-            for (Location b : blocksToConsiderBroken) {
-                BlockStore.setPlaced(b.getBlock(), false);
-                BlockStore.setBreakReason(b.getBlock(), BlockStore.BreakReason.MINED);
-            }
-            blocksToConsiderBroken.clear();
-        });
+        if (ValhallaMMO.getPlatform().supportsFolia()) {
+            Scheduling.runTaskTimerAsync(ValhallaMMO.getInstance(), 1L, 1L, ()-> {
+                for (Location b : blocksToConsiderBroken) {
+                    Scheduling.runLocationTask(ValhallaMMO.getInstance(), b, () -> {
+                        BlockStore.setPlaced(b.getBlock(), false);
+                        BlockStore.setBreakReason(b.getBlock(), BlockStore.BreakReason.MINED);
+                    });
+                }
+                blocksToConsiderBroken.clear();
+            });
+        } else {
+            Scheduling.runTaskTimer(ValhallaMMO.getInstance(), 0L, 5L, () -> {
+                for (Location b : blocksToConsiderBroken) {
+                    BlockStore.setPlaced(b.getBlock(), false);
+                    BlockStore.setBreakReason(b.getBlock(), BlockStore.BreakReason.MINED);
+                }
+                blocksToConsiderBroken.clear();
+            });
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

@@ -633,7 +633,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
     public void setRecipeOption(RecipeOption option) {
         this.selectedOption = option;
         if (option == null) return;
-        Scheduling.runTaskLater(ValhallaMMO.getInstance(), 1L, () ->
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), playerMenuUtility.getOwner(), 1L, () ->
                 playerMenuUtility.getOwner().setItemOnCursor(new ItemBuilder(option.getIcon()).stringTag(KEY_OPTION_ID, option.getName()).get()));
     }
 

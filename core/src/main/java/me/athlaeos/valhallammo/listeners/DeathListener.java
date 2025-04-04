@@ -46,7 +46,7 @@ public class DeathListener implements Listener {
 
         double lastDamageTaken = EntityDamagedListener.getLastDamageTaken(e.getEntity().getUniqueId());
         CustomDamageType type = CustomDamageType.getCustomType(cause);
-        Scheduling.runTaskLater(ValhallaMMO.getInstance(), 20L, () -> {
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getEntity(), 20L, () -> {
             if (type != null && !StringUtils.isEmpty(type.getTranslation())){
                 if (lastDamager == null) Utils.sendMessage(e.getEntity(), deathStatus
                         .replace("%damage%", String.format("%.1f", lastDamageTaken))

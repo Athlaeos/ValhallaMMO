@@ -97,7 +97,7 @@ public class Stun extends PotionEffectWrapper {
      * @param force true if the entity should be stunned regardless of immunity, false otherwise
      */
     public static void stunTarget(LivingEntity entity, LivingEntity causedBy, int duration, boolean force){
-        Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), entity, 1L, () -> {
             if (!entity.isValid() || entity.isDead()) return;
             double durationMultiplier = force ? 1 : Math.max(0, 1 - AccumulativeStatManager.getRelationalStats("STUN_RESISTANCE", entity, causedBy, true));
             int newDuration = (int) Math.round(duration * durationMultiplier);
@@ -115,7 +115,7 @@ public class Stun extends PotionEffectWrapper {
                 EntityCache.resetPotionEffects(l); // adding/removing an effect as a result of this method should reset the entity's potion effect cache
                 Timer.setCooldown(entity.getUniqueId(), stunImmunityDuration * 50, "stun_immunity");
             }
-        }, 1L);
+        });
     }
 
     public static void attemptStun(LivingEntity entity, LivingEntity causedBy){

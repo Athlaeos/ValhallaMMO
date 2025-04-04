@@ -107,7 +107,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
 
         HeavyArmorProfile profile = ProfileCache.getOrCache(p, HeavyArmorProfile.class);
 
-        Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, 2L, () -> {
             if (e.isCancelled() || !p.isOnline() || e.getDamage() <= 0) return;
             double chunkNerf = isChunkNerfed ? ChunkEXPNerf.getChunkEXPNerf(p.getLocation().getChunk(), p, "armors") : 1;
             int count = EntityCache.getAndCacheProperties(p).getHeavyArmorCount();
@@ -133,7 +133,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
                 if (!Timer.isCooldownPassed(p.getUniqueId(), "cooldown_heavy_armor_rage")) Timer.sendCooldownStatus(p, "cooldown_heavy_armor_rage", TranslationManager.getTranslation("ability_rage"));
             }
             if (isChunkNerfed) ChunkEXPNerf.increment(p.getLocation().getChunk(), p, "armors");
-        }, 2L);
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

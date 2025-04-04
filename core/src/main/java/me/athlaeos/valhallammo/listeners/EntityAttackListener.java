@@ -119,13 +119,13 @@ public class EntityAttackListener implements Listener {
         if (v instanceof Player p && p.getCooldown(Material.SHIELD) <= 0 && p.isBlocking() && e.getFinalDamage() == 0 &&
                 (!(e.getDamager() instanceof Player a) || a.getAttackCooldown() >= 0.9)){ // Shield disabling may only occur if the shield is being held up
             int shieldDisabling = (int) Math.round(AccumulativeStatManager.getCachedAttackerRelationalStats("SHIELD_DISARMING", p, trueDamager, 10000, true));
-            Scheduling.runTaskLater(ValhallaMMO.getInstance(), 1L, () -> {
+            Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, 1L, () -> {
                         p.setCooldown(Material.SHIELD, p.getCooldown(Material.SHIELD) + shieldDisabling);
                         p.playEffect(EntityEffect.SHIELD_BREAK);
                         ItemStack temp = ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ? null : p.getInventory().getItemInMainHand().clone();
                         p.getInventory().setItemInMainHand(p.getInventory().getItemInOffHand());
                         p.getInventory().setItemInOffHand(temp);
-                        Scheduling.runTaskLater(ValhallaMMO.getInstance(), 1L, () -> {
+                        Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, 1L, () -> {
                             ItemStack temp2 = ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ? null : p.getInventory().getItemInMainHand().clone();
                             p.getInventory().setItemInMainHand(p.getInventory().getItemInOffHand());
                             p.getInventory().setItemInOffHand(temp2);
@@ -294,7 +294,7 @@ public class EntityAttackListener implements Listener {
                     }
                     if (!damageInstances.isEmpty()) EntityDamagedListener.markNextDamageInstanceNoImmunity(v, e.getCause().toString());
 
-                    Scheduling.runTaskLater(ValhallaMMO.getInstance(), 2L, () -> {
+                    Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getDamager(), 2L, () -> {
                         // custom bleed mechanics
                         if (attackCooldown >= 0.9F){
                             double bleedChance = AccumulativeStatManager.getCachedAttackerRelationalStats("BLEED_CHANCE", v, e.getDamager(), 10000, true);

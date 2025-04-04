@@ -475,16 +475,35 @@ public class AccumulativeStatManager {
     }
 
     private static void attemptMapCleanup(){
-        Scheduling.runTask(ValhallaMMO.getInstance(), () -> {
+        if (ValhallaMMO.getPlatform().supportsFolia()) {
             if (lastMapCleanup + 120000 < System.currentTimeMillis()){
                 // cleaning up map every 2 minutes
-                new HashSet<>(statCache.keySet()).stream().filter(u -> {
+                new HashSet<>(statCache.keySet()).stream().forEach(u -> {
                     Entity entity = ValhallaMMO.getInstance().getServer().getEntity(u);
-                    return entity == null || !entity.isValid();
-                }).forEach(statCache::remove);
+                    if (entity == null) {
+                        statCache.remove(u);
+                        return;
+                    }
+                    Scheduling.runEntityTask(ValhallaMMO.getInstance(), entity, () -> {
+                        if (!entity.isValid()) {
+                            statCache.remove(u);
+                        }
+                    });
+                });
                 lastMapCleanup = System.currentTimeMillis();
             }
-        });
+        } else {
+            Scheduling.runTask(ValhallaMMO.getInstance(), () -> {
+                if (lastMapCleanup + 120000 < System.currentTimeMillis()){
+                    // cleaning up map every 2 minutes
+                    new HashSet<>(statCache.keySet()).stream().filter(u -> {
+                        Entity entity = ValhallaMMO.getInstance().getServer().getEntity(u);
+                        return entity == null || !entity.isValid();
+                    }).forEach(statCache::remove);
+                    lastMapCleanup = System.currentTimeMillis();
+                }
+            });
+        }
     }
 
     public static void resetCache(Entity e){
