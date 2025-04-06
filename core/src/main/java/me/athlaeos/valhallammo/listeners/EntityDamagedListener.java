@@ -31,7 +31,7 @@ import java.util.*;
 
 public class EntityDamagedListener implements Listener {
     private static final boolean customDamageEnabled = ValhallaMMO.getPluginConfig().getBoolean("custom_damage_system", true);
-    private static final Collection<String> entityDamageCauses = new HashSet<>(Set.of("THORNS", "ENTITY_ATTACK", "ENTITY_SWEEP_ATTACK", "PROJECTILE", "ENTITY_EXPLOSION", "SONIC_BOOM"));
+    private static final Collection<String> entityDamageCauses = new HashSet<>(Set.of("CUSTOM", "THORNS", "ENTITY_ATTACK", "ENTITY_SWEEP_ATTACK", "PROJECTILE", "ENTITY_EXPLOSION", "SONIC_BOOM"));
     private static final Collection<String> trueDamage = new HashSet<>(Set.of("VOID", "SONIC_BOOM", "STARVATION", "DROWNING", "SUICIDE", "WORLD_BORDER", "KILL", "GENERIC_KILL"));
 
     private static final Map<UUID, String> customDamageCauses = new HashMap<>();

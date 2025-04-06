@@ -73,6 +73,12 @@ globalbuff_cycle_pause: 300 # After each buff is shown, nothing will be shown fo
 custom_effect_display: true # If disabled, the sidebar displaying custom effects while applied will no longer display.
 # This may improve performance, but players will also be completely unaware of any potion effects currently active on them
 
+flight_pvp_prevention: true # If enabled, players rewarded with the "enable flight" perk reward are prevented flight for a time when damaging, or are damaged by another player
+flight_pve_prevention: true # If enabled, players rewarded with the "enable flight" perk reward are prevented flight for a time when damaging, or are damaged by another entity
+flight_pvp_prevention_duration: 30 # Duration for which flight is prevented after engaging in pvp (in seconds)
+flight_pve_prevention_duration: 5 # Duration for which flight is prevented after engaging in pve (in seconds)
+flight_prevention_slow_falling: false # If a flying player engages in pvp, they receive slow falling for a few seconds
+
 skilltree_arrow_data_n: 3511002 # Custom model data of the NORTHERN arrow in the skill tree
 skilltree_arrow_data_ne: 3511003 # Custom model data of the NORTHEASTERN arrow in the skill tree
 skilltree_arrow_data_e: 3511004 # Custom model data of the EASTERN arrow in the skill tree
