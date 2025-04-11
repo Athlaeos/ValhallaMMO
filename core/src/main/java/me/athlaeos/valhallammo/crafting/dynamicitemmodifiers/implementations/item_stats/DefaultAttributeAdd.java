@@ -42,7 +42,7 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
 
         double extraValue = 0;
         if (add){
-            AttributeWrapper existingAttribute = ItemAttributesRegistry.getStats(outputItem.getMeta(), true).get(this.attribute);
+            AttributeWrapper existingAttribute = ItemAttributesRegistry.getStats(outputItem.getMeta(), false).get(this.attribute);
             if (existingAttribute != null && (!existingAttribute.isVanilla() || existingAttribute.getOperation() == operation)){
                 extraValue = existingAttribute.getValue();
             }
