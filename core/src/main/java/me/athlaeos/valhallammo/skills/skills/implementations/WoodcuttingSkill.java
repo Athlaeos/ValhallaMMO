@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.skills.skills.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.event.PlayerBlockDropItemsEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.EquipmentClass;
@@ -266,6 +267,16 @@ public class WoodcuttingSkill extends Skill implements Listener {
             s.setStage(Math.min(Math.max(0, Utils.randomAverage(profile.getInstantGrowthRate())), s.getMaximumStage() - 1));
             e.getBlock().setBlockData(s);
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onOtherBlockDrops(PlayerBlockDropItemsEvent e){
+        double exp = 0;
+        for (ItemStack i : e.getItems()){
+            if (ItemUtils.isEmpty(i)) continue;
+            exp += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+        }
+        addEXP(e.getPlayer(), exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
     @Override

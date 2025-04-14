@@ -139,7 +139,7 @@ public class Bleeder {
         return bleedingEntities;
     }
 
-    private static class BleedingInstance extends BukkitRunnable {
+    public static class BleedingInstance extends BukkitRunnable {
         private final LivingEntity bleedingEntity;
         private final Entity causedBy;
         private double bleedingDamage;

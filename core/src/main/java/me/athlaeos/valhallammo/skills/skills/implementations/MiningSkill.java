@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
+import me.athlaeos.valhallammo.event.PlayerBlockDropItemsEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
@@ -38,6 +39,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -282,11 +284,14 @@ public class MiningSkill extends Skill implements Listener {
             if (!(b.getState() instanceof Container)) ItemUtils.multiplyItems(predictedDrops, 1 + blastingDropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
             LootListener.markExploded(b);
             LootListener.setFortuneLevel(e.getEntity(), profile.getBlastFortuneLevel());
-            LootListener.prepareBlockDrops(b, predictedDrops);
             LootListener.setEntityOwner(e.getEntity(), responsible);
             if (profile.isBlastingInstantPickup()) LootListener.setInstantPickup(b, responsible);
             b.setType(Material.AIR);
-            for (ItemStack i : predictedDrops){
+
+            PlayerBlockDropItemsEvent event = new PlayerBlockDropItemsEvent(responsible, b, predictedDrops);
+            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+            LootListener.prepareBlockDrops(b, event.getItems());
+            for (ItemStack i : event.getItems()){
                 if (ItemUtils.isEmpty(i)) continue;
                 exp += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
             }
@@ -294,12 +299,26 @@ public class MiningSkill extends Skill implements Listener {
         addEXP(responsible, exp * blastingExpMultiplier, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onTNTDamage(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof Player p) || !(e.getDamager() instanceof TNTPrimed)) return;
-        if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_MINING)) return;
-        MiningProfile profile = ProfileCache.getOrCache(p, MiningProfile.class);
-        e.setDamage(e.getDamage() * (1 - profile.getTntDamageReduction()));
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getDamager() instanceof TNTPrimed tnt) ||
+                !(e.getEntity() instanceof Item || e.getEntity() instanceof Player)) return;
+        if (WorldGuardHook.inDisabledRegion(e.getEntity().getLocation(), WorldGuardHook.VMMO_SKILL_MINING)) return;
+        if (e.getEntity() instanceof Player p) {
+            Player responsible = null;
+            if (tnt.getSource() instanceof Player pl && p.isOnline()) responsible = pl;
+            else if (tnt.getSource() instanceof AbstractArrow a && a.getShooter() instanceof Player pl && p.isOnline()) responsible = pl;
+            if (responsible == null || !p.getUniqueId().equals(responsible.getUniqueId())) return;
+            MiningProfile profile = ProfileCache.getOrCache(p, MiningProfile.class);
+            e.setDamage(e.getDamage() * (1 - profile.getTntDamageReduction()));
+        } else if (e.getEntity() instanceof Item) {
+            Player responsible = null;
+            if (tnt.getSource() instanceof Player p && p.isOnline()) responsible = p;
+            else if (tnt.getSource() instanceof AbstractArrow a && a.getShooter() instanceof Player p && p.isOnline()) responsible = p;
+            if (responsible == null) return;
+            MiningProfile profile = ProfileCache.getOrCache(responsible, MiningProfile.class);
+            if (profile.isBlastingItemImmunity()) e.setCancelled(true);
+        }
     }
 
     @Override

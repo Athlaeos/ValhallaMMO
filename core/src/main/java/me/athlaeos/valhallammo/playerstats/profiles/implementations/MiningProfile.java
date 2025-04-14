@@ -33,6 +33,7 @@ public class MiningProfile extends Profile {
         stringSetStat("unbreakableBlocks");
         intStat("blastFortuneLevel", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
         booleanStat("blastingInstantPickup", new BooleanProperties(true, true));
+        booleanStat("blastingItemImmunity", new BooleanProperties(true, true));
 
         booleanStat("veinMiningUnlocked", new BooleanProperties(true, true));
         booleanStat("veinMiningInstantPickup", new BooleanProperties(true, true));
@@ -57,6 +58,8 @@ public class MiningProfile extends Profile {
     public void setDrillingUnlocked(boolean value) { setBoolean("drillingUnlocked", value); }
     public boolean isBlastingInstantPickup() { return getBoolean("blastingInstantPickup"); }
     public void setBlastingInstantPickup(boolean value) { setBoolean("blastingInstantPickup", value); }
+    public boolean isBlastingItemImmunity() { return getBoolean("blastingItemImmunity"); }
+    public void setBlastingItemImmunity(boolean value) { setBoolean("blastingItemImmunity", value); }
     public boolean isVeinMiningInstantPickup() { return getBoolean("veinMiningInstantPickup"); }
     public void setVeinMiningInstantPickup(boolean value) { setBoolean("veinMiningInstantPickup", value); }
 

@@ -116,7 +116,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
             double lastDamageTaken = e.getDamage();
             double exp = expPerDamage * lastDamageTaken * entityExpMultiplier * (1 + (totalHeavyArmor * expBonusPerPoint)) * chunkNerf;
             double pvpMult = trueDamager instanceof Player ? pvpMultiplier : 1;
-            addEXP(p, pvpMult * pvpMult * count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+            if (lastDamageTaken <= 1000000) addEXP(p, pvpMult * pvpMult * count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
             if (!hasPermissionAccess(p)) return;
             if (profile.isRageUnlocked() && profile.getRageLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_heavy_armor_rage") &&

@@ -219,11 +219,12 @@ public class ArcherySkill extends Skill implements Listener {
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (e.isCancelled() || !p.isOnline()) return;
+            double damageTaken = EntityDamagedListener.getLastDamageTaken(v.getUniqueId(), e.getFinalDamage());
+            if (damageTaken > 1000000) return;
             double chunkNerf = !isChunkNerfed || EntitySpawnListener.isTrialSpawned(v) ? 1 : ChunkEXPNerf.getChunkEXPNerf(v.getLocation().getChunk(), p, "archery");
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(v.getType(), 1D);
             double exp = ((expDistanceMultiplierBase * baseExp) + (baseExp * expDistanceMultiplierBonus * expDistance)) * entityExpMultiplier * chunkNerf;
             if (hasInfinity) exp *= expInfinityMultiplier;
-            double damageTaken = EntityDamagedListener.getLastDamageTaken(v.getUniqueId(), e.getFinalDamage());
             double pvpMult = e.getEntity() instanceof Player ? pvpMultiplier : 1;
             addEXP(p,
                     pvpMult * (1 + (expDamageBonus * (maxHealthLimitation ? (Math.min(EntityUtils.getMaxHP(v), damageTaken)) : damageTaken))) * exp *
