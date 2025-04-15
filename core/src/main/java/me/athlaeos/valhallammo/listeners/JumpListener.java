@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.event.PlayerJumpEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.MathUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -99,9 +100,9 @@ public class JumpListener implements Listener {
             double motionY = 0.42 + (jumpLevel * 0.1F);
             double motionZ = e.getPlayer().getVelocity().getZ() + (e.getPlayer().isSprinting() ? MathUtils.cos(f) * 0.2 : 0);
             if (multiJumpAnimation != null) multiJumpAnimation.animate(e.getPlayer(), e.getPlayer().getLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
-                            e.getPlayer().setVelocity(new Vector(motionX, motionY, motionZ).add(new Vector(0, (jumpHeightBonus * 0.1), 0))),
-                    1L);
+            Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getPlayer(), 1L, () ->
+                e.getPlayer().setVelocity(new Vector(motionX, motionY, motionZ).add(new Vector(0, (jumpHeightBonus * 0.1), 0)))
+            );
             e.getPlayer().setFallDistance(0);
         }
 

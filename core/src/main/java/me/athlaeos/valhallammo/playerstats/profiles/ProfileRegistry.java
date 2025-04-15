@@ -14,6 +14,7 @@ import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -70,10 +71,10 @@ public class ProfileRegistry {
         if (((Database) persistence).getConnection() == null) persistence = new SQLite(); // if SQL connection fails, choose SQLite
         if (((Database) persistence).getConnection() == null) persistence = new PDC(); // if SQLite fails, choose PDC
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskTimerAsync(ValhallaMMO.getInstance(), delay_profile_saving, delay_profile_saving, () -> {
             saveAll();
             LeaderboardManager.refreshLeaderboards();
-        }, delay_profile_saving, delay_profile_saving);
+        });
     }
 
     public static void saveAll(){

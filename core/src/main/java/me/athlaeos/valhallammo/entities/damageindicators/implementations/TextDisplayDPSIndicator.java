@@ -9,10 +9,10 @@ import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import org.bukkit.EntityEffect;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -77,7 +77,7 @@ public class TextDisplayDPSIndicator implements DamageIndicatorStrategy {
         return Dummy.isDummy(damaged);
     }
 
-    private static class DPSInstance extends BukkitRunnable {
+    private static class DPSInstance extends ValhallaRunnable {
         private final UUID id;
         private final LivingEntity damaged;
         private final CustomDamageType type;

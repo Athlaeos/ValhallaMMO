@@ -14,6 +14,7 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.item.arrow_attributes.ArrowBehaviorRegistry;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.GameMode;
@@ -142,7 +143,8 @@ public class ProjectileListener implements Listener {
     }
 
     public static void removeBow(Projectile projectile){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> projectileShotByMap.remove(projectile.getUniqueId()), 2L);
+        UUID uuid = projectile.getUniqueId();
+        Scheduling.runTaskLater(ValhallaMMO.getInstance(), 2L, () -> projectileShotByMap.remove(uuid));
     }
 
     private final Map<UUID, Integer> crossbowReloads = new HashMap<>();
@@ -183,13 +185,13 @@ public class ProjectileListener implements Listener {
                         int currentReloads = crossbowReloads.getOrDefault(p.getUniqueId(), 0); // reload, increment magazine
                         if (currentReloads + 1 <= allowedReloads){
                             crossbowReloads.put(p.getUniqueId(), currentReloads + 1);
-                            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                            Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, 1L, () -> {
                                 boolean mainHand = !ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) && p.getInventory().getItemInMainHand().getType() == Material.CROSSBOW;
                                 ItemStack crossbow = mainHand ? p.getInventory().getItemInMainHand() : p.getInventory().getItemInOffHand();
                                 if (ItemUtils.isEmpty(crossbow) || !(crossbow.getItemMeta() instanceof CrossbowMeta crossbowMeta)) return;
                                 crossbowMeta.addChargedProjectile(consumable);
                                 crossbow.setItemMeta(crossbowMeta);
-                            }, 1L);
+                            });
                             if (e.getProjectile() instanceof AbstractArrow a) a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
                         } else {
                             crossbowReloads.remove(p.getUniqueId()); // do not reload, but reset magazine
@@ -256,7 +258,7 @@ public class ProjectileListener implements Listener {
             int originalDamageTicks = l.getNoDamageTicks();
             a.setDamage(a.getDamage() * ValhallaMMO.getPluginConfig().getDouble("multishot_damage_reduction", 0.5));
             l.setNoDamageTicks(0);
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> l.setNoDamageTicks(originalDamageTicks), 1L);
+            Scheduling.runEntityTask(ValhallaMMO.getInstance(), l, 1L, () -> l.setNoDamageTicks(originalDamageTicks));
         }
 
         removeBow(e.getEntity()); // if an arrow hits anything, the bow it was shot from is forgotten
@@ -297,7 +299,7 @@ public class ProjectileListener implements Listener {
                     if (wrapper.isVanilla()) l.addPotionEffect(new PotionEffect(wrapper.getVanillaEffect(), duration, (int) wrapper.getAmplifier(), false));
                     else PotionEffectRegistry.addEffect(l, trueDamager, new CustomPotionEffect(wrapper, duration, wrapper.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ARROW);
                 }
-                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
+                Scheduling.runTaskLater(ValhallaMMO.getInstance(), () ->
                         cancelNextArrowEffects.remove(e.getEntity().getUniqueId()), 1L
                 );
             }

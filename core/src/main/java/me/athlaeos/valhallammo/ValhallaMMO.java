@@ -25,6 +25,10 @@ import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.persistence.implementations.SQL;
+import me.athlaeos.valhallammo.platform.ValhallaPlatform;
+import me.athlaeos.valhallammo.platform.bukkit.BukkitPlatform;
+import me.athlaeos.valhallammo.platform.folia.FoliaPlatform;
+import me.athlaeos.valhallammo.platform.paper.PaperPlatform;
 import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
@@ -45,6 +49,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,18 +65,7 @@ public class ValhallaMMO extends JavaPlugin {
     private static final Map<Class<? extends PluginHook>, PluginHook> activeHooks = new HashMap<>();
     private static YamlConfiguration pluginConfig;
     private static final Collection<String> worldBlacklist = new HashSet<>();
-    private static final boolean usingPaperMC = Catch.catchOrElse(() -> {
-        try {
-            Class.forName("com.destroystokyo.paper.loottable.LootableInventory");
-        } catch (ClassNotFoundException exception) {
-            return false;
-        }
-        return true;
-    }, false);
-
-    {
-        instance = this;
-    }
+    private static ValhallaPlatform<?> platform = new BukkitPlatform();
 
     public static ValhallaMMO getInstance() {
         return instance;
@@ -81,8 +75,16 @@ public class ValhallaMMO extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        instance = this;
         // save and update configs
         pluginConfig = saveAndUpdateConfig("config.yml");
+
+        //platform support
+        if (FoliaPlatform.usingFolia()) {
+            platform = new FoliaPlatform();
+        } else if (PaperPlatform.usingPaper()) {
+            platform = new PaperPlatform();
+        }
 
         String lang = pluginConfig.getString("language", "en-us");
         save("languages/en-us.json");
@@ -170,7 +172,7 @@ public class ValhallaMMO extends JavaPlugin {
         saveAndUpdateConfig("gui_details.yml");
 
         customMiningSystem = pluginConfig.getBoolean("custom_mining_speeds", true);
-        if (customMiningSystem){
+        if (customMiningSystem && !platform.supportsFolia()) { //todo breaks on folia
             packetListener = new PacketListener(new BlockBreakNetworkHandlerImpl());
             packetListener.addAll();
             registerListener(new CustomBreakSpeedListener());
@@ -321,6 +323,7 @@ public class ValhallaMMO extends JavaPlugin {
             Class<?> clazz = Class.forName("me.athlaeos.valhallammo.nms.NMS_" + nmsVersion);
 
             if (NMS.class.isAssignableFrom(clazz)) {
+                getLogger().info("Loading for version " + nmsVersion);
                 nms = (NMS) clazz.getDeclaredConstructor().newInstance();
             }
 
@@ -442,6 +445,11 @@ public class ValhallaMMO extends JavaPlugin {
     }
 
     public static boolean isUsingPaperMC() {
-        return usingPaperMC;
+        return platform.supportsPaper();
+    }
+
+    @ApiStatus.Internal
+    public static ValhallaPlatform<?> getPlatform() {
+        return platform;
     }
 }

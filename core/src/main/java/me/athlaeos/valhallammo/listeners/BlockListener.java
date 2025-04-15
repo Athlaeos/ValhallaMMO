@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.BlockStore;
 import me.athlaeos.valhallammo.utility.BlockUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -31,13 +32,25 @@ import java.util.stream.Collectors;
 public class BlockListener implements Listener {
 
     public BlockListener(){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
-            for (Location b : blocksToConsiderBroken) {
-                BlockStore.setPlaced(b.getBlock(), false);
-                BlockStore.setBreakReason(b.getBlock(), BlockStore.BreakReason.MINED);
-            }
-            blocksToConsiderBroken.clear();
-        }, 0L, 5L);
+        if (ValhallaMMO.getPlatform().supportsFolia()) {
+            Scheduling.runTaskTimerAsync(ValhallaMMO.getInstance(), 1L, 1L, ()-> {
+                for (Location b : blocksToConsiderBroken) {
+                    Scheduling.runLocationTask(ValhallaMMO.getInstance(), b, () -> {
+                        BlockStore.setPlaced(b.getBlock(), false);
+                        BlockStore.setBreakReason(b.getBlock(), BlockStore.BreakReason.MINED);
+                    });
+                }
+                blocksToConsiderBroken.clear();
+            });
+        } else {
+            Scheduling.runTaskTimer(ValhallaMMO.getInstance(), 0L, 5L, () -> {
+                for (Location b : blocksToConsiderBroken) {
+                    BlockStore.setPlaced(b.getBlock(), false);
+                    BlockStore.setBreakReason(b.getBlock(), BlockStore.BreakReason.MINED);
+                }
+                blocksToConsiderBroken.clear();
+            });
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

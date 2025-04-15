@@ -25,10 +25,7 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.potioneffects.implementations.Stun;
 import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.utility.Bleeder;
-import me.athlaeos.valhallammo.utility.EntityUtils;
-import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.utility.*;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -162,7 +159,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
             ItemBuilder weapon = damager instanceof Trident t ? new ItemBuilder(t.getItem()) : EntityCache.getAndCacheProperties(p).getMainHand();
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.LIGHT) return;
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            Scheduling.runLocationTask(ValhallaMMO.getInstance(), l.getLocation(), 2L, () -> {
                 if (e.isCancelled() || !p.isOnline()) return;
                 if (e.getDamage() > 1000000) return;
                 double chunkNerf = !isChunkNerfed || EntitySpawnListener.isTrialSpawned(l) ? 1 : ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
@@ -179,7 +176,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
                         false,
                         PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
                 if (isChunkNerfed && !EntitySpawnListener.isTrialSpawned(l)) ChunkEXPNerf.increment(l.getLocation().getChunk(), p, "weapons");
-            }, 2L);
+            });
         }
     }
 

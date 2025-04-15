@@ -119,19 +119,19 @@ public class EntityAttackListener implements Listener {
         if (v instanceof Player p && p.getCooldown(Material.SHIELD) <= 0 && p.isBlocking() && e.getFinalDamage() == 0 &&
                 (!(e.getDamager() instanceof Player a) || a.getAttackCooldown() >= 0.9)){ // Shield disabling may only occur if the shield is being held up
             int shieldDisabling = (int) Math.round(AccumulativeStatManager.getCachedAttackerRelationalStats("SHIELD_DISARMING", p, trueDamager, 10000, true));
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, 1L, () -> {
                         p.setCooldown(Material.SHIELD, p.getCooldown(Material.SHIELD) + shieldDisabling);
                         p.playEffect(EntityEffect.SHIELD_BREAK);
                         ItemStack temp = ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ? null : p.getInventory().getItemInMainHand().clone();
                         p.getInventory().setItemInMainHand(p.getInventory().getItemInOffHand());
                         p.getInventory().setItemInOffHand(temp);
-                        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                        Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, 1L, () -> {
                             ItemStack temp2 = ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ? null : p.getInventory().getItemInMainHand().clone();
                             p.getInventory().setItemInMainHand(p.getInventory().getItemInOffHand());
                             p.getInventory().setItemInOffHand(temp2);
-                            }, 1L);
-                        },
-                    1L);
+                            });
+                        }
+            );
         }
         if (!sweep){
             boolean facing = EntityUtils.isEntityFacing(v, e.getDamager().getLocation(), facingAngleCos) || (e.getDamager() instanceof LivingEntity le && EntityUtils.isEntityFacing(v, le.getEyeLocation(), facingAngleCos));
@@ -200,7 +200,7 @@ public class EntityAttackListener implements Listener {
             if (knockbackResistance > 0) EntityUtils.addUniqueAttribute(v, EntityAttributeStats.NEGATIVE_KNOCKBACK, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResistance, AttributeModifier.Operation.ADD_NUMBER);
             if (knockbackBonus != 0){
                 double finalKnockbackBonus = knockbackBonus;
-                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                Scheduling.runEntityTask(ValhallaMMO.getInstance(), v, 1L, () -> {
                     // finishing off custom knockback mechanics (removing attribute if placed, or changing velocity to comply with increased knockback)
                     if (knockbackResistance > 0) EntityUtils.removeUniqueAttribute(v, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
                     else if (finalKnockbackBonus > 0){
@@ -211,7 +211,7 @@ public class EntityAttackListener implements Listener {
                         lookingDirection.setZ(lookingDirection.getZ() * finalKnockbackBonus);
                         v.setVelocity(v.getVelocity().add(lookingDirection));
                     }
-                }, 1L);
+                });
             }
 
             // custom dismount mechanics
@@ -294,7 +294,7 @@ public class EntityAttackListener implements Listener {
                     }
                     if (!damageInstances.isEmpty()) EntityDamagedListener.markNextDamageInstanceNoImmunity(v, e.getCause().toString());
 
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                    Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getDamager(), 2L, () -> {
                         // custom bleed mechanics
                         if (attackCooldown >= 0.9F){
                             double bleedChance = AccumulativeStatManager.getCachedAttackerRelationalStats("BLEED_CHANCE", v, e.getDamager(), 10000, true);
@@ -351,7 +351,7 @@ public class EntityAttackListener implements Listener {
                                 if (maxHealth != null) td.setHealth(Math.min(maxHealth.getValue(), td.getHealth() + lifeStealValue));
                             }
                         }
-                    }, 2L);
+                    });
                 }
             }
         }
@@ -387,7 +387,7 @@ public class EntityAttackListener implements Listener {
 
             if (hand.getType().isEdible() || weapon.getMeta() instanceof PotionMeta || !EquipmentClass.isHandHeld(weapon.getMeta())) return;
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getEntity(), 1L, () -> {
                 if (!e.getEntity().isValid() || e.getEntity().isDead()) return;
                 boolean updatedMeta = false;
                 // apply potion effects
@@ -402,7 +402,7 @@ public class EntityAttackListener implements Listener {
                     hand.setItemMeta(weapon.getMeta());
                     a.getEquipment().setItemInMainHand(weapon.get(), true);
                 }
-            }, 1L);
+            });
         }
     }
 

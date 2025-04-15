@@ -11,9 +11,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
-import me.athlaeos.valhallammo.utility.BlockUtils;
-import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.version.BrewingPreventionListener;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,7 +24,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -123,7 +120,7 @@ public class BrewingStandListener implements Listener {
     }
 
     private void updateStand(BrewerInventory inventory, Player p, boolean automated){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, 1L, () -> {
             ItemStack i = inventory.getItem(ingredient);
             ActiveBrewingStand activeStand = activeStands.get(inventory.getLocation());
             if (ItemUtils.isEmpty(i)) {
@@ -155,10 +152,10 @@ public class BrewingStandListener implements Listener {
                 newStand.runTaskTimer(ValhallaMMO.getInstance(), 0, 1);
                 activeStands.put(brewingStand.getLocation(), newStand);
             }
-        }, 1L);
+        });
     }
 
-    private static class ActiveBrewingStand extends BukkitRunnable {
+    private static class ActiveBrewingStand extends ValhallaRunnable {
         private final boolean disabled;
         private final boolean automated;
         private final Player p;

@@ -18,6 +18,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
@@ -115,8 +116,8 @@ public class SmithingTableListener implements Listener {
                 if (ItemUtils.isEmpty(finalAddition) || CustomFlag.hasFlag(addition.getMeta(), CustomFlag.UNCRAFTABLE) || ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                     e.setCancelled(true);
                 } else {
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
-                            e.getInventory().setItem(additionIndex, finalAddition), 1L
+                    Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, 1L, () ->
+                            e.getInventory().setItem(additionIndex, finalAddition)
                     );
                 }
             } else {
@@ -134,7 +135,7 @@ public class SmithingTableListener implements Listener {
     @SuppressWarnings("all")
     @EventHandler
     public void onPrepareSmithing(PrepareSmithingEvent e){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> {
             boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
             int baseIndex = isTemplateCompatible ? 1 : 0;
             int templateIndex = baseIndex - 1;

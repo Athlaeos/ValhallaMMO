@@ -21,6 +21,7 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.EntityUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
@@ -114,7 +115,7 @@ public class LightArmorSkill extends Skill implements Listener {
 
         LightArmorProfile profile = ProfileCache.getOrCache(p, LightArmorProfile.class);
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), p, 2L, () -> {
             if (e.isCancelled() || !p.isOnline() || e.getDamage() <= 0) return;
             double chunkNerf = isChunkNerfed ? ChunkEXPNerf.getChunkEXPNerf(p.getLocation().getChunk(), p, "armors") : 1;
             int count = EntityCache.getAndCacheProperties(p).getLightArmorCount();
@@ -141,7 +142,7 @@ public class LightArmorSkill extends Skill implements Listener {
                 if (!Timer.isCooldownPassed(p.getUniqueId(), "cooldown_light_armor_adrenaline")) Timer.sendCooldownStatus(p, "cooldown_light_armor_adrenaline", TranslationManager.getTranslation("ability_adrenaline"));
             }
             if (isChunkNerfed) ChunkEXPNerf.increment(p.getLocation().getChunk(), p, "armors");
-        }, 2L);
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.event.EntityUpdateLevelEvent;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.apache.commons.lang.StringUtils;
@@ -269,7 +270,7 @@ public class MonsterScalingManager {
 
     public static double getCachedDifficultyLevel(Player from){
         if (Timer.isCooldownPassed(from.getUniqueId(), "delay_regional_difficulty_cache_update")){
-            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> getAreaDifficultyLevel(from.getLocation(), from));
+            Scheduling.runLocationTask(ValhallaMMO.getInstance(), from.getLocation(), () -> getAreaDifficultyLevel(from.getLocation(), from));
             Timer.setCooldown(from.getUniqueId(), 10000, "delay_regional_difficulty_cache_update");
         }
         return regionalMonsterLevelCache.getOrDefault(from.getUniqueId(), 0D);

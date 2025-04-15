@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.version;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import org.bukkit.Material;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.event.EventHandler;
@@ -17,10 +18,10 @@ public class BrewingPreventionListener implements Listener {
                 ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) ||
                 CustomRecipeRegistry.getBrewingRecipes().isEmpty()) return;
         e.setTotalBrewTime(Integer.MAX_VALUE);
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runLocationTask(ValhallaMMO.getInstance(), e.getBlock().getLocation(), 1L, () -> {
             if (e.getBlock().getType() != Material.BREWING_STAND || !(e.getBlock().getState() instanceof BrewingStand stand)) return;
             stand.setFuelLevel(stand.getFuelLevel() + 1);
             stand.update();
-        }, 1L);
+        });
     }
 }

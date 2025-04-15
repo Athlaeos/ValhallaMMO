@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.utility.GlobalEffect;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.command.CommandSender;
 
@@ -21,7 +22,7 @@ public class SaveAllCommand implements Command {
         ProfileRegistry.saveAll();
         CustomRecipeRegistry.saveRecipes(true);
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskAsync(ValhallaMMO.getInstance(), () -> {
             PartyManager.saveParties();
             GlobalEffect.saveActiveGlobalEffects();
             CustomItemRegistry.saveItems();

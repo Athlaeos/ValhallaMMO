@@ -161,7 +161,7 @@ public class ItemUtils {
 
     public static void startProjectileRunnableCache(){
         // cleans up the stored projectile cache every 10 seconds, removing items if they've been in there for 10 seconds or longer
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskTimer(ValhallaMMO.getInstance(), () -> {
             for (UUID uuid : new HashMap<>(storedProjectileCache).keySet()){
                 if (storedProjectileCachedAt.get(uuid) + 10000 > System.currentTimeMillis()) {
                     storedProjectileCachedAt.remove(uuid);
@@ -822,10 +822,10 @@ public class ItemUtils {
         ItemStack oldCursor = e.getOldCursor().clone();
         oldCursor.setAmount(newAmount);
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getWhoClicked(), 1L, () -> {
             if (oldCursor.getAmount() > 0) e.getWhoClicked().setItemOnCursor(oldCursor);
             else e.getWhoClicked().setItemOnCursor(null);
-        }, 1L);
+        });
     }
 
     public static int timesContained(List<ItemStack> inventory, Map<ItemStack, Integer> ingredients, IngredientChoice matcher){

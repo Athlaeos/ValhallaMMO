@@ -10,10 +10,7 @@ import me.athlaeos.valhallammo.listeners.LootListener;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.DiggingProfile;
 import me.athlaeos.valhallammo.skills.skills.implementations.DiggingSkill;
-import me.athlaeos.valhallammo.utility.BlockStore;
-import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.StringUtils;
-import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.utility.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -199,7 +196,7 @@ public class DiggingArchaeologyExtension implements Listener {
         LootTable previousTable = ArchaeologyListener.getSuspiciousLootTables().get(e.getBlock());
         if (previousTable == null) return;
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runLocationTask(ValhallaMMO.getInstance(), b.getLocation(), 2L, () -> {
             e.getBlock().setType(previousMaterial);
             b.setLootTable(previousTable);
             b.update();
@@ -209,6 +206,6 @@ public class DiggingArchaeologyExtension implements Listener {
                 brushable.setDusted(0);
                 e.getBlock().setBlockData(brushable);
             }
-        }, 2L);
+        });
     }
 }

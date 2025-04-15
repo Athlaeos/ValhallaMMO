@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.utility.MathUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -48,9 +49,9 @@ public class ChargedShotSonicBoom extends Animation {
         MathUtils.transformExistingPoints(normalizedCenter, 0, entity.getEyeLocation().getPitch() + 90, 0, 1, smallCircle);
         MathUtils.transformExistingPoints(normalizedCenter, entity.getEyeLocation().getYaw() + 180, 0, 0, 1, smallCircle);
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> largeCircle.forEach(l -> pulse(entity.getWorld(), entity.getEyeLocation(), l, largeCircleCenter, 0.25)), 2L);
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> middleCircle.forEach(l -> pulse(entity.getWorld(), entity.getEyeLocation(), l, middleCircleCenter, 0.15)), 4L);
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> smallCircle.forEach(l -> pulse(entity.getWorld(), entity.getEyeLocation(), l, smallCircleCenter, 0.1)), 6L);
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), entity, 2L, () -> largeCircle.forEach(l -> pulse(entity.getWorld(), entity.getEyeLocation(), l, largeCircleCenter, 0.25)));
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), entity, 4L, () -> middleCircle.forEach(l -> pulse(entity.getWorld(), entity.getEyeLocation(), l, middleCircleCenter, 0.15)));
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), entity, 6L, () -> smallCircle.forEach(l -> pulse(entity.getWorld(), entity.getEyeLocation(), l, smallCircleCenter, 0.1)));
     }
 
     private void pulse(World w, Location location, Location particleLocation, Location center, double intensity){

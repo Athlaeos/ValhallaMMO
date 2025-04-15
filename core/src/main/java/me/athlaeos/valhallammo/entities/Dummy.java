@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.ArmorStand;
@@ -70,11 +71,11 @@ public class Dummy implements Listener {
                 !isDummy(l)) return;
         ItemBuilder stored = ItemUtils.getStoredItem(a);
         if (stored == null) return;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), a, 2L, () -> {
             if (a.isValid()) {
                 if (a.getPickupStatus() == AbstractArrow.PickupStatus.ALLOWED) a.getWorld().dropItem(a.getLocation(), stored.get());
                 a.remove();
             }
-        }, 2L);
+        });
     }
 }

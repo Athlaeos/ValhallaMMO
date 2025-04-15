@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -17,7 +18,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -82,7 +82,7 @@ public class ArmorSwitchListener implements Listener {
         updateArmor(e.getPlayer());
     }
 
-    private static class DelayedArmorUpdate extends BukkitRunnable{
+    private static class DelayedArmorUpdate extends ValhallaRunnable {
         private static final int delay = 30; // after 1.5 seconds update equipment
         private int timer = delay;
         private final Player who;

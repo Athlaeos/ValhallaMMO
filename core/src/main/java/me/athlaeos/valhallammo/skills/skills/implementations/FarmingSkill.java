@@ -241,7 +241,7 @@ public class FarmingSkill extends Skill implements Listener {
             }
         }
         if (clickedBlock.getBlockData() instanceof Beehive b && b.getHoneyLevel() >= b.getMaximumHoneyLevel()) {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            Scheduling.runLocationTask(ValhallaMMO.getInstance(), e.getClickedBlock().getLocation(), 5L, () -> {
                 Beehive newHive = clickedBlock.getBlockData() instanceof Beehive bee ? bee : null;
                 if (newHive == null) return;
                 if (newHive.getHoneyLevel() < newHive.getMaximumHoneyLevel()){
@@ -262,7 +262,7 @@ public class FarmingSkill extends Skill implements Listener {
                         clickedBlock.setBlockData(newHive);
                     }
                 }
-            }, 5L);
+            });
         }
     }
 

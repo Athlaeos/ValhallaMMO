@@ -21,10 +21,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockCondition;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockConditionRegistry;
 import me.athlaeos.valhallammo.skills.skills.implementations.PowerSkill;
-import me.athlaeos.valhallammo.utility.BossBarUtils;
-import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.StringUtils;
-import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.utility.*;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -37,7 +34,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -633,7 +629,7 @@ public abstract class Skill {
                 );
             }
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            Scheduling.runTaskAsync(ValhallaMMO.getInstance(), () -> {
                 for (int i = from; i > to; i--) {
                     for (PerkReward reward : levelingPerks) {
                         if (reward instanceof MultiplicativeReward || reward.isPersistent()) continue;
@@ -714,7 +710,7 @@ public abstract class Skill {
                     );
                 } else {
                     int finalDuration = lastDelay;
-                    new BukkitRunnable(){
+                    new ValhallaRunnable(){
                         int timer = 0;
                         @Override
                         public void run() {
@@ -733,7 +729,7 @@ public abstract class Skill {
                 }
             }
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            Scheduling.runTaskAsync(ValhallaMMO.getInstance(), () -> {
                 for (int i = from + 1; i <= to; i++) {
                     for (PerkReward reward : levelingPerks) {
                         if (reward instanceof MultiplicativeReward) continue;
@@ -802,7 +798,7 @@ public abstract class Skill {
                     reward.apply(p);
                 }
                 if (!perk.getExpenses().isEmpty()){
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+                    Scheduling.runTask(ValhallaMMO.getInstance(), () -> {
                         for (ResourceExpense expense : perk.getExpenses()) {
                             expense.purchase(p, false);
                         }
@@ -811,8 +807,9 @@ public abstract class Skill {
             }
         }
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
-                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, getProfileType())));
+        Scheduling.runTask(ValhallaMMO.getInstance(), () ->
+                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, getProfileType()))
+        );
     }
 
     private final boolean perksForgettable = ConfigManager.getConfig("config.yml").reload().get().getBoolean("forgettable_perks");

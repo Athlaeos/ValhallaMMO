@@ -5,17 +5,18 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.MiningSpeed;
 import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
 import me.athlaeos.valhallammo.listeners.LootListener;
+import me.athlaeos.valhallammo.platform.scheduler.TaskHolder;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfile;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
@@ -52,7 +53,7 @@ public class BlockDigProcess {
 
         if (instantBlockBreakerTask != null && !done) return;
         done = false;
-        instantBlockBreakerTask = ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+        instantBlockBreakerTask = Scheduling.runTask(ValhallaMMO.getInstance(), () -> {
             try {
                 new HashSet<>((blocksToBreakInstantly.isEmpty() ? blocksToBreakInstantly2 : blocksToBreakInstantly).entrySet()).forEach(e -> {
                     Player p = ValhallaMMO.getInstance().getServer().getPlayer(e.getKey());
@@ -93,7 +94,7 @@ public class BlockDigProcess {
     }
 
     private static boolean done = false;
-    private static BukkitTask instantBlockBreakerTask = null;
+    private static TaskHolder<?> instantBlockBreakerTask = null;
     private static final Map<UUID, Location> blocksToBreakInstantly = new HashMap<>();
     private static final Map<UUID, Location> blocksToBreakInstantly2 = new HashMap<>();
 
@@ -102,7 +103,7 @@ public class BlockDigProcess {
     }
 
     public static void sendCracks(Block block, int cracks){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runLocationTask(ValhallaMMO.getInstance(), block.getLocation(), () -> {
             for (Entity p : block.getWorld().getNearbyEntities(block.getLocation(), 20, 20, 20, (e) -> e instanceof Player))
                 ValhallaMMO.getNms().blockBreakAnimation((Player) p, block, getID(block), cracks);
         });

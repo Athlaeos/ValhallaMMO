@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import org.bukkit.EntityEffect;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -113,8 +114,8 @@ public class BlockInteractConversions {
                     user, true, mainHand ? EquipmentSlot.HAND : EquipmentSlot.OFF_HAND);
             ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
             if (event.isCancelled()) return false;
-            if (clicked.getBlockData() instanceof Stairs s1) ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> { if (clicked.getBlockData() instanceof Stairs s2) s2.setShape(s1.getShape()); },1L);
-            if (clicked.getBlockData() instanceof Slab s1) ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> { if (clicked.getBlockData() instanceof Slab s2) s2.setType(s1.getType()); },1L);
+            if (clicked.getBlockData() instanceof Stairs s1) Scheduling.runLocationTask(ValhallaMMO.getInstance(), clicked.getLocation(), 1L, () -> { if (clicked.getBlockData() instanceof Stairs s2) s2.setShape(s1.getShape()); });
+            if (clicked.getBlockData() instanceof Slab s1) Scheduling.runLocationTask(ValhallaMMO.getInstance(), clicked.getLocation(), 1L, () -> { if (clicked.getBlockData() instanceof Slab s2) s2.setType(s1.getType()); });
 
             clicked.setType(conversion.to);
             if (conversion.sound != null) user.playSound(user.getLocation(), conversion.sound, 1F, 1F);

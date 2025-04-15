@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatSource;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
@@ -35,7 +36,7 @@ public class PotionEffectSingleUseSource implements AccumulativeStatSource {
                 effect.setEffectiveUntil(0);
                 PotionEffectRegistry.addEffect(l, null, effect, true, 1, EntityPotionEffectEvent.Cause.EXPIRATION, EntityPotionEffectEvent.Action.REMOVED);
             }
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> AccumulativeStatManager.resetCache(l), 1L);
+            Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> AccumulativeStatManager.resetCache(l), 1L);
             return amplifier;
         }
         return 0;

@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.NamespacedKey;
@@ -29,7 +30,8 @@ public class PermanentPotionEffects {
     private static final Collection<UUID> entitiesWithPermanentEffects = new HashSet<>();
 
     public static void initializeRunnable(){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+        //todo check folia support
+        Scheduling.runTaskTimer(ValhallaMMO.getInstance(), 80L, 80L, () -> {
             for (UUID uuid : new HashSet<>(entitiesWithPermanentEffects)){
                 Entity e = ValhallaMMO.getInstance().getServer().getEntity(uuid);
                 if (e == null || !e.isValid() || e.isDead() || !(e instanceof LivingEntity l) || (e instanceof Player p && !p.isOnline())) {
@@ -44,7 +46,7 @@ public class PermanentPotionEffects {
                 }
                 for (PotionEffect effect : effects) l.addPotionEffect(effect);
             }
-        }, 80L, 80L);
+        });
     }
 
     public static List<PotionEffect> fromString(String str){

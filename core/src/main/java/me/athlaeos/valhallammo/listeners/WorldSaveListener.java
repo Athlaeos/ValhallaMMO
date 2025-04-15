@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.resourcepack.Host;
 import me.athlaeos.valhallammo.utility.GlobalEffect;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +23,7 @@ public class WorldSaveListener implements Listener {
     @EventHandler
     public void onWorldSave(WorldSaveEvent e){
         if (e.getWorld().getName().equals(ValhallaMMO.getInstance().getServer().getWorlds().get(0).getName())) {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            Scheduling.runTaskAsync(ValhallaMMO.getInstance(), () -> {
                 ProfileRegistry.saveAll();
                 CustomRecipeRegistry.saveRecipes(false);
                 LootTableRegistry.saveAll();

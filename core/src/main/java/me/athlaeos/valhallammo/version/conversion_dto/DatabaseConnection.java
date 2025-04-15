@@ -2,8 +2,8 @@ package me.athlaeos.valhallammo.version.conversion_dto;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -59,7 +59,7 @@ public class DatabaseConnection {
             return null;
         }
         if (conn != null){
-            new BukkitRunnable(){
+            new ValhallaRunnable(){
                 @Override
                 public void run() {
                     try {
@@ -69,7 +69,7 @@ public class DatabaseConnection {
                         cancel();
                     }
                 }
-            }.runTaskTimerAsynchronously(ValhallaMMO.getInstance(), ping_delay, ping_delay);
+            }.runTaskTimerAsync(ValhallaMMO.getInstance(), ping_delay, ping_delay);
         }
         return conn;
     }

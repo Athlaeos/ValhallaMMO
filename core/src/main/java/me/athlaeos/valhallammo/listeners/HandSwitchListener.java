@@ -3,8 +3,10 @@ package me.athlaeos.valhallammo.listeners;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -16,7 +18,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -64,10 +65,10 @@ public class HandSwitchListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onItemBreak(PlayerItemBreakEvent e){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskLater(ValhallaMMO.getInstance(), 1L, () -> {
             reset(e.getPlayer());
             playersWhoSwitchedItems.remove(e.getPlayer().getUniqueId());
-        }, 1L);
+        });
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -99,7 +100,7 @@ public class HandSwitchListener implements Listener {
         }
     }
 
-    private static class DelayedHandUpdate extends BukkitRunnable {
+    private static class DelayedHandUpdate extends ValhallaRunnable {
         private static final int delay = 10; // after 0.5 seconds update hands
         private int timer = delay;
         private final Player who;

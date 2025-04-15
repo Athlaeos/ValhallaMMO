@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.MathUtils;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
@@ -13,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;
@@ -29,7 +29,7 @@ public class ThrownItem {
     }
 
     private final ArmorStand stand;
-    private final BukkitRunnable runnable;
+    private final ValhallaRunnable runnable;
 
     private final ItemBuilder item;
     private final ThrowableItemStats stats;
@@ -88,7 +88,7 @@ public class ThrownItem {
         }
 
         final ThrownItem instance = this;
-        runnable = new BukkitRunnable(){
+        runnable = new ValhallaRunnable(){
             @Override
             public void run() {
                 animation.tick(instance);

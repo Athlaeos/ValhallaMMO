@@ -7,12 +7,12 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.skills.skills.implementations.ArcherySkill;
 import me.athlaeos.valhallammo.utility.MathUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;
@@ -45,7 +45,7 @@ public class ChargedShotAmmo extends Animation {
     private static final double cR = MathUtils.cos(MathUtils.toRadians(0));
     private static final double sR = MathUtils.sin(MathUtils.toRadians(0));
 
-    private static class AmmoAnimation extends BukkitRunnable{
+    private static class AmmoAnimation extends ValhallaRunnable {
         private final Player p;
         private Collection<Location> circle;
         private int charges;

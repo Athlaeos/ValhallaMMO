@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.utility.Bleeder;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Entity;
@@ -45,7 +46,7 @@ public class DeathListener implements Listener {
 
         double lastDamageTaken = EntityDamagedListener.getLastDamageTaken(e.getEntity().getUniqueId());
         CustomDamageType type = CustomDamageType.getCustomType(cause);
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runEntityTask(ValhallaMMO.getInstance(), e.getEntity(), 20L, () -> {
             if (type != null && !StringUtils.isEmpty(type.getTranslation())){
                 if (lastDamager == null) Utils.sendMessage(e.getEntity(), deathStatus
                         .replace("%damage%", String.format("%.1f", lastDamageTaken))
@@ -61,7 +62,7 @@ public class DeathListener implements Listener {
                         .replace("%damage%", String.format("%.1f", lastDamageTaken))
                         .replace("%killer%", lastDamager.getName()));
             }
-        }, 20L);
+        });
 
         List<String> deathMessages = lastDamager != null ?
                 TranslationManager.getListTranslation("death_message_" + cause.toLowerCase(java.util.Locale.US) + "_enemy") :

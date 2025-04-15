@@ -19,6 +19,7 @@ public class SideBarUtils {
      * @param contents the contents the scoreboard should display
      */
     public static void showSideBarToPlayer(final Player player, String key, String title, List<String> contents, boolean force){
+        if (!ValhallaMMO.getPlatform().supportsScoreboard()) return;
         Sidebar sideBar = activeSidebars.get(player.getUniqueId());
         if (sideBar == null) sideBar = new Sidebar(player, key, title, contents);
         else sideBar.updateContents(contents);
@@ -28,6 +29,7 @@ public class SideBarUtils {
     }
 
     public static void hideSideBarFromPlayer(final Player player, String key){
+        if (!ValhallaMMO.getPlatform().supportsScoreboard()) return;
         if (player.getScoreboard().getObjective(key) != null && manager != null) {
             player.setScoreboard(manager.getMainScoreboard());
             activeSidebars.remove(player.getUniqueId());

@@ -7,13 +7,12 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Projectile;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class AnimationUtils {
     public static void trailProjectile(Projectile projectile, ParticleWrapper particle, int duration){
-        new BukkitRunnable(){
+        new ValhallaRunnable(){
             int count = 0;
             @Override
             public void run() {

@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.particle.implementations.GenericParticle;
 import me.athlaeos.valhallammo.item.item_attributes.ArrowBehavior;
 import me.athlaeos.valhallammo.utility.AnimationUtils;
+import me.athlaeos.valhallammo.utility.ValhallaRunnable;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
@@ -12,7 +13,6 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class VoidImmunityArrow extends ArrowBehavior {
 
@@ -38,7 +38,7 @@ public class VoidImmunityArrow extends ArrowBehavior {
     @Override
     public void onDamage(EntityDamageByEntityEvent e, double... args) {
         if (e.getEntity() instanceof LivingEntity l){
-            new BukkitRunnable(){
+            new ValhallaRunnable(){
                 @Override
                 public void run() {
                     l.setNoDamageTicks(0);

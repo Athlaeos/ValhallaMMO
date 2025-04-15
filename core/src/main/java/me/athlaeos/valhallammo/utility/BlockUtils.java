@@ -22,7 +22,6 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -180,16 +179,16 @@ public class BlockUtils {
         for (Double distance : sortedByDistance.keySet()){
             int time = (int) MathUtils.sqrt(distance);
             if (time > highest) highest = time;
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> processBlocks(responsible, sortedByDistance.get(distance), validation, process, null), time * PULSE_DELAY);
+            Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> processBlocks(responsible, sortedByDistance.get(distance), validation, process, null), time * PULSE_DELAY);
         }
         if (onFinish != null) {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> onFinish.act(responsible), (highest * PULSE_DELAY) + 1);
+            Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> onFinish.act(responsible), (highest * PULSE_DELAY) + 1);
         }
     }
 
     public static void processBlocksDelayed(Player responsible, Collection<Block> blocks, Predicate<Player> validation, Action<Block> process, Action<Player> onFinish){
         Iterator<Block> iterator = blocks.iterator();
-        new BukkitRunnable(){
+        new ValhallaRunnable(){
             @Override
             public void run() {
                 if (iterator.hasNext()){

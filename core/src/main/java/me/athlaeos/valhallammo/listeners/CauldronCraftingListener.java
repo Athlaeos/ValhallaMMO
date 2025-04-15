@@ -16,8 +16,7 @@ import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
-import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -37,7 +36,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -74,14 +72,14 @@ public class CauldronCraftingListener implements Listener {
         if (e.isCancelled() || !(e.getBlock().getBlockData() instanceof Directional d)) return;
         if (!blockThrowItemLimiter.containsKey(b.getLocation())){
             Collection<Entity> entitiesBefore = b.getWorld().getNearbyEntities(b.getRelative(d.getFacing()).getLocation().add(0.5, 0.5, 0.5), 0.5, 0.5, 0.5, (i) -> i instanceof Item);
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            Scheduling.runLocationTask(ValhallaMMO.getInstance(), b.getLocation(), 1L, () -> {
                 Collection<Entity> newEntities = b.getWorld().getNearbyEntities(b.getRelative(d.getFacing()).getLocation().add(0.5, 0.5, 0.5), 0.5, 0.5, 0.5, (i) -> i instanceof Item && !entitiesBefore.contains(i));
                 Item i = (Item) newEntities.stream().findAny().orElse(null);
                 if (i == null) return;
                 CauldronInputTick runnable = new CauldronInputTick(b, i);
                 blockThrowItemLimiter.put(b.getLocation(), runnable);
                 runnable.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
-            }, 1L);
+            });
         } else {
             blockThrowItemLimiter.get(b.getLocation()).resetTicks();
         }
@@ -408,7 +406,7 @@ public class CauldronCraftingListener implements Listener {
         return customBlockData.has(CAULDRON_STORAGE, PersistentDataType.STRING) && !getCauldronContents(cauldron).isEmpty();
     }
 
-    private static class CauldronCookingTask extends BukkitRunnable{
+    private static class CauldronCookingTask extends ValhallaRunnable {
         private int duration;
         private final UUID cooker;
         private final Location cauldron;
@@ -467,7 +465,7 @@ public class CauldronCraftingListener implements Listener {
         }
     }
 
-    private static class CauldronInputTick extends BukkitRunnable{
+    private static class CauldronInputTick extends ValhallaRunnable{
         private int ticks = ValhallaMMO.getPluginConfig().getInt("cauldron_item_duration");
         private final UUID thrower;
         private final Location block;
