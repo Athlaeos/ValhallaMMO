@@ -92,7 +92,7 @@ public class Bleeder {
                         25, 0.4, 0.4, 0.4, Material.REDSTONE_BLOCK.createBlockData());
                 if (!bleedingEntities.containsKey(bleeder.getUniqueId())) {
                     bleedingEntities.put(bleeder.getUniqueId(), instance);
-                    instance.runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
+                    instance.runEntity(ValhallaMMO.getInstance(), bleeder, 1L, 1L);
                 }
             }
         });

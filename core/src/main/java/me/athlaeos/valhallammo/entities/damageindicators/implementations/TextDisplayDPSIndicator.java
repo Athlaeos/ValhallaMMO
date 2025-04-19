@@ -72,7 +72,7 @@ public class TextDisplayDPSIndicator implements DamageIndicatorStrategy {
                 damageIndicatorMap.get(damaged.getUniqueId()).get(type).priority = index;
                 index++;
             }
-            instance.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
+            instance.runEntity(ValhallaMMO.getInstance(), damaged, 0L, 1L);
         }
         return Dummy.isDummy(damaged);
     }
@@ -144,7 +144,7 @@ public class TextDisplayDPSIndicator implements DamageIndicatorStrategy {
                 DPSInstance newInstance = new DPSInstance(damaged, type, damage, mitigated, crit);
                 instances.put(type, newInstance);
                 damageIndicatorMap.put(damaged.getUniqueId(), instances);
-                newInstance.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
+                newInstance.runEntity(ValhallaMMO.getInstance(), damaged, 0L, 1L);
 
                 int index = 0;
                 for (CustomDamageType type : damageIndicatorMap.get(damaged.getUniqueId()).keySet()){

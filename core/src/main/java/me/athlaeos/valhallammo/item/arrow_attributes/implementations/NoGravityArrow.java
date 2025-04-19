@@ -23,7 +23,7 @@ public class NoGravityArrow extends ArrowBehavior {
             public void run() {
                 e.getProjectile().remove();
             }
-        }.runTaskLater(ValhallaMMO.getInstance(), 200);
+        }.runEntity(ValhallaMMO.getInstance(),  e.getProjectile(), 200);
     }
 
     @Override

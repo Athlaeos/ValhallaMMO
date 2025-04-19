@@ -43,7 +43,7 @@ public class VoidImmunityArrow extends ArrowBehavior {
                 public void run() {
                     l.setNoDamageTicks(0);
                 }
-            }.runTaskLater(ValhallaMMO.getInstance(), 1L);
+            }.runEntity(ValhallaMMO.getInstance(), l, 1L);
         }
     }
 

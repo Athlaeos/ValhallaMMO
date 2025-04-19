@@ -20,9 +20,13 @@ public interface ValhallaScheduler<T> {
 
     public TaskHolder<T> runEntityTask(Plugin plugin, Entity entity, long delay, Runnable toRun);
 
+    public TaskHolder<T> runEntityTask(Plugin plugin, Entity entity, long delay, long period, Runnable toRun);
+
     public void runEntityTask(Plugin plugin, Entity entity, Runnable toRun);
 
     public TaskHolder<T> runLocationTask(Plugin plugin, Location location, long delay, Runnable toRun);
+
+    public TaskHolder<T> runLocationTask(Plugin plugin, Location location, long delay, long period, Runnable toRun);
 
     public void runLocationTask(Plugin plugin, Location location, Runnable toRun);
 

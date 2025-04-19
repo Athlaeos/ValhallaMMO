@@ -44,7 +44,7 @@ public class DrillingActive extends Animation {
     @Override
     public void animate(LivingEntity entity, Location location, Vector direction, int tick) {
         AccumulativeStatManager.updateStats(entity);
-        if (entity instanceof Player p && particle != null) new DrillingAnimation(p).runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
+        if (entity instanceof Player p && particle != null) new DrillingAnimation(p).runEntity(ValhallaMMO.getInstance(), p, 1L, 1L);
     }
 
     private static class DrillingAnimation extends ValhallaRunnable {

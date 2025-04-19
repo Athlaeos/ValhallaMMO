@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.skills.perk_rewards.implementations.FlightReward;
 import me.athlaeos.valhallammo.utility.GlobalEffect;
+import me.athlaeos.valhallammo.utility.Scheduling;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -49,7 +50,7 @@ public class JoinLeaveListener implements Listener {
             }
         }
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Scheduling.runTaskLater(ValhallaMMO.getInstance(), () -> {
             EntityAttributeStats.updateStats(e.getPlayer());
             FlightReward.setFlight(e.getPlayer(), true);
         }, 40L);

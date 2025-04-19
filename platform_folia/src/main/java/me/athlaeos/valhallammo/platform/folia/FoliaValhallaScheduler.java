@@ -58,6 +58,11 @@ public class FoliaValhallaScheduler implements ValhallaScheduler<ScheduledTask> 
     }
 
     @Override
+    public TaskHolder<ScheduledTask> runEntityTask(Plugin plugin, Entity entity, long delay, long period, Runnable toRun) {
+        return holder(entity.getScheduler().runAtFixedRate(plugin, scheduledTask -> toRun.run(), null, delay, period));
+    }
+
+    @Override
     public void runEntityTask(Plugin plugin, Entity entity, Runnable toRun) {
         entity.getScheduler().run(plugin, scheduledTask -> toRun.run(), null);
     }
@@ -65,6 +70,11 @@ public class FoliaValhallaScheduler implements ValhallaScheduler<ScheduledTask> 
     @Override
     public TaskHolder<ScheduledTask> runLocationTask(Plugin plugin, Location location, long delay, Runnable toRun) {
         return holder(region.runDelayed(plugin, location, scheduledTask -> toRun.run(), delay));
+    }
+
+    @Override
+    public TaskHolder<ScheduledTask> runLocationTask(Plugin plugin, Location location, long delay, long period, Runnable toRun) {
+        return holder(region.runAtFixedRate(plugin, location, scheduledTask -> toRun.run(), delay, period));
     }
 
     @Override

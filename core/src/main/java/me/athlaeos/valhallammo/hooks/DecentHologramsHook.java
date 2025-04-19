@@ -59,7 +59,7 @@ public class DecentHologramsHook extends PluginHook implements Listener {
                 damageIndicatorMap.get(damaged.getUniqueId()).get(type).priority = index;
                 index++;
             }
-            instance.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
+            instance.runEntity(ValhallaMMO.getInstance(), damaged,0L, 1L);
         }
         return Dummy.isDummy(damaged);
     }

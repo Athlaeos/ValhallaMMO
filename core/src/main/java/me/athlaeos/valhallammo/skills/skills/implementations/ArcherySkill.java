@@ -269,7 +269,7 @@ public class ArcherySkill extends Skill implements Listener {
                     public void run() {
                         e.getProjectile().remove();
                     }
-                }.runTaskLater(ValhallaMMO.getInstance(), 200);
+                }.runEntity(ValhallaMMO.getInstance(), e.getProjectile(), 200);
             }
 
             if (chargedShotFireAnimation != null) chargedShotFireAnimation.animate(p, p.getEyeLocation(), p.getEyeLocation().getDirection(), 0);

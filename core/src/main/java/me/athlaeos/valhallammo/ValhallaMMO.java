@@ -1,5 +1,7 @@
 package me.athlaeos.valhallammo;
 
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.PlatformScheduler;
 import me.athlaeos.valhallammo.block.BlockInteractConversions;
 import me.athlaeos.valhallammo.commands.*;
 import me.athlaeos.valhallammo.configuration.ConfigManager;

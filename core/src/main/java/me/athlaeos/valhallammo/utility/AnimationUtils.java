@@ -22,7 +22,7 @@ public class AnimationUtils {
 
                 count++;
             }
-        }.runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
+        }.runEntity(ValhallaMMO.getInstance(), projectile, 1L, 1L);
     }
 
     public static void outlineBlock(Block b, int lineDensity, float particleSize, int red, int green, int blue){

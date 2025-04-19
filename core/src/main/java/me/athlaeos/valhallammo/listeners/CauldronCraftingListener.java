@@ -59,7 +59,7 @@ public class CauldronCraftingListener implements Listener {
         if (!entityThrowItemLimiter.containsKey(thrower.getUniqueId())){
             CauldronInputTick runnable = new CauldronInputTick(thrower, e.getItemDrop());
             entityThrowItemLimiter.put(thrower.getUniqueId(), runnable);
-            runnable.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
+            runnable.runEntity(ValhallaMMO.getInstance(), thrower, 0L, 1L);
         } else {
             entityThrowItemLimiter.get(thrower.getUniqueId()).resetTicks();
         }
@@ -78,7 +78,7 @@ public class CauldronCraftingListener implements Listener {
                 if (i == null) return;
                 CauldronInputTick runnable = new CauldronInputTick(b, i);
                 blockThrowItemLimiter.put(b.getLocation(), runnable);
-                runnable.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
+                runnable.runLocation(ValhallaMMO.getInstance(), b.getLocation(), 0L, 1L);
             });
         } else {
             blockThrowItemLimiter.get(b.getLocation()).resetTicks();
@@ -170,7 +170,7 @@ public class CauldronCraftingListener implements Listener {
         if (recipe.isTimedRecipe()){
             CauldronCookingTask task = new CauldronCookingTask(responsible, cauldron, recipe, count);
             activeCauldrons.put(cauldron.getLocation(), task);
-            task.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
+            task.runLocation(ValhallaMMO.getInstance(), cauldron.getLocation(), 0L, 1L);
         } else if (!ItemUtils.isEmpty(catalyst)){
             ItemBuilder result = new ItemBuilder(recipe.tinkerCatalyst() ? catalyst : recipe.getResult());
             if (recipe.requiresValhallaTools() && !SmithingItemPropertyManager.hasSmithingQuality(ItemUtils.getItemMeta(catalyst))) return null;

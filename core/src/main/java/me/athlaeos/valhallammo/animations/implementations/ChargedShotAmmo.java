@@ -35,7 +35,7 @@ public class ChargedShotAmmo extends Animation {
 
     @Override
     public void animate(LivingEntity entity, Location location, Vector direction, int tick) {
-        if (entity instanceof Player p) new AmmoAnimation(p, ArcherySkill.getChargedShotCharges(p.getUniqueId())).runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
+        if (entity instanceof Player p) new AmmoAnimation(p, ArcherySkill.getChargedShotCharges(p.getUniqueId())).runEntity(ValhallaMMO.getInstance(), p, 1L, 1L);
     }
 
     private static final double cP = MathUtils.cos(MathUtils.toRadians(0));

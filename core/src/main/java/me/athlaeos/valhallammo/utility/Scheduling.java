@@ -75,6 +75,10 @@ public class Scheduling {
         return getScheduler().runEntityTask(plugin, entity, delay, toRun);
     }
 
+    public static TaskHolder<?> runEntityTask(Plugin plugin, Entity entity, long delay, long period, Runnable toRun) {
+        return getScheduler().runEntityTask(plugin, entity, delay, period, toRun);
+    }
+
     public static void runEntityTask(Plugin plugin, Entity entity, Runnable toRun) {
         getScheduler().runEntityTask(plugin, entity, toRun);
     }
@@ -85,6 +89,10 @@ public class Scheduling {
 
     public static void runLocationTask(Plugin plugin, Location location, Runnable toRun) {
         getScheduler().runLocationTask(plugin, location, toRun);
+    }
+
+    public static TaskHolder<?> runLocationTask(Plugin plugin, Location location, long delay, long period, Runnable toRun) {
+        return getScheduler().runLocationTask(plugin, location, delay, period, toRun);
     }
 
     public static TaskHolder<?> runEntityTaskAsync(Plugin plugin, Entity entity, long delay, Runnable toRun) {

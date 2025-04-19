@@ -203,7 +203,7 @@ public class BlockUtils {
                     cancel();
                 }
             }
-        }.runTaskTimer(ValhallaMMO.getInstance(), 0L, 1L);
+        }.runEntity(ValhallaMMO.getInstance(), responsible, 0L, 1L);
     }
 
     private static final Collection<Material> ageableExceptions = ItemUtils.getMaterialSet(Arrays.asList(

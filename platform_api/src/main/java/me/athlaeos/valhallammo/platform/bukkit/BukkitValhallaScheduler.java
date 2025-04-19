@@ -88,6 +88,11 @@ public class BukkitValhallaScheduler implements ValhallaScheduler<BukkitTask> {
     }
 
     @Override
+    public TaskHolder<BukkitTask> runEntityTask(Plugin plugin, Entity entity, long delay, long period, Runnable toRun) {
+        return this.runTaskTimer(plugin, delay, period, toRun);
+    }
+
+    @Override
     public void runEntityTask(Plugin plugin, Entity entity, Runnable toRun) {
         this.runTask(plugin, toRun);
     }
@@ -100,6 +105,11 @@ public class BukkitValhallaScheduler implements ValhallaScheduler<BukkitTask> {
     @Override
     public void runLocationTask(Plugin plugin, Location location, Runnable toRun) {
         this.runTask(plugin, toRun);
+    }
+
+    @Override
+    public TaskHolder<BukkitTask> runLocationTask(Plugin plugin, Location location, long delay, long period, Runnable toRun) {
+        return this.runTaskTimer(plugin, delay, period, toRun);
     }
 
     @Override

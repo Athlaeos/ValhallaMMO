@@ -3,6 +3,8 @@ package me.athlaeos.valhallammo.utility;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.platform.scheduler.TaskHolder;
 import me.athlaeos.valhallammo.platform.scheduler.ValhallaScheduler;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
 public abstract class ValhallaRunnable implements Runnable {
@@ -44,6 +46,24 @@ public abstract class ValhallaRunnable implements Runnable {
     public void runTaskTimer(Plugin plugin, long delay, long repeat) {
         this.cancel();
         this.task = Scheduling.runTaskTimer(plugin, delay, repeat, this);
+    }
+
+    /**
+     * Repeat a task every [repeat] ticks after [delay] ticks
+     */
+    public void runLocation(Plugin plugin, Location location, long delay, long repeat) {
+        this.cancel();
+        this.task = Scheduling.runLocationTask(plugin, location, delay, repeat, this);
+    }
+
+    public void runEntity(Plugin plugin, Entity entity, long delay) {
+        this.cancel();
+        this.task = Scheduling.runEntityTask(plugin, entity, delay, this);
+    }
+
+    public void runEntity(Plugin plugin, Entity entity, long delay, long repeat) {
+        this.cancel();
+        this.task = Scheduling.runEntityTask(plugin, entity, delay, repeat, this);
     }
 
     /**

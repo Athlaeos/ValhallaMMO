@@ -9,7 +9,7 @@ dependencies {
     compileOnly("org.spigotmc", "spigot-api", "1.20.1-R0.1-SNAPSHOT")
     compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
 
-    //playforms
+    //platforms
     implementation(project(":platform_api"))
     implementation(project(":platform_folia"))
 
@@ -29,6 +29,12 @@ dependencies {
     compileOnly("commons-io:commons-io:2.17.0")
     compileOnly("org.bstats:bstats-bukkit:3.0.3")
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.5")
+}
+
+tasks {
+    shadowJar {
+        relocate("com.jeff_media.customblockdata", "me.athlaeos.valhallammo.lib.customblockdata")
+    }
 }
 
 publishing {

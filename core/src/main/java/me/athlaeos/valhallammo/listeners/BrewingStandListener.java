@@ -149,7 +149,7 @@ public class BrewingStandListener implements Listener {
                 double speedMultiplier = 1 + (p == null ? 0 : AccumulativeStatManager.getCachedStats("BREWING_SPEED_BONUS", p, 10000, true));
                 int duration = (int) (speedMultiplier <= 0 ? -1 : baseDuration / speedMultiplier); // negative speed = no brewing
                 ActiveBrewingStand newStand = new ActiveBrewingStand(p, inventory, recipes, duration, automated);
-                newStand.runTaskTimer(ValhallaMMO.getInstance(), 0, 1);
+                newStand.runEntity(ValhallaMMO.getInstance(), p, 0, 1);
                 activeStands.put(brewingStand.getLocation(), newStand);
             }
         });

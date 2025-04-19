@@ -9,6 +9,8 @@ plugins {
 
 java.disableAutoTargetJvm()
 
+group = "me.athlaeos.valhallammo"
+
 //repos
 allprojects {
     repositories {
