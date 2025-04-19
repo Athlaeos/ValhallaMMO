@@ -41,7 +41,7 @@ public class SimpleMerchant extends VirtualMerchant {
                 toRemove.add(recipe);
                 continue;
             }
-            if (trade.failsPredicates(trade.getPredicateSelection(), context) || (trade.isExclusive() && !profile.getExclusiveTrades().contains(trade.getId()))) toRemove.add(recipe);
+            if (trade.failsPredicates(trade.getPredicateSelection(), context) || (trade.isExclusive() && !profile.getExclusiveTrades().contains(trade.getID()))) toRemove.add(recipe);
         }
         getRecipes().removeIf(toRemove::contains);
     }

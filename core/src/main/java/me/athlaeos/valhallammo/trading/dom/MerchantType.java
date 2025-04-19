@@ -35,7 +35,7 @@ public class MerchantType implements Weighted {
     public void setVersion(int version) { this.version = version; }
     public void setCanLoseProfession(boolean canLoseProfession) { this.canLoseProfession = canLoseProfession; }
     public String getName() { return name; }
-    public boolean isResetTradesOnRestock() { return resetTradesOnRestock; }
+    public boolean resetsTradesOnRestock() { return resetTradesOnRestock; }
     public boolean isPerPlayerStock() { return perPlayerStock; }
     public double getWeight() { return weight; }
 
@@ -56,7 +56,7 @@ public class MerchantType implements Weighted {
     }
 
     public void addTrade(MerchantLevel level, MerchantTrade trade){
-        trades.get(level).getTrades().add(trade.getId());
+        trades.get(level).getTrades().add(trade.getID());
     }
 
     public double getRolls(MerchantLevel level){
@@ -65,8 +65,8 @@ public class MerchantType implements Weighted {
     public double getRollQuality(MerchantLevel level){
         return Math.max(0, trades.get(level).getRollQuality());
     }
-    public double getExpRequirement(MerchantLevel level){
-        double accumulated = 0;
+    public int getExpRequirement(MerchantLevel level){
+        int accumulated = 0;
         for (MerchantLevel l : MerchantLevel.values()) {
             if (l.getLevel() > level.getLevel()) break;
             accumulated += Math.max(0, trades.get(l).getExpRequirement());

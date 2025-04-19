@@ -49,6 +49,7 @@ public class CustomMerchantManager {
     private static MerchantDataPersistence merchantDataPersistence;
 
     private static final Map<Villager.Profession, MerchantConfiguration> merchantConfigurations = new HashMap<>();
+    private static final MerchantConfiguration travelingMerchantConfiguration = new MerchantConfiguration(null);
     private static final Map<String, MerchantType> registeredMerchantTypes = new HashMap<>();
     private static final Map<String, MerchantTrade> registeredMerchantTrades = new HashMap<>();
 
@@ -97,7 +98,7 @@ public class CustomMerchantManager {
                 ItemBuilder result = new ItemBuilder(t.getResult());
                 DynamicItemModifier.modify(result, null, t.getModifiers(), false, true, true);
                 setTradeKey(result.getMeta(), t);
-                trades.add(new MerchantData.TradeData(t.getId(), level.getLevel(), result.get(), t.getMaxUses()));
+                trades.add(new MerchantData.TradeData(t.getID(), level.getLevel(), result.get(), t.getMaxUses()));
             });
         }
         MerchantData data = new MerchantData(type, trades.toArray(new MerchantData.TradeData[0]));
@@ -142,9 +143,9 @@ public class CustomMerchantManager {
             }
             trades.add(trade);
         }
-        double expVanillaToCustomModifier = level.getDefaultExpRequirement() / type.getExpRequirement(level);
+        double expVanillaToCustomModifier = (double) level.getDefaultExpRequirement() / type.getExpRequirement(level);
         for (MerchantTrade trade : trades){
-            MerchantData.TradeData tradeData = data.getTrades().get(trade.getId());
+            MerchantData.TradeData tradeData = data.getTrades().get(trade.getID());
             if (tradeData.getLevel() > level.getLevel()) continue;
             double maxUses = trade.getMaxUses();
             double remainingUses = tradeData.getSalesLeft();
@@ -158,7 +159,7 @@ public class CustomMerchantManager {
             int uses = (int) Math.floor(maxUses - remainingUses);
             int specialPrice = Math.round(trade.getScalingCostItem().getAmount() * (1 + (tradeData.getDemand() * trade.getDemandPriceMultiplier())));
             int villagerExperience = (int) Math.round(trade.getVillagerExperience() * (1) * expVanillaToCustomModifier); // TODO player villager experience multiplier
-            MerchantRecipe recipe = new MerchantRecipe(tradeData.getItem(), uses, (int) Math.floor(maxUses), trade.rewardsExperience(), villagerExperience, 1, 0, specialPrice);
+            MerchantRecipe recipe = new MerchantRecipe(tradeData.getItem(), uses, (int) Math.floor(maxUses), false, villagerExperience, 1, 0, specialPrice);
             List<ItemStack> ingredients = new ArrayList<>();
             ingredients.add(trade.getScalingCostItem());
             if (!ItemUtils.isEmpty(trade.getOptionalCostItem())) ingredients.add(trade.getOptionalCostItem());
@@ -169,7 +170,7 @@ public class CustomMerchantManager {
     }
 
     public static void registerTrade(MerchantTrade trade){
-        registeredMerchantTrades.put(trade.getId(), trade);
+        registeredMerchantTrades.put(trade.getID(), trade);
     }
 
     public static void registerMerchantType(MerchantType type){
@@ -201,7 +202,7 @@ public class CustomMerchantManager {
     }
 
     public static void setTradeKey(ItemMeta meta, MerchantTrade trade){
-        meta.getPersistentDataContainer().set(KEY_TRADE_ID, PersistentDataType.STRING, trade.getId());
+        meta.getPersistentDataContainer().set(KEY_TRADE_ID, PersistentDataType.STRING, trade.getID());
     }
 
     public static MerchantTrade tradeFromKeyedMeta(ItemMeta meta){
@@ -263,6 +264,24 @@ public class CustomMerchantManager {
     public static MerchantConfiguration getMerchantConfiguration(Villager.Profession ofProfession){
         if (merchantConfigurations.get(ofProfession) == null) merchantConfigurations.put(ofProfession, new MerchantConfiguration(ofProfession));
         return merchantConfigurations.get(ofProfession);
+    }
+
+    public static MerchantConfiguration getTravelingMerchantConfiguration(){
+        return travelingMerchantConfiguration;
+    }
+
+    public static void removeTrade(MerchantTrade trade){
+        registeredMerchantTrades.remove(trade.getID());
+        for (MerchantType type : registeredMerchantTypes.values()){
+            for (MerchantLevel level : MerchantLevel.values()) {
+                MerchantType.MerchantLevelTrades trades = type.getTrades(level);
+                if (trades != null) trades.getTrades().remove(trade.getID());
+            }
+        }
+    }
+
+    public static void removeType(MerchantType type){
+        registeredMerchantTypes.remove(type.getType());
     }
 
     public static MerchantType getMerchantType(String id){
