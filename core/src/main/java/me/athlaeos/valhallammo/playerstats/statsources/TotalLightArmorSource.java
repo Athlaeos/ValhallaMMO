@@ -25,17 +25,10 @@ public class TotalLightArmorSource implements AccumulativeStatSource, EvEAccumul
     @Override
     public double fetch(Entity victim, Entity a, boolean use) {
         if (victim instanceof LivingEntity v){
-            double lightArmor = Math.max(0, AccumulativeStatManager.getCachedRelationalStats("LIGHT_ARMOR", v, a, 10000, true));
+            double baseLightArmor = fetch(victim, use);
             double lightArmorFlatPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("LIGHT_ARMOR_FLAT_IGNORED", v, a, 10000, true);
-
-            double lightArmorMultiplier = 1 + Math.max(0, AccumulativeStatManager.getCachedRelationalStats("LIGHT_ARMOR_MULTIPLIER", v, a, 10000, true));
             double lightArmorFractionPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("LIGHT_ARMOR_FRACTION_IGNORED", v, a, 10000, true);
-            double armorMultiplierBonus = 1 + Math.max(0, AccumulativeStatManager.getCachedRelationalStats("ARMOR_MULTIPLIER_BONUS", v, a, 10000, true));
-            double armorFractionPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("ARMOR_FRACTION_IGNORED", v, a, 10000, true);
-
-            double totalLightArmor = (lightArmor * lightArmorMultiplier) * (1 - lightArmorFractionPenetration) - lightArmorFlatPenetration;
-
-            return (totalLightArmor * armorMultiplierBonus) * (1 - armorFractionPenetration);
+            return (baseLightArmor * (1 - lightArmorFractionPenetration)) - lightArmorFlatPenetration;
         }
         return 0;
     }

@@ -123,7 +123,7 @@ public class LightArmorSkill extends Skill implements Listener {
             double lastDamageTaken = e.getDamage();
             double exp = expPerDamage * lastDamageTaken * entityExpMultiplier * (1 + (totalLightArmor * expBonusPerPoint)) * chunkNerf;
             double pvpMult = trueDamager instanceof Player ? pvpMultiplier : 1;
-            addEXP(p,  pvpMult * count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+            if (lastDamageTaken <= 1000000) addEXP(p,  pvpMult * count * exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
             if (!hasPermissionAccess(p)) return;
             if (profile.isAdrenalineUnlocked() && profile.getAdrenalineLevel() > 0 && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_light_armor_adrenaline") &&

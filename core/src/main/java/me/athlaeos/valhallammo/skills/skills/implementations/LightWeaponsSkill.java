@@ -164,6 +164,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 if (e.isCancelled() || !p.isOnline()) return;
+                if (e.getDamage() > 1000000) return;
                 double chunkNerf = !isChunkNerfed || EntitySpawnListener.isTrialSpawned(l) ? 1 : ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);
                 double pvpMult = e.getEntity() instanceof Player ? pvpMultiplier : 1;

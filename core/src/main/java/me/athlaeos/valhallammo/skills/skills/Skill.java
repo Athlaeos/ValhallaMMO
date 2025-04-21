@@ -467,7 +467,7 @@ public abstract class Skill {
         // creative mode players should not gain skill-acquired exp
         if (!(this instanceof PowerSkill) && p.getGameMode() == GameMode.CREATIVE && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
         // only experience-scaling skills should scale with exp multipliers. By default, this only excludes PowerSkill
-        if (isExperienceScaling() && (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION||
+        if (isExperienceScaling() && (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION ||
                 reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE)) amount *= (1 + AccumulativeStatManager.getStats("GLOBAL_EXP_GAIN", p, true));
 
         PlayerSkillExperienceGainEvent event = new PlayerSkillExperienceGainEvent(p, amount, this, reason);
@@ -496,7 +496,8 @@ public abstract class Skill {
 
             ProfileRegistry.setPersistentProfile(p, profile, profile.getClass());
             // level conditions don't need to be checked if the player's current exp isn't enough to level up, or low enough to level down
-            if (profile.getEXP() >= expForLevel(profile.getLevel() + 1) || profile.getEXP() < 0) {
+            double nextLevelEXP = expForLevel(profile.getLevel() + 1);
+            if ((nextLevelEXP > 0 && profile.getEXP() >= nextLevelEXP) || profile.getEXP() < 0) {
                 updateLevelUpConditions(p, silent);
                 AccumulativeStatManager.updateStats(p);
             }
@@ -754,7 +755,9 @@ public abstract class Skill {
                 }
             });
         }
-        if (Bukkit.isPrimaryThread()) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new PlayerSkillLevelUpEvent(p, this, from, to));
+        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
+                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new PlayerSkillLevelUpEvent(p, this, from, to))
+        );
     }
 
     public void updateSkillStats(Player p, boolean runPersistentStartingPerks) {

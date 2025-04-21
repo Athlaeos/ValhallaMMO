@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.skills.skills.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
+import me.athlaeos.valhallammo.event.PlayerBlockDropItemsEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.listeners.LootListener;
@@ -147,6 +148,16 @@ public class DiggingSkill extends Skill implements Listener {
             amount *= (1 + AccumulativeStatManager.getStats("DIGGING_EXP_GAIN", p, true));
         }
         super.addEXP(p, amount, silent, reason);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onOtherBlockDrops(PlayerBlockDropItemsEvent e){
+        double exp = 0;
+        for (ItemStack i : e.getItems()){
+            if (ItemUtils.isEmpty(i)) continue;
+            exp += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+        }
+        addEXP(e.getPlayer(), exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
     public Map<Material, Double> getDropsExpValues() {
