@@ -89,7 +89,7 @@ public class NexoChoice extends RecipeOption {
         if (nexoId != null) {
             return "Nexo Item: " + nexoId;
         }
-        // Name fallback
+        // Item name fallback
         return ItemUtils.getItemName(ItemUtils.getItemMeta(base));
     }
 
