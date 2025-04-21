@@ -46,8 +46,6 @@ public class NexoChoice extends RecipeOption {
 
     @Override
     public RecipeChoice getChoice(ItemStack i) {
-        // Create a custom RecipeChoice.ExactChoice implementation
-        // This will handle vanilla recipe system better
         return new RecipeChoice.ExactChoice(i) {
             @Override
             public boolean test(@NotNull ItemStack itemStack) {
@@ -69,7 +67,7 @@ public class NexoChoice extends RecipeOption {
         String nexoId1 = NexoItems.idFromItem(i1);
         String nexoId2 = NexoItems.idFromItem(i2);
 
-        // If both items don't have Nexo IDs, they don't match our requirement
+        // If both items don't have Nexo IDs, they don't match the requirement
         if (nexoId1 == null && nexoId2 == null) return false;
 
         // If only one has a Nexo ID, they don't match
@@ -91,7 +89,7 @@ public class NexoChoice extends RecipeOption {
         if (nexoId != null) {
             return "Nexo Item: " + nexoId;
         }
-        // Last resort fallback
+        // Name fallback
         return ItemUtils.getItemName(ItemUtils.getItemMeta(base));
     }
 

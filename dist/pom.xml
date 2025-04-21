@@ -99,10 +99,6 @@
                             <artifact>me.athlaeos:valhallammo-core</artifact>
                             <includes>**</includes>
                         </filter>
-                        <filter>
-                            <artifact>me.athlaeos:valhallammo-v1_21_R3</artifact>
-                            <includes>**</includes>
-                        </filter>
                     </filters>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
