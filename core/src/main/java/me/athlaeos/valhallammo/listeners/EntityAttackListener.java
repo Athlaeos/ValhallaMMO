@@ -212,6 +212,10 @@ public class EntityAttackListener implements Listener {
                         v.setVelocity(v.getVelocity().add(lookingDirection));
                     }
                 }, 1L);
+            } else if (knockbackResistance > 0){
+                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                    EntityUtils.removeUniqueAttribute(v, "valhalla_negative_knockback_taken", Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+                }, 1L);
             }
 
             // custom dismount mechanics

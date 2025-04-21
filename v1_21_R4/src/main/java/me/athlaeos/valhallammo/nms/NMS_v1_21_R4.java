@@ -256,11 +256,13 @@ public final class NMS_v1_21_R4 implements NMS {
             FoodComponent food = meta.getFood();
             food.setCanAlwaysEat(canAlwaysEat);
             meta.setFood(food);
-            ConsumableComponent consumable = meta.getConsumable();
-            consumable.setConsumeSeconds(eatTimeSeconds);
-            consumable.setAnimation(ConsumableComponent.Animation.EAT);
-            consumable.setSound(Sound.ENTITY_GENERIC_EAT);
-            meta.setConsumable(consumable);
+            if (!ValhallaMMO.isUsingPaperMC()){
+                ConsumableComponent consumable = meta.getConsumable();
+                consumable.setConsumeSeconds(eatTimeSeconds);
+                consumable.setAnimation(ConsumableComponent.Animation.EAT);
+                consumable.setSound(Sound.ENTITY_GENERIC_EAT);
+                meta.setConsumable(consumable);
+            }
         } else meta.setFood(null);
     }
 

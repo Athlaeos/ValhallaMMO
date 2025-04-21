@@ -4,7 +4,10 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -31,7 +34,11 @@ public class PlayerSignatureAdd extends DynamicItemModifier {
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         List<String> lore = outputItem.getMeta().getLore() != null ? outputItem.getMeta().getLore() : new ArrayList<>();
         String format = TranslationManager.getTranslation("format_signature");
-        if (end || lore.isEmpty()) lore.add(Utils.chat(format.replace("%player%", crafter.getName())));
+        if (end || lore.isEmpty()) lore.add(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(Utils.chat(format
+                .replace("%player%", crafter.getName())
+                .replace("%quality_smithing%", String.valueOf(SmithingItemPropertyManager.getQuality(outputItem.getMeta())))
+                .replace("%quality_alchemy%", String.valueOf(AlchemyItemPropertyManager.getQuality(outputItem.getMeta())))
+        ), crafter), crafter));
         else lore.set(0, Utils.chat(format.replace("%player%", crafter.getName())));
         outputItem.lore(lore);
         outputItem.stringTag(SIGNATURE, crafter.getUniqueId().toString());
