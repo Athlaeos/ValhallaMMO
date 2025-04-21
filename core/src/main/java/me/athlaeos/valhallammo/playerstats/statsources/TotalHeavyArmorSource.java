@@ -25,17 +25,10 @@ public class TotalHeavyArmorSource implements AccumulativeStatSource, EvEAccumul
     @Override
     public double fetch(Entity victim, Entity a, boolean use) {
         if (victim instanceof LivingEntity v){
-            double heavyArmor = Math.max(0, AccumulativeStatManager.getCachedRelationalStats("HEAVY_ARMOR", v, a, 10000, true));
+            double baseHeavyArmor = fetch(victim, use);
             double heavyArmorFlatPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("HEAVY_ARMOR_FLAT_IGNORED", v, a, 10000, true);
-
-            double heavyArmorMultiplier = 1 + Math.max(0, AccumulativeStatManager.getCachedRelationalStats("HEAVY_ARMOR_MULTIPLIER", v, a, 10000, true));
             double heavyArmorFractionPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("HEAVY_ARMOR_FRACTION_IGNORED", v, a, 10000, true);
-            double armorMultiplierBonus = 1 + Math.max(0, AccumulativeStatManager.getCachedRelationalStats("ARMOR_MULTIPLIER_BONUS", v, a, 10000, true));
-            double armorFractionPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("ARMOR_FRACTION_IGNORED", v, a, 10000, true);
-
-            double totalHeavyArmor = (heavyArmor * heavyArmorMultiplier) * (1 - heavyArmorFractionPenetration) - heavyArmorFlatPenetration;
-
-            return (totalHeavyArmor * armorMultiplierBonus) * (1 - armorFractionPenetration);
+            return (baseHeavyArmor * (1 - heavyArmorFractionPenetration)) - heavyArmorFlatPenetration;
         }
         return 0;
     }

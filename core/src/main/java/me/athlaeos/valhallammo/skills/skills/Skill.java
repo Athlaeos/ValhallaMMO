@@ -496,7 +496,8 @@ public abstract class Skill {
 
             ProfileRegistry.setPersistentProfile(p, profile, profile.getClass());
             // level conditions don't need to be checked if the player's current exp isn't enough to level up, or low enough to level down
-            if (profile.getEXP() >= expForLevel(profile.getLevel() + 1) || profile.getEXP() < 0) {
+            double nextLevelEXP = expForLevel(profile.getLevel() + 1);
+            if ((nextLevelEXP > 0 && profile.getEXP() >= nextLevelEXP) || profile.getEXP() < 0) {
                 updateLevelUpConditions(p, silent);
                 AccumulativeStatManager.updateStats(p);
             }
