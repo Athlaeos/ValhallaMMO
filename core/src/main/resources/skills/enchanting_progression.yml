@@ -7,6 +7,8 @@ experience:
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   max_level: 100
   is_chunk_nerfed: true
+  daily_limit: -1
+  daily_limit_warning: '<lang.skill-enchanting-daily-limit-reached>'
   exp_gain:
     experience_spent_conversion: 0.5 # The fraction of spent experience during enchanting that's converted into additional enchanting skill experience
     enchantment_base:

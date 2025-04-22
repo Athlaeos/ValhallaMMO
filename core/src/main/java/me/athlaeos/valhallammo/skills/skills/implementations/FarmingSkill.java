@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.entities.EntityClassification;
+import me.athlaeos.valhallammo.event.PlayerBlocksDropItemsEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
@@ -331,6 +332,18 @@ public class FarmingSkill extends Skill implements Listener {
             expQuantity += blockDropExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
         }
         addEXP(e.getPlayer(), expQuantity, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onOtherBlockDrops(PlayerBlocksDropItemsEvent e){
+        double exp = 0;
+        for (Block b : e.getBlocksAndItems().keySet()){
+            for (ItemStack i : e.getBlocksAndItems().getOrDefault(b, new ArrayList<>())){
+                if (ItemUtils.isEmpty(i)) continue;
+                exp += blockDropExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+            }
+        }
+        addEXP(e.getPlayer(), exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

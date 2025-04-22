@@ -4,6 +4,8 @@ experience:
   max_level: 100
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   is_chunk_nerfed: true
+  daily_limit: -1
+  daily_limit_warning: '<lang.skill-fishing-daily-limit-reached>'
   fishing_catch:
     COD: 200
     SALMON: 250

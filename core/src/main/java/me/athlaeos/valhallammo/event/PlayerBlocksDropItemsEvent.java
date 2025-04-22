@@ -7,27 +7,23 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class PlayerBlockDropItemsEvent extends PlayerEvent {
+public class PlayerBlocksDropItemsEvent extends PlayerEvent {
     private static final HandlerList handlers = new HandlerList();
-    private final Block block;
-    private final List<ItemStack> items;
+    private final Map<Block, List<ItemStack>> blocksAndItems;
 
-    public PlayerBlockDropItemsEvent(Player player, Block block, List<ItemStack> items) {
+    public PlayerBlocksDropItemsEvent(Player player, Map<Block, List<ItemStack>> blocksAndItems) {
         super(player);
-        this.block = block;
-        this.items = items;
+        this.blocksAndItems = blocksAndItems;
     }
 
     @Override public @NotNull HandlerList getHandlers() { return handlers; }
     public static HandlerList getHandlerList() { return handlers; }
 
-    public Block getBlock() {
-        return block;
-    }
-
-    public List<ItemStack> getItems() {
-        return items;
+    public Map<Block, List<ItemStack>> getBlocksAndItems() {
+        return blocksAndItems;
     }
 }

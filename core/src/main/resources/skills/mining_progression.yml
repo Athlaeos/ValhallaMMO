@@ -6,7 +6,9 @@ experience:
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
   exp_multiplier_mine: 1 
   exp_multiplier_blast: 1.5 
-  exp_per_break: false 
+  exp_per_break: false
+  daily_limit: -1
+  daily_limit_warning: '<lang.skill-mining-daily-limit-reached>'
   mining_break: # Blocks mined or exploded will grant the player the amount of experience noted based on the amount of items it dropped,
     # if the block was placed beforehand it will not reward any EXP or skill benefits.
     # Only the items in this list will benefit from drop multiplication

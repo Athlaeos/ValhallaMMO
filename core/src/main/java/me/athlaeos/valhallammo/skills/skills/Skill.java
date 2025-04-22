@@ -67,6 +67,8 @@ public abstract class Skill {
     protected BarStyle expBarStyle;
     protected String expBarTitle;
     protected boolean isNavigable;
+    protected double experienceLimit = -1;
+    protected String experienceLimitMessage = null;
 
     public abstract void loadConfiguration();
 
@@ -193,6 +195,8 @@ public abstract class Skill {
         this.levelingMessages = TranslationManager.translateListPlaceholders(progressionConfig.getStringList("messages"));
         this.levelingCommands = progressionConfig.getStringList("commands");
         this.levelingUndoCommands = progressionConfig.getStringList("undo_commands");
+        this.experienceLimit = progressionConfig.getDouble("experience.daily_limit", -1);
+        this.experienceLimitMessage = progressionConfig.getString("experience.daily_limit_warning", null);
 
         int[] coords = parseCoordinates(progressionConfig.getString("starting_coordinates", "0,0"));
         this.centerX = coords[0];
@@ -463,7 +467,7 @@ public abstract class Skill {
      */
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         // non-levelable skills should not gain exp
-        if (!isLevelableSkill() || (requiredPermission != null && !p.hasPermission(requiredPermission))) return;
+        if (!isLevelableSkill() || (requiredPermission != null && !p.hasPermission(requiredPermission)) || hasReachedLimit(p)) return;
         // creative mode players should not gain skill-acquired exp
         if (!(this instanceof PowerSkill) && p.getGameMode() == GameMode.CREATIVE && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
         // only experience-scaling skills should scale with exp multipliers. By default, this only excludes PowerSkill
@@ -481,6 +485,7 @@ public abstract class Skill {
                             reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE)) return; // player has already reached max allowed level, do not proceed
             profile.setEXP(profile.getEXP() + event.getAmount());
             profile.setTotalEXP(profile.getTotalEXP() + event.getAmount());
+            incrementExperienceLimit(p, event.getAmount());
 
             if (!silent) {
                 double statusAmount = accumulateEXP(p, event.getAmount(), event.getLeveledSkill());
@@ -502,6 +507,30 @@ public abstract class Skill {
                 AccumulativeStatManager.updateStats(p);
             }
         }
+    }
+
+    private final Map<UUID, Double> experienceLimitMap = new HashMap<>();
+    private final Map<UUID, Long> experienceLimitTimeMap = new HashMap<>();
+    private final Collection<UUID> sentExperienceLimitMessage = new HashSet<>();
+    public boolean hasReachedLimit(Player p){
+        if (experienceLimit < 0 || this instanceof PowerSkill) return false;
+        return experienceLimitMap.getOrDefault(p.getUniqueId(), 0D) >= experienceLimit;
+    }
+
+    public void incrementExperienceLimit(Player p, double exp){
+        if (experienceLimit < 0 || this instanceof PowerSkill) return;
+        // If the player time was not yet recorded, or it's been a day, reset the time and counter
+        if (!experienceLimitTimeMap.containsKey(p.getUniqueId()) ||
+                experienceLimitTimeMap.get(p.getUniqueId()) + (24 * 60 * 60 * 1000) < System.currentTimeMillis()) {
+            experienceLimitTimeMap.put(p.getUniqueId(), System.currentTimeMillis());
+            experienceLimitMap.remove(p.getUniqueId());
+            sentExperienceLimitMessage.remove(p.getUniqueId());
+        }
+        double existingValue = experienceLimitMap.getOrDefault(p.getUniqueId(), 0D);
+        existingValue += exp;
+        experienceLimitMap.put(p.getUniqueId(), existingValue);
+        if (hasReachedLimit(p) && !sentExperienceLimitMessage.contains(p.getUniqueId()))
+            Utils.sendMessage(p, TranslationManager.translatePlaceholders(experienceLimitMessage));
     }
 
     public void addLevels(Player player, int levels, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {

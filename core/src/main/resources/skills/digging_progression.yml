@@ -3,6 +3,8 @@ starting_perks: []
 experience:
   max_level: 100
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
+  daily_limit: -1
+  daily_limit_warning: '<lang.skill-digging-daily-limit-reached>'
   digging_break:
     SNOW: 0.2
     FARMLAND: 8

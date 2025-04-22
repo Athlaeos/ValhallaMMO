@@ -13,6 +13,8 @@ experience:
   exp_multiplier_point: 0.05 # Exp multiplier bonus for each point of armor the player has. With 0.05 and 40 armor points the player gains +200% exp
   pvp_multiplier: 0.1
   is_chunk_nerfed: true
+  daily_limit: -1
+  daily_limit_warning: '<lang.skill-heavy-armor-daily-limit-reached>'
 
 special_perks: []
 
