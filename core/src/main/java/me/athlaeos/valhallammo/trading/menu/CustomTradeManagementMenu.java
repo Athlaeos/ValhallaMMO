@@ -50,6 +50,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
     private View view = View.PROFESSIONS;
     private int subTypePage = 0;
     private Villager.Profession currentProfession = null;
+    private boolean travelingMerchant = false;
     private MerchantType currentSubType = null;
     private MerchantTrade currentTrade = null;
     private boolean confirmDeletion = false;
@@ -66,7 +67,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
 
     @Override
     public String getMenuName() {
-        return "&8Manage Trades"; // TODO custom menu
+        return Utils.chat("&8Manage Trades"); // TODO custom menu
     }
 
     @Override
@@ -82,8 +83,10 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
         ItemBuilder cursor = ItemUtils.isEmpty(e.getCursor()) ? null : new ItemBuilder(e.getCursor());
         String buttonFunction = clickedItem == null ? null : clickedItem.getMeta().getPersistentDataContainer().get(KEY_BUTTON, PersistentDataType.STRING);
         if (view == View.PROFESSIONS){
-            Villager.Profession clickedProfession = clickedItem == null ? null : Catch.catchOrElse(() -> Villager.Profession.valueOf(clickedItem.getMeta().getPersistentDataContainer().get(KEY_PROFESSION, PersistentDataType.STRING)), null);
-            if (clickedProfession == null) return;
+            String clickedData = clickedItem == null ? null : clickedItem.getMeta().getPersistentDataContainer().get(KEY_PROFESSION, PersistentDataType.STRING);
+            Villager.Profession clickedProfession = Catch.catchOrElse(() -> Villager.Profession.valueOf(clickedData), null);
+            travelingMerchant = clickedData != null && clickedData.equals("TRAVELING");
+            if (clickedProfession == null && !travelingMerchant) return;
             currentProfession = clickedProfession;
             switchView(View.SUBTYPES);
         } else if (view == View.SUBTYPES){
@@ -114,7 +117,8 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                 };
                 Questionnaire.startQuestionnaire((Player) e.getWhoClicked(), questionnaire);
             } else if (buttonFunction != null && buttonFunction.equals("backToMenuButton")) {
-                currentSubType = null;
+                currentProfession = null;
+                travelingMerchant = false;
                 switchView(View.PROFESSIONS);
             } else {
                 String clickedSubtype = clickedItem == null ? null : clickedItem.getMeta().getPersistentDataContainer().get(KEY_SUBTYPE, PersistentDataType.STRING);
@@ -327,27 +331,27 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
         inventory.clear();
         switch (view){
             case PROFESSIONS -> {
-                inventory.setItem(4, professionButton(null));
-                inventory.setItem(11, professionButton(Villager.Profession.CARTOGRAPHER));
-                inventory.setItem(12, professionButton(Villager.Profession.LIBRARIAN));
-                inventory.setItem(13, professionButton(Villager.Profession.CLERIC));
-                inventory.setItem(15, professionButton(Villager.Profession.MASON));
-                inventory.setItem(19, professionButton(Villager.Profession.NONE));
-                inventory.setItem(20, professionButton(Villager.Profession.NITWIT));
-                inventory.setItem(22, professionButton(Villager.Profession.FLETCHER));
-                inventory.setItem(23, professionButton(Villager.Profession.ARMORER));
-                inventory.setItem(24, professionButton(Villager.Profession.TOOLSMITH));
-                inventory.setItem(25, professionButton(Villager.Profession.WEAPONSMITH));
-                inventory.setItem(29, professionButton(Villager.Profession.LEATHERWORKER));
-                inventory.setItem(30, professionButton(Villager.Profession.SHEPHERD));
-                inventory.setItem(31, professionButton(Villager.Profession.FARMER));
-                inventory.setItem(32, professionButton(Villager.Profession.FISHERMAN));
-                inventory.setItem(33, professionButton(Villager.Profession.BUTCHER));
+                inventory.setItem(13, professionButton(null));
+                inventory.setItem(20, professionButton(Villager.Profession.CARTOGRAPHER));
+                inventory.setItem(21, professionButton(Villager.Profession.LIBRARIAN));
+                inventory.setItem(22, professionButton(Villager.Profession.CLERIC));
+                inventory.setItem(24, professionButton(Villager.Profession.MASON));
+                inventory.setItem(28, professionButton(Villager.Profession.NONE));
+                inventory.setItem(29, professionButton(Villager.Profession.NITWIT));
+                inventory.setItem(31, professionButton(Villager.Profession.FLETCHER));
+                inventory.setItem(32, professionButton(Villager.Profession.ARMORER));
+                inventory.setItem(33, professionButton(Villager.Profession.TOOLSMITH));
+                inventory.setItem(34, professionButton(Villager.Profession.WEAPONSMITH));
+                inventory.setItem(38, professionButton(Villager.Profession.LEATHERWORKER));
+                inventory.setItem(39, professionButton(Villager.Profession.SHEPHERD));
+                inventory.setItem(40, professionButton(Villager.Profession.FARMER));
+                inventory.setItem(41, professionButton(Villager.Profession.FISHERMAN));
+                inventory.setItem(42, professionButton(Villager.Profession.BUTCHER));
 
             }
             case SUBTYPES -> {
-                if (currentProfession != null){
-                    List<MerchantType> types = new ArrayList<>(CustomMerchantManager.getMerchantConfiguration(currentProfession).getMerchantTypes().stream().map(CustomMerchantManager::getMerchantType).filter(Objects::nonNull).toList());
+                if (currentProfession != null || travelingMerchant){
+                    List<MerchantType> types = new ArrayList<>((travelingMerchant ? CustomMerchantManager.getTravelingMerchantConfiguration() : CustomMerchantManager.getMerchantConfiguration(currentProfession)).getMerchantTypes().stream().map(CustomMerchantManager::getMerchantType).filter(Objects::nonNull).toList());
                     types.sort(Comparator.comparing(MerchantType::getType));
                     List<ItemStack> buttons = new ArrayList<>();
 
@@ -358,11 +362,11 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                                 .lore(
                                         String.format("&7Chance of occurrence: &e%.1f%% &7(&e%.1f&7)", Math.max(0, Math.min(100, (type.getWeight() / totalWeight) * 100)), type.getWeight()),
                                         "&7Trades:",
-                                        "    Novice:     &e" + type.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
-                                        "    Apprentice: &b" + type.getTrades().get(MerchantLevel.APPRENTICE).getTrades().size(),
-                                        "    Journeyman: &a" + type.getTrades().get(MerchantLevel.JOURNEYMAN).getTrades().size(),
-                                        "    Expert:     &c" + type.getTrades().get(MerchantLevel.EXPERT).getTrades().size(),
-                                        "    Master:     &d" + type.getTrades().get(MerchantLevel.MASTER).getTrades().size(),
+                                        "    &7Novice:         &e" + type.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
+                                        "    &7Apprentice:   &b" + type.getTrades().get(MerchantLevel.APPRENTICE).getTrades().size(),
+                                        "    &7Journeyman: &a" + type.getTrades().get(MerchantLevel.JOURNEYMAN).getTrades().size(),
+                                        "    &7Expert:        &c" + type.getTrades().get(MerchantLevel.EXPERT).getTrades().size(),
+                                        "    &7Master:        &d" + type.getTrades().get(MerchantLevel.MASTER).getTrades().size(),
                                         "",
                                         "&6Click to edit",
                                         "&cShift-Right-Click to delete")
@@ -392,26 +396,26 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
             }
             case SUBTYPE -> {
                 if (currentSubType != null){
-                    List<MerchantType> types = new ArrayList<>(CustomMerchantManager.getMerchantConfiguration(currentProfession).getMerchantTypes().stream().map(CustomMerchantManager::getMerchantType).filter(Objects::nonNull).toList());
+                    List<MerchantType> types = new ArrayList<>((travelingMerchant ? CustomMerchantManager.getTravelingMerchantConfiguration() : CustomMerchantManager.getMerchantConfiguration(currentProfession)).getMerchantTypes().stream().map(CustomMerchantManager::getMerchantType).filter(Objects::nonNull).toList());
                     double totalWeight = types.stream().map(MerchantType::getWeight).mapToDouble(d -> d).sum();
                     inventory.setItem(0, new ItemBuilder(Buttons.subtypeNameButton).name(currentSubType.getName() == null ? "&7No name" : currentSubType.getName()).get());
                     inventory.setItem(8, new ItemBuilder(Buttons.subtypeVersionButton).name("&fVersion: " + currentSubType.getVersion()).get());
                     inventory.setItem(11, new ItemBuilder(Buttons.subtypeRealisticButton).name("&fRestocking Resets: " + (currentSubType.resetsTradesOnRestock() ? "Yes" : "No")).get());
                     inventory.setItem(13, new ItemBuilder(Buttons.subtypeProfessionLossButton).name("&fPermanent Profession: " + (currentSubType.canLoseProfession() ? "No" : "Yes")).get());
                     inventory.setItem(15, new ItemBuilder(Buttons.subtypePerPlayerStockButton).name("&fPer Player Stock: " + (currentSubType.isPerPlayerStock() ? "Yes" : "No")).get());
-                    inventory.setItem(21, new ItemBuilder(Buttons.subtypeWeightButton)
+                    inventory.setItem(30, new ItemBuilder(Buttons.subtypeWeightButton)
                             .name("&fWeight: " + currentSubType.getWeight())
                             .prependLore(
                                     String.format("&7Chance of occurrence: &e%.1f%% &7(&e%.1f&7)", Math.max(0, Math.min(100, (currentSubType.getWeight() / totalWeight) * 100)), currentSubType.getWeight())
                             ).get());
-                    inventory.setItem(23, new ItemBuilder(Buttons.subtypeTradesButton)
+                    inventory.setItem(32, new ItemBuilder(Buttons.subtypeTradesButton)
                             .prependLore(
                                     "&7Trades:",
-                                    "    Novice:     &e" + currentSubType.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
-                                    "    Apprentice: &b" + currentSubType.getTrades().get(MerchantLevel.APPRENTICE).getTrades().size(),
-                                    "    Journeyman: &a" + currentSubType.getTrades().get(MerchantLevel.JOURNEYMAN).getTrades().size(),
-                                    "    Expert:     &c" + currentSubType.getTrades().get(MerchantLevel.EXPERT).getTrades().size(),
-                                    "    Master:     &d" + currentSubType.getTrades().get(MerchantLevel.MASTER).getTrades().size()
+                                    "    &7Novice:         &e" + currentSubType.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
+                                    "    &7Apprentice:   &b" + currentSubType.getTrades().get(MerchantLevel.APPRENTICE).getTrades().size(),
+                                    "    &7Journeyman: &a" + currentSubType.getTrades().get(MerchantLevel.JOURNEYMAN).getTrades().size(),
+                                    "    &7Expert:        &c" + currentSubType.getTrades().get(MerchantLevel.EXPERT).getTrades().size(),
+                                    "    &7Master:        &d" + currentSubType.getTrades().get(MerchantLevel.MASTER).getTrades().size()
                             ).get());
                 }
                 inventory.setItem(49, Buttons.backToMenuButton);

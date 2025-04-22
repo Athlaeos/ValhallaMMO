@@ -169,6 +169,7 @@
     "description_command_potionattribute": "Applies a custom potion effect to the held item",
     "description_command_reward": "Executes a Perk Reward onto a player with the given argument",
     "description_command_loot": "Accesses ValhallaMMO's custom loot table manager",
+    "description_command_merchants": "Accesses ValhallaMMO's custom merchants manager",
     "description_command_globalbuff": "Add or cancel global effects like increased EXP gain for everyone",
     "description_command_reload": "Reloads all the configs into memory, &cthis saves changes made to recipes and loot tables which may cause a lag spike",
     "description_command_givebook": "Gives you or other players the \"getting started\" book for ValhallaMMO",

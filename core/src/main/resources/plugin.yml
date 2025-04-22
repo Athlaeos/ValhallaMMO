@@ -132,6 +132,9 @@ permissions:
   valhalla.recipes:
     default: op
     description: "Access to the /valhalla recipes command, which gives the user full control over all custom recipes on the server."
+  valhalla.merchants:
+    default: op
+    description: "Access to the /valhalla merchants command, which gives the user full control over custom merchants and their trades"
   valhalla.loottables:
     default: op
     description: "Access to the /valhalla loot command, which gives the user full control over all loot tables within the plugin."
