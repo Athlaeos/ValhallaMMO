@@ -6,7 +6,7 @@ import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
-import me.athlaeos.valhallammo.event.PlayerBlockDropItemsEvent;
+import me.athlaeos.valhallammo.event.PlayerBlocksDropItemsEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
@@ -39,7 +39,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -274,6 +273,7 @@ public class MiningSkill extends Skill implements Listener {
 //        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new EntityExplodeEvent(e.getEntity(), e.getLocation(), blockList, e.getYield()));
         recursionPrevention.remove(e.getEntity().getUniqueId());
 
+        Map<Block, List<ItemStack>> blocksAndItems = new HashMap<>();
         for (Block b : blockList){
             if (b.getState() instanceof Container) continue;
             LootListener.addPreparedLuck(b, blastingLuck);
@@ -288,14 +288,19 @@ public class MiningSkill extends Skill implements Listener {
             if (profile.isBlastingInstantPickup()) LootListener.setInstantPickup(b, responsible);
             b.setType(Material.AIR);
 
-            PlayerBlockDropItemsEvent event = new PlayerBlockDropItemsEvent(responsible, b, predictedDrops);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
-            LootListener.prepareBlockDrops(b, event.getItems());
-            for (ItemStack i : event.getItems()){
+            blocksAndItems.put(b, predictedDrops);
+        }
+        PlayerBlocksDropItemsEvent event = new PlayerBlocksDropItemsEvent(responsible, blocksAndItems);
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        for (Block b : event.getBlocksAndItems().keySet()){
+            List<ItemStack> drops = event.getBlocksAndItems().getOrDefault(b, new ArrayList<>());
+            LootListener.prepareBlockDrops(b, drops);
+            for (ItemStack i : drops){
                 if (ItemUtils.isEmpty(i)) continue;
                 exp += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
             }
         }
+
         addEXP(responsible, exp * blastingExpMultiplier, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 

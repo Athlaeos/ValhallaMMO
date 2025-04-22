@@ -2,12 +2,9 @@ starting_perks: []
 
 experience: # Everything about leveling and experience progression for Landscaping
   max_level: 100 # Max level for landscaping, players can still gain exp after reaching 200
-  exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300' # Here the x-axis represents level and the y-axis is the exp required to
-  # progress to that level.
-  # The area under this graph from point a to point b represents the total amount of experience needed to get from level
-  # a to b. You don't have to work with this, it's only for those who really want to make this progression their own.
-  # By default, it takes about 4300 exp to get from 0 to 40, 27,000 to get from 40 to 80, 164,000 from 80 to 60,
-  # 1,000,000 from 60 to 80, and 6,300,000 from 80 to 200- or 7,500,000 from 0 to 200.
+  exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
+  daily_limit: -1
+  daily_limit_warning: '<lang.skill-woodcutting-daily-limit-reached>'
   woodcutting_strip:
     STRIPPED_OAK_LOG: 20
     STRIPPED_SPRUCE_LOG: 20

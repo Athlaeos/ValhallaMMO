@@ -12,6 +12,8 @@ experience:
   max_health_limitation: false
   pvp_multiplier: 0.1
   is_chunk_nerfed: true
+  daily_limit: -1
+  daily_limit_warning: '<lang.skill-heavy-weapons-daily-limit-reached>'
 
 special_perks: []
 

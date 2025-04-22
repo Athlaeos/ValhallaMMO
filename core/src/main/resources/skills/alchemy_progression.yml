@@ -6,6 +6,8 @@ experience:
   exp_multiplier_quality: 0.00334 # Added experience multiplier for each point of quality of the potion
   multiplier_automated: 0.25
   multiplier_manual: 2
+  daily_limit: -1
+  daily_limit_warning: '<lang.skill-alchemy-daily-limit-reached>'
 
 special_perks: []
 
