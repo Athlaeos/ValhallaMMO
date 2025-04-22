@@ -67,7 +67,13 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
 
     @Override
     public String getMenuName() {
-        return Utils.chat("&8Manage Trades"); // TODO custom menu
+        return Utils.chat(switch(view) {
+            case TRADE -> "&8Manage Trade " + currentTrade.getID();
+            case TRADES -> "&8" + currentSubType.getType() + "'s Trades";
+            case SUBTYPE -> "&8" + currentSubType.getType();
+            case SUBTYPES -> "&8Subtypes of " + (travelingMerchant ? "Traveling Merchant" : StringUtils.toPascalCase(currentProfession.toString().replace("_", " ")));
+            case PROFESSIONS -> "&8Profession Overview";
+        }); // TODO custom menu
     }
 
     @Override
