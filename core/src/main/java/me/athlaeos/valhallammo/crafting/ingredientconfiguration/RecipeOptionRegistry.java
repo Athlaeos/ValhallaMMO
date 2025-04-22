@@ -23,7 +23,6 @@ public class RecipeOptionRegistry {
         registerOption(new ToolChoice());
         registerOption(new WeaponChoice());
         registerOption(new MeleeWeaponChoice());
-        registerOption(new NexoChoice());
     }
 
     public static void registerOption(RecipeOption c) {
