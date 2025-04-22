@@ -1121,6 +1121,7 @@
     "stat_icon_generic_gravity": "",
     "stat_icon_generic_safe_fall_distance": "",
     "stat_icon_generic_fall_damage_multiplier": "",
+    "stat_icon_player_block_interaction_range": "",
     "stat_icon_bludgeoning_resistance": "",
     "stat_icon_lightning_resistance": "",
     "stat_icon_freezing_resistance": "",
