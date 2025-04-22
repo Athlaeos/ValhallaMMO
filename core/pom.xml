@@ -20,10 +20,6 @@
             <url>https://maven.lauriichan.me/release</url>
         </repository>
         <repository>
-            <id>alessiodp-repo</id>
-            <url>https://repo.alessiodp.com/releases</url>
-        </repository>
-        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
