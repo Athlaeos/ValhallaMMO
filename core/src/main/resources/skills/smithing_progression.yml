@@ -21,6 +21,8 @@ experience:
   durability_chunk_limit: 50 # Similar to the combat skills, damaging an item too much in the same chunk will reduce exp gotten from it.
   # In this case, it prevents you from getting more stacks if the counter exceeds this limit.
   # This basically just means you may not get more than 50 stacks per chunk per item type
+  daily_limit: -1
+  daily_limit_warning: '<lang.skill-smithing-daily-limit-reached>'
 
 starting_coordinates: '3,5'
 

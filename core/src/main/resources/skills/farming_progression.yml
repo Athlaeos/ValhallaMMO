@@ -3,6 +3,8 @@ starting_perks: []
 experience:
   max_level: 100
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
+  daily_limit: -1
+  daily_limit_warning: '<lang.skill-farming-daily-limit-reached>'
   block_interact:
     BEEHIVE: 400
     BEE_NEST: 400
