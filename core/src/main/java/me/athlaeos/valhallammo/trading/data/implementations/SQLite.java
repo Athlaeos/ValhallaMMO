@@ -17,10 +17,10 @@ public class SQLite extends MerchantDataPersistence implements Database {
     private Connection conn;
     @Override
     public Connection getConnection() {
-        File dataFolder = new File(ValhallaMMO.getInstance().getDataFolder(), "merchant_data.db");
+        File dataFolder = new File(ValhallaMMO.getInstance().getDataFolder(), "trading/merchant_data.db");
         if (!dataFolder.exists()){
             try {
-                if (dataFolder.createNewFile()) ValhallaMMO.logInfo("New merchant_data.db file created!");
+                if (dataFolder.createNewFile()) ValhallaMMO.logInfo("New trading/merchant_data.db file created!");
             } catch (IOException e) {
                 ValhallaMMO.logSevere("Could not create SQLite database file merchant_data.db");
             }
@@ -35,7 +35,7 @@ public class SQLite extends MerchantDataPersistence implements Database {
         } catch (SQLException ex) {
             ValhallaMMO.logSevere("SQLite exception on initialize " + ex);
         } catch (ClassNotFoundException ex) {
-            ValhallaMMO.logInfo("You do not have the SQLite JDBC library on your server, defaulted to Persistent Data Container storage");
+            ValhallaMMO.logSevere("You do not have the SQLite JDBC library on your server, custom trading mechanics are unfortunately disabled");
         }
         return null;
     }

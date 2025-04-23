@@ -187,6 +187,7 @@ public class ValhallaMMO extends JavaPlugin {
         ResourcePack.tryStart();
 
         ProfileRegistry.setupDatabase();
+        CustomMerchantManager.setupDatabase();
         ProfileRegistry.registerDefaultProfiles();
         PotionBelt.loadFromFile();
         ItemAttributesRegistry.registerAttributes();
@@ -274,9 +275,9 @@ public class ValhallaMMO extends JavaPlugin {
         LeaderboardManager.loadFile();
         CustomRecipeRegistry.loadFiles();
         LootTableRegistry.loadFiles();
+        CustomMerchantManager.loadAll();
         ArmorSetRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/armor_sets.json"));
         CustomItemRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/items.json"));
-//       TODO CustomMerchantManager.loadTradesFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/merchant_configurations.json"));
         LeaderboardManager.refreshLeaderboards();
 
         // During reloads profiles are persisted. This makes sure profiles of players who are already online are ensured
@@ -307,17 +308,17 @@ public class ValhallaMMO extends JavaPlugin {
             try {
                 database.getConnection().close();
             } catch (SQLException ignored){
-                logSevere("Could not close connection");
+                logSevere("Could not close connection for player data persistence");
             }
         }
-//        CustomMerchantManager.getMerchantDataPersistence().saveAllData();
-//        if (CustomMerchantManager.getMerchantDataPersistence() instanceof Database database) {
-//            try {
-//                database.getConnection().close();
-//            } catch (SQLException ignored){
-//                logSevere("Could not close connection");
-//            }
-//        }
+        CustomMerchantManager.getMerchantDataPersistence().saveAllData();
+        if (CustomMerchantManager.getMerchantDataPersistence() instanceof Database database) {
+            try {
+                database.getConnection().close();
+            } catch (SQLException ignored){
+                logSevere("Could not close connection for merchant data persistence");
+            }
+        }
         for (Player p : getServer().getOnlinePlayers()) {
             EntityAttributeStats.removeStats(p);
             CustomBreakSpeedListener.removeFatiguedPlayer(p);
@@ -327,7 +328,7 @@ public class ValhallaMMO extends JavaPlugin {
         LootTableRegistry.saveAll();
         ArmorSetRegistry.saveArmorSets();
         CustomItemRegistry.saveItems();
-//      TODO  CustomMerchantManager.saveMerchantConfigurations();
+        CustomMerchantManager.saveAll();
         GlobalEffect.saveActiveGlobalEffects();
         PartyManager.saveParties();
         JumpListener.onServerStop();

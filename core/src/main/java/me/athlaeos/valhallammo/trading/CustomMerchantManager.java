@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.dom.Weighted;
@@ -12,7 +13,6 @@ import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
-import me.athlaeos.valhallammo.trading.data.MerchantConfigurationData;
 import me.athlaeos.valhallammo.trading.data.MerchantDataPersistence;
 import me.athlaeos.valhallammo.trading.data.implementations.SQLite;
 import me.athlaeos.valhallammo.trading.dom.*;
@@ -52,6 +52,12 @@ public class CustomMerchantManager {
     private static final MerchantConfiguration travelingMerchantConfiguration = new MerchantConfiguration(null);
     private static final Map<String, MerchantType> registeredMerchantTypes = new HashMap<>();
     private static final Map<String, MerchantTrade> registeredMerchantTrades = new HashMap<>();
+
+    static {
+        for (Villager.Profession profession : Villager.Profession.values()){
+            merchantConfigurations.put(profession, new MerchantConfiguration(profession));
+        }
+    }
 
     /**
      * Takes a villager and turns them into a custom trader, of a type fitting their profession. <br>
@@ -210,33 +216,98 @@ public class CustomMerchantManager {
     }
 
     @SuppressWarnings("all")
-    public static void loadTradesFromFile(File f){
-        try {
-            f.createNewFile();
-        } catch (IOException ignored){}
+    public static void loadAll(){
+        File configurations = new File(ValhallaMMO.getInstance().getDataFolder(), "/trading/configurations.json");
+        File types = new File(ValhallaMMO.getInstance().getDataFolder(), "/trading/types.json");
+        File trades = new File(ValhallaMMO.getInstance().getDataFolder(), "/trading/trades.json");
+        loadConfigurationsFromFile(configurations);
+
+        ensureCreation(configurations);
+        ensureCreation(types);
+        ensureCreation(trades);
+
+        loadConfigurationsFromFile(configurations);
+        loadMerchantTypesFromFile(types);
+        loadTradesFromFile(trades);
+    }
+
+    @SuppressWarnings("all")
+    public static void loadConfigurationsFromFile(File f){
+        ensureCreation(f);
         try (BufferedReader setsReader = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
-            MerchantConfigurationData data = gson.fromJson(setsReader, MerchantConfigurationData.class);
+            MerchantConfiguration[] data = gson.fromJson(setsReader, MerchantConfiguration[].class);
             if (data == null) return;
-            for (MerchantConfiguration merchant : data.getMerchantConfigurations()) registerConfiguration(merchant);
-            for (MerchantTrade merchant : data.getRegisteredMerchantTrades()) registerTrade(merchant);
-            for (MerchantType merchant : data.getRegisteredMerchantTypes()) registerMerchantType(merchant);
+            for (MerchantConfiguration merchant : data) registerConfiguration(merchant);
         } catch (IOException | JsonSyntaxException exception){
-            ValhallaMMO.logSevere("Could not load merchant configurations from merchant_configurations.json, " + exception.getMessage());
+            ValhallaMMO.logSevere("Could not load merchant configurations from " + f.getName() + ", " + exception.getMessage());
         } catch (NoClassDefFoundError ignored){}
     }
 
     @SuppressWarnings("all")
-    public static void saveMerchantConfigurations(){
-        File f = new File(ValhallaMMO.getInstance().getDataFolder(), "/merchant_configurations.json");
+    public static void loadMerchantTypesFromFile(File f){
+        ensureCreation(f);
+        try (BufferedReader setsReader = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
+            MerchantType[] data = gson.fromJson(setsReader, MerchantType[].class);
+            if (data == null) return;
+            for (MerchantType type : data) registerMerchantType(type);
+        } catch (IOException | JsonSyntaxException exception){
+            ValhallaMMO.logSevere("Could not load merchant types from " + f.getName() + ", " + exception.getMessage());
+        } catch (NoClassDefFoundError ignored){}
+    }
+
+    @SuppressWarnings("all")
+    private static void ensureCreation(File f){
         try {
-            f.createNewFile();
-        } catch (IOException ignored){}
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(f, StandardCharsets.UTF_8))){
-            JsonElement element = gson.toJsonTree(new MerchantConfigurationData(registeredMerchantTrades.values(), registeredMerchantTypes.values(), merchantConfigurations.values()), MerchantConfigurationData.class);
+            if (!f.exists()) {
+                f.mkdirs();
+                f.createNewFile();
+            }
+        } catch (Exception ignored){}
+    }
+
+    public static void loadTradesFromFile(File f){
+        ensureCreation(f);
+        try (BufferedReader setsReader = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
+            MerchantTrade[] data = gson.fromJson(setsReader, MerchantTrade[].class);
+            if (data == null) return;
+            for (MerchantTrade trade : data) registerTrade(trade);
+        } catch (IOException | JsonSyntaxException exception){
+            ValhallaMMO.logSevere("Could not load merchant trades from " + f.getName() + ", " + exception.getMessage());
+        } catch (NoClassDefFoundError ignored){}
+    }
+
+    @SuppressWarnings("all")
+    public static void saveAll(){
+        File configurations = new File(ValhallaMMO.getInstance().getDataFolder(), "/trading/configurations.json");
+        File types = new File(ValhallaMMO.getInstance().getDataFolder(), "/trading/types.json");
+        File trades = new File(ValhallaMMO.getInstance().getDataFolder(), "/trading/trades.json");
+
+        ensureCreation(configurations);
+        ensureCreation(types);
+        ensureCreation(trades);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(configurations, StandardCharsets.UTF_8))){
+            JsonElement element = gson.toJsonTree(new ArrayList<>(merchantConfigurations.values()), new TypeToken<ArrayList<MerchantConfiguration>>(){}.getType());
             gson.toJson(element, writer);
             writer.flush();
         } catch (IOException | JsonSyntaxException exception){
-            ValhallaMMO.logSevere("Could not save items to merchant_configurations.json, " + exception.getMessage());
+            ValhallaMMO.logSevere("Could not save items to trading/configurations.json, " + exception.getMessage());
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(types, StandardCharsets.UTF_8))){
+            JsonElement element = gson.toJsonTree(new ArrayList<>(registeredMerchantTypes.values()), new TypeToken<ArrayList<MerchantType>>(){}.getType());
+            gson.toJson(element, writer);
+            writer.flush();
+        } catch (IOException | JsonSyntaxException exception){
+            ValhallaMMO.logSevere("Could not save items to trading/types.json, " + exception.getMessage());
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(trades, StandardCharsets.UTF_8))){
+            JsonElement element = gson.toJsonTree(new ArrayList<>(registeredMerchantTrades.values()), new TypeToken<ArrayList<MerchantTrade>>(){}.getType());
+            gson.toJson(element, writer);
+            writer.flush();
+        } catch (IOException | JsonSyntaxException exception){
+            ValhallaMMO.logSevere("Could not save items to trading/trades.json, " + exception.getMessage());
         }
     }
 
