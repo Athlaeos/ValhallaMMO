@@ -116,6 +116,8 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                                 MerchantType type = new MerchantType(answer);
                                 currentSubType = type;
                                 CustomMerchantManager.registerMerchantType(type);
+                                if (travelingMerchant) CustomMerchantManager.getTravelingMerchantConfiguration().getMerchantTypes().add(type.getType());
+                                else CustomMerchantManager.getMerchantConfiguration(currentProfession).getMerchantTypes().add(type.getType());
                                 switchView(View.SUBTYPE);
                             }
                         };
@@ -199,6 +201,11 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                 if (clickedFunction == null) return;
                 switch (clickedFunction) {
                     case "createNewButton" -> {
+                        MerchantLevel clickedLevel = noviceTradeIndexes.contains(e.getRawSlot()) ? MerchantLevel.NOVICE :
+                                apprenticeTradeIndexes.contains(e.getRawSlot()) ? MerchantLevel.APPRENTICE :
+                                        journeymanTradeIndexes.contains(e.getRawSlot()) ? MerchantLevel.JOURNEYMAN :
+                                                expertTradeIndexes.contains(e.getRawSlot()) ? MerchantLevel.EXPERT :
+                                                        MerchantLevel.MASTER;
                         playerMenuUtility.setPreviousMenu(this); // fallback in case player doesn't wanna
                         e.getWhoClicked().closeInventory();
                         Questionnaire questionnaire = new Questionnaire((Player) e.getWhoClicked(), null, null,
@@ -212,12 +219,13 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                                 return (p) -> {
                                     String answer = question.getAnswer().replaceAll(" ", "_").toLowerCase(java.util.Locale.US);
                                     if (answer.contains("cancel")) playerMenuUtility.getPreviousMenu().open();
-                                    else if (CustomMerchantManager.getMerchantType(answer) != null)
+                                    else if (CustomMerchantManager.getTrade(answer) != null)
                                         Utils.sendMessage(getWho(), "&cThe given trade already exists!");
                                     else {
                                         MerchantTrade trade = new MerchantTrade(answer);
                                         currentTrade = trade;
                                         CustomMerchantManager.registerTrade(trade);
+                                        currentSubType.getTrades(clickedLevel).getTrades().add(trade.getID());
                                         switchView(View.TRADE);
                                     }
                                 };
@@ -241,19 +249,18 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     }
                     case "tradesNoviceRollsButton" -> currentSubType.setRolls(MerchantLevel.NOVICE, currentSubType.getRolls(MerchantLevel.NOVICE) + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.01 : -0.01)));
                     case "tradesNoviceRollQualityButton" -> currentSubType.setRollQuality(MerchantLevel.NOVICE, currentSubType.getRollQuality(MerchantLevel.NOVICE) + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.01 : -0.01)));
-                    case "tradesNoviceExpRequirementButton" -> currentSubType.setExpRequirement(MerchantLevel.NOVICE, currentSubType.getExpRequirement(MerchantLevel.NOVICE) + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1)));
                     case "tradesApprenticeRollsButton" -> currentSubType.setRolls(MerchantLevel.APPRENTICE, currentSubType.getRolls(MerchantLevel.APPRENTICE) + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.01 : -0.01)));
                     case "tradesApprenticeRollQualityButton" -> currentSubType.setRollQuality(MerchantLevel.APPRENTICE, currentSubType.getRollQuality(MerchantLevel.APPRENTICE) + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.01 : -0.01)));
-                    case "tradesApprenticeExpRequirementButton" -> currentSubType.setExpRequirement(MerchantLevel.APPRENTICE, currentSubType.getExpRequirement(MerchantLevel.APPRENTICE) + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1)));
+                    case "tradesApprenticeExpRequirementButton" -> currentSubType.setExpRequirement(MerchantLevel.APPRENTICE, Math.max(0, currentSubType.getRawExpRequirement(MerchantLevel.APPRENTICE) + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1))));
                     case "tradesJourneymanRollsButton" -> currentSubType.setRolls(MerchantLevel.JOURNEYMAN, currentSubType.getRolls(MerchantLevel.JOURNEYMAN) + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.01 : -0.01)));
                     case "tradesJourneymanRollQualityButton" -> currentSubType.setRollQuality(MerchantLevel.JOURNEYMAN, currentSubType.getRollQuality(MerchantLevel.JOURNEYMAN) + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.01 : -0.01)));
-                    case "tradesJourneymanExpRequirementButton" -> currentSubType.setExpRequirement(MerchantLevel.JOURNEYMAN, currentSubType.getExpRequirement(MerchantLevel.JOURNEYMAN) + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1)));
+                    case "tradesJourneymanExpRequirementButton" -> currentSubType.setExpRequirement(MerchantLevel.JOURNEYMAN, Math.max(0, currentSubType.getRawExpRequirement(MerchantLevel.JOURNEYMAN) + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1))));
                     case "tradesExpertRollsButton" -> currentSubType.setRolls(MerchantLevel.EXPERT, currentSubType.getRolls(MerchantLevel.EXPERT) + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.01 : -0.01)));
                     case "tradesExpertRollQualityButton" -> currentSubType.setRollQuality(MerchantLevel.EXPERT, currentSubType.getRollQuality(MerchantLevel.EXPERT) + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.01 : -0.01)));
-                    case "tradesExpertExpRequirementButton" -> currentSubType.setExpRequirement(MerchantLevel.EXPERT, currentSubType.getExpRequirement(MerchantLevel.EXPERT) + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1)));
+                    case "tradesExpertExpRequirementButton" -> currentSubType.setExpRequirement(MerchantLevel.EXPERT, Math.max(0, currentSubType.getRawExpRequirement(MerchantLevel.EXPERT) + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1))));
                     case "tradesMasterRollsButton" -> currentSubType.setRolls(MerchantLevel.MASTER, currentSubType.getRolls(MerchantLevel.MASTER) + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.01 : -0.01)));
                     case "tradesMasterRollQualityButton" -> currentSubType.setRollQuality(MerchantLevel.MASTER, currentSubType.getRollQuality(MerchantLevel.MASTER) + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.01 : -0.01)));
-                    case "tradesMasterExpRequirementButton" -> currentSubType.setExpRequirement(MerchantLevel.MASTER, currentSubType.getExpRequirement(MerchantLevel.MASTER) + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1)));
+                    case "tradesMasterExpRequirementButton" -> currentSubType.setExpRequirement(MerchantLevel.MASTER, Math.max(0, currentSubType.getRawExpRequirement(MerchantLevel.MASTER) + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1))));
                     case "backToMenuButton" -> switchView(View.SUBTYPE);
                 }
             }
@@ -364,11 +371,11 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     double totalWeight = types.stream().map(MerchantType::getWeight).mapToDouble(d -> d).sum();
                     for (MerchantType type : types){
                         ItemStack icon = new ItemBuilder(Material.PAPER)
-                                .name("&e" + TranslationManager.translatePlaceholders(type.getName()) + " &7v" + type.getVersion())
+                                .name("&e" + (type.getName() == null ? type.getType() : TranslationManager.translatePlaceholders(type.getName())) + " &7v" + type.getVersion())
                                 .lore(
                                         String.format("&7Chance of occurrence: &e%.1f%% &7(&e%.1f&7)", Math.max(0, Math.min(100, (type.getWeight() / totalWeight) * 100)), type.getWeight()),
                                         "&7Trades:",
-                                        "    &7Novice:         &e" + type.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
+                                        "    &7Novice:        &e" + type.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
                                         "    &7Apprentice:   &b" + type.getTrades().get(MerchantLevel.APPRENTICE).getTrades().size(),
                                         "    &7Journeyman: &a" + type.getTrades().get(MerchantLevel.JOURNEYMAN).getTrades().size(),
                                         "    &7Expert:        &c" + type.getTrades().get(MerchantLevel.EXPERT).getTrades().size(),
@@ -417,7 +424,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     inventory.setItem(32, new ItemBuilder(Buttons.subtypeTradesButton)
                             .prependLore(
                                     "&7Trades:",
-                                    "    &7Novice:         &e" + currentSubType.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
+                                    "    &7Novice:        &e" + currentSubType.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
                                     "    &7Apprentice:   &b" + currentSubType.getTrades().get(MerchantLevel.APPRENTICE).getTrades().size(),
                                     "    &7Journeyman: &a" + currentSubType.getTrades().get(MerchantLevel.JOURNEYMAN).getTrades().size(),
                                     "    &7Expert:        &c" + currentSubType.getTrades().get(MerchantLevel.EXPERT).getTrades().size(),
@@ -463,33 +470,33 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     tradesExpertPage = Math.max(0, Math.min(expertPages.size() - 1, tradesExpertPage));
                     tradesMasterPage = Math.max(0, Math.min(masterPages.size() - 1, tradesMasterPage));
 
-                    inventory.setItem(0, new ItemBuilder(Buttons.tradesNoviceRollsButton).prependLore("&7Currently: &e" + currentSubType.getRolls(MerchantLevel.NOVICE), "").get());
-                    inventory.setItem(1, new ItemBuilder(Buttons.tradesNoviceRollQualityButton).prependLore("&7Currently: &e" + currentSubType.getRollQuality(MerchantLevel.NOVICE), "").get());
+                    inventory.setItem(0, new ItemBuilder(Buttons.tradesNoviceRollsButton).prependLore(String.format("&7Currently: &e%.2f", currentSubType.getRolls(MerchantLevel.NOVICE)), "").get());
+                    inventory.setItem(1, new ItemBuilder(Buttons.tradesNoviceRollQualityButton).prependLore(String.format("&7Currently: &e%.2f", currentSubType.getRollQuality(MerchantLevel.NOVICE)), "").get());
                     inventory.setItem(2, new ItemBuilder(Buttons.tradesNoviceExpRequirementButton).get());
                     inventory.setItem(3, Buttons.pageBackButton);
                     for (int i = 0; i < novicePages.get(tradesNovicePage).size(); i++) inventory.setItem(noviceTradeIndexes.get(i), novicePages.get(tradesNovicePage).get(i));
                     inventory.setItem(8, Buttons.pageForwardButton);
-                    inventory.setItem(9, new ItemBuilder(Buttons.tradesApprenticeRollsButton).prependLore("&7Currently: &e" + currentSubType.getRolls(MerchantLevel.APPRENTICE), "").get());
-                    inventory.setItem(10, new ItemBuilder(Buttons.tradesApprenticeRollQualityButton).prependLore("&7Currently: &e" + currentSubType.getRollQuality(MerchantLevel.APPRENTICE), "").get());
-                    inventory.setItem(11, new ItemBuilder(Buttons.tradesApprenticeExpRequirementButton).prependLore("&7Currently: &e" + currentSubType.getTrades(MerchantLevel.APPRENTICE).getExpRequirement() + " &8(total &6" + currentSubType.getExpRequirement(MerchantLevel.APPRENTICE) + "&8)").get());
+                    inventory.setItem(9, new ItemBuilder(Buttons.tradesApprenticeRollsButton).prependLore(String.format("&7Currently: &e%.2f", currentSubType.getRolls(MerchantLevel.APPRENTICE)), "").get());
+                    inventory.setItem(10, new ItemBuilder(Buttons.tradesApprenticeRollQualityButton).prependLore(String.format("&7Currently: &e%.2f", currentSubType.getRollQuality(MerchantLevel.APPRENTICE)), "").get());
+                    inventory.setItem(11, new ItemBuilder(Buttons.tradesApprenticeExpRequirementButton).prependLore(String.format("&7Currently: &e%d &8(total &6%d&8)", currentSubType.getTrades(MerchantLevel.APPRENTICE).getExpRequirement(), currentSubType.getExpRequirement(MerchantLevel.APPRENTICE))).get());
                     inventory.setItem(12, Buttons.pageBackButton);
                     for (int i = 0; i < apprenticePages.get(tradesApprenticePage).size(); i++) inventory.setItem(apprenticeTradeIndexes.get(i), apprenticePages.get(tradesApprenticePage).get(i));
                     inventory.setItem(17, Buttons.pageForwardButton);
-                    inventory.setItem(18, new ItemBuilder(Buttons.tradesJourneymanRollsButton).prependLore("&7Currently: &e" + currentSubType.getRolls(MerchantLevel.JOURNEYMAN), "").get());
-                    inventory.setItem(19, new ItemBuilder(Buttons.tradesJourneymanRollQualityButton).prependLore("&7Currently: &e" + currentSubType.getRollQuality(MerchantLevel.JOURNEYMAN), "").get());
-                    inventory.setItem(20, new ItemBuilder(Buttons.tradesJourneymanExpRequirementButton).prependLore("&7Currently: &e" + currentSubType.getTrades(MerchantLevel.JOURNEYMAN).getExpRequirement() + " &8(total &6" + currentSubType.getExpRequirement(MerchantLevel.JOURNEYMAN) + "&8)").get());
+                    inventory.setItem(18, new ItemBuilder(Buttons.tradesJourneymanRollsButton).prependLore(String.format("&7Currently: &e%.2f", currentSubType.getRolls(MerchantLevel.JOURNEYMAN)), "").get());
+                    inventory.setItem(19, new ItemBuilder(Buttons.tradesJourneymanRollQualityButton).prependLore(String.format("&7Currently: &e%.2f", currentSubType.getRollQuality(MerchantLevel.JOURNEYMAN)), "").get());
+                    inventory.setItem(20, new ItemBuilder(Buttons.tradesJourneymanExpRequirementButton).prependLore(String.format("&7Currently: &e%d &8(total &6%d&8)", currentSubType.getTrades(MerchantLevel.JOURNEYMAN).getExpRequirement(), currentSubType.getExpRequirement(MerchantLevel.JOURNEYMAN))).get());
                     inventory.setItem(21, Buttons.pageBackButton);
                     for (int i = 0; i < journeymanPages.get(tradesJourneymanPage).size(); i++) inventory.setItem(journeymanTradeIndexes.get(i), journeymanPages.get(tradesJourneymanPage).get(i));
                     inventory.setItem(26, Buttons.pageForwardButton);
-                    inventory.setItem(27, new ItemBuilder(Buttons.tradesExpertRollsButton).prependLore("&7Currently: &e" + currentSubType.getRolls(MerchantLevel.EXPERT), "").get());
-                    inventory.setItem(28, new ItemBuilder(Buttons.tradesExpertRollQualityButton).prependLore("&7Currently: &e" + currentSubType.getRollQuality(MerchantLevel.EXPERT), "").get());
-                    inventory.setItem(29, new ItemBuilder(Buttons.tradesExpertExpRequirementButton).prependLore("&7Currently: &e" + currentSubType.getTrades(MerchantLevel.EXPERT).getExpRequirement() + " &8(total &6" + currentSubType.getExpRequirement(MerchantLevel.EXPERT) + "&8)").get());
+                    inventory.setItem(27, new ItemBuilder(Buttons.tradesExpertRollsButton).prependLore(String.format("&7Currently: &e%.2f", currentSubType.getRolls(MerchantLevel.EXPERT)), "").get());
+                    inventory.setItem(28, new ItemBuilder(Buttons.tradesExpertRollQualityButton).prependLore(String.format("&7Currently: &e%.2f", currentSubType.getRollQuality(MerchantLevel.EXPERT)), "").get());
+                    inventory.setItem(29, new ItemBuilder(Buttons.tradesExpertExpRequirementButton).prependLore(String.format("&7Currently: &e%d &8(total &6%d&8)", currentSubType.getTrades(MerchantLevel.EXPERT).getExpRequirement(), currentSubType.getExpRequirement(MerchantLevel.EXPERT))).get());
                     inventory.setItem(30, Buttons.pageBackButton);
                     for (int i = 0; i < expertPages.get(tradesExpertPage).size(); i++) inventory.setItem(expertTradeIndexes.get(i), expertPages.get(tradesExpertPage).get(i));
                     inventory.setItem(35, Buttons.pageForwardButton);
-                    inventory.setItem(36, new ItemBuilder(Buttons.tradesMasterRollsButton).prependLore("&7Currently: &e" + currentSubType.getRolls(MerchantLevel.MASTER), "").get());
-                    inventory.setItem(37, new ItemBuilder(Buttons.tradesMasterRollQualityButton).prependLore("&7Currently: &e" + currentSubType.getRollQuality(MerchantLevel.MASTER), "").get());
-                    inventory.setItem(38, new ItemBuilder(Buttons.tradesMasterExpRequirementButton).prependLore("&7Currently: &e" + currentSubType.getTrades(MerchantLevel.MASTER).getExpRequirement() + " &8(total &6" + currentSubType.getExpRequirement(MerchantLevel.MASTER) + "&8)").get());
+                    inventory.setItem(36, new ItemBuilder(Buttons.tradesMasterRollsButton).prependLore(String.format("&7Currently: &e%.2f", currentSubType.getRolls(MerchantLevel.MASTER)), "").get());
+                    inventory.setItem(37, new ItemBuilder(Buttons.tradesMasterRollQualityButton).prependLore(String.format("&7Currently: &e%.2f", currentSubType.getRollQuality(MerchantLevel.MASTER)), "").get());
+                    inventory.setItem(38, new ItemBuilder(Buttons.tradesMasterExpRequirementButton).prependLore(String.format("&7Currently: &e%d &8(total &6%d&8)", currentSubType.getTrades(MerchantLevel.MASTER).getExpRequirement(), currentSubType.getExpRequirement(MerchantLevel.MASTER))).get());
                     inventory.setItem(39, Buttons.pageBackButton);
                     for (int i = 0; i < masterPages.get(tradesMasterPage).size(); i++) inventory.setItem(masterTradeIndexes.get(i), masterPages.get(tradesMasterPage).get(i));
                     inventory.setItem(44, Buttons.pageForwardButton);
@@ -502,19 +509,19 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     currentTrade.getPredicates().forEach(p -> predicateLore.addAll(StringUtils.separateStringIntoLines("&d> " + p.getActiveDescription(), 40)));
                     inventory.setItem(0, new ItemBuilder(Buttons.tradePredicatesButton).placeholderLore("%predicates%", predicateLore).get());
                     inventory.setItem(1, new ItemBuilder(Buttons.tradePredicateModeButton).prependLore("&e" + currentTrade.getPredicateSelection()).get());
-                    String weight = String.format("&8%.1f + %.1f/demand, up to %d, +%.1f/luck", currentTrade.getWeight(), currentTrade.getDemandWeightModifier(), currentTrade.getDemandWeightMaxQuantity(), currentTrade.getWeightQuality());
+                    String weight = String.format("&8%.1f + %.2f/demand, up to %d, +%.1f/luck", currentTrade.getWeight(), currentTrade.getDemandWeightModifier(), currentTrade.getDemandWeightMaxQuantity(), currentTrade.getWeightQuality());
                     inventory.setItem(2, new ItemBuilder(Buttons.tradeWeightButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getWeight()), weight).get());
                     inventory.setItem(3, new ItemBuilder(Buttons.tradeWeightQualityButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getWeightQuality()), weight).get());
                     inventory.setItem(4, new ItemBuilder(Buttons.tradeWeightDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandWeightModifier()), weight).get());
                     inventory.setItem(5, new ItemBuilder(Buttons.tradeWeightDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandWeightMaxQuantity()), weight).get());
-                    String uses = String.format("&8%d + %.1f/demand, up to %d", currentTrade.getMaxUses(), currentTrade.getDemandMaxUsesModifier(), currentTrade.getDemandMaxUsesMaxQuantity());
+                    String uses = String.format("&8%d + %.2f/demand, up to %d", currentTrade.getMaxUses(), currentTrade.getDemandMaxUsesModifier(), currentTrade.getDemandMaxUsesMaxQuantity());
                     inventory.setItem(6, new ItemBuilder(Buttons.tradeUsesButton).prependLore(String.format("&7Currently &e%d", currentTrade.getMaxUses()), uses).get());
                     inventory.setItem(7, new ItemBuilder(Buttons.tradeUsesDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandMaxUsesModifier()), uses).get());
                     inventory.setItem(8, new ItemBuilder(Buttons.tradeUsesDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandMaxUsesMaxQuantity()), uses).get());
                     inventory.setItem(9, new ItemBuilder(Buttons.tradeReputationPositiveModButton).prependLore(String.format("&7Currently &ex%.1f", currentTrade.getPositiveReputationMultiplier()), uses).get());
                     String price = String.format("&8%d + %.0f%%/demand, up to %d", currentTrade.getScalingCostItem().getAmount(), currentTrade.getDemandPriceMultiplier() * 100, currentTrade.getDemandPriceMax());
                     inventory.setItem(11, new ItemBuilder(Buttons.tradePriceDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandPriceMultiplier()), price).get());
-                    inventory.setItem(13, new ItemBuilder(Buttons.tradeVillagerExperienceButton).prependLore(String.format("&7Currently &e%d", currentTrade.getVillagerExperience()), price).get());
+                    inventory.setItem(13, new ItemBuilder(Buttons.tradeVillagerExperienceButton).prependLore(String.format("&7Currently &e%d", currentTrade.getVillagerExperience())).get());
                     inventory.setItem(20, currentTrade.getScalingCostItem());
                     inventory.setItem(21, currentTrade.getOptionalCostItem());
                     inventory.setItem(23, currentTrade.getResult());
@@ -555,22 +562,22 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
 
     @Override
     public void setPredicates(Collection<LootPredicate> predicates) {
-
+        currentTrade.setPredicates(predicates);
     }
 
     @Override
     public Collection<LootPredicate> getPredicates() {
-        return List.of();
+        return currentTrade.getPredicates();
     }
 
     @Override
     public void setResultModifiers(List<DynamicItemModifier> resultModifiers) {
-
+        currentTrade.setModifiers(resultModifiers);
     }
 
     @Override
     public List<DynamicItemModifier> getResultModifiers() {
-        return List.of();
+        return currentTrade.getModifiers();
     }
 
     private enum View{
@@ -1100,7 +1107,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                         .lore("",
                                 "&7Modifies the price of the trade",
                                 "&7based on its demand")
-                        .stringTag(KEY_BUTTON, "tradePriceDemandModifierButton")
+                        .stringTag(KEY_BUTTON, "tradePriceDemandModButton")
                         .get();
         private static final ItemStack tradePriceDemandMaxButton =
                 new ItemBuilder(getButtonData("editor_trading_trade_pricedemandmax", Material.IRON_INGOT))

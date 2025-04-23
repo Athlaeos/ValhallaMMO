@@ -66,12 +66,17 @@ public class MerchantType implements Weighted {
         return Math.max(0, trades.get(level).getRollQuality());
     }
     public int getExpRequirement(MerchantLevel level){
+        if (level == MerchantLevel.NOVICE) return 0;
         int accumulated = 0;
         for (MerchantLevel l : MerchantLevel.values()) {
             if (l.getLevel() > level.getLevel()) break;
             accumulated += Math.max(0, trades.get(l).getExpRequirement());
         }
         return accumulated;
+    }
+    public int getRawExpRequirement(MerchantLevel level){
+        if (level == MerchantLevel.NOVICE) return 0;
+        return trades.get(level).getExpRequirement();
     }
     public void setRolls(MerchantLevel level, double rolls) {
         trades.get(level).setRolls(rolls);
