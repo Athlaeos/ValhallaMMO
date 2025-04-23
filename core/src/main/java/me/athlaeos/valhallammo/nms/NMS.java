@@ -14,10 +14,12 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -105,5 +107,8 @@ public interface NMS extends Listener {
     }
     default List<Boolean> getCMDBooleanList(ItemMeta meta){
         return new ArrayList<>();
+    }
+    default EntityExplodeEvent getExplosionEvent(Entity tnt, Location at, List<Block> blockList, float yield, int result){
+        return new EntityExplodeEvent(tnt, at, blockList, yield);
     }
 }

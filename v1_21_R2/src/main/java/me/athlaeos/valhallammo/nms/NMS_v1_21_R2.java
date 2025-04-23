@@ -38,9 +38,11 @@ import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R2.generator.structure.CraftStructureType;
 import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -361,5 +363,11 @@ public final class NMS_v1_21_R2 implements NMS {
         ToolComponent tool = meta.getTool();
         tool.setDefaultMiningSpeed(miningSpeed);
         meta.setTool(tool);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public EntityExplodeEvent getExplosionEvent(Entity tnt, Location at, List<org.bukkit.block.Block> blockList, float yield, int result) {
+        return new EntityExplodeEvent(tnt, at, blockList, yield, ExplosionResult.values()[result]);
     }
 }

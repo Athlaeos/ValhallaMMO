@@ -11,6 +11,7 @@ softdepend:
 - PlaceholderAPI
 - DecentHolograms
 - JustLootIt
+- CoreProtect
 commands:
   valhalla:
     description: "Main command for all things ValhallaMMO-related"
