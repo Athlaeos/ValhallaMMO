@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.PlayerBlocksDropItemsEvent;
+import me.athlaeos.valhallammo.hooks.CoreProtectHook;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
@@ -267,10 +268,11 @@ public class MiningSkill extends Skill implements Listener {
 
         double exp = 0;
         List<Block> blockList = new ArrayList<>(e.blockList());
+//        if (ValhallaMMO.isHookFunctional(CoreProtectHook.class)) CoreProtectHook.markBlocksExploded(e.getEntity().getWorld(), e.blockList());
 
         // calls another explosion event to make sure other plugins like coreprotect can pick up on it
         recursionPrevention.add(e.getEntity().getUniqueId());
-//        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new EntityExplodeEvent(e.getEntity(), e.getLocation(), blockList, e.getYield()));
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new EntityExplodeEvent(e.getEntity(), e.getLocation(), blockList, e.getYield()));
         recursionPrevention.remove(e.getEntity().getUniqueId());
 
         Map<Block, List<ItemStack>> blocksAndItems = new HashMap<>();
