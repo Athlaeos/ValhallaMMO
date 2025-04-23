@@ -272,7 +272,7 @@ public class MiningSkill extends Skill implements Listener {
 
         // calls another explosion event to make sure other plugins like coreprotect can pick up on it
         recursionPrevention.add(e.getEntity().getUniqueId());
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new EntityExplodeEvent(e.getEntity(), e.getLocation(), blockList, e.getYield()));
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(ValhallaMMO.getNms().getExplosionEvent(e.getEntity(), e.getLocation(), blockList, e.getYield(), 1));
         recursionPrevention.remove(e.getEntity().getUniqueId());
 
         Map<Block, List<ItemStack>> blocksAndItems = new HashMap<>();
