@@ -1,18 +1,22 @@
 package me.athlaeos.valhallammo.trading.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.trading.*;
 import me.athlaeos.valhallammo.trading.dom.*;
 import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
 import me.athlaeos.valhallammo.trading.merchants.implementations.SimpleMerchant;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.VillagerCareerChangeEvent;
+import org.bukkit.event.entity.VillagerReplenishTradeEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +28,9 @@ import java.util.*;
 
 public class MerchantListener implements Listener {
     private static final Map<UUID, VirtualMerchant> activeTradingMenus = new HashMap<>();
-    private final boolean convertAllVillagers = ValhallaMMO.getPluginConfig().getBoolean("customize_all_villagers");
+    private final boolean convertAllVillagers = CustomMerchantManager.getTradingConfig().getBoolean("customize_all_villagers");
+    private final double demandDecayRate = CustomMerchantManager.getTradingConfig().getDouble("demand_decay_per_day", 0.5);
+    private final int demandMax = CustomMerchantManager.getTradingConfig().getInt("demand_max", 24);
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onClose(InventoryCloseEvent e){
@@ -38,7 +44,28 @@ public class MerchantListener implements Listener {
         virtualMerchant.onClose();
         UUID villager = virtualMerchant.getMerchantID();
         if (villager == null || !(ValhallaMMO.getInstance().getServer().getEntity(villager) instanceof Villager v)) return;
-        v.setVillagerExperience(v.getVillagerExperience() + virtualMerchant.getExpToGrant());
+        MerchantType type = CustomMerchantManager.getMerchantType(virtualMerchant.getData().getType());
+        MerchantData data = virtualMerchant.getData();
+        if (type == null) return;
+        data.setExp(Math.min(type.getExpRequirement(MerchantLevel.MASTER), data.getExp() + virtualMerchant.getExpToGrant()));
+        MerchantLevel level = CustomMerchantManager.getLevel(data);
+        MerchantLevel nextLevel = level == null ? null : MerchantLevel.getNextLevel(level);
+        if (nextLevel == null) v.setVillagerExperience(300); // already max level
+        else {
+            int expToCurrentLevel = type.getExpRequirement(level);
+            int expToNextLevel = type.getExpRequirement(nextLevel);
+
+            float progressToNextLevel = ((float) data.getExp() - expToCurrentLevel) / (expToNextLevel - expToCurrentLevel);
+            v.setVillagerExperience(level.getDefaultExpRequirement() + (int) Math.floor((nextLevel.getDefaultExpRequirement() - level.getDefaultExpRequirement()) * progressToNextLevel));
+
+            // Ensures that at least one of the villager's trades is not fully restocked, prompting
+            // the villager to want to restock
+            MerchantRecipe recipe = Catch.catchOrElse(() -> v.getRecipe(0), null);
+            if (recipe != null) {
+                recipe.setUses(1);
+                v.setRecipe(0, recipe);
+            }
+        }
     }
 
 //    @EventHandler(priority = EventPriority.MONITOR)
@@ -126,6 +153,7 @@ public class MerchantListener implements Listener {
         }
 
         int finalTimesTraded = timesTraded;
+        System.out.println("trading trade " + trade.getID() + "x " + timesTraded);
         CustomMerchantManager.getMerchantData(merchantID, data -> {
             PlayerTradeItemEvent event = new PlayerTradeItemEvent((Player) e.getWhoClicked(), merchantID, data, m.getMerchant(), recipe, trade, result, finalTimesTraded);
             ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
@@ -133,6 +161,10 @@ public class MerchantListener implements Listener {
                 e.setCancelled(true);
                 return;
             }
+            MerchantData.TradeData tradeData = data.getTrades().get(event.getCustomTrade().getID());
+            if (tradeData == null) return; // should never really happen, but here as a precaution
+            tradeData.setLastTraded(System.currentTimeMillis());
+            tradeData.setDemand(Math.min(demandMax, tradeData.getDemand() + finalTimesTraded));
 
             m.setItem(2, event.getResult());
             if (merchantID != null){
@@ -148,25 +180,89 @@ public class MerchantListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onVillagerInteract(PlayerInteractAtEntityEvent e){
-        if (!(e.getRightClicked() instanceof Villager v) || !convertAllVillagers && !CustomMerchantManager.isCustomMerchant(v)) return;
+        if (!(e.getRightClicked() instanceof Villager v) || (!convertAllVillagers && !CustomMerchantManager.isCustomMerchant(v))) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             CustomMerchantManager.getMerchantData(v, data -> {
-                if (data == null && convertAllVillagers) data = CustomMerchantManager.convertToRandomMerchant(v);
-                if (data == null) return;
-                MerchantData.MerchantPlayerMemory reputation = data.getPlayerMemory(e.getPlayer().getUniqueId());
-                // TODO actually do something with reputation data
-                MerchantConfiguration configuration = CustomMerchantManager.getMerchantConfigurations().get(v.getProfession());
-                if (configuration == null) return;
-                List<MerchantRecipe> recipes = CustomMerchantManager.recipesFromData(data, e.getPlayer());
-                if (recipes != null) {
-                    // TODO data driven custom merchants instead of hardcoded simple ones
-                    VirtualMerchant merchant = new SimpleMerchant(PlayerMenuUtilManager.getPlayerMenuUtility(e.getPlayer()), v.getUniqueId(), data, recipes);
-                    if (merchant.getRecipes().isEmpty()) v.shakeHead();
-                    else merchant.open();
-                } else v.shakeHead();
+                ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+                    MerchantData d = data;
+                    MerchantType type = d == null ? null : CustomMerchantManager.getMerchantType(d.getType());
+                    if (d != null && type != null && d.getTypeVersion() != type.getVersion()) d = CustomMerchantManager.createMerchant(v.getUniqueId(), type);
+                    else if (d != null && type != null && type.resetsTradesDaily() && d.getDay() != CustomMerchantManager.today()) {
+                        Map<String, MerchantData.TradeData> newData = new HashMap<>();
+                        Map<String, MerchantData.TradeData> currentData = d.getTrades();
+                        for (MerchantData.TradeData trade : CustomMerchantManager.generateRandomTrades(type)){
+                            MerchantData.TradeData entry = currentData.get(trade.getTrade());
+                            if (entry == null) {
+                                newData.put(trade.getTrade(), trade);
+                                continue;
+                            }
+                            trade.setDemand(entry.getDemand());
+                            trade.setLastRestocked(entry.getLastRestocked());
+                            trade.setLastTraded(entry.getLastTraded());
+                            newData.put(trade.getTrade(), trade);
+                        }
+                        d.getTrades().clear();
+                        d.getTrades().putAll(newData);
+                    }
+                    if (d == null && convertAllVillagers) d = CustomMerchantManager.convertToRandomMerchant(v);
+                    if (d == null) {
+                        e.getPlayer().openInventory(v.getInventory());
+                        return;
+                    }
+                    int today = CustomMerchantManager.today();
+                    if (d.getDay() < today){
+                        // different day, decay demand
+                        for (MerchantData.TradeData tradeData : d.getTrades().values()) tradeData.setDemand((int) Math.floor(tradeData.getDemand() * Math.pow(demandDecayRate, 1 + today - d.getDay())));
+                        d.setDay(today);
+                    } else if (d.getDay() != today) {
+                        // time has gone backwards...? reset demand
+                        for (MerchantData.TradeData tradeData : d.getTrades().values()) tradeData.setDemand(0);
+                    }
+
+                    MerchantData.MerchantPlayerMemory reputation = d.getPlayerMemory(e.getPlayer().getUniqueId());
+                    MerchantConfiguration configuration = CustomMerchantManager.getMerchantConfigurations().get(v.getProfession());
+                    if (configuration == null || configuration.getMerchantTypes().isEmpty()) return;
+                    List<MerchantRecipe> recipes = CustomMerchantManager.recipesFromData(d, e.getPlayer());
+                    if (recipes != null) {
+                        VirtualMerchant merchant = new SimpleMerchant(PlayerMenuUtilManager.getPlayerMenuUtility(e.getPlayer()), v.getUniqueId(), d, recipes);
+                        if (merchant.getRecipes().isEmpty()) v.shakeHead();
+                        else merchant.open();
+                    } else v.shakeHead();
+                });
             });
         });
         e.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onMerchantLoseProfession(VillagerCareerChangeEvent e){
+
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onMerchantRestock(VillagerReplenishTradeEvent e){
+        if (e.isCancelled() || !Timer.isCooldownPassed(e.getEntity().getUniqueId(), "delay_restock_trades")) return;
+
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            CustomMerchantManager.getMerchantData(e.getEntity(), data -> {
+                ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+                    if (data == null) return;
+                    long time = CustomMerchantManager.time();
+                    for (MerchantData.TradeData tradeData : data.getTrades().values()){
+                        MerchantTrade trade = CustomMerchantManager.getTrade(tradeData.getTrade());
+                        if (trade == null || trade.getRestockDelay() < 0) continue;
+                        if (time >= tradeData.getLastRestocked() + trade.getRestockDelay()){
+                            tradeData.setRemainingUses(trade.getMaxUses());
+                            tradeData.setLastRestocked(time);
+                        }
+                    }
+                });
+            });
+        });
+        Timer.setCooldown(e.getEntity().getUniqueId(), 5000, "delay_restock_trades");
+        // All trades are being restocked, though this event fires for each MerchantRecipe restocked.
+        // Since that is unnecessary, and we purely use the event to detect when a villager restocks normally,
+        // we apply a cooldown of a couple seconds to make sure this event doesn't fire repeatedly needlessly
     }
 
     public static VirtualMerchant getCurrentActiveVirtualMerchant(Player player){

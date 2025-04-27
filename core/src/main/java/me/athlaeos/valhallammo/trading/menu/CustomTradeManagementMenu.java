@@ -171,7 +171,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                         Questionnaire.startQuestionnaire((Player) e.getWhoClicked(), questionnaire);
                     }
                     case "subtypeVersionButton" -> currentSubType.setVersion(Math.max(0, currentSubType.getVersion() + ((e.isShiftClick() ? 5 : 1) * (e.isLeftClick() ? 1 : -1))));
-                    case "subtypeRealisticButton" -> currentSubType.setResetTradesOnRestock(!currentSubType.resetsTradesOnRestock());
+                    case "subtypeRealisticButton" -> currentSubType.setResetTradesDaily(!currentSubType.resetsTradesDaily());
                     case "subtypeProfessionLossButton" -> currentSubType.setCanLoseProfession(!currentSubType.canLoseProfession());
                     case "subtypePerPlayerStockButton" -> currentSubType.setPerPlayerStock(!currentSubType.isPerPlayerStock());
                     case "subtypeWeightButton" -> currentSubType.setWeight(currentSubType.getWeight() + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.1 : -0.1)));
@@ -413,7 +413,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     double totalWeight = types.stream().map(MerchantType::getWeight).mapToDouble(d -> d).sum();
                     inventory.setItem(0, new ItemBuilder(Buttons.subtypeNameButton).name(currentSubType.getName() == null ? "&7No name" : currentSubType.getName()).get());
                     inventory.setItem(8, new ItemBuilder(Buttons.subtypeVersionButton).name("&fVersion: " + currentSubType.getVersion()).get());
-                    inventory.setItem(11, new ItemBuilder(Buttons.subtypeRealisticButton).name("&fRestocking Resets: " + (currentSubType.resetsTradesOnRestock() ? "Yes" : "No")).get());
+                    inventory.setItem(11, new ItemBuilder(Buttons.subtypeRealisticButton).name("&fRestocking Resets: " + (currentSubType.resetsTradesDaily() ? "Yes" : "No")).get());
                     inventory.setItem(13, new ItemBuilder(Buttons.subtypeProfessionLossButton).name("&fPermanent Profession: " + (currentSubType.canLoseProfession() ? "No" : "Yes")).get());
                     inventory.setItem(15, new ItemBuilder(Buttons.subtypePerPlayerStockButton).name("&fPer Player Stock: " + (currentSubType.isPerPlayerStock() ? "Yes" : "No")).get());
                     inventory.setItem(30, new ItemBuilder(Buttons.subtypeWeightButton)
@@ -533,10 +533,19 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     inventory.setItem(31, new ItemBuilder(Buttons.tradeEnchantingExperienceButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getEnchantingExperience())).get());
                     inventory.setItem(37, new ItemBuilder(Buttons.tradeFixedUsesButton).prependLore("&7Currently &e" + (currentTrade.hasFixedUseCount() ? "On" : "Off")).get());
                     inventory.setItem(43, new ItemBuilder(Buttons.tradeExclusiveButton).prependLore("&7Currently &e" + (currentTrade.isExclusive() ? "On" : "Off")).get());
+
+                    inventory.setItem(41, new ItemBuilder(Buttons.tradeRestockDelayButton).prependLore("&7Currently &e" + timeToString(currentTrade.getRestockDelay())).get());
+                    inventory.setItem(39, new ItemBuilder(Buttons.tradePriceRandomizerButton).prependLore(String.format("&7Price is &e%d-%d", Math.max(1, currentTrade.getScalingCostItem().getAmount() + currentTrade.getPriceRandomNegativeOffset()), Math.max(1, currentTrade.getScalingCostItem().getAmount() + currentTrade.getPriceRandomPositiveOffset()))).get());
                 }
                 inventory.setItem(49, Buttons.backToMenuButton);
             }
         }
+    }
+
+    private String timeToString(long delay){
+        if (delay < 24000) {
+            return String.format("%d ingame hours", delay/1000);
+        } else return String.format("%.1f ingame days", delay / 24000D);
     }
 
     private ItemStack fromTrade(MerchantTrade trade){
@@ -793,9 +802,8 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                         .get();
         private static final ItemStack subtypeRealisticButton =
                 new ItemBuilder(getButtonData("editor_trading_subtype_realistic", Material.FLINT_AND_STEEL))
-                        .lore("&7If enabled, when a villager restocks ",
-                                "&7at their work station, their trade ",
-                                "&7selection resets.",
+                        .lore("&7If enabled, a villager's trade selection",
+                                "&7will reset and change daily.",
                                 "&7This also features a demand mechanic,",
                                 "&7where frequently purchased items also",
                                 "&7increase the likelihood for it to",
@@ -1156,6 +1164,27 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                                 "&7specifically granted access to this",
                                 "&7trade can see it")
                         .stringTag(KEY_BUTTON, "tradeExclusiveButton")
+                        .get();
+        private static final ItemStack tradeRestockDelayButton =
+                new ItemBuilder(getButtonData("editor_trading_trade_restockdelay", Material.CLOCK))
+                        .name("&fRestock Cooldown")
+                        .lore("",
+                                "&7Determines the duration in which",
+                                "&7this trade cannot restock after",
+                                "&7restocking.",
+                                "&7Keep in mind that when the duration",
+                                "&7ends the villager is not immediately",
+                                "&7prompted to restock")
+                        .stringTag(KEY_BUTTON, "tradeRestockDelayButton")
+                        .get();
+        private static final ItemStack tradePriceRandomizerButton =
+                new ItemBuilder(getButtonData("editor_trading_trade_pricerandomizer", Material.DIAMOND))
+                        .name("&fPrice Randomizer")
+                        .lore("",
+                                "&7Randomizes the base price amount",
+                                "&eClick to increase/decrease the minimum bound",
+                                "&eShift-click to do so with the maximum bound")
+                        .stringTag(KEY_BUTTON, "tradePriceRandomizerButton")
                         .get();
     }
 }

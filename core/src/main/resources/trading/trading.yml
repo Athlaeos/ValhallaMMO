@@ -1,0 +1,191 @@
+customize_all_villagers: false # If true, if an interacted villager does not have a custom trading configuration, they will be given one
+# If false, the villager will need to explicitly be given one with a command
+
+delay_until_working: 24000 # When a villager gets a profession, it will take this duration (in game ticks, 1 ingame day by default) for them to start trading
+
+demand_decay_per_day: 0.5 # Every time a trade is made the trade's "demand" stat increases, and this decays per day. This determines by how much it is reduced.
+# For example, if a trade has been traded 20 times, a decay rate of 0.5 means the demand will be 10 the next day, 5 the day after, then 2, etc.
+demand_max: 24 # To prevent demand getting out of control and taking too long to decay, here's a cap
+
+# Determines the % price discount based on happiness, renown, and reputation (can be negative)
+# By default this produces a discount of
+# -25% to +25% from happiness -10 to 10
+# -20% to +20% from reputation -100 to 100
+# -15% to +15% from renown -100 to 100
+# Totalling 60% off when a villager is perfectly happy and confident around you :)
+# The price is first affected by the "demand" mechanic, and then reduced by discount. Finally, by the player's own discount (charisma) stat
+price_multiplier: "(0.0025 * %happiness%) + (0.002 * %reputation%) + (0.0015 * %renown%)"
+
+happiness_upper_limit: 10 # Happiness cannot go above this value
+happiness_lower_limit: -10 # Happiness cannot go below this value
+reputation_trading_upper_limit: 100 # Reputation cannot exceed this value
+reputation_trading_lower_limit: -100 # Reputation cannot go below this value
+reputation_renown_upper_limit: 100 # Renown cannot exceed this value
+reputation_renown_lower_limit: -100 # Renown cannot go below this value
+renown_unforgiveable: -90 # If the player reaches a renown lower than this value, it can not go up again
+reputation_unforgiveable: -90 # If the player reaches a reputation lower than this value, it can not go up again
+renown_kill_villager: -50 # Renown lost to all nearby villagers when a villager is killed
+
+renown_kill_baby_villager: -75 # Renown lost to all nearby villagers when a baby villager is killed
+renown_kill_iron_golem: -25 # Renown lost to all nearby villagers when an iron golem is killed
+renown_hurt_villager: -5 # Renown lost to all nearby villagers when a villager is punched repeatedly (1 punch will start an "accident" timer, if the villager is punched again during the timer this penalty goes into effect)
+renown_hurt_baby_villager: -10 # Renown lost to all nearby villagers when a baby villager is hurt repeatedly
+renown_death_villager: -5 # Renown lost to all nearby villager if a villager merely dies under a player's watch
+renown_death_baby_villager: -10 # Renown lost to all nearby villagers if a baby villager merely dies under a player's watch
+renown_death_iron_golem: -2 # Renown lost to all nearby villagers if an iron golem merely dies under a player's watch
+renown_hero: 20 # Renown gained when winning a raid
+renown_happiness: 1 # Renown gained when making a villager happy (this cannot be repeated on a single villager)
+
+time_forgive_accidental_punch: 1200 # If a villager is hurt accidentally, they will forgive you. If they are hurt again during this timer, your reputation and renown goes down. (in game ticks, by default 1 minute)
+
+happiness_deny_trading: -5 # If a villager has less than this amount of happiness, they will deny trading entirely
+happiness_renown_threshold: 8 # If a villager has more than this amount of happiness, the player's renown goes up to all nearby villagers
+
+happiness_sources:
+  imprisoned: -10 # If a villager has little space to move, they become very unhappy
+  free: 1 # If a villager has plenty of space to move, they become happier
+  depressing: -2 # If a villager has no decorations or nice things around, they become unhappier
+  comfortable: 1 # If a villager has plenty of decorations and nice things around, they become happier
+  dark: -2 # If a villager is in the dark, they become unhappier
+  bright: 1 # If a villager is in a lit area, they become happier
+  lonely: -2 # If a villager is alone with no other villagers around, they become unhappier
+  accompanied: 1 # If a villager is accompanied by other villagers, they become happier
+  fearful: -10 # If a villager is actively threatened by a zombie or player, they become very unhappy
+  peaceful: 1 # If a villager has no active threats around, they become happier
+  insecure: -1 # If a villager has not been traded with for a long time, they become unhappier
+  secure: 1 # If a villager has recently been traded with, they are happier
+  wounded: -1 # If a villager has taken damage, they are unhappier
+  healed: 1 # If a villager is fully healed, they are happier
+  distrusting: -3 # If a villager was recently harmed by the player, they are unhappier
+  trusting: 1 # If a villager was not recently harmed by the player, they are happier
+  reputation_trading: 0.02 # Happiness per trading reputation towards the player
+  reputation_renown: 0.03 # Happiness per renown reputation towards the player
+
+imprisonment_space_max: 25 # With less than 25 blocks of free walking space, the villager feels trapped
+free_space_requirement: 50 # With over 50 blocks of free walking space, the villager feels free
+depressing_luxuries_max: 5 # With less than 5 unique "nice things" around, the villager feels in a depressed place
+comfort_required_things: 15 # With more than 15 unique "nice things" around, the villager feels in a nice place
+darkness_max: 2 # With a light level of less than 2, the villager feels in the dark
+brightness_requirement: 5 # With a light level of more than 5, the villager feels it's comfortably light
+loneliness_max: 0 # With no other villagers around, the villager feels lonely
+accompanied_requirement: 5 # With at least 5 other villagers around, the villager feels in company
+insecurity_max: 96000 # If the villager has not been traded with for 96000 ticks (4 ingame days) the villager feels insecure :(
+security_requirement: 12000 # If the villager has been traded with in the past 12000 ticks (half an ingame day) the villager feels secure :)
+woundedness_max: 5 # If the villager has taken more than 5 damage, they feel wounded
+distrusting_max: 96000 # If the villager was damaged in the past 96000 ticks (3 ingame days) by the player, they feel distrusting
+trusting_requirement: 240000 # If the villager has not been damaged in the past 240000 ticks (10 ingame days), they feel more trusting
+
+nice_things:
+  - entity:PAINTING
+  - entity:ITEM_FRAME
+  - entity:ARMOR_STAND
+  - entity:WOLF
+  - entity:CAT
+  - entity:PARROT
+  - entity:COW
+  - entity:PIG
+  - entity:CHICKEN
+  - entity:HORSE
+  - entity:DONKEY
+  - entity:LLAMA
+  - entity:CAMEL
+  - entity:RABBIT
+  - entity:SNIFFER
+  - entity:TRADER_LLAMA
+  - entity:BEE
+  - entity:IRON_GOLEM
+  - block:LANTERN
+  - block:SOUL_LANTERN
+  - block:BOOKSHELF
+  - block:WHITE_CARPET
+  - block:PINK_CARPET
+  - block:RED_CARPET
+  - block:ORANGE_CARPET
+  - block:YELLOW_CARPET
+  - block:LIME_CARPET
+  - block:GREEN_CARPET
+  - block:CYAN_CARPET
+  - block:LIGHT_BLUE_CARPET
+  - block:BLUE_CARPET
+  - block:PURPLE_CARPET
+  - block:MAGENTA_CARPET
+  - block:BLACK_CARPET
+  - block:BROWN_CARPET
+  - block:GRAY_CARPET
+  - block:LIGHT_GRAY_CARPET
+  - block:AMETHYST_BLOCK
+  - block:AMETHYST_CLUSTER
+  - block:ANVIL
+  - block:CHIPPED_ANVIL
+  - block:BROKEN_ANVIL
+  - block:ENCHANTING_TABLE
+  - block:CHEST
+  - block:ENDER_CHEST
+  - block:FLOWER_POT
+  - block:FURNACE
+  - block:BEACON
+  - block:JUKEBOX
+  - block:SMITHING_TABLE
+  - block:CRAFTING_TABLE
+  - block:COMPOSTER
+  - block:SMOKER
+  - block:BLAST_FURNACE
+  - block:BARREL
+  - block:FLETCHING_TABLE
+  - block:LOOM
+  - block:GRINDSTONE
+  - block:STONECUTTER
+  - block:LECTERN
+  - block:BREWING_STAND
+  - block:CARTOGRAPHY_TABLE
+  - block:CAKE
+  - block:WHITE_GLAZED_TERRACOTTA
+  - block:PINK_GLAZED_TERRACOTTA
+  - block:RED_GLAZED_TERRACOTTA
+  - block:ORANGE_GLAZED_TERRACOTTA
+  - block:YELLOW_GLAZED_TERRACOTTA
+  - block:LIME_GLAZED_TERRACOTTA
+  - block:GREEN_GLAZED_TERRACOTTA
+  - block:CYAN_GLAZED_TERRACOTTA
+  - block:LIGHT_BLUE_GLAZED_TERRACOTTA
+  - block:BLUE_GLAZED_TERRACOTTA
+  - block:PURPLE_GLAZED_TERRACOTTA
+  - block:MAGENTA_GLAZED_TERRACOTTA
+  - block:BLACK_GLAZED_TERRACOTTA
+  - block:BROWN_GLAZED_TERRACOTTA
+  - block:GRAY_GLAZED_TERRACOTTA
+  - block:LIGHT_GRAY_GLAZED_TERRACOTTA
+  - block:WHITE_STAINED_GLASS
+  - block:PINK_STAINED_GLASS
+  - block:RED_STAINED_GLASS
+  - block:ORANGE_STAINED_GLASS
+  - block:YELLOW_STAINED_GLASS
+  - block:LIME_STAINED_GLASS
+  - block:GREEN_STAINED_GLASS
+  - block:CYAN_STAINED_GLASS
+  - block:LIGHT_BLUE_STAINED_GLASS
+  - block:BLUE_STAINED_GLASS
+  - block:PURPLE_STAINED_GLASS
+  - block:MAGENTA_STAINED_GLASS
+  - block:BLACK_STAINED_GLASS
+  - block:BROWN_STAINED_GLASS
+  - block:GRAY_STAINED_GLASS
+  - block:LIGHT_GRAY_STAINED_GLASS
+  - block:WHITE_STAINED_GLASS_PANE
+  - block:PINK_STAINED_GLASS_PANE
+  - block:RED_STAINED_GLASS_PANE
+  - block:ORANGE_STAINED_GLASS_PANE
+  - block:YELLOW_STAINED_GLASS_PANE
+  - block:LIME_STAINED_GLASS_PANE
+  - block:GREEN_STAINED_GLASS_PANE
+  - block:CYAN_STAINED_GLASS_PANE
+  - block:LIGHT_BLUE_STAINED_GLASS_PANE
+  - block:BLUE_STAINED_GLASS_PANE
+  - block:PURPLE_STAINED_GLASS_PANE
+  - block:MAGENTA_STAINED_GLASS_PANE
+  - block:BLACK_STAINED_GLASS_PANE
+  - block:BROWN_STAINED_GLASS_PANE
+  - block:GRAY_STAINED_GLASS_PANE
+  - block:LIGHT_GRAY_STAINED_GLASS_PANE
+  - block:CAMPFIRE
+  - block:SOUL_CAMPFIRE

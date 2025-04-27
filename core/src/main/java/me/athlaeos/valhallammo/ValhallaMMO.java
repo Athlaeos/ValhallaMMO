@@ -36,6 +36,7 @@ import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockConditionRegist
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.tools.BlockHardnessStick;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
+import me.athlaeos.valhallammo.trading.listeners.MerchantListener;
 import me.athlaeos.valhallammo.utility.GlobalEffect;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -88,6 +89,9 @@ public class ValhallaMMO extends JavaPlugin {
         String lang = pluginConfig.getString("language", "en-us");
         save("languages/en-us.json");
         save("languages/materials/en-us.json");
+        save("trading/configurations.json");
+        save("trading/trades.json");
+        save("trading/types.json");
         save("recipes/grid_recipes.json");
         save("recipes/brewing_recipes.json");
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_6)) save("recipes/brewing_recipes_1_20_6+.json");
@@ -245,7 +249,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerListener(new WorldSaveListener());
 //        registerListener(new ThrownWeaponListener()); // might end up not using
 
-        // registerListener(new MerchantListener());
+        registerListener(new MerchantListener());
         registerListener(new BlockHardnessStick());
 
         registerCommand(new CommandManager(), "valhalla");

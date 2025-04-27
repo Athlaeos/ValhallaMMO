@@ -15,6 +15,7 @@ import java.util.*;
 
 public class SQLite extends MerchantDataPersistence implements Database {
     private Connection conn;
+
     @Override
     public Connection getConnection() {
         File dataFolder = new File(ValhallaMMO.getInstance().getDataFolder(), "trading/merchant_data.db");

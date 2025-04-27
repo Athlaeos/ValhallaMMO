@@ -6,15 +6,15 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class MerchantConfiguration {
-    private final Villager.Profession type;
+    private final ProfessionWrapper type;
     private final Collection<String> merchantTypes = new HashSet<>(); // should be exclusively filled with MerchantType id's
 
     public MerchantConfiguration(Villager.Profession type){
-        this.type = type;
+        this.type = type == null ? null : ProfessionWrapper.ofProfession(type);
     }
 
     public Villager.Profession getType() {
-        return type;
+        return type == null ? null : type.getProfession();
     }
 
     public Collection<String> getMerchantTypes() {

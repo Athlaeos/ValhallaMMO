@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -20,7 +21,9 @@ import me.athlaeos.valhallammo.utility.Callback;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.AbstractVillager;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
@@ -54,8 +57,8 @@ public class CustomMerchantManager {
     private static final Map<String, MerchantTrade> registeredMerchantTrades = new HashMap<>();
 
     static {
-        for (Villager.Profession profession : Villager.Profession.values()){
-            merchantConfigurations.put(profession, new MerchantConfiguration(profession));
+        for (ProfessionWrapper profession : ProfessionWrapper.values()){
+            merchantConfigurations.put(profession.getProfession(), new MerchantConfiguration(profession.getProfession()));
         }
     }
 
@@ -86,6 +89,12 @@ public class CustomMerchantManager {
     }
 
     public static MerchantData createMerchant(UUID id, MerchantType type){
+        MerchantData data = new MerchantData(type, generateRandomTrades(type));
+        merchantDataPersistence.setData(id, data);
+        return data;
+    }
+
+    public static List<MerchantData.TradeData> generateRandomTrades(MerchantType type){
         List<MerchantData.TradeData> trades = new ArrayList<>();
         for (MerchantLevel level : type.getTrades().keySet()){
             MerchantType.MerchantLevelTrades levelTrades = type.getTrades(level);
@@ -104,15 +113,18 @@ public class CustomMerchantManager {
                 ItemBuilder result = new ItemBuilder(t.getResult());
                 DynamicItemModifier.modify(result, null, t.getModifiers(), false, true, true);
                 setTradeKey(result.getMeta(), t);
-                trades.add(new MerchantData.TradeData(t.getID(), level.getLevel(), result.get(), t.getMaxUses()));
+
+                ItemBuilder cost = new ItemBuilder(t.getScalingCostItem());
+                int randomOffset = Utils.getRandom().nextInt(t.getPriceRandomNegativeOffset(), 1 + t.getPriceRandomPositiveOffset());
+                int price = Math.min(1, Math.max(ValhallaMMO.getNms().getMaxStackSize(cost.getMeta(), cost.getItem().getType()), cost.getItem().getAmount() + randomOffset));
+
+                trades.add(new MerchantData.TradeData(t.getID(), level.getLevel(), price, result.get(), t.getMaxUses()));
             });
         }
-        MerchantData data = new MerchantData(type, trades.toArray(new MerchantData.TradeData[0]));
-        merchantDataPersistence.setData(id, data);
-        return data;
+        return trades;
     }
 
-    public static void getMerchantData(Villager villager, Callback<MerchantData> whenReady){
+    public static void getMerchantData(AbstractVillager villager, Callback<MerchantData> whenReady){
         merchantDataPersistence.getData(villager.getUniqueId(), whenReady);
     }
 
@@ -153,21 +165,28 @@ public class CustomMerchantManager {
         for (MerchantTrade trade : trades){
             MerchantData.TradeData tradeData = data.getTrades().get(trade.getID());
             if (tradeData.getLevel() > level.getLevel()) continue;
-            double maxUses = trade.getMaxUses();
-            double remainingUses = tradeData.getSalesLeft();
+            double perTradeWeight = 1;
             if (!trade.hasFixedUseCount()){
                 double tradeCountMultiplier = 1; // TODO AccumulativeStatManager.getCachedStats("TRADE_USE_MULTIPLIER", player, 10000, true);
-                maxUses += (Math.round(Math.min(trade.getDemandMaxUsesMaxQuantity(), trade.getDemandMaxUsesModifier() * tradeData.getDemand())));
-                maxUses *= tradeCountMultiplier;
-                remainingUses *= tradeCountMultiplier;
+                // TODO scale with demand
+                perTradeWeight = 1 / tradeCountMultiplier;
             }
-            if (remainingUses > maxUses) remainingUses = maxUses;
-            int uses = (int) Math.floor(maxUses - remainingUses);
-            int specialPrice = Math.round(trade.getScalingCostItem().getAmount() * (1 + (tradeData.getDemand() * trade.getDemandPriceMultiplier())));
+            int finalMaxUses = (int) Math.floor(trade.getMaxUses() / perTradeWeight);
+            int finalRemainingUses = (int) Math.floor(tradeData.getRemainingUses() / perTradeWeight);
+            if (finalRemainingUses > finalMaxUses) finalRemainingUses = finalMaxUses;
+            int uses = (finalMaxUses - finalRemainingUses);
+            int specialPrice = 2;// Math.round(trade.getScalingCostItem().getAmount() * (1 + (tradeData.getDemand() * trade.getDemandPriceMultiplier())));
+            // specialprice is simply a PRICE OFFSET, so with a price of 8 and a specialprice of 2 the final price is 10
             int villagerExperience = (int) Math.round(trade.getVillagerExperience() * (1) * expVanillaToCustomModifier); // TODO player villager experience multiplier
-            MerchantRecipe recipe = new MerchantRecipe(tradeData.getItem(), uses, (int) Math.floor(maxUses), false, villagerExperience, 1, 0, specialPrice);
+
+            ItemStack cost = trade.getScalingCostItem().clone();
+            cost.setAmount(tradeData.getBasePrice());
+
+            ItemBuilder result = new ItemBuilder(tradeData.getItem());
+            setTradeKey(result.getMeta(), trade);
+            MerchantRecipe recipe = new MerchantRecipe(result.get(), uses, finalMaxUses, false, villagerExperience, 1, 0, specialPrice);
             List<ItemStack> ingredients = new ArrayList<>();
-            ingredients.add(trade.getScalingCostItem());
+            ingredients.add(cost);
             if (!ItemUtils.isEmpty(trade.getOptionalCostItem())) ingredients.add(trade.getOptionalCostItem());
             recipe.setIngredients(ingredients);
             recipes.add(recipe);
@@ -258,10 +277,7 @@ public class CustomMerchantManager {
     @SuppressWarnings("all")
     private static void ensureCreation(File f){
         try {
-            if (!f.exists()) {
-                f.mkdirs();
-                f.createNewFile();
-            }
+            if (!f.exists()) f.createNewFile();
         } catch (Exception ignored){}
     }
 
@@ -304,8 +320,6 @@ public class CustomMerchantManager {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(trades, StandardCharsets.UTF_8))){
             JsonElement element = gson.toJsonTree(new ArrayList<>(registeredMerchantTrades.values()), new TypeToken<ArrayList<MerchantTrade>>(){}.getType());
-            gson.toJson(element, writer);
-            writer.flush();
         } catch (IOException | JsonSyntaxException exception){
             ValhallaMMO.logSevere("Could not save items to trading/trades.json, " + exception.getMessage());
         }
@@ -361,5 +375,17 @@ public class CustomMerchantManager {
 
     public static MerchantTrade getTrade(String id){
         return registeredMerchantTrades.get(id);
+    }
+
+    public static int today(){
+        return (int) Math.floor(time() / 24000D);
+    }
+
+    public static long time(){
+        return ValhallaMMO.getInstance().getServer().getWorlds().getFirst().getFullTime();
+    }
+
+    public static YamlConfiguration getTradingConfig(){
+        return ConfigManager.getConfig("trading/trading.yml").get();
     }
 }

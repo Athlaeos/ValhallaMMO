@@ -27,6 +27,8 @@ public class MerchantTrade implements Weighted {
     private float demandWeightModifier = 0; // determines how much more/less rare a trade is depending on how many times it's been traded in the past
     private int demandWeightMaxQuantity = 0; // determines the max amount of weight a trade's rarity can be offset with at maximum demand
     private int maxUses = 6;
+    private int priceRandomNegativeOffset = 0;
+    private int priceRandomPositiveOffset = 0;
     private float demandMaxUsesModifier = 0; // determines how many more/less times a trade can be traded depending on how many times it's been traded in the past
     private int demandMaxUsesMaxQuantity = 0; // determines the max amount of extra times a trade can be traded with at maximum demand
     private int villagerExperience = 1; // amount of experience the villager gets from this trade
@@ -37,6 +39,7 @@ public class MerchantTrade implements Weighted {
     private int demandPriceMax = 0;
     private boolean fixedUseCount = false; // if true, the maxUses property may be scaled by the player's "TRADE_USE_MULTIPLIER" stat
     private boolean exclusive = false; // if true, the player must have this trade in their "exclusive trades" list in their TradingProfile to be able to access this trade
+    private long restockDelay = 0; // allowed delay between restocking. A trade will not restock if the duration has not passed, even if the villager tries to.
 
     public MerchantTrade(String id){
         this.id = id;
@@ -70,6 +73,9 @@ public class MerchantTrade implements Weighted {
     public int getDemandPriceMax() { return demandPriceMax; }
     public float getNegativeReputationMultiplier() { return negativeReputationMultiplier; }
     public float getPositiveReputationMultiplier() { return positiveReputationMultiplier; }
+    public long getRestockDelay() { return restockDelay; }
+    public int getPriceRandomNegativeOffset() { return priceRandomNegativeOffset; }
+    public int getPriceRandomPositiveOffset() { return priceRandomPositiveOffset; }
 
     public void setFixedUseCount(boolean fixedUseCount) { this.fixedUseCount = fixedUseCount; }
     public void setResult(ItemStack result) { this.result = result; }
@@ -95,6 +101,9 @@ public class MerchantTrade implements Weighted {
     public void setDemandPriceMax(int demandPriceMax) { this.demandPriceMax = demandPriceMax; }
     public void setNegativeReputationMultiplier(float negativeReputationMultiplier) { this.negativeReputationMultiplier = negativeReputationMultiplier; }
     public void setPositiveReputationMultiplier(float positiveReputationMultiplier) { this.positiveReputationMultiplier = positiveReputationMultiplier; }
+    public void setRestockDelay(long delay) { this.restockDelay = delay; }
+    public void setPriceRandomNegativeOffset(int priceRandomNegativeOffset) { this.priceRandomNegativeOffset = priceRandomNegativeOffset; }
+    public void setPriceRandomPositiveOffset(int priceRandomPositiveOffset) { this.priceRandomPositiveOffset = priceRandomPositiveOffset; }
 
     public boolean failsPredicates(LootTable.PredicateSelection predicateSelection, LootContext context){
         if (predicates.isEmpty()) return false;
