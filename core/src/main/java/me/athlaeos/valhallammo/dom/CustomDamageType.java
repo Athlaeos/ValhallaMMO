@@ -14,7 +14,7 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
         registeredTypes.put(type.type, type);
     }
     public static CustomDamageType getCustomType(String damageCause){
-        return damageToCustomTypeMapping.get(damageCause);
+        return damageToCustomTypeMapping.getOrDefault(damageCause, registeredTypes.get(damageCause));
     }
 
     public static final CustomDamageType FIRE = new CustomDamageType("FIRE", "FIRE", "LAVA", "MELTING", "FIRE_TICK", "HOT_FLOOR", "DRYOUT", "CAMPFIRE")
