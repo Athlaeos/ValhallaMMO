@@ -1,3 +1,5 @@
+enabled: false
+
 customize_all_villagers: false # If true, if an interacted villager does not have a custom trading configuration, they will be given one
 # If false, the villager will need to explicitly be given one with a command
 
@@ -9,37 +11,50 @@ demand_max: 24 # To prevent demand getting out of control and taking too long to
 
 # Determines the % price discount based on happiness, renown, and reputation (can be negative)
 # By default this produces a discount of
-# -25% to +25% from happiness -10 to 10
+# -20% to +20% from happiness -10 to 10
 # -20% to +20% from reputation -100 to 100
-# -15% to +15% from renown -100 to 100
+# -20% to +20% from renown -100 to 100
 # Totalling 60% off when a villager is perfectly happy and confident around you :)
 # The price is first affected by the "demand" mechanic, and then reduced by discount. Finally, by the player's own discount (charisma) stat
-price_multiplier: "(0.0025 * %happiness%) + (0.002 * %reputation%) + (0.0015 * %renown%)"
+discount: "(0.02 * %happiness%) + (0.002 * %reputation%) + (0.002 * %renown%)"
 
 happiness_upper_limit: 10 # Happiness cannot go above this value
 happiness_lower_limit: -10 # Happiness cannot go below this value
-reputation_trading_upper_limit: 100 # Reputation cannot exceed this value
-reputation_trading_lower_limit: -100 # Reputation cannot go below this value
-reputation_renown_upper_limit: 100 # Renown cannot exceed this value
-reputation_renown_lower_limit: -100 # Renown cannot go below this value
-renown_unforgiveable: -90 # If the player reaches a renown lower than this value, it can not go up again
-reputation_unforgiveable: -90 # If the player reaches a reputation lower than this value, it can not go up again
-renown_kill_villager: -50 # Renown lost to all nearby villagers when a villager is killed
+reputation_upper_limit: 100 # Reputation cannot exceed this value
+reputation_lower_limit: -100 # Reputation cannot go below this value
+renown_upper_limit: 100 # Renown cannot exceed this value
+renown_lower_limit: -100 # Renown cannot go below this value
+renown_unforgivable: -90 # If the player reaches a renown lower than this value, it can not go up again
+reputation_unforgivable: -90 # If the player reaches a reputation lower than this value, it can not go up again
 
+renown_kill_villager: -50 # Renown lost to all nearby villagers when a villager is killed
 renown_kill_baby_villager: -75 # Renown lost to all nearby villagers when a baby villager is killed
 renown_kill_iron_golem: -25 # Renown lost to all nearby villagers when an iron golem is killed
 renown_hurt_villager: -5 # Renown lost to all nearby villagers when a villager is punched repeatedly (1 punch will start an "accident" timer, if the villager is punched again during the timer this penalty goes into effect)
 renown_hurt_baby_villager: -10 # Renown lost to all nearby villagers when a baby villager is hurt repeatedly
+renown_hurt_iron_golem: 0 # Renown lost to all nearby villagers when an iron golem is hurt repeatedly
 renown_death_villager: -5 # Renown lost to all nearby villager if a villager merely dies under a player's watch
 renown_death_baby_villager: -10 # Renown lost to all nearby villagers if a baby villager merely dies under a player's watch
 renown_death_iron_golem: -2 # Renown lost to all nearby villagers if an iron golem merely dies under a player's watch
+reputation_kill_villager: -50 # etc.
+reputation_kill_baby_villager: -75
+reputation_kill_iron_golem: -15
+reputation_hurt_villager: -5
+reputation_hurt_baby_villager: -10
+reputation_hurt_iron_golem: 0
+reputation_death_villager: 0
+reputation_death_baby_villager: 0
+reputation_death_iron_golem: 0
 renown_hero: 20 # Renown gained when winning a raid
+# There is no renown when losing a raid because losing a raid means all villagers are dead
 renown_happiness: 1 # Renown gained when making a villager happy (this cannot be repeated on a single villager)
 
 time_forgive_accidental_punch: 1200 # If a villager is hurt accidentally, they will forgive you. If they are hurt again during this timer, your reputation and renown goes down. (in game ticks, by default 1 minute)
 
-happiness_deny_trading: -5 # If a villager has less than this amount of happiness, they will deny trading entirely
+happiness_deny_trading: -3 # If a villager has less than this amount of happiness, they will deny trading entirely
+renown_deny_trading: -75 # If a villager has less than this amount of renown, they will deny trading entirely
 happiness_renown_threshold: 8 # If a villager has more than this amount of happiness, the player's renown goes up to all nearby villagers
+happiness_prevent_golem_spawning: -5 # If a villager has less than this amount of happiness, iron golems will not spawn from them
 
 happiness_sources:
   imprisoned: -10 # If a villager has little space to move, they become very unhappy

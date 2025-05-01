@@ -65,6 +65,7 @@ public abstract class VirtualMerchant {
         VirtualMerchant oldMenu = MerchantListener.getCurrentActiveVirtualMerchant(playerMenuUtility.getOwner());
         if (oldMenu != null) MerchantListener.virtualMerchantClose(playerMenuUtility.getOwner(), oldMenu);
         MerchantListener.setActiveTradingMenu(playerMenuUtility.getOwner(), this);
+        if (merchantID != null) MerchantListener.getTradingMerchants().add(merchantID);
         playerMenuUtility.getOwner().openMerchant(merchant, true);
         onOpen();
     }

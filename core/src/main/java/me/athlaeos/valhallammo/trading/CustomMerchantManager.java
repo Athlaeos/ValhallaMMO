@@ -14,13 +14,19 @@ import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.trading.data.MerchantDataPersistence;
 import me.athlaeos.valhallammo.trading.data.implementations.SQLite;
 import me.athlaeos.valhallammo.trading.dom.*;
+import me.athlaeos.valhallammo.trading.happiness.HappinessSourceRegistry;
 import me.athlaeos.valhallammo.utility.Callback;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.MathUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.AbstractVillager;
@@ -48,7 +54,11 @@ public class CustomMerchantManager {
     private static final NamespacedKey KEY_TRADE_ID = new NamespacedKey(ValhallaMMO.getInstance(), "trade_id");
     private static final NamespacedKey KEY_CUSTOM_VILLAGER = new NamespacedKey(ValhallaMMO.getInstance(), "is_custom_villager");
 
-    private final int delayUntilWorking = ValhallaMMO.getPluginConfig().getInt("delay_until_working"); // the time it takes for a villager who just got a profession to be able to work/be interacted with, in game time
+    private static final int delayUntilWorking = getTradingConfig().getInt("delay_until_working"); // the time it takes for a villager who just got a profession to be able to work/be interacted with, in game time
+    private static final String discountFormula = getTradingConfig().getString("discount", "(0.0025 * %happiness%) + (0.002 * %reputation%) + (0.0015 * %renown%)");
+    private static final double renownUnforgivable = getTradingConfig().getDouble("renown_unforgivable", -90);
+    private static final double reputationUnforgivable = getTradingConfig().getDouble("reputation_unforgivable", -90);
+
     private static MerchantDataPersistence merchantDataPersistence;
 
     private static final Map<Villager.Profession, MerchantConfiguration> merchantConfigurations = new HashMap<>();
@@ -70,9 +80,9 @@ public class CustomMerchantManager {
      * @param villager The villager to be granted custom trades
      * @return The new MerchantData representing all trades the villager has been granted, or null if no recipes were added
      */
-    public static MerchantData convertToRandomMerchant(Villager villager){
+    public static MerchantData convertToRandomMerchant(AbstractVillager villager, float luck){
         villager.getPersistentDataContainer().set(KEY_CUSTOM_VILLAGER, PersistentDataType.BYTE, (byte) 0);
-        MerchantConfiguration configuration = merchantConfigurations.get(villager.getProfession());
+        MerchantConfiguration configuration = villager instanceof Villager v ? merchantConfigurations.get(v.getProfession()) : travelingMerchantConfiguration;
         if (configuration == null || configuration.getMerchantTypes().isEmpty()) return null; // No configuration available, do not do anything
         Collection<MerchantType> types = new HashSet<>();
         for (String type : new HashSet<>(configuration.getMerchantTypes())) {
@@ -85,16 +95,17 @@ public class CustomMerchantManager {
         MerchantType selectedType = Utils.weightedSelection(types, 1, 0, 0).stream().findFirst().orElse(null);
         if (selectedType == null) return null; // No merchant type selected
 
-        return createMerchant(villager.getUniqueId(), selectedType);
+        return createMerchant(villager.getUniqueId(), selectedType, luck);
     }
 
-    public static MerchantData createMerchant(UUID id, MerchantType type){
-        MerchantData data = new MerchantData(type, generateRandomTrades(type));
+    public static MerchantData createMerchant(UUID id, MerchantType type, float luck){
+        AbstractVillager villager = ValhallaMMO.getInstance().getServer().getEntity(id) instanceof AbstractVillager a ? a : null;
+        MerchantData data = new MerchantData(villager, type, generateRandomTrades(type, luck));
         merchantDataPersistence.setData(id, data);
         return data;
     }
 
-    public static List<MerchantData.TradeData> generateRandomTrades(MerchantType type){
+    public static List<MerchantData.TradeData> generateRandomTrades(MerchantType type, float luck){
         List<MerchantData.TradeData> trades = new ArrayList<>();
         for (MerchantLevel level : type.getTrades().keySet()){
             MerchantType.MerchantLevelTrades levelTrades = type.getTrades(level);
@@ -108,15 +119,16 @@ public class CustomMerchantManager {
             }
             Collection<MerchantTrade> selectedTrades = new HashSet<>(merchantTrades.stream().filter(t -> t.getWeight() == -1).toList());
             merchantTrades.removeIf(t -> t.getWeight() == -1);
-            selectedTrades.addAll(Utils.weightedSelection(merchantTrades, Utils.randomAverage(type.getRolls(level)), 0, 0));
+            selectedTrades.addAll(Utils.weightedSelection(merchantTrades, Utils.randomAverage(type.getRolls(level)), luck, 0));
             selectedTrades.forEach(t -> {
                 ItemBuilder result = new ItemBuilder(t.getResult());
                 DynamicItemModifier.modify(result, null, t.getModifiers(), false, true, true);
                 setTradeKey(result.getMeta(), t);
 
                 ItemBuilder cost = new ItemBuilder(t.getScalingCostItem());
-                int randomOffset = Utils.getRandom().nextInt(t.getPriceRandomNegativeOffset(), 1 + t.getPriceRandomPositiveOffset());
-                int price = Math.min(1, Math.max(ValhallaMMO.getNms().getMaxStackSize(cost.getMeta(), cost.getItem().getType()), cost.getItem().getAmount() + randomOffset));
+                int boundMax = t.getPriceRandomPositiveOffset() - t.getPriceRandomNegativeOffset();
+                int randomOffset = boundMax <= 0 ? 0 : (Utils.getRandom().nextInt(boundMax) + t.getPriceRandomNegativeOffset());
+                int price = Math.max(1, Math.min(ValhallaMMO.getNms().getMaxStackSize(cost.getMeta(), cost.getItem().getType()), cost.getItem().getAmount() + randomOffset));
 
                 trades.add(new MerchantData.TradeData(t.getID(), level.getLevel(), price, result.get(), t.getMaxUses()));
             });
@@ -161,21 +173,33 @@ public class CustomMerchantManager {
             }
             trades.add(trade);
         }
+        AbstractVillager villager = data.getVillager();
+        float happiness = villager == null ? 0F : HappinessSourceRegistry.getHappiness(player, villager);
+        float renown = data.getPlayerMemory(player.getUniqueId()).getRenownReputation();
         double expVanillaToCustomModifier = (double) level.getDefaultExpRequirement() / type.getExpRequirement(level);
         for (MerchantTrade trade : trades){
+            float reputation = data.getPlayerMemory(player.getUniqueId()).getTradingReputation();
+            if (reputation < 0) reputation *= trade.getNegativeReputationMultiplier();
+            else if (reputation > 0) reputation *= trade.getPositiveReputationMultiplier();
             MerchantData.TradeData tradeData = data.getTrades().get(trade.getID());
             if (tradeData.getLevel() > level.getLevel()) continue;
-            double perTradeWeight = 1;
-            if (!trade.hasFixedUseCount()){
-                double tradeCountMultiplier = 1; // TODO AccumulativeStatManager.getCachedStats("TRADE_USE_MULTIPLIER", player, 10000, true);
-                // TODO scale with demand
-                perTradeWeight = 1 / tradeCountMultiplier;
-            }
+            double perTradeWeight = trade.getPerTradeWeight(player, tradeData);
             int finalMaxUses = (int) Math.floor(trade.getMaxUses() / perTradeWeight);
-            int finalRemainingUses = (int) Math.floor(tradeData.getRemainingUses() / perTradeWeight);
+            int finalRemainingUses = (int) Math.floor(tradeData.getRemainingUses(player, type.isPerPlayerStock()) / perTradeWeight);
             if (finalRemainingUses > finalMaxUses) finalRemainingUses = finalMaxUses;
             int uses = (finalMaxUses - finalRemainingUses);
-            int specialPrice = 2;// Math.round(trade.getScalingCostItem().getAmount() * (1 + (tradeData.getDemand() * trade.getDemandPriceMultiplier())));
+            double price = tradeData.getBasePrice();
+
+            price = Math.min(trade.getDemandPriceMax(), price * (1 + (tradeData.getDemand() * trade.getDemandPriceMultiplier())));
+
+            double discount = discountFormula == null ? 0 : Utils.eval(discountFormula
+                    .replace("%happiness%", String.valueOf(happiness))
+                    .replace("%renown%", String.valueOf(renown))
+                    .replace("%reputation%", String.valueOf(reputation))
+            );
+            price = Math.round(price * (1 - discount) * (1 + 0)); // TODO + AccumulativeStatManager.getCachedStats("TRADING_DISCOUNT", player, 10000, true)
+
+            int specialPrice = (int) Math.round(price) - tradeData.getBasePrice();// Math.round(trade.getScalingCostItem().getAmount() * (1 + (tradeData.getDemand() * trade.getDemandPriceMultiplier())));
             // specialprice is simply a PRICE OFFSET, so with a price of 8 and a specialprice of 2 the final price is 10
             int villagerExperience = (int) Math.round(trade.getVillagerExperience() * (1) * expVanillaToCustomModifier); // TODO player villager experience multiplier
 
@@ -206,7 +230,7 @@ public class CustomMerchantManager {
         merchantConfigurations.put(configuration.getType(), configuration);
     }
 
-    public int getDelayUntilWorking() {
+    public static int getDelayUntilWorking() {
         return delayUntilWorking;
     }
 
@@ -320,6 +344,8 @@ public class CustomMerchantManager {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(trades, StandardCharsets.UTF_8))){
             JsonElement element = gson.toJsonTree(new ArrayList<>(registeredMerchantTrades.values()), new TypeToken<ArrayList<MerchantTrade>>(){}.getType());
+            gson.toJson(element, writer);
+            writer.flush();
         } catch (IOException | JsonSyntaxException exception){
             ValhallaMMO.logSevere("Could not save items to trading/trades.json, " + exception.getMessage());
         }
@@ -342,7 +368,7 @@ public class CustomMerchantManager {
         return merchantDataPersistence;
     }
 
-    public static boolean isCustomMerchant(Villager villager){
+    public static boolean isCustomMerchant(AbstractVillager villager){
         return villager.getPersistentDataContainer().has(KEY_CUSTOM_VILLAGER, PersistentDataType.BYTE);
     }
 
@@ -363,6 +389,43 @@ public class CustomMerchantManager {
                 if (trades != null) trades.getTrades().remove(trade.getID());
             }
         }
+    }
+
+    public static float getTradingLuck(Player p){
+        AttributeInstance luckInstance = p.getAttribute(AttributeMappings.LUCK.getAttribute());
+        float luck = luckInstance == null ? 0 : (float) luckInstance.getValue();
+        // TODO luck += (float) AccumulativeStatManager.getCachedStats("TRADING_LUCK", p, 10000, true);
+        return luck;
+    }
+
+    public static void modifyTradingReputation(MerchantData data, Player toPlayer, float reputation){
+        if (reputation == 0) return;
+        MerchantData.MerchantPlayerMemory memory = data.getPlayerMemory(toPlayer.getUniqueId());
+        if (memory.getTradingReputation() < reputationUnforgivable && reputation > 0) return;
+        if (reputation > 0) reputation *= (1); // TODO  + AccumulativeStatManager.getCachedStats("TRADING_POS_REPUTATION_MULTIPLIER", toPlayer, 10000, true)
+        else reputation *= (1); // TODO  + AccumulativeStatManager.getCachedStats("TRADING_NEG_REPUTATION_MULTIPLIER", toPlayer, 10000, true)
+        memory.setRenownReputation(memory.getRenownReputation() + reputation);
+
+        AbstractVillager villager = data.getVillager();
+        if (villager == null) return;
+        int particleCount = Math.min(1, Math.round(reputation / 10F));
+        if (reputation < 0) toPlayer.spawnParticle(Particle.VILLAGER_ANGRY, villager.getEyeLocation(), particleCount, 0.5, 0.5, 0.5);
+        else toPlayer.spawnParticle(Particle.VILLAGER_HAPPY, villager.getEyeLocation(), particleCount, 0.5, 0.5, 0.5);
+    }
+
+    public static void modifyRenownReputation(MerchantData data, Player toPlayer, float reputation){
+        if (reputation == 0) return;
+        MerchantData.MerchantPlayerMemory memory = data.getPlayerMemory(toPlayer.getUniqueId());
+        if (memory.getRenownReputation() < renownUnforgivable && reputation > 0) return;
+        if (reputation > 0) reputation *= (1); // TODO  + AccumulativeStatManager.getCachedStats("TRADING_POS_RENOWN_MULTIPLIER", toPlayer, 10000, true)
+        else reputation *= (1); // TODO  + AccumulativeStatManager.getCachedStats("TRADING_NEG_RENOWN_MULTIPLIER", toPlayer, 10000, true)
+        memory.setRenownReputation(memory.getRenownReputation() + reputation);
+
+        AbstractVillager villager = data.getVillager();
+        if (villager == null) return;
+        int particleCount = Math.min(1, Math.round(reputation / 10F));
+        if (reputation < 0) toPlayer.spawnParticle(Particle.VILLAGER_ANGRY, villager.getEyeLocation(), particleCount, 0.5, 0.5, 0.5);
+        else toPlayer.spawnParticle(Particle.VILLAGER_HAPPY, villager.getEyeLocation(), particleCount, 0.5, 0.5, 0.5);
     }
 
     public static void removeType(MerchantType type){

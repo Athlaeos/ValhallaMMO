@@ -321,6 +321,11 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                 case "tradeEnchantingExperienceButton" -> currentTrade.setEnchantingExperience(currentTrade.getEnchantingExperience() + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 0.1F : -0.1F)));
                 case "tradeFixedUsesButton" -> currentTrade.setFixedUseCount(!currentTrade.hasFixedUseCount());
                 case "tradeExclusiveButton" -> currentTrade.setExclusive(!currentTrade.isExclusive());
+                case "tradeRestockDelayButton" -> currentTrade.setRestockDelay(Math.max(-1000, currentTrade.getRestockDelay() + ((e.isShiftClick() ? 24 : 1) * (e.isLeftClick() ? 1000 : -1000))));
+                case "tradePriceRandomizerButton" -> {
+                    if (e.isShiftClick()) currentTrade.setPriceRandomPositiveOffset(Math.max(currentTrade.getPriceRandomNegativeOffset(), currentTrade.getPriceRandomPositiveOffset() + (e.isLeftClick() ? 1 : -1)));
+                    else currentTrade.setPriceRandomNegativeOffset(Math.min(currentTrade.getPriceRandomPositiveOffset(), currentTrade.getPriceRandomNegativeOffset() + (e.isLeftClick() ? 1 : -1)));
+                }
                 case "backToMenuButton" -> switchView(View.TRADES);
             }
         }
@@ -413,7 +418,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     double totalWeight = types.stream().map(MerchantType::getWeight).mapToDouble(d -> d).sum();
                     inventory.setItem(0, new ItemBuilder(Buttons.subtypeNameButton).name(currentSubType.getName() == null ? "&7No name" : currentSubType.getName()).get());
                     inventory.setItem(8, new ItemBuilder(Buttons.subtypeVersionButton).name("&fVersion: " + currentSubType.getVersion()).get());
-                    inventory.setItem(11, new ItemBuilder(Buttons.subtypeRealisticButton).name("&fRestocking Resets: " + (currentSubType.resetsTradesDaily() ? "Yes" : "No")).get());
+                    inventory.setItem(11, new ItemBuilder(Buttons.subtypeRealisticButton).name("&fDaily Resets: " + (currentSubType.resetsTradesDaily() ? "Yes" : "No")).get());
                     inventory.setItem(13, new ItemBuilder(Buttons.subtypeProfessionLossButton).name("&fPermanent Profession: " + (currentSubType.canLoseProfession() ? "No" : "Yes")).get());
                     inventory.setItem(15, new ItemBuilder(Buttons.subtypePerPlayerStockButton).name("&fPer Player Stock: " + (currentSubType.isPerPlayerStock() ? "Yes" : "No")).get());
                     inventory.setItem(30, new ItemBuilder(Buttons.subtypeWeightButton)
@@ -512,14 +517,16 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     String weight = String.format("&8%.1f + %.2f/demand, up to %d, +%.1f/luck", currentTrade.getWeight(), currentTrade.getDemandWeightModifier(), currentTrade.getDemandWeightMaxQuantity(), currentTrade.getWeightQuality());
                     inventory.setItem(2, new ItemBuilder(Buttons.tradeWeightButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getWeight()), weight).get());
                     inventory.setItem(3, new ItemBuilder(Buttons.tradeWeightQualityButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getWeightQuality()), weight).get());
-                    inventory.setItem(4, new ItemBuilder(Buttons.tradeWeightDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandWeightModifier()), weight).get());
-                    inventory.setItem(5, new ItemBuilder(Buttons.tradeWeightDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandWeightMaxQuantity()), weight).get());
+                    if (currentSubType.resetsTradesDaily()){
+                        inventory.setItem(4, new ItemBuilder(Buttons.tradeWeightDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandWeightModifier()), weight).get());
+                        inventory.setItem(5, new ItemBuilder(Buttons.tradeWeightDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandWeightMaxQuantity()), weight).get());
+                    }
                     String uses = String.format("&8%d + %.2f/demand, up to %d", currentTrade.getMaxUses(), currentTrade.getDemandMaxUsesModifier(), currentTrade.getDemandMaxUsesMaxQuantity());
                     inventory.setItem(6, new ItemBuilder(Buttons.tradeUsesButton).prependLore(String.format("&7Currently &e%d", currentTrade.getMaxUses()), uses).get());
                     inventory.setItem(7, new ItemBuilder(Buttons.tradeUsesDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandMaxUsesModifier()), uses).get());
                     inventory.setItem(8, new ItemBuilder(Buttons.tradeUsesDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandMaxUsesMaxQuantity()), uses).get());
-                    inventory.setItem(9, new ItemBuilder(Buttons.tradeReputationPositiveModButton).prependLore(String.format("&7Currently &ex%.1f", currentTrade.getPositiveReputationMultiplier()), uses).get());
-                    String price = String.format("&8%d + %.0f%%/demand, up to %d", currentTrade.getScalingCostItem().getAmount(), currentTrade.getDemandPriceMultiplier() * 100, currentTrade.getDemandPriceMax());
+                    inventory.setItem(9, new ItemBuilder(Buttons.tradeReputationPositiveModButton).prependLore(String.format("&7Currently &ex%.1f", currentTrade.getPositiveReputationMultiplier())).get());
+                    String price = String.format("&8%d + %.0f%%/demand, up to %s", currentTrade.getScalingCostItem().getAmount(), currentTrade.getDemandPriceMultiplier() * 100, (currentTrade.getDemandPriceMax() > 0 ? "+" : "") + currentTrade.getDemandPriceMax());
                     inventory.setItem(11, new ItemBuilder(Buttons.tradePriceDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandPriceMultiplier()), price).get());
                     inventory.setItem(13, new ItemBuilder(Buttons.tradeVillagerExperienceButton).prependLore(String.format("&7Currently &e%d", currentTrade.getVillagerExperience())).get());
                     inventory.setItem(20, currentTrade.getScalingCostItem());
@@ -528,14 +535,14 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     List<String> modifierLore = new ArrayList<>();
                     currentTrade.getModifiers().forEach(m -> modifierLore.addAll(StringUtils.separateStringIntoLines("&d> " + m.getActiveDescription(), 40)));
                     inventory.setItem(24, new ItemBuilder(Buttons.tradeModifierButton).placeholderLore("%modifiers%", modifierLore).get());
-                    inventory.setItem(27, new ItemBuilder(Buttons.tradeReputationNegativeModButton).prependLore(String.format("&7Currently &ex%.1f", currentTrade.getNegativeReputationMultiplier()), uses).get());
-                    inventory.setItem(29, new ItemBuilder(Buttons.tradePriceDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandPriceMax())).get());
+                    inventory.setItem(27, new ItemBuilder(Buttons.tradeReputationNegativeModButton).prependLore(String.format("&7Currently &ex%.1f", currentTrade.getNegativeReputationMultiplier())).get());
+                    inventory.setItem(29, new ItemBuilder(Buttons.tradePriceDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandPriceMax()), price).get());
                     inventory.setItem(31, new ItemBuilder(Buttons.tradeEnchantingExperienceButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getEnchantingExperience())).get());
                     inventory.setItem(37, new ItemBuilder(Buttons.tradeFixedUsesButton).prependLore("&7Currently &e" + (currentTrade.hasFixedUseCount() ? "On" : "Off")).get());
                     inventory.setItem(43, new ItemBuilder(Buttons.tradeExclusiveButton).prependLore("&7Currently &e" + (currentTrade.isExclusive() ? "On" : "Off")).get());
 
-                    inventory.setItem(41, new ItemBuilder(Buttons.tradeRestockDelayButton).prependLore("&7Currently &e" + timeToString(currentTrade.getRestockDelay())).get());
-                    inventory.setItem(39, new ItemBuilder(Buttons.tradePriceRandomizerButton).prependLore(String.format("&7Price is &e%d-%d", Math.max(1, currentTrade.getScalingCostItem().getAmount() + currentTrade.getPriceRandomNegativeOffset()), Math.max(1, currentTrade.getScalingCostItem().getAmount() + currentTrade.getPriceRandomPositiveOffset()))).get());
+                    inventory.setItem(41, new ItemBuilder(Buttons.tradeRestockDelayButton).prependLore("&7Currently &e" + (currentTrade.getRestockDelay() < 0 ? "Does not restock" : timeToString(currentTrade.getRestockDelay()))).get());
+                    inventory.setItem(39, new ItemBuilder(Buttons.tradePriceRandomizerButton).prependLore(String.format("&7Price is &e%d-%d", currentTrade.getScalingCostItem().getAmount() + currentTrade.getPriceRandomNegativeOffset(), currentTrade.getScalingCostItem().getAmount() + currentTrade.getPriceRandomPositiveOffset())).get());
                 }
                 inventory.setItem(49, Buttons.backToMenuButton);
             }
@@ -543,9 +550,9 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
     }
 
     private String timeToString(long delay){
-        if (delay < 24000) {
-            return String.format("%d ingame hours", delay/1000);
-        } else return String.format("%.1f ingame days", delay / 24000D);
+        if (delay < 24000) return String.format("%d ingame hours", delay/1000);
+        else if (delay % 24000 == 0) return String.format("%d ingame days", (int) (delay / 24000D));
+        else return String.format("%d ingame days and %d hours", (int) (delay / 24000D), (int) ((delay % 24000) / 1000D));
     }
 
     private ItemStack fromTrade(MerchantTrade trade){

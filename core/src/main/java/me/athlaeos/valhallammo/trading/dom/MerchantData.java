@@ -2,9 +2,12 @@ package me.athlaeos.valhallammo.trading.dom;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.AbstractVillager;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +18,13 @@ import java.util.UUID;
 
 public class MerchantData {
     private static final Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(ConfigurationSerializable.class, new ItemStackGSONAdapter()).create();
+    private static final int reputationMax = CustomMerchantManager.getTradingConfig().getInt("reputation_upper_limit", 100);
+    private static final int reputationMin = CustomMerchantManager.getTradingConfig().getInt("reputation_lower_limit", -100);
+    private static final int renownMax = CustomMerchantManager.getTradingConfig().getInt("renown_upper_limit", 100);
+    private static final int renownMin = CustomMerchantManager.getTradingConfig().getInt("renown_lower_limit", -100);
+    private static final int demandMax = CustomMerchantManager.getTradingConfig().getInt("demand_max", 24);
 
+    private final UUID villagerUUID;
     private final String type;
     private final int typeVersion;
     private int day; // keeps track of which day the merchant had last reset their demand tracker
@@ -23,14 +32,16 @@ public class MerchantData {
     private final Map<UUID, MerchantPlayerMemory> playerMemory = new HashMap<>(); // Tracks the amount of times a player traded with a villager. Partially used to determine if a player is a frequent customer or not.
     private int exp = 0;
 
-    public MerchantData(MerchantType type, TradeData... data){
+    public MerchantData(AbstractVillager villager, MerchantType type, TradeData... data){
+        this.villagerUUID = villager == null ? null : villager.getUniqueId();
         this.type = type.getType();
         this.typeVersion = type.getVersion();
         for (TradeData datum : data) trades.put(datum.getTrade(), datum);
         this.day = CustomMerchantManager.today();
     }
 
-    public MerchantData(MerchantType type, Collection<TradeData> data){
+    public MerchantData(AbstractVillager villager, MerchantType type, Collection<TradeData> data){
+        this.villagerUUID = villager == null ? null : villager.getUniqueId();
         this.type = type.getType();
         this.typeVersion = type.getVersion();
         for (TradeData datum : data) trades.put(datum.getTrade(), datum);
@@ -50,8 +61,16 @@ public class MerchantData {
         if (!playerMemory.containsKey(player)) playerMemory.put(player, new MerchantPlayerMemory());
         return playerMemory.get(player);
     }
+    public Map<UUID, MerchantPlayerMemory> getPlayerMemory() {
+        return playerMemory;
+    }
     public int getDay() { return day; }
     public void setDay(int day) { this.day = day; }
+    public UUID getVillagerUUID() { return villagerUUID; }
+    public AbstractVillager getVillager(){
+        if (villagerUUID == null) return null;
+        return ValhallaMMO.getInstance().getServer().getEntity(villagerUUID) instanceof AbstractVillager a ? a : null;
+    }
 
     public static MerchantData deserialize(String data){
         return gson.fromJson(data, MerchantData.class);
@@ -68,6 +87,7 @@ public class MerchantData {
         private final int maxUses;
         private double remainingUses;
         private int demand = 0;
+        private Map<UUID, Double> perPlayerRemainingUses = new HashMap<>();
         private final int basePrice;
         private long lastRestocked = -1;
         private long lastTraded = -1;
@@ -89,9 +109,21 @@ public class MerchantData {
         public long getLastRestocked() { return lastRestocked; }
         public long getLastTraded() { return lastTraded; }
         public int getBasePrice() { return basePrice; }
+        public double getRemainingUses(Player player, boolean perPlayerStock){
+            if (perPlayerStock) return perPlayerRemainingUses.getOrDefault(player.getUniqueId(), (double) maxUses);
+            else return remainingUses;
+        }
 
-        public void setDemand(int demand) { this.demand = demand; }
+        public void setDemand(int demand) { this.demand = Math.min(demandMax, demand); }
         public void setRemainingUses(double remainingUses) { this.remainingUses = remainingUses; }
+        public void setRemainingUses(Player player, double remainingUses, boolean perPlayerStock){
+            if (perPlayerStock) perPlayerRemainingUses.put(player.getUniqueId(), remainingUses);
+            else this.remainingUses = remainingUses;
+        }
+        public void resetRemainingUses(boolean perPlayerStock){
+            if (perPlayerStock) perPlayerRemainingUses.clear();
+            else this.remainingUses = maxUses;
+        }
         public void setLastRestocked(long lastRestocked) { this.lastRestocked = lastRestocked; }
         public void setLastTraded(long lastTraded) { this.lastTraded = lastTraded; }
     }
@@ -110,7 +142,7 @@ public class MerchantData {
         public Map<String, Double> getPerPlayerTradesLeft() { return perPlayerTradesLeft; }
         public void setLastTimeTraded(long lastTimeTraded) { this.lastTimeTraded = lastTimeTraded; }
         public void setTimesTraded(int timesTraded) { this.timesTraded = timesTraded; }
-        public void setRenownReputation(float renownReputation) { this.renownReputation = renownReputation; }
-        public void setTradingReputation(float tradingReputation) { this.tradingReputation = tradingReputation; }
+        public void setRenownReputation(float renownReputation) { this.renownReputation = Math.max(renownMin, Math.min(renownMax, renownReputation)); }
+        public void setTradingReputation(float tradingReputation) { this.tradingReputation = Math.max(reputationMin, Math.min(reputationMax, tradingReputation)); }
     }
 }

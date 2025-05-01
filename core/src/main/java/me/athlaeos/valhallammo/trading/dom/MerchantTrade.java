@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
 
@@ -104,6 +105,18 @@ public class MerchantTrade implements Weighted {
     public void setRestockDelay(long delay) { this.restockDelay = delay; }
     public void setPriceRandomNegativeOffset(int priceRandomNegativeOffset) { this.priceRandomNegativeOffset = priceRandomNegativeOffset; }
     public void setPriceRandomPositiveOffset(int priceRandomPositiveOffset) { this.priceRandomPositiveOffset = priceRandomPositiveOffset; }
+
+    public float getPerTradeWeight(Player player, MerchantData.TradeData tradeData){
+        if (!fixedUseCount){
+            float perTradeWeight = 1;
+            double expectedMaxTrades = maxUses * (1); // TODO + AccumulativeStatManager.getCachedStats("TRADING_USES_MULTIPLIER", player, 10000, true);
+            expectedMaxTrades += Math.min(demandMaxUsesMaxQuantity, tradeData.getDemand() * demandMaxUsesMaxQuantity);
+            expectedMaxTrades += 0; // TODO AccumulativeStatManager.getCachedStats("TRADING_USES_BONUS", player, 10000, true);
+            if (expectedMaxTrades <= 0) perTradeWeight = Integer.MAX_VALUE;
+            else perTradeWeight = (float) (maxUses / expectedMaxTrades);
+            return perTradeWeight;
+        } else return 1;
+    }
 
     public boolean failsPredicates(LootTable.PredicateSelection predicateSelection, LootContext context){
         if (predicates.isEmpty()) return false;

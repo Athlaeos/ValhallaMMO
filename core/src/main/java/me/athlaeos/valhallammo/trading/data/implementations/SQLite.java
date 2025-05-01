@@ -72,7 +72,10 @@ public class SQLite extends MerchantDataPersistence implements Database {
 
     @Override
     public void setData(UUID id, MerchantData data) {
-        allData.put(id, data);
+        if (data == null) {
+            allData.remove(id);
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> removeData(id));
+        } else allData.put(id, data);
     }
 
     @Override
@@ -88,7 +91,9 @@ public class SQLite extends MerchantDataPersistence implements Database {
                     PreparedStatement stmt = conn.prepareStatement("SELECT * FROM merchants WHERE id = ?;");
                     stmt.setString(1, id.toString());
                     ResultSet result = stmt.executeQuery();
-                    if (result.next()) callback.whenReady(MerchantData.deserialize(result.getString("data")));
+                    MerchantData data = MerchantData.deserialize(result.getString("data"));
+                    allData.put(id, data);
+                    if (result.next()) callback.whenReady(data);
                     else callback.whenReady(null);
                 } catch (SQLException ex){
                     ValhallaMMO.logSevere("SQLException when trying to fetch MerchantData with id " + id);
@@ -103,6 +108,7 @@ public class SQLite extends MerchantDataPersistence implements Database {
     public void saveAllData() {
         for (UUID id : allData.keySet()){
             MerchantData data = allData.get(id);
+            if (data == null) continue;
             saveData(id, data);
         }
     }
@@ -117,6 +123,19 @@ public class SQLite extends MerchantDataPersistence implements Database {
             stmt.execute();
         } catch (SQLException exception){
             ValhallaMMO.getInstance().getServer().getLogger().severe("SQLException when trying to save MerchantData with id " + id);
+            exception.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removeData(UUID id) {
+        String query = "DELETE FROM merchants WHERE id = ?;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, id.toString());
+            stmt.execute();
+        } catch (SQLException exception){
+            ValhallaMMO.getInstance().getServer().getLogger().severe("SQLException when trying to remove MerchantData with id " + id);
             exception.printStackTrace();
         }
     }

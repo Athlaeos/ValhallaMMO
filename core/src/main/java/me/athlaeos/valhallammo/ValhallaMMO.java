@@ -55,6 +55,7 @@ import java.util.*;
 
 public class ValhallaMMO extends JavaPlugin {
     private static boolean customMiningSystem = false;
+    private static boolean tradingSystemEnabled = false;
     private static NMS nms = null;
     private static PacketListener packetListener = null;
     private static ValhallaMMO instance;
@@ -100,14 +101,16 @@ public class ValhallaMMO extends JavaPlugin {
         save("recipes/cauldron_recipes.json");
         save("recipes/smithing_recipes.json");
         save("items.json");
-        save("merchant_configurations.json");
+        save("trading/configurations.json");
+        save("trading/types.json");
+        save("trading/trades.json");
         save("loot_table_config.json");
         save("loot_tables/digging.json");
         save("loot_tables/fishing.json");
         save("loot_tables/woodcutting.json");
         save("replacement_table_config.json");
         save("replacement_tables/loot_valhallafication.json");
-        saveConfig("trading.yml");
+        saveConfig("trading/trading.yml");
         saveConfig("recipes/disabled_recipes.yml");
         saveConfig("leaderboards.yml");
         saveConfig("mob_stats.yml");
@@ -155,6 +158,7 @@ public class ValhallaMMO extends JavaPlugin {
             enabled = false;
             return;
         }
+        tradingSystemEnabled = CustomMerchantManager.getTradingConfig().getBoolean("enabled", false);
 
         // initialize modifiers and perk rewards
         ResourceExpenseRegistry.registerDefaultExpenses();
@@ -191,7 +195,7 @@ public class ValhallaMMO extends JavaPlugin {
         ResourcePack.tryStart();
 
         ProfileRegistry.setupDatabase();
-        CustomMerchantManager.setupDatabase();
+        if (tradingSystemEnabled) CustomMerchantManager.setupDatabase();
         ProfileRegistry.registerDefaultProfiles();
         PotionBelt.loadFromFile();
         ItemAttributesRegistry.registerAttributes();
@@ -249,7 +253,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerListener(new WorldSaveListener());
 //        registerListener(new ThrownWeaponListener()); // might end up not using
 
-        registerListener(new MerchantListener());
+        if (tradingSystemEnabled) registerListener(new MerchantListener());
         registerListener(new BlockHardnessStick());
 
         registerCommand(new CommandManager(), "valhalla");
@@ -279,7 +283,7 @@ public class ValhallaMMO extends JavaPlugin {
         LeaderboardManager.loadFile();
         CustomRecipeRegistry.loadFiles();
         LootTableRegistry.loadFiles();
-        CustomMerchantManager.loadAll();
+        if (tradingSystemEnabled) CustomMerchantManager.loadAll();
         ArmorSetRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/armor_sets.json"));
         CustomItemRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/items.json"));
         LeaderboardManager.refreshLeaderboards();
@@ -315,12 +319,14 @@ public class ValhallaMMO extends JavaPlugin {
                 logSevere("Could not close connection for player data persistence");
             }
         }
-        CustomMerchantManager.getMerchantDataPersistence().saveAllData();
-        if (CustomMerchantManager.getMerchantDataPersistence() instanceof Database database) {
-            try {
-                database.getConnection().close();
-            } catch (SQLException ignored){
-                logSevere("Could not close connection for merchant data persistence");
+        if (tradingSystemEnabled){
+            CustomMerchantManager.getMerchantDataPersistence().saveAllData();
+            if (CustomMerchantManager.getMerchantDataPersistence() instanceof Database database) {
+                try {
+                    database.getConnection().close();
+                } catch (SQLException ignored){
+                    logSevere("Could not close connection for merchant data persistence");
+                }
             }
         }
         for (Player p : getServer().getOnlinePlayers()) {
@@ -332,7 +338,7 @@ public class ValhallaMMO extends JavaPlugin {
         LootTableRegistry.saveAll();
         ArmorSetRegistry.saveArmorSets();
         CustomItemRegistry.saveItems();
-        CustomMerchantManager.saveAll();
+        if (tradingSystemEnabled) CustomMerchantManager.saveAll();
         GlobalEffect.saveActiveGlobalEffects();
         PartyManager.saveParties();
         JumpListener.onServerStop();
@@ -470,5 +476,9 @@ public class ValhallaMMO extends JavaPlugin {
 
     public static boolean isUsingPaperMC() {
         return usingPaperMC;
+    }
+
+    public static boolean isTradingSystemEnabled() {
+        return tradingSystemEnabled;
     }
 }

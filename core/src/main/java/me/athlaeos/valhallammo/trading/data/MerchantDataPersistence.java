@@ -19,5 +19,7 @@ public abstract class MerchantDataPersistence {
     public abstract void saveAllData();
 
     public abstract void saveData(UUID id, MerchantData data);
+
+    public abstract void removeData(UUID id);
 }
 
