@@ -355,7 +355,8 @@ public class DynamicModifierMenu extends Menu {
         }
         List<DynamicItemModifier> modifiers = currentModifiers.stream().filter(m -> showRelational || !(m instanceof RelationalItemModifier)).limit(45).sorted(Comparator.comparingInt((DynamicItemModifier a) -> a.getPriority().getPriorityRating())).toList();
         for (DynamicItemModifier modifier : modifiers){
-            ItemStack icon = new ItemBuilder(modifier.getModifierIcon())
+            if (ItemUtils.isEmpty(modifier.getModifierIcon())) ValhallaMMO.logWarning("Modifier " + modifier.getName() + " has no icon, please notify plugin author Athlaeos!");
+            ItemStack icon = new ItemBuilder(ItemUtils.isEmpty(modifier.getModifierIcon()) ? new ItemStack(Material.BARRIER) : modifier.getModifierIcon())
                     .lore(StringUtils.separateStringIntoLines(modifier.getActiveDescription(), 40))
                     .name(modifier.getDisplayName())
                     .stringTag(KEY_MODIFIER_ID, modifier.getName())

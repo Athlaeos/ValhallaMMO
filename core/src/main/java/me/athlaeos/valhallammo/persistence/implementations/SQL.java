@@ -161,8 +161,6 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
 
     @Override
     public void loadProfile(Player p) {
-        if (persistentProfiles.containsKey(p.getUniqueId())) return; // stats are presumably already loaded in and so they do not
-        // need to be loaded in from the database again
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             boolean runPersistentStartingPerks = false;
             Map<Class<? extends Profile>, Profile> profs = persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>());
