@@ -87,8 +87,16 @@
     <build>
         <defaultGoal>clean package</defaultGoal>
         <directory>../target</directory>
-        <finalName>ValhallaMMOPremium_${revision}</finalName>
+        <finalName>${finalName}_${revision}</finalName>
         <plugins>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <!-- use the same repo you declared in distributionManagement -->
+                    <repositoryId>${distributionManagement.repository.id}</repositoryId>
+                    <url>${distributionManagement.repository.url}</url>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

@@ -15,10 +15,12 @@
         <javaVersion>17</javaVersion>
         <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\1.21.5\plugins</testServerPath>
         <shadedPackage>me.athlaeos.valhallammo.shaded</shadedPackage>
+        <finalName>ValhallaMMOPremium</finalName>
 
         <!-- Do not change the following properties -->
         <outputDirectory>target</outputDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <repo.user>athlaeos</repo.user>
     </properties>
 
     <modules>
@@ -67,8 +69,39 @@
                     <target>${javaVersion}</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.7.0</version>
+                <configuration>
+                </configuration>
+                <executions>
+                    <!-- enable flattening -->
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <!-- ensure proper cleanup -->
+                    <execution>
+                        <id>flatten.clean</id>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>repsy</id>
+            <url>https://repo.repsy.io/mvn/${repo.user}/valhallammo</url>
+        </repository>
+    </distributionManagement>
 
     <repositories>
         <repository>
