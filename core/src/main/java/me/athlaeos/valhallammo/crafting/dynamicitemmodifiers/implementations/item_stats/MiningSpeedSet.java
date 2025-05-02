@@ -26,7 +26,7 @@ public class MiningSpeedSet extends DynamicItemModifier {
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
         MiningSpeed.setMultiplier(outputItem.getMeta(), value);
-        ValhallaMMO.getNms().setTool(outputItem.getMeta(), (float) value, true);
+        ValhallaMMO.getNms().setTool(outputItem, (float) value, true);
     }
 
     @Override

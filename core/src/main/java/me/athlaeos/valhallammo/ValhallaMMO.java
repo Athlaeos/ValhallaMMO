@@ -21,6 +21,7 @@ import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.nms.NMS;
 import me.athlaeos.valhallammo.block.BlockBreakNetworkHandlerImpl;
 import me.athlaeos.valhallammo.nms.PacketListener;
+import me.athlaeos.valhallammo.nms.Paper;
 import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
@@ -57,6 +58,7 @@ public class ValhallaMMO extends JavaPlugin {
     private static boolean customMiningSystem = false;
     private static boolean tradingSystemEnabled = false;
     private static NMS nms = null;
+    private static Paper paper = null;
     private static PacketListener packetListener = null;
     private static ValhallaMMO instance;
     private static boolean resourcePackConfigForced = false;
@@ -159,6 +161,7 @@ public class ValhallaMMO extends JavaPlugin {
             return;
         }
         tradingSystemEnabled = CustomMerchantManager.getTradingConfig().getBoolean("enabled", false);
+        setupPaper();
 
         // initialize modifiers and perk rewards
         ResourceExpenseRegistry.registerDefaultExpenses();
@@ -170,6 +173,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerHook(new WorldGuardHook());
         registerHook(new JustLootItHook());
         registerHook(new DecentHologramsHook());
+        registerHook(new NexoHook());
         registerHook(new CoreProtectHook());
     }
 
@@ -191,6 +195,8 @@ public class ValhallaMMO extends JavaPlugin {
             registerListener(packetListener);
         }
         logInfo("NMS version " + nms.getClass().getSimpleName() + " registered!");
+        if (paper != null) logInfo("Successfully hooked to paper version " + paper.getClass().getSimpleName());
+        else if (usingPaperMC && MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21_4)) logWarning("Using papermc, but couldn't hook to paper API");
 
         ResourcePack.tryStart();
 
@@ -364,6 +370,20 @@ public class ValhallaMMO extends JavaPlugin {
         }
     }
 
+    private void setupPaper() {
+        try {
+            String paperVersion = MinecraftVersion.getServerVersion().getNmsVersion();
+            if (paperVersion == null) return;
+            Class<?> clazz = Class.forName("me.athlaeos.valhallammo.paper.Paper_" + paperVersion);
+
+            if (Paper.class.isAssignableFrom(clazz)) {
+                paper = (Paper) clazz.getDeclaredConstructor().newInstance();
+            }
+        } catch (Exception | Error e) {
+            e.printStackTrace();
+        }
+    }
+
     public static NMS getNms() {
         return nms;
     }
@@ -480,5 +500,9 @@ public class ValhallaMMO extends JavaPlugin {
 
     public static boolean isTradingSystemEnabled() {
         return tradingSystemEnabled;
+    }
+
+    public static Paper getPaper() {
+        return paper;
     }
 }

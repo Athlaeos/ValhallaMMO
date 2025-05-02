@@ -25,7 +25,7 @@ public class MakeEdible extends DynamicItemModifier {
 
     @Override
     public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        ValhallaMMO.getNms().setEdible(outputItem.getMeta(), edible, canAlwaysEat, eatTimeSeconds);
+        ValhallaMMO.getNms().setEdible(outputItem, edible, canAlwaysEat, eatTimeSeconds);
     }
 
     @Override

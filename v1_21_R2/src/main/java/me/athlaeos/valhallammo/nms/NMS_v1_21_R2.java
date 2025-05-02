@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -253,12 +254,16 @@ public final class NMS_v1_21_R2 implements NMS {
 
     @SuppressWarnings("UnstableApiUsage")
     @Override
-    public void setEdible(ItemMeta meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {
+    public void setEdible(ItemBuilder meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {
+        if (ValhallaMMO.getPaper() != null){
+            ValhallaMMO.getPaper().setConsumable(meta, edible, canAlwaysEat, eatTimeSeconds);
+            return;
+        }
         if (edible){
-            FoodComponent food = meta.getFood();
+            FoodComponent food = meta.getMeta().getFood();
             food.setCanAlwaysEat(canAlwaysEat);
-            meta.setFood(food);
-        } else meta.setFood(null);
+            meta.getMeta().setFood(food);
+        } else meta.getMeta().setFood(null);
     }
 
     @Override
@@ -376,10 +381,14 @@ public final class NMS_v1_21_R2 implements NMS {
 
     @Override
     @SuppressWarnings("UnstableApiUsage")
-    public void setTool(ItemMeta meta, float miningSpeed, boolean canDestroyInCreative){
-        ToolComponent tool = meta.getTool();
+    public void setTool(ItemBuilder meta, float miningSpeed, boolean canDestroyInCreative){
+        if (ValhallaMMO.getPaper() != null){
+            ValhallaMMO.getPaper().setTool(meta, miningSpeed, canDestroyInCreative);
+            return;
+        }
+        ToolComponent tool = meta.getMeta().getTool();
         tool.setDefaultMiningSpeed(miningSpeed);
-        meta.setTool(tool);
+        meta.getMeta().setTool(tool);
     }
 
     @SuppressWarnings("UnstableApiUsage")

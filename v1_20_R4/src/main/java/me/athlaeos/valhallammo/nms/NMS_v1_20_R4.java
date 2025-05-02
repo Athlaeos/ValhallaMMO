@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -231,7 +232,7 @@ public final class NMS_v1_20_R4 implements NMS {
     }
 
     @Override
-    public void setEdible(ItemMeta meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {
+    public void setEdible(ItemBuilder meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {
         // do nothing, incompatible
     }
 
@@ -434,9 +435,9 @@ public final class NMS_v1_20_R4 implements NMS {
 
     @Override
     @SuppressWarnings("UnstableApiUsage")
-    public void setTool(ItemMeta meta, float miningSpeed, boolean canDestroyInCreative){
-        ToolComponent tool = meta.getTool();
+    public void setTool(ItemBuilder meta, float miningSpeed, boolean canDestroyInCreative){
+        ToolComponent tool = meta.getMeta().getTool();
         tool.setDefaultMiningSpeed(miningSpeed);
-        meta.setTool(tool);
+        meta.getMeta().setTool(tool);
     }
 }
