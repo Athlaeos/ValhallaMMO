@@ -472,7 +472,7 @@ public abstract class Skill {
         if (!(this instanceof PowerSkill) && p.getGameMode() == GameMode.CREATIVE && reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) return;
         // only experience-scaling skills should scale with exp multipliers. By default, this only excludes PowerSkill
         if (isExperienceScaling() && (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION ||
-                reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE)) amount *= (1 + AccumulativeStatManager.getStats("GLOBAL_EXP_GAIN", p, true));
+                reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE)) amount *= (1 + AccumulativeStatManager.getCachedStats("GLOBAL_EXP_GAIN", p, 10000, true));
 
         PlayerSkillExperienceGainEvent event = new PlayerSkillExperienceGainEvent(p, amount, this, reason);
         if (Bukkit.isPrimaryThread()) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);

@@ -347,7 +347,7 @@ public class MiningSkill extends Skill implements Listener {
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_MINING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
-            amount *= (1 + AccumulativeStatManager.getStats("MINING_EXP_GAIN", p, true));
+            amount *= (1 + AccumulativeStatManager.getCachedStats("MINING_EXP_GAIN", p, 10000, true));
         }
         super.addEXP(p, amount, silent, reason);
     }

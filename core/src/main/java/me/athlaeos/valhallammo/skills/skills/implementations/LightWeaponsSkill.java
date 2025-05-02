@@ -215,7 +215,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_LIGHTWEAPONS)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
-            amount *= (1 + AccumulativeStatManager.getStats("LIGHT_WEAPONS_EXP_GAIN", p, true));
+            amount *= (1 + AccumulativeStatManager.getCachedStats("LIGHT_WEAPONS_EXP_GAIN", p, 10000, true));
         }
         super.addEXP(p, amount, silent, reason);
     }

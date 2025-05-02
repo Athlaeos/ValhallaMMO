@@ -300,7 +300,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_WOODCUTTING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
-            amount *= (1 + AccumulativeStatManager.getStats("WOODCUTTING_EXP_GAIN", p, true));
+            amount *= (1 + AccumulativeStatManager.getCachedStats("WOODCUTTING_EXP_GAIN", p, 10000, true));
         }
         super.addEXP(p, amount, silent, reason);
     }
