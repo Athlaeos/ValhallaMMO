@@ -160,6 +160,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerHook(new WorldGuardHook());
         registerHook(new JustLootItHook());
         registerHook(new DecentHologramsHook());
+        registerHook(new NexoHook());
         registerHook(new CoreProtectHook());
     }
 
