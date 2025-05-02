@@ -307,8 +307,10 @@ public class AccumulativeStatManager {
 
     public static void registerOffensive(String stat, AccumulativeStatSource... s){
         StatCollector existingSource = sources.get(stat);
-        if (existingSource == null) existingSource = new StatCollectorBuilder().addSources(s).setAttackerPossessive().build();
-        else existingSource.getStatSources().addAll(Arrays.asList(s));
+        if (existingSource == null) {
+            existingSource = new StatCollectorBuilder().addSources(s).setAttackerPossessive().build();
+            PlaceholderRegistry.registerPlaceholder(new TotalStatPlaceholder("%stat_source_" + stat.toLowerCase(java.util.Locale.US) + "%", stat));
+        } else existingSource.getStatSources().addAll(Arrays.asList(s));
         register(stat, existingSource);
     }
 
