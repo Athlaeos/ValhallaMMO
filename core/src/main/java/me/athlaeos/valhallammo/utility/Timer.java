@@ -39,7 +39,7 @@ public class Timer {
      */
     public static void setCooldownIgnoreIfPermission(Entity entity, int timems, String cooldownKey){
         if (!entity.hasPermission("valhalla.ignorecooldowns")){
-            double cooldownReduction = AccumulativeStatManager.getStats("COOLDOWN_REDUCTION", entity, true);
+            double cooldownReduction = AccumulativeStatManager.getCachedStats("COOLDOWN_REDUCTION", entity, 10000, true);
             int newCooldown = Math.max(0, (int) (timems * (1D - cooldownReduction)));
             setCooldown(entity.getUniqueId(), newCooldown, cooldownKey);
         }

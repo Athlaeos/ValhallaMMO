@@ -16,7 +16,7 @@ public class TotalStatPlaceholder extends Placeholder {
     @Override
     public String parse(String s, Player p) {
         StatCollector collector = AccumulativeStatManager.getStatCollector(statSource);
-        double stat = AccumulativeStatManager.getStats(statSource, p, false);
+        double stat = AccumulativeStatManager.getCachedStats(statSource, p, 10000, false);
         return s.replace(this.placeholder, collector.getFormat().format(stat));
     }
 }

@@ -196,7 +196,7 @@ public class HeavyArmorSkill extends Skill implements Listener {
     @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
-            amount *= (1 + AccumulativeStatManager.getStats("HEAVY_ARMOR_EXP_GAIN", p, true));
+            amount *= (1 + AccumulativeStatManager.getCachedStats("HEAVY_ARMOR_EXP_GAIN", p, 10000, true));
         }
         super.addEXP(p, amount, silent, reason);
     }

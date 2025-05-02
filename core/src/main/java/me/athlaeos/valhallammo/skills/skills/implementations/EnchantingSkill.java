@@ -171,7 +171,7 @@ public class EnchantingSkill extends Skill implements Listener {
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
-            amount *= (1 + AccumulativeStatManager.getStats("ENCHANTING_EXP_GAIN", p, true));
+            amount *= (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_EXP_GAIN", p, 10000, true));
         }
         super.addEXP(p, amount, silent, reason);
     }
@@ -196,7 +196,7 @@ public class EnchantingSkill extends Skill implements Listener {
         if (!existingLevelOffers.containsKey(e.getEnchantmentBonus())){
             int skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", enchanter, 10000, true);
             skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", enchanter, 10000, true)));
-            double chance = AccumulativeStatManager.getStats("ENCHANTING_AMPLIFY_CHANCE", e.getEnchanter(), true);
+            double chance = AccumulativeStatManager.getCachedStats("ENCHANTING_AMPLIFY_CHANCE", e.getEnchanter(), 10000, true);
 
             EnchantingItemPropertyManager.scaleEnchantmentOffers(skill, e.getOffers(), chance);
             EnchantingProfile profile = ProfileCache.getOrCache(enchanter, EnchantingProfile.class);

@@ -114,7 +114,7 @@ public class AlchemySkill extends Skill implements Listener {
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ALCHEMY)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
-            amount *= (1 + AccumulativeStatManager.getStats("ALCHEMY_EXP_GAIN", p, true));
+            amount *= (1 + AccumulativeStatManager.getCachedStats("ALCHEMY_EXP_GAIN", p, 10000, true));
         }
         double multiplier = reason != PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION ? 1 : BrewingStandListener.isMarkedAutomatedBrewing(p) ? expMultiplierAutomated : expMultiplierManual;
         super.addEXP(p, multiplier * amount, silent, reason);
