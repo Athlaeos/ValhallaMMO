@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -253,19 +254,23 @@ public final class NMS_v1_21_R4 implements NMS {
 
     @SuppressWarnings("UnstableApiUsage")
     @Override
-    public void setEdible(ItemMeta meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {
+    public void setEdible(ItemBuilder meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {
+        if (ValhallaMMO.getPaper() != null){
+            ValhallaMMO.getPaper().setConsumable(meta, edible, canAlwaysEat, eatTimeSeconds);
+            return;
+        }
         if (edible){
-            FoodComponent food = meta.getFood();
+            FoodComponent food = meta.getMeta().getFood();
             food.setCanAlwaysEat(canAlwaysEat);
-            meta.setFood(food);
+            meta.getMeta().setFood(food);
             if (!ValhallaMMO.isUsingPaperMC()){
-                ConsumableComponent consumable = meta.getConsumable();
+                ConsumableComponent consumable = meta.getMeta().getConsumable();
                 consumable.setConsumeSeconds(eatTimeSeconds);
                 consumable.setAnimation(ConsumableComponent.Animation.EAT);
                 consumable.setSound(Sound.ENTITY_GENERIC_EAT);
-                meta.setConsumable(consumable);
+                meta.getMeta().setConsumable(consumable);
             }
-        } else meta.setFood(null);
+        } else meta.getMeta().setFood(null);
     }
 
     @Override
@@ -469,11 +474,15 @@ public final class NMS_v1_21_R4 implements NMS {
 
     @Override
     @SuppressWarnings("UnstableApiUsage")
-    public void setTool(ItemMeta meta, float miningSpeed, boolean canDestroyInCreative){
-        ToolComponent tool = meta.getTool();
+    public void setTool(ItemBuilder meta, float miningSpeed, boolean canDestroyInCreative){
+        if (ValhallaMMO.getPaper() != null){
+            ValhallaMMO.getPaper().setTool(meta, miningSpeed, canDestroyInCreative);
+            return;
+        }
+        ToolComponent tool = meta.getMeta().getTool();
         tool.setDefaultMiningSpeed(miningSpeed);
         tool.setCanDestroyBlocksInCreative(canDestroyInCreative);
-        meta.setTool(tool);
+        meta.getMeta().setTool(tool);
     }
 
     @SuppressWarnings("UnstableApiUsage")

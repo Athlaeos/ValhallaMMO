@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
@@ -45,7 +46,7 @@ public interface NMS extends Listener {
     Sound blockSound(Block b);
     void resetAttackCooldown(Player p);
 
-    void setEdible(ItemMeta meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds);
+    void setEdible(ItemBuilder meta, boolean edible, boolean canAlwaysEat, float eatTimeSeconds);
     void setGlint(ItemMeta meta, boolean glint);
     void setMaxStackSize(ItemMeta meta, int stackSize);
     int getMaxStackSize(ItemMeta meta, Material baseMaterial);
@@ -80,7 +81,7 @@ public interface NMS extends Listener {
     default void addToolBlockRule(ItemMeta meta, Material blockType, float efficiency){
         // do nothing
     }
-    default void setTool(ItemMeta meta, float miningSpeed, boolean canDestroyInCreative){
+    default void setTool(ItemBuilder meta, float miningSpeed, boolean canDestroyInCreative){
         // do nothing
     }
 
