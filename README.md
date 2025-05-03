@@ -1,3 +1,22 @@
+Integrate ValhallaMMO into your project with Maven
+```
+<repositories>
+    <repository>
+        <id>repsy</id>
+        <url>https://repo.repsy.io/mvn/athlaeos/valhallammo</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>me.athlaeos</groupId>
+        <artifactId>valhallammo-dist</artifactId>
+        <version>dev-0.2</version>
+    </dependency>
+</dependencies>
+```
+
+
 # Welcome to ValhallaMMO
 ValhallaMMO is a large plugin with many features, but its main goal is to overhaul regular gameplay to be more involved and immersive.
 Your game impact is now heavily influenced by how skilled/levelled you are at something. This can mean stronger and more durable tools from crafting, stronger potions and enchantments, greater damage when fighting, special abilities, etc.
