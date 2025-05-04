@@ -21,6 +21,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseLootEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTables;
 
@@ -184,7 +185,11 @@ public class VaultLootListener implements Listener {
             } else {
                 List<LootTables> possibilities = new ArrayList<>(map.getOrDefault(i.getType(), new HashSet<>()));
                 if (possibilities.isEmpty()) unmatchedItems.add(i);
-                else likelyTables.add(possibilities.getFirst());
+                else {
+                    ItemMeta meta = i.getItemMeta();
+                    if (meta != null && (meta.hasDisplayName() || meta.hasLore())) unmatchedItems.add(i);
+                    else likelyTables.add(possibilities.getFirst());
+                }
             }
         }
         if (isVault){
