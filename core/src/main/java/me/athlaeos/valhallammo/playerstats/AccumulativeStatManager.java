@@ -290,6 +290,23 @@ public class AccumulativeStatManager {
         register("HEAVY_WEAPONS_EXP_GAIN", new PermissionStatSource("valhalla.exp.heavy_weapons"), new ProfileStatSource(HeavyWeaponsProfile.class, "heavyWeaponsEXPMultiplier"), new GlobalBuffSource("heavy_weapons_experience"));
 
         register("MARTIAL_ARTS_EXP_GAIN", new PermissionStatSource("valhalla.exp.martial_arts"), new ProfileStatSource(MartialArtsProfile.class, "martialArtsEXPMultiplier"), new GlobalBuffSource("martial_arts_experience"));
+
+        register("TRADING_DISCOUNT", new ProfileStatSource(TradingProfile.class, "tradingDiscount"));
+        register("TRAINING_DISCOUNT", new ProfileStatSource(TradingProfile.class, "trainingDiscount"));
+        register("SERVICE_DISCOUNT", new ProfileStatSource(TradingProfile.class, "serviceDiscount"));
+        register("TRADING_LUCK", new ProfileStatSource(TradingProfile.class, "tradingLuck"));
+        register("TRADING_POS_REPUTATION_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "positiveReputationMultiplier"));
+        register("TRADING_NEG_REPUTATION_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "negativeReputationMultiplier"));
+        register("TRADING_POS_RENOWN_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "positiveRenownMultiplier"));
+        register("TRADING_NEG_RENOWN_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "negativeRenownMultiplier"));
+        register("TRADING_USES_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "tradingStockMultiplier"));
+        register("TRADING_USES_BONUS", new ProfileStatSource(TradingProfile.class, "tradingStockBonus"));
+        register("TRADING_DELIVERY_SPEED_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "orderDeliverySpeedMultiplier"));
+        register("TRADING_SKILL_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "merchantSkillMultiplier"));
+        register("TRADING_MERCHANT_EXPERIENCE_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "merchantExperienceMultiplier"));
+        register("TRADING_GIFT_CHANCE", new ProfileStatSource(TradingProfile.class, "tradeGiftChance"));
+        register("TRADING_DELIVERY_SPEED_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "orderDeliverySpeedMultiplier"));
+        register("TRADING_DELIVERY_SPEED_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "orderDeliverySpeedMultiplier"));
     }
 
     /**

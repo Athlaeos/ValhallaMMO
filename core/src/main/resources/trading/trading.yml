@@ -64,6 +64,7 @@ happiness_sources:
   dark: -2 # If a villager is in the dark, they become unhappier
   bright: 1 # If a villager is in a lit area, they become happier
   lonely: -2 # If a villager is alone with no other villagers around, they become unhappier
+  overcrowded: -5 # If a villager is in an overcrowded space, they become unhappier
   accompanied: 1 # If a villager is accompanied by other villagers, they become happier
   fearful: -10 # If a villager is actively threatened by a zombie or player, they become very unhappy
   peaceful: 1 # If a villager has no active threats around, they become happier
@@ -83,124 +84,127 @@ comfort_required_things: 15 # With more than 15 unique "nice things" around, the
 darkness_max: 2 # With a light level of less than 2, the villager feels in the dark
 brightness_requirement: 5 # With a light level of more than 5, the villager feels it's comfortably light
 loneliness_max: 0 # With no other villagers around, the villager feels lonely
-accompanied_requirement: 5 # With at least 5 other villagers around, the villager feels in company
+overcrowded_radius: 8
+overcrowded_requirement: 5 # With at least 6 other villagers in a radius of 8 blocks, the villager feels overcrowded
+accompanied_radius: 64
+accompanied_requirement: 5 # With at least 5 other villagers around in a 64 block radius, the villager feels in company
 insecurity_max: 96000 # If the villager has not been traded with for 96000 ticks (4 ingame days) the villager feels insecure :(
 security_requirement: 12000 # If the villager has been traded with in the past 12000 ticks (half an ingame day) the villager feels secure :)
 woundedness_max: 5 # If the villager has taken more than 5 damage, they feel wounded
 distrusting_max: 96000 # If the villager was damaged in the past 96000 ticks (3 ingame days) by the player, they feel distrusting
-trusting_requirement: 240000 # If the villager has not been damaged in the past 240000 ticks (10 ingame days), they feel more trusting
+trusting_requirement: 480000 # If the villager has not been damaged in the past 480000 ticks (20 ingame days), they feel more trusting
 
 nice_things:
-  - entity:PAINTING
-  - entity:ITEM_FRAME
-  - entity:ARMOR_STAND
-  - entity:WOLF
-  - entity:CAT
-  - entity:PARROT
-  - entity:COW
-  - entity:PIG
-  - entity:CHICKEN
-  - entity:HORSE
-  - entity:DONKEY
-  - entity:LLAMA
-  - entity:CAMEL
-  - entity:RABBIT
-  - entity:SNIFFER
-  - entity:TRADER_LLAMA
-  - entity:BEE
-  - entity:IRON_GOLEM
-  - block:LANTERN
-  - block:SOUL_LANTERN
-  - block:BOOKSHELF
-  - block:WHITE_CARPET
-  - block:PINK_CARPET
-  - block:RED_CARPET
-  - block:ORANGE_CARPET
-  - block:YELLOW_CARPET
-  - block:LIME_CARPET
-  - block:GREEN_CARPET
-  - block:CYAN_CARPET
-  - block:LIGHT_BLUE_CARPET
-  - block:BLUE_CARPET
-  - block:PURPLE_CARPET
-  - block:MAGENTA_CARPET
-  - block:BLACK_CARPET
-  - block:BROWN_CARPET
-  - block:GRAY_CARPET
-  - block:LIGHT_GRAY_CARPET
-  - block:AMETHYST_BLOCK
-  - block:AMETHYST_CLUSTER
-  - block:ANVIL
-  - block:CHIPPED_ANVIL
-  - block:BROKEN_ANVIL
-  - block:ENCHANTING_TABLE
-  - block:CHEST
-  - block:ENDER_CHEST
-  - block:FLOWER_POT
-  - block:FURNACE
-  - block:BEACON
-  - block:JUKEBOX
-  - block:SMITHING_TABLE
-  - block:CRAFTING_TABLE
-  - block:COMPOSTER
-  - block:SMOKER
-  - block:BLAST_FURNACE
-  - block:BARREL
-  - block:FLETCHING_TABLE
-  - block:LOOM
-  - block:GRINDSTONE
-  - block:STONECUTTER
-  - block:LECTERN
-  - block:BREWING_STAND
-  - block:CARTOGRAPHY_TABLE
-  - block:CAKE
-  - block:WHITE_GLAZED_TERRACOTTA
-  - block:PINK_GLAZED_TERRACOTTA
-  - block:RED_GLAZED_TERRACOTTA
-  - block:ORANGE_GLAZED_TERRACOTTA
-  - block:YELLOW_GLAZED_TERRACOTTA
-  - block:LIME_GLAZED_TERRACOTTA
-  - block:GREEN_GLAZED_TERRACOTTA
-  - block:CYAN_GLAZED_TERRACOTTA
-  - block:LIGHT_BLUE_GLAZED_TERRACOTTA
-  - block:BLUE_GLAZED_TERRACOTTA
-  - block:PURPLE_GLAZED_TERRACOTTA
-  - block:MAGENTA_GLAZED_TERRACOTTA
-  - block:BLACK_GLAZED_TERRACOTTA
-  - block:BROWN_GLAZED_TERRACOTTA
-  - block:GRAY_GLAZED_TERRACOTTA
-  - block:LIGHT_GRAY_GLAZED_TERRACOTTA
-  - block:WHITE_STAINED_GLASS
-  - block:PINK_STAINED_GLASS
-  - block:RED_STAINED_GLASS
-  - block:ORANGE_STAINED_GLASS
-  - block:YELLOW_STAINED_GLASS
-  - block:LIME_STAINED_GLASS
-  - block:GREEN_STAINED_GLASS
-  - block:CYAN_STAINED_GLASS
-  - block:LIGHT_BLUE_STAINED_GLASS
-  - block:BLUE_STAINED_GLASS
-  - block:PURPLE_STAINED_GLASS
-  - block:MAGENTA_STAINED_GLASS
-  - block:BLACK_STAINED_GLASS
-  - block:BROWN_STAINED_GLASS
-  - block:GRAY_STAINED_GLASS
-  - block:LIGHT_GRAY_STAINED_GLASS
-  - block:WHITE_STAINED_GLASS_PANE
-  - block:PINK_STAINED_GLASS_PANE
-  - block:RED_STAINED_GLASS_PANE
-  - block:ORANGE_STAINED_GLASS_PANE
-  - block:YELLOW_STAINED_GLASS_PANE
-  - block:LIME_STAINED_GLASS_PANE
-  - block:GREEN_STAINED_GLASS_PANE
-  - block:CYAN_STAINED_GLASS_PANE
-  - block:LIGHT_BLUE_STAINED_GLASS_PANE
-  - block:BLUE_STAINED_GLASS_PANE
-  - block:PURPLE_STAINED_GLASS_PANE
-  - block:MAGENTA_STAINED_GLASS_PANE
-  - block:BLACK_STAINED_GLASS_PANE
-  - block:BROWN_STAINED_GLASS_PANE
-  - block:GRAY_STAINED_GLASS_PANE
-  - block:LIGHT_GRAY_STAINED_GLASS_PANE
-  - block:CAMPFIRE
-  - block:SOUL_CAMPFIRE
+  - PAINTING
+  - ITEM_FRAME
+  - ARMOR_STAND
+  - WOLF
+  - CAT
+  - PARROT
+  - COW
+  - PIG
+  - CHICKEN
+  - HORSE
+  - DONKEY
+  - LLAMA
+  - CAMEL
+  - RABBIT
+  - SNIFFER
+  - TRADER_LLAMA
+  - BEE
+  - IRON_GOLEM
+  - LANTERN
+  - SOUL_LANTERN
+  - BOOKSHELF
+  - WHITE_CARPET
+  - PINK_CARPET
+  - RED_CARPET
+  - ORANGE_CARPET
+  - YELLOW_CARPET
+  - LIME_CARPET
+  - GREEN_CARPET
+  - CYAN_CARPET
+  - LIGHT_BLUE_CARPET
+  - BLUE_CARPET
+  - PURPLE_CARPET
+  - MAGENTA_CARPET
+  - BLACK_CARPET
+  - BROWN_CARPET
+  - GRAY_CARPET
+  - LIGHT_GRAY_CARPET
+  - AMETHYST_BLOCK
+  - AMETHYST_CLUSTER
+  - ANVIL
+  - CHIPPED_ANVIL
+  - BROKEN_ANVIL
+  - ENCHANTING_TABLE
+  - CHEST
+  - ENDER_CHEST
+  - FLOWER_POT
+  - FURNACE
+  - BEACON
+  - JUKEBOX
+  - SMITHING_TABLE
+  - CRAFTING_TABLE
+  - COMPOSTER
+  - SMOKER
+  - BLAST_FURNACE
+  - BARREL
+  - FLETCHING_TABLE
+  - LOOM
+  - GRINDSTONE
+  - STONECUTTER
+  - LECTERN
+  - BREWING_STAND
+  - CARTOGRAPHY_TABLE
+  - CAKE
+  - WHITE_GLAZED_TERRACOTTA
+  - PINK_GLAZED_TERRACOTTA
+  - RED_GLAZED_TERRACOTTA
+  - ORANGE_GLAZED_TERRACOTTA
+  - YELLOW_GLAZED_TERRACOTTA
+  - LIME_GLAZED_TERRACOTTA
+  - GREEN_GLAZED_TERRACOTTA
+  - CYAN_GLAZED_TERRACOTTA
+  - LIGHT_BLUE_GLAZED_TERRACOTTA
+  - BLUE_GLAZED_TERRACOTTA
+  - PURPLE_GLAZED_TERRACOTTA
+  - MAGENTA_GLAZED_TERRACOTTA
+  - BLACK_GLAZED_TERRACOTTA
+  - BROWN_GLAZED_TERRACOTTA
+  - GRAY_GLAZED_TERRACOTTA
+  - LIGHT_GRAY_GLAZED_TERRACOTTA
+  - WHITE_STAINED_GLASS
+  - PINK_STAINED_GLASS
+  - RED_STAINED_GLASS
+  - ORANGE_STAINED_GLASS
+  - YELLOW_STAINED_GLASS
+  - LIME_STAINED_GLASS
+  - GREEN_STAINED_GLASS
+  - CYAN_STAINED_GLASS
+  - LIGHT_BLUE_STAINED_GLASS
+  - BLUE_STAINED_GLASS
+  - PURPLE_STAINED_GLASS
+  - MAGENTA_STAINED_GLASS
+  - BLACK_STAINED_GLASS
+  - BROWN_STAINED_GLASS
+  - GRAY_STAINED_GLASS
+  - LIGHT_GRAY_STAINED_GLASS
+  - WHITE_STAINED_GLASS_PANE
+  - PINK_STAINED_GLASS_PANE
+  - RED_STAINED_GLASS_PANE
+  - ORANGE_STAINED_GLASS_PANE
+  - YELLOW_STAINED_GLASS_PANE
+  - LIME_STAINED_GLASS_PANE
+  - GREEN_STAINED_GLASS_PANE
+  - CYAN_STAINED_GLASS_PANE
+  - LIGHT_BLUE_STAINED_GLASS_PANE
+  - BLUE_STAINED_GLASS_PANE
+  - PURPLE_STAINED_GLASS_PANE
+  - MAGENTA_STAINED_GLASS_PANE
+  - BLACK_STAINED_GLASS_PANE
+  - BROWN_STAINED_GLASS_PANE
+  - GRAY_STAINED_GLASS_PANE
+  - LIGHT_GRAY_STAINED_GLASS_PANE
+  - CAMPFIRE
+  - SOUL_CAMPFIRE

@@ -16,6 +16,7 @@ public class WorldGuardHook extends PluginHook{
     public static final String VMMO_CRAFTING_CAULDRON = "vmmo-crafting-cauldron";
     public static final String VMMO_CRAFTING_ALLOY = "vmmo-crafting-alloy";
     public static final String VMMO_SKILL_SMITHING = "vmmo-skill-smithing";
+    public static final String VMMO_SKILL_TRADING = "vmmo-skill-trading";
     public static final String VMMO_SKILL_ENCHANTING = "vmmo-skill-enchanting";
     public static final String VMMO_SKILL_ALCHEMY = "vmmo-skill-alchemy";
     public static final String VMMO_SKILL_LIGHTWEAPONS = "vmmo-skill-lightweapons";
@@ -53,6 +54,7 @@ public class WorldGuardHook extends PluginHook{
         WorldGuardWrapper.registerFlag(VMMO_CRAFTING_CRAFTINGTABLE);
         WorldGuardWrapper.registerFlag(VMMO_CRAFTING_BREWING);
         WorldGuardWrapper.registerFlag(VMMO_CRAFTING_SMITHING);
+        WorldGuardWrapper.registerFlag(VMMO_SKILL_TRADING);
         WorldGuardWrapper.registerFlag(VMMO_CRAFTING_FURNACE);
         WorldGuardWrapper.registerFlag(VMMO_CRAFTING_CAMPFIRE);
         WorldGuardWrapper.registerFlag(VMMO_CRAFTING_IMMERSIVE);

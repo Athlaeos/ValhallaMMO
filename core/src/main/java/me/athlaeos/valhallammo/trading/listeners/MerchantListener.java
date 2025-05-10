@@ -1,8 +1,13 @@
 package me.athlaeos.valhallammo.trading.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
+import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
+import me.athlaeos.valhallammo.skills.skills.implementations.TradingSkill;
 import me.athlaeos.valhallammo.trading.*;
 import me.athlaeos.valhallammo.trading.dom.*;
 import me.athlaeos.valhallammo.trading.happiness.HappinessSourceRegistry;
@@ -18,10 +23,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.VillagerCareerChangeEvent;
-import org.bukkit.event.entity.VillagerReplenishTradeEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.raid.RaidFinishEvent;
@@ -122,7 +124,7 @@ public class MerchantListener implements Listener {
             if (meta == null) return;
             CustomMerchantManager.removeTradeKey(meta);
             result.setItemMeta(meta);
-        }, 1L); // TODO don't forget that this key must still be added to trades
+        }, 1L);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -221,11 +223,16 @@ public class MerchantListener implements Listener {
                     experiencePointsToReward -= orbSize;
                 }
 
+                int price = ItemUtils.isEmpty(recipe.getAdjustedIngredient1()) ? recipe.getIngredients().getFirst().getAmount() + recipe.getSpecialPrice() : recipe.getAdjustedIngredient1().getAmount();
+                double ratio = 1 - ((double) price / Math.max(1, tradeData.getBasePrice()));
+
+                TradingSkill skill = (TradingSkill) SkillRegistry.getSkill(TradingSkill.class);
+                if (skill != null) skill.addEXP((Player) e.getWhoClicked(), trade.getSkillExp() * finalTimesTraded, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, CustomMerchantManager.getLevel(data), ratio);
+
                 m.setItem(2, event.getResult());
                 if (merchantID != null){
                     int reputationQuantity = event.getTimesTraded();
                     MerchantData.MerchantPlayerMemory memory = event.getMerchantData().getPlayerMemory(e.getWhoClicked().getUniqueId());
-                    // TODO calculate trading reputation based on current happiness
                     memory.setTradingReputation(memory.getTradingReputation() + reputationQuantity);
                     int exp = Utils.randomAverage(event.getTimesTraded() * event.getCustomTrade().getVillagerExperience());
                     merchantInterface.setExpToGrant(merchantInterface.getExpToGrant() + exp);
@@ -271,28 +278,44 @@ public class MerchantListener implements Listener {
                     MerchantType type = d == null ? null : CustomMerchantManager.getMerchantType(d.getType());
                     if (d != null && type != null && d.getTypeVersion() != type.getVersion()) {
                         Map<UUID, MerchantData.MerchantPlayerMemory> memory = new HashMap<>(d.getPlayerMemory());
-                        d = CustomMerchantManager.createMerchant(v.getUniqueId(), type, CustomMerchantManager.getTradingLuck(e.getPlayer()));
+                        d = CustomMerchantManager.createMerchant(v.getUniqueId(), type, e.getPlayer());
                         d.getPlayerMemory().putAll(memory);
-                    }
-                    else if (d != null && type != null && type.resetsTradesDaily() && d.getDay() != CustomMerchantManager.today()) {
+                    } else if (d != null && type != null && d.getDay() != CustomMerchantManager.today()) {
                         Map<String, MerchantData.TradeData> newData = new HashMap<>();
                         Map<String, MerchantData.TradeData> currentData = d.getTrades();
-                        for (MerchantData.TradeData trade : CustomMerchantManager.generateRandomTrades(type, CustomMerchantManager.getTradingLuck(e.getPlayer()))){
-                            MerchantData.TradeData entry = currentData.get(trade.getTrade());
-                            if (entry == null) {
+                        if (type.resetsTradesDaily()){
+                            for (MerchantData.TradeData trade : CustomMerchantManager.generateRandomTrades(type, e.getPlayer())){
+                                MerchantData.TradeData entry = currentData.get(trade.getTrade());
+                                if (entry == null) {
+                                    newData.put(trade.getTrade(), trade);
+                                    continue;
+                                }
+                                trade.setDemand(entry.getDemand());
+                                trade.setLastRestocked(entry.getLastRestocked());
+                                trade.setLastTraded(entry.getLastTraded());
                                 newData.put(trade.getTrade(), trade);
-                                continue;
                             }
-                            trade.setDemand(entry.getDemand());
-                            trade.setLastRestocked(entry.getLastRestocked());
-                            trade.setLastTraded(entry.getLastTraded());
-                            newData.put(trade.getTrade(), trade);
+                        } else {
+                            for (MerchantData.TradeData trade : currentData.values()){
+                                MerchantTrade t = CustomMerchantManager.getTrade(trade.getTrade());
+                                if (!t.refreshes()) {
+                                    newData.put(trade.getTrade(), trade);
+                                    continue;
+                                }
+                                ItemBuilder newResult = CustomMerchantManager.prepareTradeResult(t, e.getPlayer());
+                                if (newResult == null) {
+                                    newData.put(trade.getTrade(), trade);
+                                    continue;
+                                }
+                                trade.setItem(newResult.getItem());
+                                newData.put(trade.getTrade(), trade);
+                            }
                         }
                         d.getTrades().clear();
                         d.getTrades().putAll(newData);
                     }
                     if ((d == null && convertAllVillagers) || type == null) {
-                        d = CustomMerchantManager.convertToRandomMerchant(v, CustomMerchantManager.getTradingLuck(e.getPlayer()));
+                        d = CustomMerchantManager.convertToRandomMerchant(v, e.getPlayer());
                     }
                     if (d == null) {
                         cancelMerchantInventory.remove(v.getUniqueId());
@@ -483,6 +506,12 @@ public class MerchantListener implements Listener {
                 );
             });
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onItemThrow(ItemSpawnEvent e){
+        if (e.isCancelled() || e.getEntity().getThrower() == null || ValhallaMMO.getInstance().getServer().getEntity(e.getEntity().getThrower()) instanceof AbstractVillager a) return;
+        System.out.println(e.getEntity().getItemStack().getType() + " thrown by villager!");
     }
 
     public static VirtualMerchant getCurrentActiveVirtualMerchant(Player player){

@@ -83,7 +83,7 @@ public class MerchantData {
     public static class TradeData{
         private final String trade;
         private final int level;
-        private final ItemStack item;
+        private ItemStack item;
         private final int maxUses;
         private double remainingUses;
         private int demand = 0;
@@ -126,6 +126,7 @@ public class MerchantData {
         }
         public void setLastRestocked(long lastRestocked) { this.lastRestocked = lastRestocked; }
         public void setLastTraded(long lastTraded) { this.lastTraded = lastTraded; }
+        public void setItem(ItemStack item) { this.item = item; }
     }
 
     public static class MerchantPlayerMemory{
@@ -134,6 +135,7 @@ public class MerchantData {
         private float tradingReputation;
         private float renownReputation;
         private final Map<String, Double> perPlayerTradesLeft = new HashMap<>();
+        private final Map<String, Long> giftedTradeCooldown = new HashMap<>();
 
         public int getTimesTraded() { return timesTraded; }
         public float getRenownReputation() { return renownReputation; }
@@ -144,5 +146,16 @@ public class MerchantData {
         public void setTimesTraded(int timesTraded) { this.timesTraded = timesTraded; }
         public void setRenownReputation(float renownReputation) { this.renownReputation = Math.max(renownMin, Math.min(renownMax, renownReputation)); }
         public void setTradingReputation(float tradingReputation) { this.tradingReputation = Math.max(reputationMin, Math.min(reputationMax, tradingReputation)); }
+        public Map<String, Long> getGiftedTradeCooldown() { return giftedTradeCooldown; }
+
+        public boolean isGiftable(String trade){
+            long cooldown = giftedTradeCooldown.getOrDefault(trade, 0L);
+            return cooldown >= 0 && cooldown < CustomMerchantManager.time();
+        }
+
+        public void setCooldown(String trade, long cooldown){
+            if (cooldown < 0) giftedTradeCooldown.put(trade, -1L);
+            else giftedTradeCooldown.put(trade, CustomMerchantManager.time() + cooldown);
+        }
     }
 }

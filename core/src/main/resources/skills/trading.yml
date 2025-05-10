@@ -1,0 +1,8 @@
+display_name: '<lang.skill-trading-displayname>'
+icon: EMERALD
+icon_data: 3510001
+description: '<lang.skill-trading-description>'
+
+levelbar_title: '<lang.skill-trading-level-bar>'
+levelbar_color: YELLOW # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
+levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID

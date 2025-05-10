@@ -327,6 +327,9 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     else currentTrade.setPriceRandomNegativeOffset(Math.min(currentTrade.getPriceRandomPositiveOffset(), currentTrade.getPriceRandomNegativeOffset() + (e.isLeftClick() ? 1 : -1)));
                 }
                 case "backToMenuButton" -> switchView(View.TRADES);
+                case "tradeRefreshesButton" -> currentTrade.setRefreshes(!currentTrade.refreshes());
+                case "tradeGiftableButton" -> currentTrade.setGiftable(e.isShiftClick() ? null : (currentTrade.isGiftable() == null || !currentTrade.isGiftable()));
+                case "tradeSkillExperienceButton" -> currentTrade.setSkillExp(currentTrade.getSkillExp() + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 1 : -1)));
             }
         }
 
@@ -520,6 +523,8 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     if (currentSubType.resetsTradesDaily()){
                         inventory.setItem(4, new ItemBuilder(Buttons.tradeWeightDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandWeightModifier()), weight).get());
                         inventory.setItem(5, new ItemBuilder(Buttons.tradeWeightDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandWeightMaxQuantity()), weight).get());
+                    } else {
+                        inventory.setItem(5, new ItemBuilder(Buttons.tradeRefreshesButton).prependLore("&7Currently &e" + (currentTrade.refreshes() ? "On" : "Off")).get());
                     }
                     String uses = String.format("&8%d + %.2f/demand, up to %d", currentTrade.getMaxUses(), currentTrade.getDemandMaxUsesModifier(), currentTrade.getDemandMaxUsesMaxQuantity());
                     inventory.setItem(6, new ItemBuilder(Buttons.tradeUsesButton).prependLore(String.format("&7Currently &e%d", currentTrade.getMaxUses()), uses).get());
@@ -541,6 +546,8 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     inventory.setItem(37, new ItemBuilder(Buttons.tradeFixedUsesButton).prependLore("&7Currently &e" + (currentTrade.hasFixedUseCount() ? "On" : "Off")).get());
                     inventory.setItem(43, new ItemBuilder(Buttons.tradeExclusiveButton).prependLore("&7Currently &e" + (currentTrade.isExclusive() ? "On" : "Off")).get());
 
+                    inventory.setItem(17, new ItemBuilder(Buttons.tradeGiftableButton).prependLore("&7Currently &e" + (currentTrade.isGiftable() == null ? "On, &cbut only once per player" : (currentTrade.isGiftable() ? "On" : "Off"))).get());
+                    inventory.setItem(35, new ItemBuilder(Buttons.tradeSkillExperienceButton).prependLore(String.format("&7Currently &e%d", (int) currentTrade.getSkillExp())).get());
                     inventory.setItem(41, new ItemBuilder(Buttons.tradeRestockDelayButton).prependLore("&7Currently &e" + (currentTrade.getRestockDelay() < 0 ? "Does not restock" : timeToString(currentTrade.getRestockDelay()))).get());
                     inventory.setItem(39, new ItemBuilder(Buttons.tradePriceRandomizerButton).prependLore(String.format("&7Price is &e%d-%d", currentTrade.getScalingCostItem().getAmount() + currentTrade.getPriceRandomNegativeOffset(), currentTrade.getScalingCostItem().getAmount() + currentTrade.getPriceRandomPositiveOffset())).get());
                 }
@@ -1192,6 +1199,38 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                                 "&eClick to increase/decrease the minimum bound",
                                 "&eShift-click to do so with the maximum bound")
                         .stringTag(KEY_BUTTON, "tradePriceRandomizerButton")
+                        .get();
+        private static final ItemStack tradeGiftableButton =
+                new ItemBuilder(getButtonData("editor_trading_trade_giftable", Material.DIAMOND))
+                        .name("&fGiftable")
+                        .lore("",
+                                "&7If enabled, this trade may be randomly",
+                                "&7gifted to nice customers.",
+                                "&eClick to toggle",
+                                "&eShift-Click to make it so this trade",
+                                "&emay only be gifted once per player")
+                        .stringTag(KEY_BUTTON, "tradeGiftableButton")
+                        .get();
+        private static final ItemStack tradeRefreshesButton =
+                new ItemBuilder(getButtonData("editor_trading_trade_refreshes", Material.DIAMOND))
+                        .name("&fDaily Refresh")
+                        .lore("",
+                                "&7If enabled, this trade refreshes daily.",
+                                "&7A refresh means the trade stays the same,",
+                                "&7but the output is reprocessed by the",
+                                "&7trade modifiers.",
+                                "&eClick to toggle")
+                        .stringTag(KEY_BUTTON, "tradeRefreshesButton")
+                        .get();
+        private static final ItemStack tradeSkillExperienceButton =
+                new ItemBuilder(getButtonData("editor_trading_trade_skillexperience", Material.DIAMOND))
+                        .name("&fSkill Experience")
+                        .lore("",
+                                "&7The trading skill experience rewarded",
+                                "&7every time this trade is traded",
+                                "&eClick to increase/decrease by 1",
+                                "&eShift-click to increase/decrease by 25")
+                        .stringTag(KEY_BUTTON, "tradeSkillExperienceButton")
                         .get();
     }
 }

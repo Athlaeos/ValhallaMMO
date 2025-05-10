@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.trading.happiness;
 
+import me.athlaeos.valhallammo.trading.happiness.sources.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -14,7 +15,15 @@ public class HappinessSourceRegistry {
     private static final long CACHE_DURATION = 10000;
 
     static {
-
+        registerSource(new Brightness());
+        registerSource(new Comfort());
+        registerSource(new Company());
+        registerSource(new Health());
+        registerSource(new PlayerRelation());
+        registerSource(new Security());
+        registerSource(new Space());
+        registerSource(new Stress());
+        registerSource(new Trust());
     }
 
     public static float getHappiness(Player interactingPlayer, Entity entity){

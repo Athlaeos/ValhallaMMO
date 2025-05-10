@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.trading.merchants.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.TradingProfile;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
@@ -27,7 +28,7 @@ public class SimpleMerchant extends VirtualMerchant {
         TradingProfile profile = ProfileCache.getOrCache(utility.getOwner(), TradingProfile.class);
         Collection<MerchantRecipe> toRemove = new HashSet<>();
         AttributeInstance luckAttribute = utility.getOwner().getAttribute(Attribute.GENERIC_LUCK);
-        double luck = 0; // TODO AccumulativeStatManager.getCachedStats("TRADING_LUCK", utility.getOwner(), 10000, true);
+        double luck = AccumulativeStatManager.getCachedStats("TRADING_LUCK", utility.getOwner(), 10000, true);
         if (luckAttribute != null) luck += luckAttribute.getValue();
         LootContext context = new LootContext.Builder(utility.getOwner().getLocation()).killer(utility.getOwner()).lootedEntity(ValhallaMMO.getInstance().getServer().getEntity(merchantID) instanceof Villager v ? v : null).lootingModifier(0).luck((float) luck).build();
         for (MerchantRecipe recipe : recipes){

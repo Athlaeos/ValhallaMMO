@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.version.ActivityMappings;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
@@ -120,4 +121,5 @@ public interface NMS extends Listener {
     default EntityExplodeEvent getExplosionEvent(Entity tnt, Location at, List<Block> blockList, float yield, int result){
         return new EntityExplodeEvent(tnt, at, blockList, yield);
     }
+    ActivityMappings getActivity(LivingEntity entity);
 }
