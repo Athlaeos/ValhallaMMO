@@ -40,7 +40,8 @@ public class MaxStackSizeSet extends DynamicItemModifier {
         return new Pair<>(12,
                 new ItemBuilder(Material.BOOK)
                         .name("&eWhat should max stack size be?")
-                        .lore("&6Click to add/subtract 1",
+                        .lore("&fCurrently &e" + maxStackSize,
+                                "&6Click to add/subtract 1",
                                 "&6Shift-Click to add/subtract 16")
                         .get()).map(Set.of());
     }

@@ -18,7 +18,7 @@ public class PermissionStatSource implements AccumulativeStatSource {
         if (!(statPossessor instanceof Player p) || !p.hasPermission(basePermission)) return 0;
         double value = 0;
         for (PermissionAttachmentInfo permission : p.getEffectivePermissions()){
-            if (!permission.getPermission().startsWith(basePermission)) continue;
+            if (!permission.getValue() || !permission.getPermission().startsWith(basePermission)) continue;
             String v = permission.getPermission().replace(basePermission + ".", "");
             Double d = Catch.catchOrElse(() -> Double.valueOf(v), null);
             if (d == null) continue;

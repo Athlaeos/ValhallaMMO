@@ -79,7 +79,7 @@ public class Bleeder {
         else if (WorldGuardHook.inDisabledRegion(bleeder.getLocation(), WorldGuardHook.VMMO_COMBAT_BLEED)) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             BleedingInstance instance = bleedingEntities.get(bleeder.getUniqueId());
-            double resistance = AccumulativeStatManager.getRelationalStats("BLEED_RESISTANCE", bleeder, causedBy, true);
+            double resistance = AccumulativeStatManager.getCachedRelationalStats("BLEED_RESISTANCE", bleeder, causedBy, 10000, true);
             EntityBleedEvent event = new EntityBleedEvent(bleeder, causedBy, combatType, damage, resistance, duration, stacks);
             ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()){
