@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.event.EntityUpdateLevelEvent;
+import me.athlaeos.valhallammo.hooks.MythicMobsHook;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
@@ -162,6 +163,8 @@ public class MonsterScalingManager {
     public static double getStatValue(LivingEntity entity, String stat){
         if (!enabled || EntityClassification.matchesClassification(entity.getType(), EntityClassification.UNALIVE)) return 0;
         int level = Math.max(0, getLevel(entity));
+        if (MythicMobsHook.isMythicMob(entity))
+            return MythicMobsHook.getMythicMobStat(stat, entity);
         if (entityStatScaling.containsKey(entity.getType())){
             Map<String, String> entityStats = entityStatScaling.getOrDefault(entity.getType(), new HashMap<>());
             if (!entityStats.containsKey(stat)) return 0;
