@@ -218,6 +218,17 @@
     "ability_oneshot_protection": "&6One-Shot Protection",
     "ability_meditation": "&aMeditation",
     "ability_disarming": "&eDisarming",
+    "service_trading": "&aTrade",
+    "service_training": "&9Train",
+    "service_ordering": "&eOrder",
+    "service_upgrading": "&7Tinker",
+    "service_learning": "&dLearn",
+    "service_investing": "&cInvest",
+    "service_confirm_order": "&aConfirm Order",
+    "service_order_cant_afford": "&cCan't afford these orders",
+    "service_order_time": "&aConfirm Order",
+    "service_order_time_format_more_than_1_day": "%days% days",
+    "service_order_time_format_less_than_1_day": "less than a day",
     "status_economy_cost": "&7Costs &e$%cost%",
     "warning_insufficient_money": "&cInsufficient Funds",
     "warning_insufficient_items": "&cInsufficient Item Funds",
@@ -3388,6 +3399,53 @@
       "%ingredients%",
       "",
       "&eProduces %result%"
+    ],
+    "service_description_trading": [
+      "&7Exchange wares for other wares"
+    ],
+    "service_description_training": [
+      "&7Exchange wares for %skill% EXP"
+    ],
+    "service_description_upgrading": [
+      "&7Exchange wares for item-related services"
+    ],
+    "service_description_ordering": [
+      "&7Pre-order wares so you guarantee",
+      "&7getting them later"
+    ],
+    "service_description_ordering_pending": [
+      "&7Pre-order wares so you guarantee",
+      "&7getting them later.",
+      "&cActive pending order to be delivered",
+      "&cin roughly %time%.",
+      "&cPlacing a new order resets the delivery",
+      "&ctime. Shift-Click to add new order."
+    ],
+    "service_description_ordering_ready": [
+      "&7Pre-order wares so you guarantee",
+      "&7getting them later.",
+      "&aOrder ready! Click to receive"
+    ],
+    "service_description_learning": [
+      "&7Exchange wares for trade knowledge",
+      "&7or abilities"
+    ],
+    "service_description_investing": [
+      "&7Invest in this merchant to improve",
+      "&7their servicing capabilities"
+    ],
+    "service_confirm_order_lore": [
+      "&7Click to confirm order"
+    ],
+    "service_order_time_lore": [
+      "&7Expected to arrive in %time%"
+    ],
+    "service_order_trade_prefix": [
+      "&a%times_ordered%/%max_orders%",
+      "",
+      "&7Costs &e%amount%x %item%",
+      "&7and &e%amount2%x %item2%",
+      ""
     ]
   },
   "stringIndex": {},
