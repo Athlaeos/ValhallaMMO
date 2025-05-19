@@ -30,6 +30,10 @@ public abstract class Menu {
 
     public abstract void setMenuItems();
 
+    public PlayerMenuUtility getPlayerMenuUtility() {
+        return playerMenuUtility;
+    }
+
     public void open(){
         inventory = Bukkit.createInventory(null, getSlots(), getMenuName());
 

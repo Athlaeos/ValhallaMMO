@@ -1,9 +1,43 @@
 enabled: false
 
+service_button_name_trading: "<lang.service_trading>"
+service_button_name_training: "<lang.service_training>"
+service_button_name_upgrading: "<lang.service_upgrading>"
+service_button_name_ordering: "<lang.service_ordering>"
+service_button_name_learning: "<lang.service_learning>"
+service_button_name_investing: "<lang.service_investing>"
+service_button_description_trading:
+  - "<lang.service_description_trading>"
+service_button_description_training:
+  - "<lang.service_description_training>"
+service_button_description_upgrading:
+  - "<lang.service_description_upgrading>"
+service_button_description_ordering:
+  - "<lang.service_description_ordering>"
+service_button_description_ordering_pending:
+  - "<lang.service_description_ordering_pending>"
+service_button_description_ordering_ready:
+  - "<lang.service_description_ordering_ready>"
+service_button_description_learning:
+  - "<lang.service_description_learning>"
+service_button_description_investing:
+  - "<lang.service_description_investing>"
+service_button_type_trading: LIME_DYE/9199203/9199202/9199201
+service_button_type_training: LIME_DYE/9199209/9199208/9199207
+service_button_type_upgrading: LIME_DYE/9199212/9199211/9199210
+service_button_type_ordering: LIME_DYE/9199206/9199205/9199204
+service_button_type_learning: LIME_DYE/9199215/9199214/9199213
+service_button_type_investing: LIME_DYE/9199218/9199217/9199216
+
 customize_all_villagers: false # If true, if an interacted villager does not have a custom trading configuration, they will be given one
 # If false, the villager will need to explicitly be given one with a command
 
 delay_until_working: 24000 # When a villager gets a profession, it will take this duration (in game ticks, 1 ingame day by default) for them to start trading
+
+order_delivery_time: 168000 # Duration after placing an order for the order to become available (default 1 in-game week)
+order_discount_start: 10 # Minimum amount of items required to purchase before they start getting discounted
+order_discount_rate: 0.01 # Discount per additional item after order_discount_start
+order_discount_max: 0.2 # Maximum discount based on the items ordered
 
 demand_decay_per_day: 0.5 # Every time a trade is made the trade's "demand" stat increases, and this decays per day. This determines by how much it is reduced.
 # For example, if a trade has been traded 20 times, a decay rate of 0.5 means the demand will be 10 the next day, 5 the day after, then 2, etc.

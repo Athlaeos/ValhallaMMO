@@ -45,6 +45,8 @@ public class MerchantTrade implements Weighted {
     private Boolean giftable = false; // if enabled, this trade may be gifted. if false, it may not. if null, it may only be gifted ONCE per player
     private boolean refreshes = false; // (only works with daily restocks disabled) if enabled, the trade remains the same but modifiers are re-applied per day
     private double skillExp = 100; // the amount of trading skill exp granted when traded
+    private boolean isTradeable = true; // if false, this item is only available as a gift
+    private int maxOrderCount = 0; // max times this may be ordered. if 0, this trade cannot be ordered
 
     public MerchantTrade(String id){
         this.id = id;
@@ -84,6 +86,8 @@ public class MerchantTrade implements Weighted {
     public Boolean isGiftable() { return giftable; }
     public boolean refreshes() { return refreshes; }
     public double getSkillExp() { return skillExp; }
+    public boolean isTradeable() { return isTradeable; }
+    public int getMaxOrderCount() { return maxOrderCount; }
 
     public void setFixedUseCount(boolean fixedUseCount) { this.fixedUseCount = fixedUseCount; }
     public void setResult(ItemStack result) { this.result = result; }
@@ -115,6 +119,8 @@ public class MerchantTrade implements Weighted {
     public void setGiftable(Boolean giftable) { this.giftable = giftable; }
     public void setRefreshes(boolean refreshes) { this.refreshes = refreshes; }
     public void setSkillExp(double skillExp) { this.skillExp = skillExp; }
+    public void setTradeable(boolean tradeable) { isTradeable = tradeable; }
+    public void setMaxOrderCount(int maxOrderCount) { this.maxOrderCount = maxOrderCount; }
 
     public float getPerTradeWeight(Player player, MerchantData.TradeData tradeData){
         if (!fixedUseCount){

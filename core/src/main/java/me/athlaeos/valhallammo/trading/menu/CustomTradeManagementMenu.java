@@ -326,8 +326,10 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     if (e.isShiftClick()) currentTrade.setPriceRandomPositiveOffset(Math.max(currentTrade.getPriceRandomNegativeOffset(), currentTrade.getPriceRandomPositiveOffset() + (e.isLeftClick() ? 1 : -1)));
                     else currentTrade.setPriceRandomNegativeOffset(Math.min(currentTrade.getPriceRandomPositiveOffset(), currentTrade.getPriceRandomNegativeOffset() + (e.isLeftClick() ? 1 : -1)));
                 }
+                case "tradeTradeableButton" -> currentTrade.setTradeable(!currentTrade.isTradeable());
                 case "backToMenuButton" -> switchView(View.TRADES);
                 case "tradeRefreshesButton" -> currentTrade.setRefreshes(!currentTrade.refreshes());
+                case "tradeOrderableButton" -> currentTrade.setMaxOrderCount(currentTrade.getMaxOrderCount() + ((e.isShiftClick() ? 8 : 1) * (e.isLeftClick() ? 1 : -1)));
                 case "tradeGiftableButton" -> currentTrade.setGiftable(e.isShiftClick() ? null : (currentTrade.isGiftable() == null || !currentTrade.isGiftable()));
                 case "tradeSkillExperienceButton" -> currentTrade.setSkillExp(currentTrade.getSkillExp() + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 1 : -1)));
             }
@@ -520,36 +522,42 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     String weight = String.format("&8%.1f + %.2f/demand, up to %d, +%.1f/luck", currentTrade.getWeight(), currentTrade.getDemandWeightModifier(), currentTrade.getDemandWeightMaxQuantity(), currentTrade.getWeightQuality());
                     inventory.setItem(2, new ItemBuilder(Buttons.tradeWeightButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getWeight()), weight).get());
                     inventory.setItem(3, new ItemBuilder(Buttons.tradeWeightQualityButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getWeightQuality()), weight).get());
-                    if (currentSubType.resetsTradesDaily()){
-                        inventory.setItem(4, new ItemBuilder(Buttons.tradeWeightDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandWeightModifier()), weight).get());
-                        inventory.setItem(5, new ItemBuilder(Buttons.tradeWeightDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandWeightMaxQuantity()), weight).get());
-                    } else {
-                        inventory.setItem(5, new ItemBuilder(Buttons.tradeRefreshesButton).prependLore("&7Currently &e" + (currentTrade.refreshes() ? "On" : "Off")).get());
+
+                    if (currentTrade.isTradeable()) {
+                        if (currentSubType.resetsTradesDaily()){
+                            inventory.setItem(4, new ItemBuilder(Buttons.tradeWeightDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandWeightModifier()), weight).get());
+                            inventory.setItem(5, new ItemBuilder(Buttons.tradeWeightDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandWeightMaxQuantity()), weight).get());
+                        } else {
+                            inventory.setItem(5, new ItemBuilder(Buttons.tradeRefreshesButton).prependLore("&7Currently &e" + (currentTrade.refreshes() ? "On" : "Off")).get());
+                        }
+
+                        String uses = String.format("&8%d + %.2f/demand, up to %d", currentTrade.getMaxUses(), currentTrade.getDemandMaxUsesModifier(), currentTrade.getDemandMaxUsesMaxQuantity());
+                        inventory.setItem(6, new ItemBuilder(Buttons.tradeUsesButton).prependLore(String.format("&7Currently &e%d", currentTrade.getMaxUses()), uses).get());
+                        inventory.setItem(7, new ItemBuilder(Buttons.tradeUsesDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandMaxUsesModifier()), uses).get());
+                        inventory.setItem(8, new ItemBuilder(Buttons.tradeUsesDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandMaxUsesMaxQuantity()), uses).get());
+                        inventory.setItem(9, new ItemBuilder(Buttons.tradeReputationPositiveModButton).prependLore(String.format("&7Currently &ex%.1f", currentTrade.getPositiveReputationMultiplier())).get());
+                        String price = String.format("&8%d + %.0f%%/demand, up to %s", currentTrade.getScalingCostItem().getAmount(), currentTrade.getDemandPriceMultiplier() * 100, (currentTrade.getDemandPriceMax() > 0 ? "+" : "") + currentTrade.getDemandPriceMax());
+                        inventory.setItem(11, new ItemBuilder(Buttons.tradePriceDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandPriceMultiplier()), price).get());
+                        inventory.setItem(13, new ItemBuilder(Buttons.tradeVillagerExperienceButton).prependLore(String.format("&7Currently &e%d", currentTrade.getVillagerExperience())).get());
+
+                        inventory.setItem(20, currentTrade.getScalingCostItem());
+                        inventory.setItem(21, currentTrade.getOptionalCostItem());
+                        inventory.setItem(27, new ItemBuilder(Buttons.tradeReputationNegativeModButton).prependLore(String.format("&7Currently &ex%.1f", currentTrade.getNegativeReputationMultiplier())).get());
+                        inventory.setItem(29, new ItemBuilder(Buttons.tradePriceDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandPriceMax()), price).get());
+                        inventory.setItem(31, new ItemBuilder(Buttons.tradeEnchantingExperienceButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getEnchantingExperience())).get());
+                        inventory.setItem(37, new ItemBuilder(Buttons.tradeFixedUsesButton).prependLore("&7Currently &e" + (currentTrade.hasFixedUseCount() ? "On" : "Off")).get());
+                        inventory.setItem(35, new ItemBuilder(Buttons.tradeSkillExperienceButton).prependLore(String.format("&7Currently &e%d", (int) currentTrade.getSkillExp())).get());
+                        inventory.setItem(41, new ItemBuilder(Buttons.tradeRestockDelayButton).prependLore("&7Currently &e" + (currentTrade.getRestockDelay() < 0 ? "Does not restock" : timeToString(currentTrade.getRestockDelay()))).get());
+                        inventory.setItem(39, new ItemBuilder(Buttons.tradePriceRandomizerButton).prependLore(String.format("&7Price is &e%d-%d", currentTrade.getScalingCostItem().getAmount() + currentTrade.getPriceRandomNegativeOffset(), currentTrade.getScalingCostItem().getAmount() + currentTrade.getPriceRandomPositiveOffset())).get());
                     }
-                    String uses = String.format("&8%d + %.2f/demand, up to %d", currentTrade.getMaxUses(), currentTrade.getDemandMaxUsesModifier(), currentTrade.getDemandMaxUsesMaxQuantity());
-                    inventory.setItem(6, new ItemBuilder(Buttons.tradeUsesButton).prependLore(String.format("&7Currently &e%d", currentTrade.getMaxUses()), uses).get());
-                    inventory.setItem(7, new ItemBuilder(Buttons.tradeUsesDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandMaxUsesModifier()), uses).get());
-                    inventory.setItem(8, new ItemBuilder(Buttons.tradeUsesDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandMaxUsesMaxQuantity()), uses).get());
-                    inventory.setItem(9, new ItemBuilder(Buttons.tradeReputationPositiveModButton).prependLore(String.format("&7Currently &ex%.1f", currentTrade.getPositiveReputationMultiplier())).get());
-                    String price = String.format("&8%d + %.0f%%/demand, up to %s", currentTrade.getScalingCostItem().getAmount(), currentTrade.getDemandPriceMultiplier() * 100, (currentTrade.getDemandPriceMax() > 0 ? "+" : "") + currentTrade.getDemandPriceMax());
-                    inventory.setItem(11, new ItemBuilder(Buttons.tradePriceDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandPriceMultiplier()), price).get());
-                    inventory.setItem(13, new ItemBuilder(Buttons.tradeVillagerExperienceButton).prependLore(String.format("&7Currently &e%d", currentTrade.getVillagerExperience())).get());
-                    inventory.setItem(20, currentTrade.getScalingCostItem());
-                    inventory.setItem(21, currentTrade.getOptionalCostItem());
+                    inventory.setItem(18, new ItemBuilder(Buttons.tradeTradeableButton).prependLore("&7Currently &e" + (currentTrade.isTradeable() ? "On" : "Off")).get());
                     inventory.setItem(23, currentTrade.getResult());
                     List<String> modifierLore = new ArrayList<>();
                     currentTrade.getModifiers().forEach(m -> modifierLore.addAll(StringUtils.separateStringIntoLines("&d> " + m.getActiveDescription(), 40)));
                     inventory.setItem(24, new ItemBuilder(Buttons.tradeModifierButton).placeholderLore("%modifiers%", modifierLore).get());
-                    inventory.setItem(27, new ItemBuilder(Buttons.tradeReputationNegativeModButton).prependLore(String.format("&7Currently &ex%.1f", currentTrade.getNegativeReputationMultiplier())).get());
-                    inventory.setItem(29, new ItemBuilder(Buttons.tradePriceDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandPriceMax()), price).get());
-                    inventory.setItem(31, new ItemBuilder(Buttons.tradeEnchantingExperienceButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getEnchantingExperience())).get());
-                    inventory.setItem(37, new ItemBuilder(Buttons.tradeFixedUsesButton).prependLore("&7Currently &e" + (currentTrade.hasFixedUseCount() ? "On" : "Off")).get());
                     inventory.setItem(43, new ItemBuilder(Buttons.tradeExclusiveButton).prependLore("&7Currently &e" + (currentTrade.isExclusive() ? "On" : "Off")).get());
-
+                    inventory.setItem(26, new ItemBuilder(Buttons.tradeOrderableButton).prependLore(String.format("&7Currently &e%d", currentTrade.getMaxOrderCount())).get());
                     inventory.setItem(17, new ItemBuilder(Buttons.tradeGiftableButton).prependLore("&7Currently &e" + (currentTrade.isGiftable() == null ? "On, &cbut only once per player" : (currentTrade.isGiftable() ? "On" : "Off"))).get());
-                    inventory.setItem(35, new ItemBuilder(Buttons.tradeSkillExperienceButton).prependLore(String.format("&7Currently &e%d", (int) currentTrade.getSkillExp())).get());
-                    inventory.setItem(41, new ItemBuilder(Buttons.tradeRestockDelayButton).prependLore("&7Currently &e" + (currentTrade.getRestockDelay() < 0 ? "Does not restock" : timeToString(currentTrade.getRestockDelay()))).get());
-                    inventory.setItem(39, new ItemBuilder(Buttons.tradePriceRandomizerButton).prependLore(String.format("&7Price is &e%d-%d", currentTrade.getScalingCostItem().getAmount() + currentTrade.getPriceRandomNegativeOffset(), currentTrade.getScalingCostItem().getAmount() + currentTrade.getPriceRandomPositiveOffset())).get());
                 }
                 inventory.setItem(49, Buttons.backToMenuButton);
             }
@@ -1231,6 +1239,27 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                                 "&eClick to increase/decrease by 1",
                                 "&eShift-click to increase/decrease by 25")
                         .stringTag(KEY_BUTTON, "tradeSkillExperienceButton")
+                        .get();
+        private static final ItemStack tradeTradeableButton =
+                new ItemBuilder(getButtonData("editor_trading_trade_tradeable", Material.REDSTONE_TORCH))
+                        .name("&fTradeable")
+                        .lore("",
+                                "&7If enabled, this entry can be",
+                                "&7obtained through trading.",
+                                "&7Can be used to make an item only",
+                                "&7obtainable through gifting or ",
+                                "&7ordering",
+                                "&eClick to toggle")
+                        .stringTag(KEY_BUTTON, "tradeTradeableButton")
+                        .get();
+        private static final ItemStack tradeOrderableButton =
+                new ItemBuilder(getButtonData("editor_trading_trade_orderable", Material.FILLED_MAP))
+                        .name("&fMax Order Count")
+                        .lore("",
+                                "&7The max amount of times this",
+                                "&7trade may be ordered.",
+                                "&7If 0, this trade can't be ordered")
+                        .stringTag(KEY_BUTTON, "tradeOrderableButton")
                         .get();
     }
 }

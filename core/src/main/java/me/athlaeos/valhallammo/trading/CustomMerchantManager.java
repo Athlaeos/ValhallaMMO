@@ -119,7 +119,7 @@ public class CustomMerchantManager {
                 }
             }
             Collection<MerchantTrade> selectedTrades = new HashSet<>(merchantTrades.stream().filter(t -> t.getWeight() == -1).toList());
-            merchantTrades.removeIf(t -> t.getWeight() == -1);
+            merchantTrades.removeIf(t -> t.getWeight() == -1 || !t.isTradeable());
             selectedTrades.addAll(Utils.weightedSelection(merchantTrades, Utils.randomAverage(type.getRolls(level)), luck, 0));
             selectedTrades.forEach(t -> {
                 ItemBuilder result = prepareTradeResult(t, player);
@@ -459,5 +459,9 @@ public class CustomMerchantManager {
 
     public static YamlConfiguration getTradingConfig(){
         return ConfigManager.getConfig("trading/trading.yml").get();
+    }
+
+    public static String getDiscountFormula() {
+        return discountFormula;
     }
 }

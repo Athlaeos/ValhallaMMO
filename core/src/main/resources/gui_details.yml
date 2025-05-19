@@ -198,4 +198,11 @@ editor_trading_trade_pricedemandmax: EMERALD:-1
 editor_trading_trade_reputationposmod: WHEAT:-1
 editor_trading_trade_reputationnegmod: WHEAT:-1
 editor_trading_trade_fixeduses: REDSTONE_TORCH:-1
-editor_trading_trade_exclusive: DIAMOND:-1
+editor_trading_trade_exclusive: BOOK:-1
+editor_trading_trade_restockdelay: CLOCK:-1
+editor_trading_trade_pricerandomizer: COMPARATOR:-1
+editor_trading_trade_giftable: GOLDEN_APPLE:-1
+editor_trading_trade_refreshes: BONE_MEAL:-1
+editor_trading_trade_skillexperience: KNOWLEDGE_BOOK:-1
+editor_trading_trade_tradeable: EMERALD:-1
+editor_trading_trade_orderable: FILLED_MAP:-1

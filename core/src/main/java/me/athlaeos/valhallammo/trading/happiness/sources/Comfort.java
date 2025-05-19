@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.trading.happiness.sources;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.happiness.HappinessSource;
 import org.bukkit.block.Block;
@@ -20,6 +21,10 @@ public class Comfort implements HappinessSource, Listener {
     private final Collection<String> luxuryThings = new HashSet<>(CustomMerchantManager.getTradingConfig().getStringList("nice_things"));
 
     private final Map<UUID, Float> happinessCache = new HashMap<>();
+
+    public Comfort(){
+        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+    }
 
     @Override
     public String id() {

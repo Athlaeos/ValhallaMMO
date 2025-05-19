@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.trading.happiness.sources;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.happiness.HappinessSource;
 import me.athlaeos.valhallammo.utility.BlockUtils;
@@ -22,6 +23,10 @@ public class Space implements HappinessSource, Listener {
     private final float imprisonedHappiness = (float) CustomMerchantManager.getTradingConfig().getDouble("happiness_sources.imprisoned", -5);
 
     private final Map<UUID, Float> happinessCache = new HashMap<>();
+
+    public Space(){
+        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+    }
 
     @Override
     public String id() {
@@ -70,7 +75,7 @@ public class Space implements HappinessSource, Listener {
     @Override
     public float get(Player contextPlayer, Entity entity) {
         if (happinessCache.containsKey(entity.getUniqueId())) return happinessCache.get(entity.getUniqueId());
-        Collection<Block> vein = BlockUtils.getBlockVein(entity.getLocation().getBlock(), freeSpace + 1, this::isFreeBlock, freedomScanArea);
+        Collection<Block> vein = BlockUtils.getBlockVein(entity.getLocation().getBlock().getRelative(BlockFace.DOWN), freeSpace + 1, this::isFreeBlock, freedomScanArea);
         System.out.println("living space is " + vein.size());
         float happiness = 0;
 

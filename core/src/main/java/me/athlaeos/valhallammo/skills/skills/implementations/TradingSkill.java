@@ -63,7 +63,7 @@ public class TradingSkill extends Skill implements Listener {
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_TRADING)) return;
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
-            double multiplier = Math.max(0, 1 + AccumulativeStatManager.getCachedStats("TRADING_EXP_GAIN_GENERAL", p, 10000, true));
+            double multiplier = Math.max(0, 1 + AccumulativeStatManager.getCachedStats("TRADING_EXP_GAIN", p, 10000, true));
             amount *= multiplier;
         }
         super.addEXP(p, amount, silent, reason);

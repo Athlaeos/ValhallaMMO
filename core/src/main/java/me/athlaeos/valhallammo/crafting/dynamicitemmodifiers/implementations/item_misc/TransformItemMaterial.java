@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -17,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class TransformItemMaterial extends DynamicItemModifier {
+public class TransformItemMaterial extends DynamicItemModifier implements ResultChangingModifier {
     private static final Map<String, Map<EquipmentClass, Material>> classToMaterialMapping = new HashMap<>();
     private final Material icon;
     private final String materialPrefix;
@@ -113,5 +114,16 @@ public class TransformItemMaterial extends DynamicItemModifier {
     @Override
     public int commandArgsRequired() {
         return 0;
+    }
+
+    @Override
+    public ItemStack getNewResult(Player crafter, ItemBuilder item) {
+        EquipmentClass equipmentClass = EquipmentClass.getMatchingClass(item.getMeta());
+        if (equipmentClass == null) return item.get();
+        Material transformTo = classToMaterialMapping.getOrDefault(materialPrefix, new HashMap<>()).get(equipmentClass);
+        if (transformTo == null) return item.get();
+
+        item.type(transformTo);
+        return item.get();
     }
 }

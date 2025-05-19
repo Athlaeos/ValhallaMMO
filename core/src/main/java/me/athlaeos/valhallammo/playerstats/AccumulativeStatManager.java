@@ -295,6 +295,7 @@ public class AccumulativeStatManager {
         register("TRAINING_DISCOUNT", new ProfileStatSource(TradingProfile.class, "trainingDiscount"));
         register("SERVICE_DISCOUNT", new ProfileStatSource(TradingProfile.class, "serviceDiscount"));
         register("TRADING_LUCK", new ProfileStatSource(TradingProfile.class, "tradingLuck"));
+        register("TRADING_ORDER_MAX_COUNT_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "orderMaxMultiplier"));
         register("TRADING_POS_REPUTATION_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "positiveReputationMultiplier"));
         register("TRADING_NEG_REPUTATION_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "negativeReputationMultiplier"));
         register("TRADING_POS_RENOWN_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "positiveRenownMultiplier"));
@@ -304,9 +305,9 @@ public class AccumulativeStatManager {
         register("TRADING_DELIVERY_SPEED_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "orderDeliverySpeedMultiplier"));
         register("TRADING_SKILL_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "merchantSkillMultiplier"));
         register("TRADING_MERCHANT_EXPERIENCE_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "merchantExperienceMultiplier"));
-        register("TRADING_GIFT_CHANCE", new ProfileStatSource(TradingProfile.class, "tradeGiftChance"));
-        register("TRADING_DELIVERY_SPEED_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "orderDeliverySpeedMultiplier"));
-        register("TRADING_DELIVERY_SPEED_MULTIPLIER", new ProfileStatSource(TradingProfile.class, "orderDeliverySpeedMultiplier"));
+        register("TRADING_GIFT_CHANCE", new ProfileStatSource(TradingProfile.class, "tradeGiftChance"), new TradingRenownGiftChanceSource(), new TradingReputationGiftChanceSource());
+        register("TRADING_GIFT_COOLDOWN", new ProfileStatSource(TradingProfile.class, "tradeGiftCooldown"));
+        register("TRADING_EXP_GAIN", new ProfileStatSource(TradingProfile.class, "tradingEXPMultiplier"));
     }
 
     /**
