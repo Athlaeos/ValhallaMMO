@@ -212,7 +212,7 @@ public class LootListener implements Listener {
         Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
         if (p == null) {
             List<Player> nearby = EntityUtils.getNearbyPlayers(e.getBlock().getLocation(), 100);
-            if (!nearby.isEmpty()) p = nearby.getFirst();
+            if (!nearby.isEmpty()) p = nearby.get(0);
         }
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();

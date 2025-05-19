@@ -65,11 +65,12 @@ public class ChargedShotAmmo extends Animation {
                 cancel();
                 return;
             }
-            circle.forEach(l -> {
+            for (Location l : circle) {
                 if (l.getWorld() == null || !l.getWorld().equals(p.getWorld())) l.setWorld(p.getWorld());
-                if (ammo == Particle.valueOf(oldOrNew("REDSTONE", "DUST"))) p.getWorld().spawnParticle(ammo, l.clone().add(p.getLocation()).add(0, 0.8, 0), 0, ammoOptions);
+                if (ammo == Utils.DUST)
+                    p.getWorld().spawnParticle(ammo, l.clone().add(p.getLocation()).add(0, 0.8, 0), 0, ammoOptions);
                 else p.getWorld().spawnParticle(ammo, l.clone().add(p.getLocation()).add(0, 0.8, 0), 0);
-            });
+            }
             // if the charges on the animation doesn't match the remaining charges, reset the circle
             if (remainingCharges != charges) {
                 charges = remainingCharges;

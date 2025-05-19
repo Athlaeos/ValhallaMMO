@@ -186,7 +186,7 @@ public abstract class Skill {
             ItemMeta iconMeta = ItemUtils.getItemMeta(icon);
             if (iconMeta != null) {
                 iconMeta.setCustomModelData(modelData);
-                ItemUtils.setItemMeta(this.icon, iconMeta);
+                ItemUtils.setMetaNoClone(this.icon, iconMeta);
             }
         }
 

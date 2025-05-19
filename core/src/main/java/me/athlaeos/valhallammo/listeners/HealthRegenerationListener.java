@@ -10,9 +10,9 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 
 public class HealthRegenerationListener implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onHealthRegenerated(EntityRegainHealthEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         if (e.getEntity() instanceof LivingEntity l){
             double multiplier = 1 + AccumulativeStatManager.getCachedStats("HEALING_BONUS", l, 10000, true);
             e.setAmount(e.getAmount() * multiplier);

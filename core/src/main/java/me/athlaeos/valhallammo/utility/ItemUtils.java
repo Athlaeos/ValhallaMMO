@@ -306,9 +306,17 @@ public class ItemUtils {
         return contents;
     }
 
+
+    public static void replaceOrAddLore(ItemBuilder builder, String find, String replacement){
+        if (builder == null) return;
+        List<String> lore = builder.getLore() == null ? new ArrayList<>() : builder.getLore();
+        replaceOrAddLore(lore, find, replacement);
+        builder.lore(lore);
+    }
+
     public static void replaceOrAddLore(ItemMeta meta, String find, String replacement){
-        find = ChatColor.stripColor(Utils.chat(find));
         if (meta == null) return;
+        find = ChatColor.stripColor(Utils.chat(find));
         List<String> lore = meta.getLore() == null ? new ArrayList<>() : meta.getLore();
         replaceOrAddLore(lore, find, replacement);
         meta.setLore(lore);
@@ -353,8 +361,18 @@ public class ItemUtils {
         if (isEmpty(i)) return null;
         ItemMeta meta = i.getItemMeta();
         if (meta == null) return null;
-        meta.getPersistentDataContainer().set(TYPE_KEY, PersistentDataType.STRING, i.getType().toString());
+        storeType(meta, i.getType());
         return meta;
+    }
+
+    public static void storeType(ItemMeta meta, Material material) {
+        if (meta == null) return;
+        meta.getPersistentDataContainer().set(TYPE_KEY, PersistentDataType.STRING, material.toString());
+    }
+
+    public static void setMetaNoClone(ItemStack i, ItemMeta meta) {
+        meta.getPersistentDataContainer().remove(TYPE_KEY);
+        i.setItemMeta(meta);
     }
 
     /**
@@ -421,10 +439,10 @@ public class ItemUtils {
         if (meta == null) return "null";
         Material base = getStoredType(meta);
         if (base == null) return "null";
-        if (meta.hasDisplayName()) name = Utils.chat(meta.getDisplayName());
+        if (meta.hasDisplayName()) name = meta.getDisplayName();
         else if (TranslationManager.getMaterialTranslations().getMaterialTranslations().containsKey(base.toString())) name = Utils.chat(TranslationManager.getMaterialTranslation(base));
-        else name = me.athlaeos.valhallammo.utility.StringUtils.toPascalCase("&r" + base.toString().replace("_", " "));
-        return Utils.chat(name);
+        else name = Utils.chat(me.athlaeos.valhallammo.utility.StringUtils.toPascalCase("&r" + base.toString().replace("_", " ")));
+        return name;
     }
 
     /**
@@ -556,11 +574,8 @@ public class ItemUtils {
 
     public static Material stringToMaterial(String material, Material def){
         if (material == null || material.isEmpty()) return def;
-        try {
-            return Material.valueOf(material);
-        } catch (IllegalArgumentException ignored){
-            return def;
-        }
+        Material found = Material.getMaterial(material);
+        return found == null ? def : found;
     }
 
     public static EquipmentSlot getEquipmentSlot(ItemMeta meta){
@@ -576,9 +591,18 @@ public class ItemUtils {
 
     public static void removeIfLoreContains(ItemMeta meta, String find){
         if (meta == null || meta.getLore() == null) return;
+        final String stripped = ChatColor.stripColor(Utils.chat(find));
         List<String> lore = meta.getLore();
-        lore.removeIf(l -> l.contains(ChatColor.stripColor(Utils.chat(find))));
+        lore.removeIf(l -> l.contains(stripped));
         meta.setLore(lore);
+    }
+
+    public static void removeIfLoreContains(ItemBuilder i, String find) {
+        if (i == null || i.getLore() == null) return;
+        final String stripped = ChatColor.stripColor(Utils.chat(find));
+        List<String> lore = i.getLore();
+        lore.removeIf(l -> l.contains(stripped));
+        i.lore(lore);
     }
 
     /**
@@ -616,7 +640,7 @@ public class ItemUtils {
                 }
             }
             PlayerItemDamageEvent event = new PlayerItemDamageEvent(who, item, damage);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+            Bukkit.getPluginManager().callEvent(event);
             if (!event.isCancelled()){
                 if (!CustomDurabilityManager.hasCustomDurability(meta)){
                     Damageable damageable = (Damageable) meta;
@@ -625,7 +649,7 @@ public class ItemUtils {
                         who.playEffect(breakEffect);
                         return true;
                     } else {
-                        setItemMeta(item, damageable);
+                        setMetaNoClone(item, damageable);
                     }
                 } else {
                     if (CustomDurabilityManager.getDurability(meta, false) <= 0){

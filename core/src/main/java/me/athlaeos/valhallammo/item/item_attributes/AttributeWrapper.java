@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeRemove;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import org.bukkit.Material;
@@ -12,7 +13,12 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class AttributeWrapper {
+    private static final Map<String, Attribute> VANILLA_ATTRIBUTES = new HashMap<>();
+
     protected final String attribute;
     protected String convertTo = null;
     protected Double min = Double.NEGATIVE_INFINITY;
@@ -29,17 +35,8 @@ public abstract class AttributeWrapper {
         this.format = format;
         this.value = 0;
         this.operation = AttributeModifier.Operation.ADD_NUMBER;
-        boolean isVanilla;
-        Attribute vanillaAttribute;
-        try {
-            vanillaAttribute = Attribute.valueOf(attribute);
-            isVanilla = true;
-        } catch (IllegalArgumentException ignored){
-            vanillaAttribute = null;
-            isVanilla = false;
-        }
-        this.vanillaAttribute = vanillaAttribute;
-        this.isVanilla = isVanilla;
+        this.vanillaAttribute = getAttribute(attribute);
+        this.isVanilla = this.vanillaAttribute != null;
     }
 
     private Material icon = null;
@@ -99,6 +96,8 @@ public abstract class AttributeWrapper {
     }
     public void onApply(ItemMeta i){}
     public void onRemove(ItemMeta i) {}
+    public void onApply(ItemBuilder i){ onApply(i.getMeta()); }
+    public void onRemove(ItemBuilder i){ onRemove(i.getMeta()); }
 
     public Double getMin() { return min; }
     public Double getMax() { return max; }
@@ -138,4 +137,15 @@ public abstract class AttributeWrapper {
     }
 
     public abstract AttributeWrapper copy();
+
+    private static Attribute getAttribute(String attribute) {
+        // TODO: Replace this with a registry call instead of enum lookup, rn registry isn't viable with how the stat system is setup
+        if (VANILLA_ATTRIBUTES.containsKey(attribute)) return VANILLA_ATTRIBUTES.get(attribute);
+        Attribute vanilla = null;
+        try {
+            vanilla = Attribute.valueOf(attribute);
+        } catch (IllegalArgumentException ignored) {}
+        VANILLA_ATTRIBUTES.put(attribute, vanilla);
+        return vanilla;
+    }
 }

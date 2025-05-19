@@ -14,6 +14,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.playerstats.statsources.*;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
@@ -21,6 +22,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("unused")
 public class AccumulativeStatManager {
@@ -388,8 +390,9 @@ public class AccumulativeStatManager {
 
     public static double getCachedStats(String stat, Entity p, long refreshAfter, boolean use){
         if (p == null) return 0;
-        if (isStatCached(p, stat)){
-            return getCachedStatIgnoringExpiration(p, stat);
+        Double cachedValue = getValidCachedStat(p, stat);
+        if (cachedValue != null) {
+            return cachedValue;
         } else {
             double statValue = getStats(stat, p, use);
             cacheStat(p, stat, statValue, refreshAfter);
@@ -399,8 +402,9 @@ public class AccumulativeStatManager {
 
     public static double getCachedRelationalStats(String stat, Entity victimPrimary, Entity attacker, long refreshAfter, boolean use){
         if (victimPrimary == null) return 0;
-        if (isStatCached(victimPrimary, stat)){
-            return getCachedStatIgnoringExpiration(victimPrimary, stat);
+        Double cachedValue = getValidCachedStat(victimPrimary, stat);
+        if (cachedValue != null) {
+            return cachedValue;
         } else {
             double statValue = getRelationalStats(stat, victimPrimary, attacker, use);
             cacheStat(victimPrimary, stat, statValue, refreshAfter);
@@ -410,8 +414,9 @@ public class AccumulativeStatManager {
 
     public static double getCachedAttackerRelationalStats(String stat, Entity victim, Entity attackerPrimary, long refreshAfter, boolean use){
         if (victim == null || attackerPrimary == null) return 0;
-        if (isStatCached(attackerPrimary, stat)){
-            return getCachedStatIgnoringExpiration(attackerPrimary, stat);
+        Double cachedValue = getValidCachedStat(attackerPrimary, stat);
+        if (cachedValue != null) {
+            return cachedValue;
         } else {
             double statValue = getRelationalStats(stat, victim, attackerPrimary, use);
             cacheStat(attackerPrimary, stat, statValue, refreshAfter);
@@ -419,7 +424,7 @@ public class AccumulativeStatManager {
         }
     }
 
-    private static final Map<UUID, Map<String, Map.Entry<Long, Double>>> statCache = new HashMap<>();
+    private static final Map<UUID, Map<String, Map.Entry<Long, Double>>> statCache = new ConcurrentHashMap<>();
 
     private static long lastMapCleanup = System.currentTimeMillis();
 
@@ -445,17 +450,11 @@ public class AccumulativeStatManager {
      * @param cacheFor the amount of time the cached value will be valid for, in milliseconds
      */
     public static void cacheStat(Entity e, String stat, double amount, long cacheFor){
-        Map<String, Map.Entry<Long, Double>> currentCachedStats = statCache.getOrDefault(e.getUniqueId(), new HashMap<>());
-        currentCachedStats.put(stat, new Map.Entry<>() {
-            private final long time = System.currentTimeMillis() + cacheFor;
-            @Override
-            public Long getKey() { return time; }
-            @Override
-            public Double getValue() { return amount; }
-            @Override
-            public Double setValue(Double value) { return null; }
+        statCache.compute(e.getUniqueId(), (uuid, cache) -> {
+            if (cache == null) cache = new HashMap<>();
+            cache.put(stat, new AbstractMap.SimpleEntry<>(System.currentTimeMillis() + cacheFor, amount));
+            return cache;
         });
-        statCache.put(e.getUniqueId(), currentCachedStats);
     }
 
     /**
@@ -466,23 +465,29 @@ public class AccumulativeStatManager {
      * @return true if the stat is cached and unexpired, false otherwise
      */
     private static boolean isStatCached(Entity e, String stat){
+        return getValidCachedStat(e, stat) != null;
+    }
+
+    /**
+     * @param e The entity whose stat you want
+     * @param stat The stat you want
+     * @return The cached stat if the cache is still valid, otherwise null
+     */
+    private static Double getValidCachedStat(Entity e, String stat) {
         attemptMapCleanup();
-        if (statCache.containsKey(e.getUniqueId())){
-            if (statCache.getOrDefault(e.getUniqueId(), new HashMap<>()).get(stat) != null){
-                return statCache.getOrDefault(e.getUniqueId(), new HashMap<>()).get(stat).getKey() > System.currentTimeMillis();
-            }
-        }
-        return false;
+        Map<String, Map.Entry<Long, Double>> stats = statCache.get(e.getUniqueId());
+        if (stats == null) return null;
+        Map.Entry<Long, Double> cache = stats.get(stat);
+        return cache != null && cache.getKey() > System.currentTimeMillis() ? cache.getValue() : null;
     }
 
     private static void attemptMapCleanup(){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
             if (lastMapCleanup + 120000 < System.currentTimeMillis()){
-                // cleaning up map every 2 minutes
-                new HashSet<>(statCache.keySet()).stream().filter(u -> {
-                    Entity entity = ValhallaMMO.getInstance().getServer().getEntity(u);
-                    return entity == null || !entity.isValid();
-                }).forEach(statCache::remove);
+                for (UUID uuid : new HashSet<>(statCache.keySet())) {
+                    Entity entity = Bukkit.getEntity(uuid);
+                    if (entity == null || !entity.isValid()) statCache.remove(uuid);
+                }
                 lastMapCleanup = System.currentTimeMillis();
             }
         });

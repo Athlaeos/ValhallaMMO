@@ -81,8 +81,8 @@ public class LeaderboardManager {
     public static void cache(Leaderboard l, Map<Integer, LeaderboardEntry> ranks){
         cachedLeaderboardsByRank.put(l.key, ranks);
         Map<UUID, LeaderboardEntry> personalEntries = new HashMap<>();
-        for (int rank : ranks.keySet()){
-            personalEntries.put(ranks.get(rank).playerUUID(), ranks.get(rank));
+        for (LeaderboardEntry entry : ranks.values()) {
+            personalEntries.put(entry.playerUUID(), entry);
         }
         cachedLeaderboardsByPlayer.put(l.key, personalEntries);
     }

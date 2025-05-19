@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class ReplacementPool {
+    public static final ReplacementPool NONE = new ReplacementPool("", "");
+
     private final String parentTable;
     private final String key;
     private final Map<UUID, ReplacementEntry> entries = new HashMap<>();

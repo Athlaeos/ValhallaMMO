@@ -56,7 +56,7 @@ public class ChargedShotSonicBoom extends Animation {
     private void pulse(World w, Location location, Location particleLocation, Location center, double intensity){
         if (particleLocation.equals(center) || location.getWorld() == null || particleLocation.getWorld() == null) return;
         if (!particleLocation.getWorld().equals(location.getWorld())) return;
-        if (sonicBoom == Particle.valueOf(oldOrNew("REDSTONE", "DUST")))
+        if (sonicBoom == Utils.DUST)
             w.spawnParticle(sonicBoom, location.add(particleLocation), 0, sonicBoomOptions);
         else w.spawnParticle(sonicBoom, location.add(particleLocation), 0,
                 (particleLocation.getX() - center.getX()) * intensity,

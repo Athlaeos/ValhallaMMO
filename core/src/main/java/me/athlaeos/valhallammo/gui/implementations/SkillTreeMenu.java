@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.skills.skills.PerkConnectionIcon;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
@@ -247,31 +248,30 @@ public class SkillTreeMenu extends Menu {
             String storedType = getItemStoredSkillType(meta);
             if (storedType != null){
                 Skill s = SkillRegistry.getSkill(storedType);
-                if (s != null) {
-                    PowerProfile acc = ProfileRegistry.getMergedProfile(target, PowerProfile.class);
-                    meta.setDisplayName(Utils.chat(s.getDisplayName() + (acc.getNewGamePlus() > 0 ?
-                            TranslationManager.getTranslation("prestige_level_format")
-                                    .replace("%prestige_roman%", StringUtils.toRoman(acc.getNewGamePlus())
-                                            .replace("%prestige_numeric%", String.valueOf(acc.getNewGamePlus()))) :
-                            "")));
+                if (s == null) continue;
+                PowerProfile acc = ProfileCache.getOrCache(target, PowerProfile.class);
+                meta.setDisplayName(Utils.chat(s.getDisplayName() + (acc.getNewGamePlus() > 0 ?
+                        TranslationManager.getTranslation("prestige_level_format")
+                                .replace("%prestige_roman%", StringUtils.toRoman(acc.getNewGamePlus())
+                                        .replace("%prestige_numeric%", String.valueOf(acc.getNewGamePlus()))) :
+                        "")));
 
-                    Profile p = ProfileRegistry.getPersistentProfile(target, s.getProfileType());
-                    double expRequired = s.expForLevel(p.getLevel() + 1);
-                    List<String> lore = new ArrayList<>();
-                    for (String line : TranslationManager.getListTranslation("skilltree_icon_format")){
-                        lore.add(Utils.chat(line
-                                .replace("%level_current%", "" + p.getLevel())
-                                .replace("%exp_current%", String.format("%.2f", p.getEXP()))
-                                .replace("%exp_next%", (expRequired < 0) ? TranslationManager.getTranslation("max_level") : String.format("%.2f", expRequired))
-                                .replace("%exp_total%", String.format("%.2f", p.getTotalEXP()))
-                                .replace("%prestigepoints%", String.valueOf((acc.getSpendablePrestigePoints() - acc.getSpentPrestigePoints())))
-                                .replace("%skillpoints%", String.valueOf((acc.getSpendableSkillPoints() - acc.getSpentSkillPoints())))));
-                    }
-                    meta.setLore(lore);
-                    meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS);
-                    meta.setAttributeModifiers(null);
-                    ItemUtils.setItemMeta(i, meta);
+                Profile p = ProfileRegistry.getPersistentProfile(target, s.getProfileType());
+                double expRequired = s.expForLevel(p.getLevel() + 1);
+                List<String> lore = new ArrayList<>();
+                for (String line : TranslationManager.getListTranslation("skilltree_icon_format")){
+                    lore.add(Utils.chat(line
+                            .replace("%level_current%", "" + p.getLevel())
+                            .replace("%exp_current%", String.format("%.2f", p.getEXP()))
+                            .replace("%exp_next%", (expRequired < 0) ? TranslationManager.getTranslation("max_level") : String.format("%.2f", expRequired))
+                            .replace("%exp_total%", String.format("%.2f", p.getTotalEXP()))
+                            .replace("%prestigepoints%", String.valueOf((acc.getSpendablePrestigePoints() - acc.getSpentPrestigePoints())))
+                            .replace("%skillpoints%", String.valueOf((acc.getSpendableSkillPoints() - acc.getSpentSkillPoints())))));
                 }
+                meta.setLore(lore);
+                meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS);
+                meta.setAttributeModifiers(null);
+                ItemUtils.setMetaNoClone(i, meta);
             }
         }
         if (iconsSize > 0){
@@ -329,26 +329,18 @@ public class SkillTreeMenu extends Menu {
                                             0; // not unlocked
 
                     List<String> lore = new ArrayList<>();
-                    TranslationManager.getListTranslation("skilltree_perk_format").forEach(l -> {
+                    upper: for (String l : TranslationManager.getListTranslation("skilltree_perk_format")) {
                         if (l.contains("%description%")) {
                             String description = p.getDescription();
-                            for (PerkReward reward : p.getRewards()) description = description.replace("{" + reward.getName() + "}", reward.rewardPlaceholder());
+                            for (PerkReward reward : p.getRewards())
+                                description = description.replace("{" + reward.getName() + "}", reward.rewardPlaceholder());
                             lore.addAll(Utils.chat(StringUtils.separateStringIntoLines(description, 40)));
-                        } else if (UnlockConditionRegistry.getValuePlaceholders().stream().anyMatch(con -> l.contains(String.format("%%%s%%", con)))) { // if lore contains a value placeholder
-                            UnlockCondition condition = p.getConditions().stream().filter(con -> l.contains(String.format("%%%s%%", con.getValuePlaceholder()))).findAny().orElse(null);
-                            if (unlockedStatus == 0 && condition != null && condition.getConditionMessages() != null && !condition.getConditionMessages().isEmpty()) lore.addAll(Utils.chat(condition.getConditionMessages()));
-                        } else if (UnlockConditionRegistry.getFailurePlaceholders().stream().anyMatch(con -> l.contains(String.format("%%%s%%", con)))) { // if lore contains a failure placeholder
-                            UnlockCondition condition = p.getConditions().stream().filter(con -> l.contains(String.format("%%%s%%", con.getFailurePlaceholder()))).findAny().orElse(null);
-                            if (unlockedStatus == 0 && !p.metConditionRequirements(target, false) && condition != null && !StringUtils.isEmpty(condition.getFailedConditionMessage())) lore.add(Utils.chat(condition.getFailedConditionMessage()));
-                        } else if (ResourceExpenseRegistry.getExpenses().values().stream().anyMatch(con -> l.contains(con.getCostPlaceholder()))) { // if lore contains a cost placeholder
-                            ResourceExpense condition = p.getExpenses().stream().filter(con -> l.contains(con.getCostPlaceholder())).findAny().orElse(null);
-                            if (unlockedStatus == 0 && condition != null && !StringUtils.isEmpty(condition.getCostMessage())) lore.addAll(StringUtils.separateStringIntoLines(Utils.chat(condition.getCostMessage()), 40));
-                        } else if (ResourceExpenseRegistry.getExpenses().values().stream().anyMatch(con -> l.contains(con.getInsufficientCostPlaceholder()))) { // if lore contains a cost placeholder
-                            ResourceExpense condition = p.getExpenses().stream().filter(con -> l.contains(con.getInsufficientCostPlaceholder())).findAny().orElse(null);
-                            if (unlockedStatus == 0 && condition != null && !condition.canPurchase(target) && !StringUtils.isEmpty(condition.getInsufficientFundsMessage())) lore.add(Utils.chat(condition.getInsufficientFundsMessage()));
-                        } else if (l.contains("%warning_levels%")){
-                            if (unlockedStatus == 0 && !p.metLevelRequirement(target) && !StringUtils.isEmpty(perk_requirement_warning_levels)) lore.add(Utils.chat(perk_requirement_warning_levels));
-                        } else if (l.contains("%status_unlocked%")){
+                            continue;
+                        } else if (l.contains("%warning_levels%")) {
+                            if (unlockedStatus == 0 && !p.metLevelRequirement(target) && !StringUtils.isEmpty(perk_requirement_warning_levels))
+                                lore.add(Utils.chat(perk_requirement_warning_levels));
+                            continue;
+                        } else if (l.contains("%status_unlocked%")) {
                             String status = switch (unlockedStatus) {
                                 case 1 -> perk_requirement_status_unlocked;
                                 case 2 -> perk_requirement_status_permanently_locked;
@@ -356,18 +348,52 @@ public class SkillTreeMenu extends Menu {
                                 default -> null;
                             };
                             if (!StringUtils.isEmpty(status)) lore.add(Utils.chat(status));
-                        } else if (l.contains("%warning_cost%")){
+                            continue;
+                        } else if (l.contains("%warning_cost%")) {
                             if (unlockedStatus == 0 && !p.metResourceRequirements(target)) {
-                                for (ResourceExpense expense : p.getExpenses()) if (!expense.canPurchase(target)) lore.add(Utils.chat(expense.getInsufficientFundsMessage()));
+                                for (ResourceExpense expense : p.getExpenses())
+                                    if (!expense.canPurchase(target))
+                                        lore.add(Utils.chat(expense.getInsufficientFundsMessage()));
                             }
-                        } else if (l.contains("%status_unlockable%")){
-                            if (unlockedStatus == 0 && p.canUnlock(target) && !StringUtils.isEmpty(perk_requirement_status_unlockable)) lore.add(Utils.chat(perk_requirement_status_unlockable));
-                        } else if (l.contains("%cost%")){
-                            if (unlockedStatus == 0) for (ResourceExpense expense : p.getExpenses()) lore.add(Utils.chat(expense.getCostMessage()));
-                        } else {
-                            lore.add(Utils.chat(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(l.replace("%level_required%", String.valueOf(p.getLevelRequirement())).replace("%skill%", p.getSkill().getDisplayName()), target), target)));
+                            continue;
+                        } else if (l.contains("%status_unlockable%")) {
+                            if (unlockedStatus == 0 && p.canUnlock(target) && !StringUtils.isEmpty(perk_requirement_status_unlockable))
+                                lore.add(Utils.chat(perk_requirement_status_unlockable));
+                            continue;
+                        } else if (l.contains("%cost%")) {
+                            if (unlockedStatus == 0) for (ResourceExpense expense : p.getExpenses())
+                                lore.add(Utils.chat(expense.getCostMessage()));
+                            continue;
                         }
-                    });
+
+                        for (UnlockCondition condition : UnlockConditionRegistry.getConditions()) {
+                            if (l.contains("%" + condition.getValuePlaceholder() + "%")) {
+                                if (unlockedStatus == 0 && p.getConditions().contains(condition) && condition.getConditionMessages() != null && !condition.getConditionMessages().isEmpty())
+                                    lore.addAll(Utils.chat(condition.getConditionMessages()));
+                                continue upper;
+                            }
+                            if (l.contains("%" + condition.getFailurePlaceholder() + "%")) {
+                                if (unlockedStatus == 0 && p.getConditions().contains(condition) && !p.metConditionRequirements(target, false) && !StringUtils.isEmpty(condition.getFailedConditionMessage()))
+                                    lore.add(Utils.chat(condition.getFailedConditionMessage()));
+                                continue upper;
+                            }
+                        }
+
+                        for (ResourceExpense expense : ResourceExpenseRegistry.getExpenses().values()) {
+                            if (l.contains(expense.getCostPlaceholder())) {
+                                if (unlockedStatus == 0 && p.getExpenses().contains(expense) && !StringUtils.isEmpty(expense.getCostMessage()))
+                                    lore.addAll(StringUtils.separateStringIntoLines(Utils.chat(expense.getCostMessage()), 40));
+                                continue upper;
+                            }
+                            if (l.contains(expense.getInsufficientCostPlaceholder())) {
+                                if (unlockedStatus == 0 && p.getExpenses().contains(expense) && !expense.canPurchase(target) && !StringUtils.isEmpty(expense.getInsufficientFundsMessage()))
+                                    lore.add(Utils.chat(expense.getInsufficientFundsMessage()));
+                                continue upper;
+                            }
+                        }
+
+                        lore.add(Utils.chat(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(l.replace("%level_required%", String.valueOf(p.getLevelRequirement())).replace("%skill%", p.getSkill().getDisplayName()), target), target)));
+                    }
                     icon.lore(lore);
                     icon.flag(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS);
                     icon.wipeAttributes();

@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.hooks.MythicMobsHook;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.apache.commons.lang.StringUtils;
@@ -19,10 +20,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class MonsterScalingManager {
@@ -249,12 +247,12 @@ public class MonsterScalingManager {
      */
     public static double getAreaDifficultyLevel(Location l, Player cacheFor){
         if (!enabled || l.getWorld() == null) return 0;
-        Collection<Entity> players = l.getWorld().getNearbyEntities(l, 128, 128, 128, (entity) -> entity instanceof Player p && p.getGameMode() != GameMode.CREATIVE);
+        List<Player> players = EntityUtils.getNearbyPlayers(l, 128, false);
         int combinedLevel = 0;
         int lowest = -1;
         int highest = -1;
-        for (Entity e : players){
-            if (!(e instanceof Player p)) continue;
+        for (Player p : players){
+            if (p.getGameMode() != GameMode.SURVIVAL) continue;
             PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
             combinedLevel += profile.getLevel();
             if (lowest < 0 || lowest > profile.getLevel()) lowest = profile.getLevel();

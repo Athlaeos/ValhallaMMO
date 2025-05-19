@@ -5,9 +5,7 @@ import me.athlaeos.valhallammo.skills.perkunlockconditions.implementations.Other
 import me.athlaeos.valhallammo.skills.perkunlockconditions.implementations.SinglePerkUnlockedRequirement;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.implementations.VersionMinimumRequirement;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class UnlockConditionRegistry {
@@ -18,6 +16,10 @@ public class UnlockConditionRegistry {
         register(new SinglePerkUnlockedRequirement());
         register(new OtherSkillLevelRequirement());
         register(new VersionMinimumRequirement());
+    }
+
+    public static Collection<UnlockCondition> getConditions() {
+        return new HashSet<>(conditions.values());
     }
 
     public static void register(UnlockCondition expense){
@@ -37,7 +39,7 @@ public class UnlockConditionRegistry {
      * @return a collection of value placeholders
      */
     public static Collection<String> getValuePlaceholders() {
-        return conditions.keySet();
+        return new HashSet<>(conditions.keySet());
     }
 
     /**
@@ -47,6 +49,11 @@ public class UnlockConditionRegistry {
      * @return a collection of failure placeholders
      */
     public static Collection<String> getFailurePlaceholders() {
-        return conditions.values().stream().map(UnlockCondition::getFailurePlaceholder).collect(Collectors.toSet());
+        Set<String> placeholders = new HashSet<>();
+        for (UnlockCondition unlockCondition : conditions.values()) {
+            String failurePlaceholder = unlockCondition.getFailurePlaceholder();
+            placeholders.add(failurePlaceholder);
+        }
+        return placeholders;
     }
 }

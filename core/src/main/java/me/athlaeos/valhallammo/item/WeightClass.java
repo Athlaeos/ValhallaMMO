@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.item;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -38,9 +39,7 @@ public enum WeightClass {
         Material stored = ItemUtils.getStoredType(meta);
         String value = ItemUtils.getPDCString(WEIGHT_CLASS, meta, null);
         if (value != null){
-            try {
-                return WeightClass.valueOf(value);
-            } catch (IllegalArgumentException ignored) {}
+            return getValue(value);
         }
         if (stored != null){
             for (WeightClass type : values()){
@@ -54,11 +53,7 @@ public enum WeightClass {
         if (meta == null) return false;
         Material stored = ItemUtils.getStoredType(meta);
         String value = ItemUtils.getPDCString(WEIGHT_CLASS, meta, null);
-        if (value != null){
-            try {
-                return true;
-            } catch (IllegalArgumentException ignored) {}
-        }
+        if (value != null) return true;
         if (stored != null){
             for (WeightClass type : values()){
                 if (type.matchingMaterials.contains(stored)) return true;
@@ -77,14 +72,50 @@ public enum WeightClass {
         int count = 0;
         EntityEquipment equipment = entity.getEquipment();
         if (equipment == null) return 0;
-        if (!ItemUtils.isEmpty(equipment.getHelmet()) && getWeightClass(ItemUtils.getItemMeta(equipment.getHelmet())) == weightClass) count++;
-        if (!ItemUtils.isEmpty(equipment.getChestplate()) && getWeightClass(ItemUtils.getItemMeta(equipment.getChestplate())) == weightClass) count++;
-        if (!ItemUtils.isEmpty(equipment.getLeggings()) && getWeightClass(ItemUtils.getItemMeta(equipment.getLeggings())) == weightClass) count++;
-        if (!ItemUtils.isEmpty(equipment.getBoots()) && getWeightClass(ItemUtils.getItemMeta(equipment.getBoots())) == weightClass) count++;
+        if (getWeightClass(ItemUtils.getItemMeta(equipment.getHelmet())) == weightClass) count++;
+        if (getWeightClass(ItemUtils.getItemMeta(equipment.getChestplate())) == weightClass) count++;
+        if (getWeightClass(ItemUtils.getItemMeta(equipment.getLeggings())) == weightClass) count++;
+        if (getWeightClass(ItemUtils.getItemMeta(equipment.getBoots())) == weightClass) count++;
         return count;
     }
 
     public Collection<Material> getMatchingMaterials() {
         return matchingMaterials;
+    }
+
+    /**
+     *
+     * @param properties The entity properties to get the weight class from
+     * @return an array of the weight class counts, index 0 -> weightless, 1 -> light, 2 -> heavy
+     */
+    public static int[] getWeightClasses(EntityProperties properties) {
+        int[] classes = {0, 0, 0};
+        for (ItemBuilder builder : properties.getArmor()) {
+            switch (getWeightClass(builder.getMeta())) {
+                case WEIGHTLESS -> classes[0] += 1;
+                case LIGHT -> classes[1] += 1;
+                case HEAVY -> classes[2] += 1;
+            }
+        }
+        return classes;
+    }
+
+    public static int getArmorWeightClassCount(EntityProperties properties, WeightClass weightClass) {
+        int count = 0;
+        for (ItemBuilder builder : properties.getArmor()) {
+            if (getWeightClass(builder.getMeta()) == weightClass) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static WeightClass getValue(String value) {
+        if (value == null) return WEIGHTLESS;
+        return switch (value) {
+            case "HEAVY" -> HEAVY;
+            case "LIGHT" -> LIGHT;
+            default -> WEIGHTLESS;
+        };
     }
 }

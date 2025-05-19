@@ -13,12 +13,9 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-
-import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class PotionEffectConvert extends DynamicItemModifier {
     private static final List<String> types = new ArrayList<>();

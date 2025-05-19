@@ -109,9 +109,9 @@ public class BlockHardnessStick implements Listener {
         };
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onScroll(PlayerItemHeldEvent e){
-        if (e.isCancelled() || !e.getPlayer().isSneaking()) return;
+        if (!e.getPlayer().isSneaking()) return;
         ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
         if (ItemUtils.isEmpty(hand) || hand.getType() != Material.STICK) return;
         ItemBuilder item = new ItemBuilder(hand);

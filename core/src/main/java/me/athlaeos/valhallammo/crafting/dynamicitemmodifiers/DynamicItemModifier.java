@@ -164,4 +164,11 @@ public abstract class DynamicItemModifier {
     public static void sortModifiers(List<DynamicItemModifier> modifiers){
         modifiers.sort(Comparator.comparingInt((DynamicItemModifier a) -> a.getPriority().getPriorityRating()));
     }
+
+    public static boolean requiresPlayer(Collection<DynamicItemModifier> modifiers) {
+        for (DynamicItemModifier modifier : modifiers) {
+            if (modifier.requiresPlayer()) return true;
+        }
+        return false;
+    }
 }

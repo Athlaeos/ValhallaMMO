@@ -276,7 +276,7 @@ public class CraftingTableListener implements Listener {
                 if (!ItemUtils.isEmpty(firstItem)){
                     int newDurability = Math.min(combinedDurability + (int) Math.floor(0.05 * firstItemMaxDurability), firstItemMaxDurability);
                     CustomDurabilityManager.setDurability(firstMeta, newDurability, firstItemMaxDurability);
-                    ItemUtils.setItemMeta(firstItem, firstMeta);
+                    ItemUtils.setMetaNoClone(firstItem, firstMeta);
 
                     PowerProfile profile = crafter == null ? null : ProfileCache.getOrCache(crafter, PowerProfile.class);
                     if (profile == null || !profile.hasInventoryRepairingKeepEnchanting()) firstItem.getEnchantments().keySet().forEach(firstItem::removeEnchantment);
@@ -364,7 +364,7 @@ public class CraftingTableListener implements Listener {
 
                     arrowMeta.setColor(potionMeta.getColor());
                     arrowMeta.addItemFlags(potionMeta.getItemFlags().toArray(new org.bukkit.inventory.ItemFlag[0]));
-                    ItemUtils.setItemMeta(arrow, arrowMeta);
+                    ItemUtils.setMetaNoClone(arrow, arrowMeta);
 
                     inventory.setResult(arrow);
                 } else {

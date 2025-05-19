@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class TranslationManager {
     private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -27,8 +28,13 @@ public class TranslationManager {
      */
     public static String getTranslation(String key){
         if (pluginTranslations == null) return "";
-        if (!key.contains("<lang.") && !pluginTranslations.getStringTranslations().containsKey(key)) ValhallaMMO.logWarning("No translated value mapped for " + key);
-        return translatePlaceholders(pluginTranslations.getStringTranslations().getOrDefault(key, key));
+        Map<String, String> translations = pluginTranslations.getStringTranslations();
+        String translation = translations.get(key);
+        if (translation == null) {
+            if (!key.contains("<lang.") && !translations.containsKey(key)) ValhallaMMO.logWarning("No translated value mapped for key " + key);
+            return translatePlaceholders(key);
+        }
+        return translatePlaceholders(translation);
     }
 
     /**
@@ -36,8 +42,9 @@ public class TranslationManager {
      */
     public static String getRawTranslation(String key){
         if (pluginTranslations == null) return "";
-        if (!pluginTranslations.getStringTranslations().containsKey(key)) return null;
-        return translatePlaceholders(pluginTranslations.getStringTranslations().get(key));
+        String translation = pluginTranslations.getStringTranslations().get(key);
+        if (translation == null) return null;
+        return translatePlaceholders(translation);
     }
 
     public static PluginTranslationDTO getDefaultTranslations() {
@@ -95,7 +102,7 @@ public class TranslationManager {
                     newList.add(translatePlaceholders(l));
                 } else {
                     // each line in the associated list is once again passed through the translation method
-                    placeholderList.forEach(s -> newList.add(translatePlaceholders(s)));
+                    for (String s : placeholderList) newList.add(translatePlaceholders(s));
                 }
             }
         }
@@ -157,30 +164,34 @@ public class TranslationManager {
 
     /**
      * Replaces any language placeholders in the display name and lore to their translated versions
-     * @param iMeta the item to translate
+     * @param meta the item to translate
      */
-    public static void translateItemMeta(ItemMeta iMeta){
-        boolean translated = false;
-        if (iMeta == null) return;
-        if (iMeta.hasDisplayName()){
-            if (iMeta.getDisplayName().contains("<lang.")){
-                iMeta.setDisplayName(Utils.chat(translatePlaceholders(iMeta.getDisplayName())));
-                translated = true;
+    public static void translateItemMeta(ItemMeta meta){
+        if (meta == null) return;
+        if (meta.hasDisplayName()){
+            String displayName = meta.getDisplayName();
+            if (displayName.contains("<lang.")){
+                meta.setDisplayName(Utils.chat(translatePlaceholders(displayName)));
             }
         }
-        if (iMeta.hasLore() && iMeta.getLore() != null){
+        if (meta.hasLore()){
+            List<String> lore = meta.getLore();
             List<String> newLore = new ArrayList<>();
-            if (iMeta.getLore().stream().anyMatch(s -> s.contains("<lang."))){
-                for (String s : translateListPlaceholders(iMeta.getLore())){
-                    newLore.add(Utils.chat(s));
+            if (lore != null) {
+                for (String line : lore) {
+                    if (line.contains("<lang.")) {
+                        for (String s : translateListPlaceholders(lore)){
+                            newLore.add(Utils.chat(s));
+                        }
+                        break;
+                    }
                 }
-                translated = true;
-            } else newLore = iMeta.getLore();
-
-            iMeta.setLore(newLore);
+                if (newLore.isEmpty()) {
+                    newLore = lore;
+                }
+            }
+            meta.setLore(newLore);
         }
-        if (!translated) return;
-        ItemUtils.reSetItemText(iMeta);
     }
 
     public static String getLanguage() {
