@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.po
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierScalingPresets;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
@@ -50,31 +51,31 @@ public class ScaleDuration extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         Scaling scaling;
         if (presetScaling != null) scaling = ModifierScalingPresets.getScalings().get(presetScaling);
         else scaling = new Scaling(Objects.requireNonNullElseGet(commandScaling, this::buildScaling), mode, lowerBound, upperBound);
         if (scaling == null) {
-            failedRecipe(outputItem, "&cRecipe scaling wrongly configured, contact admin");
+            failedRecipe(context.getItem(), "&cRecipe scaling wrongly configured, contact admin");
             return;
         }
         int skill;
         switch (skillToScaleWith) {
-            case "SMITHING" -> skill = SmithingItemPropertyManager.getQuality(outputItem.getMeta());
-            case "ALCHEMY" -> skill = AlchemyItemPropertyManager.getQuality(outputItem.getMeta());
+            case "SMITHING" -> skill = SmithingItemPropertyManager.getQuality(context.getItem().getMeta());
+            case "ALCHEMY" -> skill = AlchemyItemPropertyManager.getQuality(context.getItem().getMeta());
             case "ENCHANTING" -> {
-                skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", crafter, 10000, true);
-                skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", crafter, 10000, true)));
+                skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
+                skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", context.getCrafter(), 10000, context.shouldExecuteUsageMechanics())));
             }
             default -> {
                 Skill s = SkillRegistry.getSkill(skillToScaleWith);
-                Profile profile = ProfileCache.getOrCache(crafter, s.getProfileType());
+                Profile profile = ProfileCache.getOrCache(context.getCrafter(), s.getProfileType());
                 skill = profile.getLevel();
             }
         }
 
         int finalQuality = (int) Math.round(skillEfficiency * skill);
-        AlchemyItemPropertyManager.applyAttributeScaling(outputItem.getMeta(), scaling, finalQuality, true, minimumValue, 0);
+        AlchemyItemPropertyManager.applyAttributeScaling(context.getItem().getMeta(), scaling, finalQuality, true, minimumValue, 0);
     }
 
     @Override

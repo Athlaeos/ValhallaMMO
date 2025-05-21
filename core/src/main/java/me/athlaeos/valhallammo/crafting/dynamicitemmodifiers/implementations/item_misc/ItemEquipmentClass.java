@@ -2,12 +2,12 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,8 +21,8 @@ public class ItemEquipmentClass extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        EquipmentClass.setEquipmentClass(outputItem.getMeta(), equipmentClass);
+    public void processItem(ModifierContext context) {
+        EquipmentClass.setEquipmentClass(context.getItem().getMeta(), equipmentClass);
     }
 
     @Override

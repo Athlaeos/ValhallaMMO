@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.gui.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
@@ -83,7 +84,7 @@ public class LootFreeSelectionMenu extends Menu {
             for (LootEntry entry : pool.getEntries().values()){
                 entryMapping.put(entry.getUuid(), entry);
                 ItemBuilder drop = new ItemBuilder(entry.getDrop());
-                if (selectableLootModifiers) DynamicItemModifier.modify(drop, playerMenuUtility.getOwner(), entry.getModifiers(), false, false, true);
+                if (selectableLootModifiers) DynamicItemModifier.modify(ModifierContext.builder(drop).crafter(playerMenuUtility.getOwner()).validate().get(), entry.getModifiers());
                 if (CustomFlag.hasFlag(drop.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
                 if (entry.isGuaranteedPresent()) {
                     guaranteedDropsItems.add(drop);
@@ -196,7 +197,8 @@ public class LootFreeSelectionMenu extends Menu {
                     UUID uuid = UUID.fromString(uuidString);
                     LootEntry entry = entryMapping.get(uuid);
                     if (entry == null) continue;
-                    DynamicItemModifier.modify(i, playerMenuUtility.getOwner(), entry.getModifiers(), false, false, true);
+
+                    DynamicItemModifier.modify(ModifierContext.builder(i).crafter(playerMenuUtility.getOwner()).validate().get(), entry.getModifiers());
 
                     int existingAmount = Math.max(1, selection.getOrDefault(uuid, 1));
                     String quantity = (entry.getBaseQuantityMin() != entry.getBaseQuantityMax() ? (entry.getBaseQuantityMin() * existingAmount) + "-" + (entry.getBaseQuantityMax() * existingAmount) : String.valueOf(entry.getBaseQuantityMin() * existingAmount)) + "x ";

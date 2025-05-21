@@ -1,14 +1,13 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards;
 
-import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
-import me.athlaeos.valhallammo.hooks.VaultHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -25,15 +24,15 @@ public class Item extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!use) return;
+    public void processItem(ModifierContext context) {
+        if (!context.shouldExecuteUsageMechanics()) return;
         Map<ItemStack, Integer> compressed = ItemUtils.compressStacks(rewards);
         Map<ItemStack, Integer> afterMultiplication = new HashMap<>();
         for (ItemStack item : compressed.keySet()){
-            afterMultiplication.put(item, compressed.get(item) * timesExecuted);
+            afterMultiplication.put(item, compressed.get(item) * context.getTimesExecuted());
         }
         List<ItemStack> decompressed = ItemUtils.decompressStacks(afterMultiplication);
-        decompressed.forEach(i -> ItemUtils.addItem(crafter, i, true));
+        decompressed.forEach(i -> ItemUtils.addItem(context.getCrafter(), i, true));
     }
 
     @Override

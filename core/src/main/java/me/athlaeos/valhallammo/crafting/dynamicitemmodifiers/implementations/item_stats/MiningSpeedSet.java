@@ -4,13 +4,13 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.MiningSpeed;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,9 +24,9 @@ public class MiningSpeedSet extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        MiningSpeed.setMultiplier(outputItem.getMeta(), value);
-        ValhallaMMO.getNms().setTool(outputItem, (float) value, true);
+    public void processItem(ModifierContext context) {
+        MiningSpeed.setMultiplier(context.getItem().getMeta(), value);
+        ValhallaMMO.getNms().setTool(context.getItem(), (float) value, true);
     }
 
     @Override

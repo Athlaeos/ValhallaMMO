@@ -2,13 +2,13 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.cr
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
-import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,10 +22,10 @@ public class CounterCompareNumber extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!validate) return;
-        if (SmithingItemPropertyManager.getCounter(outputItem.getMeta()) > amount){
-            failedRecipe(outputItem, TranslationManager.getTranslation("modifier_warning_counter_exceeded"));
+    public void processItem(ModifierContext context) {
+        if (!context.shouldValidate()) return;
+        if (SmithingItemPropertyManager.getCounter(context.getItem().getMeta()) > amount){
+            failedRecipe(context.getItem(), TranslationManager.getTranslation("modifier_warning_counter_exceeded"));
         }
     }
 

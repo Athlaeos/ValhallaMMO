@@ -2,14 +2,14 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
-import me.athlaeos.valhallammo.version.ConventionUtils;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -25,10 +25,10 @@ public class FlagVanillaAdd extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         correctFlag();
-        outputItem.flag(ItemFlag.valueOf(flag));
-        PotionEffectRegistry.updateEffectLore(outputItem.getMeta());
+        context.getItem().flag(ItemFlag.valueOf(flag));
+        PotionEffectRegistry.updateEffectLore(context.getItem().getMeta());
     }
 
     private void correctFlag(){

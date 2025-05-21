@@ -2,11 +2,11 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.cr
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,8 +18,8 @@ public class SmithingTagsRemoveAll extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        SmithingItemPropertyManager.setTags(outputItem.getMeta(), null);
+    public void processItem(ModifierContext context) {
+        SmithingItemPropertyManager.setTags(context.getItem().getMeta(), null);
     }
 
     @Override

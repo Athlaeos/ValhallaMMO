@@ -2,14 +2,14 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.StringUtils;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,9 +27,9 @@ public class SmithingQualityRandomized extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!use) return;
-        int quality = SmithingItemPropertyManager.getQuality(outputItem.getMeta());
+    public void processItem(ModifierContext context) {
+        if (!context.shouldExecuteUsageMechanics()) return;
+        int quality = SmithingItemPropertyManager.getQuality(context.getItem().getMeta());
         if (quality == 0) return;
         if (lowerBound > upperBound) {
             double temp = upperBound;
@@ -39,7 +39,7 @@ public class SmithingQualityRandomized extends DynamicItemModifier {
         int lowerBound = quality + (int) Math.floor(this.lowerBound * quality);
         int upperBound = quality + (int) Math.ceil(this.upperBound * quality);
         int newQuality = (Utils.getRandom().nextInt((upperBound + 1) - lowerBound) + lowerBound);
-        SmithingItemPropertyManager.setQuality(outputItem.getMeta(), Math.max(0, newQuality));
+        SmithingItemPropertyManager.setQuality(context.getItem().getMeta(), Math.max(0, newQuality));
     }
 
     @Override

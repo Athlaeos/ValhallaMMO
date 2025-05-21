@@ -2,17 +2,17 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.item.CustomDurabilityManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.StringUtils;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.item.MaterialClass;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -28,23 +28,23 @@ public class DurabilityRepairScale extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!(outputItem.getMeta() instanceof Damageable) || outputItem.getItem().getType().getMaxDurability() <= 0 || scaling == null) return;
-        double skill = Math.round(skillEfficiency * AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_GENERAL", crafter, 10000, use));
-        double skillMultiplier = 1 + AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_GENERAL", crafter, 10000, use);
-        MaterialClass materialClass = MaterialClass.getMatchingClass(outputItem.getMeta());
+    public void processItem(ModifierContext context) {
+        if (!(context.getItem().getMeta() instanceof Damageable) || context.getItem().getItem().getType().getMaxDurability() <= 0 || scaling == null) return;
+        double skill = Math.round(skillEfficiency * AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_GENERAL", context.getCrafter(), 10000, context.shouldExecuteUsageMechanics()));
+        double skillMultiplier = 1 + AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_GENERAL", context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
+        MaterialClass materialClass = MaterialClass.getMatchingClass(context.getItem().getMeta());
         if (materialClass != null){
-            skill += AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_" + materialClass, crafter, 10000, use);
-            skillMultiplier += AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_" + materialClass, crafter, 10000, use);
+            skill += AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_" + materialClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
+            skillMultiplier += AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_" + materialClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
         }
-        int itemDurability = CustomDurabilityManager.getDurability(outputItem.getMeta(), false);
-        int maxDurability = CustomDurabilityManager.getDurability(outputItem.getMeta(), true);
+        int itemDurability = CustomDurabilityManager.getDurability(context.getItem().getMeta(), false);
+        int maxDurability = CustomDurabilityManager.getDurability(context.getItem().getMeta(), true);
         if (itemDurability >= maxDurability) return;
         if (itemDurability > 0){
             // Item has custom durability
             double fractionToRepair = scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf((skill * skillMultiplier * skillEfficiency))));
             int addDurability = (int) (fractionToRepair * (double) maxDurability);
-            CustomDurabilityManager.damage(outputItem.getMeta(), -addDurability);
+            CustomDurabilityManager.damage(context.getItem().getMeta(), -addDurability);
         }
     }
 

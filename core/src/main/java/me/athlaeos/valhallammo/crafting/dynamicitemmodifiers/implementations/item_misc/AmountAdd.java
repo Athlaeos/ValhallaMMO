@@ -2,11 +2,11 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,8 +23,8 @@ public class AmountAdd extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        outputItem.amount(Math.min(Math.max(1, outputItem.getItem().getAmount() + amount), 64));
+    public void processItem(ModifierContext context) {
+        context.getItem().amount(Math.min(Math.max(1, context.getItem().getItem().getAmount() + amount), 64));
     }
 
     @Override

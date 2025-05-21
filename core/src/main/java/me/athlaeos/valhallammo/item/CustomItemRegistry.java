@@ -7,6 +7,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -45,7 +46,7 @@ public class CustomItemRegistry {
         CustomItem item = items.get(id);
         if (item == null) return null;
         ItemBuilder builder = new ItemBuilder(item.getItem().clone());
-        DynamicItemModifier.modify(builder, p, item.getModifiers(), false, true, true);
+        DynamicItemModifier.modify(ModifierContext.builder(builder).crafter(p).executeUsageMechanics().validate().get(), item.getModifiers());
         return builder.get();
     }
 

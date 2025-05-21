@@ -117,7 +117,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !Tag.LOGS.isTagged(e.getBlock().getType()) ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !isLog(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING) ||
                 !dropsExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         WoodcuttingProfile profile = ProfileCache.getOrCache(e.getPlayer(), WoodcuttingProfile.class);
@@ -136,7 +136,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                 Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "woodcutting_tree_capitator") &&
                 isTree(e.getBlock()) &&
                 !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_TREECAPITATOR)){
-            Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), treeCapitatorLimit, b -> Tag.LOGS.isTagged(b.getType()), treeCapitatorScanArea);
+            Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), treeCapitatorLimit, this::isLog, treeCapitatorScanArea);
             if (vein.size() > profile.getTreeCapitatorLimit()) return;
             treeCapitatingPlayers.add(e.getPlayer().getUniqueId());
             e.setCancelled(true);
@@ -195,8 +195,8 @@ public class WoodcuttingSkill extends Skill implements Listener {
      * A tree is defined as any log with any leaves connected somewhere above it.
      */
     private boolean isTree(Block b){
-        Collection<Block> treeBlocks = BlockUtils.getBlockVein(b, treeScanLimit, l -> !BlockStore.isPlaced(l) && (Tag.LOGS.isTagged(l.getType()) || isLeaves(l)), treeScanArea);
-        return treeBlocks.stream().anyMatch(l -> Tag.LOGS.isTagged(l.getType())) && treeBlocks.stream().anyMatch(this::isLeaves);
+        Collection<Block> treeBlocks = BlockUtils.getBlockVein(b, treeScanLimit, l -> !BlockStore.isPlaced(l) && (isLog(l) || isLeaves(l)), treeScanArea);
+        return treeBlocks.stream().anyMatch(l -> isLog(l) && treeBlocks.stream().anyMatch(this::isLeaves));
     }
 
     // checks up to 48 blocks above the log mined for a leaf block which might be used as origin
@@ -205,7 +205,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
             if (b.getLocation().getY() + i >= b.getWorld().getMaxHeight()) break;
             Block blockAt = b.getLocation().add(0, i, 0).getBlock();
             if (isLeaves(blockAt)) return blockAt;
-            if (!blockAt.getType().isAir() && !Tag.LOGS.isTagged(blockAt.getType())) return null;
+            if (!blockAt.getType().isAir() && !isLog(blockAt)) return null;
         }
         return null;
     }
@@ -215,9 +215,14 @@ public class WoodcuttingSkill extends Skill implements Listener {
         return block.getType() == Material.NETHER_WART_BLOCK || block.getType() == Material.WARPED_WART_BLOCK || block.getType() == Material.SHROOMLIGHT;
     }
 
+    private boolean isLog(Block block){
+        if (Tag.LOGS.isTagged(block.getType())) return true;
+        return block.getType().toString().equals("MANGROVE_ROOTS");
+    }
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void lootTableDrops(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !Tag.LOGS.isTagged(e.getBlock().getType()) ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !isLog(e.getBlock()) ||
                 !BlockUtils.canReward(e.getBlock()) || WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING) ||
                 e.getBlock().getState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("WOODCUTTING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);

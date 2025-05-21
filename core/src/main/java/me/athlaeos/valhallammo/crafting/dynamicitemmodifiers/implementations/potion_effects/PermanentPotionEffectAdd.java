@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.po
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -11,7 +12,6 @@ import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -31,12 +31,12 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectMappings.getEffect(effect).getPotionEffectType(), null);
         if (potionEffectType == null) return;
-        List<PotionEffect> effects = PermanentPotionEffects.getPermanentPotionEffects(outputItem.getMeta());
+        List<PotionEffect> effects = PermanentPotionEffects.getPermanentPotionEffects(context.getItem().getMeta());
         effects.add(new PotionEffect(potionEffectType, 0, amplifier));
-        PermanentPotionEffects.setPermanentPotionEffects(outputItem.getMeta(), effects);
+        PermanentPotionEffects.setPermanentPotionEffects(context.getItem().getMeta(), effects);
     }
 
     @Override

@@ -2,13 +2,13 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.ItemSkillRequirements;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,11 +25,11 @@ public class SkillRequirementAdd extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!use) return;
+    public void processItem(ModifierContext context) {
+        if (!context.shouldExecuteUsageMechanics()) return;
         Skill s = SkillRegistry.getSkill(skill);
-        ItemSkillRequirements.addSkillRequirement(outputItem.getMeta(), s, levelRequired);
-        ItemSkillRequirements.setAnySkillMatch(outputItem.getMeta(), !shouldFulfillAll);
+        ItemSkillRequirements.addSkillRequirement(context.getItem().getMeta(), s, levelRequired);
+        ItemSkillRequirements.setAnySkillMatch(context.getItem().getMeta(), !shouldFulfillAll);
     }
 
     @Override

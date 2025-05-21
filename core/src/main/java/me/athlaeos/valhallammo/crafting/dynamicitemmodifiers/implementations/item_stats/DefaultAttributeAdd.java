@@ -3,15 +3,15 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -37,12 +37,12 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
 
         double extraValue = 0;
         if (add){
-            AttributeWrapper existingAttribute = ItemAttributesRegistry.getStats(outputItem.getMeta(), false).get(this.attribute);
+            AttributeWrapper existingAttribute = ItemAttributesRegistry.getStats(context.getItem().getMeta(), false).get(this.attribute);
             if (existingAttribute != null && (!existingAttribute.isVanilla() || existingAttribute.getOperation() == operation)){
                 extraValue = existingAttribute.getValue();
             }
@@ -51,7 +51,7 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
         attribute.setValue(value + extraValue);
         attribute.setOperation(operation);
         attribute.setHidden(hidden);
-        ItemAttributesRegistry.addDefaultStat(outputItem.getMeta(), attribute);
+        ItemAttributesRegistry.addDefaultStat(context.getItem().getMeta(), attribute);
     }
 
     @Override

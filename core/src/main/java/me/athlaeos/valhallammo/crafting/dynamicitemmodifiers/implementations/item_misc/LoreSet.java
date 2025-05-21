@@ -2,13 +2,13 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -24,13 +24,13 @@ public class LoreSet extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (lore.isEmpty()) outputItem.lore(lore);
+    public void processItem(ModifierContext context) {
+        if (lore.isEmpty()) context.getItem().lore(lore);
         else {
             switch (mode) {
-                case 0 -> outputItem.prependLore(lore);
-                case 1 -> outputItem.appendLore(lore);
-                case 2 -> outputItem.lore(lore);
+                case 0 -> context.getItem().prependLore(lore);
+                case 1 -> context.getItem().appendLore(lore);
+                case 2 -> context.getItem().lore(lore);
             }
         }
     }

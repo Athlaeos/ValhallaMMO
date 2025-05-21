@@ -2,14 +2,14 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.po
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.StringUtils;
-import org.bukkit.command.CommandSender;
-import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,9 +27,9 @@ public class AlchemyQualityRandomized extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!use) return;
-        int quality = AlchemyItemPropertyManager.getQuality(outputItem.getMeta());
+    public void processItem(ModifierContext context) {
+        if (!context.shouldExecuteUsageMechanics()) return;
+        int quality = AlchemyItemPropertyManager.getQuality(context.getItem().getMeta());
         if (quality == 0) return;
         if (lowerBound > upperBound) {
             double temp = upperBound;
@@ -39,7 +39,7 @@ public class AlchemyQualityRandomized extends DynamicItemModifier {
         int lowerBound = (int) Math.floor(this.lowerBound * quality);
         int upperBound = (int) Math.ceil(this.upperBound * quality);
         int newQuality = Utils.getRandom().nextInt((upperBound + 1) - lowerBound) + lowerBound;
-        AlchemyItemPropertyManager.setQuality(outputItem.getMeta(), Math.max(0, newQuality));
+        AlchemyItemPropertyManager.setQuality(context.getItem().getMeta(), Math.max(0, newQuality));
     }
 
     @Override

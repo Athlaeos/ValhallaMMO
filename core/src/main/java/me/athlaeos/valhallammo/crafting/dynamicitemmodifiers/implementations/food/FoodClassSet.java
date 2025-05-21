@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.fo
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.item.FoodClass;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.FoodPropertyManager;
@@ -10,14 +11,10 @@ import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-
-import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class FoodClassSet extends DynamicItemModifier {
     private FoodClass foodClass = FoodClass.MEAT;
@@ -27,8 +24,8 @@ public class FoodClassSet extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        FoodPropertyManager.setFoodClass(outputItem.getMeta(), foodClass);
+    public void processItem(ModifierContext context) {
+        FoodPropertyManager.setFoodClass(context.getItem().getMeta(), foodClass);
     }
 
     @Override

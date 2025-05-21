@@ -3,16 +3,16 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.localization.TranslationManager;
-import me.athlaeos.valhallammo.utility.StringUtils;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.item.MaterialClass;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -33,23 +33,23 @@ public class AmountScale extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         if (scaling == null) {
-            failedRecipe(outputItem, "");
+            failedRecipe(context.getItem(), "");
             return;
         }
-        double skill = AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_GENERAL", crafter, 10000, use);
-        double skillMultiplier = 1 + AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_GENERAL", crafter, 10000, use);
-        MaterialClass materialClass = MaterialClass.getMatchingClass(outputItem.getMeta());
+        double skill = AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_GENERAL", context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
+        double skillMultiplier = 1 + AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_GENERAL", context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
+        MaterialClass materialClass = MaterialClass.getMatchingClass(context.getItem().getMeta());
         if (materialClass != null){
-            skill += AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_" + materialClass, crafter, 10000, use);
-            skillMultiplier += AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_" + materialClass, crafter, 10000, use);
+            skill += AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_" + materialClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
+            skillMultiplier += AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_" + materialClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
         }
-        int originalAmount = outputItem.getItem().getAmount();
+        int originalAmount = context.getItem().getItem().getAmount();
 
         if (damagePenalty){
-            if (outputItem.getMeta() instanceof Damageable && outputItem.getItem().getType().getMaxDurability() > 0){
-                double fractionDurability = (outputItem.getItem().getType().getMaxDurability() - ((Damageable) outputItem.getMeta()).getDamage()) / (double) outputItem.getItem().getType().getMaxDurability();
+            if (context.getItem().getMeta() instanceof Damageable && context.getItem().getItem().getType().getMaxDurability() > 0){
+                double fractionDurability = (context.getItem().getItem().getType().getMaxDurability() - ((Damageable) context.getItem().getMeta()).getDamage()) / (double) context.getItem().getItem().getType().getMaxDurability();
                 originalAmount = (int) Math.floor(originalAmount * fractionDurability);
             }
         }
@@ -57,10 +57,10 @@ public class AmountScale extends DynamicItemModifier {
         int minimumAmount = Math.max(0, (int) Math.ceil(originalAmount * minimumFraction));
         int newAmount = (int) Math.max(minimumAmount, Math.floor(scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf((skill * skillMultiplier * skillEfficiency))), originalAmount)));
         if (newAmount <= 0) {
-            outputItem.amount(1);
-            outputItem.type(Material.BARRIER);
-            failedRecipe(outputItem, TranslationManager.getTranslation("modifier_warning_salvage_insufficient_skill"));
-        } else outputItem.amount(newAmount);
+            context.getItem().amount(1);
+            context.getItem().type(Material.BARRIER);
+            failedRecipe(context.getItem(), TranslationManager.getTranslation("modifier_warning_salvage_insufficient_skill"));
+        } else context.getItem().amount(newAmount);
     }
 
     @Override

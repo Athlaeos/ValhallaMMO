@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.loot.LootTable;
@@ -10,7 +11,6 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,10 +28,10 @@ public class LootTableSet extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        LootTableRegistry.setLootTable(outputItem.getMeta(), LootTableRegistry.getLootTables().get(lootTable));
-        LootTableRegistry.setFreeSelectionTable(outputItem.getMeta(), freeSelection, repeatSelection);
-        LootTableRegistry.setLootSound(outputItem.getMeta(), lootSound);
+    public void processItem(ModifierContext context) {
+        LootTableRegistry.setLootTable(context.getItem().getMeta(), LootTableRegistry.getLootTables().get(lootTable));
+        LootTableRegistry.setFreeSelectionTable(context.getItem().getMeta(), freeSelection, repeatSelection);
+        LootTableRegistry.setLootSound(context.getItem().getMeta(), lootSound);
     }
 
     @Override

@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -10,7 +11,6 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -28,12 +28,12 @@ public class Equippable extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         if (model == null) return;
-        EquippableWrapper wrapper = ValhallaMMO.getNms().getEquippable(outputItem.getMeta());
+        EquippableWrapper wrapper = ValhallaMMO.getNms().getEquippable(context.getItem().getMeta());
         if (wrapper == null) wrapper = new EquippableWrapper(model, slot, cameraOverlay, null, null);
         else wrapper = new EquippableWrapper(model, slot, cameraOverlay == null ? wrapper.cameraOverlayKey() : cameraOverlay, wrapper.equipSound(), wrapper.allowedTypes());
-        ValhallaMMO.getNms().setEquippable(outputItem.getMeta(),
+        ValhallaMMO.getNms().setEquippable(context.getItem().getMeta(),
                 wrapper.modelKey(),
                 wrapper.slot(),
                 wrapper.cameraOverlayKey(),

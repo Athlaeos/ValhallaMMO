@@ -884,8 +884,9 @@ public class ItemUtils {
         return minimumAmount;
     }
 
-    public static boolean removeItems(List<ItemStack> contents, Map<ItemStack, Integer> ingredients, int count, IngredientChoice matcher) {
-        if (ingredients.isEmpty()) return true;
+    public static List<ItemStack> removeItems(List<ItemStack> contents, Map<ItemStack, Integer> ingredients, int count, IngredientChoice matcher) {
+        if (ingredients.isEmpty()) return new ArrayList<>();
+        List<ItemStack> removedItems = new ArrayList<>();
         for (ItemStack ingredient : ingredients.keySet()){
             ingredient = ingredient.clone();
             int amountRequired = ingredients.get(ingredient) * count;
@@ -893,18 +894,25 @@ public class ItemUtils {
                 if (matcher.matches(ingredient, i)) {
                     int amount = i.getAmount();
                     if (amount > amountRequired){
+                        ItemStack removed = i.clone();
+                        removed.setAmount(amount - amountRequired);
+                        removedItems.add(removed);
                         i.setAmount(amount - amountRequired);
-                    } else contents.remove(i);
+                    } else {
+                        removedItems.add(i.clone());
+                        contents.remove(i);
+                    }
                     amountRequired -= Math.min(amount, amountRequired);
                 }
             }
-            if (amountRequired > 0) return false; // if there's any required items left, contents doesn't contain everything
+            if (amountRequired > 0) return null; // if there's any required items left, contents doesn't contain everything
         }
-        return true;
+        return removedItems;
     }
 
-    public static boolean removeItems(Inventory inventory, Map<ItemStack, Integer> ingredients, int count, IngredientChoice matcher) {
-        if (ingredients.isEmpty()) return true;
+    public static List<ItemStack> removeItems(Inventory inventory, Map<ItemStack, Integer> ingredients, int count, IngredientChoice matcher) {
+        if (ingredients.isEmpty()) return new ArrayList<>();
+        List<ItemStack> removedItems = new ArrayList<>();
         for (ItemStack ingredient : ingredients.keySet()){
             ingredient = ingredient.clone();
             int amountRequired = ingredients.get(ingredient) * count;
@@ -914,14 +922,20 @@ public class ItemUtils {
                 if (matcher.matches(ingredient, item)) {
                     int amount = item.getAmount();
                     if (amount > amountRequired){
+                        ItemStack removed = item.clone();
+                        removed.setAmount(amount - amountRequired);
+                        removedItems.add(removed);
                         item.setAmount(amount - amountRequired);
-                    } else inventory.setItem(i, null);
+                    } else {
+                        removedItems.add(item.clone());
+                        inventory.setItem(i, null);
+                    }
                     amountRequired -= Math.min(amount, amountRequired);
                 }
             }
-            if (amountRequired > 0) return false; // if there's any required items left, contents doesn't contain everything
+            if (amountRequired > 0) return null; // if there's any required items left, contents doesn't contain everything
         }
-        return true;
+        return removedItems;
     }
 
     private static final Collection<Material> consumables = Set.of(Material.ARROW, Material.SPECTRAL_ARROW, Material.TIPPED_ARROW,

@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
@@ -129,7 +130,7 @@ public class CookingListener implements Listener {
 
                 ItemBuilder result = new ItemBuilder(recipe.tinker() ? handItem.getItem() : recipe.getResult());
 
-                DynamicItemModifier.modify(result, p, recipe.getModifiers(), false, false, true);
+                DynamicItemModifier.modify(ModifierContext.builder(result).crafter(p).validate().get(), recipe.getModifiers());
                 if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                     Timer.setCooldown(e.getPlayer().getUniqueId(), 500, "delay_dynamic_campfire_attempts");
                     e.setCancelled(true);
@@ -220,7 +221,7 @@ public class CookingListener implements Listener {
                     f.getWorld().playEffect(f.getLocation(), Effect.EXTINGUISH, 0);
                     return;
                 }
-                DynamicItemModifier.modify(result, owner, recipe.getModifiers(), false, false, true);
+                DynamicItemModifier.modify(ModifierContext.builder(result).crafter(owner).validate().get(), recipe.getModifiers());
 
                 if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                     if (owner != null) Timer.setCooldown(owner.getUniqueId(), 500, "delay_furnace_attempts");
@@ -261,7 +262,7 @@ public class CookingListener implements Listener {
                     return;
                 }
 
-                DynamicItemModifier.modify(result, owner, recipe.getModifiers(), false, true, true);
+                DynamicItemModifier.modify(ModifierContext.builder(result).crafter(owner).executeUsageMechanics().validate().get(), recipe.getModifiers());
                 if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                     ejectCampfire(c);
                     c.getWorld().playEffect(c.getLocation(), Effect.EXTINGUISH, 0);
@@ -333,7 +334,7 @@ public class CookingListener implements Listener {
                 return;
             }
 
-            DynamicItemModifier.modify(result, owner, recipe.getModifiers(), false, true, true);
+            DynamicItemModifier.modify(ModifierContext.builder(result).crafter(owner).executeUsageMechanics().validate().get(), recipe.getModifiers());
             if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                 for (Location l : MathUtils.getRandomPointsInArea(f.getLocation().add(0.5, 0.5, 0.5), 1, 10)) f.getWorld().spawnParticle(Particle.ASH, l, 0);
                 f.getWorld().playEffect(f.getLocation(), Effect.EXTINGUISH, 0);

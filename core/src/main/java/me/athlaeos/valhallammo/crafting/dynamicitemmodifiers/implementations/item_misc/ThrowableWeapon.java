@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.throwable_weapon_animations.ThrowableItemStats;
@@ -10,7 +11,6 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,8 +27,8 @@ public class ThrowableWeapon extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        ThrowableWeaponAnimationRegistry.setItemStats(outputItem.getMeta(), new ThrowableItemStats(animationType, cooldown,
+    public void processItem(ModifierContext context) {
+        ThrowableWeaponAnimationRegistry.setItemStats(context.getItem().getMeta(), new ThrowableItemStats(animationType, cooldown,
                 gravityStrength, velocityDamageMultiplier, defaultVelocity, damageMultiplier, infinity, returnsNaturally));
     }
 

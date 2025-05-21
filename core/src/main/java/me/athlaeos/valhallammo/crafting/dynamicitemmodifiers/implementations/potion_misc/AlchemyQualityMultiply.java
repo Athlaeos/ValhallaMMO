@@ -3,14 +3,14 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.po
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
-import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.StringUtils;
-import org.bukkit.command.CommandSender;
-import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
+import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.playerstats.format.StatFormat;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,10 +24,10 @@ public class AlchemyQualityMultiply extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        int quality = AlchemyItemPropertyManager.getQuality(outputItem.getMeta());
+    public void processItem(ModifierContext context) {
+        int quality = AlchemyItemPropertyManager.getQuality(context.getItem().getMeta());
         int newQuality = Math.max(0, (int) Math.floor(quality * multiplyBy));
-        AlchemyItemPropertyManager.setQuality(outputItem.getMeta(), newQuality);
+        AlchemyItemPropertyManager.setQuality(context.getItem().getMeta(), newQuality);
     }
 
     @Override

@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.crafting.ToolRequirementType;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
@@ -71,7 +72,7 @@ public class CraftingTableListener implements Listener {
             }
 
             ItemBuilder prepareResultBuilder = new ItemBuilder(result);
-            DynamicItemModifier.modify(prepareResultBuilder, (Player) e.getWhoClicked(), recipe.getModifiers(), false, false, true, 1);
+            DynamicItemModifier.modify(ModifierContext.builder(prepareResultBuilder).crafter(crafter).items(inventory.getMatrix()).validate().get(), recipe.getModifiers());
             if (CustomFlag.hasFlag(prepareResultBuilder.getMeta(), CustomFlag.UNCRAFTABLE)) {
                 e.setCancelled(true);
                 return;
@@ -179,7 +180,7 @@ public class CraftingTableListener implements Listener {
                 }
             }
             ItemBuilder resultBuilder = new ItemBuilder(result);
-            DynamicItemModifier.modify(resultBuilder, (Player) e.getWhoClicked(), recipe.getModifiers(), false, true, true, amountCrafted);
+            DynamicItemModifier.modify(ModifierContext.builder(resultBuilder).crafter(crafter).executeUsageMechanics().validate().count(amountCrafted).items(inventory.getMatrix()).get(), recipe.getModifiers());
             if (CustomFlag.hasFlag(resultBuilder.getMeta(), CustomFlag.UNCRAFTABLE)) {
                 e.setCancelled(true);
                 return;
@@ -335,7 +336,7 @@ public class CraftingTableListener implements Listener {
             }
 
             ItemBuilder resultBuilder = new ItemBuilder(result);
-            DynamicItemModifier.modify(resultBuilder, crafter, recipe.getModifiers(), false, false, true);
+            DynamicItemModifier.modify(ModifierContext.builder(resultBuilder).crafter(crafter).items(inventory.getMatrix()).validate().get(), recipe.getModifiers());
             inventory.setResult(resultBuilder.get());
         } else if (crafted instanceof ComplexRecipe r){
             if (r.getKey().getKey().equals("tipped_arrow") && !ItemUtils.isEmpty(inventory.getResult()) && Arrays.stream(inventory.getMatrix()).noneMatch(ItemUtils::isEmpty)){

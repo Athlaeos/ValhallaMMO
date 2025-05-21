@@ -2,13 +2,13 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.po
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
-import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
-import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
+import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,13 +24,13 @@ public class AlchemyTagsCancelIfAbsent extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        Collection<Integer> tagsToCheck = AlchemyItemPropertyManager.getTags(outputItem.getMeta());
+    public void processItem(ModifierContext context) {
+        Collection<Integer> tagsToCheck = AlchemyItemPropertyManager.getTags(context.getItem().getMeta());
         for (Integer tag : tags){
             if (!tagsToCheck.contains(tag)) {
                 String message = AlchemyItemPropertyManager.getTagRequiredErrors().get(tag);
-                if (tag != null) failedRecipe(outputItem, message);
-                else failedRecipe(outputItem, TranslationManager.getTranslation("modifier_warning_required_alchemy_tag"));
+                if (tag != null) failedRecipe(context.getItem(), message);
+                else failedRecipe(context.getItem(), TranslationManager.getTranslation("modifier_warning_required_alchemy_tag"));
                 break;
             }
         }

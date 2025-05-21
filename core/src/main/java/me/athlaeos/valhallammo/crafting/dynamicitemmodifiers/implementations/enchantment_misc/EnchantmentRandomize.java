@@ -3,15 +3,15 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.en
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.EnchantingItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.utility.Enchanter;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -28,22 +28,22 @@ public class EnchantmentRandomize extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         if (level == 0) return;
 
-        Map<Enchantment, Integer> chosenEnchantments = Enchanter.getRandomEnchantments(outputItem.getItem(), outputItem.getMeta(), level, includeTreasure);
+        Map<Enchantment, Integer> chosenEnchantments = Enchanter.getRandomEnchantments(context.getItem().getItem(), context.getItem().getMeta(), level, includeTreasure);
         if (chosenEnchantments.isEmpty()) return;
-        if (outputItem.getItem().getType() == Material.BOOK) outputItem.type(Material.ENCHANTED_BOOK);
+        if (context.getItem().getItem().getType() == Material.BOOK) context.getItem().type(Material.ENCHANTED_BOOK);
 
         for (Enchantment e : chosenEnchantments.keySet()){
             int lv = chosenEnchantments.get(e);
             if (scaleWithSkill){
-                int skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", crafter, 10000, true);
-                skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", crafter, 10000, true)));
+                int skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, true);
+                skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", context.getCrafter(), 10000, true)));
                 lv = EnchantingItemPropertyManager.getScaledLevel(e, skill, lv);
             }
-            if (outputItem.getMeta() instanceof EnchantmentStorageMeta eMeta) eMeta.addStoredEnchant(e, lv, false);
-            else outputItem.enchant(e, lv);
+            if (context.getItem().getMeta() instanceof EnchantmentStorageMeta eMeta) eMeta.addStoredEnchant(e, lv, false);
+            else context.getItem().enchant(e, lv);
         }
     }
 

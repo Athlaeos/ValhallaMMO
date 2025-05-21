@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.jeff_media.customblockdata.CustomBlockData;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Weighted;
@@ -33,7 +34,6 @@ import org.bukkit.persistence.PersistentDataType;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LootTableRegistry {
     private static final Gson gson = new GsonBuilder()
@@ -218,7 +218,7 @@ public class LootTableRegistry {
                 ? new ItemBuilder(toReplace)
                 : new ItemBuilder(selectedEntry.getReplaceBy());
 
-        DynamicItemModifier.modify(builder, (Player) context.getKiller(), selectedEntry.getModifiers(), false, true, true);
+        DynamicItemModifier.modify(ModifierContext.builder(builder).crafter((Player) context.getKiller()).executeUsageMechanics().validate().get(), selectedEntry.getModifiers());
         return CustomFlag.hasFlag(builder.getMeta(), CustomFlag.UNCRAFTABLE) ? null : builder.get();
     }
 
@@ -254,7 +254,7 @@ public class LootTableRegistry {
                 } else {
                     ItemBuilder builder = new ItemBuilder(selectedEntry.getDrop());
                     if (context.getKiller() == null && DynamicItemModifier.requiresPlayer(selectedEntry.getModifiers())) continue;
-                    DynamicItemModifier.modify(builder, (Player) context.getKiller(), selectedEntry.getModifiers(), false, true, true);
+                    DynamicItemModifier.modify(ModifierContext.builder(builder).crafter((Player) context.getKiller()).executeUsageMechanics().validate().get(), selectedEntry.getModifiers());
                     if (CustomFlag.hasFlag(builder.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
                     item = builder.get();
                 }
