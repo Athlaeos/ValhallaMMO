@@ -46,9 +46,9 @@ public class ProjectileListener implements Listener {
 
     private static final Map<UUID, ItemBuilder> projectileShotByMap = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onLaunch(ProjectileLaunchEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         ItemBuilder projectile;
         if (e.getEntity() instanceof ThrowableProjectile t && !ItemUtils.isEmpty(t.getItem())) {
             projectile = new ItemBuilder(t.getItem().clone());
@@ -117,18 +117,18 @@ public class ProjectileListener implements Listener {
         a.setMetadata("duplicate_multishot", new FixedMetadataValue(ValhallaMMO.getInstance(), true));
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onItemDispense(BlockDispenseEvent e){
         Block b = e.getBlock();
-        if (ValhallaMMO.isWorldBlacklisted(b.getWorld().getName()) || ItemUtils.isEmpty(e.getItem()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(b.getWorld().getName()) || ItemUtils.isEmpty(e.getItem())) return;
         ItemStack storedItem = e.getItem().clone();
         storedItem.setAmount(1);
         dispensedItems.put(e.getBlock().getLocation(), storedItem);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onFinalShoot(EntityShootBowEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || ItemUtils.isEmpty(e.getConsumable())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || ItemUtils.isEmpty(e.getConsumable())) return;
 
         ArrowBehaviorRegistry.execute(e, ArrowBehaviorRegistry.getBehaviors(ItemUtils.getItemMeta(e.getConsumable())).values());
     }
@@ -147,9 +147,9 @@ public class ProjectileListener implements Listener {
 
     private final Map<UUID, Integer> crossbowReloads = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onShoot(EntityShootBowEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getProjectile() instanceof Projectile pr)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getProjectile() instanceof Projectile pr)) return;
         ItemStack bow = e.getBow();
         if (e.getProjectile() instanceof AbstractArrow a && a.isShotFromCrossbow() && a.getPickupStatus() != AbstractArrow.PickupStatus.ALLOWED && !ItemUtils.isEmpty(bow) && bow.containsEnchantment(Enchantment.MULTISHOT)){
             setMultishotArrow(a); // it's safe to assume these are secondary multishot arrows
@@ -248,9 +248,9 @@ public class ProjectileListener implements Listener {
         if (speedWrapper != null) p.setVelocity(p.getVelocity().multiply(1 + speedWrapper.getValue()));
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onHit(ProjectileHitEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
 
         if (e.getHitEntity() instanceof LivingEntity l && e.getEntity() instanceof AbstractArrow a && isShotFromMultishot(a) && ValhallaMMO.getPluginConfig().getBoolean("multishot_all_hit")) {
             int originalDamageTicks = l.getNoDamageTicks();
@@ -266,9 +266,9 @@ public class ProjectileListener implements Listener {
         ArrowBehaviorRegistry.execute(e, ArrowBehaviorRegistry.getBehaviors(stored.getMeta()).values());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPickup(PlayerPickupArrowEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
         if (!(e.getArrow() instanceof Trident)){
             removeBow(e.getArrow());
             Item i = e.getItem();
@@ -279,9 +279,9 @@ public class ProjectileListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         if (e.getDamager() instanceof Projectile p && e.getEntity() instanceof LivingEntity l && !EntityClassification.matchesClassification(e.getEntity().getType(), EntityClassification.UNALIVE)){
             ItemBuilder stored = ItemUtils.getStoredItem(p);
             if (stored == null) return;
@@ -308,9 +308,9 @@ public class ProjectileListener implements Listener {
 
     private final Collection<UUID> cancelNextArrowEffects = new HashSet<>();
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onArrowPotionEffect(EntityPotionEffectEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         if (e.getCause() == EntityPotionEffectEvent.Cause.ARROW && cancelNextArrowEffects.contains(e.getEntity().getUniqueId())) e.setCancelled(true);
     }
 }

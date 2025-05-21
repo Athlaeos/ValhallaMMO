@@ -15,7 +15,7 @@ import org.bukkit.inventory.CookingRecipe;
 import org.bukkit.inventory.Recipe;
 
 public class FurnaceStartSmeltListener implements Listener {
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceStart(FurnaceStartSmeltEvent e){
         if (e.getBlock().getState() instanceof Furnace){
             DynamicCookingRecipe recipe = CustomRecipeRegistry.getCookingRecipesByKey().get(e.getRecipe().getKey());

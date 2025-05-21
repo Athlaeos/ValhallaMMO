@@ -74,9 +74,9 @@ public class DiggingSkill extends Skill implements Listener {
             ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new DiggingArchaeologyExtension(this), ValhallaMMO.getInstance());
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) ||
                 !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING)) return;
 
@@ -86,9 +86,9 @@ public class DiggingSkill extends Skill implements Listener {
         LootListener.addPreparedLuck(e.getBlock(), AccumulativeStatManager.getCachedStats("DIGGING_LUCK", e.getPlayer(), 10000, true));
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void lootTableDrops(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) ||
                 !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING) ||
                 e.getBlock().getState() instanceof Container) return;
@@ -104,9 +104,9 @@ public class DiggingSkill extends Skill implements Listener {
         addEXP(e.getPlayer(), expQuantity, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onItemsDropped(BlockDropItemEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState()) ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || !BlockUtils.canReward(e.getBlockState()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING) ||
                 !dropsExpValues.containsKey(e.getBlockState().getType()) ||
                 e.getBlockState() instanceof Container) return;

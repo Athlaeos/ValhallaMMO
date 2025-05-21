@@ -11,7 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BrewingStartEvent;
 
 public class BrewingPreventionListener implements Listener {
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onStartBrewing(BrewingStartEvent e){
         if (WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), WorldGuardHook.VMMO_CRAFTING_BREWING) ||
                 ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) ||

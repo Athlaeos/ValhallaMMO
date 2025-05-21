@@ -26,9 +26,9 @@ public class EntityResponsibilityListener implements Listener {
         effectToDamageTypeMapping.put(PotionEffectMappings.WITHER.getPotionEffectType(), CustomDamageType.NECROTIC);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onFireAspect(EntityCombustByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof LivingEntity v)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof LivingEntity v)) return;
 
         Entity damager = e.getCombuster();
         if (damager instanceof Projectile a && a.getShooter() instanceof Entity combuster) {
@@ -38,10 +38,10 @@ public class EntityResponsibilityListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPoisonSplash(PotionSplashEvent e){
         ItemStack potion = e.getPotion().getItem();
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) ||
                 ItemUtils.isEmpty(potion) || !(e.getPotion().getShooter() instanceof LivingEntity shooter)) return;
 
         for (PotionEffect effect : e.getPotion().getEffects()){
@@ -64,9 +64,9 @@ public class EntityResponsibilityListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onLingeringCloudHit(AreaEffectCloudApplyEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) ||
                 !(e.getEntity().getSource() instanceof LivingEntity shooter)) return;
 
         for (PotionEffect effect : e.getEntity().getCustomEffects()){

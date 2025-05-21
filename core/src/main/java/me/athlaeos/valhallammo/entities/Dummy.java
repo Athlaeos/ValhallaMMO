@@ -39,9 +39,9 @@ public class Dummy implements Listener {
         return equipment.getHelmet().getMeta().getPersistentDataContainer().has(DUMMY_KEY, PersistentDataType.BYTE);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDummyCreation(PlayerInteractAtEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getRightClicked().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getRightClicked().getWorld().getName()) ||
                 !(e.getRightClicked() instanceof ArmorStand a) || a.getEquipment() == null) return;
         ItemStack interactedWith = e.getPlayer().getInventory().getItemInMainHand();
         if (ItemUtils.isEmpty(interactedWith)) return;
@@ -55,7 +55,7 @@ public class Dummy implements Listener {
         else interactedWith.setAmount(interactedWith.getAmount() - 1);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDummyItemPlacement(BlockPlaceEvent e){
         if (ItemUtils.isEmpty(e.getItemInHand()) || !e.getItemInHand().getType().isBlock()) return;
         ItemMeta meta = ItemUtils.getItemMeta(e.getItemInHand());
@@ -63,9 +63,9 @@ public class Dummy implements Listener {
         if (isDummyItem(meta)) e.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onArrowHitDummy(ProjectileHitEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || e.getHitEntity() == null ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.getHitEntity() == null ||
                 e.getHitBlock() != null || !(e.getEntity() instanceof AbstractArrow a) || !(e.getHitEntity() instanceof LivingEntity l) ||
                 !isDummy(l)) return;
         ItemBuilder stored = ItemUtils.getStoredItem(a);

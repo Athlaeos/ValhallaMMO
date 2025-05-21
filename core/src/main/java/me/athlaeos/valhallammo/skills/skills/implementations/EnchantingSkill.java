@@ -144,10 +144,10 @@ public class EnchantingSkill extends Skill implements Listener {
         elementalHitAnimation.remove(damageType);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onGrindstoneUsage(InventoryClickEvent e){
         if (WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
-        if (e.getClickedInventory() instanceof GrindstoneInventory && !e.isCancelled()){
+        if (e.getClickedInventory() instanceof GrindstoneInventory){
             Timer.setCooldown(e.getWhoClicked().getUniqueId(), 5000, "cancel_essence_multiplication");
         }
     }
@@ -181,9 +181,9 @@ public class EnchantingSkill extends Skill implements Listener {
     private static final Map<UUID, Map<Enchantment, Integer>> anvilMaxLevelCache = new HashMap<>(); // max anvil levels are cached because up to 3 events are fired in a row when
     // interacting with an anvil, and each would be calculating the max levels which is unnecessary.
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPrepareEnchant(PrepareItemEnchantEvent e) {
-        if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName()) ||
                 WorldGuardHook.inDisabledRegion(e.getEnchanter().getLocation(), e.getEnchanter(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         Map<Material, Map<Integer, EnchantmentOffer[]>> existingMaterialOffers = storedEnchantmentOffers.getOrDefault(e.getEnchanter().getUniqueId(), new HashMap<>());
         Map<Integer, EnchantmentOffer[]> existingLevelOffers = existingMaterialOffers.getOrDefault(e.getItem().getType(), new HashMap<>());
@@ -218,9 +218,9 @@ public class EnchantingSkill extends Skill implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEnchantItem(EnchantItemEvent e) {
-        if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName()) ||
                 WorldGuardHook.inDisabledRegion(e.getEnchanter().getLocation(), e.getEnchanter(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         Player enchanter = e.getEnchanter();
         ItemBuilder item = new ItemBuilder(e.getItem());
@@ -265,9 +265,9 @@ public class EnchantingSkill extends Skill implements Listener {
 
     private static final Collection<UUID> activeElementalBlade = new HashSet<>();
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) ||
                 !EntityDamagedListener.getEntityDamageCauses().contains(e.getCause().toString())) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
         if (!(trueDamager instanceof Player p) || !(e.getEntity() instanceof LivingEntity v) ||
@@ -323,9 +323,9 @@ public class EnchantingSkill extends Skill implements Listener {
     }
 
     @SuppressWarnings("all")
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onHandSwap(PlayerSwapHandItemsEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() || !e.getPlayer().isSneaking()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !e.getPlayer().isSneaking()) return;
         if (WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "delay_hand_swap")) return; // to prevent spam, a cooldown of 0.5 seconds is applied
         if (ItemUtils.isEmpty(e.getOffHandItem())) return;
@@ -368,7 +368,7 @@ public class EnchantingSkill extends Skill implements Listener {
         e.setDroppedExp(Utils.randomAverage(e.getDroppedExp() * entityEXPMultipliers.getOrDefault(e.getEntityType(), 1D)));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExpAbsorb(PlayerExpChangeEvent e){
         if (WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cancel_essence_multiplication")) return;
@@ -395,7 +395,7 @@ public class EnchantingSkill extends Skill implements Listener {
     }
 
     @SuppressWarnings("all")
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onAnvilUsage(PrepareAnvilEvent e) {
         Player combiner = (Player) e.getView().getPlayer();
         if (WorldGuardHook.inDisabledRegion(combiner.getLocation(), combiner, WorldGuardHook.VMMO_SKILL_ENCHANTING)) return;

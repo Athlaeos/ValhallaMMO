@@ -54,11 +54,10 @@ public class CauldronCraftingListener implements Listener {
     private static final Map<Location, CauldronCookingTask> activeCauldrons = new HashMap<>();
     private static final int cauldron_capacity = ValhallaMMO.getPluginConfig().getInt("cauldron_max_capacity", 3);
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onItemThrow(PlayerDropItemEvent e){
         Player thrower = e.getPlayer();
         if (ValhallaMMO.isWorldBlacklisted(thrower.getWorld().getName())) return;
-        if (e.isCancelled()) return;
         if (!entityThrowItemLimiter.containsKey(thrower.getUniqueId())){
             CauldronInputTick runnable = new CauldronInputTick(thrower, e.getItemDrop());
             entityThrowItemLimiter.put(thrower.getUniqueId(), runnable);
@@ -68,11 +67,11 @@ public class CauldronCraftingListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onItemDispense(BlockDispenseEvent e){
         Block b = e.getBlock();
         if (ValhallaMMO.isWorldBlacklisted(b.getWorld().getName())) return;
-        if (e.isCancelled() || !(e.getBlock().getBlockData() instanceof Directional d)) return;
+        if (!(e.getBlock().getBlockData() instanceof Directional d)) return;
         if (!blockThrowItemLimiter.containsKey(b.getLocation())){
             Collection<Entity> entitiesBefore = b.getWorld().getNearbyEntities(b.getRelative(d.getFacing()).getLocation().add(0.5, 0.5, 0.5), 0.5, 0.5, 0.5, (i) -> i instanceof Item);
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
@@ -109,32 +108,28 @@ public class CauldronCraftingListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPistonExtend(BlockPistonExtendEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
-        if (!e.isCancelled()) {
-            e.getBlocks().stream().filter(CauldronCraftingListener::isCustomCauldron).forEach(CauldronCraftingListener::dumpCauldronContents);
-        }
+        e.getBlocks().stream().filter(CauldronCraftingListener::isCustomCauldron).forEach(CauldronCraftingListener::dumpCauldronContents);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPistonExtend(EntityExplodeEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
-        if (!e.isCancelled()) e.blockList().stream().filter(CauldronCraftingListener::isCustomCauldron).forEach(CauldronCraftingListener::dumpCauldronContents);
+        e.blockList().stream().filter(CauldronCraftingListener::isCustomCauldron).forEach(CauldronCraftingListener::dumpCauldronContents);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPistonExtend(BlockExplodeEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
-        if (!e.isCancelled()) e.blockList().stream().filter(CauldronCraftingListener::isCustomCauldron).forEach(CauldronCraftingListener::dumpCauldronContents);
+        e.blockList().stream().filter(CauldronCraftingListener::isCustomCauldron).forEach(CauldronCraftingListener::dumpCauldronContents);
     }
 
-    @EventHandler(priority =EventPriority.MONITOR)
+    @EventHandler(priority =EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e){
-        if (!e.isCancelled()){
-            if (CauldronCraftingListener.isCustomCauldron(e.getBlock())){
-                CauldronCraftingListener.dumpCauldronContents(e.getBlock());
-            }
+        if (CauldronCraftingListener.isCustomCauldron(e.getBlock())){
+            CauldronCraftingListener.dumpCauldronContents(e.getBlock());
         }
     }
 

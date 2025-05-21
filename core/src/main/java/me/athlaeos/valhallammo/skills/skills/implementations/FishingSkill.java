@@ -86,9 +86,9 @@ public class FishingSkill extends Skill implements Listener {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void baitChecker(PlayerFishEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) ||
                 e.getState() != PlayerFishEvent.State.CAUGHT_FISH ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FISHING)) return;
 
@@ -106,9 +106,9 @@ public class FishingSkill extends Skill implements Listener {
 
     private final Map<UUID, Integer> preparedBaitInfo = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onCatch(PlayerFishEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) ||
                 !(e.getState() == PlayerFishEvent.State.FISHING || e.getState() == PlayerFishEvent.State.CAUGHT_FISH) ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FISHING)) return;
 
@@ -193,9 +193,9 @@ public class FishingSkill extends Skill implements Listener {
         return meta.getPersistentDataContainer().getOrDefault(BAIT_POWER_KEY, PersistentDataType.DOUBLE, 0D);
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onFish(PlayerFishEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) ||
                 e.getState() != PlayerFishEvent.State.CAUGHT_FISH || !(e.getCaught() instanceof Item i)) return;
         Player p = e.getPlayer();
         AttributeInstance luckAttribute = p.getAttribute(Attribute.GENERIC_LUCK);

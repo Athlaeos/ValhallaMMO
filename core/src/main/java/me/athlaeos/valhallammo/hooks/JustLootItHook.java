@@ -38,7 +38,7 @@ public class JustLootItHook extends PluginHook {
     @Override
     public void whenPresent() {
         listener = new Listener() {
-            @EventHandler
+            @EventHandler(ignoreCancelled = true)
             public void onLootProvided(AsyncJLIPlayerLootProvidedEvent event) {
                 if (ValhallaMMO.isWorldBlacklisted(event.entryLocation().getWorld().getName())) {
                     return;

@@ -56,7 +56,7 @@ public class CookingListener implements Listener {
     }
 
     // owner is set to furnace on inventory click
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void furnaceOwnerTracker(InventoryClickEvent e){
         if (furnaces.contains(e.getView().getTopInventory().getType())){
             Location l = e.getView().getTopInventory().getLocation();
@@ -151,90 +151,88 @@ public class CookingListener implements Listener {
         return uuid;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceBurn(FurnaceBurnEvent e){
         Block b = e.getBlock();
-        if (b.getState() instanceof Furnace f && !e.isCancelled()){
-            UUID furnaceUUID = uuidFromLocation(f.getLocation());
-            if (!Timer.isCooldownPassed(furnaceUUID, "furnace_wait_time")){
-                e.setCancelled(true);
-                return;
-            }
-            Pair<CookingRecipe<?>, DynamicCookingRecipe> recipes = getFurnaceRecipe(f.getInventory().getSmelting());
-            if (recipes.getOne() == null){
+        if (!(b.getState() instanceof Furnace f)) return;
+        UUID furnaceUUID = uuidFromLocation(f.getLocation());
+        if (!Timer.isCooldownPassed(furnaceUUID, "furnace_wait_time")){
+            e.setCancelled(true);
+            return;
+        }
+        Pair<CookingRecipe<?>, DynamicCookingRecipe> recipes = getFurnaceRecipe(f.getInventory().getSmelting());
+        if (recipes.getOne() == null){
+            e.setCancelled(true);
+            Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
+            return;
+        }
+        if (recipes.getTwo() == null) {
+            if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) {
                 e.setCancelled(true);
                 Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
-                return;
-            }
-            if (recipes.getTwo() == null) {
-                if (CustomRecipeRegistry.getDisabledRecipes().contains(recipes.getOne().getKey())) {
+            } else {
+                DynamicCookingRecipe recipe = CustomRecipeRegistry.getCookingRecipesByKey().get(recipes.getOne().getKey());
+                if (recipe != null) {
                     e.setCancelled(true);
                     Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
-                } else {
-                    DynamicCookingRecipe recipe = CustomRecipeRegistry.getCookingRecipesByKey().get(recipes.getOne().getKey());
-                    if (recipe != null) {
-                        e.setCancelled(true);
-                        Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
-                        return; // is a valhalla recipe, but not valid. Cancel recipe
-                    }
+                    return; // is a valhalla recipe, but not valid. Cancel recipe
                 }
-                return;// vanilla recipe found, cancel if recipe is disabled
             }
-            if (WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), WorldGuardHook.VMMO_CRAFTING_FURNACE)){
-                e.setCancelled(true);
-                Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
-                return;
-            }
-            DynamicCookingRecipe recipe = recipes.getTwo();
-            if (!ItemUtils.isEmpty(f.getInventory().getSmelting())){
-                ItemBuilder result = new ItemBuilder(recipe.tinker() ? f.getInventory().getSmelting() : recipe.getResult());
+            return;// vanilla recipe found, cancel if recipe is disabled
+        }
+        if (WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), WorldGuardHook.VMMO_CRAFTING_FURNACE)){
+            e.setCancelled(true);
+            Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
+            return;
+        }
+        DynamicCookingRecipe recipe = recipes.getTwo();
+        if (!ItemUtils.isEmpty(f.getInventory().getSmelting())){
+            ItemBuilder result = new ItemBuilder(recipe.tinker() ? f.getInventory().getSmelting() : recipe.getResult());
 
-                Player owner = BlockUtils.getOwner(b);
-                if (owner != null){
-                    PowerProfile profile = ProfileCache.getOrCache(owner, PowerProfile.class);
-                    if (profile == null ||
-                            (!owner.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName()) &&
-                                    !owner.hasPermission("valhalla.recipe." + recipe.getName()))) {
-                        // If the the player's profile is null, the player hasn't unlocked the recipe,
-                        // the world is blacklisted, any of the validations failed, or the location is in a region
-                        // which blocks custom recipes, cancel campfire interaction
-                        e.setCancelled(true);
-                        return;
-                    }
-                }
-                if ((recipe.getModifiers().stream().anyMatch(DynamicItemModifier::requiresPlayer) && owner == null) ||
-                        (ValhallaMMO.isWorldBlacklisted(f.getWorld().getName())) ||
-                        (WorldGuardHook.inDisabledRegion(f.getLocation(), WorldGuardHook.VMMO_CRAFTING_CAMPFIRE)) ||
-                        (recipe.getValidations().stream().anyMatch(v -> {
-                            Validation validation = ValidationRegistry.getValidation(v);
-                            if (validation != null) {
-                                boolean invalid = !validation.validate(f.getLocation().getBlock());
-                                if (invalid && owner != null) {
-                                    Utils.sendActionBar(owner, validation.validationError());
-                                }
-                                return invalid;
-                            }
-                            return false;
-                        }))){
+            Player owner = BlockUtils.getOwner(b);
+            if (owner != null){
+                PowerProfile profile = ProfileCache.getOrCache(owner, PowerProfile.class);
+                if (profile == null ||
+                        (!owner.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName()) &&
+                                !owner.hasPermission("valhalla.recipe." + recipe.getName()))) {
+                    // If the the player's profile is null, the player hasn't unlocked the recipe,
+                    // the world is blacklisted, any of the validations failed, or the location is in a region
+                    // which blocks custom recipes, cancel campfire interaction
                     e.setCancelled(true);
-                    Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
-                    f.getWorld().playEffect(f.getLocation(), Effect.EXTINGUISH, 0);
                     return;
                 }
-                DynamicItemModifier.modify(ModifierContext.builder(result).crafter(owner).validate().get(), recipe.getModifiers());
+            }
+            if ((recipe.getModifiers().stream().anyMatch(DynamicItemModifier::requiresPlayer) && owner == null) ||
+                    (ValhallaMMO.isWorldBlacklisted(f.getWorld().getName())) ||
+                    (WorldGuardHook.inDisabledRegion(f.getLocation(), WorldGuardHook.VMMO_CRAFTING_CAMPFIRE)) ||
+                    (recipe.getValidations().stream().anyMatch(v -> {
+                        Validation validation = ValidationRegistry.getValidation(v);
+                        if (validation != null) {
+                            boolean invalid = !validation.validate(f.getLocation().getBlock());
+                            if (invalid && owner != null) {
+                                Utils.sendActionBar(owner, validation.validationError());
+                            }
+                            return invalid;
+                        }
+                        return false;
+                    }))){
+                e.setCancelled(true);
+                Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
+                f.getWorld().playEffect(f.getLocation(), Effect.EXTINGUISH, 0);
+                return;
+            }
+            DynamicItemModifier.modify(ModifierContext.builder(result).crafter(owner).validate().get(), recipe.getModifiers());
 
-                if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
-                    if (owner != null) Timer.setCooldown(owner.getUniqueId(), 500, "delay_furnace_attempts");
-                    e.setCancelled(true);
-                    Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
-                }
+            if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
+                if (owner != null) Timer.setCooldown(owner.getUniqueId(), 500, "delay_furnace_attempts");
+                e.setCancelled(true);
+                Timer.setCooldown(furnaceUUID, 5000, "furnace_wait_time");
             }
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCook(BlockCookEvent e){
-        if (e.isCancelled()) return;
         Block b = e.getBlock();
         Player owner = BlockUtils.getOwner(b);
         if (b.getState() instanceof Campfire c){

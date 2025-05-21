@@ -132,9 +132,9 @@ public class ArcherySkill extends Skill implements Listener {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCrossbowUnload(InventoryClickEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) ||
                 !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_crossbow_unload_attempts") ||
                 WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
         if ((!(e.getClickedInventory() instanceof PlayerInventory)) || !e.isRightClick()) return; // player inventory must be right-clicked
@@ -184,9 +184,9 @@ public class ArcherySkill extends Skill implements Listener {
         if (chargedShotAmmoAnimation != null) chargedShotAmmoAnimation.animate(e.getPlayer(), e.getPlayer().getEyeLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onArrowHit(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         if (!(e.getDamager() instanceof AbstractArrow a) || !(EntityUtils.getTrueDamager(e) instanceof Player p) || a instanceof Trident ||
                 !(e.getEntity() instanceof LivingEntity v) || EntityClassification.matchesClassification(v.getType(), EntityClassification.UNALIVE)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
@@ -218,7 +218,7 @@ public class ArcherySkill extends Skill implements Listener {
         e.setDamage(damage);
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            if (e.isCancelled() || !p.isOnline() || (v instanceof IronGolem g && g.isPlayerCreated())) return;
+            if (!p.isOnline() || (v instanceof IronGolem g && g.isPlayerCreated())) return;
             double damageTaken = EntityDamagedListener.getLastDamageTaken(v.getUniqueId(), e.getFinalDamage());
             if (damageTaken > 1000000) return;
             double chunkNerf = !isChunkNerfed || EntitySpawnListener.isTrialSpawned(v) ? 1 : ChunkEXPNerf.getChunkEXPNerf(v.getLocation().getChunk(), p, "archery");
@@ -236,9 +236,9 @@ public class ArcherySkill extends Skill implements Listener {
         }, 2L);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCrit(EntityCriticallyHitEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         if (e.getCritter() instanceof AbstractArrow a && a.getShooter() instanceof Player p && e.getEntity() instanceof LivingEntity l){
             if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
             ArcheryProfile profile = ProfileCache.getOrCache(p, ArcheryProfile.class);
@@ -247,9 +247,9 @@ public class ArcherySkill extends Skill implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onArrowShot(EntityShootBowEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         ItemStack bow = e.getBow();
         ItemStack consumable = e.getConsumable();
         if (!(e.getProjectile() instanceof AbstractArrow a) || a instanceof Trident || ItemUtils.isEmpty(consumable) || ItemUtils.isEmpty(bow)) return;
@@ -290,9 +290,9 @@ public class ArcherySkill extends Skill implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void arrowShotSpeedMinimalizer(EntityShootBowEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         if (!(e.getProjectile() instanceof AbstractArrow a) || a instanceof Trident || ItemUtils.isEmpty(e.getConsumable()) || ItemUtils.isEmpty(e.getBow())) return;
         if (!(a.getShooter() instanceof Player p)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
