@@ -170,13 +170,13 @@ public class EntityUtils {
     public static double combinedAttributeValue(LivingEntity entity, String attribute, WeightClass weightFilter, String equipmentPenalty, boolean mainHandOnly){
         double total = 0;
         EntityProperties properties = EntityCache.getAndCacheProperties(entity);
-        if (properties.getHelmet() != null && WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter)
+        if (properties.getHelmet() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter))
             total += getValue(entity, equipmentPenalty, properties.getHelmet().getMeta(), properties.getHelmetAttributes(), attribute, null);
-        if (properties.getChestplate() != null && WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter)
+        if (properties.getChestplate() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter))
             total += getValue(entity, equipmentPenalty, properties.getChestplate().getMeta(), properties.getChestPlateAttributes(), attribute, null);
-        if (properties.getLeggings() != null && WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter)
+        if (properties.getLeggings() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter))
             total += getValue(entity, equipmentPenalty, properties.getLeggings().getMeta(), properties.getLeggingsAttributes(), attribute, null);
-        if (properties.getBoots() != null && WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter)
+        if (properties.getBoots() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter))
             total += getValue(entity, equipmentPenalty, properties.getBoots().getMeta(), properties.getBootsAttributes(), attribute, null);
 
         if (properties.getMainHand() != null && ItemUtils.usedMainHand(properties.getMainHand(), properties.getOffHand()))
