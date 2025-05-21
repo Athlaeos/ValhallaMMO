@@ -6,10 +6,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.CommandSender;
@@ -25,6 +22,7 @@ import java.util.regex.Pattern;
 import static me.athlaeos.valhallammo.hooks.MiniMessageHook.convertMiniMessage;
 
 public class Utils {
+    public static final Particle DUST = Particle.valueOf(oldOrNew("REDSTONE", "DUST"));
 
     private static final Random random = new Random();
 
@@ -291,8 +289,11 @@ public class Utils {
     static final Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
 
     public static List<String> chat(List<String> messages){
-        if (messages == null) return new ArrayList<>();
-        return messages.stream().map(Utils::chat).toList();
+        List<String> chat = new ArrayList<>();
+        for (String message : messages) {
+            chat.add(chat(message));
+        }
+        return chat;
     }
 
     private static boolean miniMessageSupported;

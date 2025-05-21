@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.EnchantingItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -12,7 +13,6 @@ import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,20 +33,20 @@ public class EnchantmentAdd extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         Enchantment e = keyEnchantmentMap.get(this.enchantment);
         if (e == null) {
             ValhallaMMO.logWarning("EnchantmentAdd modifier was instantiated with an enchantment that doesn't exist: " + enchantment);
             return;
         }
-        if (level <= 0) outputItem.getItem().removeEnchantment(e);
+        if (level <= 0) context.getItem().getItem().removeEnchantment(e);
         else {
             if (scaleWithSkill){
-                int skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", crafter, 10000, true);
-                skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", crafter, 10000, true)));
+                int skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, true);
+                skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", context.getCrafter(), 10000, true)));
                 level = EnchantingItemPropertyManager.getScaledLevel(e, skill, level);
             }
-            outputItem.enchant(e, level);
+            context.getItem().enchant(e, level);
         }
     }
 

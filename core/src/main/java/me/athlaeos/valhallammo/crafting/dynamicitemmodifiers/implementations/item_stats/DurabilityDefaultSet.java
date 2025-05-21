@@ -3,12 +3,12 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.CustomDurabilityManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,9 +22,9 @@ public class DurabilityDefaultSet extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        double fraction = (double) CustomDurabilityManager.getDurability(outputItem.getMeta(), false) / CustomDurabilityManager.getDurability(outputItem.getMeta(), true);
-        CustomDurabilityManager.setDurability(outputItem.getMeta(), (int) (value * fraction), value);
+    public void processItem(ModifierContext context) {
+        double fraction = (double) CustomDurabilityManager.getDurability(context.getItem().getMeta(), false) / CustomDurabilityManager.getDurability(context.getItem().getMeta(), true);
+        CustomDurabilityManager.setDurability(context.getItem().getMeta(), (int) (value * fraction), value);
     }
 
     @Override

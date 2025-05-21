@@ -2,16 +2,16 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.po
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.StringUtils;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.potioneffects.EffectClass;
-import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,14 +26,14 @@ public class AlchemyQualityScale extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        double typeSkill = effectClass == null || effectClass == EffectClass.NEUTRAL ? 0 : AccumulativeStatManager.getCachedStats("ALCHEMY_QUALITY_" + effectClass, crafter, 10000, use);
-        double generalSkill = AccumulativeStatManager.getCachedStats("ALCHEMY_QUALITY_GENERAL", crafter, 10000, use);
+    public void processItem(ModifierContext context) {
+        double typeSkill = effectClass == null || effectClass == EffectClass.NEUTRAL ? 0 : AccumulativeStatManager.getCachedStats("ALCHEMY_QUALITY_" + effectClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
+        double generalSkill = AccumulativeStatManager.getCachedStats("ALCHEMY_QUALITY_GENERAL", context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
 
-        double typeMultiplier = effectClass == null || effectClass == EffectClass.NEUTRAL ? 0 : AccumulativeStatManager.getCachedStats("ALCHEMY_FRACTION_QUALITY_" + effectClass, crafter, 10000, use);
-        double generalMultiplier = 1 + AccumulativeStatManager.getCachedStats("ALCHEMY_FRACTION_QUALITY_GENERAL", crafter, 10000, use);
+        double typeMultiplier = effectClass == null || effectClass == EffectClass.NEUTRAL ? 0 : AccumulativeStatManager.getCachedStats("ALCHEMY_FRACTION_QUALITY_" + effectClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
+        double generalMultiplier = 1 + AccumulativeStatManager.getCachedStats("ALCHEMY_FRACTION_QUALITY_GENERAL", context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
 
-        AlchemyItemPropertyManager.setQuality(outputItem.getMeta(), (int) ((generalMultiplier + typeMultiplier) * ((typeSkill + generalSkill) * skillEfficiency)));
+        AlchemyItemPropertyManager.setQuality(context.getItem().getMeta(), (int) ((generalMultiplier + typeMultiplier) * ((typeSkill + generalSkill) * skillEfficiency)));
     }
 
     @Override

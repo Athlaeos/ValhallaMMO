@@ -209,7 +209,11 @@ public class EntityAttackListener implements Listener {
                         lookingDirection.setX(lookingDirection.getX() * finalKnockbackBonus);
                         lookingDirection.setY(0);
                         lookingDirection.setZ(lookingDirection.getZ() * finalKnockbackBonus);
-                        v.setVelocity(v.getVelocity().add(lookingDirection));
+                        Vector vel = v.getVelocity().add(lookingDirection);
+                        try {
+                            vel.checkFinite();
+                            v.setVelocity(vel);
+                        } catch (IllegalArgumentException ignored) {}
                     }
                 }, 1L);
             } else if (knockbackResistance > 0){

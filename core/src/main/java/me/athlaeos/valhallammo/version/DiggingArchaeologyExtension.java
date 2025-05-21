@@ -128,9 +128,9 @@ public class DiggingArchaeologyExtension implements Listener {
             {0, 1, 0}
     };
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !(sandConversionBlocks.containsKey(e.getBlock().getType()) || gravelConversionBlocks.containsKey(e.getBlock().getType()))) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !(sandConversionBlocks.containsKey(e.getBlock().getType()) || gravelConversionBlocks.containsKey(e.getBlock().getType()))) return;
         DiggingProfile profile = ProfileCache.getOrCache(e.getPlayer(), DiggingProfile.class);
 
         Structures nearbyStructure = null;
@@ -178,9 +178,9 @@ public class DiggingArchaeologyExtension implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBrush(BlockDropItemEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !(e.getBlockState() instanceof BrushableBlock b)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !(e.getBlockState() instanceof BrushableBlock b)) return;
         DiggingProfile profile = ProfileCache.getOrCache(e.getPlayer(), DiggingProfile.class);
 
         double expQuantity = 0;

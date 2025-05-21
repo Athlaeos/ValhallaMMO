@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.item.item_attributes.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.CustomFlag;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
@@ -128,6 +129,24 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
             );
         }
     }
+    @Override
+    public void onApply(ItemBuilder i) {
+        // if the item has HIDE_ATTRIBUTES, do not display in lore unless item also has DISPLAY_ATTRIBUTES
+        // HIDE_ATTRIBUTES will hide vanilla attributes regardless, but if DISPLAY_ATTRIBUTES is also present these vanilla attributes will be displayed as lore instead
+        boolean customFlag = CustomFlag.hasFlag(i.getMeta(), CustomFlag.DISPLAY_ATTRIBUTES);
+        boolean vanillaFlag = i.getMeta().hasItemFlag(ItemFlag.HIDE_ATTRIBUTES);
+        if (isHidden || ((isVanilla && (!customFlag || !vanillaFlag)) || (!isVanilla && (vanillaFlag && !customFlag)))) onRemove(i);
+        else {
+            String translation = getAttributeName();
+            if (StringUtils.isEmpty(translation)) return;
+            ItemUtils.replaceOrAddLore(i,
+                    translation
+                            .replace("%icon%", "")
+                            .replace("%value%", "").trim(),
+                    getLoreDisplay().trim()
+            );
+        }
+    }
 
     @Override
     public String getLoreDisplay(){
@@ -145,6 +164,15 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
 
     @Override
     public void onRemove(ItemMeta i) {
+        String translation = TranslationManager.getTranslation("attribute_" + attribute.toLowerCase(java.util.Locale.US));
+        if (StringUtils.isEmpty(translation)) return;
+        ItemUtils.removeIfLoreContains(i, translation
+                .replace("%icon%", "")
+                .replace("%value%", "").trim());
+    }
+
+    @Override
+    public void onRemove(ItemBuilder i) {
         String translation = TranslationManager.getTranslation("attribute_" + attribute.toLowerCase(java.util.Locale.US));
         if (StringUtils.isEmpty(translation)) return;
         ItemUtils.removeIfLoreContains(i, translation

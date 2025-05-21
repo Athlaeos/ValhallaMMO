@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.cr
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
@@ -9,7 +10,6 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,18 +27,18 @@ public class SmithingTagsLevelRequirement extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        Map<Integer, Integer> tagsToCheck = SmithingItemPropertyManager.getTags(outputItem.getMeta());
+    public void processItem(ModifierContext context) {
+        Map<Integer, Integer> tagsToCheck = SmithingItemPropertyManager.getTags(context.getItem().getMeta());
         for (LevelRequirement tag : tags){
             int tagLevel = tagsToCheck.getOrDefault(tag.tag, 0);
             if (tagLevel <= 0 && !tag.lower) {
                 String message = SmithingItemPropertyManager.getTagRequiredErrors().get(tag.tag);
-                failedRecipe(outputItem, Objects.requireNonNullElseGet(message, () -> TranslationManager.getTranslation("modifier_warning_required_smithing_tag")));
+                failedRecipe(context.getItem(), Objects.requireNonNullElseGet(message, () -> TranslationManager.getTranslation("modifier_warning_required_smithing_tag")));
                 break;
             } else {
                 if ((tag.lower && tagLevel > tag.level) || (!tag.lower && tagLevel < tag.level)) {
                     String message = SmithingItemPropertyManager.getTagRequiredErrors().get(tag.tag);
-                    failedRecipe(outputItem, Objects.requireNonNullElseGet(message, () -> TranslationManager.getTranslation("modifier_warning_required_smithing_tag").replace("%level%", String.valueOf(tag.level))));
+                    failedRecipe(context.getItem(), Objects.requireNonNullElseGet(message, () -> TranslationManager.getTranslation("modifier_warning_required_smithing_tag").replace("%level%", String.valueOf(tag.level))));
                     break;
                 }
             }

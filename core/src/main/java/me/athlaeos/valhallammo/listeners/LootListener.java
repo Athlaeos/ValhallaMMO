@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.block.BlockExplodeBlockDestructionInfo;
 import me.athlaeos.valhallammo.block.EntityExplodeBlockDestructionInfo;
 import me.athlaeos.valhallammo.block.GenericBlockDestructionInfo;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
@@ -212,7 +213,7 @@ public class LootListener implements Listener {
         Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
         if (p == null) {
             List<Player> nearby = EntityUtils.getNearbyPlayers(e.getBlock().getLocation(), 100);
-            if (!nearby.isEmpty()) p = nearby.getFirst();
+            if (!nearby.isEmpty()) p = nearby.get(0);
         }
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
@@ -710,7 +711,7 @@ public class LootListener implements Listener {
                     int times = selection.get(entry);
                     for (int i = 0; i < times; i++){
                         ItemBuilder reward = new ItemBuilder(entry.getDrop());
-                        DynamicItemModifier.modify(reward, e.getPlayer(), entry.getModifiers(), false, true, true);
+                        DynamicItemModifier.modify(ModifierContext.builder(reward).crafter(e.getPlayer()).executeUsageMechanics().validate().get(), entry.getModifiers());
                         if (!CustomFlag.hasFlag(reward.getMeta(), CustomFlag.UNCRAFTABLE)) {
                             int quantityMin = Utils.randomAverage(entry.getBaseQuantityMin() + (Math.max(0, context.getLootingModifier()) * entry.getQuantityMinFortuneBase()));
                             int quantityMax = Utils.randomAverage(entry.getBaseQuantityMax() + (Math.max(0, context.getLootingModifier()) * entry.getQuantityMaxFortuneBase()));

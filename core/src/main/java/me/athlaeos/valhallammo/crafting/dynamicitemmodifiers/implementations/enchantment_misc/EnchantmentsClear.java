@@ -3,12 +3,12 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.en
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -24,14 +24,14 @@ public class EnchantmentsClear extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (outputItem.getMeta() instanceof EnchantmentStorageMeta eMeta){
+    public void processItem(ModifierContext context) {
+        if (context.getItem().getMeta() instanceof EnchantmentStorageMeta eMeta){
             eMeta.getEnchants().keySet().stream().filter(e -> !ignoreCursed || !curseEnchantments.contains(e))
                     .forEach(eMeta::removeStoredEnchant);
-            if (eMeta.getEnchants().isEmpty() && outputItem.getItem().getType() == Material.ENCHANTED_BOOK) outputItem.type(Material.BOOK);
+            if (eMeta.getEnchants().isEmpty() && context.getItem().getItem().getType() == Material.ENCHANTED_BOOK) context.getItem().type(Material.BOOK);
         } else {
-            outputItem.getItem().getEnchantments().keySet().stream().filter(e -> !ignoreCursed || !curseEnchantments.contains(e))
-                    .forEach(e -> outputItem.getItem().removeEnchantment(e));
+            context.getItem().getItem().getEnchantments().keySet().stream().filter(e -> !ignoreCursed || !curseEnchantments.contains(e))
+                    .forEach(e -> context.getItem().getItem().removeEnchantment(e));
         }
     }
 

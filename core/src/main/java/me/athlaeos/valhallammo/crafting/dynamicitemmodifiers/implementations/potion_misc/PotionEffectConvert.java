@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.po
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
@@ -11,14 +12,10 @@ import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-
-import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class PotionEffectConvert extends DynamicItemModifier {
     private static final List<String> types = new ArrayList<>();
@@ -34,18 +31,18 @@ public class PotionEffectConvert extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        Map<String, PotionEffectWrapper> effects = PotionEffectRegistry.getStoredEffects(outputItem.getMeta(), true);
+    public void processItem(ModifierContext context) {
+        Map<String, PotionEffectWrapper> effects = PotionEffectRegistry.getStoredEffects(context.getItem().getMeta(), true);
         for (String from : conversions.keySet()){
             if (effects.remove(from) == null) continue;
-            PotionEffectRegistry.removeEffect(outputItem.getMeta(), from);
+            PotionEffectRegistry.removeEffect(context.getItem().getMeta(), from);
             PotionEffectWrapper to = PotionEffectRegistry.getEffect(conversions.get(from).effect);
             to.setAmplifier(conversions.get(from).amplifier);
             to.setDuration(conversions.get(from).duration);
             effects.put(to.getEffect(), to);
-            PotionEffectRegistry.addDefaultEffect(outputItem.getMeta(), to);
+            PotionEffectRegistry.addDefaultEffect(context.getItem().getMeta(), to);
         }
-        PotionEffectRegistry.updateItemName(outputItem.getMeta(), true, false);
+        PotionEffectRegistry.updateItemName(context.getItem().getMeta(), true, false);
     }
 
     @Override

@@ -319,7 +319,7 @@ public class DynamicModifierMenu extends Menu {
         List<ItemStack> totalModifierButtons = new ArrayList<>();
         for (DynamicItemModifier modifier : sortedModifiers){
             if (currentStringModifiers.contains(modifier.getName())) continue;
-            if (modifier instanceof RelationalItemModifier && !showRelational) continue;
+            if (modifier instanceof RelationalToItemModifier && !showRelational) continue;
 
             // category isn't ALL, and the modifier's categories don't contain selected category
             if (!currentCategory.equals(ModifierCategoryRegistry.ALL) && !modifier.getCategories().contains(currentCategory.id())) continue;
@@ -353,7 +353,7 @@ public class DynamicModifierMenu extends Menu {
         for (int i = 0; i < 45; i++){
             inventory.setItem(i, null);
         }
-        List<DynamicItemModifier> modifiers = currentModifiers.stream().filter(m -> showRelational || !(m instanceof RelationalItemModifier)).limit(45).sorted(Comparator.comparingInt((DynamicItemModifier a) -> a.getPriority().getPriorityRating())).toList();
+        List<DynamicItemModifier> modifiers = currentModifiers.stream().filter(m -> showRelational || !(m instanceof RelationalToItemModifier)).limit(45).sorted(Comparator.comparingInt((DynamicItemModifier a) -> a.getPriority().getPriorityRating())).toList();
         for (DynamicItemModifier modifier : modifiers){
             if (ItemUtils.isEmpty(modifier.getModifierIcon())) ValhallaMMO.logWarning("Modifier " + modifier.getName() + " has no icon, please notify plugin author Athlaeos!");
             ItemStack icon = new ItemBuilder(ItemUtils.isEmpty(modifier.getModifierIcon()) ? new ItemStack(Material.BARRIER) : modifier.getModifierIcon())

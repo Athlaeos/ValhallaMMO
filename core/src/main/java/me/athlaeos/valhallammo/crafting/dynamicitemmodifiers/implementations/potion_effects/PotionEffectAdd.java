@@ -3,19 +3,22 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.po
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.ItemUtils;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class PotionEffectAdd extends DynamicItemModifier {
     private final String effect;
@@ -35,13 +38,13 @@ public class PotionEffectAdd extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         PotionEffectWrapper effect = PotionEffectRegistry.getEffect(this.effect);
         effect.setAmplifier(value);
         effect.setDuration(duration);
-        effect.setCharges(ItemUtils.isConsumable(outputItem.getItem().getType()) ? -1 : charges);
-        PotionEffectRegistry.addDefaultEffect(outputItem.getMeta(), effect);
-        PotionEffectRegistry.updateItemName(outputItem.getMeta(), false, false);
+        effect.setCharges(ItemUtils.isConsumable(context.getItem().getItem().getType()) ? -1 : charges);
+        PotionEffectRegistry.addDefaultEffect(context.getItem().getMeta(), effect);
+        PotionEffectRegistry.updateItemName(context.getItem().getMeta(), false, false);
     }
 
     @Override

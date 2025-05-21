@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -25,12 +26,12 @@ public class EmbeddedToolsSet extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (embeddedTools.isEmpty()) MiningSpeed.setEmbeddedTools(outputItem.getMeta(), null);
+    public void processItem(ModifierContext context) {
+        if (embeddedTools.isEmpty()) MiningSpeed.setEmbeddedTools(context.getItem().getMeta(), null);
         else {
-            Collection<MiningSpeed.EmbeddedTool> tools = MiningSpeed.getEmbeddedTools(outputItem.getMeta());
+            Collection<MiningSpeed.EmbeddedTool> tools = MiningSpeed.getEmbeddedTools(context.getItem().getMeta());
             tools.addAll(embeddedTools);
-            MiningSpeed.setEmbeddedTools(outputItem.getMeta(), tools);
+            MiningSpeed.setEmbeddedTools(context.getItem().getMeta(), tools);
         }
     }
 

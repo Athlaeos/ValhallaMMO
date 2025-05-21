@@ -3,19 +3,19 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
-import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -31,17 +31,17 @@ public class PlayerSignatureAdd extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        List<String> lore = outputItem.getMeta().getLore() != null ? outputItem.getMeta().getLore() : new ArrayList<>();
+    public void processItem(ModifierContext context) {
+        List<String> lore = context.getItem().getMeta().getLore() != null ? context.getItem().getMeta().getLore() : new ArrayList<>();
         String format = TranslationManager.getTranslation("format_signature");
         if (end || lore.isEmpty()) lore.add(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(Utils.chat(format
-                .replace("%player%", crafter.getName())
-                .replace("%quality_smithing%", String.valueOf(SmithingItemPropertyManager.getQuality(outputItem.getMeta())))
-                .replace("%quality_alchemy%", String.valueOf(AlchemyItemPropertyManager.getQuality(outputItem.getMeta())))
-        ), crafter), crafter));
-        else lore.set(0, Utils.chat(format.replace("%player%", crafter.getName())));
-        outputItem.lore(lore);
-        outputItem.stringTag(SIGNATURE, crafter.getUniqueId().toString());
+                .replace("%player%", context.getCrafter().getName())
+                .replace("%quality_smithing%", String.valueOf(SmithingItemPropertyManager.getQuality(context.getItem().getMeta())))
+                .replace("%quality_alchemy%", String.valueOf(AlchemyItemPropertyManager.getQuality(context.getItem().getMeta())))
+        ), context.getCrafter()), context.getCrafter()));
+        else lore.set(0, Utils.chat(format.replace("%player%", context.getCrafter().getName())));
+        context.getItem().lore(lore);
+        context.getItem().stringTag(SIGNATURE, context.getCrafter().getUniqueId().toString());
     }
 
     public static UUID getSignature(ItemStack i){

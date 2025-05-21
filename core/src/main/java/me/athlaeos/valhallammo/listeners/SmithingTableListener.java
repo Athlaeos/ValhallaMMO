@@ -5,29 +5,30 @@ import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicSmithingRecipe;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
-import me.athlaeos.valhallammo.item.CustomDurabilityManager;
-import me.athlaeos.valhallammo.item.EquipmentClass;
-import me.athlaeos.valhallammo.item.CustomFlag;
-import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
-import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.*;
-import org.bukkit.inventory.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.PrepareSmithingEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.SmithingInventory;
+import org.bukkit.inventory.SmithingRecipe;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
 
 public class SmithingTableListener implements Listener {
 
@@ -82,7 +83,7 @@ public class SmithingTableListener implements Listener {
             }
 
             ItemBuilder result = new ItemBuilder(r.tinkerBase() ? base.getItem() : r.getResult());
-            DynamicItemModifier.modify(result, addition, p, r.getResultModifiers(), false, true, true, e.isShiftClick() ? crafted : 1);
+            DynamicItemModifier.modify(ModifierContext.builder(result).crafter(p).executeUsageMechanics().validate().count(e.isShiftClick() ? crafted : 1).get(), r.getResultModifiers());
             if (ItemUtils.isEmpty(result.getItem()) || ItemUtils.isEmpty(addition.getItem())) {
                 s.setResult(null);
                 return;
@@ -101,7 +102,7 @@ public class SmithingTableListener implements Listener {
                         smithingAdditionInfoMap.remove(e.getWhoClicked().getUniqueId());
                         return;
                     }
-                    DynamicItemModifier.modify(addition, result, p, r.getAdditionModifiers(), false, true, true, crafted);
+                    DynamicItemModifier.modify(ModifierContext.builder(addition).items(result).crafter(p).executeUsageMechanics().validate().count(crafted).get(), r.getAdditionModifiers());
                     if (ItemUtils.isEmpty(result.getItem()) || ItemUtils.isEmpty(addition.getItem())) {
                         s.setResult(null);
                         return;
@@ -194,7 +195,7 @@ public class SmithingTableListener implements Listener {
             }
 
             ItemBuilder result = new ItemBuilder(recipe.tinkerBase() ? base.getItem() : recipe.getResult());
-            DynamicItemModifier.modify(result, addition, p, recipe.getResultModifiers(), false, false, true);
+            DynamicItemModifier.modify(ModifierContext.builder(result).items(addition).crafter(p).validate().get(), recipe.getResultModifiers());
             if (ItemUtils.isEmpty(result.getItem()) || ItemUtils.isEmpty(addition.getItem())) {
                 s.setResult(null);
                 return;
@@ -204,7 +205,7 @@ public class SmithingTableListener implements Listener {
                 // modification without crafting. The addition must therefore be cached along with the other
                 // recipe specifications, we then later check if during the recipe execution the specifications
                 // match or otherwise we cancel
-                DynamicItemModifier.modify(addition, result, p, recipe.getAdditionModifiers(), false, false, true);
+                DynamicItemModifier.modify(ModifierContext.builder(addition).items(result).crafter(p).validate().get(), recipe.getAdditionModifiers());
                 if (ItemUtils.isEmpty(result.getItem()) || ItemUtils.isEmpty(addition.getItem())) {
                     s.setResult(null);
                     return;

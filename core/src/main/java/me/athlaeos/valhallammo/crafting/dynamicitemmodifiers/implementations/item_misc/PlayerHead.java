@@ -2,10 +2,10 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -19,9 +19,9 @@ public class PlayerHead extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (outputItem.getMeta() instanceof SkullMeta s && crafter != null){
-            s.setOwningPlayer(crafter);
+    public void processItem(ModifierContext context) {
+        if (context.getItem().getMeta() instanceof SkullMeta s && context.getCrafter() != null){
+            s.setOwningPlayer(context.getCrafter());
         }
     }
 

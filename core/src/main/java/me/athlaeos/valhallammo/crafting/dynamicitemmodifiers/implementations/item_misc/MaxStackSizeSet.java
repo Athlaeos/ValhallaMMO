@@ -3,11 +3,11 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,8 +24,8 @@ public class MaxStackSizeSet extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        ValhallaMMO.getNms().setMaxStackSize(outputItem.getMeta(), maxStackSize);
+    public void processItem(ModifierContext context) {
+        ValhallaMMO.getNms().setMaxStackSize(context.getItem().getMeta(), maxStackSize);
     }
 
     @Override
@@ -40,7 +40,8 @@ public class MaxStackSizeSet extends DynamicItemModifier {
         return new Pair<>(12,
                 new ItemBuilder(Material.BOOK)
                         .name("&eWhat should max stack size be?")
-                        .lore("&6Click to add/subtract 1",
+                        .lore("&fCurrently &e" + maxStackSize,
+                                "&6Click to add/subtract 1",
                                 "&6Shift-Click to add/subtract 16")
                         .get()).map(Set.of());
     }

@@ -2,12 +2,12 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.po
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.skills.skills.implementations.AlchemySkill;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,10 +20,10 @@ public class ConversionTransmutationPotion extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         if (!SkillRegistry.isRegistered(AlchemySkill.class)) return;
-        if (outputItem.getItem().getType() == Material.POTION) outputItem.type(Material.SPLASH_POTION);
-        AlchemySkill.setTransmutationPotion(outputItem.getMeta(), true);
+        if (context.getItem().getItem().getType() == Material.POTION) context.getItem().type(Material.SPLASH_POTION);
+        AlchemySkill.setTransmutationPotion(context.getItem().getMeta(), true);
     }
 
     @Override

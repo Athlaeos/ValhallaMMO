@@ -3,21 +3,24 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierScalingPresets;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Scaling;
-import me.athlaeos.valhallammo.item.*;
+import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
+import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
+import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.StringUtils;
-import org.bukkit.command.CommandSender;
-import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -53,33 +56,33 @@ public class DefaultAttributeScale extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         Scaling scaling;
         if (presetScaling != null) scaling = ModifierScalingPresets.getScalings().get(presetScaling);
         else scaling = new Scaling(Objects.requireNonNullElseGet(commandScaling, this::buildScaling), mode, lowerBound, upperBound);
         if (scaling == null) {
-            failedRecipe(outputItem, "&cRecipe scaling wrongly configured, contact admin");
+            failedRecipe(context.getItem(), "&cRecipe scaling wrongly configured, contact admin");
             return;
         }
         int skill;
         switch (skillToScaleWith) {
-            case "SMITHING" -> skill = SmithingItemPropertyManager.getQuality(outputItem.getMeta());
-            case "ALCHEMY" -> skill = AlchemyItemPropertyManager.getQuality(outputItem.getMeta());
+            case "SMITHING" -> skill = SmithingItemPropertyManager.getQuality(context.getItem().getMeta());
+            case "ALCHEMY" -> skill = AlchemyItemPropertyManager.getQuality(context.getItem().getMeta());
             case "ENCHANTING" -> {
-                skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", crafter, 10000, true);
-                skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", crafter, 10000, true)));
+                skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, true);
+                skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", context.getCrafter(), 10000, true)));
             }
             default -> {
                 Skill s = SkillRegistry.getSkill(skillToScaleWith);
-                Profile profile = ProfileCache.getOrCache(crafter, s.getProfileType());
+                Profile profile = ProfileCache.getOrCache(context.getCrafter(), s.getProfileType());
                 skill = profile.getLevel();
             }
         }
 
         int finalQuality = (int) Math.round(skillEfficiency * skill);
-        if (!ItemAttributesRegistry.hasCustomStats(outputItem.getMeta())) ItemAttributesRegistry.applyVanillaStats(outputItem.getMeta());
+        if (!ItemAttributesRegistry.hasCustomStats(context.getItem().getMeta())) ItemAttributesRegistry.applyVanillaStats(context.getItem().getMeta());
 
-        SmithingItemPropertyManager.applyAttributeScaling(outputItem.getMeta(), scaling, finalQuality, attribute, minimumValue);
+        SmithingItemPropertyManager.applyAttributeScaling(context.getItem().getMeta(), scaling, finalQuality, attribute, minimumValue);
     }
 
     @Override

@@ -2,12 +2,12 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.item.CustomDurabilityManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -21,16 +21,16 @@ public class DurabilityRandomized extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!use) return;
-        if (!(outputItem.getMeta() instanceof Damageable) || outputItem.getItem().getType().getMaxDurability() <= 0) return;
-        if (CustomDurabilityManager.hasCustomDurability(outputItem.getMeta())){
-            int maxDurability = CustomDurabilityManager.getDurability(outputItem.getMeta(), true);
+    public void processItem(ModifierContext context) {
+        if (!context.shouldExecuteUsageMechanics()) return;
+        if (!(context.getItem().getMeta() instanceof Damageable) || context.getItem().getItem().getType().getMaxDurability() <= 0) return;
+        if (CustomDurabilityManager.hasCustomDurability(context.getItem().getMeta())){
+            int maxDurability = CustomDurabilityManager.getDurability(context.getItem().getMeta(), true);
             int randomDurability = Utils.getRandom().nextInt(maxDurability) + 1;
-            CustomDurabilityManager.setDurability(outputItem.getMeta(), randomDurability, maxDurability);
+            CustomDurabilityManager.setDurability(context.getItem().getMeta(), randomDurability, maxDurability);
         } else {
-            Damageable meta = (Damageable) outputItem.getMeta();
-            int maxDurability = outputItem.getItem().getType().getMaxDurability();
+            Damageable meta = (Damageable) context.getItem().getMeta();
+            int maxDurability = context.getItem().getItem().getType().getMaxDurability();
             int randomDurability = Utils.getRandom().nextInt(maxDurability) + 1;
             meta.setDamage(maxDurability - randomDurability);
         }

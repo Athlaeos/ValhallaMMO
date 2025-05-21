@@ -38,9 +38,9 @@ public class EntitySpawnListener implements Listener {
             "BREEDING", "TRIAL_SPAWNER", "TRAP"
     );
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLightningStrike(LightningStrikeEvent e){
-        if (e.isCancelled() || lightningDrawRange <= 0 || e.getCause() != LightningStrikeEvent.Cause.WEATHER) return;
+        if (lightningDrawRange <= 0 || e.getCause() != LightningStrikeEvent.Cause.WEATHER) return;
         if (e.getLightning().getLocation().subtract(0, 1, 0).getBlock().getType() == Material.LIGHTNING_ROD) return; // lightning struck lightning rod, takes priority, disregard
         Entity closestEntity = null;
         double lowestLightningResistance = 0D;
@@ -65,16 +65,16 @@ public class EntitySpawnListener implements Listener {
         e.getLightning().teleport(newLocation);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntitySpawn(CreatureSpawnEvent e){
-        if (e.isCancelled() || e.getSpawnReason() != CreatureSpawnEvent.SpawnReason.SPAWNER) return;
+        if (e.getSpawnReason() != CreatureSpawnEvent.SpawnReason.SPAWNER) return;
         e.getEntity().setMetadata("valhallammo_spawnreason", new FixedMetadataValue(ValhallaMMO.getInstance(), e.getSpawnReason().toString()));
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onLevelledEntitySpawn(CreatureSpawnEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !viableSpawnReasons.contains(e.getSpawnReason().toString()) ||
-                e.isCancelled() || EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE)) return;
+                EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE)) return;
         AttributeInstance maxHealth = e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (e.getEntity().getCustomName() != null || (maxHealth != null && maxHealth.getBaseValue() != maxHealth.getValue())) return;
 
@@ -91,9 +91,9 @@ public class EntitySpawnListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWolfInteract(PlayerInteractAtEntityEvent e){
-        if (e.isCancelled() || !(e.getRightClicked() instanceof Wolf w) || w.getOwner() == null || ValhallaMMO.isWorldBlacklisted(e.getRightClicked().getWorld().getName())) return;
+        if (!(e.getRightClicked() instanceof Wolf w) || w.getOwner() == null || ValhallaMMO.isWorldBlacklisted(e.getRightClicked().getWorld().getName())) return;
         AttributeInstance maxHealth = w.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (maxHealth == null) return;
         double healthFraction = w.getHealth() / maxHealth.getValue();
@@ -103,9 +103,9 @@ public class EntitySpawnListener implements Listener {
         if (newMaxHealth != null) w.setHealth(Math.min(newMaxHealth.getValue(), healthFraction * newMaxHealth.getValue()));
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWolfTame(EntityTameEvent e){
-        if (e.isCancelled() || !(e.getEntity() instanceof Wolf w) || ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
+        if (!(e.getEntity() instanceof Wolf w) || ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         AttributeInstance maxHealth = w.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (maxHealth == null) return;
         double healthFraction = w.getHealth() / maxHealth.getValue();

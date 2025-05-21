@@ -28,6 +28,7 @@ public class SmithingItemPropertyManager {
 
     private static final Map<Integer, String> qualityLore = new TreeMap<>();
     private static final Map<Integer, String> tagLore = new HashMap<>();
+    private static final Map<Integer, String> cleanTagLore = new HashMap<>();
     private static final Map<Integer, String> tagRequiredErrors = new HashMap<>();
     private static final Map<Integer, String> tagForbiddenErrors = new HashMap<>();
     private static final Map<String, Map<MaterialClass, Scaling>> materialScalings = new HashMap<>();
@@ -65,7 +66,12 @@ public class SmithingItemPropertyManager {
                 try {
                     int tag = Integer.parseInt(r);
                     String lore = TranslationManager.translatePlaceholders(yaml.getString("tag_lore." + r));
-                    if (lore != null) tagLore.put(tag, Utils.chat(lore));
+                    if (lore != null) {
+                        lore = Utils.chat(lore);
+                        String cleaned = ChatColor.stripColor(lore.replace("%lv_roman%", "").replace("%lv_normal%", ""));
+                        tagLore.put(tag, lore);
+                        cleanTagLore.put(tag, cleaned);
+                    }
                 } catch (IllegalArgumentException ignored){
                     ValhallaMMO.logWarning("Invalid number tag in skills/smithing.yml: tag_lore." + r + " is not a number");
                 }
@@ -142,6 +148,37 @@ public class SmithingItemPropertyManager {
         Map<Integer, Integer> tags = getTags(i);
         tags.remove(tag);
         setTags(i, tags);
+    }
+
+    public static void setTagLore(ItemBuilder builder) {
+        if (builder == null) return;
+        List<String> currentLore = builder.getLore() != null ? builder.getLore() : new ArrayList<>();
+        List<String> newLore = new ArrayList<>();
+        int tagIndex = -1; // the purpose of this is to track where in the lore tags are placed, so the position doesn't change
+        for (String l : currentLore){
+            boolean tagLine = false;
+            String cleanLine = ChatColor.stripColor(Utils.chat(l));
+            for (String tag : cleanTagLore.values()){
+                if (cleanLine.contains(tag)) { // if the current line of lore contains any of the tag lores (placeholders removed) then record this line index
+                    tagLine = true;
+                    if (tagIndex < 0) tagIndex = currentLore.indexOf(l);
+                    break;
+                }
+            }
+            if (!tagLine) {
+                newLore.add(l); // if not, just add the line as is
+            }
+        }
+        Map<Integer, Integer> tags = CustomFlag.hasFlag(builder.getMeta(), CustomFlag.HIDE_TAGS) ? new HashMap<>() : getTags(builder.getMeta());
+        tags.keySet().retainAll(tagLore.keySet()); // remove all tags that don't have a lore
+        for (Integer tag : tags.keySet()){
+            String lore = tagLore.get(tag)
+                    .replace("%lv_roman%", StringUtils.toRoman(Math.max(1, tags.get(tag))))
+                    .replace("%lv_normal%", String.valueOf(tags.get(tag)));
+            if (tagIndex <= 0) newLore.add(lore);
+            else newLore.add(tagIndex, lore);
+        }
+        builder.lore(newLore);
     }
 
     public static void setTagLore(ItemMeta meta){

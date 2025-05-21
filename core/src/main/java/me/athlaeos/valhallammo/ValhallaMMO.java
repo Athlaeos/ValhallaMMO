@@ -55,6 +55,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class ValhallaMMO extends JavaPlugin {
+    private static final boolean premium = false;
     private static boolean customMiningSystem = false;
     private static boolean tradingSystemEnabled = false;
     private static NMS nms = null;
@@ -219,7 +220,9 @@ public class ValhallaMMO extends JavaPlugin {
         ProfilePersistence connection = ProfileRegistry.getPersistence();
 
         if (ConfigManager.getConfig("config.yml").get().getBoolean("metrics", true)){
-            new Metrics(this, 14942).addCustomChart(new Metrics.SimplePie("using_database_for_player_data", () -> connection instanceof SQL db && db.getConnection() != null ? "Yes" : "No"));
+            Metrics metrics = new Metrics(this, 14942);
+            metrics.addCustomChart(new Metrics.SimplePie("using_database_for_player_data", () -> connection instanceof SQL db && db.getConnection() != null ? "Yes" : "No"));
+            metrics.addCustomChart(new Metrics.SimplePie("premium_users", () -> premium ? "Yes" : "No"));
         }
 
         registerListener(new Dummy());
@@ -505,5 +508,9 @@ public class ValhallaMMO extends JavaPlugin {
 
     public static Paper getPaper() {
         return paper;
+    }
+
+    public static boolean isPremium() {
+        return premium;
     }
 }

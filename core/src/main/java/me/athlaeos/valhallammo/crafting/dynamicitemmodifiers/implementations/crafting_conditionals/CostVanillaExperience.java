@@ -2,13 +2,13 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.cr
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,12 +22,12 @@ public class CostVanillaExperience extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if ((validate && EntityUtils.getTotalExperience(crafter) < amount * timesExecuted) ||
-                (use && !EntityUtils.addExperience(crafter, -amount * timesExecuted))){
+    public void processItem(ModifierContext context) {
+        if ((context.shouldValidate() && EntityUtils.getTotalExperience(context.getCrafter()) < amount * context.getTimesExecuted()) ||
+                (context.shouldExecuteUsageMechanics() && !EntityUtils.addExperience(context.getCrafter(), -amount * context.getTimesExecuted()))){
             String warning = TranslationManager.getTranslation("modifier_warning_insufficient_exp");
-            failedRecipe(outputItem,
-                    warning.replace("%quantity%", String.valueOf(timesExecuted))
+            failedRecipe(context.getItem(),
+                    warning.replace("%quantity%", String.valueOf(context.getTimesExecuted()))
                             .replace("%cost%", String.format("%,d", amount))
             );
         }

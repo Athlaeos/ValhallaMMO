@@ -3,23 +3,20 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.po
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.version.ConventionUtils;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionType;
 
 import java.util.*;
-
-import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class PotionTypeRequired extends DynamicItemModifier {
     public static final List<PotionType> legalTypes = new ArrayList<>(List.of(PotionType.AWKWARD, PotionType.MUNDANE, PotionType.THICK));
@@ -34,9 +31,9 @@ public class PotionTypeRequired extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (validate && outputItem.getMeta() instanceof PotionMeta meta && ValhallaMMO.getNms().getPotionType(meta) != type){
-            failedRecipe(outputItem, TranslationManager.getTranslation("modifier_warning_required_potion_type"));
+    public void processItem(ModifierContext context) {
+        if (context.shouldValidate() && context.getItem().getMeta() instanceof PotionMeta meta && ValhallaMMO.getNms().getPotionType(meta) != type){
+            failedRecipe(context.getItem(), TranslationManager.getTranslation("modifier_warning_required_potion_type"));
         }
     }
 

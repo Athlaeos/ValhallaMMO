@@ -26,15 +26,14 @@ public class MenuListener implements Listener {
      * is sleeping, so to patch this we prevent inventories opening while the player
      * is sleeping.
      */
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onMenuOpen(InventoryOpenEvent e){
-        if (!e.getPlayer().isSleeping() || e.isCancelled()) return;
+        if (!e.getPlayer().isSleeping()) return;
         e.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerSleep(PlayerBedEnterEvent e){
-        if (e.isCancelled()) return;
         e.getPlayer().closeInventory();
     }
 

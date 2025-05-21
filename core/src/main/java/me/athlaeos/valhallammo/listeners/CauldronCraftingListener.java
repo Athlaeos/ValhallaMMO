@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCauldronRecipe;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.event.CauldronAbsorbItemEvent;
@@ -176,9 +177,10 @@ public class CauldronCraftingListener implements Listener {
         } else if (!ItemUtils.isEmpty(catalyst)){
             ItemBuilder result = new ItemBuilder(recipe.tinkerCatalyst() ? catalyst : recipe.getResult());
             if (recipe.requiresValhallaTools() && !SmithingItemPropertyManager.hasSmithingQuality(ItemUtils.getItemMeta(catalyst))) return null;
-            if (ItemUtils.removeItems(contents, recipe.getIngredients(), count, recipe.getMetaRequirement().getChoice())){
+            List<ItemStack> removedItems = ItemUtils.removeItems(contents, recipe.getIngredients(), count, recipe.getMetaRequirement().getChoice());
+            if (removedItems != null){
                 // catalyst-triggered recipes are crafted instantly and so "use" can be true. Timed recipes should execute on completion
-                DynamicItemModifier.modify(result, responsible, recipe.getModifiers(), false, true, true, count);
+                DynamicItemModifier.modify(ModifierContext.builder(result).items(removedItems).crafter(responsible).executeUsageMechanics().validate().get(), recipe.getModifiers());
                 if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) return null;
                 setCauldronContents(cauldron, contents);
 
@@ -299,11 +301,11 @@ public class CauldronCraftingListener implements Listener {
 
                 ItemBuilder result = new ItemBuilder(r.tinkerCatalyst() ? catalyst : r.getResult());
                 if (r.getIngredients().isEmpty()) {
-                    DynamicItemModifier.modify(result, crafter, r.getModifiers(), false, false, true, count);
+                    DynamicItemModifier.modify(ModifierContext.builder(result).crafter(crafter).validate().get(), r.getModifiers());
                     if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
                     return new Pair<>(r, count); // catalyst recipes may have no ingredients, timed recipes MUST have ingredients
                 } else {
-                    DynamicItemModifier.modify(result, crafter, r.getModifiers(), false, false, true, count);
+                    DynamicItemModifier.modify(ModifierContext.builder(result).crafter(crafter).validate().get(), r.getModifiers());
                     if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
                     count = Math.min(count, ItemUtils.timesContained(contents, r.getIngredients(), r.getMetaRequirement().getChoice()));
                 }
@@ -433,9 +435,10 @@ public class CauldronCraftingListener implements Listener {
                 Block b = cauldron.getBlock();
                 ItemBuilder result = new ItemBuilder(recipe.getResult());
                 List<ItemStack> contents = getCauldronContents(b);
-                if (ItemUtils.removeItems(contents, recipe.getIngredients(), quantity, recipe.getMetaRequirement().getChoice())){
+                List<ItemStack> removedItems = ItemUtils.removeItems(contents, recipe.getIngredients(), quantity, recipe.getMetaRequirement().getChoice());
+                if (removedItems != null){
                     // catalyst-triggered recipes are crafted instantly and so "use" can be true. Timed recipes should execute on completion
-                    DynamicItemModifier.modify(result, p, recipe.getModifiers(), false, true, true, quantity);
+                    DynamicItemModifier.modify(ModifierContext.builder(result).items(removedItems).crafter(p).executeUsageMechanics().validate().get(), recipe.getModifiers());
                     if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) {
                         b.getWorld().playEffect(cauldron.add(0.5, 0.2, 0.5), Effect.EXTINGUISH, 0);
                         dumpCauldronContents(b);

@@ -7,7 +7,6 @@ import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.PlayerBlocksDropItemsEvent;
-import me.athlaeos.valhallammo.hooks.CoreProtectHook;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
@@ -126,9 +125,9 @@ public class MiningSkill extends Skill implements Listener {
 
     private final Collection<UUID> veinMiningPlayers = new HashSet<>();
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
                 !dropsExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         MiningProfile profile = ProfileCache.getOrCache(e.getPlayer(), MiningProfile.class);
@@ -176,9 +175,9 @@ public class MiningSkill extends Skill implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void lootTableDrops(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlock()) ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !BlockUtils.canReward(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
                 !dropsExpValues.containsKey(e.getBlock().getType()) ||
                 e.getBlock().getState() instanceof Container) return;
@@ -194,9 +193,9 @@ public class MiningSkill extends Skill implements Listener {
         addEXP(e.getPlayer(), expQuantity * miningExpMultiplier, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onItemsDropped(BlockDropItemEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || e.isCancelled() || !BlockUtils.canReward(e.getBlockState()) ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || !BlockUtils.canReward(e.getBlockState()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
                 !dropsExpValues.containsKey(e.getBlockState().getType()) ||
                 e.getBlockState() instanceof Container) return;
@@ -249,10 +248,10 @@ public class MiningSkill extends Skill implements Listener {
 
     private final Collection<UUID> recursionPrevention = new HashSet<>();
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || recursionPrevention.contains(e.getEntity().getUniqueId()) ||
-                e.isCancelled() || !(e.getEntity() instanceof TNTPrimed tnt) || tnt.getSource() == null) return;
+                !(e.getEntity() instanceof TNTPrimed tnt) || tnt.getSource() == null) return;
         Player responsible = null;
         if (tnt.getSource() instanceof Player p && p.isOnline()) responsible = p;
         else if (tnt.getSource() instanceof AbstractArrow a && a.getShooter() instanceof Player p && p.isOnline()) responsible = p;
@@ -306,9 +305,9 @@ public class MiningSkill extends Skill implements Listener {
         addEXP(responsible, exp * blastingExpMultiplier, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onTNTDamage(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getDamager() instanceof TNTPrimed tnt) ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getDamager() instanceof TNTPrimed tnt) ||
                 !(e.getEntity() instanceof Item || e.getEntity() instanceof Player)) return;
         if (WorldGuardHook.inDisabledRegion(e.getEntity().getLocation(), WorldGuardHook.VMMO_SKILL_MINING)) return;
         if (e.getEntity() instanceof Player p) {

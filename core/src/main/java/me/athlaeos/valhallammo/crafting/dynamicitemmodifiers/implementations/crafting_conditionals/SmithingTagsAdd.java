@@ -2,14 +2,14 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.cr
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.StringUtils;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,16 +27,16 @@ public class SmithingTagsAdd extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         if (newTags == null) newTags = new HashMap<>();
         if (!tags.isEmpty()) {
             tags.forEach(t -> newTags.put(t, 1));
             tags.clear();
         }
 
-        Map<Integer, Integer> existingTags = SmithingItemPropertyManager.getTags(outputItem.getMeta());
+        Map<Integer, Integer> existingTags = SmithingItemPropertyManager.getTags(context.getItem().getMeta());
         newTags.keySet().forEach(t ->
-                SmithingItemPropertyManager.addTag(outputItem.getMeta(), t, existingTags.getOrDefault(t, 0) + newTags.get(t))
+                SmithingItemPropertyManager.addTag(context.getItem().getMeta(), t, existingTags.getOrDefault(t, 0) + newTags.get(t))
         );
     }
 

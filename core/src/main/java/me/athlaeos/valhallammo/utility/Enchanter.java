@@ -130,7 +130,7 @@ public class Enchanter {
             for (Enchantment e : chosenEnchantments.keySet()){
                 eMeta.addStoredEnchant(e, chosenEnchantments.get(e), false);
             }
-            ItemUtils.setItemMeta(i, eMeta);
+            ItemUtils.setMetaNoClone(i, eMeta);
         } else {
             i.addEnchantments(chosenEnchantments);
         }

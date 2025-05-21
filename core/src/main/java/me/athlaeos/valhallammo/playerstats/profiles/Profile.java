@@ -108,74 +108,97 @@ public abstract class Profile {
     }
 
     public int getInt(String stat) {
-        if (!ints.containsKey(stat)) throw new IllegalArgumentException("No int stat with this name is registered under " + getClass().getSimpleName());
-        return ints.get(stat).getValue();
+        NumberHolder<Integer> holder = ints.get(stat);
+        if (holder == null) throw new IllegalArgumentException("No int stat with name " + stat + " is registered under " + getClass().getSimpleName());
+        return holder.getValue();
     }
     public int getDefaultInt(String stat) {
-        if (!ints.containsKey(stat)) throw new IllegalArgumentException("No int stat with this name is registered under " + getClass().getSimpleName());
-        return ints.get(stat).getDefault();
+        NumberHolder<Integer> holder = ints.get(stat);
+        if (holder == null) throw new IllegalArgumentException("No int stat with name " + stat + " is registered under " + getClass().getSimpleName());
+        return holder.getDefault();
     }
     public void setInt(String stat, int value){
-        if (!ints.containsKey(stat)) throw new IllegalArgumentException("No int stat with this name is registered under " + getClass().getSimpleName());
-        if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMin())) value = (int) Math.max(numberStatProperties.get(stat).getMin(), value);
-        if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMax())) value = (int) Math.min(numberStatProperties.get(stat).getMax(), value);
-        ints.get(stat).setValue(value);
+        NumberHolder<Integer> holder = ints.get(stat);
+        if (holder == null) throw new IllegalArgumentException("No int stat with name " + stat + " is registered under " + getClass().getSimpleName());
+        StatProperties properties = numberStatProperties.get(stat);
+        if (properties != null) {
+            if (!Double.isNaN(properties.getMin())) value = (int) Math.max(properties.getMin(), value);
+            if (!Double.isNaN(properties.getMax())) value = (int) Math.min(properties.getMax(), value);
+        }
+        holder.setValue(value);
     }
 
     public float getFloat(String stat) {
-        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
-        return floats.get(stat).getValue();
+        NumberHolder<Float> holder = floats.get(stat);
+        if (holder == null) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
+        return holder.getValue();
     }
     public float getDefaultFloat(String stat) {
-        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
-        return floats.get(stat).getDefault();
+        NumberHolder<Float> holder = floats.get(stat);
+        if (holder == null) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
+        return holder.getDefault();
     }
     public void setFloat(String stat, float value){
-        if (!floats.containsKey(stat)) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
-        if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMin())) value = (float) Math.max(numberStatProperties.get(stat).getMin(), value);
-        if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMax())) value = (float) Math.min(numberStatProperties.get(stat).getMax(), value);
-        floats.get(stat).setValue(value);
+        NumberHolder<Float> holder = floats.get(stat);
+        if (holder == null) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
+        StatProperties properties = numberStatProperties.get(stat);
+        if (properties != null) {
+            if (!Double.isNaN(properties.getMin())) value = (float) Math.max(properties.getMin(), value);
+            if (!Double.isNaN(properties.getMax())) value = (float) Math.min(properties.getMax(), value);
+        }
+        holder.setValue(value);
     }
 
     public double getDouble(String stat) {
-        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
-        return doubles.get(stat).getValue();
+        NumberHolder<Double> holder = doubles.get(stat);
+        if (holder == null) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
+        return holder.getValue();
     }
     public double getDefaultDouble(String stat) {
-        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
-        return doubles.get(stat).getDefault();
+        NumberHolder<Double> holder = doubles.get(stat);
+        if (holder == null) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
+        return holder.getDefault();
     }
     public void setDouble(String stat, double value){
-        if (!doubles.containsKey(stat)) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
-        if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMin())) value = Math.max(numberStatProperties.get(stat).getMin(), value);
-        if (numberStatProperties.containsKey(stat) && !Double.isNaN(numberStatProperties.get(stat).getMax())) value = Math.min(numberStatProperties.get(stat).getMax(), value);
-        doubles.get(stat).setValue(value);
+        NumberHolder<Double> holder = doubles.get(stat);
+        if (holder == null) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
+        StatProperties properties = numberStatProperties.get(stat);
+        if (properties != null) {
+            if (!Double.isNaN(properties.getMin())) value = Math.max(properties.getMin(), value);
+            if (!Double.isNaN(properties.getMax())) value = Math.min(properties.getMax(), value);
+        }
+        holder.setValue(value);
     }
 
     public Collection<String> getStringSet(String stat) {
-        if (!stringSets.containsKey(stat)) throw new IllegalArgumentException("No stringSet stat with this name " + stat + " is registered under " + getClass().getSimpleName());
-        return stringSets.get(stat);
+        Collection<String> strings = stringSets.get(stat);
+        if (strings == null) throw new IllegalArgumentException("No stringSet stat with name " + stat + " is registered under " + getClass().getSimpleName());
+        return strings;
     }
     public void setStringSet(String stat, Collection<String> value){
-        if (!stringSets.containsKey(stat)) throw new IllegalArgumentException("No stringSet stat with this name " + stat + " is registered under " + getClass().getSimpleName());
+        if (!stringSets.containsKey(stat)) throw new IllegalArgumentException("No stringSet stat with name " + stat + " is registered under " + getClass().getSimpleName());
         stringSets.put(stat, value);
     }
 
     public boolean getBoolean(String stat) {
-        if (!booleans.containsKey(stat)) throw new IllegalArgumentException("No boolean stat with this name " + stat + " is registered under " + getClass().getSimpleName());
-        return booleans.get(stat).getValue();
+        BooleanHolder holder = booleans.get(stat);
+        if (holder == null) throw new IllegalArgumentException("No boolean stat with name " + stat + " is registered under " + getClass().getSimpleName());
+        return holder.getValue();
     }
     public boolean getDefaultBoolean(String stat) {
-        if (!booleans.containsKey(stat)) throw new IllegalArgumentException("No boolean stat with this name " + stat + " is registered under " + getClass().getSimpleName());
-        return booleans.get(stat).getDefault();
+        BooleanHolder holder = booleans.get(stat);
+        if (holder == null) throw new IllegalArgumentException("No boolean stat with name " + stat + " is registered under " + getClass().getSimpleName());
+        return holder.getDefault();
     }
     public boolean shouldBooleanStatHavePerkReward(String stat){
-        if (!booleans.containsKey(stat) || booleans.get(stat).getProperties() == null) return false;
-        return booleans.get(stat).getProperties().generatePerkReward();
+        BooleanHolder holder = booleans.get(stat);
+        if (holder == null || holder.getProperties() == null) return false;
+        return holder.getProperties().generatePerkReward();
     }
     public void setBoolean(String stat, boolean value){
-        if (!booleans.containsKey(stat)) throw new IllegalArgumentException("No boolean stat with this name " + stat + " is registered under " + getClass().getSimpleName());
-        booleans.get(stat).setValue(value);
+        BooleanHolder holder = booleans.get(stat);
+        if (holder == null) throw new IllegalArgumentException("No boolean stat with this name " + stat + " is registered under " + getClass().getSimpleName());
+        holder.setValue(value);
     }
 
     public Collection<String> intStatNames() {
@@ -288,24 +311,40 @@ public abstract class Profile {
     public Profile merge(Profile profile, Player owner){
         Profile merged = getBlankProfile(owner);
         for (String s : allStatNames){
-            if (ints.containsKey(s)) {
-                StatProperties mode = this.ints.get(s).getProperties();
-                merged.ints.get(s).value = (int) mergeNumbers(mode, this.ints.get(s).value, profile.ints.get(s).value, profile.ints.get(s).def);
-            } else if (doubles.containsKey(s)) {
-                StatProperties mode = this.doubles.get(s).getProperties();
-                merged.doubles.get(s).value = mergeNumbers(mode, this.doubles.get(s).value, profile.doubles.get(s).value, profile.doubles.get(s).def);
-            } else if (floats.containsKey(s)) {
-                StatProperties mode = this.floats.get(s).getProperties();
-                merged.floats.get(s).value = (float) mergeNumbers(mode, this.floats.get(s).value, profile.floats.get(s).value, profile.floats.get(s).def);
-            } else if (stringSets.containsKey(s)) {
-                Collection<String> sets = new HashSet<>(profile.stringSets.get(s));
-                sets.addAll(this.stringSets.get(s));
-                merged.stringSets.put(s, sets);
-            } else if (booleans.containsKey(s)) {
-                merged.booleans.get(s).setValue(booleans.get(s).getProperties().shouldPrioritizeTrue() ?
-                        (profile.booleans.get(s).getValue() || this.booleans.get(s).getValue()) : // if either are true, put true
-                        (!(!profile.booleans.get(s).getValue() || !this.booleans.get(s).getValue()))); // if either are false, put false
-            } else ValhallaMMO.logWarning("Stat " + s + " in " + this.getClass().getSimpleName() + " was not associated to datatype");
+            NumberHolder<Integer> intStat = ints.get(s);
+            if (intStat != null) {
+                NumberHolder<Integer> other = profile.ints.get(s);
+                merged.ints.get(s).value = (int) mergeNumbers(intStat.properties, intStat.value, other.value, other.def);
+                continue;
+            }
+            NumberHolder<Double> doubleStat = doubles.get(s);
+            if (doubleStat != null) {
+                NumberHolder<Double> other = profile.doubles.get(s);
+                merged.doubles.get(s).value = mergeNumbers(doubleStat.properties, doubleStat.value, other.value, other.def);
+                continue;
+            }
+            NumberHolder<Float> floatStat = floats.get(s);
+            if (floatStat != null) {
+                NumberHolder<Float> other = profile.floats.get(s);
+                merged.floats.get(s).value = (float) mergeNumbers(floatStat.properties, floatStat.value, other.value, other.def);
+                continue;
+            }
+            Collection<String> strings = stringSets.get(s);
+            if (strings != null) {
+                Collection<String> allStrings = new HashSet<>(profile.stringSets.get(s));
+                allStrings.addAll(strings);
+                merged.stringSets.put(s, allStrings);
+                continue;
+            }
+            BooleanHolder booleanStat = booleans.get(s);
+            if (booleanStat != null) {
+                BooleanHolder other = profile.booleans.get(s);
+                merged.booleans.get(s).setValue(booleanStat.getProperties().shouldPrioritizeTrue() ?
+                        (other.getValue() || booleanStat.getValue()) : // if either are true, put true
+                        (!(!other.getValue() || !booleanStat.getValue()))); // if either are false, put false
+            } else {
+                ValhallaMMO.logWarning("Stat " + s + " in " + this.getClass().getSimpleName() + " was not associated to datatype");
+            }
         }
         return merged;
     }

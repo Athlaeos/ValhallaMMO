@@ -80,9 +80,9 @@ public class SmithingSkill extends Skill implements Listener {
         super.addEXP(p, amount, silent, reason);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDamageItem(PlayerItemDamageEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_SMITHING) ||
                 e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         incrementStacks(e.getPlayer(), e.getItem().getType());

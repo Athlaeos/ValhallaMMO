@@ -47,7 +47,7 @@ public class ArmorSwitchListener implements Listener {
             } else if (e.getClick().isShiftClick() && !ItemUtils.isEmpty(e.getCurrentItem())){
                 ItemBuilder clicked = new ItemBuilder(e.getCurrentItem());
                 EquipmentClass type = EquipmentClass.getMatchingClass(clicked.getMeta());
-                if (!EquipmentClass.isArmor(type)) return; // clicked item isn't armor, and so it can be assumed no equipment is equipped
+                if (type == null || !type.isArmor()) return; // clicked item isn't armor, and so it can be assumed no equipment is equipped
                 ItemStack armor = switch (type){
                     case HELMET -> e.getWhoClicked().getInventory().getItem(EquipmentSlot.HEAD);
                     case CHESTPLATE -> e.getWhoClicked().getInventory().getItem(EquipmentSlot.CHEST);

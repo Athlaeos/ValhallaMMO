@@ -3,13 +3,12 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.re
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
-import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -24,17 +23,17 @@ public class CommandsSet extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!use) return;
-        for (int i = 0; i < timesExecuted; i++){
+    public void processItem(ModifierContext context) {
+        if (!context.shouldExecuteUsageMechanics()) return;
+        for (int i = 0; i < context.getTimesExecuted(); i++){
             for (String command : commands){
                 ValhallaMMO.getInstance().getServer().dispatchCommand(
                         ValhallaMMO.getInstance().getServer().getConsoleSender(),
                         command
-                                .replace("%player%", crafter == null ? "" : crafter.getName())
-                                .replace("%x%", crafter == null ? "" : String.valueOf(crafter.getLocation().getX()))
-                                .replace("%y%", crafter == null ? "" : String.valueOf(crafter.getLocation().getY()))
-                                .replace("%z%", crafter == null ? "" : String.valueOf(crafter.getLocation().getZ()))
+                                .replace("%player%", context.getCrafter() == null ? "" : context.getCrafter().getName())
+                                .replace("%x%", context.getCrafter() == null ? "" : String.valueOf(context.getCrafter().getLocation().getX()))
+                                .replace("%y%", context.getCrafter() == null ? "" : String.valueOf(context.getCrafter().getLocation().getY()))
+                                .replace("%z%", context.getCrafter() == null ? "" : String.valueOf(context.getCrafter().getLocation().getZ()))
                 );
             }
         }

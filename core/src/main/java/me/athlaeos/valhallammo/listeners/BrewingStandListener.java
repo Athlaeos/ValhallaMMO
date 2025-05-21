@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.listeners;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicBrewingRecipe;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.PlayerCustomBrewEvent;
@@ -233,7 +234,7 @@ public class BrewingStandListener implements Listener {
 
                 if (automated) markAutomatedBrewing(p);
                 ItemBuilder result = (recipe.tinker() ? new ItemBuilder(slotItem) : new ItemBuilder(recipe.getResult()));
-                DynamicItemModifier.modify(result, p, recipe.getModifiers(), false, true, true);
+                DynamicItemModifier.modify(ModifierContext.builder(result).items(inventory.getIngredient()).crafter(p).executeUsageMechanics().validate().get(), recipe.getModifiers());
                 unmarkAutomatedBrewing(p);
                 PlayerCustomBrewEvent event = new PlayerCustomBrewEvent(p, recipe, result.get(), stand, ItemUtils.isEmpty(result.getItem()) && !CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE));
                 ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
@@ -330,7 +331,7 @@ public class BrewingStandListener implements Listener {
 
             // If the slot item does not match the required type, skip to next
             ItemBuilder result = (r.tinker() ? new ItemBuilder(slotItem) : new ItemBuilder(r.getResult()));
-            DynamicItemModifier.modify(result, brewer, r.getModifiers(), false, false, true);
+            DynamicItemModifier.modify(ModifierContext.builder(result).items(ingredient).crafter(brewer).validate().get(), r.getModifiers());
 
             if (!ItemUtils.isEmpty(result.getItem()) && !CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) {
                 recipes.put(i, r); // If the item is not null by the end of processing, recipes is added.

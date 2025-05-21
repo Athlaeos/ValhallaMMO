@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.crafting.ToolRequirementType;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
@@ -71,7 +72,7 @@ public class CraftingTableListener implements Listener {
             }
 
             ItemBuilder prepareResultBuilder = new ItemBuilder(result);
-            DynamicItemModifier.modify(prepareResultBuilder, (Player) e.getWhoClicked(), recipe.getModifiers(), false, false, true, 1);
+            DynamicItemModifier.modify(ModifierContext.builder(prepareResultBuilder).crafter(crafter).items(inventory.getMatrix()).validate().get(), recipe.getModifiers());
             if (CustomFlag.hasFlag(prepareResultBuilder.getMeta(), CustomFlag.UNCRAFTABLE)) {
                 e.setCancelled(true);
                 return;
@@ -179,7 +180,7 @@ public class CraftingTableListener implements Listener {
                 }
             }
             ItemBuilder resultBuilder = new ItemBuilder(result);
-            DynamicItemModifier.modify(resultBuilder, (Player) e.getWhoClicked(), recipe.getModifiers(), false, true, true, amountCrafted);
+            DynamicItemModifier.modify(ModifierContext.builder(resultBuilder).crafter(crafter).executeUsageMechanics().validate().count(amountCrafted).items(inventory.getMatrix()).get(), recipe.getModifiers());
             if (CustomFlag.hasFlag(resultBuilder.getMeta(), CustomFlag.UNCRAFTABLE)) {
                 e.setCancelled(true);
                 return;
@@ -276,7 +277,7 @@ public class CraftingTableListener implements Listener {
                 if (!ItemUtils.isEmpty(firstItem)){
                     int newDurability = Math.min(combinedDurability + (int) Math.floor(0.05 * firstItemMaxDurability), firstItemMaxDurability);
                     CustomDurabilityManager.setDurability(firstMeta, newDurability, firstItemMaxDurability);
-                    ItemUtils.setItemMeta(firstItem, firstMeta);
+                    ItemUtils.setMetaNoClone(firstItem, firstMeta);
 
                     PowerProfile profile = crafter == null ? null : ProfileCache.getOrCache(crafter, PowerProfile.class);
                     if (profile == null || !profile.hasInventoryRepairingKeepEnchanting()) firstItem.getEnchantments().keySet().forEach(firstItem::removeEnchantment);
@@ -335,7 +336,7 @@ public class CraftingTableListener implements Listener {
             }
 
             ItemBuilder resultBuilder = new ItemBuilder(result);
-            DynamicItemModifier.modify(resultBuilder, crafter, recipe.getModifiers(), false, false, true);
+            DynamicItemModifier.modify(ModifierContext.builder(resultBuilder).crafter(crafter).items(inventory.getMatrix()).validate().get(), recipe.getModifiers());
             inventory.setResult(resultBuilder.get());
         } else if (crafted instanceof ComplexRecipe r){
             if (r.getKey().getKey().equals("tipped_arrow") && !ItemUtils.isEmpty(inventory.getResult()) && Arrays.stream(inventory.getMatrix()).noneMatch(ItemUtils::isEmpty)){
@@ -364,7 +365,7 @@ public class CraftingTableListener implements Listener {
 
                     arrowMeta.setColor(potionMeta.getColor());
                     arrowMeta.addItemFlags(potionMeta.getItemFlags().toArray(new org.bukkit.inventory.ItemFlag[0]));
-                    ItemUtils.setItemMeta(arrow, arrowMeta);
+                    ItemUtils.setMetaNoClone(arrow, arrowMeta);
 
                     inventory.setResult(arrow);
                 } else {

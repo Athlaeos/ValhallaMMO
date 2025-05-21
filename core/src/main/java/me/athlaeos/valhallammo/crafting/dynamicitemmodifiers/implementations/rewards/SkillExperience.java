@@ -2,19 +2,19 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.re
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.MaterialClass;
+import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.skills.skills.implementations.AlchemySkill;
 import me.athlaeos.valhallammo.skills.skills.implementations.SmithingSkill;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.command.CommandSender;
-import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,24 +30,24 @@ public class SkillExperience extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!use) return;
+    public void processItem(ModifierContext context) {
+        if (!context.shouldExecuteUsageMechanics()) return;
         Skill s = SkillRegistry.getSkill(skill);
         if (s == null) return;
         if (s instanceof SmithingSkill smithing) {
-            double trueAmount = amount * timesExecuted;
-            double multiplierBasedOnDurabilityTaken = smithing.getExperienceMultiplierFromDamage(crafter, ItemUtils.getStoredType(outputItem.getMeta()), true);
-            if (timesExecuted > 1){
+            double trueAmount = amount * context.getTimesExecuted();
+            double multiplierBasedOnDurabilityTaken = smithing.getExperienceMultiplierFromDamage(context.getCrafter(), ItemUtils.getStoredType(context.getItem().getMeta()), true);
+            if (context.getTimesExecuted() > 1){
                 trueAmount -= amount; // subtracting 1x experience quantity from final value, adding multiplied value instead of.
                 // This is to prevent a large crafted bulk of items from being multiplied when only 1 instance should be
                 trueAmount += amount * multiplierBasedOnDurabilityTaken;
             } else trueAmount *= multiplierBasedOnDurabilityTaken;
-            smithing.addEXP(crafter, trueAmount, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, MaterialClass.getMatchingClass(outputItem.getMeta()));
+            smithing.addEXP(context.getCrafter(), trueAmount, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, MaterialClass.getMatchingClass(context.getItem().getMeta()));
         } else if (s instanceof AlchemySkill a){
-            int quality = AlchemyItemPropertyManager.getQuality(outputItem.getMeta());
+            int quality = AlchemyItemPropertyManager.getQuality(context.getItem().getMeta());
             double multiplier = 1 + (quality * a.getQualityPotionExperienceMultiplier());
-            s.addEXP(crafter,  multiplier * amount * timesExecuted, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
-        } else s.addEXP(crafter, amount * timesExecuted, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+            s.addEXP(context.getCrafter(),  multiplier * amount * context.getTimesExecuted(), false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+        } else s.addEXP(context.getCrafter(), amount * context.getTimesExecuted(), false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
     @Override

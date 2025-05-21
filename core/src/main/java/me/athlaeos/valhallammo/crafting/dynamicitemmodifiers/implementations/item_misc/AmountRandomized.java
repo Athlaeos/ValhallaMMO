@@ -2,16 +2,19 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class AmountRandomized extends DynamicItemModifier {
     private int lowerBound = 0;
@@ -22,15 +25,15 @@ public class AmountRandomized extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        if (!use) return;
+    public void processItem(ModifierContext context) {
+        if (!context.shouldExecuteUsageMechanics()) return;
         if (lowerBound > upperBound) {
             int temp = upperBound;
             upperBound = lowerBound;
             lowerBound = temp;
         }
         int newAmount = Utils.getRandom().nextInt(upperBound + 1) + lowerBound;
-        outputItem.amount(Math.min(Math.max(1, newAmount), outputItem.get().getType().getMaxStackSize()));
+        context.getItem().amount(Math.min(Math.max(1, newAmount), context.getItem().get().getType().getMaxStackSize()));
     }
 
     @Override

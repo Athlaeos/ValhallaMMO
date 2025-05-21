@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.playerstats;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.utility.EntityUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
@@ -16,27 +17,29 @@ public class EntityCache {
 
     public static EntityProperties getAndCacheProperties(LivingEntity entity){
         attemptCacheCleanup();
-        if (lastCacheRefreshMap.getOrDefault(entity.getUniqueId(), 0L) + CACHE_REFRESH_DELAY <= System.currentTimeMillis()){
-            // delay expired, cache properties
-            cachedProperties.put(entity.getUniqueId(), EntityUtils.getEntityProperties(entity, true, true, true));
-            lastCacheRefreshMap.put(entity.getUniqueId(), System.currentTimeMillis());
-        }
-        return cachedProperties.getOrDefault(entity.getUniqueId(), EntityUtils.getEntityProperties(entity, true, true, true));
+        return cachedProperties.compute(entity.getUniqueId(), (uuid, cached) -> {
+            Long lastCache = lastCacheRefreshMap.get(uuid);
+            if (lastCache == null || lastCache + CACHE_REFRESH_DELAY <= System.currentTimeMillis() || cached == null) {
+                lastCacheRefreshMap.put(uuid, System.currentTimeMillis());
+                return EntityUtils.getEntityProperties(entity, true, true, true);
+            }
+            return cached;
+        });
     }
 
     public static void resetHands(LivingEntity entity){
-        cachedProperties.put(entity.getUniqueId(), EntityUtils.updateProperties(cachedProperties.getOrDefault(entity.getUniqueId(), getAndCacheProperties(entity)),
-                entity, false, true, false));
+        cachedProperties.computeIfPresent(entity.getUniqueId(), (uuid, cached) ->
+                EntityUtils.updateProperties(cached, entity, false, true, false));
     }
 
     public static void resetEquipment(LivingEntity entity){
-        cachedProperties.put(entity.getUniqueId(), EntityUtils.updateProperties(cachedProperties.getOrDefault(entity.getUniqueId(), getAndCacheProperties(entity)),
-                entity, true, false, false));
+        cachedProperties.computeIfPresent(entity.getUniqueId(), (uuid, cached) ->
+                EntityUtils.updateProperties(cached, entity, true, false, false));
     }
 
     public static void resetPotionEffects(LivingEntity entity){
-        cachedProperties.put(entity.getUniqueId(), EntityUtils.updateProperties(cachedProperties.getOrDefault(entity.getUniqueId(), getAndCacheProperties(entity)),
-                entity, false, false, true));
+        cachedProperties.computeIfPresent(entity.getUniqueId(), (uuid, cached) ->
+                EntityUtils.updateProperties(cached, entity, false, false, true));
     }
 
     public static void removeProperties(LivingEntity entity){
@@ -44,16 +47,15 @@ public class EntityCache {
     }
 
     public static void attemptCacheCleanup(){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
             if (lastCacheCleanup + CACHE_CLEANUP_DELAY < System.currentTimeMillis()){
-                Collection<UUID> uuids = new HashSet<>(cachedProperties.keySet());
-                uuids.forEach(u -> {
-                    Entity entity = ValhallaMMO.getInstance().getServer().getEntity(u);
+                for (UUID uuid : new HashSet<>(cachedProperties.keySet())) {
+                    Entity entity = Bukkit.getEntity(uuid);
                     if (entity == null || !entity.isValid()){
-                        cachedProperties.remove(u);
-                        lastCacheRefreshMap.remove(u);
+                        cachedProperties.remove(uuid);
+                        lastCacheRefreshMap.remove(uuid);
                     }
-                });
+                }
                 lastCacheCleanup = System.currentTimeMillis();
             }
         });

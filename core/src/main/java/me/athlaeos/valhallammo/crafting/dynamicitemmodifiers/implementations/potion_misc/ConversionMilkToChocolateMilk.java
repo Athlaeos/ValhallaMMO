@@ -2,12 +2,12 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.po
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,18 +20,18 @@ public class ConversionMilkToChocolateMilk extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        Map<String, PotionEffectWrapper> defaultPotionEffects = PotionEffectRegistry.getStoredEffects(outputItem.getMeta(), true);
+    public void processItem(ModifierContext context) {
+        Map<String, PotionEffectWrapper> defaultPotionEffects = PotionEffectRegistry.getStoredEffects(context.getItem().getMeta(), true);
         if (defaultPotionEffects.remove("MILK") == null) return;
-        PotionEffectRegistry.removeEffect(outputItem.getMeta(), "MILK");
+        PotionEffectRegistry.removeEffect(context.getItem().getMeta(), "MILK");
 
         PotionEffectWrapper chocolateMilkWrapper = PotionEffectRegistry.getEffect("CHOCOLATE_MILK");
         chocolateMilkWrapper.setAmplifier(1);
         chocolateMilkWrapper.setDuration(1);
         defaultPotionEffects.put(chocolateMilkWrapper.getEffect(), chocolateMilkWrapper);
 
-        PotionEffectRegistry.addDefaultEffect(outputItem.getMeta(), chocolateMilkWrapper);
-        PotionEffectRegistry.updateItemName(outputItem.getMeta(), true, false);
+        PotionEffectRegistry.addDefaultEffect(context.getItem().getMeta(), chocolateMilkWrapper);
+        PotionEffectRegistry.updateItemName(context.getItem().getMeta(), true, false);
     }
 
     @Override

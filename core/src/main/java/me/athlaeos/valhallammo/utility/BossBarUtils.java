@@ -26,13 +26,12 @@ public class BossBarUtils {
      */
     public static void showBossBarToPlayer(final Player player, String title, double progress, final int time, String skillType, BarColor color, BarStyle style){
         TemporaryBossBar bossBar = null;
+        Map<String, TemporaryBossBar> bars = activeBossBars.get(player.getUniqueId());
+        if (bars != null) bossBar = bars.get(skillType);
+
         if (progress < 0) progress = 0D;
         if (progress > 1) progress = 1D;
-        if (activeBossBars.containsKey(player.getUniqueId())){
-            if (activeBossBars.get(player.getUniqueId()).containsKey(skillType)){
-                bossBar = activeBossBars.get(player.getUniqueId()).get(skillType);
-            }
-        }
+
         if (bossBar == null){
             bossBar = new TemporaryBossBar(time, progress, title, player, skillType, color, style);
             Map<String, TemporaryBossBar> existingBossBars = activeBossBars.get(player.getUniqueId());
@@ -55,6 +54,9 @@ public class BossBarUtils {
         private final Player p;
         private final String skillType;
 
+        private String lastText;
+        private double lastFraction;
+
         public TemporaryBossBar(int timer, double fraction, String text, Player p, String skillType, BarColor color, BarStyle style){
             this.timer = timer;
             this.fraction = fraction;
@@ -74,8 +76,14 @@ public class BossBarUtils {
                 activeBossBars.put(p.getUniqueId(), existingBossBars);
                 cancel();
             } else {
-                bossBar.setTitle(text);
-                bossBar.setProgress(fraction);
+                if (!this.text.equals(lastText)) {
+                    bossBar.setTitle(text);
+                    lastText = text;
+                }
+                if (this.fraction != lastFraction) {
+                    bossBar.setProgress(fraction);
+                    lastFraction = fraction;
+                }
                 bossBar.addPlayer(p);
                 timer--;
             }

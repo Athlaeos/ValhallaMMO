@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.jeff_media.customblockdata.CustomBlockData;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Weighted;
@@ -33,7 +34,6 @@ import org.bukkit.persistence.PersistentDataType;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LootTableRegistry {
     private static final Gson gson = new GsonBuilder()
@@ -56,7 +56,7 @@ public class LootTableRegistry {
     private static final Map<String, String> entityReplacementTables = new HashMap<>(); // all loot tables active on entity drops
     private static final Map<NamespacedKey, String> keyedReplacementTables = new HashMap<>(); //
     private static String globalReplacementTable = null; // replacement tables that are active on all loot regardless of type
-    private static final Map<String, Map<String, String>> replacementTableCache = new HashMap<>();
+    private static final Map<String, Map<String, ReplacementPool>> replacementTableCache = new HashMap<>();
 
     private static final Map<String, LootTable> lootTables = new HashMap<>(); // registry for all loot tables
     private static final Map<String, String> blockLootTables = new HashMap<>(); // all loot tables active on blocks
@@ -188,63 +188,64 @@ public class LootTableRegistry {
 
     public static ItemStack getReplacement(ReplacementTable table, LootContext context, LootTable.LootType type, ItemStack toReplace){
         if (table == null) return null;
-        Map<String, String> cachedTableMap = replacementTableCache.getOrDefault(table.getKey(), new HashMap<>());
-        boolean cached = cachedTableMap.containsKey(toReplace.toString());
-        ReplacementPool pool = table.getReplacementPools().get(cachedTableMap.getOrDefault(toReplace.toString(), ""));
-        if (!cached){
-            // no value mapped,
-            for (ReplacementPool p : table.getReplacementPools().values()){
-                if (!p.getToReplace().getOption().matches(p.getToReplace().getItem(), toReplace)) continue; // pool doesn't match, skip
-                // pool matches
-                pool = p;
-                break;
+
+        Map<String, ReplacementPool> cachedTableMap = replacementTableCache.computeIfAbsent(table.getKey(), key -> new HashMap<>());
+        ReplacementPool pool = cachedTableMap.compute(toReplace.toString(), (key, cached) -> {
+            if (cached == null) {
+                for (ReplacementPool possible : table.getReplacementPools().values()) {
+                    if (possible.getToReplace().getOption().matches(possible.getToReplace().getItem(), toReplace)) {
+                        return possible;
+                    }
+                }
+                return ReplacementPool.NONE;
             }
-        } else if (pool == null) return null;
-        if (pool == null){
-            cachedTableMap.put(toReplace.toString(), null);
-            replacementTableCache.put(table.getKey(), cachedTableMap);
+            return cached;
+        });
+
+        if (pool == ReplacementPool.NONE || table.failsPredicates(pool.getPredicateSelection(), type, context, pool.getPredicates())) {
             return null;
         }
-        if (table.failsPredicates(pool.getPredicateSelection(), type, context, pool.getPredicates())) return null;
-        ReplacementEntry selectedEntry = Utils.weightedSelection(pool.getEntries().values().stream().filter(e -> !table.failsPredicates(e.getPredicateSelection(), type, context, e.getPredicates())
-        ).collect(Collectors.toList()), 1, context.getLuck(), context.getLootingModifier()).stream().findFirst().orElse(null);
+
+        Collection<ReplacementEntry> entries = pool.getEntries().values();
+        entries.removeIf(entry -> (context.getKiller() == null && DynamicItemModifier.requiresPlayer(entry.getModifiers())) || table.failsPredicates(entry.getPredicateSelection(), type, context, entry.getPredicates()));
+        List<ReplacementEntry> weighted = Utils.weightedSelection(entries, 1, context.getLuck(), context.getLootingModifier());
+        if (weighted.isEmpty()) return null;
+
+        ReplacementEntry selectedEntry = weighted.get(0);
         if (selectedEntry == null || ItemUtils.isEmpty(selectedEntry.getReplaceBy())) return null;
 
-        ItemBuilder builder = selectedEntry.tinker() ? new ItemBuilder(toReplace) : new ItemBuilder(selectedEntry.getReplaceBy());
+        ItemBuilder builder = selectedEntry.tinker()
+                ? new ItemBuilder(toReplace)
+                : new ItemBuilder(selectedEntry.getReplaceBy());
 
-        if (context.getKiller() == null && selectedEntry.getModifiers().stream().anyMatch(DynamicItemModifier::requiresPlayer)) return null; // requires player, and no player is involved
-        DynamicItemModifier.modify(builder, (Player) context.getKiller(), selectedEntry.getModifiers(), false, true, true);
-        if (CustomFlag.hasFlag(builder.getMeta(), CustomFlag.UNCRAFTABLE)) return null;
-        return builder.get();
+        DynamicItemModifier.modify(ModifierContext.builder(builder).crafter((Player) context.getKiller()).executeUsageMechanics().validate().get(), selectedEntry.getModifiers());
+        return CustomFlag.hasFlag(builder.getMeta(), CustomFlag.UNCRAFTABLE) ? null : builder.get();
     }
 
     public static List<ItemStack> getLoot(LootTable table, LootContext context, LootTable.LootType type){
         List<ItemStack> loot = new ArrayList<>();
-        for (String poolName : table.getPools().keySet()){
-            LootPool pool = table.getPools().get(poolName);
-            if (table.failsPredicates(pool.getPredicateSelection(), type, context, pool.getPredicates())) continue;
-            double rand = Utils.getRandom().nextDouble();
-            if (rand > (pool.getDropChance() + (pool.getDropLuckChance() * context.getLuck()))) continue;
+        for (LootPool pool : table.getPools().values()) {
+            if (table.failsPredicates(pool.getPredicateSelection(), type, context, pool.getPredicates())
+                    || Utils.getRandom().nextDouble() > (pool.getDropChance() + (pool.getDropLuckChance() * context.getLuck()))) continue;
 
-            Collection<LootEntry> selectedEntries = new ArrayList<>();
-            if (pool.isWeighted()){
-                // weighted selection
-                selectedEntries.addAll(Utils.weightedSelection(pool.getEntries().values().stream().filter(e -> {
-                    if (table.failsPredicates(e.getPredicateSelection(), type, context, e.getPredicates())) return false;
-                    if (e.isGuaranteedPresent()){
-                        selectedEntries.add(e);
-                        return false;
-                    }
-                    return true;
-                }).collect(Collectors.toList()), pool.getRolls(context), context.getLuck(), context.getLootingModifier())); // weighted selection excluding any failed entries or guaranteed drops
+            List<LootEntry> passed = new ArrayList<>();
+            List<LootEntry> selectedEntries = new ArrayList<>();
+            for (LootEntry entry : pool.getEntries().values()) {
+                if (!table.failsPredicates(entry.getPredicateSelection(), type, context, entry.getPredicates())) {
+                    (entry.isGuaranteedPresent() ? selectedEntries : passed).add(entry);                }
+            }
+            if (passed.isEmpty() && selectedEntries.isEmpty()) continue;
+
+            if (pool.isWeighted()) {
+                selectedEntries.addAll(Utils.weightedSelection(passed, pool.getRolls(context), context.getLuck(), context.getLootingModifier()));
             } else {
-                for (LootEntry entry : pool.getEntries().values()){
-                    if (table.failsPredicates(entry.getPredicateSelection(), type, context, entry.getPredicates())) continue;
-                    double chance = entry.isGuaranteedPresent() ? 1 : entry.getChance(context.getLuck());
-
-                    if (Utils.proc(chance, 0, true)) selectedEntries.add(entry);
+                for (LootEntry entry : passed){
+                    if (Utils.proc(entry.getChance(context.getLuck()), 0, true)) {
+                        selectedEntries.add(entry);
+                    }
                 }
             }
+
             for (LootEntry selectedEntry : selectedEntries){
                 if (ItemUtils.isEmpty(selectedEntry.getDrop())) continue;
                 ItemStack item;
@@ -252,8 +253,8 @@ public class LootTableRegistry {
                     item = selectedEntry.getDrop().clone();
                 } else {
                     ItemBuilder builder = new ItemBuilder(selectedEntry.getDrop());
-                    if (context.getKiller() == null && selectedEntry.getModifiers().stream().anyMatch(DynamicItemModifier::requiresPlayer)) continue;
-                    DynamicItemModifier.modify(builder, (Player) context.getKiller(), selectedEntry.getModifiers(), false, true, true);
+                    if (context.getKiller() == null && DynamicItemModifier.requiresPlayer(selectedEntry.getModifiers())) continue;
+                    DynamicItemModifier.modify(ModifierContext.builder(builder).crafter((Player) context.getKiller()).executeUsageMechanics().validate().get(), selectedEntry.getModifiers());
                     if (CustomFlag.hasFlag(builder.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
                     item = builder.get();
                 }

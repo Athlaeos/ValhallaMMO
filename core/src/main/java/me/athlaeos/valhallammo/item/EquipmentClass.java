@@ -87,21 +87,19 @@ public enum EquipmentClass {
 
     public static boolean isArmor(ItemMeta meta) {
         EquipmentClass equipmentClass = getMatchingClass(meta);
-        if (equipmentClass == HELMET) return true;
-        if (equipmentClass == CHESTPLATE) return true;
-        if (equipmentClass == LEGGINGS) return true;
-        return equipmentClass == BOOTS;
+        return equipmentClass != null && equipmentClass.isArmor();
     }
 
     public static boolean isHandHeld(ItemMeta meta) {
         EquipmentClass equipmentClass = getMatchingClass(meta);
-        return equipmentClass != null && !isArmor(equipmentClass);
+        return equipmentClass != null && !equipmentClass.isArmor();
     }
 
     public static boolean isArmor(EquipmentClass equipmentClass) {
-        if (equipmentClass == HELMET) return true;
-        if (equipmentClass == CHESTPLATE) return true;
-        if (equipmentClass == LEGGINGS) return true;
-        return equipmentClass == BOOTS;
+        return equipmentClass != null && equipmentClass.isArmor();
+    }
+
+    public boolean isArmor() {
+        return this == HELMET || this == CHESTPLATE || this == LEGGINGS || this == BOOTS;
     }
 }

@@ -2,16 +2,16 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.StringUtils;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.item.MaterialClass;
+import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
-import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,15 +25,15 @@ public class SmithingQualityScale extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
-        double skill = AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_GENERAL", crafter, 10000, use);
-        double skillMultiplier = 1 + AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_GENERAL", crafter, 10000, use);
-        MaterialClass materialClass = MaterialClass.getMatchingClass(outputItem.getMeta());
+    public void processItem(ModifierContext context) {
+        double skill = AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_GENERAL", context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
+        double skillMultiplier = 1 + AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_GENERAL", context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
+        MaterialClass materialClass = MaterialClass.getMatchingClass(context.getItem().getMeta());
         if (materialClass != null){
-            skill += AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_" + materialClass, crafter, 10000, use);
-            skillMultiplier += AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_" + materialClass, crafter, 10000, use);
+            skill += AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_" + materialClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
+            skillMultiplier += AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_" + materialClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
         }
-        SmithingItemPropertyManager.setQuality(outputItem.getMeta(), (int) (skillMultiplier * skill * skillEfficiency));
+        SmithingItemPropertyManager.setQuality(context.getItem().getMeta(), (int) (skillMultiplier * skill * skillEfficiency));
     }
 
     @Override

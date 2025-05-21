@@ -20,6 +20,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -89,23 +90,9 @@ public class EntityUtils {
     private static Method isOnGroundMethod = null;
     /**
      * Suboptimal solution, but it'll be like this until I figure out a better more reliable method of checking if a player is on the ground
-     * Method by mfnalex (jeff media)
      */
     public static boolean isOnGround(Entity e){
-        try {
-            // Use reflection to get the isOnGround method from the Entity class
-            Method method = isOnGroundMethod;
-            if (method == null) {
-                isOnGroundMethod = Entity.class.getDeclaredMethod("isOnGround");
-                method = isOnGroundMethod;
-            }
-
-            // Invoke the method on the Player object
-            return (boolean) method.invoke(e);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        return e.isOnGround();
     }
 
     private static boolean downwardsRaytraceBlockSegment(Location l, Vector direction, double length){
@@ -183,13 +170,13 @@ public class EntityUtils {
     public static double combinedAttributeValue(LivingEntity entity, String attribute, WeightClass weightFilter, String equipmentPenalty, boolean mainHandOnly){
         double total = 0;
         EntityProperties properties = EntityCache.getAndCacheProperties(entity);
-        if (properties.getHelmet() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter))
+        if (properties.getHelmet() != null && WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter)
             total += getValue(entity, equipmentPenalty, properties.getHelmet().getMeta(), properties.getHelmetAttributes(), attribute, null);
-        if (properties.getChestplate() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter))
+        if (properties.getChestplate() != null && WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter)
             total += getValue(entity, equipmentPenalty, properties.getChestplate().getMeta(), properties.getChestPlateAttributes(), attribute, null);
-        if (properties.getLeggings() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter))
+        if (properties.getLeggings() != null && WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter)
             total += getValue(entity, equipmentPenalty, properties.getLeggings().getMeta(), properties.getLeggingsAttributes(), attribute, null);
-        if (properties.getBoots() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter))
+        if (properties.getBoots() != null && WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter)
             total += getValue(entity, equipmentPenalty, properties.getBoots().getMeta(), properties.getBootsAttributes(), attribute, null);
 
         if (properties.getMainHand() != null && ItemUtils.usedMainHand(properties.getMainHand(), properties.getOffHand()))
@@ -205,13 +192,13 @@ public class EntityUtils {
     public static double combinedAttackerAttributeValue(LivingEntity entity, String attribute, WeightClass weightFilter, String equipmentPenalty, boolean mainHand){
         double total = 0;
         EntityProperties properties = EntityCache.getAndCacheProperties(entity);
-        if (properties.getHelmet() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter))
+        if (properties.getHelmet() != null && WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter)
             total += getValue(entity, equipmentPenalty, properties.getHelmet().getMeta(), properties.getHelmetAttributes(), attribute, null);
-        if (properties.getChestplate() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter))
+        if (properties.getChestplate() != null && WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter)
             total += getValue(entity, equipmentPenalty, properties.getChestplate().getMeta(), properties.getChestPlateAttributes(), attribute, null);
-        if (properties.getLeggings() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter))
+        if (properties.getLeggings() != null && WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter)
             total += getValue(entity, equipmentPenalty, properties.getLeggings().getMeta(), properties.getLeggingsAttributes(), attribute, null);
-        if (properties.getBoots() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter))
+        if (properties.getBoots() != null && WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter)
             total += getValue(entity, equipmentPenalty, properties.getBoots().getMeta(), properties.getBootsAttributes(), attribute, null);
 
         if (mainHand && properties.getMainHand() != null)
@@ -226,13 +213,19 @@ public class EntityUtils {
     }
 
     public static List<Player> getNearbyPlayers(Location from, double radius){
+        return getNearbyPlayers(from, radius, true);
+    }
+
+    public static List<Player> getNearbyPlayers(Location from, double radius, boolean sorted){
         double squared = radius * radius;
         List<Player> nearby = new ArrayList<>();
         if (from.getWorld() == null) return nearby;
         for (Player p : from.getWorld().getPlayers()){
             if (from.distanceSquared(p.getLocation()) <= squared) nearby.add(p);
         }
-        nearby.sort(Comparator.comparingDouble(p -> p.getLocation().distanceSquared(from)));
+        if (sorted) {
+            nearby.sort(Comparator.comparingDouble(p -> p.getLocation().distanceSquared(from)));
+        }
         return nearby;
     }
 
@@ -255,14 +248,18 @@ public class EntityUtils {
     public static double combinedAttributeValue(LivingEntity entity, String attribute, AttributeModifier.Operation operation, WeightClass weightFilter, String equipmentPenalty, boolean mainHandOnly){
         double total = 0;
         EntityProperties properties = EntityCache.getAndCacheProperties(entity);
-        if (properties.getHelmet() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter))
-            total += getValue(entity, equipmentPenalty, properties.getHelmet().getMeta(), properties.getHelmetAttributes(), attribute, operation);
-        if (properties.getChestplate() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter))
-            total += getValue(entity, equipmentPenalty, properties.getChestplate().getMeta(), properties.getChestPlateAttributes(), attribute, operation);
-        if (properties.getLeggings() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter))
-            total += getValue(entity, equipmentPenalty, properties.getLeggings().getMeta(), properties.getLeggingsAttributes(), attribute, operation);
-        if (properties.getBoots() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter))
-            total += getValue(entity, equipmentPenalty, properties.getBoots().getMeta(), properties.getBootsAttributes(), attribute, operation);
+        ItemBuilder helmet = properties.getHelmet();
+        if (helmet != null && WeightClass.getWeightClass(helmet.getMeta()) == weightFilter)
+            total += getValue(entity, equipmentPenalty, helmet.getMeta(), properties.getHelmetAttributes(), attribute, operation);
+        ItemBuilder chestPlate = properties.getChestplate();
+        if (chestPlate != null && WeightClass.getWeightClass(chestPlate.getMeta()) == weightFilter)
+            total += getValue(entity, equipmentPenalty, chestPlate.getMeta(), properties.getChestPlateAttributes(), attribute, operation);
+        ItemBuilder leggings = properties.getLeggings();
+        if (leggings != null && WeightClass.getWeightClass(leggings.getMeta()) == weightFilter)
+            total += getValue(entity, equipmentPenalty, leggings.getMeta(), properties.getLeggingsAttributes(), attribute, operation);
+        ItemBuilder boots = properties.getBoots();
+        if (boots != null && WeightClass.getWeightClass(boots.getMeta()) == weightFilter)
+            total += getValue(entity, equipmentPenalty, boots.getMeta(), properties.getBootsAttributes(), attribute, operation);
 
         if (properties.getMainHand() != null && ItemUtils.usedMainHand(properties.getMainHand(), properties.getOffHand()))
             total += getValue(entity, equipmentPenalty, properties.getMainHand().getMeta(), properties.getMainHandAttributes(), attribute, operation);
@@ -284,7 +281,8 @@ public class EntityUtils {
     }
 
     public static EntityProperties updateProperties(EntityProperties properties, LivingEntity e, boolean equipment, boolean hands, boolean getPotionEffects){
-        if (e.getEquipment() != null) {
+        EntityEquipment eEquipment = e.getEquipment();
+        if (eEquipment != null) {
             properties.getPermanentPotionEffects().clear();
             List<List<PotionEffect>> permanentEffects = new ArrayList<>();
             if (e instanceof Player p) {
@@ -293,64 +291,65 @@ public class EntityUtils {
             }
             if (equipment){
                 properties.getCombinedEnchantments().clear();
-                properties.setHelmet(e.getEquipment().getHelmet());
-                properties.setChestplate(e.getEquipment().getChestplate());
-                properties.setLeggings(e.getEquipment().getLeggings());
-                properties.setBoots(e.getEquipment().getBoots());
-                properties.addCombinedEnchantments(properties.getHelmet());
-                properties.addCombinedEnchantments(properties.getChestplate());
-                properties.addCombinedEnchantments(properties.getLeggings());
-                properties.addCombinedEnchantments(properties.getBoots());
+                properties.setHelmet(eEquipment.getHelmet());
+                properties.setChestplate(eEquipment.getChestplate());
+                properties.setLeggings(eEquipment.getLeggings());
+                properties.setBoots(eEquipment.getBoots());
 
-                properties.setHeavyArmorCount(WeightClass.getArmorWeightClassCount(e, WeightClass.HEAVY));
-                properties.setLightArmorCount(WeightClass.getArmorWeightClassCount(e, WeightClass.LIGHT));
-                properties.setWeightlessArmorCount(WeightClass.getArmorWeightClassCount(e, WeightClass.WEIGHTLESS));
+                int[] armorWeights = WeightClass.getWeightClasses(properties);
+                properties.setHeavyArmorCount(armorWeights[2]);
+                properties.setLightArmorCount(armorWeights[1]);
+                properties.setWeightlessArmorCount(armorWeights[0]);
 
-                if (properties.getHelmet() != null) {
-                    properties.setHelmetAttributes(ItemAttributesRegistry.getStats(properties.getHelmet().getMeta(), false));
-                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getHelmet().getMeta()));
+                ItemBuilder helmet = properties.getHelmet();
+                if (helmet != null) {
+                    properties.addCombinedEnchantments(helmet);
+                    properties.setHelmetAttributes(ItemAttributesRegistry.getStats(helmet.getMeta(), false));
+                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(helmet.getMeta()));
                 }
-                if (properties.getChestplate() != null) {
-                    properties.setChestPlateAttributes(ItemAttributesRegistry.getStats(properties.getChestplate().getMeta(), false));
-                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getChestplate().getMeta()));
+                ItemBuilder chestPlate = properties.getChestplate();
+                if (chestPlate != null) {
+                    properties.addCombinedEnchantments(chestPlate);
+                    properties.setChestPlateAttributes(ItemAttributesRegistry.getStats(chestPlate.getMeta(), false));
+                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(chestPlate.getMeta()));
                 }
-                if (properties.getLeggings() != null) {
-                    properties.setLeggingsAttributes(ItemAttributesRegistry.getStats(properties.getLeggings().getMeta(), false));
-                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getLeggings().getMeta()));
+                ItemBuilder leggings = properties.getLeggings();
+                if (leggings != null) {
+                    properties.addCombinedEnchantments(leggings);
+                    properties.setLeggingsAttributes(ItemAttributesRegistry.getStats(leggings.getMeta(), false));
+                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(leggings.getMeta()));
                 }
-                if (properties.getBoots() != null) {
-                    properties.setBootsAttributes(ItemAttributesRegistry.getStats(properties.getBoots().getMeta(), false));
-                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getBoots().getMeta()));
+                ItemBuilder boots = properties.getBoots();
+                if (boots != null) {
+                    properties.addCombinedEnchantments(boots);
+                    properties.setBootsAttributes(ItemAttributesRegistry.getStats(boots.getMeta(), false));
+                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(boots.getMeta()));
                 }
                 for (BiFetcher<List<ItemStack>, LivingEntity> fetcher : otherEquipmentFetchers){
-                    List<ItemBuilder> otherEquipment = fetcher.get(e).stream().map(ItemBuilder::new).toList();
-                    properties.getMiscEquipment().addAll(otherEquipment);
-                    otherEquipment.forEach(i -> {
-                        properties.getMiscEquipmentAttributes().put(i, ItemAttributesRegistry.getStats(i.getMeta(), false));
-                        properties.addCombinedEnchantments(i);
-                        permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(i.getMeta()));
-                    });
+                    for (ItemStack otherEquipment : fetcher.get(e)) {
+                        ItemBuilder builder = new ItemBuilder(otherEquipment);
+                        properties.getMiscEquipment().add(builder);
+                        properties.getMiscEquipmentAttributes().put(builder, ItemAttributesRegistry.getStats(builder.getMeta(), false));
+                        permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(builder.getMeta()));
+                    }
                 }
             }
             if (hands){
                 properties.setMainHand(e.getEquipment().getItemInMainHand());
                 properties.setOffHand(e.getEquipment().getItemInOffHand());
-                properties.addCombinedEnchantments(properties.getMainHand());
-                properties.addCombinedEnchantments(properties.getOffHand());
-                if (properties.getMainHand() != null &&
-                        !EquipmentClass.isArmor(properties.getMainHand().getMeta()) &&
-                        EquipmentClass.getMatchingClass(properties.getMainHand().getMeta()) != EquipmentClass.TRINKET
-                ) {
-                    properties.setMainHandAttributes(ItemAttributesRegistry.getStats(properties.getMainHand().getMeta(), false));
-                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getMainHand().getMeta()));
+
+                ItemBuilder mainHand = properties.getMainHand();
+                properties.addCombinedEnchantments(mainHand);
+                if (mainHand != null && EquipmentClass.isHandHeld(mainHand.getMeta()) && EquipmentClass.getMatchingClass(mainHand.getMeta()) != EquipmentClass.TRINKET) {
+                    properties.setMainHandAttributes(ItemAttributesRegistry.getStats(mainHand.getMeta(), false));
+                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(mainHand.getMeta()));
                 }
 
-                if (properties.getOffHand() != null &&
-                        !EquipmentClass.isArmor(properties.getOffHand().getMeta()) &&
-                        EquipmentClass.getMatchingClass(properties.getOffHand().getMeta()) != EquipmentClass.TRINKET
-                ) {
-                    properties.setOffHandAttributes(ItemAttributesRegistry.getStats(properties.getOffHand().getMeta(), false));
-                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(properties.getOffHand().getMeta()));
+                ItemBuilder offHand = properties.getOffHand();
+                properties.addCombinedEnchantments(offHand);
+                if (offHand != null && EquipmentClass.isHandHeld(offHand.getMeta()) && EquipmentClass.getMatchingClass(offHand.getMeta()) != EquipmentClass.TRINKET) {
+                    properties.setOffHandAttributes(ItemAttributesRegistry.getStats(offHand.getMeta(), false));
+                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(offHand.getMeta()));
                 }
             }
             List<PotionEffect> combinedPermanentEffects = PermanentPotionEffects.getCombinedEffects(permanentEffects);
@@ -362,7 +361,6 @@ public class EntityUtils {
             properties.getActivePotionEffects().clear();
             properties.getActivePotionEffects().putAll(PotionEffectRegistry.getActiveEffects(e));
         }
-
         return properties;
     }
 

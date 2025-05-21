@@ -41,7 +41,7 @@ public class AnvilListener implements Listener {
         int maxDurability = CustomDurabilityManager.getDurability(resultMeta, true);
         if (fraction >= 0.97) CustomDurabilityManager.setDurability(resultMeta, maxDurability, maxDurability);
         else CustomDurabilityManager.setDurability(resultMeta, fraction);
-        ItemUtils.setItemMeta(result, resultMeta);
+        ItemUtils.setMetaNoClone(result, resultMeta);
 
         e.setResult(result);
     }

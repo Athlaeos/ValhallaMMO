@@ -163,7 +163,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.HEAVY) return;
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                if (e.isCancelled() || !p.isOnline()) return;
+                if (e.isCancelled() || !p.isOnline() || (l instanceof IronGolem g && g.isPlayerCreated())) return;
                 if (e.getDamage() > 1000000) return;
                 double chunkNerf = !isChunkNerfed || EntitySpawnListener.isTrialSpawned(l) ? 1 : ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);

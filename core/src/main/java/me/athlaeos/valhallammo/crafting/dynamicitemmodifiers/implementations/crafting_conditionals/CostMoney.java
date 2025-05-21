@@ -3,15 +3,15 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.cr
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.VaultHook;
-import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.StringUtils;
-import org.bukkit.command.CommandSender;
-import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.hooks.VaultTransaction;
+import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,13 +28,13 @@ public class CostMoney extends DynamicItemModifier {
     }
 
     @Override
-    public void processItem(Player crafter, ItemBuilder outputItem, boolean use, boolean validate, int timesExecuted) {
+    public void processItem(ModifierContext context) {
         if (!ValhallaMMO.isHookFunctional(VaultHook.class)) return;
-        if ((validate && VaultTransaction.getBalance(crafter) < amount * timesExecuted) ||
-                (use && !VaultTransaction.withdrawBalance(crafter, amount * timesExecuted))){
+        if ((context.shouldValidate() && VaultTransaction.getBalance(context.getCrafter()) < amount * context.getTimesExecuted()) ||
+                (context.shouldExecuteUsageMechanics() && !VaultTransaction.withdrawBalance(context.getCrafter(), amount * context.getTimesExecuted()))){
             String warning = TranslationManager.getTranslation("modifier_warning_insufficient_funds");
-            failedRecipe(outputItem,
-                    warning.replace("%quantity%", String.valueOf(timesExecuted))
+            failedRecipe(context.getItem(),
+                    warning.replace("%quantity%", String.valueOf(context.getTimesExecuted()))
                             .replace("%cost%", String.format("%,.2f", amount))
             );
         }

@@ -2,8 +2,9 @@ package me.athlaeos.valhallammo.commands.valhallasubcommands;
 
 import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.RelationalItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.RelationalToItemModifier;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
@@ -31,7 +32,7 @@ public class ModifyCommand implements Command {
                 Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_invalid_modifier"));
                 return true;
             }
-            if (modifier instanceof RelationalItemModifier){
+            if (modifier instanceof RelationalToItemModifier){
                 Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_advanced_modifier_unusable"));
                 return true;
             }
@@ -65,7 +66,7 @@ public class ModifyCommand implements Command {
                     ItemStack hand = target.getInventory().getItemInMainHand();
                     if (ItemUtils.isEmpty(hand)) continue;
                     ItemBuilder builder = new ItemBuilder(hand);
-                    modifier.processItem(target, builder, true, true);
+                    modifier.processItem(ModifierContext.builder(builder).crafter(target).sort().executeUsageMechanics().validate().get());
                     if (ItemUtils.isEmpty(builder.getItem()) || CustomFlag.hasFlag(builder.getMeta(), CustomFlag.UNCRAFTABLE)){
                         Utils.sendMessage(sender,
                                 TranslationManager.getTranslation("error_command_modifier_failed")
@@ -112,7 +113,7 @@ public class ModifyCommand implements Command {
 
     @Override
     public List<String> getSubcommandArgs(CommandSender sender, String[] args) {
-        if (args.length == 2) return ModifierRegistry.getModifiers().values().stream().filter(m -> !(m instanceof RelationalItemModifier)).map(DynamicItemModifier::getName).collect(Collectors.toList());
+        if (args.length == 2) return ModifierRegistry.getModifiers().values().stream().filter(m -> !(m instanceof RelationalToItemModifier)).map(DynamicItemModifier::getName).collect(Collectors.toList());
         else if (args.length >= 3) {
             DynamicItemModifier modifier;
             try {

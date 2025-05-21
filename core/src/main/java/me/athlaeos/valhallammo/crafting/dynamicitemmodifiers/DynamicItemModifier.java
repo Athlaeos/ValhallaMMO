@@ -1,16 +1,15 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.event.AdvancedItemModificationEvent;
 import me.athlaeos.valhallammo.event.ItemModificationEvent;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -67,10 +66,7 @@ public abstract class DynamicItemModifier {
         return name;
     }
 
-    public void processItem(Player crafter, ItemBuilder i, boolean use, boolean validate){
-        processItem(crafter, i, use, validate, 1);
-    }
-    public abstract void processItem(Player crafter, ItemBuilder i, boolean use, boolean validate, int timesExecuted);
+    public abstract void processItem(ModifierContext context);
 
     public void failedRecipe(ItemBuilder i, String message){
         if (message == null) message = "";
@@ -82,79 +78,44 @@ public abstract class DynamicItemModifier {
     }
 
     /**
-     * Modifies an item based on the given dynamic item modifiers. <br>
+     * Modifies a modification context based on the given dynamic item modifiers. <br>
      * If an item is flagged with {@link CustomFlag#UNCRAFTABLE} by one of the modifiers it is assumed
      * the recipe failed for one reason or another. UNCRAFTABLE items cannot be removed from the crafting inventory or be produced at all,
      * in which case lore may be added to the item describing why the recipe failed.
-     * @param i the item to modify
-     * @param p the player to use in modification (can be null if no player-required modifiers are used)
-     * @param modifiers the modifiers to execute on the item
-     * @param sort if the modifiers need to be sorted based on priority first (might help performance if modifiers are sorted prior)
-     * @param use communicates to the modifier if the recipe is being crafted rather than pre-crafted. things like exp shouldn't be given if the recipe is only pre-crafted
-     * @param validate if crafting validation should happen. for example, if a result of a recipe is being pre-generated,
-     *                 you typically don't want the recipe to be validated based on conditions otherwise the result will look off
-     * @param count how many times the recipe is being crafted. mainly applicable for the crafting grid recipes where the player can craft several items instantly
+     * @param context the modification context which should include all the details needed to modify its item
+     * @param modifiers the modifiers to execute on the context
      */
-    public static void modify(ItemBuilder i, Player p, List<DynamicItemModifier> modifiers, boolean sort, boolean use, boolean validate, int count){
-        ItemModificationEvent event = new ItemModificationEvent(p, i, modifiers, sort, use, validate, count);
+    public static void modify(ModifierContext context, List<DynamicItemModifier> modifiers){
+        ItemModificationEvent event = new ItemModificationEvent(context, modifiers);
         if (Bukkit.isPrimaryThread()) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
-        if (event.sort()) sortModifiers(event.getModifiers());
+        if (event.getContext().shouldSort()) sortModifiers(event.getModifiers());
+        modifiers:
         for (DynamicItemModifier modifier : event.getModifiers()){
-            if (modifier instanceof RelationalItemModifier) continue;
-            modifier.processItem(p, i, event.use(), event.validate(), event.getCount());
-            if (ItemUtils.isEmpty(i.getItem()) || CustomFlag.hasFlag(i.getMeta(), CustomFlag.UNCRAFTABLE)) break;
-        }
-        i.translate();
-    }
-
-    /**
-     * Does what {@link DynamicItemModifier#modify(ItemBuilder, Player, List, boolean, boolean, boolean, int)} does, except with a
-     * <b>count</b> of 1.
-     */
-    public static void modify(ItemBuilder i, Player p, List<DynamicItemModifier> modifiers, boolean sort, boolean use, boolean validate){
-        modify(i, p, modifiers, sort, use, validate, 1);
-    }
-
-    /**
-     * Modifiers <b>two</b> items based on the given modifiers. Because two items are considered, {@link RelationalItemModifier}s may be used to alter items
-     * based on the player's stats AND another item.
-     * @param i1 the first item to modify
-     * @param i2 the second item to modify
-     * @param p the player to use in modification (can be null if no player-required modifiers are used)
-     * @param modifiers the modifiers to execute on the item
-     * @param sort if the modifiers need to be sorted based on priority first (might help performance if modifiers are sorted prior)
-     * @param use communicates to the modifier if the recipe is being crafted rather than pre-crafted. things like exp shouldn't be given if the recipe is only pre-crafted
-     * @param validate if crafting validation should happen. for example, if a result of a recipe is being pre-generated,
-     *                 you typically don't want the recipe to be validated based on conditions otherwise the result will look off
-     * @param count how many times the recipe is being crafted. mainly applicable for the crafting grid recipes where the player can craft several items instantly
-     */
-    public static void modify(ItemBuilder i1, ItemBuilder i2, Player p, List<DynamicItemModifier> modifiers, boolean sort, boolean use, boolean validate, int count){
-        AdvancedItemModificationEvent event = new AdvancedItemModificationEvent(p, i1, i2, modifiers, sort, use, validate, count);
-        if (Bukkit.isPrimaryThread()) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
-        RelationalItemModifier.RelationalResult result = new RelationalItemModifier.RelationalResult(event.getItem(), event.getItem2());
-        if (event.sort()) sortModifiers(event.getModifiers());
-        for (DynamicItemModifier modifier : event.getModifiers()){
-            if (modifier instanceof RelationalItemModifier relationalItemModifier) {
-                relationalItemModifier.processItem(p, result.i1(), result.i2(), event.use(), event.validate(), event.getCount());
-            } else {
-                modifier.processItem(p, result.i1(), event.use(), event.validate(), event.getCount());
-                result = new RelationalItemModifier.RelationalResult(result.i1(), result.i2());
-                if (ItemUtils.isEmpty(result.i1().getItem()) || CustomFlag.hasFlag(result.i1().getMeta(), CustomFlag.UNCRAFTABLE) ||
-                        ItemUtils.isEmpty(result.i2().getItem()) || CustomFlag.hasFlag(result.i2().getMeta(), CustomFlag.UNCRAFTABLE)) break;
+            if (!modifier.meetsRequirement(context)) {
+                if (context.getCrafter() != null) Utils.sendMessage(context.getCrafter(), "&cWhatever you just created was improperly configured. Please notify admin. A modifier was used that doesn't function in this context");
+                context.getItem().flag(CustomFlag.UNCRAFTABLE);
+                return;
             }
-            if (ItemUtils.isEmpty(i1.getItem()) || CustomFlag.hasFlag(i1.getMeta(), CustomFlag.UNCRAFTABLE) ||
-                    ItemUtils.isEmpty(i2.getItem()) || CustomFlag.hasFlag(i2.getMeta(), CustomFlag.UNCRAFTABLE)) break;
+            if (!modifier.meetsPlayerRequirement(context)){
+                ValhallaMMO.logSevere("&cWhatever was just created was improperly configured. Please check your recipes. A modifier was used that requires a player, but no player exists in this context");
+                context.getItem().flag(CustomFlag.UNCRAFTABLE);
+                return;
+            }
+            modifier.processItem(context);
+            if (ItemUtils.isEmpty(context.getItem().getItem()) || CustomFlag.hasFlag(context.getItem().getMeta(), CustomFlag.UNCRAFTABLE)) break;
+            for (ItemBuilder otherItem : context.getOtherInvolvedItems())
+                if (ItemUtils.isEmpty(otherItem.getItem()) || CustomFlag.hasFlag(otherItem.getMeta(), CustomFlag.UNCRAFTABLE)) break modifiers;
         }
-        i1.translate();
-        i2.translate();
+        context.getItem().translate();
+        for (ItemBuilder otherItem : context.getOtherInvolvedItems()) otherItem.translate();
     }
 
-    /**
-     * Does what {@link DynamicItemModifier#modify(ItemBuilder, ItemBuilder, Player, List, boolean, boolean, boolean, int)} does, except with a
-     * <b>count</b> of 1.
-     */
-    public static void modify(ItemBuilder i1, ItemBuilder i2, Player p, List<DynamicItemModifier> modifiers, boolean sort, boolean use, boolean validate){
-        modify(i1, i2, p, modifiers, sort, use, validate, 1);
+    public final boolean meetsPlayerRequirement(ModifierContext context){
+        return !requiresPlayer() || context.getCrafter() != null;
+    }
+
+    public boolean meetsRequirement(ModifierContext context){
+        return true;
     }
 
     /**
@@ -163,5 +124,12 @@ public abstract class DynamicItemModifier {
      */
     public static void sortModifiers(List<DynamicItemModifier> modifiers){
         modifiers.sort(Comparator.comparingInt((DynamicItemModifier a) -> a.getPriority().getPriorityRating()));
+    }
+
+    public static boolean requiresPlayer(Collection<DynamicItemModifier> modifiers) {
+        for (DynamicItemModifier modifier : modifiers) {
+            if (modifier.requiresPlayer()) return true;
+        }
+        return false;
     }
 }
