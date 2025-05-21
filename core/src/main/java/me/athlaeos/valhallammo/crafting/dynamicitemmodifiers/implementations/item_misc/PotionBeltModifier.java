@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.PotionBelt;
@@ -98,11 +99,11 @@ public class PotionBeltModifier extends DynamicItemModifier{
     }
 
     @Override
-    public void processItem(Player player, ItemBuilder itemBuilder, boolean b, boolean b1, int i) {
-        PotionBelt.setPotions(itemBuilder.getMeta(), new ArrayList<>());
-        PotionBelt.setCapacity(itemBuilder.getMeta(), capacity);
-        PotionBelt.setStoredBelt(itemBuilder.getMeta(), itemBuilder.get());
-        ItemStack belt = itemBuilder.get();
-        PotionBelt.setStoredBelt(itemBuilder.getMeta(), belt);
+    public void processItem(ModifierContext context) {
+        PotionBelt.setPotions(context.getItem().getMeta(), new ArrayList<>());
+        PotionBelt.setCapacity(context.getItem().getMeta(), capacity);
+        PotionBelt.setStoredBelt(context.getItem().getMeta(), context.getItem().get());
+        ItemStack belt = context.getItem().get();
+        PotionBelt.setStoredBelt(context.getItem().getMeta(), belt);
     }
 }

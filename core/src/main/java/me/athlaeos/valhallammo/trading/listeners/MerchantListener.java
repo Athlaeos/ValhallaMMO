@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.trading.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
@@ -12,13 +13,15 @@ import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.TradingProfile;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.skills.skills.implementations.TradingSkill;
-import me.athlaeos.valhallammo.trading.*;
+import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.*;
 import me.athlaeos.valhallammo.trading.happiness.HappinessSourceRegistry;
-import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
 import me.athlaeos.valhallammo.trading.menu.ServiceMenu;
-import me.athlaeos.valhallammo.utility.*;
+import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
+import me.athlaeos.valhallammo.utility.EntityUtils;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -261,7 +264,7 @@ public class MerchantListener implements Listener {
                             MerchantTrade selectedGift = Catch.catchOrElse(() -> Utils.weightedSelection(possibleGifts, 1, luck, 0).getFirst(), null);
                             if (selectedGift != null) {
                                 ItemBuilder gift = new ItemBuilder(selectedGift.getResult());
-                                DynamicItemModifier.modify(gift, (Player) e.getWhoClicked(), selectedGift.getModifiers(), false, true, true);
+                                DynamicItemModifier.modify(ModifierContext.builder(gift).crafter((Player) e.getWhoClicked()).executeUsageMechanics().entity(villager).validate().get(), selectedGift.getModifiers());
                                 if (!CustomFlag.hasFlag(gift.getMeta(), CustomFlag.UNCRAFTABLE)) {
                                     long cooldown = (long) AccumulativeStatManager.getCachedStats("TRADING_GIFT_COOLDOWN", e.getWhoClicked(), 10000, true);
                                     ItemStack finalGift = gift.get();
@@ -336,7 +339,7 @@ public class MerchantListener implements Listener {
                         Map<String, MerchantData.TradeData> newData = new HashMap<>();
                         Map<String, MerchantData.TradeData> currentData = d.getTrades();
                         if (type.resetsTradesDaily()){
-                            for (MerchantData.TradeData trade : CustomMerchantManager.generateRandomTrades(type, e.getPlayer())){
+                            for (MerchantData.TradeData trade : CustomMerchantManager.generateRandomTrades(v, type, e.getPlayer())){
                                 MerchantData.TradeData entry = currentData.get(trade.getTrade());
                                 if (entry == null) {
                                     newData.put(trade.getTrade(), trade);
@@ -354,7 +357,7 @@ public class MerchantListener implements Listener {
                                     newData.put(trade.getTrade(), trade);
                                     continue;
                                 }
-                                ItemBuilder newResult = CustomMerchantManager.prepareTradeResult(t, e.getPlayer());
+                                ItemBuilder newResult = CustomMerchantManager.prepareTradeResult(v, t, e.getPlayer());
                                 if (newResult == null) {
                                     newData.put(trade.getTrade(), trade);
                                     continue;

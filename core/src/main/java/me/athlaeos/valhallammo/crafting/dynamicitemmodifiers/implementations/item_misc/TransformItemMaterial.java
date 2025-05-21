@@ -13,12 +13,13 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class TransformItemMaterial extends ResultChangingModifier {
+public class TransformItemMaterial extends DynamicItemModifier implements ResultChangingModifier {
     private static final Map<String, Map<EquipmentClass, Material>> classToMaterialMapping = new HashMap<>();
     private final Material icon;
     private final String materialPrefix;

@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -100,12 +101,12 @@ public class CustomMerchantManager {
 
     public static MerchantData createMerchant(UUID id, MerchantType type, Player interactingPlayer){
         AbstractVillager villager = ValhallaMMO.getInstance().getServer().getEntity(id) instanceof AbstractVillager a ? a : null;
-        MerchantData data = new MerchantData(villager, type, generateRandomTrades(type, interactingPlayer));
+        MerchantData data = new MerchantData(villager, type, generateRandomTrades(villager, type, interactingPlayer));
         merchantDataPersistence.setData(id, data);
         return data;
     }
 
-    public static List<MerchantData.TradeData> generateRandomTrades(MerchantType type, Player player){
+    public static List<MerchantData.TradeData> generateRandomTrades(AbstractVillager villager, MerchantType type, Player player){
         float luck = getTradingLuck(player);
         List<MerchantData.TradeData> trades = new ArrayList<>();
         for (MerchantLevel level : type.getTrades().keySet()){
@@ -122,7 +123,7 @@ public class CustomMerchantManager {
             merchantTrades.removeIf(t -> t.getWeight() == -1 || !t.isTradeable());
             selectedTrades.addAll(Utils.weightedSelection(merchantTrades, Utils.randomAverage(type.getRolls(level)), luck, 0));
             selectedTrades.forEach(t -> {
-                ItemBuilder result = prepareTradeResult(t, player);
+                ItemBuilder result = prepareTradeResult(villager, t, player);
                 if (result == null) return;
 
                 ItemBuilder cost = new ItemBuilder(t.getScalingCostItem());
@@ -136,9 +137,9 @@ public class CustomMerchantManager {
         return trades;
     }
 
-    public static ItemBuilder prepareTradeResult(MerchantTrade t, Player player){
+    public static ItemBuilder prepareTradeResult(AbstractVillager villager, MerchantTrade t, Player player){
         ItemBuilder result = new ItemBuilder(t.getResult());
-        DynamicItemModifier.modify(result, player, t.getModifiers(), false, true, true);
+        DynamicItemModifier.modify(ModifierContext.builder(result).crafter(player).validate().entity(villager).executeUsageMechanics().get(), t.getModifiers());
         if (CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) return null;
         setTradeKey(result.getMeta(), t);
         return result;
