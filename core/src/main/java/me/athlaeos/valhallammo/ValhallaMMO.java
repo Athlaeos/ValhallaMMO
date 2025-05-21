@@ -289,6 +289,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerCommand(new ProfileCommand(DiggingProfile.class), "digging");
         registerCommand(new ProfileCommand(FishingProfile.class), "fishing");
         registerCommand(new ProfileCommand(MartialArtsProfile.class), "martialarts");
+        registerCommand(new ProfileCommand(TradingProfile.class), "trading");
 
         LeaderboardManager.loadFile();
         CustomRecipeRegistry.loadFiles();

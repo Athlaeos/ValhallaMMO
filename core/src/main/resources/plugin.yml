@@ -59,6 +59,8 @@ commands:
     description: "Shorter command for /val profile alchemy, allowing players to view their alchemy stats"
   power:
     description: "Shorter command for /val profile power, allowing players to view their power stats"
+  trading:
+    description: "Shorter command for /val profile trading, allowing players to view their trading stats"
   redeem:
     description: "Exchanges level/exp tokens to any skill level/exp (except power)"
     usage: "/redeem <levels/exp> <skill> <amount>"
