@@ -6,9 +6,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ModifierContext {
     private Player crafter;
@@ -19,6 +17,7 @@ public class ModifierContext {
     private boolean shouldSort = false;
     private boolean shouldValidate = false;
     private boolean executeUsageMechanics = false;
+    private final Map<Class<?>, Object> otherArgs = new HashMap<>();
 
     private ModifierContext(ItemBuilder item){
         this.item = item;
@@ -36,6 +35,15 @@ public class ModifierContext {
     public boolean shouldSort() { return shouldSort; }
     public boolean shouldValidate() { return shouldValidate; }
     public boolean shouldExecuteUsageMechanics() { return executeUsageMechanics; }
+    @SuppressWarnings("unchecked")
+    public <T> T getOtherType(Class<T> clazz){
+        Object o = otherArgs.get(clazz);
+        if (o == null) return null;
+        return (T) o;
+    }
+    public void setOtherType(Object o){
+        otherArgs.put(o.getClass(), o);
+    }
 
     public static class ModifierContextBuilder{
         private final ModifierContext context;

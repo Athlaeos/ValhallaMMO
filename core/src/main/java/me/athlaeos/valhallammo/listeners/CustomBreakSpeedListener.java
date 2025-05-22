@@ -199,9 +199,9 @@ public class CustomBreakSpeedListener implements Listener {
         }, 10L);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPotionEffect(EntityPotionEffectEvent e){
-        if (e.isCancelled() || e.getCause() == EntityPotionEffectEvent.Cause.PLUGIN || !(e.getEntity() instanceof Player p) || MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) return;
+        if (e.getCause() == EntityPotionEffectEvent.Cause.PLUGIN || !(e.getEntity() instanceof Player p) || MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)) return;
         if (e.getOldEffect() != null && (e.getOldEffect().getType() == PotionEffectMappings.HASTE.getPotionEffectType() || e.getOldEffect().getType() == PotionEffectMappings.MINING_FATIGUE.getPotionEffectType()))
             DigPacketInfo.resetMinerCache(e.getEntity().getUniqueId());
         if (e.getNewEffect() != null && (e.getNewEffect().getType() == PotionEffectMappings.HASTE.getPotionEffectType() || e.getNewEffect().getType() == PotionEffectMappings.MINING_FATIGUE.getPotionEffectType()))

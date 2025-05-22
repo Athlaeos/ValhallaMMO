@@ -31,10 +31,9 @@ public class ReachAttackListener implements Listener {
         return lastArmSwingReasons;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSwing(PlayerAnimationEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) ||
-                e.isCancelled() ||
                 e.getAnimationType() != PlayerAnimationType.ARM_SWING ||
                 lastArmSwingReasons.getOrDefault(e.getPlayer().getUniqueId(), ArmSwingReason.ATTACK) != ArmSwingReason.ATTACK) return;
         EntityProperties properties = EntityCache.getAndCacheProperties(e.getPlayer());
@@ -64,9 +63,9 @@ public class ReachAttackListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
 
         if (e.getDamager() instanceof Player p) {
             // we don't want reach attacks to be executed when the player successfully attacked something in range (attack events are called before arm swing events)
@@ -118,9 +117,9 @@ public class ReachAttackListener implements Listener {
         setLastArmSwingReason(e.getPlayer(), ArmSwingReason.DROP_ITEM);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
         setLastArmSwingReason(e.getPlayer(), ArmSwingReason.BLOCK_DAMAGE);
     }
 

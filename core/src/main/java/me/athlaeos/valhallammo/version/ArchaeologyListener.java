@@ -108,7 +108,7 @@ public class ArchaeologyListener implements Listener {
         return false;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBrush(BlockDropItemEvent e){
         if (e.getBlockState() instanceof BrushableBlock) {
             BlockFace face = EntityUtils.getSelectedBlockFace(e.getPlayer());

@@ -93,9 +93,9 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCoatingApply(InventoryClickEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) ||
                 !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_heavy_coating_attempts") ||
                 WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_HEAVYWEAPONS)) return;
         if (!(e.getClickedInventory() instanceof PlayerInventory) || !e.isRightClick()) return; // player inventory must be right-clicked
@@ -131,9 +131,9 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
         else e.getCursor().setAmount(e.getCursor().getAmount() - 1);
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
         if (trueDamager instanceof Player p && (!(e.getDamager() instanceof AbstractArrow) || e.getDamager() instanceof Trident) && e.getEntity() instanceof LivingEntity l){
             if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_HEAVYWEAPONS)) return;
@@ -149,9 +149,9 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onExpAttack(EntityDamageEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) ||
                 EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE) ||
                 e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK || !(e.getEntity() instanceof LivingEntity l) ||
                 EntityClassification.matchesClassification(l.getType(), EntityClassification.PASSIVE)) return;
@@ -163,7 +163,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.HEAVY) return;
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                if (e.isCancelled() || !p.isOnline() || (l instanceof IronGolem g && g.isPlayerCreated())) return;
+                if (!p.isOnline() || (l instanceof IronGolem g && g.isPlayerCreated())) return;
                 if (e.getDamage() > 1000000) return;
                 double chunkNerf = !isChunkNerfed || EntitySpawnListener.isTrialSpawned(l) ? 1 : ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);
@@ -183,9 +183,9 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCrit(EntityCriticallyHitEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         if (e.getCritter() instanceof Player p && e.getEntity() instanceof LivingEntity l){
             if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_HEAVYWEAPONS)) return;
             ItemBuilder weapon = EntityCache.getAndCacheProperties(p).getMainHand();

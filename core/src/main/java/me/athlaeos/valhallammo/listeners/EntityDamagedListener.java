@@ -63,31 +63,19 @@ public class EntityDamagedListener implements Listener {
         oneShotProtectionSound = Catch.catchOrElse(() -> Sound.valueOf(c.getString("oneshot_protection_sound")), Sound.ITEM_TOTEM_USE);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDamageRecord(EntityDamageEvent e){
-        if (e.isCancelled()) return;
         if (e instanceof EntityDamageByEntityEvent eve) EntityDamagedListener.setDamager(e.getEntity(), eve.getDamager());
     }
 
     private final Map<UUID, Double> healthTracker = new HashMap<>();
     private final Map<UUID, Double> absorptionTracker = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void prepareDamageInstances(EntityDamageEvent e){
-//        Map<String, Double> preparedInstances = getPreparedInstances(e.getEntity());
-//        if (preparedInstances.isEmpty()) return;
-//        String damageCause = customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString());
-//        if (!preparedInstances.containsKey(damageCause)) return;
-//        e.setDamage(preparedInstances.get(damageCause));
-//        preparedInstances.remove(damageCause);
-//        preparedDamageInstances.put(e.getEntity().getUniqueId(), preparedInstances);
-    }
-
     private static final Map<UUID, Runnable> damageProcesses = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDamageTaken(EntityDamageEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !customDamageEnabled) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !customDamageEnabled) return;
         if (e.getEntity() instanceof LivingEntity l){
             String damageCause = customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString());
             CustomDamageType type = CustomDamageType.getCustomType(damageCause);
@@ -165,13 +153,11 @@ public class EntityDamagedListener implements Listener {
                 double healthBefore = l.getHealth();
                 damageProcesses.put(l.getUniqueId(), () -> {
                     l.setNoDamageTicks(iFrames);
-                    if (!e.isCancelled()){
-                        AttributeInstance health = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-                        double maxHealth = health != null ? health.getValue() : -1;
-                        if (l.getHealth() > 0) {
-                            l.setAbsorptionAmount(Math.max(0, predictedAbsorption));
-                            l.setHealth(Math.max(damageCause.equals("POISON") ? 1 : 0, Math.min(maxHealth, predictedHealth)));
-                        }
+                    AttributeInstance health = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+                    double maxHealth = health != null ? health.getValue() : -1;
+                    if (l.getHealth() > 0) {
+                        l.setAbsorptionAmount(Math.max(0, predictedAbsorption));
+                        l.setHealth(Math.max(damageCause.equals("POISON") ? 1 : 0, Math.min(maxHealth, predictedHealth)));
                     }
                     customDamageCauses.remove(l.getUniqueId());
                     healthTracker.remove(l.getUniqueId());

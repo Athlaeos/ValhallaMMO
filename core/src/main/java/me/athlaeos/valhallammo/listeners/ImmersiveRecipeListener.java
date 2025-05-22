@@ -55,7 +55,7 @@ public class ImmersiveRecipeListener implements Listener {
         Player p = e.getPlayer();
         if (!Timer.isCooldownPassed(p.getUniqueId(), "delay_crafting_attempts")) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) selectedImmersiveRecipe.remove(p.getUniqueId());
-        if (e.useItemInHand() == Event.Result.DENY || e.getHand() != EquipmentSlot.HAND || e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (e.useInteractedBlock() == Event.Result.DENY || e.getHand() != EquipmentSlot.HAND || e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (!CustomRecipeRegistry.getImmersiveRecipesByBlock().containsKey(ItemUtils.getBaseMaterial(clicked.getType()))) return;
         if (Timer.getTimerResult(p.getUniqueId(), "time_held_immersive_interact") == 0) Timer.startTimer(p.getUniqueId(), "time_held_immersive_interact"); // start timer if none was started yet
         if (Timer.getTimerResult(p.getUniqueId(), "time_since_immersive_interact") == 0) Timer.startTimer(p.getUniqueId(), "time_since_immersive_interact"); // start timer if none was started yet

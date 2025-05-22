@@ -13,9 +13,9 @@ import java.util.Collection;
 
 public class PartyEXPGainListener implements Listener {
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEXPGain(PlayerSkillExperienceGainEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) ||
                 e.getReason() != PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION ||
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_PARTY_EXPSHARING) ||
                 e.getLeveledSkill() instanceof PowerSkill) return;

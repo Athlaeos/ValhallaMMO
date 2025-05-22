@@ -120,9 +120,9 @@ public class AlchemySkill extends Skill implements Listener {
         super.addEXP(p, multiplier * amount, silent, reason);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPotionCombine(InventoryClickEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() || !e.isRightClick() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || !e.isRightClick() ||
                 !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "delay_combining_attempts") ||
                 WorldGuardHook.inDisabledRegion(e.getWhoClicked().getLocation(), (Player) e.getWhoClicked(), WorldGuardHook.VMMO_SKILL_ALCHEMY) ||
                 !hasPermissionAccess((Player) e.getWhoClicked())) return;
@@ -185,7 +185,7 @@ public class AlchemySkill extends Skill implements Listener {
         else e.getCursor().setAmount(e.getCursor().getAmount() - 1);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCauldronInteract(PlayerInteractEvent e){
         if (!quickEmptyPotions || WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_ALCHEMY)) return;
         Block b = e.getClickedBlock();
@@ -199,9 +199,9 @@ public class AlchemySkill extends Skill implements Listener {
         }
     }
 
-    @EventHandler(priority=EventPriority.MONITOR)
+    @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
     public void onProjectileHitBlock(PotionSplashEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) ||
                 e.getHitBlock() == null ||
                 !(e.getEntity().getShooter() instanceof Player p) ||
                 WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ALCHEMY) ||

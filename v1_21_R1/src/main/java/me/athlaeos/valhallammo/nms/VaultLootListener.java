@@ -96,11 +96,11 @@ public class VaultLootListener implements Listener {
     }
 
     @SuppressWarnings("UnstableApiUsage")
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVaultDispenseItem(BlockDispenseLootEvent e){
         BlockData data = e.getBlock().getBlockData();
         if (!(data instanceof Vault ||
-                data instanceof TrialSpawner) || e.isCancelled()) return;
+                data instanceof TrialSpawner)) return;
         boolean isOminous = data instanceof Vault v ? v.isOminous() :
                 ((TrialSpawner) data).isOminous();
         boolean isVault = data instanceof Vault;
@@ -135,7 +135,7 @@ public class VaultLootListener implements Listener {
                 }
             } else {
                 List<ItemStack> vanillaLoot = new ArrayList<>(table.getLootTable().populateLoot(Utils.getRandom(), context));
-                ItemStack vanillaDrop = vanillaLoot.isEmpty() ? null : vanillaLoot.getFirst();
+                ItemStack vanillaDrop = vanillaLoot.isEmpty() ? null : vanillaLoot.get(0);
                 if (!ItemUtils.isEmpty(vanillaDrop)) {
                     details.add(new DropDetails(vanillaDrop, false, table));
                 }
@@ -188,7 +188,7 @@ public class VaultLootListener implements Listener {
                 else {
                     ItemMeta meta = i.getItemMeta();
                     if (meta != null && (meta.hasDisplayName() || meta.hasLore() || meta.hasCustomModelData())) unmatchedItems.add(i);
-                    else likelyTables.add(possibilities.getFirst());
+                    else likelyTables.add(possibilities.get(0));
                 }
             }
         }

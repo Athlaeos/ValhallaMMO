@@ -31,10 +31,10 @@ public class ItemConsumptionListener implements Listener {
     private final Collection<UUID> cancelNextFoodEffects = new HashSet<>();
     private final Collection<UUID> cancelNextFoodEvent = new HashSet<>();
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onItemConsume(PlayerItemConsumeEvent e){
         ItemStack item = e.getItem();
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() || ItemUtils.isEmpty(item)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || ItemUtils.isEmpty(item)) return;
         Player p = e.getPlayer();
         for (PotionEffectWrapper wrapper : PotionEffectRegistry.getStoredEffects(ItemUtils.getItemMeta(item), false).values()){
             if (!wrapper.isVanilla()) PotionEffectRegistry.addEffect(p, null, new CustomPotionEffect(wrapper, (int) wrapper.getDuration(), wrapper.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.POTION_DRINK);
@@ -91,9 +91,9 @@ public class ItemConsumptionListener implements Listener {
         if (cancelNextFoodEvent.contains(e.getEntity().getUniqueId())) e.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onHungerChange(FoodLevelChangeEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         if (e.getFoodLevel() < e.getEntity().getFoodLevel()){
             // entity lost hunger
             double chance = AccumulativeStatManager.getCachedStats("HUNGER_SAVE_CHANCE", e.getEntity(), 10000, true);
@@ -108,9 +108,9 @@ public class ItemConsumptionListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFoodPotionEffect(EntityPotionEffectEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof Player p)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof Player p)) return;
         if (e.getCause() == EntityPotionEffectEvent.Cause.FOOD) {
             PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
             if (cancelNextFoodEffects.contains(e.getEntity().getUniqueId())) e.setCancelled(true);

@@ -21,17 +21,17 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Map;
 
 public class EnchantmentListener implements Listener {
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPrepareEnchant(PrepareItemEnchantEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName())) return;
         ItemStack item = e.getItem();
         ItemMeta meta = ItemUtils.getItemMeta(item);
         if (CustomFlag.hasFlag(meta, CustomFlag.UNENCHANTABLE)) e.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEnchant(EnchantItemEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEnchanter().getWorld().getName())) return;
         ItemStack item = e.getItem();
         ItemMeta meta = ItemUtils.getItemMeta(item);
         if (CustomFlag.hasFlag(meta, CustomFlag.UNENCHANTABLE)) {

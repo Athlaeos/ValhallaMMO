@@ -45,9 +45,9 @@ public class ItemDamageListener implements Listener {
         }
     }
 
-    @EventHandler(priority=EventPriority.NORMAL)
+    @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onItemMend(PlayerItemMendEvent e){
-        if (e.isCancelled() || ItemUtils.isEmpty(e.getItem())) return;
+        if (ItemUtils.isEmpty(e.getItem())) return;
         ItemMeta meta = ItemUtils.getItemMeta(e.getItem());
         if (CustomFlag.hasFlag(meta, CustomFlag.UNMENDABLE)){
             e.setCancelled(true);

@@ -93,16 +93,15 @@ public class FlightReward extends PerkReward implements Listener {
         return PerkRewardArgumentType.NONE;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onToggleFlight(PlayerToggleFlightEvent e){
-        if (!e.isFlying() || e.isCancelled() || !e.getPlayer().getPersistentDataContainer().has(KEY_GRANTED_FLIGHT, PersistentDataType.BYTE)) return;
+        if (!e.isFlying() || !e.getPlayer().getPersistentDataContainer().has(KEY_GRANTED_FLIGHT, PersistentDataType.BYTE)) return;
         if (Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "flight_interrupt")) return;
         e.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPvP(EntityDamageByEntityEvent e){
-        if (e.isCancelled()) return;
         if (flightPvPPrevention && e.getEntity() instanceof Player v && EntityUtils.getTrueDamager(e) instanceof Player a){
             Timer.setCooldown(v.getUniqueId(), 1000 * flightPvPPreventionDuration, "flight_interrupt");
             Timer.setCooldown(a.getUniqueId(), 1000 * flightPvPPreventionDuration, "flight_interrupt");

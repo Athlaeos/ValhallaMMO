@@ -71,9 +71,9 @@ public class EntityAttackListener implements Listener {
 
     private static final boolean multiplyDamageNumbers = ValhallaMMO.getPluginConfig().getBoolean("damage_multipliers_multiplicative");
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onSkillGapDamage(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof LivingEntity v)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof LivingEntity v)) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
 
         if (v instanceof Player pV && trueDamager instanceof Player pA && skillGapPvPPrevention &&
@@ -87,9 +87,9 @@ public class EntityAttackListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof LivingEntity v) ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof LivingEntity v) ||
                 e.getDamager() instanceof EnderPearl) return;
         if (e.getDamager() instanceof EnderDragon && v.getNoDamageTicks() > 0){
             // Ender dragons seem to be an exception entity that are capable of attacking every tick, we don't want that because it basically instantly kills people
@@ -383,9 +383,9 @@ public class EntityAttackListener implements Listener {
         bleedNextAttack.add(entity.getUniqueId());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPotionAttack(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
 
         if (e.getDamager() instanceof LivingEntity a && e.getEntity() instanceof LivingEntity v && a.getEquipment() != null){
             if (a instanceof Player p && WorldGuardHook.inDisabledRegion(a.getLocation(), p, WorldGuardHook.VMMO_COMBAT_WEAPONCOATING)) return;

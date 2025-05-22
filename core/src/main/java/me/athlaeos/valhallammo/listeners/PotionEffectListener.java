@@ -28,10 +28,10 @@ import java.util.Map;
 
 public class PotionEffectListener implements Listener {
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPotionSplash(PotionSplashEvent e){
         ItemStack potion = e.getPotion().getItem();
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || ItemUtils.isEmpty(potion)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || ItemUtils.isEmpty(potion)) return;
         Collection<PotionEffectWrapper> effects = PotionEffectRegistry.getStoredEffects(ItemUtils.getItemMeta(potion), false).values();
         LivingEntity thrower = e.getEntity().getShooter() instanceof LivingEntity l ? l : null;
         double minimumIntensity = 0;
@@ -51,10 +51,10 @@ public class PotionEffectListener implements Listener {
 
     private final NamespacedKey potionCloudKey = new NamespacedKey(ValhallaMMO.getInstance(), "lingering_custom_effects");
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPotionLinger(LingeringPotionSplashEvent e){
         ItemStack potion = e.getEntity().getItem();
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || ItemUtils.isEmpty(potion)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || ItemUtils.isEmpty(potion)) return;
         ItemMeta potionMeta = ItemUtils.getItemMeta(potion);
         if (potionMeta == null) return;
         if (e.getEntity().getShooter() instanceof LivingEntity l){
@@ -64,18 +64,16 @@ public class PotionEffectListener implements Listener {
             e.getAreaEffectCloud().setDuration((int) (e.getAreaEffectCloud().getDuration() * durationMultiplier));
         }
 
-        if (!e.isCancelled()){
-            String encodedEffects = PotionEffectRegistry.getRawData(potionMeta, false);
-            if (!StringUtils.isEmpty(encodedEffects)){
-                e.getAreaEffectCloud().getPersistentDataContainer().set(potionCloudKey, PersistentDataType.STRING, encodedEffects);
-                e.getAreaEffectCloud().addCustomEffect(new PotionEffect(PotionEffectType.BLINDNESS, 0, 0, false, false, false), false);
-            }
+        String encodedEffects = PotionEffectRegistry.getRawData(potionMeta, false);
+        if (!StringUtils.isEmpty(encodedEffects)){
+            e.getAreaEffectCloud().getPersistentDataContainer().set(potionCloudKey, PersistentDataType.STRING, encodedEffects);
+            e.getAreaEffectCloud().addCustomEffect(new PotionEffect(PotionEffectType.BLINDNESS, 0, 0, false, false, false), false);
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onLingeringCloudHit(AreaEffectCloudApplyEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         AreaEffectCloud cloud = e.getEntity();
         String cloudString = cloud.getPersistentDataContainer().getOrDefault(potionCloudKey, PersistentDataType.STRING, "");
         if (StringUtils.isEmpty(cloudString)) return;

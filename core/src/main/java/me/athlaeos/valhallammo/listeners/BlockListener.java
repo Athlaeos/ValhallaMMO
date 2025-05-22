@@ -48,23 +48,23 @@ public class BlockListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockForm(BlockFormEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
         BlockStore.setPlaced(e.getBlock(), false);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onStructureForm(StructureGrowEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getWorld().getName())) return;
         for (BlockState b : e.getBlocks()){
             BlockStore.setPlaced(b.getBlock(), false);
         }
     }
 
-    @EventHandler(priority =EventPriority.LOWEST)
+    @EventHandler(priority =EventPriority.LOWEST, ignoreCancelled = true)
     public void onPistonExtend(BlockPistonExtendEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
         if (e.getBlock().getBlockData() instanceof Directional d){
             for (Block b : e.getBlocks().stream().map(b -> b.getRelative(d.getFacing())).collect(Collectors.toSet())){
                 BlockStore.setPlaced(b, true);
@@ -73,9 +73,9 @@ public class BlockListener implements Listener {
         }
     }
 
-    @EventHandler(priority =EventPriority.LOWEST)
+    @EventHandler(priority =EventPriority.LOWEST, ignoreCancelled = true)
     public void onPistonRetract(BlockPistonRetractEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
         if (e.getBlock().getBlockData() instanceof Directional d){
             for (Block b : e.getBlocks().stream().map(b -> b.getRelative(d.getFacing().getOppositeFace())).collect(Collectors.toSet())){
                 BlockStore.setPlaced(b, true);
@@ -84,9 +84,9 @@ public class BlockListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled() || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         if (e instanceof BlockMultiPlaceEvent me){
             me.getReplacedBlockStates().forEach(b -> BlockStore.setPlaced(b.getBlock(), true));
         } else {
@@ -107,9 +107,9 @@ public class BlockListener implements Listener {
 
     private static final Collection<Location> blocksToConsiderBroken = new HashSet<>();
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
         if (e.getBlock().getBlockData() instanceof Bisected bisected) {
             if (bisected.getHalf() == Bisected.Half.TOP) {
                 Block down = e.getBlock().getRelative(BlockFace.DOWN);
@@ -123,9 +123,9 @@ public class BlockListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplosionPrime(ExplosionPrimeEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() || !(e.getEntity() instanceof TNTPrimed tnt) || tnt.getSource() == null) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof TNTPrimed tnt) || tnt.getSource() == null) return;
         Player responsible = null;
         if (tnt.getSource() instanceof Player p) responsible = p;
         else if (tnt.getSource() instanceof AbstractArrow a && a.getShooter() instanceof Player p) responsible = p;
@@ -137,18 +137,18 @@ public class BlockListener implements Listener {
     private static final float EXPLOSION_IMMUNE_HARDNESS = 10;
     private static final float EXPLOSION_IMMUNE_BLAST_RESISTANCE = 30;
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplosion(BlockExplodeEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
         e.blockList().removeIf(b -> {
             float hardness = BlockUtils.getHardness(b);
             return hardness < 0 || hardness >= EXPLOSION_IMMUNE_HARDNESS || b.getType().getBlastResistance() >= EXPLOSION_IMMUNE_BLAST_RESISTANCE;
         });
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplosion(EntityExplodeEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         e.blockList().removeIf(b -> {
             float hardness = BlockUtils.getHardness(b);
             return hardness < 0 || hardness >= EXPLOSION_IMMUNE_HARDNESS || b.getType().getBlastResistance() >= EXPLOSION_IMMUNE_BLAST_RESISTANCE;
