@@ -32,8 +32,8 @@ public class ItemType extends DynamicItemModifier implements ResultChangingModif
     }
 
     @Override
-    public ItemStack getNewResult(Player crafter, ItemBuilder item) {
-        return item.copy().type(material).get();
+    public ItemStack getNewResult(ModifierContext context) {
+        return context.getItem().copy().type(material).get();
     }
 
     @Override

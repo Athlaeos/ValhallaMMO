@@ -269,8 +269,8 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                                 hand :
                                 recipe.getTinkerInput().getItem()) :
                         recipe.getResult()).clone();
-                ResultChangingModifier changingModifier = (ResultChangingModifier) recipe.getModifiers().stream().filter(m -> m instanceof ResultChangingModifier r).findFirst().orElse(null);
-                if (changingModifier != null) button = changingModifier.getNewResult(playerMenuUtility.getOwner(), new ItemBuilder(button));
+                ResultChangingModifier changingModifier = (ResultChangingModifier) recipe.getModifiers().stream().filter(m -> m instanceof ResultChangingModifier).findFirst().orElse(null);
+                if (changingModifier != null) button = changingModifier.getNewResult(ModifierContext.builder(new ItemBuilder(button)).crafter(playerMenuUtility.getOwner()).get());
                 List<String> lore = new ArrayList<>(recipe.getDescription() == null ?
                         defaultFormat :
                         Arrays.asList(recipe.getDescription().split("/n"))

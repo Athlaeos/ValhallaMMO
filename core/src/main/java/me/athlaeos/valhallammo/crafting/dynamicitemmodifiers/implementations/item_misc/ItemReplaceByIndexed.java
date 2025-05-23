@@ -33,8 +33,8 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
     }
 
     @Override
-    public ItemStack getNewResult(Player crafter, ItemBuilder i) {
-        return item == null ? null : CustomItemRegistry.getProcessedItem(item, crafter);
+    public ItemStack getNewResult(ModifierContext context) {
+        return item == null ? null : CustomItemRegistry.getProcessedItem(item, context.getCrafter());
     }
 
     @Override

@@ -30,7 +30,7 @@ public class ItemReplace extends DynamicItemModifier implements ResultChangingMo
     }
 
     @Override
-    public ItemStack getNewResult(Player crafter, ItemBuilder item) {
+    public ItemStack getNewResult(ModifierContext context) {
         return replaceBy;
     }
 
