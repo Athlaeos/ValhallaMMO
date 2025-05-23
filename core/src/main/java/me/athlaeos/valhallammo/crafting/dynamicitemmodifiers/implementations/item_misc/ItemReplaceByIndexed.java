@@ -98,7 +98,7 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
 
     @Override
     public String parseCommand(CommandSender executor, String[] args) {
-        if (args.length < 3) return "One argument is expected: the name of the item";
+        if (args.length < 1) return "One argument is expected: the name of the item";
         item = args[0];
         return null;
     }

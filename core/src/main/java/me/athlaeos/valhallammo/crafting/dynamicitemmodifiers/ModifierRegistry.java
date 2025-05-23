@@ -157,6 +157,7 @@ public class ModifierRegistry {
         register(new ItemUnbreakable("unbreakable"));
         register(new ItemWeightClass("weight_class"));
         register(new ItemReplaceByIndexed("replace_by_custom"));
+        register(new ItemReplaceByIndexedBasedOnQuality("replace_by_custom_quality_based"));
         register(new PlayerSignatureAdd("signature"));
         register(new SmithingNeutralQualitySet("smithing_neutral_quality_set"));
         register(new SmithingQualityAdd("smithing_quality_add"));
@@ -206,6 +207,9 @@ public class ModifierRegistry {
         register(new BaitValueSet("bait_power"));
 
         register(new ArmorSetSet("armor_set"));
+
+        register(new MerchantSmithingQualitySet("merchant_smithing_skill"));
+        register(new MerchantAlchemyQualitySet("merchant_alchemy_skill"));
     }
 
     public static void register(DynamicItemModifier m) {
