@@ -6,9 +6,9 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import org.bukkit.command.CommandSender;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -32,7 +32,7 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier implements Res
     }
 
     @Override
-    public ItemStack getNewResult(Player crafter, ItemBuilder item) {
+    public ItemStack getNewResult(ModifierContext context) {
         return replaceBy;
     }
 
