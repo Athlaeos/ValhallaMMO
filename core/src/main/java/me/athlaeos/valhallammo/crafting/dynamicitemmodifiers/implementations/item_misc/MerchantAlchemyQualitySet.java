@@ -6,7 +6,6 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.trading.dom.MerchantLevel;

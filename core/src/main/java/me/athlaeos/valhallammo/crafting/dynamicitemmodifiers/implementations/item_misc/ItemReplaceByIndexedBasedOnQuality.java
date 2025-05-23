@@ -1,9 +1,6 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc;
 
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.*;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.*;
@@ -11,9 +8,9 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -53,12 +50,12 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
     }
 
     @Override
-    public ItemStack getNewResult(Player crafter, ItemBuilder item) {
+    public ItemStack getNewResult(ModifierContext context) {
         int skill = switch (skillToScaleWith) {
-            case "SMITHING" -> SmithingItemPropertyManager.getQuality(item.getMeta());
-            case "ALCHEMY" -> AlchemyItemPropertyManager.getQuality(item.getMeta());
-            case "ENCHANTING" -> (int) (AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", crafter, 10000, true) * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", crafter, 10000, true)));
-            default -> ProfileCache.getOrCache(crafter, SkillRegistry.getSkill(skillToScaleWith).getProfileType()).getLevel();
+            case "SMITHING" -> SmithingItemPropertyManager.getQuality(context.getItem().getMeta());
+            case "ALCHEMY" -> AlchemyItemPropertyManager.getQuality(context.getItem().getMeta());
+            case "ENCHANTING" -> (int) (AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, true) * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", context.getCrafter(), 10000, true)));
+            default -> ProfileCache.getOrCache(context.getCrafter(), SkillRegistry.getSkill(skillToScaleWith).getProfileType()).getLevel();
         };
         List<Integer> sortedQualities = new ArrayList<>(items.keySet());
         sortedQualities.sort(Comparator.comparingInt(i -> i));
@@ -68,7 +65,7 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
             highestItem = i;
         }
         String customItem = items.get(highestItem);
-        return customItem == null ? item.get() : CustomItemRegistry.getProcessedItem(customItem, crafter);
+        return customItem == null ? context.getItem().get() : CustomItemRegistry.getProcessedItem(customItem, context.getCrafter());
     }
 
     @Override
@@ -89,7 +86,7 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
             if (currentItem == null) this.items.remove(currentQuality);
             else this.items.put(currentQuality, currentItem);
         }
-        if (button == 17){
+        if (button == 16){
             List<String> skills = new ArrayList<>(SkillRegistry.getAllSkillsByType().keySet());
             skills.sort(Comparator.comparingInt(s -> SkillRegistry.getSkill(s).getSkillTreeMenuOrderPriority()));
             int currentSkill = skills.indexOf(skillToScaleWith);
@@ -147,12 +144,21 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
                                         "&7replaced with " + currentItem,
                                         "&6Click to cycle")
                                 .get()),
-                new Pair<>(17,
+                new Pair<>(18,
                         new ItemBuilder(Material.CHEST)
                                 .name("&fCurrent Setup")
                                 .lore("&fThe item transforms accordingly:")
                                 .appendLore(lore)
-                                .get())
+                                .get()),
+                new Pair<>(16, new ItemBuilder(Material.BOOK)
+                        .name("&fSkill to use")
+                        .lore(String.format("&fSet to: &e%s", StringUtils.toPascalCase(skillToScaleWith)),
+                                "&fSets which skill should be used",
+                                "&fto define the scaling's strength",
+                                "&eSmithing and Alchemy are exceptions",
+                                "&fwhere they base %rating% off of the",
+                                "&fitem's quality instead of player skill",
+                                "&6Click to cycle").get())
         ));
     }
 
