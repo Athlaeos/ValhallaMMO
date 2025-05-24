@@ -41,9 +41,6 @@ public class ModifierContext {
         if (o == null) return null;
         return (T) o;
     }
-    public void setOtherType(Object o){
-        otherArgs.put(o.getClass(), o);
-    }
 
     public static class ModifierContextBuilder{
         private final ModifierContext context;
@@ -69,6 +66,10 @@ public class ModifierContext {
         public ModifierContextBuilder validate(){ context.shouldValidate = true; return this; }
         public ModifierContextBuilder executeUsageMechanics(){ context.executeUsageMechanics = true; return this; }
         public ModifierContextBuilder item(ItemBuilder item){ context.item = item; return this; }
+        public ModifierContextBuilder setOtherType(Object o){
+            context.otherArgs.put(o.getClass(), o);
+            return this;
+        }
         public ModifierContext get(){ return this.context; }
     }
 }
