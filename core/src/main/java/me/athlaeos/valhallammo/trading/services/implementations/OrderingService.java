@@ -2,7 +2,6 @@ package me.athlaeos.valhallammo.trading.services.implementations;
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.RelativeToOtherEntityModifier;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -40,11 +39,7 @@ public class OrderingService extends Service {
                     if (trade == null) continue;
                     for (int i = 0; i < quantity; i++){
                         ItemBuilder result = new ItemBuilder(trade.getResult());
-
-                        for (DynamicItemModifier modifier : trade.getModifiers()){
-                            if (modifier instanceof RelativeToOtherEntityModifier r) r.process(menu.getPlayerMenuUtility().getOwner(), data.getVillager(), result, true, true, 1);
-                        }
-                        DynamicItemModifier.modify(ModifierContext.builder(result).entity(data.getVillager()).crafter(menu.getPlayerMenuUtility().getOwner()).executeUsageMechanics().validate().get(), trade.getModifiers());
+                        DynamicItemModifier.modify(ModifierContext.builder(result).setOtherType(data).entity(data.getVillager()).crafter(menu.getPlayerMenuUtility().getOwner()).executeUsageMechanics().validate().get(), trade.getModifiers());
                         if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
                         toReceive.add(result.get());
                     }

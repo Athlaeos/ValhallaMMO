@@ -13,7 +13,6 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -118,13 +117,13 @@ public class TransformItemMaterial extends DynamicItemModifier implements Result
     }
 
     @Override
-    public ItemStack getNewResult(Player crafter, ItemBuilder item) {
-        EquipmentClass equipmentClass = EquipmentClass.getMatchingClass(item.getMeta());
-        if (equipmentClass == null) return item.get();
+    public ItemStack getNewResult(ModifierContext context) {
+        EquipmentClass equipmentClass = EquipmentClass.getMatchingClass(context.getItem().getMeta());
+        if (equipmentClass == null) return context.getItem().get();
         Material transformTo = classToMaterialMapping.getOrDefault(materialPrefix, new HashMap<>()).get(equipmentClass);
-        if (transformTo == null) return item.get();
+        if (transformTo == null) return context.getItem().get();
 
-        item.type(transformTo);
-        return item.get();
+        context.getItem().type(transformTo);
+        return context.getItem().get();
     }
 }

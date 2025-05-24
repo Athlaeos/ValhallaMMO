@@ -1,8 +1,7 @@
 package me.athlaeos.valhallammo.trading.menu;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.RelativeToOtherEntityModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ExactChoice;
 import me.athlaeos.valhallammo.gui.Menu;
@@ -197,12 +196,9 @@ public class ServiceOrderingMenu extends Menu {
                 }
                 ItemBuilder result = new ItemBuilder(trade.getResult());
 
-                for (DynamicItemModifier modifier : trade.getModifiers()){
-                    if (modifier instanceof RelativeToOtherEntityModifier r) r.process(playerMenuUtility.getOwner(), data.getVillager(), result, false, true, 1);
-                }
                 ResultChangingModifier changingModifier = (ResultChangingModifier) trade.getModifiers().stream().filter(m -> m instanceof ResultChangingModifier).findFirst().orElse(null);
                 if (changingModifier != null) {
-                    ItemStack resultItem = changingModifier.getNewResult(playerMenuUtility.getOwner(), result);
+                    ItemStack resultItem = changingModifier.getNewResult(ModifierContext.builder(result).crafter(playerMenuUtility.getOwner()).validate().get());
                     if (!ItemUtils.isEmpty(resultItem)) result = new ItemBuilder(resultItem);
                 }
                 if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
