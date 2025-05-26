@@ -152,7 +152,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder placeholderLore(String placeholder, String replaceWith){
-        return lore(ItemUtils.setListPlaceholder(meta.hasLore() && meta.getLore() != null ? meta.getLore() : new ArrayList<>(), placeholder, replaceWith));
+        return lore(ItemUtils.setListPlaceholder(lore != null ? lore : new ArrayList<>(), placeholder, replaceWith));
     }
 
     public ItemBuilder appendLore(String... lore){
