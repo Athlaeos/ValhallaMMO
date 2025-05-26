@@ -1,4 +1,4 @@
-package me.athlaeos.valhallammo.trading.services.implementations;
+package me.athlaeos.valhallammo.trading.services.type_implementations;
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
@@ -9,17 +9,20 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
+import me.athlaeos.valhallammo.trading.menu.MerchantServicesMenu;
+import me.athlaeos.valhallammo.trading.menu.ServiceMenu;
 import me.athlaeos.valhallammo.trading.menu.ServiceOrderingMenu;
 import me.athlaeos.valhallammo.trading.services.Service;
-import me.athlaeos.valhallammo.trading.menu.ServiceMenu;
+import me.athlaeos.valhallammo.trading.services.ServiceType;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderingService extends Service {
+public class OrderingService extends ServiceType {
     private final DynamicButton button = Catch.catchOrElse(() -> new DynamicButton(CustomMerchantManager.getTradingConfig().getString("service_button_type_ordering", "")), null);
     @Override
     public String getID() {
@@ -27,7 +30,7 @@ public class OrderingService extends Service {
     }
 
     @Override
-    public void onSelect(InventoryClickEvent e, ServiceMenu menu, MerchantData data) {
+    public void onServiceSelect(InventoryClickEvent e, ServiceMenu menu, Service service, MerchantData data) {
         MerchantData.OrderData pendingOrder = data.getPendingOrders().get(menu.getPlayerMenuUtility().getOwner().getUniqueId());
         if (pendingOrder != null) {
             if (pendingOrder.shouldReceive()) {
@@ -50,21 +53,38 @@ public class OrderingService extends Service {
 
                 menu.getPlayerMenuUtility().getOwner().closeInventory();
                 data.getPendingOrders().remove(menu.getPlayerMenuUtility().getOwner().getUniqueId());
-            } else if (e.isShiftClick()) new ServiceOrderingMenu(menu.getPlayerMenuUtility(), data).open();
-        } else new ServiceOrderingMenu(menu.getPlayerMenuUtility(), data).open();
+            } else if (e.isShiftClick()) {
+                ServiceOrderingMenu m = new ServiceOrderingMenu(menu.getPlayerMenuUtility(), data);
+                if (m.getOrderableTrades().isEmpty()) {
+                    if (data.getVillager() instanceof Villager villager) villager.shakeHead();
+                } else m.open();
+            }
+        } else {
+            ServiceOrderingMenu m = new ServiceOrderingMenu(menu.getPlayerMenuUtility(), data);
+            if (m.getOrderableTrades().isEmpty()) {
+                if (data.getVillager() instanceof Villager villager) villager.shakeHead();
+            } else m.open();
+        }
     }
 
     @Override
-    public ItemStack getButtonIcon(ServiceMenu menu, MerchantData data) {
+    public ItemStack getButtonIcon(ServiceMenu menu, Service service, MerchantData data) {
         MerchantData.OrderData pendingOrder = data.getPendingOrders().get(menu.getPlayerMenuUtility().getOwner().getUniqueId());
+        List<String> value = pendingOrder == null ? CustomMerchantManager.getTradingConfig().getStringList("service_button_description_ordering") :
+                (pendingOrder.shouldReceive() ? CustomMerchantManager.getTradingConfig().getStringList("service_button_description_ordering_ready") :
+                        CustomMerchantManager.getTradingConfig().getStringList("service_button_description_ordering_pending"));
+
         return button.get(ButtonSize.defaultFromButtonCount(menu.getServices().size()))
                 .name(TranslationManager.translatePlaceholders(CustomMerchantManager.getTradingConfig().getString("service_button_name_ordering")))
                 .lore(TranslationManager.translateListPlaceholders(
-                        pendingOrder == null ? CustomMerchantManager.getTradingConfig().getStringList("service_button_description_ordering") :
-                                (pendingOrder.shouldReceive() ? CustomMerchantManager.getTradingConfig().getStringList("service_button_description_ordering_ready") :
-                                        CustomMerchantManager.getTradingConfig().getStringList("service_button_description_ordering_pending"))
+                        value
                 ))
                 .placeholderLore("%time%", pendingOrder == null ? "" : ServiceOrderingMenu.timeFormat(pendingOrder.getRemainingTime()))
                 .get();
+    }
+
+    @Override
+    public void onTypeConfigurationSelect(InventoryClickEvent e, Service service, MerchantServicesMenu menu) {
+        // do nothing, ordering services are not configurable
     }
 }

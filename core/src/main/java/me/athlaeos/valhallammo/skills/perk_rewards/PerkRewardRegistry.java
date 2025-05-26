@@ -9,6 +9,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.implementations.AlchemySkill;
+import me.athlaeos.valhallammo.trading.CustomMerchantManager;
+import me.athlaeos.valhallammo.trading.services.ServiceRegistry;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.entity.Player;
@@ -97,6 +99,14 @@ public class PerkRewardRegistry {
         register(new ProfileStringListRemove("martialarts_meditation_buffs_remove", "meditationBuffs", MartialArtsProfile.class));
         register(new ProfileStringListAdd("martialarts_dropkick_damage_type_add", "dropKickDamageType", MartialArtsProfile.class));
         register(new ProfileStringListRemove("martialarts_dropkick_damage_type_remove", "dropKickDamageType", MartialArtsProfile.class));
+        register(new ProfileStringListAdd("trading_services_unlock", "unlockedServices", TradingProfile.class));
+        register(new ProfileStringListFill("trading_services_unlock_all", "unlockedServices", TradingProfile.class, ServiceRegistry.getServices()::keySet));
+        register(new ProfileStringListRemove("trading_services_lock", "unlockedServices", TradingProfile.class));
+        register(new ProfileStringListClear("trading_services_lock_all", "unlockedServices", TradingProfile.class));
+        register(new ProfileStringListAdd("exclusive_trades_unlock", "exclusiveTrades", TradingProfile.class));
+        register(new ProfileStringListRemove("exclusive_trades_lock", "exclusiveTrades", TradingProfile.class));
+        register(new ProfileStringListFill("exclusive_trades_unlock_all", "exclusiveTrades", TradingProfile.class, CustomMerchantManager.getRegisteredMerchantTrades()::keySet));
+        register(new ProfileStringListClear("exclusive_trades_lock_all", "exclusiveTrades", TradingProfile.class));
         register(new FlightReward());
         register(new FlightRemoveReward());
     }

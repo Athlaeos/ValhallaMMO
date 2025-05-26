@@ -2,10 +2,7 @@ package me.athlaeos.valhallammo.trading.dom;
 
 import me.athlaeos.valhallammo.dom.Weighted;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 public class MerchantType implements Weighted {
     private final String type;
@@ -22,6 +19,7 @@ public class MerchantType implements Weighted {
             MerchantLevel.EXPERT, new MerchantLevelTrades(160, 2, 0, new HashSet<>()),
             MerchantLevel.MASTER, new MerchantLevelTrades(640, 2, 0, new HashSet<>())
     ));
+    private final Collection<String> services = new HashSet<>(Set.of("trading", "ordering"));
 
     public MerchantType(String type){
         this.type = type;
@@ -38,6 +36,7 @@ public class MerchantType implements Weighted {
     public boolean resetsTradesDaily() { return resetTradesDaily; }
     public boolean isPerPlayerStock() { return perPlayerStock; }
     public double getWeight() { return weight; }
+    public Collection<String> getServices() { return services; }
 
     @Override
     public double getWeight(double luck, double fortune) {

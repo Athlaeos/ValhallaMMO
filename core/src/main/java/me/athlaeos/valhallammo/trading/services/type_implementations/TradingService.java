@@ -1,15 +1,17 @@
-package me.athlaeos.valhallammo.trading.services.implementations;
+package me.athlaeos.valhallammo.trading.services.type_implementations;
 
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
-import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantConfiguration;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
+import me.athlaeos.valhallammo.trading.menu.MerchantServicesMenu;
+import me.athlaeos.valhallammo.trading.menu.ServiceMenu;
 import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
 import me.athlaeos.valhallammo.trading.merchants.implementations.SimpleMerchant;
 import me.athlaeos.valhallammo.trading.services.Service;
-import me.athlaeos.valhallammo.trading.menu.ServiceMenu;
-import org.bukkit.Material;
+import me.athlaeos.valhallammo.trading.services.ServiceType;
 import org.bukkit.entity.AbstractVillager;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -18,23 +20,17 @@ import org.bukkit.inventory.MerchantRecipe;
 
 import java.util.List;
 
-public class TradingService extends Service {
-    private final Villager.Profession profession;
-
-    public TradingService(Villager.Profession profession){
-        this.profession = profession;
-    }
+public class TradingService extends ServiceType {
+    private final DynamicButton button = Catch.catchOrElse(() -> new DynamicButton(CustomMerchantManager.getTradingConfig().getString("service_button_type_trading", "")), null);
 
     @Override
     public String getID() {
-        return "TRADING_" + (profession == null ? "TRAVELING" : profession);
+        return "TRADING";
     }
 
     @Override
-    public void onSelect(InventoryClickEvent e, ServiceMenu menu, MerchantData data) {
+    public void onServiceSelect(InventoryClickEvent e, ServiceMenu menu, Service service, MerchantData data) {
         AbstractVillager v = data.getVillager();
-        if (v instanceof Villager villager && villager.getProfession() != profession) return;
-        else if (!(v instanceof Villager) && profession != null) return;
         MerchantConfiguration configuration = v instanceof Villager villager ? CustomMerchantManager.getMerchantConfigurations().get(villager.getProfession()) : CustomMerchantManager.getTravelingMerchantConfiguration();
         if (configuration == null || configuration.getMerchantTypes().isEmpty()) return;
         List<MerchantRecipe> recipes = CustomMerchantManager.recipesFromData(data, menu.getPlayerMenuUtility().getOwner());
@@ -53,13 +49,16 @@ public class TradingService extends Service {
     }
 
     @Override
-    public ItemStack getButtonIcon(ServiceMenu serviceMenu, MerchantData data) {
-        return new ItemBuilder(Material.LIME_DYE)
-                .name("&aTrade")
-                .lore("&8Trade with this man")
-                .data(serviceMenu.getServices().size() <= 3 ? 9199201 :
-                        serviceMenu.getServices().size() <= 6 ? 9199202 :
-                                9199203)
-                .get();
+    public ItemStack getButtonIcon(ServiceMenu menu, Service service, MerchantData data) {
+        return button.get(ButtonSize.defaultFromButtonCount(menu.getServices().size()))
+                .name(TranslationManager.translatePlaceholders(CustomMerchantManager.getTradingConfig().getString("service_button_name_trading")))
+                .lore(TranslationManager.translateListPlaceholders(
+                                        CustomMerchantManager.getTradingConfig().getStringList("service_button_description_trading"))
+                ).get();
+    }
+
+    @Override
+    public void onTypeConfigurationSelect(InventoryClickEvent e, Service service, MerchantServicesMenu menu) {
+        // do nothing, trading services are not configurable
     }
 }

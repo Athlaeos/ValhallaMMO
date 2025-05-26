@@ -206,3 +206,5 @@ editor_trading_trade_refreshes: BONE_MEAL:-1
 editor_trading_trade_skillexperience: KNOWLEDGE_BOOK:-1
 editor_trading_trade_tradeable: EMERALD:-1
 editor_trading_trade_orderable: FILLED_MAP:-1
+
+order_confirm: LIME_DYE:9199199
