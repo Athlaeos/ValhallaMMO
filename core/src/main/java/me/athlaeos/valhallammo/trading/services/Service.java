@@ -9,7 +9,7 @@ public abstract class Service {
         this.type = type.getID();
     }
 
-    public String getId() { return id; }
+    public String getID() { return id; }
     public String getType() { return type; }
     public ServiceType getServiceType(){
         return ServiceRegistry.getServiceType(type);

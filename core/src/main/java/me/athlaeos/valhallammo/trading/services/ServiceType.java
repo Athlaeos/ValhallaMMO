@@ -9,14 +9,14 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public abstract class ServiceType {
+public abstract class ServiceType<T extends Service> {
     public abstract String getID();
 
-    public abstract void onServiceSelect(InventoryClickEvent e, ServiceMenu menu, Service service, MerchantData data);
+    public abstract void onServiceSelect(InventoryClickEvent e, ServiceMenu menu, T service, MerchantData data);
 
-    public abstract ItemStack getButtonIcon(ServiceMenu serviceMenu, Service service, MerchantData data);
+    public abstract ItemStack getButtonIcon(ServiceMenu serviceMenu, T service, MerchantData data);
 
-    public abstract void onTypeConfigurationSelect(InventoryClickEvent e, Service service, MerchantServicesMenu menu);
+    public abstract void onTypeConfigurationSelect(InventoryClickEvent e, T service, MerchantServicesMenu menu);
 
     public static class DynamicButton {
         private final Material baseMaterial;

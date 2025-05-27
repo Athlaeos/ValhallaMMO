@@ -38,6 +38,8 @@ order_delivery_time: 168000 # Duration after placing an order for the order to b
 order_discount_start: 10 # Minimum amount of items required to purchase before they start getting discounted
 order_discount_rate: 0.01 # Discount per additional item after order_discount_start
 order_discount_max: 0.2 # Maximum discount based on the items ordered
+order_time_per_trade: 0.3 # Each different trade (above 1) multiplies the delivery time by the given amount (default +30% per trade)
+order_time_per_item: 0.05 # Each individual item (above 1) multiplies the delivery time by the given amount (default +5% per item bought)
 
 demand_decay_per_day: 0.5 # Every time a trade is made the trade's "demand" stat increases, and this decays per day. This determines by how much it is reduced.
 # For example, if a trade has been traded 20 times, a decay rate of 0.5 means the demand will be 10 the next day, 5 the day after, then 2, etc.

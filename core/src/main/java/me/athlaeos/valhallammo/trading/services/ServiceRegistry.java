@@ -13,11 +13,16 @@ public class ServiceRegistry {
     private static final Map<String, ServiceType> serviceTypes = new HashMap<>();
     private static final Map<String, Service> services = new HashMap<>();
 
+    public static final ServiceType SERVICE_TRADING = new TradingService();
+    public static final ServiceType SERVICE_ORDERING = new OrderingService();
+    public static final ServiceType SERVICE_TRAINING = new TrainingService();
+    public static final ServiceType SERVICE_UPGRADING = new UpgradingService();
+
     static {
-        registerType(new TradingService());
-        registerType(new OrderingService());
-        registerType(new TrainingService());
-        registerType(new UpgradingService());
+        registerType(SERVICE_TRADING);
+        registerType(SERVICE_ORDERING);
+        registerType(SERVICE_TRAINING);
+        registerType(SERVICE_UPGRADING);
 
         registerService(new PlainService("trading", getServiceType("TRADING")));
         registerService(new PlainService("ordering", getServiceType("ORDERING")));
@@ -40,7 +45,7 @@ public class ServiceRegistry {
     }
 
     public static void registerService(Service service) {
-        services.put(service.getId(), service);
+        services.put(service.getID(), service);
     }
 
     public static Map<String, Service> getServices() {
