@@ -157,7 +157,7 @@ public class ItemBuilder {
 
     public ItemBuilder appendLore(String... lore){
         if (lore == null) return this;
-        return appendLore(Arrays.asList(lore));
+        return appendLore(new ArrayList<>(Arrays.asList(lore)));
     }
 
     public ItemBuilder prependLore(String... lore){
