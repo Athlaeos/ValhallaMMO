@@ -17,14 +17,21 @@ public class EntityCache {
 
     public static EntityProperties getAndCacheProperties(LivingEntity entity){
         attemptCacheCleanup();
-        return cachedProperties.compute(entity.getUniqueId(), (uuid, cached) -> {
-            Long lastCache = lastCacheRefreshMap.get(uuid);
-            if (lastCache == null || lastCache + CACHE_REFRESH_DELAY <= System.currentTimeMillis() || cached == null) {
-                lastCacheRefreshMap.put(uuid, System.currentTimeMillis());
-                return EntityUtils.getEntityProperties(entity, true, true, true);
-            }
-            return cached;
-        });
+        Long lastCached = lastCacheRefreshMap.get(entity.getUniqueId());
+        EntityProperties cached = cachedProperties.get(entity.getUniqueId());
+        if (lastCached == null || cached == null || lastCached + CACHE_REFRESH_DELAY <= System.currentTimeMillis()) {
+            lastCacheRefreshMap.put(entity.getUniqueId(), System.currentTimeMillis());
+            cachedProperties.put(entity.getUniqueId(), EntityUtils.getEntityProperties(entity, true, true, true));
+        }
+        return cachedProperties.get(entity.getUniqueId());
+//        return cachedProperties.compute(entity.getUniqueId(), (uuid, cached) -> {
+//            Long lastCache = lastCacheRefreshMap.get(uuid);
+//            if (lastCache == null || lastCache + CACHE_REFRESH_DELAY <= System.currentTimeMillis() || cached == null) {
+//                lastCacheRefreshMap.put(uuid, System.currentTimeMillis());
+//                return EntityUtils.getEntityProperties(entity, true, true, true);
+//            }
+//            return cached;
+//        });
     }
 
     public static void resetHands(LivingEntity entity){
