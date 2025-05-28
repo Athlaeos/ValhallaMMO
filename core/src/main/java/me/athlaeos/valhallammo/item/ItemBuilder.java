@@ -128,7 +128,7 @@ public class ItemBuilder {
 
     public ItemBuilder lore(String... lore){
         if (lore == null) return this;
-        return lore(Arrays.asList(lore));
+        return lore(new ArrayList<>(Arrays.asList(lore)));
     }
 
     public ItemBuilder appendLore(List<String> lore){
@@ -162,7 +162,7 @@ public class ItemBuilder {
 
     public ItemBuilder prependLore(String... lore){
         if (lore == null) return this;
-        return prependLore(Arrays.asList(lore));
+        return prependLore(new ArrayList<>(Arrays.asList(lore)));
     }
 
     public List<String> getLore(){
