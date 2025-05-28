@@ -103,7 +103,7 @@ public class MartialArtsSkill extends Skill implements Listener {
         ConfigurationSection answerSection = skillConfig.getConfigurationSection("meditation_answer");
         if (answerSection != null){
             for (String answer : answerSection.getKeys(false)){
-                meditationPromptAnswer.put(answer, skillConfig.getString("meditation_answer." + answer, ""));
+                meditationPromptAnswer.put(answer, TranslationManager.translatePlaceholders(skillConfig.getString("meditation_answer." + answer, "")));
             }
         }
 
