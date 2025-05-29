@@ -889,12 +889,12 @@ public class PotionEffectRegistry {
         }
 
         public PotionTypeEffectWrapper aB(int amplifier){
-            this.amplifierBase = amplifier * 20;
+            this.amplifierBase = amplifier;
             return this;
         }
 
         public PotionTypeEffectWrapper aU(int amplifier){
-            this.amplifierUpgraded = amplifier * 20;
+            this.amplifierUpgraded = amplifier;
             return this;
         }
 
