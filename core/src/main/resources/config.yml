@@ -106,6 +106,8 @@ enabled_skills:
   armor_light: true
   armor_heavy: true
   archery: true
+  martial_arts: true
+  trading: true
 
 # The plugin features customizable mining speeds, which requires packet listening and sending to work. If you have other
 # plugins that affect block mining speed, they will clash! Turn this off if you're absolutely sure you want to use the other

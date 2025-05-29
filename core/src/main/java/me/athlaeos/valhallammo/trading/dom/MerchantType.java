@@ -19,7 +19,7 @@ public class MerchantType implements Weighted {
             MerchantLevel.EXPERT, new MerchantLevelTrades(160, 2, 0, new HashSet<>()),
             MerchantLevel.MASTER, new MerchantLevelTrades(640, 2, 0, new HashSet<>())
     ));
-    private final Collection<String> services = new HashSet<>(Set.of("trading", "ordering"));
+    private final Collection<String> services = new HashSet<>(Set.of("trading"));
 
     public MerchantType(String type){
         this.type = type;

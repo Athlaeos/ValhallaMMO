@@ -165,6 +165,7 @@ editor_trading_subtype_trades: EMERALD:-1
 editor_trading_subtype_weight: DIAMOND:-1
 editor_trading_subtype_perplayerstock: ENDER_CHEST:-1
 editor_trading_subtype_realistic: FLINT_AND_STEEL:-1
+editor_trading_subtype_services: IRON_PICKAXE:-1
 editor_trading_trades_novice_rolls: COPPER_INGOT:-1
 editor_trading_trades_novice_rollquality: LAPIS_LAZULI:-1
 editor_trading_trades_novice_exprequirement: EXPERIENCE_BOTTLE:-1

@@ -76,7 +76,6 @@ public class Space implements HappinessSource, Listener {
     public float get(Player contextPlayer, Entity entity) {
         if (happinessCache.containsKey(entity.getUniqueId())) return happinessCache.get(entity.getUniqueId());
         Collection<Block> vein = BlockUtils.getBlockVein(entity.getLocation().getBlock().getRelative(BlockFace.DOWN), freeSpace + 1, this::isFreeBlock, freedomScanArea);
-        System.out.println("living space is " + vein.size());
         float happiness = 0;
 
         if (vein.size() >= freeSpace) happiness = freeHappiness;

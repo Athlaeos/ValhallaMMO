@@ -335,7 +335,6 @@ public class MerchantListener implements Listener {
                         Map<UUID, MerchantData.MerchantPlayerMemory> memory = new HashMap<>(d.getPlayerMemory());
                         d = CustomMerchantManager.createMerchant(v.getUniqueId(), type, e.getPlayer());
                         d.getPlayerMemory().putAll(memory);
-                        System.out.println("refreshed trades due to version change");
                     } else if (d != null && type != null && d.getDay() != CustomMerchantManager.today()) {
                         Map<String, MerchantData.TradeData> newData = new HashMap<>();
                         Map<String, MerchantData.TradeData> currentData = d.getTrades();
@@ -351,7 +350,6 @@ public class MerchantListener implements Listener {
                                 trade.setLastTraded(entry.getLastTraded());
                                 newData.put(trade.getTrade(), trade);
                             }
-                            System.out.println("reset trades due to daily reset");
                         } else {
                             for (MerchantData.TradeData trade : currentData.values()){
                                 MerchantTrade t = CustomMerchantManager.getTrade(trade.getTrade());
@@ -367,19 +365,16 @@ public class MerchantListener implements Listener {
                                 trade.setItem(newResult.getItem());
                                 newData.put(trade.getTrade(), trade);
                             }
-                            System.out.println("updated trades due to day change");
                         }
                         d.getTrades().clear();
                         d.getTrades().putAll(newData);
                     }
                     if ((d == null && convertAllVillagers) || type == null) {
                         d = CustomMerchantManager.convertToRandomMerchant(v, e.getPlayer());
-                        System.out.println("applied data because it was absent");
-                    } else System.out.println("did not apply data because it was not null");
+                    }
                     if (d == null) {
                         cancelMerchantInventory.remove(v.getUniqueId());
                         e.getPlayer().openMerchant(v, true);
-                        System.out.println("no data created");
                         return;
                     }
                     int today = CustomMerchantManager.today();
@@ -400,7 +395,6 @@ public class MerchantListener implements Listener {
                     }
 
                     ServiceMenu menu = new ServiceMenu(PlayerMenuUtilManager.getPlayerMenuUtility(e.getPlayer()), d);
-                    System.out.println("service count: " + menu.getServices().size());
                     if (menu.getServices().size() > 1) menu.open();
                     else if (!menu.getServices().isEmpty()) menu.getServices().get(0).getServiceType().onServiceSelect(null, menu, menu.getServices().get(0), d);
                     else if (v instanceof Villager villager) villager.shakeHead();

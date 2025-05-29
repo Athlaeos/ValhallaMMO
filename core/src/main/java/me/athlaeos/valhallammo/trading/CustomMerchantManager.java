@@ -130,8 +130,7 @@ public class CustomMerchantManager {
                 int boundMax = t.getPriceRandomPositiveOffset() - t.getPriceRandomNegativeOffset();
                 int randomOffset = boundMax <= 0 ? 0 : (Utils.getRandom().nextInt(boundMax) + t.getPriceRandomNegativeOffset());
                 int price = Math.max(1, Math.min(ValhallaMMO.getNms().getMaxStackSize(cost.getMeta(), cost.getItem().getType()), cost.getItem().getAmount() + randomOffset));
-
-                trades.add(new MerchantData.TradeData(t.getID(), level.getLevel(), price, result.get(), t.getMaxUses()));
+                trades.add(new MerchantData.TradeData(t.getID(), price, level.getLevel(), result.get(), t.getMaxUses()));
             });
         }
         return trades;
@@ -184,7 +183,6 @@ public class CustomMerchantManager {
         }
         AbstractVillager villager = data.getVillager();
         float happiness = villager == null ? 0F : HappinessSourceRegistry.getHappiness(player, villager);
-        System.out.println("happiness: " + happiness);
         float renown = data.getPlayerMemory(player.getUniqueId()).getRenownReputation();
         double expVanillaToCustomModifier = (double) level.getDefaultExpRequirement() / type.getExpRequirement(level);
         for (MerchantTrade trade : trades){
@@ -200,8 +198,7 @@ public class CustomMerchantManager {
             int uses = (finalMaxUses - finalRemainingUses);
             double price = tradeData.getBasePrice();
 
-            price = Math.min(trade.getDemandPriceMax(), price * (1 + (tradeData.getDemand() * trade.getDemandPriceMultiplier())));
-
+            price = Math.min(price + trade.getDemandPriceMax(), price * (1 + (tradeData.getDemand() * trade.getDemandPriceMultiplier())));
             double discount = discountFormula == null ? 0 : Utils.eval(discountFormula
                     .replace("%happiness%", String.valueOf(happiness))
                     .replace("%renown%", String.valueOf(renown))

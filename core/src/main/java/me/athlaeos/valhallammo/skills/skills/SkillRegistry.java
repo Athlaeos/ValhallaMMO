@@ -35,8 +35,8 @@ public class SkillRegistry {
          registerIfConfigEnabled("armor_heavy", new HeavyArmorSkill("HEAVY_ARMOR"));
          registerIfConfigEnabled("weapons_light", new LightWeaponsSkill("LIGHT_WEAPONS"));
          registerIfConfigEnabled("weapons_heavy", new HeavyWeaponsSkill("HEAVY_WEAPONS"));
-        registerIfConfigEnabled("martial_arts", new MartialArtsSkill("MARTIAL_ARTS"));
-        registerIfConfigEnabled("trading", new MartialArtsSkill("TRADING"));
+         registerIfConfigEnabled("martial_arts", new MartialArtsSkill("MARTIAL_ARTS"));
+         registerIfConfigEnabled("trading", new TradingSkill("TRADING"));
     }
 
     private static void registerIfConfigEnabled(String key, Skill skill){

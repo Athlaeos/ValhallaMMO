@@ -31,15 +31,8 @@ service_button_type_investing: LIME_DYE/9199218/9199217/9199216
 
 customize_all_villagers: false # If true, if an interacted villager does not have a custom trading configuration, they will be given one
 # If false, the villager will need to explicitly be given one with a command
-
+# TODO test again
 delay_until_working: 24000 # When a villager gets a profession, it will take this duration (in game ticks, 1 ingame day by default) for them to start trading
-
-order_delivery_time: 168000 # Duration after placing an order for the order to become available (default 1 in-game week)
-order_discount_start: 10 # Minimum amount of items required to purchase before they start getting discounted
-order_discount_rate: 0.01 # Discount per additional item after order_discount_start
-order_discount_max: 0.2 # Maximum discount based on the items ordered
-order_time_per_trade: 0.3 # Each different trade (above 1) multiplies the delivery time by the given amount (default +30% per trade)
-order_time_per_item: 0.05 # Each individual item (above 1) multiplies the delivery time by the given amount (default +5% per item bought)
 
 demand_decay_per_day: 0.5 # Every time a trade is made the trade's "demand" stat increases, and this decays per day. This determines by how much it is reduced.
 # For example, if a trade has been traded 20 times, a decay rate of 0.5 means the demand will be 10 the next day, 5 the day after, then 2, etc.

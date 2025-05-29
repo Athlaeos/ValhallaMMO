@@ -20,6 +20,8 @@ import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantLevel;
 import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
 import me.athlaeos.valhallammo.trading.dom.MerchantType;
+import me.athlaeos.valhallammo.trading.services.Service;
+import me.athlaeos.valhallammo.trading.services.ServiceRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -169,6 +171,10 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                             }
                         };
                         Questionnaire.startQuestionnaire((Player) e.getWhoClicked(), questionnaire);
+                    }
+                    case "subtypeServicesButton" -> {
+                        new MerchantServicesMenu(playerMenuUtility, this, currentSubType).open();
+                        return;
                     }
                     case "subtypeVersionButton" -> currentSubType.setVersion(Math.max(0, currentSubType.getVersion() + ((e.isShiftClick() ? 5 : 1) * (e.isLeftClick() ? 1 : -1))));
                     case "subtypeRealisticButton" -> currentSubType.setResetTradesDaily(!currentSubType.resetsTradesDaily());
@@ -426,12 +432,16 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     inventory.setItem(11, new ItemBuilder(Buttons.subtypeRealisticButton).name("&fDaily Resets: " + (currentSubType.resetsTradesDaily() ? "Yes" : "No")).get());
                     inventory.setItem(13, new ItemBuilder(Buttons.subtypeProfessionLossButton).name("&fPermanent Profession: " + (currentSubType.canLoseProfession() ? "No" : "Yes")).get());
                     inventory.setItem(15, new ItemBuilder(Buttons.subtypePerPlayerStockButton).name("&fPer Player Stock: " + (currentSubType.isPerPlayerStock() ? "Yes" : "No")).get());
-                    inventory.setItem(30, new ItemBuilder(Buttons.subtypeWeightButton)
+                    List<String> validServices = new ArrayList<>();
+                    for (String service : currentSubType.getServices())
+                        if (ServiceRegistry.getService(service) != null) validServices.add(service);
+                    inventory.setItem(29, new ItemBuilder(Buttons.subtypeServicesButton).prependLore("&eCurrently has " + validServices.size() + " services", "").get());
+                    inventory.setItem(31, new ItemBuilder(Buttons.subtypeWeightButton)
                             .name("&fWeight: " + currentSubType.getWeight())
                             .prependLore(
                                     String.format("&7Chance of occurrence: &e%.1f%% &7(&e%.1f&7)", Math.max(0, Math.min(100, (currentSubType.getWeight() / totalWeight) * 100)), currentSubType.getWeight())
                             ).get());
-                    inventory.setItem(32, new ItemBuilder(Buttons.subtypeTradesButton)
+                    inventory.setItem(33, new ItemBuilder(Buttons.subtypeTradesButton)
                             .prependLore(
                                     "&7Trades:",
                                     "    &7Novice:        &e" + currentSubType.getTrades().get(MerchantLevel.NOVICE).getTrades().size(),
@@ -767,6 +777,19 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                                 "",
                                 "&6Click to edit")
                         .stringTag(KEY_BUTTON, "subtypeNameButton")
+                        .get();
+        private static final ItemStack subtypeServicesButton =
+                new ItemBuilder(getButtonData("editor_trading_subtype_services", Material.IRON_PICKAXE))
+                        .name("&fServices")
+                        .lore("&7The merchant's available services.",
+                                "&7If the player only has 1 unlocked",
+                                "&7service, it will open automatically.",
+                                "&7If the player has several, a different",
+                                "&7menu showing all of them will open",
+                                "&7of which the player needs to select one",
+                                "",
+                                "&6Click to edit")
+                        .stringTag(KEY_BUTTON, "subtypeServicesButton")
                         .get();
         private static final ItemStack subtypeVersionButton =
                 new ItemBuilder(getButtonData("editor_trading_subtype_version", Material.REDSTONE_TORCH))

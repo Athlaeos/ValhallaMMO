@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.trading.services.type_implementations;
 
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantConfiguration;
@@ -11,7 +12,9 @@ import me.athlaeos.valhallammo.trading.menu.ServiceMenu;
 import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
 import me.athlaeos.valhallammo.trading.merchants.implementations.SimpleMerchant;
 import me.athlaeos.valhallammo.trading.services.Service;
+import me.athlaeos.valhallammo.trading.services.ServiceRegistry;
 import me.athlaeos.valhallammo.trading.services.ServiceType;
+import org.bukkit.Material;
 import org.bukkit.entity.AbstractVillager;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -60,5 +63,14 @@ public class TradingService extends ServiceType {
     @Override
     public void onTypeConfigurationSelect(InventoryClickEvent e, Service service, MerchantServicesMenu menu) {
         // do nothing, trading services are not configurable
+        if (service == null) menu.getType().getServices().add(ServiceRegistry.SERVICE_TRADING.getID());
+    }
+
+    @Override
+    public ItemStack getDefaultButton() {
+        return new ItemBuilder(Material.EMERALD)
+                .name("&aTrading")
+                .lore("&7Allows trading with a merchant")
+                .get();
     }
 }

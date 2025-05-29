@@ -2,7 +2,6 @@ package me.athlaeos.valhallammo.trading.services.service_implementations;
 
 import me.athlaeos.valhallammo.trading.services.Service;
 import me.athlaeos.valhallammo.trading.services.ServiceRegistry;
-import me.athlaeos.valhallammo.trading.services.ServiceType;
 
 public class OrderService extends Service {
     private long baseOrderTime = 12000;
@@ -13,7 +12,7 @@ public class OrderService extends Service {
     private float bulkMaxDiscount = 0.2F;
 
     public OrderService(String id) {
-        super(id, ServiceRegistry.SERVICE_ORDERING);
+        super(id, ServiceRegistry.SERVICE_TYPE_ORDERING);
     }
 
     public long getBaseOrderTime() { return baseOrderTime; }

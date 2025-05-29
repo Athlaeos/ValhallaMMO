@@ -18,6 +18,7 @@ import me.athlaeos.valhallammo.trading.dom.MerchantLevel;
 import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
 import me.athlaeos.valhallammo.trading.dom.MerchantType;
 import me.athlaeos.valhallammo.trading.happiness.HappinessSourceRegistry;
+import me.athlaeos.valhallammo.trading.services.service_implementations.OrderService;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
@@ -34,9 +35,6 @@ import java.util.*;
 public class ServiceOrderingMenu extends Menu {
     private static final NamespacedKey KEY_TRADE = new NamespacedKey(ValhallaMMO.getInstance(), "trade");
 
-    private static final int minimumPurchasesForDiscount = CustomMerchantManager.getTradingConfig().getInt("order_discount_start");
-    private static final float discountPerPurchase = (float) CustomMerchantManager.getTradingConfig().getDouble("order_discount_rate");
-    private static final float maxDiscount = (float) CustomMerchantManager.getTradingConfig().getDouble("order_discount_max");
     private static final int[] indexesCostSection = new int[]{
             0, 1, 2,
             9, 10, 11,
@@ -60,6 +58,7 @@ public class ServiceOrderingMenu extends Menu {
     private static final int[] indexesTrades = new int[]{46, 47, 48, 49, 50, 51, 52};
     private static final int indexNextPage = 53;
 
+    private final OrderService service;
     private final Map<String, Integer> orders = new HashMap<>();
     private final MerchantData data;
     private final float happiness;
@@ -67,9 +66,10 @@ public class ServiceOrderingMenu extends Menu {
     private int page = 0;
     private final List<MerchantTrade> orderableTrades = new ArrayList<>();
 
-    public ServiceOrderingMenu(PlayerMenuUtility playerMenuUtility, MerchantData data) {
+    public ServiceOrderingMenu(PlayerMenuUtility playerMenuUtility, OrderService service, MerchantData data) {
         super(playerMenuUtility);
         this.data = data;
+        this.service = service;
         this.happiness = data.getVillager() == null ? 0F : HappinessSourceRegistry.getHappiness(playerMenuUtility.getOwner(), data.getVillager());
         this.renown = data.getPlayerMemory(playerMenuUtility.getOwner().getUniqueId()).getRenownReputation();
 
@@ -127,16 +127,17 @@ public class ServiceOrderingMenu extends Menu {
                 ItemUtils.removeItems(playerMenuUtility.getOwner().getInventory(), totalItems, 1, new ExactChoice());
                 e.getWhoClicked().closeInventory();
                 TradingProfile profile = ProfileCache.getOrCache(playerMenuUtility.getOwner(), TradingProfile.class);
-                long orderTime = CustomMerchantManager.getTradingConfig().getLong("delivery_time");
-                orderTime = (long) (orderTime * (1 + profile.getOrderDeliverySpeedMultiplier()));
+                long orderTime = service.getBaseOrderTime() + (service.getOrderTimeBonusPerTrade() * orders.size());
 
                 MerchantData.OrderData existingOrder = data.getPendingOrders().get(playerMenuUtility.getOwner().getUniqueId());
                 if (existingOrder != null) {
                     for (String order : existingOrder.getOrder().keySet()){
-                        int orderCount = existingOrder.getOrder().get(order);
-                        orders.put(order, orders.getOrDefault(order, 0) + orderCount);
+                        int orderCount = orders.getOrDefault(order, 0) + existingOrder.getOrder().get(order);
+                        if (orderCount > 1) orderTime += ((orderCount - 1) * service.getOrderTimeBonusPerItem());
+                        orders.put(order, orderCount);
                     }
                 }
+                orderTime = (long) (orderTime * (1 + profile.getOrderDeliverySpeedMultiplier()));
                 data.getPendingOrders().put(playerMenuUtility.getOwner().getUniqueId(), new MerchantData.OrderData(orderTime, orders));
                 if (data.getVillager() != null) data.getVillager().getWorld().playSound(data.getVillager().getLocation(), Sound.ENTITY_VILLAGER_YES, 1F, 1F);
                 return;
@@ -191,7 +192,7 @@ public class ServiceOrderingMenu extends Menu {
             ItemBuilder item2 = ItemUtils.isEmpty(trade.getOptionalCostItem()) ? null : new ItemBuilder(trade.getOptionalCostItem());
             int quantity = orders.getOrDefault(trade.getID(), 0);
 
-            float bulkCostMultiplier = Math.max(0, 1 - (quantity <= minimumPurchasesForDiscount ? 0 : Math.min(maxDiscount, (quantity - minimumPurchasesForDiscount) * discountPerPurchase)));
+            float bulkCostMultiplier = Math.max(0, 1 - (quantity <= service.getBulkMinimumOrdersForDiscount() ? 0 : Math.min(service.getBulkMaxDiscount(), (quantity - service.getBulkMinimumOrdersForDiscount()) * service.getBulkDiscountPerItem())));
             float reputation = data.getPlayerMemory(playerMenuUtility.getOwner().getUniqueId()).getTradingReputation();
             if (reputation < 0) reputation *= trade.getNegativeReputationMultiplier();
             else if (reputation > 0) reputation *= trade.getPositiveReputationMultiplier();
@@ -255,7 +256,7 @@ public class ServiceOrderingMenu extends Menu {
             int quantity = orders.get(t);
             MerchantTrade trade = CustomMerchantManager.getTrade(t);
             if (quantity <= 0 || trade == null) continue;
-            float bulkCostMultiplier = Math.max(0, 1 - (quantity <= minimumPurchasesForDiscount ? 0 : Math.min(maxDiscount, (quantity - minimumPurchasesForDiscount) * discountPerPurchase)));
+            float bulkCostMultiplier = Math.max(0, 1 - (quantity <= service.getBulkMinimumOrdersForDiscount() ? 0 : Math.min(service.getBulkMaxDiscount(), (quantity - service.getBulkMinimumOrdersForDiscount()) * service.getBulkDiscountPerItem())));
             float reputation = data.getPlayerMemory(playerMenuUtility.getOwner().getUniqueId()).getTradingReputation();
             if (reputation < 0) reputation *= trade.getNegativeReputationMultiplier();
             else if (reputation > 0) reputation *= trade.getPositiveReputationMultiplier();

@@ -38,6 +38,7 @@ import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.tools.BlockHardnessStick;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.listeners.MerchantListener;
+import me.athlaeos.valhallammo.trading.services.ServiceRegistry;
 import me.athlaeos.valhallammo.utility.GlobalEffect;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -294,7 +295,10 @@ public class ValhallaMMO extends JavaPlugin {
         LeaderboardManager.loadFile();
         CustomRecipeRegistry.loadFiles();
         LootTableRegistry.loadFiles();
-        if (tradingSystemEnabled) CustomMerchantManager.loadAll();
+        if (tradingSystemEnabled) {
+            CustomMerchantManager.loadAll();
+            ServiceRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/trading/services.json"));
+        }
         ArmorSetRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/armor_sets.json"));
         CustomItemRegistry.loadFromFile(new File(ValhallaMMO.getInstance().getDataFolder(), "/items.json"));
         LeaderboardManager.refreshLeaderboards();
@@ -349,7 +353,10 @@ public class ValhallaMMO extends JavaPlugin {
         LootTableRegistry.saveAll();
         ArmorSetRegistry.saveArmorSets();
         CustomItemRegistry.saveItems();
-        if (tradingSystemEnabled) CustomMerchantManager.saveAll();
+        if (tradingSystemEnabled) {
+            CustomMerchantManager.saveAll();
+            ServiceRegistry.saveServices();
+        }
         GlobalEffect.saveActiveGlobalEffects();
         PartyManager.saveParties();
         JumpListener.onServerStop();

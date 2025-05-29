@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.trading.menu;
 
+import me.athlaeos.valhallammo.dom.Fetcher;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -60,7 +61,7 @@ public abstract class SimpleConfigurationMenu <T> extends Menu {
         inventory.setItem(INDEX_BACK, backToMenuButton);
         for (Integer slot : buttons.keySet()){
             Button b = buttons.get(slot);
-            inventory.setItem(slot, new ItemBuilder(b.appearance).name(b.name).lore(b.description).get());
+            inventory.setItem(slot, new ItemBuilder(b.appearance).name(b.name.get()).lore(b.description.get()).get());
         }
     }
 
@@ -73,10 +74,10 @@ public abstract class SimpleConfigurationMenu <T> extends Menu {
         protected final int position;
         protected final BiConsumer<T, InventoryClickEvent> onClick;
         protected final Material appearance;
-        protected final String name;
-        protected final List<String> description;
+        protected final Fetcher<String> name;
+        protected final Fetcher<List<String>> description;
 
-        protected Button(Material appearance, int pos, String name, List<String> description, BiConsumer<T, InventoryClickEvent> onClick){
+        protected Button(Material appearance, int pos, Fetcher<String> name, Fetcher<List<String>> description, BiConsumer<T, InventoryClickEvent> onClick){
             this.position = pos;
             this.appearance = appearance;
             this.name = name;
