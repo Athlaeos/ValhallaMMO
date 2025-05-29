@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.item.WeightClass;
 import me.athlaeos.valhallammo.listeners.MovementListener;
 import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
+import me.athlaeos.valhallammo.placeholder.placeholders.TotalRawStatPlaceholder;
 import me.athlaeos.valhallammo.placeholder.placeholders.TotalStatPlaceholder;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
@@ -303,6 +304,7 @@ public class AccumulativeStatManager {
         if (existingSource == null) {
             existingSource = new StatCollectorBuilder().addSources(s).build();
             PlaceholderRegistry.registerPlaceholder(new TotalStatPlaceholder("%stat_source_" + stat.toLowerCase(java.util.Locale.US) + "%", stat));
+            PlaceholderRegistry.registerPlaceholder(new TotalRawStatPlaceholder("%stat_source_raw_" + stat.toLowerCase(java.util.Locale.US) + "%", stat));
         } else existingSource.getStatSources().addAll(Arrays.asList(s));
         register(stat, existingSource);
     }
@@ -312,6 +314,7 @@ public class AccumulativeStatManager {
         if (existingSource == null) {
             existingSource = new StatCollectorBuilder().addSources(s).setAttackerPossessive().build();
             PlaceholderRegistry.registerPlaceholder(new TotalStatPlaceholder("%stat_source_" + stat.toLowerCase(java.util.Locale.US) + "%", stat));
+            PlaceholderRegistry.registerPlaceholder(new TotalRawStatPlaceholder("%stat_source_raw_" + stat.toLowerCase(java.util.Locale.US) + "%", stat));
         } else existingSource.getStatSources().addAll(Arrays.asList(s));
         register(stat, existingSource);
     }
