@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityExhaustionEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -23,9 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 
 public class ItemConsumptionListener implements Listener {
     private final Collection<UUID> cancelNextFoodEffects = new HashSet<>();
@@ -91,20 +90,30 @@ public class ItemConsumptionListener implements Listener {
         if (cancelNextFoodEvent.contains(e.getEntity().getUniqueId())) e.setCancelled(true);
     }
 
+//    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+//    public void onHungerChange(FoodLevelChangeEvent e){
+//        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
+//        if (e.getFoodLevel() < e.getEntity().getFoodLevel()){
+//            // entity lost hunger
+//            double chance = AccumulativeStatManager.getCachedStats("HUNGER_SAVE_CHANCE", e.getEntity(), 10000, true);
+//            if (chance >= 0){
+//                if (Utils.proc(e.getEntity(), chance, false)) e.setCancelled(true);
+//            } else {
+//                int foodDifference = e.getFoodLevel() - e.getEntity().getFoodLevel();
+//                // food lost is a negative integer
+//                foodDifference = Utils.randomAverage((double) foodDifference * -(1-chance));
+//                e.setFoodLevel(Math.max(0, Math.min(20, e.getEntity().getFoodLevel() - foodDifference)));
+//            }
+//        }
+//    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onHungerChange(FoodLevelChangeEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
-        if (e.getFoodLevel() < e.getEntity().getFoodLevel()){
-            // entity lost hunger
+    public void onHungerEvent(EntityExhaustionEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof Player p)) return;
+        if (e.getExhaustion() > 0){
             double chance = AccumulativeStatManager.getCachedStats("HUNGER_SAVE_CHANCE", e.getEntity(), 10000, true);
-            if (chance >= 0){
-                if (Utils.proc(e.getEntity(), chance, false)) e.setCancelled(true);
-            } else {
-                int foodDifference = e.getFoodLevel() - e.getEntity().getFoodLevel();
-                // food lost is a negative integer
-                foodDifference = Utils.randomAverage((double) foodDifference * -(1-chance));
-                e.setFoodLevel(Math.max(0, Math.min(20, e.getEntity().getFoodLevel() - foodDifference)));
-            }
+            float exhaustion = (float) (e.getExhaustion() * (1 / (1 + Math.max(-0.999F, chance))));
+            e.setExhaustion(exhaustion);
         }
     }
 
