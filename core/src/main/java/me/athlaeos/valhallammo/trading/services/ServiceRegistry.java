@@ -44,8 +44,8 @@ public class ServiceRegistry {
     static {
         registerType(SERVICE_TYPE_TRADING);
         registerType(SERVICE_TYPE_ORDERING);
-        registerType(SERVICE_TYPE_TRAINING);
-        registerType(SERVICE_TYPE_UPGRADING);
+//        registerType(SERVICE_TYPE_TRAINING);
+//        registerType(SERVICE_TYPE_UPGRADING);
 
         registerService(SERVICE_TRADING);
     }

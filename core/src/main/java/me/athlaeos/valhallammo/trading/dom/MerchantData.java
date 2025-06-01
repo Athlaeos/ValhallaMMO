@@ -138,7 +138,7 @@ public class MerchantData {
         private long lastTimeTraded = 0;
         private float tradingReputation;
         private float renownReputation;
-        private long lastTimeGifted = 0;
+        private long timeGiftable = 0;
         private final Map<String, Double> perPlayerTradesLeft = new HashMap<>();
         private final Collection<String> singleTimeGiftedTrades = new HashSet<>();
 
@@ -156,15 +156,15 @@ public class MerchantData {
         public boolean isGiftable(String trade){
             MerchantTrade t = CustomMerchantManager.getTrade(trade);
             if (t == null) return false;
-            if (t.isGiftable() == null) return !singleTimeGiftedTrades.contains(trade);
-            else return t.isGiftable() && lastTimeGifted < CustomMerchantManager.time();
+            if (t.getGiftWeight() < 0) return !singleTimeGiftedTrades.contains(trade);
+            else return t.getGiftWeight() > 0 && timeGiftable < CustomMerchantManager.time();
         }
 
         public void setCooldown(String trade, long cooldown){
             MerchantTrade t = CustomMerchantManager.getTrade(trade);
             if (t == null) return;
-            if (t.isGiftable() == null) singleTimeGiftedTrades.add(trade);
-            lastTimeGifted = CustomMerchantManager.time() + cooldown;
+            if (t.getGiftWeight() < 0) singleTimeGiftedTrades.add(trade);
+            timeGiftable = CustomMerchantManager.time() + cooldown;
         }
     }
 

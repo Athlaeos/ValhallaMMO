@@ -20,7 +20,6 @@ import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantLevel;
 import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
 import me.athlaeos.valhallammo.trading.dom.MerchantType;
-import me.athlaeos.valhallammo.trading.services.Service;
 import me.athlaeos.valhallammo.trading.services.ServiceRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -336,7 +335,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                 case "backToMenuButton" -> switchView(View.TRADES);
                 case "tradeRefreshesButton" -> currentTrade.setRefreshes(!currentTrade.refreshes());
                 case "tradeOrderableButton" -> currentTrade.setMaxOrderCount(currentTrade.getMaxOrderCount() + ((e.isShiftClick() ? 8 : 1) * (e.isLeftClick() ? 1 : -1)));
-                case "tradeGiftableButton" -> currentTrade.setGiftable(e.isShiftClick() ? null : (currentTrade.isGiftable() == null || !currentTrade.isGiftable()));
+                case "tradeGiftWeightButton" -> currentTrade.setGiftWeight((currentTrade.getGiftWeight() + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.1F : -0.1F))));
                 case "tradeSkillExperienceButton" -> currentTrade.setSkillExp(currentTrade.getSkillExp() + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 1 : -1)));
             }
         }
@@ -376,7 +375,6 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                 inventory.setItem(40, professionButton(Villager.Profession.FARMER));
                 inventory.setItem(41, professionButton(Villager.Profession.FISHERMAN));
                 inventory.setItem(42, professionButton(Villager.Profession.BUTCHER));
-
             }
             case SUBTYPES -> {
                 if (currentProfession != null || travelingMerchant){
@@ -567,7 +565,8 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     inventory.setItem(24, new ItemBuilder(Buttons.tradeModifierButton).placeholderLore("%modifiers%", modifierLore).get());
                     inventory.setItem(43, new ItemBuilder(Buttons.tradeExclusiveButton).prependLore("&7Currently &e" + (currentTrade.isExclusive() ? "On" : "Off")).get());
                     inventory.setItem(26, new ItemBuilder(Buttons.tradeOrderableButton).prependLore(String.format("&7Currently &e%d", currentTrade.getMaxOrderCount())).get());
-                    inventory.setItem(17, new ItemBuilder(Buttons.tradeGiftableButton).prependLore("&7Currently &e" + (currentTrade.isGiftable() == null ? "On, &cbut only once per player" : (currentTrade.isGiftable() ? "On" : "Off"))).get());
+                    String giftWeight = currentTrade.getGiftWeight() < 0 ? "&cCan only be gifted once per player" : currentTrade.getGiftWeight() == 0 ? "&eCannot be gifted" : "&aMay be gifted indefinitely";
+                    inventory.setItem(17, new ItemBuilder(Buttons.tradeGiftWeightButton).prependLore(String.format("&7Currently %s%.1f", currentTrade.getGiftWeight() < 0 ? "&c" : currentTrade.getGiftWeight() == 0 ? "&7" : "&a", Math.abs(currentTrade.getWeight())), giftWeight).get());
                 }
                 inventory.setItem(49, Buttons.backToMenuButton);
             }
@@ -1231,16 +1230,19 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                                 "&eShift-click to do so with the maximum bound")
                         .stringTag(KEY_BUTTON, "tradePriceRandomizerButton")
                         .get();
-        private static final ItemStack tradeGiftableButton =
+        private static final ItemStack tradeGiftWeightButton =
                 new ItemBuilder(getButtonData("editor_trading_trade_giftable", Material.DIAMOND))
-                        .name("&fGiftable")
+                        .name("&fGift Rarity")
                         .lore("",
-                                "&7If enabled, this trade may be randomly",
-                                "&7gifted to nice customers.",
-                                "&eClick to toggle",
-                                "&eShift-Click to make it so this trade",
-                                "&emay only be gifted once per player")
-                        .stringTag(KEY_BUTTON, "tradeGiftableButton")
+                                "&7Determines how rare the trade should",
+                                "&7be in the context of gifting.",
+                                "&cIf negative, the value is made positive,",
+                                "&cbut the trade may also be gifted just once",
+                                "&cper player.",
+                                "&7If 0, the trade cannot be gifted",
+                                "&eClick to increase/decrease by 0.1",
+                                "&eShift-Click to do so by 2.5")
+                        .stringTag(KEY_BUTTON, "tradeGiftWeightButton")
                         .get();
         private static final ItemStack tradeRefreshesButton =
                 new ItemBuilder(getButtonData("editor_trading_trade_refreshes", Material.DIAMOND))

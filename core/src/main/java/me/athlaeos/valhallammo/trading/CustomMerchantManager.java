@@ -119,7 +119,7 @@ public class CustomMerchantManager {
                     ValhallaMMO.logWarning("Merchant Type " + type.getType() + " had trade " + trade + " added to it, but it doesn't exist! Removed.");
                 }
             }
-            Collection<MerchantTrade> selectedTrades = new HashSet<>(merchantTrades.stream().filter(t -> t.getWeight() == -1).toList());
+            Collection<MerchantTrade> selectedTrades = new HashSet<>(merchantTrades.stream().filter(t -> t.getWeight() == -1 && t.isTradeable()).toList());
             merchantTrades.removeIf(t -> t.getWeight() == -1 || !t.isTradeable());
             selectedTrades.addAll(Utils.weightedSelection(merchantTrades, Utils.randomAverage(type.getRolls(level)), luck, 0));
             selectedTrades.forEach(t -> {

@@ -253,8 +253,7 @@ public class MerchantListener implements Listener {
                                 MerchantType.MerchantLevelTrades trades = type.getTrades(level);
                                 for (String tradeName : trades.getTrades()){
                                     MerchantTrade merchantTrade = CustomMerchantManager.getTrade(tradeName);
-                                    if (merchantTrade == null || !memory.isGiftable(tradeName) ||
-                                            merchantTrade.isGiftable() == null || merchantTrade.isGiftable() ||
+                                    if (merchantTrade == null || !memory.isGiftable(tradeName) || merchantTrade.getGiftWeight() == 0 ||
                                             (merchantTrade.isExclusive() && !profile.getExclusiveTrades().contains(tradeName)) ||
                                             trade.failsPredicates(trade.getPredicateSelection(), context)) continue;
                                     possibleGifts.add(merchantTrade);
@@ -277,8 +276,8 @@ public class MerchantListener implements Listener {
 
                                     villager.getWorld().playSound(villager.getEyeLocation(), Sound.ENTITY_VILLAGER_YES, 1F, 1F);
 
-                                    if (selectedGift.isGiftable() == null) memory.setCooldown(selectedGift.getID(), -1);
-                                    memory.setCooldown(selectedGift.getID(), cooldown);
+                                    if (selectedGift.getGiftWeight() < 0) memory.setCooldown(selectedGift.getID(), -1);
+                                    else memory.setCooldown(selectedGift.getID(), cooldown);
                                 }
                             }
                         }

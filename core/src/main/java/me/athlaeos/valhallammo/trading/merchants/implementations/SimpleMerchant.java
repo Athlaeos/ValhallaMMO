@@ -8,9 +8,12 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.TradingProfi
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
+import me.athlaeos.valhallammo.trading.dom.MerchantType;
 import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.AbstractVillager;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -59,6 +62,10 @@ public class SimpleMerchant extends VirtualMerchant {
 
     @Override
     public String getMenuName() {
-        return "test";
+        AbstractVillager villager = getData().getVillager();
+        MerchantType type = CustomMerchantManager.getMerchantType(getData().getType());
+        return Utils.chat(villager == null || villager.getCustomName() == null ?
+                type == null ? "" : type.getName() == null ? type.getType() : type.getName() :
+                villager.getCustomName());
     }
 }
