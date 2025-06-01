@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.item.CustomFlag;
@@ -260,7 +261,7 @@ public class MerchantListener implements Listener {
                                 }
                             }
 
-                            MerchantTrade selectedGift = Catch.catchOrElse(() -> Utils.weightedSelection(possibleGifts, 1, luck, 0).getFirst(), null);
+                            MerchantTrade selectedGift = giftSelection(possibleGifts);
                             if (selectedGift != null) {
                                 ItemBuilder gift = new ItemBuilder(selectedGift.getResult());
                                 DynamicItemModifier.modify(ModifierContext.builder(gift).crafter((Player) e.getWhoClicked()).executeUsageMechanics().entity(villager).validate().get(), selectedGift.getModifiers());
@@ -293,6 +294,27 @@ public class MerchantListener implements Listener {
                 }
             });
         });
+    }
+
+    private MerchantTrade giftSelection(Collection<MerchantTrade> entries){
+        // weighted selection
+        double totalWeight = 0;
+        List<MerchantTrade> selectedEntries = new ArrayList<>();
+        if (entries.isEmpty()) return null;
+        List<Pair<MerchantTrade, Double>> totalEntries = new ArrayList<>();
+        for (MerchantTrade entry : entries){
+            totalWeight += Math.abs(entry.getGiftWeight());
+            totalEntries.add(new Pair<>(entry, totalWeight));
+        }
+
+        double random = Utils.getRandom().nextDouble() * totalWeight;
+        for (Pair<MerchantTrade, Double> pair : totalEntries){
+            if (pair.getTwo() >= random) {
+                selectedEntries.add(pair.getOne());
+                break;
+            }
+        }
+        return selectedEntries.isEmpty() ? null : selectedEntries.get(0);
     }
 
     private int orbSize(int exp){
