@@ -351,9 +351,7 @@ public class ValhallaMMO extends JavaPlugin {
             if (Paper.class.isAssignableFrom(clazz)) {
                 paper = (Paper) clazz.getDeclaredConstructor().newInstance();
             }
-        } catch (Exception | Error e) {
-            e.printStackTrace();
-        }
+        } catch (Exception | Error ignored) {}
     }
 
     public static NMS getNms() {
