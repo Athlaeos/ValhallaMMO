@@ -1,5 +1,9 @@
 starting_perks:
-  trading_services_unlock_all: []
+  trading_services_unlock:
+    - trading
+    - ordering_quick
+    - ordering_normal
+    - ordering_slow
 
 experience:
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
@@ -29,37 +33,36 @@ messages:
 leveling_perks: []
 
 perks:
-  smithing_perk_1:
-    icon: OAK_PLANKS
-    coords: "3,5"
-    name: "<lang.smithing_perk_1_name>"
-    description: "<lang.smithing_perk_1_description>"
+  trading_perk_1:
+    icon: BARREL
+    coords: "2,6"
+    name: "<lang.trading_perk_1_name>"
+    description: "<lang.trading_perk_1_description>"
     cost: 1
     hidden: false
     required_lv: 0
     perk_rewards:
-      smithing_woodcraftingskill_add: 50
-      smithing_leathercraftingskill_add: 50
+      trading_tradingstockmultiplier_add: 0.2
     messages:
-      - "<lang.smithing_perk_1_messages>"
+      - "<lang.trading_perk_1_messages>"
     custom_model_data_unlockable: -1
     custom_model_data_unlocked: -1
     custom_model_data_visible: -1
-  smithing_perk_2:
-    icon: COBBLESTONE
-    coords: "2,7"
-    name: "<lang.smithing_perk_2_name>"
-    description: "<lang.smithing_perk_2_description>"
+  trading_perk_2a:
+    icon: LECTERN
+    coords: "0,5"
+    name: "<lang.trading_perk_2a_name>"
+    description: "<lang.trading_perk_2a_description>"
     cost: 1
     hidden: false
     required_lv: 20
     perk_rewards:
-      smithing_stonecraftingskill_add: 50
-      smithing_chaincraftingskill_add: 50
+      trading_tradingluck_add: 2
+      trading_ordermaxmultiplier_add: 0.25
     messages:
-      - "<lang.smithing_perk_2_messages>"
+      - "<lang.trading_perk_2a_messages>"
     requireperk_all:
-      - smithing_perk_1
+      - trading_perk_1
     connection_line:
       '1':
         position: '3,6'
@@ -71,38 +74,21 @@ perks:
         locked: GRAY_DYE:1172717
         unlockable: ORANGE_DYE:1172817
         unlocked: LIME_DYE:1172917
-  smithing_perk_3:
-    icon: IRON_INGOT
-    coords: "6,7"
-    name: "<lang.smithing_perk_3_name>"
-    description: "<lang.smithing_perk_3_description>"
+  trading_perk_3a:
+    icon: ENCHANTING_TABLE
+    coords: "0,3"
+    name: "<lang.trading_perk_3a_name>"
+    description: "<lang.trading_perk_3a_description>"
     cost: 1
     hidden: false
     required_lv: 40
     perk_rewards:
-      smithing_ironcraftingskill_add: 50
-      smithing_goldcraftingskill_add: 50
-      recipes_unlock:
-        - craft_diamond_helmet
-        - craft_diamond_chestplate
-        - craft_diamond_leggings
-        - craft_diamond_boots
-        - craft_diamond_sword
-        - craft_diamond_axe
-        - craft_diamond_pickaxe
-        - craft_diamond_shovel
-        - craft_diamond_hoe
-        - craft_diamond_warhammer
-        - craft_diamond_greataxe
-        - craft_diamond_spear
-        - craft_diamond_dagger
-        - craft_diamond_rapier
-        - craft_diamond_mace
-        - craft_diamond_knuckles
+      trading_merchantskillmultiplier_add: 0.2
+      trading_tradingstockmultiplier_add: 0.3
     messages:
-      - "<lang.smithing_perk_3_messages>"
+      - "<lang.trading_perk_3a_messages>"
     requireperk_all:
-      - smithing_perk_2
+      - trading_perk_2a
     connection_line:
       '1':
         position: '3,7'
@@ -119,11 +105,11 @@ perks:
         locked: GRAY_DYE:1172708
         unlockable: ORANGE_DYE:1172808
         unlocked: LIME_DYE:1172908
-  smithing_perk_4:
+  trading_perk_4:
     icon: DIAMOND
     coords: "5,5"
-    name: "<lang.smithing_perk_4_name>"
-    description: "<lang.smithing_perk_4_description>"
+    name: "<lang.trading_perk_4_name>"
+    description: "<lang.trading_perk_4_description>"
     cost: 1
     hidden: false
     required_lv: 60
@@ -131,9 +117,9 @@ perks:
       smithing_diamondcraftingskill_add: 50
       power_inventoryrepairingkeepenchanting_toggle: []
     messages:
-      - "<lang.smithing_perk_4_messages>"
+      - "<lang.trading_perk_4_messages>"
     requireperk_all:
-      - smithing_perk_3
+      - trading_perk_3
     connection_line:
       '1':
         position: '5,6'
@@ -145,20 +131,20 @@ perks:
         locked: GRAY_DYE:1172719
         unlockable: ORANGE_DYE:1172819
         unlocked: LIME_DYE:1172919
-  smithing_perk_5:
+  trading_perk_5:
     icon: NETHERITE_INGOT
     coords: "8,2"
-    name: "<lang.smithing_perk_5_name>"
-    description: "<lang.smithing_perk_5_description>"
+    name: "<lang.trading_perk_5_name>"
+    description: "<lang.trading_perk_5_description>"
     cost: 1
     hidden: false
     required_lv: 80
     perk_rewards:
       smithing_netheritecraftingskill_add: 50
     messages:
-      - "<lang.smithing_perk_5_messages>"
+      - "<lang.trading_perk_5_messages>"
     requireperk_all:
-      - smithing_perk_4
+      - trading_perk_4
     connection_line:
       '1':
         position: '5,4'
@@ -185,20 +171,20 @@ perks:
         locked: GRAY_DYE:1172718
         unlockable: ORANGE_DYE:1172818
         unlocked: LIME_DYE:1172918
-  smithing_perk_6:
+  trading_perk_6:
     icon: NETHER_STAR
     coords: "0,2"
-    name: "<lang.smithing_perk_6_name>"
-    description: "<lang.smithing_perk_6_description>"
+    name: "<lang.trading_perk_6_name>"
+    description: "<lang.trading_perk_6_description>"
     cost: 1
     hidden: false
     required_lv: 100
     perk_rewards:
       smithing_genericcraftingskill_add: 50
     messages:
-      - "<lang.smithing_perk_6_messages>"
+      - "<lang.trading_perk_6_messages>"
     requireperk_all:
-      - smithing_perk_5
+      - trading_perk_5
     connection_line:
       '1':
         position: '7,2'
@@ -235,11 +221,11 @@ perks:
         locked: GRAY_DYE:1172709
         unlockable: ORANGE_DYE:1172809
         unlocked: LIME_DYE:1172909
-  smithing_perk_prismarine:
+  trading_perk_prismarine:
     icon: PRISMARINE_SHARD
     coords: "3,3"
-    name: "<lang.smithing_perk_prismarine_name>"
-    description: "<lang.smithing_perk_prismarine_description>"
+    name: "<lang.trading_perk_prismarine_name>"
+    description: "<lang.trading_perk_prismarine_description>"
     cost: 1
     hidden: false
     required_lv: 70
@@ -248,14 +234,14 @@ perks:
       recipes_unlock:
         - craft_trident
     messages:
-      - "<lang.smithing_perk_prismarine_messages>"
+      - "<lang.trading_perk_prismarine_messages>"
     requireperk_all:
-      - smithing_perk_3
-  smithing_perk_enderic:
+      - trading_perk_3
+  trading_perk_enderic:
     icon: PHANTOM_MEMBRANE
     coords: "5,3"
-    name: "<lang.smithing_perk_enderic_name>"
-    description: "<lang.smithing_perk_enderic_description>"
+    name: "<lang.trading_perk_enderic_name>"
+    description: "<lang.trading_perk_enderic_description>"
     cost: 1
     hidden: false
     required_lv: 90
@@ -265,14 +251,14 @@ perks:
         - craft_elytra
         - craft_choral_leather
     messages:
-      - "<lang.smithing_perk_enderic_messages>"
+      - "<lang.trading_perk_enderic_messages>"
     requireperk_all:
-      - smithing_perk_4
-  smithing_perk_bows:
+      - trading_perk_4
+  trading_perk_bows:
     icon: BOW
     coords: "4,4"
-    name: "<lang.smithing_perk_bows_name>"
-    description: "<lang.smithing_perk_bows_description>"
+    name: "<lang.trading_perk_bows_name>"
+    description: "<lang.trading_perk_bows_description>"
     cost: 1
     other_levels_required:
       - ARCHERY:50
@@ -282,12 +268,12 @@ perks:
       smithing_bowcraftingskill_add: 50
       smithing_crossbowcraftingskill_add: 50
     messages:
-      - "<lang.smithing_perk_bows_messages>"
-  smithing_perk_ng1:
+      - "<lang.trading_perk_bows_messages>"
+  trading_perk_ng1:
     icon: TOTEM_OF_UNDYING
     coords: "4,6"
-    name: "<lang.smithing_perk_ng1_name>"
-    description: "<lang.smithing_perk_ng1_description>"
+    name: "<lang.trading_perk_ng1_name>"
+    description: "<lang.trading_perk_ng1_description>"
     cost: 0
     hidden: true
     required_lv: 100
@@ -297,29 +283,29 @@ perks:
       p:smithing_newgameplus_add: 1
       p:smithing_genericexpmultiplier_add: -0.5
       p:perks_permanently_unlocked_add:
-        - smithing_perk_ng1
+        - trading_perk_ng1
       p:perks_unlocked_remove:
-        - smithing_perk_ng1
+        - trading_perk_ng1
     messages:
-      - "<lang.smithing_perk_ng1_messages>"
-  smithing_perk_ng2:
+      - "<lang.trading_perk_ng1_messages>"
+  trading_perk_ng2:
     icon: TOTEM_OF_UNDYING
     coords: "4,6"
-    name: "<lang.smithing_perk_ng2_name>"
-    description: "<lang.smithing_perk_ng2_description>"
+    name: "<lang.trading_perk_ng2_name>"
+    description: "<lang.trading_perk_ng2_description>"
     cost: 0
     hidden: true
     required_lv: 100
     requireperk_all:
-      - smithing_perk_ng1
+      - trading_perk_ng1
     perk_rewards:
       reset_skill_smithing: 0
       p:smithing_genericcraftingskill_add: 50
       p:smithing_newgameplus_add: 1
       p:smithing_genericexpmultiplier_add: -0.17
       p:perks_permanently_unlocked_add:
-        - smithing_perk_ng2
+        - trading_perk_ng2
       p:perks_unlocked_remove:
-        - smithing_perk_ng2
+        - trading_perk_ng2
     messages:
-      - "<lang.smithing_perk_ng2_messages>"
+      - "<lang.trading_perk_ng2_messages>"
