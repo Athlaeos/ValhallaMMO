@@ -55,11 +55,11 @@ public class RedeemCommand implements TabExecutor {
 					Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_levels_redeemed"));
 				} else {
 					double amountToRedeem = Math.max(0, StringUtils.parseDouble(args[2]));
-					if (profile.getRedeemableExperiencePoints() < amountToRedeem){
+					if (profile.getRedeemableExperiencePoints() < amountToRedeem || Double.isNaN(amountToRedeem) || Double.isInfinite(amountToRedeem)){
 						Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_insufficient_exp_tokens").replace("%amount%", String.valueOf(profile.getRedeemableExperiencePoints())));
 						return true;
 					}
-					if (amountToRedeem == 0) return true;
+					if (amountToRedeem <= 0) return true;
 					skill.addEXP(p, amountToRedeem, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.REDEEM);
 					profile.setRedeemableExperiencePoints(profile.getRedeemableExperiencePoints() - amountToRedeem);
 					Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_exp_redeemed"));
