@@ -11,8 +11,8 @@ public class PerkConnectionIcon {
     private final int lockedData;
     private final int unlockableData;
     private final int unlockedData;
-    private final int x;
-    private final int y;
+    private int x;
+    private int y;
 
     public PerkConnectionIcon(Skill parentSkill, Perk parentPerk, int x, int y, Material lockedMaterial, Material unlockableMaterial, Material unlockedMaterial, int locked, int unlockable, int unlocked){
         this.parentSkill = parentSkill;
@@ -65,5 +65,13 @@ public class PerkConnectionIcon {
 
     public Perk getParentPerk() {
         return parentPerk;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
     }
 }

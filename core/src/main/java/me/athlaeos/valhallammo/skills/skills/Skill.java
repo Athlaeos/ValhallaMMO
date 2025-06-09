@@ -365,6 +365,40 @@ public abstract class Skill {
         } catch (IllegalArgumentException ignored) {
             this.expBarStyle = BarStyle.SEGMENTED_6;
         }
+
+        normalizePerkCoordinates();
+    }
+
+    private void normalizePerkCoordinates(){
+        int minX = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE, minY = Integer.MAX_VALUE, maxY = Integer.MIN_VALUE, offsetX = 0, offsetY = 0;
+        for (Perk perk : getPerks()){
+            minX = Math.min(perk.getX(), minX);
+            maxX = Math.max(perk.getX(), maxX);
+            minY = Math.min(perk.getY(), minY);
+            maxY = Math.max(perk.getY(), maxY);
+            for (PerkConnectionIcon line : perk.getConnectionLine()){
+                minX = Math.min(line.getX(), minX);
+                maxX = Math.max(line.getX(), maxX);
+                minY = Math.min(line.getY(), minY);
+                maxY = Math.max(line.getY(), maxY);
+            }
+        }
+        if (minX != 0) {
+            offsetX = -minX; // if the minimum value of x isn't 0, all perks should be offset by the amount that would make it 0.
+            for (Perk p : getPerks()) {
+                p.setX(p.getX() + offsetX);
+                for (PerkConnectionIcon i : p.getConnectionLine()) i.setX(i.getX() + offsetX);
+            }
+            centerX += offsetX;
+        }
+        if (minY != 0) {
+            offsetY = -minY; // same with the y values. after all that is done we're left with a normalized skill tree with all positive locations starting at 0,0
+            for (Perk p : getPerks()) {
+                p.setY(p.getY() + offsetY);
+                for (PerkConnectionIcon i : p.getConnectionLine()) i.setY(i.getY() + offsetY);
+            }
+            centerY += offsetY;
+        }
     }
 
     /**

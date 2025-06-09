@@ -12,9 +12,7 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Perk {
     private final String name;
@@ -25,11 +23,13 @@ public class Perk {
     private int customModelDataUnlocked = -1;
     private int customModelDataVisible = -1;
     private final Skill skill;
-    private final int x;
-    private final int y;
+    private int x;
+    private int y;
     private final boolean hiddenUntilRequirementsMet;
     private final Collection<ResourceExpense> expenses;
+    private final Map<Class<? extends ResourceExpense>, ResourceExpense> mappedExpenses = new HashMap<>();
     private final Collection<UnlockCondition> conditions;
+    private final Map<Class<? extends UnlockCondition>, UnlockCondition> mappedConditions = new HashMap<>();
     private final int levelRequirement;
     private final String permissionRequirement;
     private final List<PerkReward> rewards;
@@ -63,7 +63,9 @@ public class Perk {
         this.y = y;
         this.hiddenUntilRequirementsMet = hidden;
         this.expenses = expenses;
+        for (ResourceExpense expense : expenses) mappedExpenses.put(expense.getClass(), expense);
         this.conditions = conditions;
+        for (UnlockCondition condition : conditions) mappedConditions.put(condition.getClass(), condition);
         this.levelRequirement = levelRequirement;
         this.permissionRequirement = permissionRequirement;
         this.rewards = rewards;
@@ -257,5 +259,21 @@ public class Perk {
         for (ResourceExpense expense : expenses){
             if (expense.isRefundable()) expense.refund(p);
         }
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Map<Class<? extends ResourceExpense>, ResourceExpense> getMappedExpenses() {
+        return mappedExpenses;
+    }
+
+    public Map<Class<? extends UnlockCondition>, UnlockCondition> getMappedConditions() {
+        return mappedConditions;
     }
 }

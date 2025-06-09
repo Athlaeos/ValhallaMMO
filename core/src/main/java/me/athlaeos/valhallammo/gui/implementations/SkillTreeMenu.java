@@ -4,24 +4,19 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
-import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.skills.skills.Perk;
-import me.athlaeos.valhallammo.skills.skills.PerkConnectionIcon;
-import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
-import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
+import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpenseRegistry;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockCondition;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockConditionRegistry;
-import me.athlaeos.valhallammo.skills.skills.PerkRegistry;
-import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
+import me.athlaeos.valhallammo.skills.skills.*;
 import me.athlaeos.valhallammo.skills.skills.implementations.PowerSkill;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -30,7 +25,6 @@ import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -40,8 +34,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
-
-import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class SkillTreeMenu extends Menu {
     private static final NamespacedKey buttonKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_button_id");
@@ -366,28 +358,32 @@ public class SkillTreeMenu extends Menu {
                             continue;
                         }
 
-                        for (UnlockCondition condition : UnlockConditionRegistry.getConditions()) {
-                            if (l.contains("%" + condition.getValuePlaceholder() + "%")) {
-                                if (unlockedStatus == 0 && p.getConditions().contains(condition) && condition.getConditionMessages() != null && !condition.getConditionMessages().isEmpty())
-                                    lore.addAll(Utils.chat(condition.getConditionMessages()));
-                                continue upper;
-                            }
-                            if (l.contains("%" + condition.getFailurePlaceholder() + "%")) {
-                                if (unlockedStatus == 0 && p.getConditions().contains(condition) && !p.metConditionRequirements(target, false) && !StringUtils.isEmpty(condition.getFailedConditionMessage()))
-                                    lore.add(Utils.chat(condition.getFailedConditionMessage()));
+                        for (UnlockCondition condition : UnlockConditionRegistry.getConditionsSet()) {
+                            if (l.contains("%" + condition.getValuePlaceholder() + "%") || l.contains("%" + condition.getFailurePlaceholder() + "%")) {
+                                if (unlockedStatus == 0 && p.getMappedConditions().containsKey(condition.getClass())) {
+                                    UnlockCondition perkCondition = p.getMappedConditions().get(condition.getClass());
+                                    if (perkCondition == null) continue upper;
+                                    if (l.contains("%" + condition.getValuePlaceholder() + "%"))
+                                        lore.addAll(Utils.chat(perkCondition.getConditionMessages()));
+
+                                    if (l.contains("%" + condition.getFailurePlaceholder() + "%") && !p.metConditionRequirements(target, false) && !StringUtils.isEmpty(perkCondition.getFailedConditionMessage()))
+                                        lore.add(Utils.chat(perkCondition.getFailedConditionMessage()));
+                                }
                                 continue upper;
                             }
                         }
 
                         for (ResourceExpense expense : ResourceExpenseRegistry.getExpenses().values()) {
-                            if (l.contains(expense.getCostPlaceholder())) {
-                                if (unlockedStatus == 0 && p.getExpenses().contains(expense) && !StringUtils.isEmpty(expense.getCostMessage()))
-                                    lore.addAll(StringUtils.separateStringIntoLines(Utils.chat(expense.getCostMessage()), 40));
-                                continue upper;
-                            }
-                            if (l.contains(expense.getInsufficientCostPlaceholder())) {
-                                if (unlockedStatus == 0 && p.getExpenses().contains(expense) && !expense.canPurchase(target) && !StringUtils.isEmpty(expense.getInsufficientFundsMessage()))
-                                    lore.add(Utils.chat(expense.getInsufficientFundsMessage()));
+                            if (l.contains(expense.getCostPlaceholder()) || l.contains(expense.getInsufficientCostPlaceholder())) {
+                                if (unlockedStatus == 0 && p.getMappedExpenses().containsKey(expense.getClass())) {
+                                    ResourceExpense perkExpense = p.getMappedExpenses().get(expense.getClass());
+                                    if (perkExpense == null) continue upper;
+                                    if (l.contains(expense.getCostPlaceholder()) && !StringUtils.isEmpty(perkExpense.getCostMessage()))
+                                        lore.addAll(StringUtils.separateStringIntoLines(Utils.chat(perkExpense.getCostMessage()), 40));
+
+                                    if (l.contains(expense.getInsufficientCostPlaceholder()) && !perkExpense.canPurchase(target) && !StringUtils.isEmpty(perkExpense.getInsufficientFundsMessage()))
+                                        lore.add(Utils.chat(expense.getInsufficientFundsMessage()));
+                                }
                                 continue upper;
                             }
                         }
