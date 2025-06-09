@@ -6,7 +6,6 @@ import me.athlaeos.valhallammo.skills.perkunlockconditions.implementations.Singl
 import me.athlaeos.valhallammo.skills.perkunlockconditions.implementations.VersionMinimumRequirement;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class UnlockConditionRegistry {
     private static final Map<String, UnlockCondition> conditions = new HashMap<>();
@@ -18,8 +17,12 @@ public class UnlockConditionRegistry {
         register(new VersionMinimumRequirement());
     }
 
-    public static Collection<UnlockCondition> getConditions() {
+    public static Collection<UnlockCondition> getConditionsSet() {
         return new HashSet<>(conditions.values());
+    }
+
+    public static Map<String, UnlockCondition> getConditions() {
+        return conditions;
     }
 
     public static void register(UnlockCondition expense){
