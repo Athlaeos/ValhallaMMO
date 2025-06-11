@@ -146,6 +146,7 @@ public class MerchantData {
         public float getRenownReputation() { return renownReputation; }
         public float getTradingReputation() { return tradingReputation; }
         public long getLastTimeTraded() { return lastTimeTraded; }
+        public long getTimeGiftable() { return timeGiftable; }
         public Map<String, Double> getPerPlayerTradesLeft() { return perPlayerTradesLeft; }
         public void setLastTimeTraded(long lastTimeTraded) { this.lastTimeTraded = lastTimeTraded; }
         public void setTimesTraded(int timesTraded) { this.timesTraded = timesTraded; }

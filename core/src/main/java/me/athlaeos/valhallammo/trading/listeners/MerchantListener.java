@@ -239,7 +239,7 @@ public class MerchantListener implements Listener {
                 AbstractVillager villager = event.getMerchantData().getVillager();
                 MerchantData.MerchantPlayerMemory memory = event.getMerchantData().getPlayerMemory(e.getWhoClicked().getUniqueId());
 
-                if (villager != null && memory.getLastTimeTraded() < CustomMerchantManager.time() && !Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "cooldown_villager_gift")) {
+                if (villager != null && memory.getTimeGiftable() < CustomMerchantManager.time()) {
                     double giftChance = AccumulativeStatManager.getCachedRelationalStats("TRADING_GIFT_CHANCE", e.getWhoClicked(), data.getVillager(), 10000, true);
                     if (giftChance > 0 && Utils.proc(giftChance, finalTimesTraded, false)) {
                         Collection<MerchantTrade> possibleGifts = new HashSet<>();

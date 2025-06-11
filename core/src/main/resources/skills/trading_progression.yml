@@ -58,22 +58,22 @@ perks:
     required_lv: 20
     perk_rewards:
       trading_tradingluck_add: 2
-      trading_ordermaxmultiplier_add: 0.25
+      trading_merchantexperiencemultiplier_add: 0.25
     messages:
       - "<lang.trading_perk_2a_messages>"
     requireperk_all:
       - trading_perk_1
     connection_line:
       '1':
-        position: '3,6'
-        locked: GRAY_DYE:1172718
-        unlockable: ORANGE_DYE:1172818
-        unlocked: LIME_DYE:1172918
+        position: '1,6'
+        locked: GRAY_DYE:1172712
+        unlockable: ORANGE_DYE:1172812
+        unlocked: LIME_DYE:1172912
       '2':
-        position: '2,6'
-        locked: GRAY_DYE:1172717
-        unlockable: ORANGE_DYE:1172817
-        unlocked: LIME_DYE:1172917
+        position: '1,5'
+        locked: GRAY_DYE:1172715
+        unlockable: ORANGE_DYE:1172815
+        unlocked: LIME_DYE:1172915
   trading_perk_3a:
     icon: ENCHANTING_TABLE
     coords: "0,3"
@@ -83,195 +83,224 @@ perks:
     hidden: false
     required_lv: 40
     perk_rewards:
-      trading_merchantskillmultiplier_add: 0.2
-      trading_tradingstockmultiplier_add: 0.3
+      trading_orderdeliveryspeedmultiplier_add: 0.5
+      trading_ordermaxmultiplier_add: 0.25
     messages:
       - "<lang.trading_perk_3a_messages>"
     requireperk_all:
       - trading_perk_2a
     connection_line:
       '1':
-        position: '3,7'
-        locked: GRAY_DYE:1172709
-        unlockable: ORANGE_DYE:1172809
-        unlocked: LIME_DYE:1172909
-      '2':
-        position: '4,7'
-        locked: GRAY_DYE:1172707
-        unlockable: ORANGE_DYE:1172807
-        unlocked: LIME_DYE:1172907
-      '3':
-        position: '5,7'
-        locked: GRAY_DYE:1172708
-        unlockable: ORANGE_DYE:1172808
-        unlocked: LIME_DYE:1172908
-  trading_perk_4:
-    icon: DIAMOND
-    coords: "5,5"
-    name: "<lang.trading_perk_4_name>"
-    description: "<lang.trading_perk_4_description>"
+        position: '0,4'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  trading_perk_4a:
+    icon: ANVIL
+    coords: "0,1"
+    name: "<lang.trading_perk_4a_name>"
+    description: "<lang.trading_perk_4a_description>"
     cost: 1
     hidden: false
     required_lv: 60
     perk_rewards:
-      smithing_diamondcraftingskill_add: 50
-      power_inventoryrepairingkeepenchanting_toggle: []
+      trading_merchantskillmultiplier_add: 0.2
+      trading_tradingstockmultiplier_add: 0.3
     messages:
-      - "<lang.trading_perk_4_messages>"
+      - "<lang.trading_perk_4a_messages>"
     requireperk_all:
-      - trading_perk_3
+      - trading_perk_3a
     connection_line:
       '1':
-        position: '5,6'
-        locked: GRAY_DYE:1172716
-        unlockable: ORANGE_DYE:1172816
-        unlocked: LIME_DYE:1172916
-      '2':
-        position: '6,6'
-        locked: GRAY_DYE:1172719
-        unlockable: ORANGE_DYE:1172819
-        unlocked: LIME_DYE:1172919
-  trading_perk_5:
-    icon: NETHERITE_INGOT
-    coords: "8,2"
-    name: "<lang.trading_perk_5_name>"
-    description: "<lang.trading_perk_5_description>"
+        position: '0,2'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
+  trading_perk_5a:
+    icon: DIAMOND
+    coords: "2,2"
+    name: "<lang.trading_perk_5a_name>"
+    description: "<lang.trading_perk_5a_description>"
     cost: 1
     hidden: false
     required_lv: 80
     perk_rewards:
-      smithing_netheritecraftingskill_add: 50
+      trading_tradingluck_add: 3
+      trading_renowngiftchancemodifier_add: 0.0005
+      trading_reputationgiftchancemodifier_add: 0.0005
+      trading_tradegiftcooldown_add: 48000
     messages:
-      - "<lang.trading_perk_5_messages>"
+      - "<lang.trading_perk_5a_messages>"
     requireperk_all:
-      - trading_perk_4
-    connection_line:
-      '1':
-        position: '5,4'
-        locked: GRAY_DYE:1172717
-        unlockable: ORANGE_DYE:1172817
-        unlocked: LIME_DYE:1172917
-      '2':
-        position: '6,4'
-        locked: GRAY_DYE:1172722
-        unlockable: ORANGE_DYE:1172822
-        unlocked: LIME_DYE:1172922
-      '3':
-        position: '6,3'
-        locked: GRAY_DYE:1172721
-        unlockable: ORANGE_DYE:1172821
-        unlocked: LIME_DYE:1172921
-      '4':
-        position: '7,3'
-        locked: GRAY_DYE:1172707
-        unlockable: ORANGE_DYE:1172807
-        unlocked: LIME_DYE:1172907
-      '5':
-        position: '8,3'
-        locked: GRAY_DYE:1172718
-        unlockable: ORANGE_DYE:1172818
-        unlocked: LIME_DYE:1172918
+      - trading_perk_4a
   trading_perk_6:
     icon: NETHER_STAR
-    coords: "0,2"
+    coords: "2,0"
     name: "<lang.trading_perk_6_name>"
     description: "<lang.trading_perk_6_description>"
     cost: 1
     hidden: false
     required_lv: 100
     perk_rewards:
-      smithing_genericcraftingskill_add: 50
+      exclusive_trades_unlock:
+        - armorer_royal_diamond_helmet
+        - armorer_royal_diamond_chestplate
+        - armorer_royal_diamond_leggings
+        - armorer_royal_diamond_boots
+        - butcher_battle_burrito
+        - butcher_aegis_stroganoff
+        - butcher_wagyu_steak
+        - butcher_titanic_goulash
+        - cleric_bustling_fungus
+        - cleric_steelblossom
+        - cleric_shimmerleaf
+        - cleric_noxious_spores
+        - cleric_knightreed
+        - cleric_tutor_lotus
+        - farmer_apple_pie
+        - farmer_golden_apple_pie
+        - farmer_lembas_bread
+        - farmer_churro
+        - fisherman_caviar
+        - fisherman_salmon_en_croute
+        - fisherman_poached_lobster
+        - fisherman_uni_sushi
+        - fletcher_royal_bow
+        - fletcher_royal_crossbow
+        - fletcher_explosive_arrow
+        - fletcher_incendiary_arrow
+        - fletcher_unholy_arrow
     messages:
       - "<lang.trading_perk_6_messages>"
     requireperk_all:
       - trading_perk_5
     connection_line:
       '1':
-        position: '7,2'
-        locked: GRAY_DYE:1172708
-        unlockable: ORANGE_DYE:1172808
-        unlocked: LIME_DYE:1172908
+        position: '2,1'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
       '2':
-        position: '6,2'
-        locked: GRAY_DYE:1172707
-        unlockable: ORANGE_DYE:1172807
-        unlocked: LIME_DYE:1172907
+        position: '0,1'
+        locked: GRAY_DYE:1172713
+        unlockable: ORANGE_DYE:1172813
+        unlocked: LIME_DYE:1172913
       '3':
-        position: '5,2'
-        locked: GRAY_DYE:1172707
-        unlockable: ORANGE_DYE:1172807
-        unlocked: LIME_DYE:1172907
+        position: '1,1'
+        locked: GRAY_DYE:1172714
+        unlockable: ORANGE_DYE:1172814
+        unlocked: LIME_DYE:1172914
       '4':
-        position: '4,2'
-        locked: GRAY_DYE:1172707
-        unlockable: ORANGE_DYE:1172807
-        unlocked: LIME_DYE:1172907
+        position: '3,0'
+        locked: GRAY_DYE:1172715
+        unlockable: ORANGE_DYE:1172815
+        unlocked: LIME_DYE:1172915
       '5':
-        position: '3,2'
-        locked: GRAY_DYE:1172707
-        unlockable: ORANGE_DYE:1172807
-        unlocked: LIME_DYE:1172907
-      '6':
-        position: '2,2'
-        locked: GRAY_DYE:1172707
-        unlockable: ORANGE_DYE:1172807
-        unlocked: LIME_DYE:1172907
-      '7':
-        position: '1,2'
-        locked: GRAY_DYE:1172709
-        unlockable: ORANGE_DYE:1172809
-        unlocked: LIME_DYE:1172909
-  trading_perk_prismarine:
-    icon: PRISMARINE_SHARD
-    coords: "3,3"
-    name: "<lang.trading_perk_prismarine_name>"
-    description: "<lang.trading_perk_prismarine_description>"
+        position: '3,1'
+        locked: GRAY_DYE:1172716
+        unlockable: ORANGE_DYE:1172816
+        unlocked: LIME_DYE:1172916
+  trading_perk_2b:
+    icon: WRITABLE_BOOK
+    coords: "4,5"
+    name: "<lang.trading_perk_2b_name>"
+    description: "<lang.trading_perk_2b_description>"
     cost: 1
     hidden: false
-    required_lv: 70
+    required_lv: 20
     perk_rewards:
-      smithing_prismarinecraftingskill_add: 50
-      recipes_unlock:
-        - craft_trident
+      trading_services_unlock:
+        - training_smithing
+        - training_alchemy
+        - training_enchanting
+        - training_farming
+        - training_mining
+        - training_fishing
+        - training_woodcutting
+        - training_light_weapons
+        - training_heavy_weapons
+        - training_light_armor
+        - training_heavy_armor
+        - training_archery
     messages:
-      - "<lang.trading_perk_prismarine_messages>"
+      - "<lang.trading_perk_2b_messages>"
     requireperk_all:
-      - trading_perk_3
-  trading_perk_enderic:
-    icon: PHANTOM_MEMBRANE
-    coords: "5,3"
-    name: "<lang.trading_perk_enderic_name>"
-    description: "<lang.trading_perk_enderic_description>"
+      - trading_perk_1
+    '1':
+      position: '3,6'
+      locked: GRAY_DYE:1172714
+      unlockable: ORANGE_DYE:1172814
+      unlocked: LIME_DYE:1172914
+    '2':
+      position: '3,5'
+      locked: GRAY_DYE:1172713
+      unlockable: ORANGE_DYE:1172813
+      unlocked: LIME_DYE:1172913
+  trading_perk_3b:
+    icon: SMITHING_TABLE
+    coords: "4,3"
+    name: "<lang.trading_perk_3b_name>"
+    description: "<lang.trading_perk_3b_description>"
     cost: 1
     hidden: false
-    required_lv: 90
+    required_lv: 40
     perk_rewards:
-      smithing_endericcraftingskill_add: 50
-      recipes_unlock:
-        - craft_elytra
-        - craft_choral_leather
+      trading_services_unlock:
+        - upgrading_repair
+        - upgrading_enchant
+        - upgrading_weapons
+        - upgrading_armors
+        - upgrading_bows
     messages:
-      - "<lang.trading_perk_enderic_messages>"
+      - "<lang.trading_perk_3b_messages>"
     requireperk_all:
-      - trading_perk_4
-  trading_perk_bows:
-    icon: BOW
-    coords: "4,4"
-    name: "<lang.trading_perk_bows_name>"
-    description: "<lang.trading_perk_bows_description>"
+      - trading_perk_2b
+    '1':
+      position: '4,4'
+      locked: GRAY_DYE:1172700
+      unlockable: ORANGE_DYE:1172800
+      unlocked: LIME_DYE:1172900
+  trading_perk_4b:
+    icon: EMERALD
+    coords: "4,1"
+    name: "<lang.trading_perk_4b_name>"
+    description: "<lang.trading_perk_4b_description>"
     cost: 1
-    other_levels_required:
-      - ARCHERY:50
+    requireperk_all:
+      - trading_perk_3b
     hidden: false
-    required_lv: 50
+    required_lv: 60
     perk_rewards:
-      smithing_bowcraftingskill_add: 50
-      smithing_crossbowcraftingskill_add: 50
+      trading_servicediscount_add: 0.33
     messages:
-      - "<lang.trading_perk_bows_messages>"
+      - "<lang.trading_perk_4b_messages>"
+    '1':
+      position: '4,2'
+      locked: GRAY_DYE:1172700
+      unlockable: ORANGE_DYE:1172800
+      unlocked: LIME_DYE:1172900
+  trading_perk_5b:
+    icon: KNOWLEDGE_BOOK
+    coords: "2,4"
+    name: "<lang.trading_perk_5b_name>"
+    description: "<lang.trading_perk_5b_description>"
+    cost: 1
+    requireperk_all:
+      - trading_perk_4b
+    hidden: false
+    required_lv: 60
+    perk_rewards:
+      trading_merchantskillmultiplier_add: 0.3
+    messages:
+      - "<lang.trading_perk_5b_messages>"
+    '1':
+      position: '2,5'
+      locked: GRAY_DYE:1172700
+      unlockable: ORANGE_DYE:1172800
+      unlocked: LIME_DYE:1172900
   trading_perk_ng1:
     icon: TOTEM_OF_UNDYING
-    coords: "4,6"
+    coords: "2,3"
     name: "<lang.trading_perk_ng1_name>"
     description: "<lang.trading_perk_ng1_description>"
     cost: 0
@@ -279,9 +308,11 @@ perks:
     required_lv: 100
     perk_rewards:
       reset_skill_smithing: 0
-      p:smithing_genericcraftingskill_add: 50
-      p:smithing_newgameplus_add: 1
-      p:smithing_genericexpmultiplier_add: -0.5
+      p:trading_tradingstockmultiplier_add: 0.25
+      p:trading_merchantskillmultiplier_add: 0.25
+      p:trading_tradingluck_add: 2
+      p:trading_newgameplus_add: 1
+      p:trading_tradingexpmultiplier_add: -0.5
       p:perks_permanently_unlocked_add:
         - trading_perk_ng1
       p:perks_unlocked_remove:
@@ -290,7 +321,7 @@ perks:
       - "<lang.trading_perk_ng1_messages>"
   trading_perk_ng2:
     icon: TOTEM_OF_UNDYING
-    coords: "4,6"
+    coords: "2,3"
     name: "<lang.trading_perk_ng2_name>"
     description: "<lang.trading_perk_ng2_description>"
     cost: 0
@@ -300,9 +331,11 @@ perks:
       - trading_perk_ng1
     perk_rewards:
       reset_skill_smithing: 0
-      p:smithing_genericcraftingskill_add: 50
-      p:smithing_newgameplus_add: 1
-      p:smithing_genericexpmultiplier_add: -0.17
+      p:trading_tradingstockmultiplier_add: 0.25
+      p:trading_merchantskillmultiplier_add: 0.25
+      p:trading_tradingluck_add: 2
+      p:trading_newgameplus_add: 1
+      p:trading_tradingexpmultiplier_add: -0.17
       p:perks_permanently_unlocked_add:
         - trading_perk_ng2
       p:perks_unlocked_remove:
