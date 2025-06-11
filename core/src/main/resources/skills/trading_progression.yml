@@ -207,7 +207,7 @@ perks:
     description: "<lang.trading_perk_2b_description>"
     cost: 1
     hidden: false
-    required_lv: 20
+    required_lv: 101
     perk_rewards:
       trading_services_unlock:
         - training_smithing
@@ -243,7 +243,7 @@ perks:
     description: "<lang.trading_perk_3b_description>"
     cost: 1
     hidden: false
-    required_lv: 40
+    required_lv: 101
     perk_rewards:
       trading_services_unlock:
         - upgrading_repair
@@ -269,7 +269,7 @@ perks:
     requireperk_all:
       - trading_perk_3b
     hidden: false
-    required_lv: 60
+    required_lv: 101
     perk_rewards:
       trading_servicediscount_add: 0.33
     messages:
@@ -288,7 +288,7 @@ perks:
     requireperk_all:
       - trading_perk_4b
     hidden: false
-    required_lv: 60
+    required_lv: 101
     perk_rewards:
       trading_merchantskillmultiplier_add: 0.3
     messages:
