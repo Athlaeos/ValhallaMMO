@@ -75,7 +75,7 @@ public class MythicMobsHook extends PluginHook
             {
                 var entity = e.getEntity();
                 var mob = MythicBukkit.inst().getMobManager().getActiveMob(entity.getUniqueId());
-                if (mob.isEmpty() || mob.get().getType().getFaction().equalsIgnoreCase("Animals"))
+                if (mob.isEmpty() || mob.get().getType().getFaction() == null || mob.get().getType().getFaction().equalsIgnoreCase("Animals"))
                     return;
 
                 mob.get().setLevel(e.getLevel());

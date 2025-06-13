@@ -118,7 +118,7 @@ public class ItemBuilder {
 
     public ItemBuilder lore(List<String> lore){
         if (lore == null) return this;
-        this.lore = lore;
+        this.lore = new ArrayList<>(lore);
         return this;
     }
 
@@ -133,7 +133,7 @@ public class ItemBuilder {
 
     public ItemBuilder appendLore(List<String> lore){
         if (lore == null) return this;
-        List<String> l = this.lore == null ? new ArrayList<>() : this.lore;
+        List<String> l = this.lore == null ? new ArrayList<>() : new ArrayList<>(this.lore);
         l.addAll(lore);
         this.lore = l;
         return this;
