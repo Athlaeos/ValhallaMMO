@@ -1616,6 +1616,36 @@
     "material-iron-spear": "&fIron Spear",
     "material-diamond-spear": "&fDiamond Spear",
     "material-netherite-spear": "&fNetherite Spear",
+    "material-royal-diamond-helmet": "&bRoyal Diamond Helmet",
+    "material-royal-diamond-chestplate": "&bRoyal Diamond Chestplate",
+    "material-royal-diamond-leggings": "&bRoyal Diamond Leggings",
+    "material-royal-diamond-boots": "&bRoyal Diamond Boots",
+    "material-royal-royal-diamond-sword": "&bRoyal Diamond Sword",
+    "material-royal-diamond-axe": "&bRoyal Diamond Axe",
+    "material-royal-netherite-helmet": "&bRoyal Netherite Helmet",
+    "material-royal-netherite-chestplate": "&bRoyal Netherite Chestplate",
+    "material-royal-netherite-leggings": "&bRoyal Netherite Leggings",
+    "material-royal-netherite-boots": "&bRoyal Netherite Boots",
+    "material-royal-netherite-sword": "&bRoyal Netherite Sword",
+    "material-royal-netherite-axe": "&bRoyal Netherite Axe",
+    "material-assassins-hood": "&fAssassin's Hood",
+    "material-assassins-cloak": "&fAssassin's Cloak",
+    "material-assassins-leggings": "&fAssassin's Leggings",
+    "material-assassins-boots": "&fAssassin's Boots",
+    "material-royal-bow": "&bRoyal Bow",
+    "material-royal-crossbow": "&bRoyal Crossbow",
+    "material-battle-burrito": "&fBattle Burrito",
+    "material-aegis-stroganoff": "&fAegis Stroganoff",
+    "material-wagyu-steak": "&fWagyu Steak",
+    "material-titanic-goulash": "&fTitanic Goulash",
+    "material-apple-pie": "&fApple Pie",
+    "material-golden-apple-pie": "&fGolden Apple Pie",
+    "material-lembas-bread": "&fLembas Bread",
+    "material-churro": "&fChurro",
+    "material-caviar": "&fCaviar",
+    "material-salmon-en-croute": "&fSalmon en Croute",
+    "material-poached-lobster": "&fPoached Lobster",
+    "material-uni-sushi": "&fUni Sushi",
     "recipe-displayname-salvage": "&fSalvage %item%",
     "martialarts_perk_1_name": "&aHands of Stone",
     "martialarts_perk_1_description": "&7Grants you &a+{martialarts_damagebonus_add} &7extra unarmed damage",
@@ -1655,6 +1685,26 @@
     "woodcutting_perk_capitator_b_description": "&7Empowers Tree Capitator to a 128-block limit, and lowers cooldown to 3 seconds.",
     "woodcutting_perk_combo_name": "&aActive Lifestyle",
     "woodcutting_perk_combo_description": "&7Increases the nutritional value of many foods, reduces hunger consumption, and increases health regeneration",
+    "trading_perk_1_name": "&aBulk Buyer",
+    "trading_perk_1_description": "&7You may now buy a merchant's &etrades&7 &a{trading_tradingstockmultiplier_add} &7more before running out",
+    "trading_perk_2a_name": "&aFriendly Charisma",
+    "trading_perk_2a_description": "&7Merchants level &a{trading_merchantexperiencemultiplier_add} &7faster, and offer more &etrades",
+    "trading_perk_3a_name": "&aExpress Delivery",
+    "trading_perk_3a_description": "&7Orders placed are delivered &a{trading_orderdeliveryspeedmultiplier_add} &7faster, and you may &9order&7 &a{trading_ordermaxmultiplier_add} &7more",
+    "trading_perk_4a_name": "&aQuality Wares",
+    "trading_perk_4a_description": "&7Merchant's items have &a{trading_merchantskillmultiplier_add} &7increased quality, when applicable. You may also &etrade&7 &a{trading_tradingstockmultiplier_add} &7more items",
+    "trading_perk_5a_name": "&aGratuity",
+    "trading_perk_5a_description": "&7Trading with a merchant grants a chance to receive a random &agift &7from them. This chance increases with reputation and renown, from &a0-10%&7. Merchants also offer more trades ",
+    "trading_perk_2b_name": "&c(not implemented yet) &aApprenticeship",
+    "trading_perk_2b_description": "&7Most merchants may now train you in their profession, allowing you to level up skills at a cost (scaling with &amerchant level&7, up to &a75&7 at &6Master &7level)",
+    "trading_perk_3b_name": "&c(not implemented yet) &aService Workers",
+    "trading_perk_3b_description": "&7Most merchants may now offer &aupgrading services&7, allowing you to upgrade or otherwise modify your items at a cost",
+    "trading_perk_4b_name": "&c(not implemented yet) &aVIP Discount",
+    "trading_perk_4b_description": "&7Services are now &a{trading_servicediscount_add} &7cheaper",
+    "trading_perk_5b_name": "&c(not implemented yet) &aArtisans",
+    "trading_perk_5b_description": "&7Merchant's items have &a{trading_merchantskillmultiplier_add} &7increased quality",
+    "trading_perk_6_name": "&aBlack Market",
+    "trading_perk_6_description": "&7Most merchants now offer exclusive powerful trades at max rank (master)",
     "smithing_perk_1_name": "&eCraftsman",
     "smithing_perk_1_description": "&7Greatly buffs the quality of your &eWooden&7 and &eLeather&7 items.",
     "smithing_perk_2_name": "&eApprentice Blacksmith",
@@ -1991,6 +2041,10 @@
     "smithing_perk_ng1_description": "&7Resets your smithing level back to 0, and reduces experience gained by &c{smithing_genericexpmultiplier_add}&7. In exchange, you gain a permanent &e{smithing_genericcraftingskill_add} &7bonus to all your creations",
     "smithing_perk_ng2_name": "&e&lNew Game II",
     "smithing_perk_ng2_description": "&7Resets your smithing level back to 0, and reduces experience gained by &c{smithing_genericexpmultiplier_add}&7. In exchange, you again gain a permanent &e{smithing_genericcraftingskill_add} &7bonus to all your creations",
+    "trading_perk_ng1_name": "&a&lNew Game I",
+    "trading_perk_ng1_description": "&7Resets your trading level back to 0, and reduces experience gained by &c{trading_tradingexpmultiplier_add}&7. In exchange, you gain a permanent &a{trading_tradingstockmultiplier_add} &7bonus to all merchant &etrading &7stocks, a &a{trading_merchantskillmultiplier_add} &7bonus to their item qualities, and an increased selection in &etrades",
+    "trading_perk_ng2_name": "&a&lNew Game II",
+    "trading_perk_ng2_description": "&7Resets your trading level back to 0, and reduces experience gained by &c{trading_tradingexpmultiplier_add}&7. In exchange, you gain a permanent &a{trading_tradingstockmultiplier_add} &7bonus to all merchant &etrading &7stocks, a &a{trading_merchantskillmultiplier_add} &7bonus to their item qualities, and an increased selection in &etrades"
     "potion_belt_entry_format_selected": "&d&l> %potion%",
     "potion_belt_entry_format_deselected": "&f> %potion%",
     "potion_belt_name_format": "&dPotion Belt: &f%item_name%"
@@ -2186,6 +2240,20 @@
       "&e✰ &6New Game II &e✰",
       "&c{smithing_genericexpmultiplier_add} &7Smithing EXP",
       "&e{smithing_genericcraftingskill_add} &7&lPermanent &7Smithing Skill"
+    ],
+    "trading_perk_ng1_messages": [
+      "&a✰ &2New Game I &a✰",
+      "&c{trading_tradingexpmultiplier_add} &7Trading EXP",
+      "&a{trading_tradingstockmultiplier_add} &7Merchant Stock Count",
+      "&a{trading_merchantskillmultiplier_add} &7&lPermanent &7Merchant Item Quality",
+      "&aIncreased Merchant Trade Selection"
+    ],
+    "trading_perk_ng2_messages": [
+      "&a✰ &2New Game II &a✰",
+      "&c{trading_tradingexpmultiplier_add} &7Trading EXP",
+      "&a{trading_tradingstockmultiplier_add} &7Merchant Stock Count",
+      "&a{trading_merchantskillmultiplier_add} &7&lPermanent &7Merchant Item Quality",
+      "&aIncreased Merchant Trade Selection"
     ],
     "power_perk_1a_messages": [
       "&c✰ &4Vitality I &c✰",
@@ -2983,6 +3051,62 @@
       "&7- Vial 'o' Harming",
       "&7- Vial 'o' Rot",
       "&7- Vial 'o' Holiness"
+    ],
+    "trading_perk_1_messages": [
+      "&a✰ &2Bulk Buyer &a✰",
+      "&a{trading_tradingstockmultiplier_add} &7Merchant Stock Count"
+    ],
+    "trading_perk_2a_messages": [
+      "&a✰ &2Friendly Charisma &a✰",
+      "&a{trading_merchantexperiencemultiplier_add} &7Merchant Experience",
+      "&aIncreased Merchant Trade Selection"
+    ],
+    "trading_perk_3a_messages": [
+      "&a✰ &2Express Delivery &a✰",
+      "&a{trading_orderdeliveryspeedmultiplier_add} &7Order Delivery Speed",
+      "&a{trading_ordermaxmultiplier_add} &7Order Max Count"
+    ],
+    "trading_perk_4a_messages": [
+      "&a✰ &2Quality Wares &a✰",
+      "&a{trading_merchantskillmultiplier_add} &7Merchant Item Quality",
+      "&a{trading_tradingstockmultiplier_add} &7Merchant Stock Count"
+    ],
+    "trading_perk_5a_messages": [
+      "&a✰ &2Gratuity &a✰",
+      "&a+Gifting",
+      "&7Merchants may now gift you a random item",
+      "&7with a &a0-10%&7 chance every time you make a trade.",
+      "&7This chance increases with reputation and renown",
+      "&aIncreased Merchant Trade Selection"
+    ],
+    "trading_perk_2b_messages": [
+      "&a✰ &2Apprenticeship &a✰",
+      "&a+Training",
+      "&7Most merchants are now able to train",
+      "&7your skills for a price.",
+      "&7Only up to a point, which increases with",
+      "&7the merchant's level up to &a75 at &6Master",
+      "&cThe cost scales with the experience you're buying"
+    ],
+    "trading_perk_3b_messages": [
+      "&a✰ &2Service Workers &a✰",
+      "&a+Upgrading",
+      "&7Most merchants are now able to upgrade",
+      "&7or modify your items for a price."
+    ],
+    "trading_perk_4b_messages": [
+      "&a✰ &2VIP Discount &a✰",
+      "&a{trading_servicediscount_add} &7Service Discount"
+    ],
+    "trading_perk_5b_messages": [
+      "&a✰ &2Artisans &a✰",
+      "&a{trading_merchantskillmultiplier_add} &7Merchant Item Quality"
+    ],
+    "trading_perk_6_messages": [
+      "&a✰ &2Black Market &a✰",
+      "&a+Black Market",
+      "&7Most merchants are now able to trade",
+      "&7exclusive powerful items at &6Master &7rank"
     ],
     "smithing_perk_1_messages": [
       "&e✰ &6Craftsman &e✰",

@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.item;
 
+import com.google.common.collect.Multimap;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd;
@@ -11,6 +12,7 @@ import me.athlaeos.valhallammo.item.item_attributes.implementations.AttributeHid
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -330,7 +332,24 @@ public class ItemAttributesRegistry {
             }
         } else {
             Material type = ItemUtils.getStoredType(meta);
-            if (type != null) return getVanillaStats(type);
+            if (type != null) {
+                Multimap<Attribute, AttributeModifier> otherAttributes = meta.getAttributeModifiers();
+                if (otherAttributes == null) attributes.putAll(getVanillaStats(type));
+                else {
+                    for (Attribute attribute : otherAttributes.keys()){
+                        AttributeMappings mapping = AttributeMappings.getAttributeMapping(attribute.toString());
+
+                        AttributeWrapper wrapper = registeredAttributes.get(mapping.getAttribute1_19());
+                        if (wrapper == null) continue;
+                        for (AttributeModifier modifier : otherAttributes.get(attribute)) {
+                            wrapper = wrapper.copy();
+                            wrapper.setValue(modifier.getAmount());
+                            wrapper.setOperation(modifier.getOperation());
+                            attributes.put(mapping.getAttribute1_19(), wrapper);
+                        }
+                    }
+                }
+            }
         }
         return attributes;
     }
