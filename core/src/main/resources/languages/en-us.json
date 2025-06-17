@@ -3458,6 +3458,10 @@
       "TITLE(&r;&aUnarmed&7 leveled up to &a%level%)",
       "&aUnarmed&7 leveled up to &a%level%"
     ],
+    "skill-level-up-trading": [
+      "TITLE(&r;&aTrading&7 leveled up to &a%level%)",
+      "&aTrading&7 leveled up to &a%level%"
+    ],
     "skill-level-up-smithing": [
       "TITLE(&r;&eSmithing&7 leveled up to &e%level%)",
       "&eSmithing&7 leveled up to &e%level%"
