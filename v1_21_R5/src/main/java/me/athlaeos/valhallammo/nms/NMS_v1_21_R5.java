@@ -12,6 +12,7 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ActivityMappings;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
@@ -19,11 +20,13 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
+import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -36,6 +39,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.craftbukkit.v1_21_R5.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R5.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_21_R5.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_21_R5.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_21_R5.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R5.generator.structure.CraftStructureType;
 import org.bukkit.craftbukkit.v1_21_R5.inventory.CraftItemStack;
@@ -59,6 +63,8 @@ import org.bukkit.tag.DamageTypeTags;
 
 import java.lang.reflect.Field;
 import java.util.*;
+
+import static me.athlaeos.valhallammo.utility.ItemUtils.itemOrAir;
 
 public final class NMS_v1_21_R5 implements NMS {
     @Override
@@ -156,6 +162,20 @@ public final class NMS_v1_21_R5 implements NMS {
     @Override
     public void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type) {
         NMS_v1_21_R1.removeAttribute(e, identifier, type);
+    }
+
+    @Override
+    public void sendArmorChange(LivingEntity entity, org.bukkit.inventory.ItemStack helmet, org.bukkit.inventory.ItemStack chestplate, org.bukkit.inventory.ItemStack leggings, org.bukkit.inventory.ItemStack boots) {
+        List<com.mojang.datafixers.util.Pair<net.minecraft.world.entity.EquipmentSlot, ItemStack>> equipment = new ArrayList<>();
+        if (entity.getEquipment() == null) return;
+        equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.MAINHAND, CraftItemStack.asNMSCopy(itemOrAir(entity.getEquipment().getItemInMainHand()))));
+        equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.OFFHAND, CraftItemStack.asNMSCopy(itemOrAir(entity.getEquipment().getItemInOffHand()))));
+        equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.HEAD, CraftItemStack.asNMSCopy(itemOrAir(helmet))));
+        equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.CHEST, CraftItemStack.asNMSCopy(itemOrAir(chestplate))));
+        equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.LEGS, CraftItemStack.asNMSCopy(itemOrAir(leggings))));
+        equipment.add(new com.mojang.datafixers.util.Pair<>(net.minecraft.world.entity.EquipmentSlot.FEET, CraftItemStack.asNMSCopy(itemOrAir(boots))));
+        ClientboundSetEquipmentPacket packet = new ClientboundSetEquipmentPacket(entity.getEntityId(), equipment);
+        PacketListener.broadcastPlayerPacket(entity, packet, true);
     }
 
     @Override
@@ -489,5 +509,12 @@ public final class NMS_v1_21_R5 implements NMS {
     @Override
     public EntityExplodeEvent getExplosionEvent(Entity tnt, Location at, List<org.bukkit.block.Block> blockList, float yield, int result) {
         return new EntityExplodeEvent(tnt, at, blockList, yield, ExplosionResult.values()[result]);
+    }
+
+    @Override
+    public ActivityMappings getActivity(LivingEntity entity) {
+        Activity activity = ((CraftLivingEntity) entity).getHandle().getBrain().getActiveNonCoreActivity().orElse(null);
+        if (activity != null) return ActivityMappings.fromName(activity.getName());
+        return null;
     }
 }
