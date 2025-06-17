@@ -169,6 +169,7 @@
     "description_command_potionattribute": "Applies a custom potion effect to the held item",
     "description_command_reward": "Executes a Perk Reward onto a player with the given argument",
     "description_command_loot": "Accesses ValhallaMMO's custom loot table manager",
+    "description_command_merchants": "Accesses ValhallaMMO's custom merchants manager",
     "description_command_globalbuff": "Add or cancel global effects like increased EXP gain for everyone",
     "description_command_reload": "Reloads all the configs into memory, &cthis saves changes made to recipes and loot tables which may cause a lag spike",
     "description_command_givebook": "Gives you or other players the \"getting started\" book for ValhallaMMO",
@@ -727,6 +728,7 @@
     "potion_name_damage_player": "Abhorrence",
     "potion_name_damage_mounted": "Stampeding",
     "potion_name_milk": "Milk",
+    "potion_name_pacification": "Peace",
 
     "effect_name_heal": "%icon% Instant Health %value%",
     "effect_name_bad_omen": "%icon% Bad Omen %value% %duration%",
@@ -929,6 +931,7 @@
     "effect_name_generic_gravity": "%icon% Gravity %value% %duration%",
     "effect_name_generic_safe_fall_distance": "%icon% Fall Capacity %value% %duration%",
     "effect_name_generic_fall_damage_multiplier": "%icon% Fall Damage %value% %duration%",
+    "effect_name_pacification": "%icon% Pacifying %duration%",
     "stat_potion_positive_prefix": "&a",
     "stat_potion_negative_prefix": "&c",
 
@@ -1138,6 +1141,7 @@
     "stat_icon_freezing_resistance": "",
     "stat_icon_radiant_resistance": "",
     "stat_icon_necrotic_resistance": "",
+    "stat_icon_pacification": "",
 
     "translation_next_page": "&7&lNext Page",
     "translation_previous_page": "&7&lPrevious Page",
@@ -1342,6 +1346,10 @@
     "skill-smithing-displayname": "&7Smithing",
     "skill-smithing-level-bar": "&7Smithing &eLV&e%lv_current% &6%exp_current%&7/&6%exp_next% &7(&e%exp%&7)",
     "skill-smithing-daily-limit-reached": "&cYou feel too exhausted to continue learning smithing for today &8(daily limit reached)",
+    "skill-trading-description": "&8Practice Trading to get better deals with villagers, and hire them to perform services for you!",
+    "skill-trading-displayname": "&7Trading",
+    "skill-trading-level-bar": "&7Trading &eLV&e%lv_current% &6%exp_current%&7/&6%exp_next% &7(&e%exp%&7)",
+    "skill-trading-daily-limit-reached": "&cYou feel too exhausted to continue learning trading for today &8(daily limit reached)",
     "skill-mining-drilling-enabled": "&aDrilling Activated",
     "skill-mining-drilling-disabled": "&cDrilling Expired",
     "skill-mining-description": "&8Practice Mining to increase your ore extraction, increase the effectiveness of blast mining, and to gain rare minerals useful in crafting",
@@ -1612,14 +1620,20 @@
     "material-royal-diamond-chestplate": "&bRoyal Diamond Chestplate",
     "material-royal-diamond-leggings": "&bRoyal Diamond Leggings",
     "material-royal-diamond-boots": "&bRoyal Diamond Boots",
-    "material-royal-royal-diamond-sword": "&bRoyal Diamond Sword",
+    "material-royal-diamond-sword": "&bRoyal Diamond Sword",
     "material-royal-diamond-axe": "&bRoyal Diamond Axe",
+    "material-royal-diamond-pickaxe": "&bRoyal Diamond Pickaxe",
+    "material-royal-diamond-shovel": "&bRoyal Diamond Shovel",
+    "material-royal-diamond-hoe": "&bRoyal Diamond Hoe",
     "material-royal-netherite-helmet": "&bRoyal Netherite Helmet",
     "material-royal-netherite-chestplate": "&bRoyal Netherite Chestplate",
     "material-royal-netherite-leggings": "&bRoyal Netherite Leggings",
     "material-royal-netherite-boots": "&bRoyal Netherite Boots",
     "material-royal-netherite-sword": "&bRoyal Netherite Sword",
     "material-royal-netherite-axe": "&bRoyal Netherite Axe",
+    "material-royal-netherite-pickaxe": "&bRoyal Netherite Pickaxe",
+    "material-royal-netherite-shovel": "&bRoyal Netherite Shovel",
+    "material-royal-netherite-hoe": "&bRoyal Netherite Hoe",
     "material-assassins-hood": "&fAssassin's Hood",
     "material-assassins-cloak": "&fAssassin's Cloak",
     "material-assassins-leggings": "&fAssassin's Leggings",
@@ -2036,7 +2050,10 @@
     "trading_perk_ng1_name": "&a&lNew Game I",
     "trading_perk_ng1_description": "&7Resets your trading level back to 0, and reduces experience gained by &c{trading_tradingexpmultiplier_add}&7. In exchange, you gain a permanent &a{trading_tradingstockmultiplier_add} &7bonus to all merchant &etrading &7stocks, a &a{trading_merchantskillmultiplier_add} &7bonus to their item qualities, and an increased selection in &etrades",
     "trading_perk_ng2_name": "&a&lNew Game II",
-    "trading_perk_ng2_description": "&7Resets your trading level back to 0, and reduces experience gained by &c{trading_tradingexpmultiplier_add}&7. In exchange, you gain a permanent &a{trading_tradingstockmultiplier_add} &7bonus to all merchant &etrading &7stocks, a &a{trading_merchantskillmultiplier_add} &7bonus to their item qualities, and an increased selection in &etrades"
+    "trading_perk_ng2_description": "&7Resets your trading level back to 0, and reduces experience gained by &c{trading_tradingexpmultiplier_add}&7. In exchange, you gain a permanent &a{trading_tradingstockmultiplier_add} &7bonus to all merchant &etrading &7stocks, a &a{trading_merchantskillmultiplier_add} &7bonus to their item qualities, and an increased selection in &etrades",
+    "potion_belt_entry_format_selected": "&d&l> %potion%",
+    "potion_belt_entry_format_deselected": "&f> %potion%",
+    "potion_belt_name_format": "&dPotion Belt: &f%item_name%"
   },
   "stringListTranslations": {
     "valhallammo_command_plain": [
@@ -2045,6 +2062,12 @@
       "&7/skills",
       "&r",
       "&7Wiki: &ehttps://github.com/Athlaeos/ValhallaMMO/wiki"
+    ],
+    "potion_belt_lore_format": [
+      "%item_lore%",
+      "",
+      "&5Stored potions &7(&d%current_count%&7/&d%max_count%&7)",
+      "%entries%"
     ],
     "heavyarmor_perk_ng1_messages": [
       "&c✰ &4New Game I &c✰",
