@@ -35,6 +35,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -156,11 +157,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                         List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, bl -> isLeaves(bl) && (!(bl.getBlockData() instanceof Leaves l) || l.getDistance() > 3), treeCapitatorLeavesScanArea));
                         Collections.shuffle(leaves);
-                        BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, bl -> {
-                            LootListener.addPreparedLuck(bl, woodCuttingLuck);
-                            LootListener.setResponsibleBreaker(bl, e.getPlayer());
-                            BlockUtils.decayBlock(bl);
-                        }, null);
+                        BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, BlockUtils::decayBlock, null);
                     }, 20L);
                 });
             else
@@ -176,17 +173,25 @@ public class WoodcuttingSkill extends Skill implements Listener {
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                         List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, bl -> isLeaves(bl) && (!(bl.getBlockData() instanceof Leaves l) || l.getDistance() > 3), treeCapitatorLeavesScanArea));
                         Collections.shuffle(leaves);
-                        BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, bl -> {
-                            LootListener.addPreparedLuck(bl, woodCuttingLuck);
-                            LootListener.setResponsibleBreaker(bl, e.getPlayer());
-                            BlockUtils.decayBlock(bl);
-                        }, null);
+                        BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, BlockUtils::decayBlock, null);
                     }, 20L);
                 });
             Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getTreeCapitatorCooldown() * 50, "woodcutting_tree_capitator");
         } else {
             if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "woodcutting_tree_capitator")) Timer.sendCooldownStatus(e.getPlayer(), "woodcutting_tree_capitator", TranslationManager.getTranslation("ability_tree_capitator"));
         }
+    }
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onBlockDecay(LeavesDecayEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName())) return;
+        Player p = null;
+        List<Player> nearby = EntityUtils.getNearbyPlayers(e.getBlock().getLocation(), 100);
+        if (!nearby.isEmpty()) p = nearby.get(0);
+        if (p == null) return;
+        double woodCuttingLuck = AccumulativeStatManager.getCachedStats("WOODCUTTING_LUCK", p, 10000, true);
+        LootListener.addPreparedLuck(e.getBlock(), woodCuttingLuck);
+        LootListener.setResponsibleBreaker(e.getBlock(), p);
     }
 
     private final int[][] treeScanArea = MathUtils.getOffsetsBetweenPoints(new int[]{-1, 1, -1}, new int[]{1, 1, 1});

@@ -31,6 +31,7 @@ public class ResourcePack {
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_2, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_1, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_6, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_5, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_4, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_3, "https://github.com/user-attachments/files/19273980/ValhallaMMO_1.21.3.zip", "9e1216aeaabeb04b2983f0aec3fb94cae6baa490");
