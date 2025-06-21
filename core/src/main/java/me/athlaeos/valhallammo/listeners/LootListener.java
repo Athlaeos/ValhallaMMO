@@ -249,7 +249,6 @@ public class LootListener implements Listener {
             AttributeInstance luckInstance = p.getAttribute(Attribute.GENERIC_LUCK);
             luck = luckInstance == null ? 0 : luckInstance.getValue();
             luck += preparedLuckBuffs.getOrDefault(b.getLocation(), 0D);
-            System.out.println("got " + luck + " luck for this event");
             ItemStack hand = p.getInventory().getItemInMainHand();
             if (!ItemUtils.isEmpty(hand)){
                 if (hand.containsEnchantment(EnchantmentMappings.FORTUNE.getEnchantment())) fortune = hand.getEnchantmentLevel(EnchantmentMappings.FORTUNE.getEnchantment());
