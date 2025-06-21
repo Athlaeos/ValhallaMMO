@@ -73,6 +73,7 @@ public class PlayerSkillExperienceGainEvent extends PlayerEvent implements Cance
         RESET,
         REDEEM,
         ALPHA_REFUND,
+        MERCHANT_TRAINING,
         OTHER
     }
 }

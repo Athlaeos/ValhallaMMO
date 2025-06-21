@@ -7,11 +7,16 @@ import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.trading.menu.MerchantServicesMenu;
 import me.athlaeos.valhallammo.trading.menu.ServiceMenu;
+import me.athlaeos.valhallammo.trading.menu.ServiceTrainingMenu;
 import me.athlaeos.valhallammo.trading.services.Service;
 import me.athlaeos.valhallammo.trading.services.ServiceType;
+import me.athlaeos.valhallammo.trading.services.service_implementations.TrainService;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrainingService extends ServiceType {
     private final DynamicButton button = Catch.catchOrElse(() -> new DynamicButton(CustomMerchantManager.getTradingConfig().getString("service_button_type_training", "")), null);
@@ -23,7 +28,12 @@ public class TrainingService extends ServiceType {
 
     @Override
     public void onServiceSelect(InventoryClickEvent e, ServiceMenu menu, Service service, MerchantData data) {
+        List<TrainService> services = new ArrayList<>();
+        for (Service s : menu.getServices()){
+            if (s instanceof TrainService ts) services.add(ts);
+        }
 
+        new ServiceTrainingMenu(menu.getPlayerMenuUtility(), services, data).open();
     }
 
     @Override

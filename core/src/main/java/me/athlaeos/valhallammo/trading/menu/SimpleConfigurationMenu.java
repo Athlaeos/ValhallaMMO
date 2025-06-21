@@ -61,7 +61,7 @@ public abstract class SimpleConfigurationMenu <T> extends Menu {
         inventory.setItem(INDEX_BACK, backToMenuButton);
         for (Integer slot : buttons.keySet()){
             Button b = buttons.get(slot);
-            inventory.setItem(slot, new ItemBuilder(b.appearance).name(b.name.get()).lore(b.description.get()).get());
+            inventory.setItem(slot, b.icon.get());
         }
     }
 
@@ -73,15 +73,11 @@ public abstract class SimpleConfigurationMenu <T> extends Menu {
     protected class Button{
         protected final int position;
         protected final BiConsumer<T, InventoryClickEvent> onClick;
-        protected final Material appearance;
-        protected final Fetcher<String> name;
-        protected final Fetcher<List<String>> description;
+        protected final Fetcher<ItemStack> icon;
 
-        protected Button(Material appearance, int pos, Fetcher<String> name, Fetcher<List<String>> description, BiConsumer<T, InventoryClickEvent> onClick){
+        protected Button(int pos, Fetcher<ItemStack> icon, BiConsumer<T, InventoryClickEvent> onClick){
             this.position = pos;
-            this.appearance = appearance;
-            this.name = name;
-            this.description = description;
+            this.icon = icon;
             this.onClick = onClick;
         }
     }

@@ -230,6 +230,7 @@
     "service_order_time": "&aConfirm Order",
     "service_order_time_format_more_than_1_day": "%days% days",
     "service_order_time_format_less_than_1_day": "less than a day",
+    "service_training_cant_afford": "&cThis lesson is too expensive",
     "status_economy_cost": "&7Costs &e$%cost%",
     "warning_insufficient_money": "&cInsufficient Funds",
     "warning_insufficient_items": "&cInsufficient Item Funds",
