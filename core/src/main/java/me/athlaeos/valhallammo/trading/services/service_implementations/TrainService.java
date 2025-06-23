@@ -3,6 +3,8 @@ package me.athlaeos.valhallammo.trading.services.service_implementations;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantLevel;
 import me.athlaeos.valhallammo.trading.services.Service;
 import me.athlaeos.valhallammo.trading.services.ServiceRegistry;
@@ -30,14 +32,13 @@ public class TrainService extends Service {
     private int rows = 6;
     private List<Integer> secondaryButtonPositions = new ArrayList<>(List.of(12, 13, 14, 21, 22, 23, 30, 31, 32));
     private ItemStack primaryButton = new ItemBuilder(Material.LIME_DYE)
-            .name("&fTrain %skill%")
-            .lore("&7Spend &aemeralds &7to gain",
-                    "&7%skill% &7experience, up to &eLV%maxlevel%")
+            .name(CustomMerchantManager.getTradingConfig().getString("service_button_buy_training_name"))
+            .lore(CustomMerchantManager.getTradingConfig().getStringList("service_button_buy_training_description"))
             .data(9199500)
             .get();
 
     public TrainService(String id) {
-        super(id, ServiceRegistry.SERVICE_TYPE_ORDERING);
+        super(id, ServiceRegistry.SERVICE_TYPE_TRAINING);
     }
 
     public void setSkillToLevel(String skillToLevel) { this.skillToLevel = skillToLevel; }

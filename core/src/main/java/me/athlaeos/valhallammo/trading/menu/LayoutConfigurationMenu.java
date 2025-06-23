@@ -41,6 +41,7 @@ public class LayoutConfigurationMenu extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
+        e.setCancelled(true);
         if (e.getRawSlot() == 45) rows = Math.max(1, Math.min(6, rows + (e.isLeftClick() ? 1 : -1)));
         else if (e.getRawSlot() == 46 && rows > 5) offsetRow = !offsetRow;
         else if (e.getRawSlot() == 53) {
@@ -57,7 +58,7 @@ public class LayoutConfigurationMenu extends Menu {
             int clickedGridIndex = e.getRawSlot() + (offsetRow ? 9 : 0);
               ItemStack cursor = e.getCursor();
               if (ItemUtils.isEmpty(cursor)) {
-                  if (e.isLeftClick()) secondaryButtonIndexes.remove(clickedGridIndex);
+                  if (e.isLeftClick()) secondaryButtonIndexes.removeAll(List.of(clickedGridIndex));
                   else secondaryButtonIndexes.add(clickedGridIndex);
               } else {
                   primaryButtonIndex = clickedGridIndex;
@@ -83,16 +84,16 @@ public class LayoutConfigurationMenu extends Menu {
         if (rows <= 4) offsetRow = false;
 
         int primaryIndex = primaryButtonIndex + (offsetRow ? -9 : 0);
-        if (!ItemUtils.isEmpty(button) && primaryIndex >= 0) inventory.setItem(primaryIndex, button.clone());
         for (int i : secondaryButtonIndexes) {
             if (!offsetRow && i >= 45) continue;
             int secondaryIndex = i + (offsetRow ? -9 : 0);
             if (secondaryIndex < 0) continue;
-            inventory.setItem(i, new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE).name("").get());
+            inventory.setItem(secondaryIndex, new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE).name("&f").get());
         }
+        if (!ItemUtils.isEmpty(button) && primaryIndex >= 0) inventory.setItem(primaryIndex, button.clone());
         if (rows < 5) {
             for (int i = 44; i >= 9 * rows; i--){
-                inventory.setItem(i, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).name("").get());
+                inventory.setItem(i, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).name("&f").get());
             }
         }
 

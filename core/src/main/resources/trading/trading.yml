@@ -22,6 +22,11 @@ service_button_description_learning:
   - "<lang.service_description_learning>"
 service_button_description_investing:
   - "<lang.service_description_investing>"
+
+service_button_buy_training_name: "<lang.service_training_confirm_button_lore>"
+service_button_buy_training_description:
+  - "<lang.service_training_confirm_button_lore>"
+
 service_button_type_trading: LIME_DYE/9199203/9199202/9199201
 service_button_type_training: LIME_DYE/9199209/9199208/9199207
 service_button_type_upgrading: LIME_DYE/9199212/9199211/9199210

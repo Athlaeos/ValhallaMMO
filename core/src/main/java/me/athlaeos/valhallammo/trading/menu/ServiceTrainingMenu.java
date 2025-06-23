@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.trading.menu;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
@@ -28,10 +29,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ServiceTrainingMenu extends Menu {
     private static final NamespacedKey KEY_METHOD = new NamespacedKey(ValhallaMMO.getInstance(), "training_method");
@@ -139,10 +137,27 @@ public class ServiceTrainingMenu extends Menu {
     @Override
     public void setMenuItems() {
         inventory.clear();
-
+        MerchantLevel level = CustomMerchantManager.getLevel(data);
+        if (level == null) return;
         for (TrainService service : services){
             if (service.getPrimaryButtonPosition() < 0 || service.getPrimaryButtonPosition() >= getSlots()) continue;
-            ItemStack button = service.getPrimaryButton().clone();
+            Skill skill = SkillRegistry.getSkill(service.getSkillToLevel());
+            if (skill == null) continue;
+            Profile profile = ProfileCache.getOrCache(playerMenuUtility.getOwner(), skill.getProfileType());
+            double expToPurchase = getExpToPurchase(service);
+            Map<ItemStack, Integer> cost = getServiceCost(service);
+            if (cost == null || cost.isEmpty()) return;
+            Optional<ItemStack> item = cost.keySet().stream().findAny();
+            String costString = TranslationManager.translatePlaceholders(SlotEntry.toString(service.getCost()));
+            int quantity = Math.max(0, cost.get(item.get()));
+
+            ItemStack button = new ItemBuilder(service.getPrimaryButton().clone())
+                    .placeholderLore("%skill%", skill.getDisplayName())
+                    .placeholderLore("%maxlevel%", String.valueOf(service.getLimitPerLevel().getOrDefault(level, 0)))
+                    .placeholderLore("%levelcurrent%", String.valueOf(profile.getLevel()))
+                    .placeholderLore("%levelnext%", profile.getLevel() >= skill.getMaxLevel() ? TranslationManager.getTranslation("max_level") : String.valueOf(profile.getLevel() + 1))
+                    .placeholderLore("%costamount%", String.valueOf(quantity))
+                    .placeholderLore("%costdescription%", costString).get();
 
             ItemStack blankServiceButton = new ItemBuilder(button).type(Material.LIME_DYE).data(9199200).stringTag(KEY_METHOD, service.getID()).get();
             for (int secondaryIndex : service.getSecondaryButtonPositions()) {

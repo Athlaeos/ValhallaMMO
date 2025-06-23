@@ -13,10 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ServiceMenu extends Menu {
     private static ServiceMenuBuilder menuBuilder = new ServiceMenuBuilderImplementation();
@@ -69,10 +66,12 @@ public class ServiceMenu extends Menu {
         inventory.clear();
         buttonToServiceMap.clear();
         int[] buttonPlacements = menuBuilder.getButtonPlacementLocations(this);
+        Collection<String> placedTypes = new HashSet<>();
         for (int i = 0; i < services.size(); i++){
             Service service = services.get(i);
             ServiceType type = service.getServiceType();
-            if (type == null) continue;
+            if (type == null || (type.singularButton()) && placedTypes.contains(type.getID())) continue;
+            placedTypes.add(type.getID());
             ItemStack baseIcon = type.getButtonIcon(this, service, data);
             buttonToServiceMap.put(buttonPlacements[i], service);
 

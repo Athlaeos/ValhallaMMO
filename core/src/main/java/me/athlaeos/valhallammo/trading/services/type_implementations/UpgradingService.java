@@ -49,4 +49,9 @@ public class UpgradingService extends ServiceType {
                         "&7in exchange for items")
                 .get();
     }
+
+    @Override
+    public boolean singularButton() {
+        return true;
+    }
 }

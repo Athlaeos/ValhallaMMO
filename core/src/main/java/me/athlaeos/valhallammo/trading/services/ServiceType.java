@@ -20,6 +20,10 @@ public abstract class ServiceType {
 
     public abstract ItemStack getDefaultButton();
 
+    public boolean singularButton(){
+        return false;
+    }
+
     public static class DynamicButton {
         private final Material baseMaterial;
         private final int bigData;
