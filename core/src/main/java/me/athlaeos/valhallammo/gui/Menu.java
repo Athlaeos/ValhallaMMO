@@ -43,12 +43,12 @@ public abstract class Menu {
         return inventory;
     }
 
-    protected static ItemStack getButtonData(String path, Material def){
+    public static ItemStack getButtonData(String path, Material def){
         return getButtonData(path, "gui_details.yml", def);
     }
 
     @SuppressWarnings("all")
-    protected static ItemStack getButtonData(String path, String config, Material def){
+    public static ItemStack getButtonData(String path, String config, Material def){
         String value = ConfigManager.getConfig(config).get().getString(path, "");
         if (StringUtils.isEmpty(value)) ValhallaMMO.logWarning(config + ":" + path + " was called, but has no value!");
         String[] parts = value.split(":");

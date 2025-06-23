@@ -2054,7 +2054,8 @@
     "trading_perk_ng2_description": "&7Resets your trading level back to 0, and reduces experience gained by &c{trading_tradingexpmultiplier_add}&7. In exchange, you gain a permanent &a{trading_tradingstockmultiplier_add} &7bonus to all merchant &etrading &7stocks, a &a{trading_merchantskillmultiplier_add} &7bonus to their item qualities, and an increased selection in &etrades",
     "potion_belt_entry_format_selected": "&d&l> %potion%",
     "potion_belt_entry_format_deselected": "&f> %potion%",
-    "potion_belt_name_format": "&dPotion Belt: &f%item_name%"
+    "potion_belt_name_format": "&dPotion Belt: &f%item_name%",
+    "service_training_confirm_button_lore": "&fTrain %skill%"
   },
   "stringListTranslations": {
     "valhallammo_command_plain": [
@@ -3598,6 +3599,12 @@
       "&7Costs &e%amount%x %item%",
       "&7and &e%amount2%x %item2%",
       ""
+    ],
+    "service_training_confirm_button_lore": [
+      "&7Spend &aemeralds &7to gain",
+      "&7%skill% &7experience, up to &eLV%maxlevel%",
+      "",
+      "&2LV%levelcurrent% &7>> &a%costamount%x %costdescription% &7>> &2LV%levelnext%"
     ]
   },
   "stringIndex": {},
