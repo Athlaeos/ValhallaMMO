@@ -2055,7 +2055,7 @@
     "potion_belt_entry_format_selected": "&d&l> %potion%",
     "potion_belt_entry_format_deselected": "&f> %potion%",
     "potion_belt_name_format": "&dPotion Belt: &f%item_name%",
-    "service_training_confirm_button_lore": "&fTrain %skill%"
+    "service_training_confirm_button_name": "&aTrain %skill%"
   },
   "stringListTranslations": {
     "valhallammo_command_plain": [
@@ -3557,7 +3557,7 @@
       "&7Exchange wares for other wares"
     ],
     "service_description_training": [
-      "&7Exchange wares for %skill% EXP"
+      "&7Exchange wares for skill EXP"
     ],
     "service_description_upgrading": [
       "&7Exchange wares for item-related services"

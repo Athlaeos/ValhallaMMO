@@ -40,12 +40,16 @@ public class ItemBuilder {
         this.item = i.clone();
         this.meta = m.clone();
         this.embeddedTools = MiningSpeed.getEmbeddedTools(meta);
+        if (this.meta.hasLore() && this.meta.getLore() != null) this.lore = new ArrayList<>(this.meta.getLore());
+        if (this.meta.hasDisplayName()) this.name = this.meta.getDisplayName();
     }
 
     public ItemBuilder(ItemStack i){
         this.item = i.clone();
         this.meta = ItemUtils.getItemMeta(item);
         this.embeddedTools = MiningSpeed.getEmbeddedTools(meta);
+        if (this.meta.hasLore() && this.meta.getLore() != null) this.lore = new ArrayList<>(this.meta.getLore());
+        if (this.meta.hasDisplayName()) this.name = this.meta.getDisplayName();
     }
 
     public ItemBuilder type(Material type){
