@@ -159,6 +159,11 @@ public class ItemBuilder {
         return lore(ItemUtils.setListPlaceholder(lore != null ? lore : new ArrayList<>(), placeholder, replaceWith));
     }
 
+    public ItemBuilder placeholderName(String placeholder, String replaceWith){
+        if (name == null) return this;
+        return name(name.replace(placeholder, replaceWith));
+    }
+
     public ItemBuilder appendLore(String... lore){
         if (lore == null) return this;
         return appendLore(new ArrayList<>(Arrays.asList(lore)));
