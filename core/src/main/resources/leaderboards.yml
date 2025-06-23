@@ -150,3 +150,23 @@ leaderboards:
     extra_stats:
       exp_total: exp_total
       level: level
+  martial_arts:
+    display_name: "<lang.leaderboard_martial_arts_level>"
+    entry_display: "&7#&a%rank% &8: &7%prefix%%player% &7|&aNG %main_stat% &7- &aLV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&aNG%main_stat% LV%level% &7%player%"
+    profile: MartialArtsProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level
+  trading:
+    display_name: "<lang.leaderboard_trading_level>"
+    entry_display: "&7#&a%rank% &8: &7%prefix%%player% &7|&aNG %main_stat% &7- &aLV %level%&7| &8(%exp_total% EXP)"
+    placeholder_display: "&aNG%main_stat% LV%level% &7%player%"
+    profile: TradingProfile
+    lower_limit: 0
+    main_stat: newGamePlus
+    extra_stats:
+      exp_total: exp_total
+      level: level

@@ -149,6 +149,8 @@
     "leaderboard_heavy_weapons_level": "&#ff7640Heavy Weapons Level &7(p.%page%)",
     "leaderboard_light_armor_level": "&#ffac40Light Armor Level &7(p.%page%)",
     "leaderboard_heavy_armor_level": "&#ff7640Heavy Armor Level &7(p.%page%)",
+    "leaderboard_martial_arts_level": "&aMartial Arts Level &7(p.%page%)",
+    "leaderboard_trading_level": "&aTrading Level &7(p.%page%)",
     "leaderboard_personal_prefix": "&7>>> ",
     "leaderboard_unranked": "&7%player% is not on the leaderboard yet! ",
     "perk_forget": "&cYou forgot %perk%",
