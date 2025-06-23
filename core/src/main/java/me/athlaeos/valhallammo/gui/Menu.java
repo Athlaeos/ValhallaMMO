@@ -43,25 +43,15 @@ public abstract class Menu {
         return inventory;
     }
 
-    public static ItemStack getButtonData(String path, Material def){
+    protected static ItemStack getButtonData(String path, Material def){
         return getButtonData(path, "gui_details.yml", def);
     }
 
     @SuppressWarnings("all")
-    public static ItemStack getButtonData(String path, String config, Material def){
+    protected static ItemStack getButtonData(String path, String config, Material def){
         String value = ConfigManager.getConfig(config).get().getString(path, "");
         if (StringUtils.isEmpty(value)) ValhallaMMO.logWarning(config + ":" + path + " was called, but has no value!");
-        String[] parts = value.split(":");
-        Material m = ItemUtils.stringToMaterial(parts[0], def);
-        int modelData = -1;
-        if (parts.length > 1) {
-            try {
-                modelData = Integer.parseInt(parts[1]);
-            } catch (NumberFormatException ignored){
-                ValhallaMMO.logWarning("Invalid integer value for custom model data in gui_details.yml: " + parts[1]);
-            }
-        }
-        return new ItemBuilder(m).data(modelData).get();
+        return ItemUtils.parseCustomModelItem(value, def);
     }
 }
 

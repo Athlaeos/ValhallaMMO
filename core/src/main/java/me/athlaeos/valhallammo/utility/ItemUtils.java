@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
@@ -1034,6 +1035,20 @@ public class ItemUtils {
                 item.setAmount(newAmount);
             }
         }
+    }
+
+    public static ItemStack parseCustomModelItem(String data, Material def){
+        String[] parts = data.split(":");
+        Material m = ItemUtils.stringToMaterial(parts[0], def);
+        int modelData = -1;
+        if (parts.length > 1) {
+            try {
+                modelData = Integer.parseInt(parts[1]);
+            } catch (NumberFormatException ignored){
+                ValhallaMMO.logWarning("Invalid integer value for custom model data in gui_details.yml: " + parts[1]);
+            }
+        }
+        return new ItemBuilder(m).data(modelData).get();
     }
 
     /**
