@@ -120,7 +120,7 @@ perks:
     perk_rewards:
       woodcutting_treecapitatorunlocked_set: true
       woodcutting_treecapitatorcooldown_add: 200
-      woodcutting_treecapitatorlimit_add: 8
+      woodcutting_treecapitatorlimit_add: 16
       woodcutting_treecapitatorblocks_add_all: 0
     messages:
       - "<lang.woodcutting_perk_3_messages>"
@@ -392,7 +392,7 @@ perks:
     required_lv: 60
     perk_rewards:
       woodcutting_treecapitatorcooldown_add: -60
-      woodcutting_treecapitatorlimit_add: 24
+      woodcutting_treecapitatorlimit_add: 32
     messages:
       - "<lang.woodcutting_perk_capitator_a_messages>"
     connection_line:
@@ -428,7 +428,7 @@ perks:
     required_lv: 80
     perk_rewards:
       woodcutting_treecapitatorcooldown_add: -80
-      woodcutting_treecapitatorlimit_add: 96
+      woodcutting_treecapitatorlimit_add: 80
     messages:
       - "<lang.woodcutting_perk_capitator_b_messages>"
     connection_line:
