@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantLevel;
 import me.athlaeos.valhallammo.trading.services.Service;
 import me.athlaeos.valhallammo.trading.services.ServiceRegistry;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -31,10 +32,9 @@ public class TrainService extends Service {
     private int primaryButtonPosition = 12;
     private int rows = 6;
     private List<Integer> secondaryButtonPositions = new ArrayList<>(List.of(12, 13, 14, 21, 22, 23, 30, 31, 32));
-    private ItemStack primaryButton = new ItemBuilder(Material.LIME_DYE)
+    private ItemStack primaryButton = new ItemBuilder(ItemUtils.parseCustomModelItem("service_button_buy_training_default_type", Material.LIME_DYE))
             .name(CustomMerchantManager.getTradingConfig().getString("service_button_buy_training_name"))
             .lore(CustomMerchantManager.getTradingConfig().getStringList("service_button_buy_training_description"))
-            .data(9199500)
             .get();
 
     public TrainService(String id) {

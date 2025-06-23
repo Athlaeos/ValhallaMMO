@@ -6,6 +6,8 @@ import me.athlaeos.valhallammo.dom.Question;
 import me.athlaeos.valhallammo.dom.Questionnaire;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.trading.menu.*;
@@ -43,8 +45,9 @@ public class TrainingService extends ServiceType {
 
     @Override
     public ItemStack getButtonIcon(ServiceMenu menu, Service service, MerchantData data) {
+        String name = TranslationManager.translatePlaceholders(CustomMerchantManager.getTradingConfig().getString("service_button_name_training"));
         return button.get(ButtonSize.defaultFromButtonCount(menu.getServices().size()))
-                .name(TranslationManager.translatePlaceholders(CustomMerchantManager.getTradingConfig().getString("service_button_name_training")))
+                .name(name == null ? "" : name)
                 .lore(TranslationManager.translateListPlaceholders(
                         CustomMerchantManager.getTradingConfig().getStringList("service_button_description_training"))
                 ).get();

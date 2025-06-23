@@ -23,7 +23,8 @@ service_button_description_learning:
 service_button_description_investing:
   - "<lang.service_description_investing>"
 
-service_button_buy_training_name: "<lang.service_training_confirm_button_lore>"
+service_button_buy_training_default_type: LIME_DYE:9199500
+service_button_buy_training_name: "<lang.service_training_confirm_button_name>"
 service_button_buy_training_description:
   - "<lang.service_training_confirm_button_lore>"
 

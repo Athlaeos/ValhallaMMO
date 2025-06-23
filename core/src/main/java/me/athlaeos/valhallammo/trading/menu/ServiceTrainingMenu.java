@@ -60,7 +60,14 @@ public class ServiceTrainingMenu extends Menu {
 
     @Override
     public String getMenuName() {
-        return Utils.chat(ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF322" : "&8Pick your training"); // TODO data driven and change menu texture
+        return Utils.chat(ValhallaMMO.isResourcePackConfigForced() ? switch (maxRowSizes) {
+            case 1 -> "&f\uF808\uF31C";
+            case 2 -> "&f\uF808\uF31D";
+            case 3 -> "&f\uF808\uF31E";
+            case 4 -> "&f\uF808\uF31F";
+            case 5 -> "&f\uF808\uF320";
+            default -> "&f\uF808\uF321";
+        } : "&8Pick your training"); // TODO data driven and change menu texture
     }
 
     @Override
@@ -144,7 +151,6 @@ public class ServiceTrainingMenu extends Menu {
             Skill skill = SkillRegistry.getSkill(service.getSkillToLevel());
             if (skill == null) continue;
             Profile profile = ProfileCache.getOrCache(playerMenuUtility.getOwner(), skill.getProfileType());
-            double expToPurchase = getExpToPurchase(service);
             Map<ItemStack, Integer> cost = getServiceCost(service);
             if (cost == null || cost.isEmpty()) return;
             Optional<ItemStack> item = cost.keySet().stream().findAny();
@@ -157,13 +163,14 @@ public class ServiceTrainingMenu extends Menu {
                     .placeholderLore("%levelcurrent%", String.valueOf(profile.getLevel()))
                     .placeholderLore("%levelnext%", profile.getLevel() >= skill.getMaxLevel() ? TranslationManager.getTranslation("max_level") : String.valueOf(profile.getLevel() + 1))
                     .placeholderLore("%costamount%", String.valueOf(quantity))
-                    .placeholderLore("%costdescription%", costString).get();
+                    .placeholderLore("%costdescription%", costString).translate().get();
 
             ItemStack blankServiceButton = new ItemBuilder(button).type(Material.LIME_DYE).data(9199200).stringTag(KEY_METHOD, service.getID()).get();
             for (int secondaryIndex : service.getSecondaryButtonPositions()) {
                 if (secondaryIndex < 0 || secondaryIndex >= getSlots()) continue;
                 inventory.setItem(secondaryIndex, blankServiceButton);
             }
+            inventory.setItem(service.getPrimaryButtonPosition(), button);
         }
     }
 }
