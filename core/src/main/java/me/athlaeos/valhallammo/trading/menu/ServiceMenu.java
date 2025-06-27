@@ -28,9 +28,12 @@ public class ServiceMenu extends Menu {
 
         MerchantType type = CustomMerchantManager.getMerchantType(data.getType());
         if (type == null) return;
+        Collection<String> putServices = new HashSet<>();
         for (String s : type.getServices()){
+            if (putServices.contains(s)) continue;
             Service service = ServiceRegistry.getService(s);
             if (service == null) continue;
+            putServices.add(s);
             services.add(service);
         }
     }

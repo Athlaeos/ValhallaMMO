@@ -7,6 +7,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.persistence.GsonAdapter;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
 import me.athlaeos.valhallammo.trading.services.service_implementations.PlainService;
@@ -26,6 +27,7 @@ public class ServiceRegistry {
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(DynamicItemModifier.class, new GsonAdapter<DynamicItemModifier>("MOD_TYPE"))
             .registerTypeAdapter(Service.class, new GsonAdapter<Service>("SERVICE_IMPL"))
+            .registerTypeAdapter(IngredientChoice.class, new GsonAdapter<IngredientChoice>("CHOICE"))
             .registerTypeHierarchyAdapter(ConfigurationSerializable.class, new ItemStackGSONAdapter())
             .setPrettyPrinting()
             .disableHtmlEscaping()

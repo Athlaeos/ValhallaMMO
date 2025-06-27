@@ -3607,6 +3607,9 @@
       "&7%skill% &7experience, up to &eLV%maxlevel%",
       "",
       "&2LV%levelcurrent% &7>> &a%costamount%x %costdescription% &7>> &2LV%levelnext%"
+    ],
+    "service_training_unavailable_button_lore": [
+      "&cI have nothing more to teach you"
     ]
   },
   "stringIndex": {},

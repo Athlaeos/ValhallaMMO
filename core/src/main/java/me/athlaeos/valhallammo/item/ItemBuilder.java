@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -253,7 +254,8 @@ public class ItemBuilder {
 
     public ItemBuilder wipeAttributes(){
         meta.setAttributeModifiers(null);
-        return this;
+        meta.addAttributeModifier(AttributeMappings.ATTACK_DAMAGE.getAttribute(), new AttributeModifier("dummy", 0.01, AttributeModifier.Operation.ADD_NUMBER));
+        return flag(ItemFlag.HIDE_ATTRIBUTES);
     }
 
     public ItemStack getItem() { return item; }

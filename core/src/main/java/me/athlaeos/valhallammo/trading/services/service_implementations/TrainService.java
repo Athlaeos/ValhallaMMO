@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.trading.services.service_implementations;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantLevel;
 import me.athlaeos.valhallammo.trading.services.Service;
@@ -26,13 +25,13 @@ public class TrainService extends Service {
             MerchantLevel.EXPERT, 60,
             MerchantLevel.MASTER, 75
     ));
-    private double expStep = 1000; // every `expStep` experience required to level up, an additional `cost` is required
+    private double expStep = 750; // every `expStep` experience required to level up, an additional `cost` is required
     private SlotEntry cost = new SlotEntry(new ItemStack(Material.EMERALD), new MaterialChoice());
     private double skillExpPerCost = 100; // the trading skill experience the player gets for every `cost` they spend
-    private int primaryButtonPosition = 12;
-    private int rows = 6;
-    private List<Integer> secondaryButtonPositions = new ArrayList<>(List.of(12, 13, 14, 21, 22, 23, 30, 31, 32));
-    private ItemStack primaryButton = new ItemBuilder(ItemUtils.parseCustomModelItem("service_button_buy_training_default_type", Material.LIME_DYE))
+    private int primaryButtonPosition = 3;
+    private int rows = 3;
+    private List<Integer> secondaryButtonPositions = new ArrayList<>(List.of(3, 4, 5, 12, 13, 14, 21, 22, 23));
+    private ItemStack primaryButton = new ItemBuilder(ItemUtils.parseCustomModelItem(CustomMerchantManager.getTradingConfig().getString("service_button_buy_training_default_type", "LIME_DYE:9199500"), Material.LIME_DYE))
             .name(CustomMerchantManager.getTradingConfig().getString("service_button_buy_training_name"))
             .lore(CustomMerchantManager.getTradingConfig().getStringList("service_button_buy_training_description"))
             .get();

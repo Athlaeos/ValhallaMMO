@@ -20,29 +20,35 @@ import me.athlaeos.valhallammo.trading.happiness.HappinessSourceRegistry;
 import me.athlaeos.valhallammo.trading.services.Service;
 import me.athlaeos.valhallammo.trading.services.ServiceRegistry;
 import me.athlaeos.valhallammo.trading.services.service_implementations.TrainService;
+import me.athlaeos.valhallammo.trading.services.service_implementations.UpgradeService;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.*;
 
-public class ServiceTrainingMenu extends Menu {
+public class ServiceUpgradingMenu extends Menu {
     private static final NamespacedKey KEY_METHOD = new NamespacedKey(ValhallaMMO.getInstance(), "training_method");
+    private static final List<Integer> indexesUpgrades = List.of(46, 47, 48, 49, 50, 51, 52);
+    private static final List<Integer> indexesCost = List.of(12, 13, 14, 21, 22, 23, 30, 31, 32);
+    private static final int indexInput = 19;
+    private static final int indexOutput = 25;
 
-    private final List<TrainService> services;
+    private final List<UpgradeService> services;
     private final MerchantData data;
     private final float happiness;
     private final float reputation;
     private final float renown;
-    private final int maxRowSizes;
     private final MerchantLevel level;
+    private int page = 0;
 
-    public ServiceTrainingMenu(PlayerMenuUtility playerMenuUtility, List<TrainService> services, MerchantData data) {
+    public ServiceUpgradingMenu(PlayerMenuUtility playerMenuUtility, List<UpgradeService> services, MerchantData data) {
         super(playerMenuUtility);
         this.data = data;
         this.services = services;
@@ -50,29 +56,16 @@ public class ServiceTrainingMenu extends Menu {
         this.reputation = data.getPlayerMemory(playerMenuUtility.getOwner().getUniqueId()).getTradingReputation();
         this.renown = data.getPlayerMemory(playerMenuUtility.getOwner().getUniqueId()).getRenownReputation();
         this.level = CustomMerchantManager.getLevel(data);
-        if (services.isEmpty()) maxRowSizes = 1;
-        else {
-            int biggest = -1;
-            for (TrainService service : services) if (service.getRows() > biggest) biggest = service.getRows();
-            maxRowSizes = biggest;
-        }
     }
 
     @Override
     public String getMenuName() {
-        return Utils.chat(ValhallaMMO.isResourcePackConfigForced() ? switch (maxRowSizes) {
-            case 1 -> "&f\uF808\uF31C";
-            case 2 -> "&f\uF808\uF31D";
-            case 3 -> "&f\uF808\uF31E";
-            case 4 -> "&f\uF808\uF31F";
-            case 5 -> "&f\uF808\uF320";
-            default -> "&f\uF808\uF321";
-        } : "&8Pick your training"); // TODO data driven and change menu texture
+        return Utils.chat(ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF321" : "&8Pick your training"); // TODO data driven and change menu texture
     }
 
     @Override
     public int getSlots() {
-        return Math.max(1, maxRowSizes) * 9;
+        return 54;
     }
 
     @Override
@@ -115,40 +108,14 @@ public class ServiceTrainingMenu extends Menu {
         e.setCancelled(true);
     }
 
-    private double getExpToPurchase(TrainService tc){
-        Skill skill = SkillRegistry.getSkill(tc.getSkillToLevel());
-        if (skill == null) return -1;
-        Profile profile = ProfileCache.getOrCache(playerMenuUtility.getOwner(), skill.getProfileType());
-        if (profile == null) return -1;
-        return Math.max(0, profile.getLevel() >= skill.getMaxLevel() ? 0 : skill.expForLevel(profile.getLevel() + 1) - profile.getEXP());
-    }
-
-    private Map<ItemStack, Integer> getServiceCost(TrainService tc){
-        Map<ItemStack, Integer> totalItems = new HashMap<>();
-        double expToPurchase = getExpToPurchase(tc);
-        if (expToPurchase <= 0) return null;
-        int costCount = Math.max(1, (int) Math.round(expToPurchase / tc.getExpStep()));
-
-        double relationshipCostMultiplier = Math.max(0, 1 - (CustomMerchantManager.getDiscountFormula() == null ? 0 : Utils.eval(CustomMerchantManager.getDiscountFormula()
-                .replace("%happiness%", String.valueOf(happiness))
-                .replace("%renown%", String.valueOf(renown))
-                .replace("%reputation%", String.valueOf(reputation))
-        )));
-        int finalItemQuantityPrice = (int) Math.max(1, costCount * tc.getCost().getItem().getAmount() * relationshipCostMultiplier);
-
-        ItemStack cost1 = tc.getCost().getItem().clone();
-        cost1.setAmount(1);
-        totalItems.put(cost1, finalItemQuantityPrice + totalItems.getOrDefault(cost1, 0));
-
-        return totalItems;
-    }
-
     @Override
     public void setMenuItems() {
         inventory.clear();
         MerchantLevel level = CustomMerchantManager.getLevel(data);
         if (level == null) return;
-        for (TrainService service : services){
+        inventory.setItem(45, previousPageButton);
+        inventory.setItem(53, nextPageButton);
+        for (UpgradeService service : services){
             if (service.getPrimaryButtonPosition() < 0 || service.getPrimaryButtonPosition() >= getSlots()) continue;
             Skill skill = SkillRegistry.getSkill(service.getSkillToLevel());
             if (skill == null) continue;
@@ -186,4 +153,11 @@ public class ServiceTrainingMenu extends Menu {
             inventory.setItem(service.getPrimaryButtonPosition(), buttonBuilder.get());
         }
     }
+
+    private static final ItemStack nextPageButton = new ItemBuilder(getButtonData("editor_nextpage", Material.ARROW))
+            .name(TranslationManager.getTranslation("translation_next_page"))
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
+    private static final ItemStack previousPageButton = new ItemBuilder(getButtonData("editor_prevpage", Material.ARROW))
+            .name(TranslationManager.getTranslation("translation_previous_page"))
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
 }

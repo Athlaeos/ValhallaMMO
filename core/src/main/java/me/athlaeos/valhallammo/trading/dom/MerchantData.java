@@ -136,11 +136,12 @@ public class MerchantData {
     public static class MerchantPlayerMemory{
         private int timesTraded = 0;
         private long lastTimeTraded = 0;
-        private float tradingReputation;
-        private float renownReputation;
+        private float tradingReputation = 0;
+        private float renownReputation = 0;
         private long timeGiftable = 0;
         private final Map<String, Double> perPlayerTradesLeft = new HashMap<>();
         private final Collection<String> singleTimeGiftedTrades = new HashSet<>();
+        private boolean hasReachedMaxHappiness = false;
 
         public int getTimesTraded() { return timesTraded; }
         public float getRenownReputation() { return renownReputation; }
@@ -153,6 +154,8 @@ public class MerchantData {
         public void setRenownReputation(float renownReputation) { this.renownReputation = Math.max(renownMin, Math.min(renownMax, renownReputation)); }
         public void setTradingReputation(float tradingReputation) { this.tradingReputation = Math.max(reputationMin, Math.min(reputationMax, tradingReputation)); }
         public Collection<String> getSingleTimeGiftedTrades() { return singleTimeGiftedTrades; }
+        public boolean hasReachedMaxHappiness() { return hasReachedMaxHappiness; }
+        public void setHasReachedMaxHappiness(boolean hasReachedMaxHappiness) {this.hasReachedMaxHappiness = hasReachedMaxHappiness;}
 
         public boolean isGiftable(String trade){
             MerchantTrade t = CustomMerchantManager.getTrade(trade);

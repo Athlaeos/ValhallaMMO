@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.trading.happiness;
 
+import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.happiness.sources.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

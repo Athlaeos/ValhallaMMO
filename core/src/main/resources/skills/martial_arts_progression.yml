@@ -379,7 +379,7 @@ perks:
     hidden: true
     required_lv: 100
     perk_rewards:
-      enable_flight: []
+      p:enable_flight: []
       p:alchemy_genericbrewingskill_add: 50
       p:archery_bowdamagemultiplier_add: 0.3
       p:digging_diggingdrops_add: 0.3

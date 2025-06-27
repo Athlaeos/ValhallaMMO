@@ -71,9 +71,10 @@ public class MerchantListener implements Listener {
     private final double reputationChildDeath = CustomMerchantManager.getTradingConfig().getDouble("reputation_death_baby_villager", 0);
     private final double reputationGolemDeath = CustomMerchantManager.getTradingConfig().getDouble("reputation_death_iron_golem", 0);
     private final double renownHero = CustomMerchantManager.getTradingConfig().getDouble("renown_hero", 0);
-    private final double renownHappiness = CustomMerchantManager.getTradingConfig().getDouble("renown_happiness", 0);
     private final double happinessDenyTrading = CustomMerchantManager.getTradingConfig().getDouble("happiness_deny_trading", -3);
     private final double renownDenyTrading = CustomMerchantManager.getTradingConfig().getDouble("renown_deny_trading", -75);
+    private final double renownHappiness = CustomMerchantManager.getTradingConfig().getDouble("renown_happiness", 0);
+    private final double happinessGainRenown = CustomMerchantManager.getTradingConfig().getDouble("happiness_renown_threshold", 8);
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onClose(InventoryCloseEvent e){
@@ -332,7 +333,8 @@ public class MerchantListener implements Listener {
             e.setCancelled(true);
             return;
         }
-        if (HappinessSourceRegistry.getHappiness(e.getPlayer(), v) <= happinessDenyTrading) {
+        float happiness = HappinessSourceRegistry.getHappiness(e.getPlayer(), v);
+        if (happiness <= happinessDenyTrading) {
             e.setCancelled(true);
             if (v instanceof Villager villager) villager.shakeHead();
             e.getPlayer().spawnParticle(Particle.VILLAGER_ANGRY, v.getEyeLocation(), 5, 0.5, 0.5, 0.5);
@@ -407,8 +409,23 @@ public class MerchantListener implements Listener {
                         // time has gone backwards...? reset demand
                         for (MerchantData.TradeData tradeData : d.getTrades().values()) tradeData.setDemand(0);
                     }
-                    MerchantData.MerchantPlayerMemory reputation = d.getPlayerMemory(e.getPlayer().getUniqueId());
-                    if (reputation.getRenownReputation() <= renownDenyTrading) {
+                    MerchantData.MerchantPlayerMemory memory = d.getPlayerMemory(e.getPlayer().getUniqueId());
+                    if (happiness >= happinessGainRenown && !memory.hasReachedMaxHappiness()) {
+                        memory.setHasReachedMaxHappiness(true);
+                        for (Entity villagerInRange : e.getPlayer().getWorld().getNearbyEntities(e.getPlayer().getLocation(), 128, 128, 128, en -> en instanceof AbstractVillager)){
+                            AbstractVillager villager = (AbstractVillager) villagerInRange;
+
+                            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+                                CustomMerchantManager.getMerchantData(villager, nearbyData ->
+                                        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+                                            if (nearbyData == null) return;
+                                            CustomMerchantManager.modifyRenownReputation(nearbyData, e.getPlayer(), (float) renownHero);
+                                        })
+                                );
+                            });
+                        }
+                    }
+                    if (memory.getRenownReputation() <= renownDenyTrading) {
                         if (v instanceof Villager villager) villager.shakeHead();
                         e.getPlayer().spawnParticle(Particle.VILLAGER_ANGRY, v.getEyeLocation(), 5, 0.5, 0.5, 0.5);
                         Utils.sendMessage(e.getPlayer(), "&fI don't deal with the likes of you."); // TODO data driven

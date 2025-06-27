@@ -27,6 +27,8 @@ service_button_buy_training_default_type: LIME_DYE:9199500
 service_button_buy_training_name: "<lang.service_training_confirm_button_name>"
 service_button_buy_training_description:
   - "<lang.service_training_confirm_button_lore>"
+service_button_unavailable_training_description:
+  - "<lang.service_training_unavailable_button_lore>"
 
 service_button_type_trading: LIME_DYE/9199203/9199202/9199201
 service_button_type_training: LIME_DYE/9199209/9199208/9199207

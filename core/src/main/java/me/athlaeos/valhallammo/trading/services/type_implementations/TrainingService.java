@@ -88,7 +88,7 @@ public class TrainingService extends ServiceType {
 
     @Override
     public ItemStack getDefaultButton() {
-        return new ItemBuilder(Material.EMERALD)
+        return new ItemBuilder(Material.WRITABLE_BOOK)
                 .name("&eTraining")
                 .lore("&7Allows players to purchase",
                         "&7skill levels or experience",

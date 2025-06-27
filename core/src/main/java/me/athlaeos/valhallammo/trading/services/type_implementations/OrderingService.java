@@ -128,7 +128,7 @@ public class OrderingService extends ServiceType {
 
     @Override
     public ItemStack getDefaultButton() {
-        return new ItemBuilder(Material.WRITABLE_BOOK)
+        return new ItemBuilder(Material.LECTERN)
                 .name("&eOrdering")
                 .lore("&7Allows a player to order many",
                         "&7of a merchant's trades in advance",

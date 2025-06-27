@@ -37,7 +37,7 @@ public class TradingService extends ServiceType {
         MerchantConfiguration configuration = v instanceof Villager villager ? CustomMerchantManager.getMerchantConfigurations().get(villager.getProfession()) : CustomMerchantManager.getTravelingMerchantConfiguration();
         if (configuration == null || configuration.getMerchantTypes().isEmpty()) return;
         List<MerchantRecipe> recipes = CustomMerchantManager.recipesFromData(data, menu.getPlayerMenuUtility().getOwner());
-        if (recipes != null) {
+        if (recipes != null && !recipes.isEmpty()) {
             VirtualMerchant merchant = new SimpleMerchant(PlayerMenuUtilManager.getPlayerMenuUtility(menu.getPlayerMenuUtility().getOwner()), v.getUniqueId(), data, recipes);
             if (merchant.getRecipes().isEmpty()) {
                 if (v instanceof Villager villager) {
