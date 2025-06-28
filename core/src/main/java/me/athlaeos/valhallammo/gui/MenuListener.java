@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
@@ -52,6 +53,14 @@ public class MenuListener implements Listener {
             if (!ItemUtils.isEmpty(e.getCursor())){
                 activeMenu.handleMenu(e);
             }
+        }
+    }
+
+    @EventHandler
+    public void onMenuClose(InventoryCloseEvent e){
+        Menu activeMenu = activeMenus.get(e.getPlayer().getUniqueId());
+        if (activeMenu != null && e.getInventory().equals(activeMenu.getInventory())){
+            activeMenu.onClose();
         }
     }
 }

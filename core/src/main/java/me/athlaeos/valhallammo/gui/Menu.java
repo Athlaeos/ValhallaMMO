@@ -53,6 +53,10 @@ public abstract class Menu {
         if (StringUtils.isEmpty(value)) ValhallaMMO.logWarning(config + ":" + path + " was called, but has no value!");
         return ItemUtils.parseCustomModelItem(value, def);
     }
+
+    public void onClose(){
+        // do nothing by default
+    }
 }
 
 //Credit for menu and manager go to Kody Simpson
