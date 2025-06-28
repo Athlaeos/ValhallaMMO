@@ -1,6 +1,8 @@
 package me.athlaeos.valhallammo.trading.menu;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.gui.Menu;
@@ -36,7 +38,7 @@ import java.util.*;
 public class ServiceUpgradingMenu extends Menu {
     private static final NamespacedKey KEY_METHOD = new NamespacedKey(ValhallaMMO.getInstance(), "training_method");
     private static final List<Integer> indexesUpgrades = List.of(46, 47, 48, 49, 50, 51, 52);
-    private static final List<Integer> indexesCost = List.of(12, 13, 14, 21, 22, 23, 30, 31, 32);
+    private static final int indexCost = 22;
     private static final int indexInput = 19;
     private static final int indexOutput = 25;
 
@@ -48,6 +50,7 @@ public class ServiceUpgradingMenu extends Menu {
     private final MerchantLevel level;
     private int page = 0;
     private UpgradeService selectedService = null;
+    private ItemStack input = null;
 
     public ServiceUpgradingMenu(PlayerMenuUtility playerMenuUtility, List<UpgradeService> services, MerchantData data) {
         super(playerMenuUtility);
@@ -79,23 +82,8 @@ public class ServiceUpgradingMenu extends Menu {
         String m = ItemUtils.getPDCString(KEY_METHOD, clicked.getMeta(), null);
         if (m != null){
             Service service = ServiceRegistry.getService(m);
-            if (!(service instanceof TrainService tc) || level == null || tc.getCost() == null || ItemUtils.isEmpty(tc.getCost().getItem())) return;
+            if (!(service instanceof UpgradeService us) || level == null || us.getCost() == null || ItemUtils.isEmpty(us.getCost().getItem())) return;
 
-            Skill skillToLevel = SkillRegistry.getSkill(tc.getSkillToLevel());
-            Profile profile = ProfileCache.getOrCache(playerMenuUtility.getOwner(), skillToLevel.getProfileType());
-            if (profile.getLevel() >= tc.getLimitPerLevel().getOrDefault(level, 0)) return;
-            Map<ItemStack, Integer> totalItems = getServiceCost(tc);
-            if (totalItems == null) return;
-            if (ItemUtils.timesContained(Arrays.asList(playerMenuUtility.getOwner().getInventory().getStorageContents()), totalItems, tc.getCost().getOption()) >= 1){
-                ItemUtils.removeItems(playerMenuUtility.getOwner().getInventory(), totalItems, 1, tc.getCost().getOption());
-                double expToPurchase = getExpToPurchase(tc);
-                skillToLevel.addEXP(playerMenuUtility.getOwner(), expToPurchase, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.MERCHANT_TRAINING);
-
-                MerchantType type = CustomMerchantManager.getMerchantType(data.getType());
-                if (type == null) return;
-                int expToGrant = (int) ((1 + AccumulativeStatManager.getCachedStats("TRADING_MERCHANT_EXPERIENCE_MULTIPLIER", playerMenuUtility.getOwner(), 10000, true)));
-                data.setExp(Math.min(type.getExpRequirement(MerchantLevel.MASTER), data.getExp() + expToGrant));
-            } else Utils.sendMessage(e.getWhoClicked(), TranslationManager.getTranslation("service_training_cant_afford"));
 
             setMenuItems();
             return;
@@ -109,15 +97,13 @@ public class ServiceUpgradingMenu extends Menu {
         e.setCancelled(true);
     }
 
-    private ItemStack getCost(){
-        if (selectedService == null) return null;
+    private int getCostQuantity(UpgradeService service){
         double relationshipCostMultiplier = Math.max(0, 1 - (CustomMerchantManager.getDiscountFormula() == null ? 0 : Utils.eval(CustomMerchantManager.getDiscountFormula()
                 .replace("%happiness%", String.valueOf(happiness))
                 .replace("%renown%", String.valueOf(renown))
                 .replace("%reputation%", String.valueOf(reputation))
         )));
-        int finalItemQuantityPrice = (int) Math.max(1, selectedService.getCost().getItem().getAmount() * relationshipCostMultiplier);
-
+        return (int) Math.max(1, service.getCost().getItem().getAmount() * relationshipCostMultiplier);
     }
 
     @Override
@@ -130,52 +116,44 @@ public class ServiceUpgradingMenu extends Menu {
         List<ItemStack> buttons = new ArrayList<>();
         for (UpgradeService service : services){
             String costString = TranslationManager.translatePlaceholders(SlotEntry.toString(service.getCost()));
+            String targetString = TranslationManager.translatePlaceholders(SlotEntry.toString(service.getInput()));
 
             ItemStack button = new ItemBuilder(service.getUpgradeIcon())
+                    .translate()
+                    .placeholderLore("%target%", targetString)
                     .placeholderLore("%item%", costString)
-                    .get();
+                    .placeholderLore("%quantity%", String.valueOf(getCostQuantity(service)))
+                    .stringTag(KEY_METHOD, service.getID()).get();
 
-            if (service.getPrimaryButtonPosition() < 0 || service.getPrimaryButtonPosition() >= getSlots()) continue;
-            Skill skill = SkillRegistry.getSkill(service.getSkillToLevel());
-            if (skill == null) continue;
-            Profile profile = ProfileCache.getOrCache(playerMenuUtility.getOwner(), skill.getProfileType());
-            Map<ItemStack, Integer> cost = getServiceCost(service);
-            if (cost == null || cost.isEmpty()) return;
-            Optional<ItemStack> item = cost.keySet().stream().findAny();
-            String costString = TranslationManager.translatePlaceholders(SlotEntry.toString(service.getCost()));
-            int quantity = Math.max(0, cost.get(item.get()));
-
-            ItemBuilder buttonBuilder = new ItemBuilder(service.getPrimaryButton().clone());
-            if (profile.getLevel() >= service.getLimitPerLevel().getOrDefault(level, 0)) {
-                buttonBuilder.lore(TranslationManager.translateListPlaceholders(CustomMerchantManager.getTradingConfig().getStringList("service_button_unavailable_training_description")));
-            }
-            buttonBuilder
-                    .placeholderName("%skill%", skill.getDisplayName())
-                    .placeholderName("%maxlevel%", String.valueOf(service.getLimitPerLevel().getOrDefault(level, 0)))
-                    .placeholderName("%levelcurrent%", String.valueOf(profile.getLevel()))
-                    .placeholderName("%levelnext%", profile.getLevel() >= skill.getMaxLevel() ? TranslationManager.getTranslation("max_level") : String.valueOf(profile.getLevel() + 1))
-                    .placeholderName("%costamount%", String.valueOf(quantity))
-                    .placeholderName("%costdescription%", costString)
-                    .placeholderLore("%skill%", skill.getDisplayName())
-                    .placeholderLore("%maxlevel%", String.valueOf(service.getLimitPerLevel().getOrDefault(level, 0)))
-                    .placeholderLore("%levelcurrent%", String.valueOf(profile.getLevel()))
-                    .placeholderLore("%levelnext%", profile.getLevel() >= skill.getMaxLevel() ? TranslationManager.getTranslation("max_level") : String.valueOf(profile.getLevel() + 1))
-                    .placeholderLore("%costamount%", String.valueOf(quantity))
-                    .placeholderLore("%costdescription%", costString)
-                    .stringTag(KEY_METHOD, service.getID()).translate().get();
-
-            ItemStack blankServiceButton = new ItemBuilder(buttonBuilder.get()).type(Material.LIME_DYE).data(9199200).get();
-            for (int secondaryIndex : service.getSecondaryButtonPositions()) {
-                if (secondaryIndex < 0 || secondaryIndex >= getSlots()) continue;
-                inventory.setItem(secondaryIndex, blankServiceButton);
-            }
-            inventory.setItem(service.getPrimaryButtonPosition(), buttonBuilder.get());
+            buttons.add(button);
         }
+
+        if (!ItemUtils.isEmpty(input)) {
+            inventory.setItem(indexInput, input);
+        }
+        if (selectedService != null){
+            if (!ItemUtils.isEmpty(input) && selectedService.getInput().getOption().matches(selectedService.getInput().getItem(), input)) {
+                ItemBuilder output = new ItemBuilder(input);
+                DynamicItemModifier.modify(ModifierContext.builder(output)
+                        .crafter(playerMenuUtility.getOwner())
+                        .setOtherType(data)
+                        .entity(data.getVillager())
+                        .validate()
+                        .get(), selectedService.getModifiers());
+                inventory.setItem(indexOutput, output.get());
+            }
+
+            ItemStack cost = selectedService.getCost().getItem().clone();
+            cost.setAmount(getCostQuantity(selectedService));
+            inventory.setItem(indexCost, cost);
+        }
+
+        Map<Integer, List<ItemStack>> pages = Utils.paginate(indexesUpgrades.size(), buttons);
+
     }
 
     @Override
     public void onClose() {
-        ItemStack input = inventory.getItem(indexInput);
         if (!ItemUtils.isEmpty(input)) {
             ItemUtils.addItem(playerMenuUtility.getOwner(), input.clone(), false);
             inventory.setItem(indexInput, null);
