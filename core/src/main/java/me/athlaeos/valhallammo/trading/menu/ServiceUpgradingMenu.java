@@ -47,6 +47,7 @@ public class ServiceUpgradingMenu extends Menu {
     private final float renown;
     private final MerchantLevel level;
     private int page = 0;
+    private UpgradeService selectedService = null;
 
     public ServiceUpgradingMenu(PlayerMenuUtility playerMenuUtility, List<UpgradeService> services, MerchantData data) {
         super(playerMenuUtility);
@@ -108,6 +109,17 @@ public class ServiceUpgradingMenu extends Menu {
         e.setCancelled(true);
     }
 
+    private ItemStack getCost(){
+        if (selectedService == null) return null;
+        double relationshipCostMultiplier = Math.max(0, 1 - (CustomMerchantManager.getDiscountFormula() == null ? 0 : Utils.eval(CustomMerchantManager.getDiscountFormula()
+                .replace("%happiness%", String.valueOf(happiness))
+                .replace("%renown%", String.valueOf(renown))
+                .replace("%reputation%", String.valueOf(reputation))
+        )));
+        int finalItemQuantityPrice = (int) Math.max(1, selectedService.getCost().getItem().getAmount() * relationshipCostMultiplier);
+
+    }
+
     @Override
     public void setMenuItems() {
         inventory.clear();
@@ -115,7 +127,14 @@ public class ServiceUpgradingMenu extends Menu {
         if (level == null) return;
         inventory.setItem(45, previousPageButton);
         inventory.setItem(53, nextPageButton);
+        List<ItemStack> buttons = new ArrayList<>();
         for (UpgradeService service : services){
+            String costString = TranslationManager.translatePlaceholders(SlotEntry.toString(service.getCost()));
+
+            ItemStack button = new ItemBuilder(service.getUpgradeIcon())
+                    .placeholderLore("%item%", costString)
+                    .get();
+
             if (service.getPrimaryButtonPosition() < 0 || service.getPrimaryButtonPosition() >= getSlots()) continue;
             Skill skill = SkillRegistry.getSkill(service.getSkillToLevel());
             if (skill == null) continue;
@@ -151,6 +170,15 @@ public class ServiceUpgradingMenu extends Menu {
                 inventory.setItem(secondaryIndex, blankServiceButton);
             }
             inventory.setItem(service.getPrimaryButtonPosition(), buttonBuilder.get());
+        }
+    }
+
+    @Override
+    public void onClose() {
+        ItemStack input = inventory.getItem(indexInput);
+        if (!ItemUtils.isEmpty(input)) {
+            ItemUtils.addItem(playerMenuUtility.getOwner(), input.clone(), false);
+            inventory.setItem(indexInput, null);
         }
     }
 
