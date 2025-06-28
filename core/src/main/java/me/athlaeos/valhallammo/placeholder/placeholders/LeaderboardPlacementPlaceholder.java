@@ -21,7 +21,7 @@ public class LeaderboardPlacementPlaceholder extends Placeholder {
     public String parse(String s, Player p) {
         LeaderboardManager.Leaderboard l = LeaderboardManager.getLeaderboards().get(leaderboard);
         LeaderboardEntry entry = LeaderboardManager.getCachedLeaderboardsByPlayer().getOrDefault(leaderboard, new HashMap<>()).get(p.getUniqueId());
-        if (entry == null || l == null) return s.replace(this.placeholder, "");
+        if (entry == null || l == null || entry.playerName() == null) return s.replace(this.placeholder, "");
         StatFormat format = Profile.getFormat(l.profile(), l.mainStat());
         String finalEntry = l.placeholderDisplay()
                 .replace("%rank%", String.valueOf(entry.place()))
