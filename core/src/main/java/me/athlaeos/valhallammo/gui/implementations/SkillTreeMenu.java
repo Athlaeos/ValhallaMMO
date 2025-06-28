@@ -310,7 +310,7 @@ public class SkillTreeMenu extends Menu {
                 if (column == null) continue;
                 for (Perk p : column){
                     Pair<Integer, Integer> offsets = coordinateOffsets.get(skill);
-                    if (p == null || !p.shouldBeVisible(target) || offsets == null) continue;
+                    if (p == null || !p.shouldBeVisible(target) || offsets == null || (p.getPermissionRequirement() != null && !playerMenuUtility.getOwner().hasPermission(p.getPermissionRequirement()))) continue;
                     ItemBuilder icon = new ItemBuilder(p.getIcon())
                             .name(perkConfirmation != null && perkConfirmation.equals(p.getName()) ? TranslationManager.getTranslation("skilltree_perk_confirmation").replace("%perk%", p.getDisplayName()) : p.getDisplayName())
                             .flag(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS).wipeAttributes()
