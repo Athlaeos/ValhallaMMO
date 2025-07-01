@@ -13,7 +13,7 @@
     <properties>
         <revision>1.5.1</revision>
         <javaVersion>17</javaVersion>
-        <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\1.21.5\plugins</testServerPath>
+        <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\1.21.7\plugins</testServerPath>
         <shadedPackage>me.athlaeos.valhallammo.shaded</shadedPackage>
 
         <!-- Do not change the following properties -->

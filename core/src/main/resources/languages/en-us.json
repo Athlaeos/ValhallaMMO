@@ -227,12 +227,16 @@
     "service_upgrading": "&7Tinker",
     "service_learning": "&dLearn",
     "service_investing": "&cInvest",
+    "service_menu_ordering": "&8Place your order",
+    "service_menu_upgrading": "&8Select your upgrade",
+    "service_menu_training": "&8Select your training",
     "service_confirm_order": "&aConfirm Order",
     "service_order_cant_afford": "&cCan't afford these orders",
     "service_order_time": "&aConfirm Order",
     "service_order_time_format_more_than_1_day": "%days% days",
     "service_order_time_format_less_than_1_day": "less than a day",
-    "service_training_cant_afford": "&cThis lesson is too expensive",
+    "service_training_cant_afford": "&cYou don't have the cost in your inventory",
+    "service_upgrading_cant_afford": "&cYou don't have the cost in your inventory",
     "status_economy_cost": "&7Costs &e$%cost%",
     "warning_insufficient_money": "&cInsufficient Funds",
     "warning_insufficient_items": "&cInsufficient Item Funds",
@@ -3607,6 +3611,9 @@
       "&7%skill% &7experience, up to &eLV%maxlevel%",
       "",
       "&2LV%levelcurrent% &7>> &a%costamount%x %costdescription% &7>> &2LV%levelnext%"
+    ],
+    "service_training_unavailable_button_lore": [
+      "&cI have nothing more to teach you"
     ]
   },
   "stringIndex": {},
