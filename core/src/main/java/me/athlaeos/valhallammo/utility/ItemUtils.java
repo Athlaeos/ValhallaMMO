@@ -758,7 +758,8 @@ public class ItemUtils {
                 // transfer or swap all if not similar
                 if (isEmpty(cursor)){
                     // pick up clicked item, should be fine
-                    e.setCancelled(false);
+                    e.getWhoClicked().setItemOnCursor(e.getCurrentItem());
+                    e.setCurrentItem(null);
                 } else {
                     if (isEmpty(clickedItem)){
                         int amountToTransfer = (e.isRightClick() ? 1 : maxAmount);

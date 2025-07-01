@@ -128,9 +128,7 @@ public class ServiceUpgradingMenu extends Menu {
                         ItemUtils.removeItems(playerMenuUtility.getOwner().getInventory(), cost, 1, selectedService.getCost().getOption());
                         input = null;
                         inventory.setItem(indexInput, null);
-                        System.out.println("success");
                     } else {
-                        System.out.println("nullify");
                         input = null;
                     }
                 }
