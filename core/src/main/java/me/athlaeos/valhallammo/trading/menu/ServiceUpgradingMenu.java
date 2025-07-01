@@ -69,69 +69,98 @@ public class ServiceUpgradingMenu extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
-        if (e.getClickedInventory() instanceof PlayerInventory) {
+        e.setCancelled(true);
+        if (e.getRawSlot() == indexPreviousPage) page--;
+        else if (e.getRawSlot() == indexNextPage) page++;
+        else if (e.getRawSlot() == indexInput) {
+            // putting item in, or removing from input
             ItemUtils.calculateClickEvent(e, 1, indexInput);
-        } else {
-            ItemBuilder clicked = ItemUtils.isEmpty(e.getCurrentItem()) ? null : new ItemBuilder(e.getCurrentItem());
-            if (clicked == null) return;
-            String m = ItemUtils.getPDCString(KEY_METHOD, clicked.getMeta(), null);
-            if (m != null) {
-                e.setCancelled(true);
-                Service service = ServiceRegistry.getService(m);
-                if (!(service instanceof UpgradeService us) || level == null || us.getCost() == null || ItemUtils.isEmpty(us.getCost().getItem()))
-                    return;
-                selectedService = us;
+            ItemStack input = inventory.getItem(indexInput);
+            if (ItemUtils.isEmpty(input)) {
+                this.input = null;
+                inventory.setItem(indexOutput, null);
+            } else this.input = input.clone();
+        } else if (e.getRawSlot() == indexOutput) {
+            if (selectedService == null || ItemUtils.isEmpty(input)) {
                 setMenuItems();
+                System.out.println("input null");
                 return;
             }
-            if (e.getRawSlot() == indexPreviousPage) page--;
-            else if (e.getRawSlot() == indexNextPage) page++;
-            else if (e.getRawSlot() == indexInput) {
-                // putting item in, or removing from input
-                ItemUtils.calculateClickEvent(e, 1, indexInput);
-                ItemStack input = inventory.getItem(indexInput);
-                if (ItemUtils.isEmpty(input)) this.input = null;
-                else this.input = input.clone();
-            } else if (e.getRawSlot() == indexOutput && selectedService != null && !ItemUtils.isEmpty(input)) {
-                Map<ItemStack, Integer> cost = new HashMap<>(Map.of(selectedService.getCost().getItem(), getCostQuantity(selectedService)));
-                if (ItemUtils.timesContained(Arrays.asList(playerMenuUtility.getOwner().getInventory().getStorageContents()), cost, selectedService.getCost().getOption()) <= 0) {
-                    // first check if player can afford it. cancel if not
-                    e.setCancelled(true);
-                    setMenuItems();
-                    Utils.sendMessage(playerMenuUtility.getOwner(), TranslationManager.getTranslation("service_upgrading_cant_afford"));
-                    return;
-                }
+            Map<ItemStack, Integer> cost = new HashMap<>(Map.of(selectedService.getCost().getItem(), getCostQuantity(selectedService)));
+            if (ItemUtils.timesContained(Arrays.asList(playerMenuUtility.getOwner().getInventory().getStorageContents()), cost, selectedService.getCost().getOption()) <= 0) {
+                // first check if player can afford it. cancel if not
+                e.setCancelled(true);
+                setMenuItems();
+                System.out.println("cant afford");
+                Utils.sendMessage(playerMenuUtility.getOwner(), TranslationManager.getTranslation("service_upgrading_cant_afford"));
+                return;
+            }
+            ItemBuilder clicked = ItemUtils.isEmpty(e.getCurrentItem()) ? null : new ItemBuilder(e.getCurrentItem());
 
-                if (CustomFlag.hasFlag(clicked.getMeta(), CustomFlag.UNCRAFTABLE)) e.setCancelled(true);
-                else {
-                    ItemBuilder testOutput = new ItemBuilder(input);
-                    DynamicItemModifier.modify(ModifierContext.builder(testOutput)
+            if (clicked == null || CustomFlag.hasFlag(clicked.getMeta(), CustomFlag.UNCRAFTABLE)) {
+                e.setCancelled(true);
+                System.out.println("invalid modifiers 1");
+            } else {
+                ItemBuilder testOutput = new ItemBuilder(input);
+                DynamicItemModifier.modify(ModifierContext.builder(testOutput)
+                        .crafter(playerMenuUtility.getOwner())
+                        .setOtherType(data)
+                        .entity(data.getVillager())
+                        .validate()
+                        .get(), selectedService.getModifiers());
+                if (CustomFlag.hasFlag(testOutput.getMeta(), CustomFlag.UNCRAFTABLE)) {
+                    System.out.println("invalid modifiers 2");
+                    e.setCancelled(true);
+                } else {
+                    ItemBuilder finalOutput = new ItemBuilder(input);
+                    DynamicItemModifier.modify(ModifierContext.builder(finalOutput)
                             .crafter(playerMenuUtility.getOwner())
                             .setOtherType(data)
                             .entity(data.getVillager())
                             .validate()
+                            .executeUsageMechanics()
                             .get(), selectedService.getModifiers());
-                    if (CustomFlag.hasFlag(testOutput.getMeta(), CustomFlag.UNCRAFTABLE)) e.setCancelled(true);
-                    else {
-                        ItemBuilder finalOutput = new ItemBuilder(input);
-                        DynamicItemModifier.modify(ModifierContext.builder(finalOutput)
-                                .crafter(playerMenuUtility.getOwner())
-                                .setOtherType(data)
-                                .entity(data.getVillager())
-                                .validate()
-                                .executeUsageMechanics()
-                                .get(), selectedService.getModifiers());
-                        e.setCurrentItem(finalOutput.get());
-                        ItemUtils.calculateClickEvent(e, 1);
-                        // check if output is empty after clicking, which would determine if the player could take the item out properly
-                        if (ItemUtils.isEmpty(inventory.getItem(indexOutput))) {
-                            // item successfully removed, pay up!
-                            ItemUtils.removeItems(playerMenuUtility.getOwner().getInventory(), cost, 1, selectedService.getCost().getOption());
-                            input = null;
-                        }
+                    e.setCurrentItem(finalOutput.get());
+                    ItemUtils.calculateClickEvent(e, 1);
+                    // check if output is empty after clicking, which would determine if the player could take the item out properly
+                    if (ItemUtils.isEmpty(inventory.getItem(indexOutput))) {
+                        // item successfully removed, pay up!
+                        ItemUtils.removeItems(playerMenuUtility.getOwner().getInventory(), cost, 1, selectedService.getCost().getOption());
+                        input = null;
+                        inventory.setItem(indexInput, null);
+                        System.out.println("success");
+                    } else {
+                        System.out.println("nullify");
+                        input = null;
                     }
                 }
             }
+        } else if (indexesUpgrades.contains(e.getRawSlot())) {
+            ItemBuilder clicked = ItemUtils.isEmpty(e.getCurrentItem()) ? null : new ItemBuilder(e.getCurrentItem());
+            if (clicked == null) {
+                setMenuItems();
+                return;
+            }
+            String m = ItemUtils.getPDCString(KEY_METHOD, clicked.getMeta(), null);
+            if (m != null) {
+                e.setCancelled(true);
+                Service service = ServiceRegistry.getService(m);
+                if (!(service instanceof UpgradeService us) || level == null || us.getCost() == null || ItemUtils.isEmpty(us.getCost().getItem())) {
+                    setMenuItems();
+                    return;
+                }
+                selectedService = us;
+                setMenuItems();
+                return;
+            }
+        } else {
+            System.out.println("something else");
+            ItemUtils.calculateClickEvent(e, 1, indexInput);
+            ItemStack input = inventory.getItem(indexInput);
+            if (ItemUtils.isEmpty(input)) {
+                this.input = null;
+                inventory.setItem(indexOutput, null);
+            } else this.input = input.clone();
         }
 
         setMenuItems();

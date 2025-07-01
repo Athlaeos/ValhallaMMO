@@ -11,11 +11,11 @@
     <packaging>pom</packaging>
 
     <properties>
-        <revision>dev-0.7</revision>
+        <revision>premium_dev-0.8</revision>
         <javaVersion>17</javaVersion>
-        <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\1.21.7\plugins</testServerPath>
+        <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\1.21.5\plugins</testServerPath>
         <shadedPackage>me.athlaeos.valhallammo.shaded</shadedPackage>
-        <finalName>ValhallaMMOPremium</finalName>
+        <finalName>ValhallaMMO</finalName>
 
         <!-- Do not change the following properties -->
         <outputDirectory>target</outputDirectory>
@@ -54,7 +54,7 @@
 
     <build>
         <defaultGoal>clean package</defaultGoal>
-        <finalName>ValhallaMMOPremium_${revision}</finalName>
+        <finalName>ValhallaMMO_${revision}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
