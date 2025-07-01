@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.trading.menu;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.gui.Menu;
@@ -144,7 +145,7 @@ public class TrainingServiceConfigurationMenu extends SimpleConfigurationMenu<Tr
 
     @Override
     public String getMenuName() {
-        return Utils.chat("&8Configure Ordering Service " + thingyToConfigure.getID()); // TODO data driven
+        return Utils.chat((ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF321\uF80C\uF80A\uF808\uF802" : "") + "&8" + thingyToConfigure.getID());
     }
 
     @Override

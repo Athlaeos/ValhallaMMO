@@ -69,12 +69,12 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
     @Override
     public String getMenuName() {
         return Utils.chat(switch(view) {
-            case TRADE -> "&8Manage Trade " + currentTrade.getID();
-            case TRADES -> "&8" + currentSubType.getType() + "'s Trades";
-            case SUBTYPE -> "&8" + currentSubType.getType();
-            case SUBTYPES -> "&8Subtypes of " + (travelingMerchant ? "Traveling Merchant" : StringUtils.toPascalCase(currentProfession.toString().replace("_", " ")));
-            case PROFESSIONS -> "&8Profession Overview";
-        }); // TODO custom menu
+            case TRADE -> (ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF342\uF80C\uF80A\uF808\uF802" : "&8Manage Trade ") + currentTrade.getID();
+            case TRADES -> (ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF341\uF80C\uF80A\uF808\uF802" : "&8") + currentSubType.getType() + "'s Trades";
+            case SUBTYPE -> (ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF321\uF80C\uF80A\uF808\uF802" : "&8") + currentSubType.getType();
+            case SUBTYPES -> (ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF340\uF80C\uF80A\uF808\uF802" : "&8Subtypes of ") + (travelingMerchant ? "Traveling Merchant" : StringUtils.toPascalCase(currentProfession.toString().replace("_", " ")));
+            case PROFESSIONS -> ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF321\uF80C\uF80A\uF808\uF802" : "&8Profession Overview";
+        });
     }
 
     @Override
@@ -334,7 +334,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                 case "tradeTradeableButton" -> currentTrade.setTradeable(!currentTrade.isTradeable());
                 case "backToMenuButton" -> switchView(View.TRADES);
                 case "tradeRefreshesButton" -> currentTrade.setRefreshes(!currentTrade.refreshes());
-                case "tradeOrderableButton" -> currentTrade.setMaxOrderCount(currentTrade.getMaxOrderCount() + ((e.isShiftClick() ? 8 : 1) * (e.isLeftClick() ? 1 : -1)));
+                case "tradeOrderableButton" -> currentTrade.setMaxOrderCount(Math.max(0, currentTrade.getMaxOrderCount() + ((e.isShiftClick() ? 8 : 1) * (e.isLeftClick() ? 1 : -1))));
                 case "tradeGiftWeightButton" -> currentTrade.setGiftWeight((currentTrade.getGiftWeight() + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.1F : -0.1F))));
                 case "tradeSkillExperienceButton" -> currentTrade.setSkillExp(currentTrade.getSkillExp() + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 1 : -1)));
             }
@@ -566,7 +566,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     inventory.setItem(43, new ItemBuilder(Buttons.tradeExclusiveButton).prependLore("&7Currently &e" + (currentTrade.isExclusive() ? "On" : "Off")).get());
                     inventory.setItem(26, new ItemBuilder(Buttons.tradeOrderableButton).prependLore(String.format("&7Currently &e%d", currentTrade.getMaxOrderCount())).get());
                     String giftWeight = currentTrade.getGiftWeight() < 0 ? "&cCan only be gifted once per player" : currentTrade.getGiftWeight() == 0 ? "&eCannot be gifted" : "&aMay be gifted indefinitely";
-                    inventory.setItem(17, new ItemBuilder(Buttons.tradeGiftWeightButton).prependLore(String.format("&7Currently %s%.1f", currentTrade.getGiftWeight() < 0 ? "&c" : currentTrade.getGiftWeight() == 0 ? "&7" : "&a", Math.abs(currentTrade.getWeight())), giftWeight).get());
+                    inventory.setItem(17, new ItemBuilder(Buttons.tradeGiftWeightButton).prependLore(String.format("&7Currently %s%.1f", currentTrade.getGiftWeight() < 0 ? "&c" : currentTrade.getGiftWeight() == 0 ? "&7" : "&a", Math.abs(currentTrade.getGiftWeight())), giftWeight).get());
                 }
                 inventory.setItem(49, Buttons.backToMenuButton);
             }

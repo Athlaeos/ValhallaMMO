@@ -4,24 +4,17 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
-import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
+import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
-import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
-import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.trading.dom.MerchantLevel;
-import me.athlaeos.valhallammo.trading.dom.MerchantType;
 import me.athlaeos.valhallammo.trading.happiness.HappinessSourceRegistry;
 import me.athlaeos.valhallammo.trading.services.Service;
 import me.athlaeos.valhallammo.trading.services.ServiceRegistry;
-import me.athlaeos.valhallammo.trading.services.service_implementations.TrainService;
 import me.athlaeos.valhallammo.trading.services.service_implementations.UpgradeService;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -37,6 +30,8 @@ import java.util.*;
 
 public class ServiceUpgradingMenu extends Menu {
     private static final NamespacedKey KEY_METHOD = new NamespacedKey(ValhallaMMO.getInstance(), "training_method");
+    private static final int indexPreviousPage = 45;
+    private static final int indexNextPage = 53;
     private static final List<Integer> indexesUpgrades = List.of(46, 47, 48, 49, 50, 51, 52);
     private static final int indexCost = 22;
     private static final int indexInput = 19;
@@ -64,7 +59,7 @@ public class ServiceUpgradingMenu extends Menu {
 
     @Override
     public String getMenuName() {
-        return Utils.chat(ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF321" : "&8Pick your training"); // TODO data driven and change menu texture
+        return Utils.chat(ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF324" : TranslationManager.getTranslation("service_menu_upgrading"));
     }
 
     @Override
@@ -74,19 +69,69 @@ public class ServiceUpgradingMenu extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
-        e.setCancelled(true);
-        if (e.getClickedInventory() instanceof PlayerInventory) return;
+        if (e.getClickedInventory() instanceof PlayerInventory) {
+            ItemUtils.calculateClickEvent(e, 1, indexInput);
+        } else {
+            ItemBuilder clicked = ItemUtils.isEmpty(e.getCurrentItem()) ? null : new ItemBuilder(e.getCurrentItem());
+            if (clicked == null) return;
+            String m = ItemUtils.getPDCString(KEY_METHOD, clicked.getMeta(), null);
+            if (m != null) {
+                e.setCancelled(true);
+                Service service = ServiceRegistry.getService(m);
+                if (!(service instanceof UpgradeService us) || level == null || us.getCost() == null || ItemUtils.isEmpty(us.getCost().getItem()))
+                    return;
+                selectedService = us;
+                setMenuItems();
+                return;
+            }
+            if (e.getRawSlot() == indexPreviousPage) page--;
+            else if (e.getRawSlot() == indexNextPage) page++;
+            else if (e.getRawSlot() == indexInput) {
+                // putting item in, or removing from input
+                ItemUtils.calculateClickEvent(e, 1, indexInput);
+                ItemStack input = inventory.getItem(indexInput);
+                if (ItemUtils.isEmpty(input)) this.input = null;
+                else this.input = input.clone();
+            } else if (e.getRawSlot() == indexOutput && selectedService != null && !ItemUtils.isEmpty(input)) {
+                Map<ItemStack, Integer> cost = new HashMap<>(Map.of(selectedService.getCost().getItem(), getCostQuantity(selectedService)));
+                if (ItemUtils.timesContained(Arrays.asList(playerMenuUtility.getOwner().getInventory().getStorageContents()), cost, selectedService.getCost().getOption()) <= 0) {
+                    // first check if player can afford it. cancel if not
+                    e.setCancelled(true);
+                    setMenuItems();
+                    Utils.sendMessage(playerMenuUtility.getOwner(), TranslationManager.getTranslation("service_upgrading_cant_afford"));
+                    return;
+                }
 
-        ItemBuilder clicked = ItemUtils.isEmpty(e.getCurrentItem()) ? null : new ItemBuilder(e.getCurrentItem());
-        if (clicked == null) return;
-        String m = ItemUtils.getPDCString(KEY_METHOD, clicked.getMeta(), null);
-        if (m != null){
-            Service service = ServiceRegistry.getService(m);
-            if (!(service instanceof UpgradeService us) || level == null || us.getCost() == null || ItemUtils.isEmpty(us.getCost().getItem())) return;
-
-
-            setMenuItems();
-            return;
+                if (CustomFlag.hasFlag(clicked.getMeta(), CustomFlag.UNCRAFTABLE)) e.setCancelled(true);
+                else {
+                    ItemBuilder testOutput = new ItemBuilder(input);
+                    DynamicItemModifier.modify(ModifierContext.builder(testOutput)
+                            .crafter(playerMenuUtility.getOwner())
+                            .setOtherType(data)
+                            .entity(data.getVillager())
+                            .validate()
+                            .get(), selectedService.getModifiers());
+                    if (CustomFlag.hasFlag(testOutput.getMeta(), CustomFlag.UNCRAFTABLE)) e.setCancelled(true);
+                    else {
+                        ItemBuilder finalOutput = new ItemBuilder(input);
+                        DynamicItemModifier.modify(ModifierContext.builder(finalOutput)
+                                .crafter(playerMenuUtility.getOwner())
+                                .setOtherType(data)
+                                .entity(data.getVillager())
+                                .validate()
+                                .executeUsageMechanics()
+                                .get(), selectedService.getModifiers());
+                        e.setCurrentItem(finalOutput.get());
+                        ItemUtils.calculateClickEvent(e, 1);
+                        // check if output is empty after clicking, which would determine if the player could take the item out properly
+                        if (ItemUtils.isEmpty(inventory.getItem(indexOutput))) {
+                            // item successfully removed, pay up!
+                            ItemUtils.removeItems(playerMenuUtility.getOwner().getInventory(), cost, 1, selectedService.getCost().getOption());
+                            input = null;
+                        }
+                    }
+                }
+            }
         }
 
         setMenuItems();
@@ -97,7 +142,7 @@ public class ServiceUpgradingMenu extends Menu {
         e.setCancelled(true);
     }
 
-    private int getCostQuantity(UpgradeService service){
+    private int getCostQuantity(UpgradeService service) {
         double relationshipCostMultiplier = Math.max(0, 1 - (CustomMerchantManager.getDiscountFormula() == null ? 0 : Utils.eval(CustomMerchantManager.getDiscountFormula()
                 .replace("%happiness%", String.valueOf(happiness))
                 .replace("%renown%", String.valueOf(renown))
@@ -106,15 +151,19 @@ public class ServiceUpgradingMenu extends Menu {
         return (int) Math.max(1, service.getCost().getItem().getAmount() * relationshipCostMultiplier);
     }
 
+    private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();
+
     @Override
     public void setMenuItems() {
         inventory.clear();
+        if (!ValhallaMMO.getPluginConfig().getBoolean("admin_gui_filler_removal"))
+            for (int i = 0; i < 54; i++) inventory.setItem(i, filler);
         MerchantLevel level = CustomMerchantManager.getLevel(data);
         if (level == null) return;
         inventory.setItem(45, previousPageButton);
         inventory.setItem(53, nextPageButton);
         List<ItemStack> buttons = new ArrayList<>();
-        for (UpgradeService service : services){
+        for (UpgradeService service : services) {
             String costString = TranslationManager.translatePlaceholders(SlotEntry.toString(service.getCost()));
             String targetString = TranslationManager.translatePlaceholders(SlotEntry.toString(service.getInput()));
 
@@ -128,10 +177,8 @@ public class ServiceUpgradingMenu extends Menu {
             buttons.add(button);
         }
 
-        if (!ItemUtils.isEmpty(input)) {
-            inventory.setItem(indexInput, input);
-        }
-        if (selectedService != null){
+        inventory.setItem(indexInput, input);
+        if (selectedService != null) {
             if (!ItemUtils.isEmpty(input) && selectedService.getInput().getOption().matches(selectedService.getInput().getItem(), input)) {
                 ItemBuilder output = new ItemBuilder(input);
                 DynamicItemModifier.modify(ModifierContext.builder(output)
@@ -149,7 +196,15 @@ public class ServiceUpgradingMenu extends Menu {
         }
 
         Map<Integer, List<ItemStack>> pages = Utils.paginate(indexesUpgrades.size(), buttons);
-
+        if (page >= pages.size()) page = pages.size() - 1;
+        else if (page < 0) page = 0;
+        List<ItemStack> page = pages.get(this.page);
+        for (int i = 0; i < page.size(); i++) {
+            ItemStack item = page.get(i);
+            inventory.setItem(indexesUpgrades.get(i), item);
+        }
+        inventory.setItem(indexPreviousPage, previousPageButton);
+        inventory.setItem(indexNextPage, nextPageButton);
     }
 
     @Override

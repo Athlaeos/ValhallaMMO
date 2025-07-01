@@ -85,7 +85,7 @@ public class ServiceOrderingMenu extends Menu {
 
     @Override
     public String getMenuName() {
-        return Utils.chat(ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF322" : "&8Make your order"); // TODO data driven
+        return Utils.chat(ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF322" : TranslationManager.getTranslation("service_menu_ordering")); // TODO data driven
     }
 
     @Override

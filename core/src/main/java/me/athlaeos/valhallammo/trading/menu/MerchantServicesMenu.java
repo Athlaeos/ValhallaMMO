@@ -172,6 +172,7 @@ public class MerchantServicesMenu extends Menu {
                     if (serviceType == null || ItemUtils.isEmpty(serviceType.getDefaultButton())) continue;
                     buttons.add(new ItemBuilder(serviceType.getDefaultButton())
                             .stringTag(KEY_SERVICE, s)
+                                    .name("&c" + s)
                             .appendLore(
                                     "&6Click to edit (if available)",
                                     "&6Shift-click to remove",

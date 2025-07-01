@@ -67,7 +67,7 @@ public class ServiceTrainingMenu extends Menu {
             case 4 -> "&f\uF808\uF31F";
             case 5 -> "&f\uF808\uF320";
             default -> "&f\uF808\uF321";
-        } : "&8Pick your training"); // TODO data driven and change menu texture
+        } : TranslationManager.getTranslation("service_menu_training"));
     }
 
     @Override

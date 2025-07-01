@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UpgradingService extends ServiceType {
-    private final DynamicButton button = Catch.catchOrElse(() -> new DynamicButton(CustomMerchantManager.getTradingConfig().getString("service_button_type_training", "")), null);
+    private final DynamicButton button = Catch.catchOrElse(() -> new DynamicButton(CustomMerchantManager.getTradingConfig().getString("service_button_type_upgrading", "")), null);
 
     @Override
     public String getID() {

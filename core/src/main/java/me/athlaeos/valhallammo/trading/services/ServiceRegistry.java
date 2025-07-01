@@ -47,7 +47,7 @@ public class ServiceRegistry {
         registerType(SERVICE_TYPE_TRADING);
         registerType(SERVICE_TYPE_ORDERING);
         registerType(SERVICE_TYPE_TRAINING);
-//        registerType(SERVICE_TYPE_UPGRADING);
+        registerType(SERVICE_TYPE_UPGRADING);
 
         registerService(SERVICE_TRADING);
     }
@@ -77,7 +77,7 @@ public class ServiceRegistry {
     }
 
     public static void removeService(String serviceName){
-        if (serviceName.equals("trading") || serviceName.equals("ordering")) return;
+        if (serviceName.equals("trading")) return;
         services.remove(serviceName);
     }
 
