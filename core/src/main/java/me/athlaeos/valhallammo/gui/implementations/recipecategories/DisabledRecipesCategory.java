@@ -54,7 +54,7 @@ public class DisabledRecipesCategory extends RecipeCategory{
                 }
                 for (Character c : details.getItems().keySet()){
                     if (details.getItems().get(c) == null) continue;
-                    lore.add("&e" + c + "&7: &e" + ItemUtils.getItemName(ItemUtils.getItemMeta(details.getItems().get(c))));
+                    lore.add("&e" + c + "&7: &e" + ItemUtils.getItemName(new ItemBuilder(details.getItems().get(c))));
                 }
             } else if (recipe instanceof ShapelessRecipe r){
                 priority = 1;
@@ -68,7 +68,7 @@ public class DisabledRecipesCategory extends RecipeCategory{
                 priority = 2;
                 prefix = "&7[&6Cooking&7] ";
                 ItemStack base = convertChoice(r.getInputChoice());
-                lore.add("&e" + choice.ingredientDescription(base) + " &f>>> &e" + ItemUtils.getItemName(ItemUtils.getItemMeta(r.getResult())));
+                lore.add("&e" + choice.ingredientDescription(base) + " &f>>> &e" + ItemUtils.getItemName(new ItemBuilder(r.getResult())));
             } else if (recipe instanceof SmithingRecipe r){
                 priority = 3;
                 prefix = "&7[&8Smithing&7] ";
@@ -83,17 +83,17 @@ public class DisabledRecipesCategory extends RecipeCategory{
                 lore.add("&eBase: &f" + choice.ingredientDescription(base));
                 lore.add("&eAddition: &f" + choice.ingredientDescription(addition));
                 lore.add("&f&m                          &r&f =");
-                lore.add("&e" + ItemUtils.getItemName(ItemUtils.getItemMeta(r.getResult())));
+                lore.add("&e" + ItemUtils.getItemName(new ItemBuilder(r.getResult())));
             } else continue;
-            boolean enabled = !CustomRecipeRegistry.getDisabledRecipes().contains(((Keyed) recipe).getKey());
+            boolean enabled = !CustomRecipeRegistry.getDisabledRecipes().contains(k.getKey());
             icons.add(new ItemBuilder(recipe.getResult())
-                    .name(prefix + (enabled ? "&a" : "&c") + StringUtils.toPascalCase(((Keyed) recipe).getKey().getKey().replace("-", " ").replace("_", " ")))
+                    .name(prefix + (enabled ? "&a" : "&c") + StringUtils.toPascalCase(k.getKey().getKey().replace("-", " ").replace("_", " ")))
                     .lore(lore)
                     .intTag(SORT_PRIORITY, priority)
                     .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
-                    .stringTag(RecipeOverviewMenu.KEY_RECIPE, ((Keyed) recipe).getKey().getKey()).get());
+                    .stringTag(RecipeOverviewMenu.KEY_RECIPE, k.getKey().getKey()).get());
         }
-        icons.sort(Comparator.comparingInt((ItemStack i) -> ItemUtils.getPDCInt(SORT_PRIORITY, i, 999)).thenComparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));
+        icons.sort(Comparator.comparingInt((ItemStack i) -> ItemUtils.getPDCInt(SORT_PRIORITY, i, 999)).thenComparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(item)))));
         return icons;
     }
 
@@ -142,17 +142,17 @@ public class DisabledRecipesCategory extends RecipeCategory{
         if (shape.size() == 3 && shape.get(shape.size() - 1).equalsIgnoreCase("   ") && shape.get(shape.size() - 2).equalsIgnoreCase("   ")) { shape.remove(shape.size() - 1); shape.remove(shape.size() - 1); } // if bottom two rows are empty, remove them
         else if (shape.get(shape.size() - 1).equalsIgnoreCase("   ")) shape.remove(shape.size() - 1); // if only bottom row is empty, remove it
 
-        if (shape.stream().allMatch(s -> s.endsWith("  "))) shape = shape.stream().map(s -> s = s.substring(0, s.length() - 2)).collect(Collectors.toList()); // if last 2 characters of each line is empty, remove them
-        if (shape.stream().allMatch(s -> s.endsWith(" "))) shape = shape.stream().map(s -> s = s.substring(0, s.length() - 1)).collect(Collectors.toList()); // if last character of each line is empty, remove it
-        if (shape.stream().allMatch(s -> s.startsWith("  "))) shape = shape.stream().map(s -> s = s.substring(2)).collect(Collectors.toList()); // if first 2 characters of each line is empty, remove them
-        if (shape.stream().allMatch(s -> s.startsWith(" "))) shape = shape.stream().map(s -> s = s.substring(1)).collect(Collectors.toList()); // if first character of each line is empty, remove it
+        if (shape.stream().allMatch(s -> s.endsWith("  "))) shape = shape.stream().map(s -> s.substring(0, s.length() - 2)).collect(Collectors.toList()); // if last 2 characters of each line is empty, remove them
+        if (shape.stream().allMatch(s -> s.endsWith(" "))) shape = shape.stream().map(s -> s.substring(0, s.length() - 1)).collect(Collectors.toList()); // if last character of each line is empty, remove it
+        if (shape.stream().allMatch(s -> s.startsWith("  "))) shape = shape.stream().map(s -> s.substring(2)).collect(Collectors.toList()); // if first 2 characters of each line is empty, remove them
+        if (shape.stream().allMatch(s -> s.startsWith(" "))) shape = shape.stream().map(s -> s.substring(1)).collect(Collectors.toList()); // if first character of each line is empty, remove it
 
         return new ShapeDetails(shape.toArray(new String[0]), ingredientMap);
     }
 
     private char getItemChar(ItemStack i, String usedChars){
         if (ItemUtils.isEmpty(i)) return ' ';
-        String itemName = ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(i)));
+        String itemName = ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(i)));
         char possibleCharacter = (itemName.isEmpty() ? i.getType().toString() : itemName).toUpperCase(java.util.Locale.US).charAt(0);
         if (usedChars.contains(String.valueOf(possibleCharacter))){
             possibleCharacter = i.getType().toString().toUpperCase(java.util.Locale.US).charAt(0);

@@ -140,6 +140,6 @@ public class PotionMatchEffectsChoice extends RecipeOption {
 
     @Override
     public String ingredientDescription(ItemStack base) {
-        return TranslationManager.translatePlaceholders(ItemUtils.getItemName(ItemUtils.getItemMeta(base)));
+        return TranslationManager.translatePlaceholders(ItemUtils.getItemName(new ItemBuilder(base)));
     }
 }

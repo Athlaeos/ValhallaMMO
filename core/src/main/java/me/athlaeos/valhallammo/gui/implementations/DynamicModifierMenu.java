@@ -241,7 +241,7 @@ public class DynamicModifierMenu extends Menu {
             for (ImmersiveCraftingRecipe recipe : CustomRecipeRegistry.getImmersiveRecipes().values()) buttons.add(icon(recipe.getName(), "&aImmersive Recipes", recipe.tinker() ? recipe.getTinkerInput().getItem() : recipe.getResult(), recipe.getModifiers(), true));
             recipeButtons.addAll(buttons);
         } else buttons.addAll(recipeButtons);
-        buttons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));
+        buttons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(item)))));
 
         Map<Integer, List<ItemStack>> pages = Utils.paginate(45, buttons);
 
@@ -262,7 +262,7 @@ public class DynamicModifierMenu extends Menu {
         List<ItemStack> buttons = new ArrayList<>();
         for (CustomItem item : CustomItemRegistry.getItems().values()) buttons.add(icon(item.getId(), "&6Grid Recipes", item.getItem(), item.getModifiers(), false));            recipeButtons.addAll(buttons);
 
-        buttons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));
+        buttons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(item)))));
         Map<Integer, List<ItemStack>> pages = Utils.paginate(45, buttons);
 
         currentPage = Math.max(1, Math.min(currentPage, pages.size()));

@@ -254,7 +254,7 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
         List<ItemStack> buttons = new ArrayList<>();
         entries.forEach(p -> {
             ItemBuilder builder = new ItemBuilder(p.getDrop()).stringTag(BUTTON_DATA, p.getUuid().toString());
-            builder.name("&e" + ItemUtils.getItemName(builder.getMeta()));
+            builder.name("&e" + ItemUtils.getItemName(builder));
             builder.lore(String.format("&9Quantity: %s %s",
                     (p.getBaseQuantityMin() != p.getBaseQuantityMax() ? p.getBaseQuantityMin() + "-" + p.getBaseQuantityMax() : p.getBaseQuantityMin()),
                     (p.getQuantityMinFortuneBase() > 0 ? (p.getQuantityMinFortuneBase() != p.getQuantityMaxFortuneBase() ? String.format("(+%.1f-%.1f/fortune)", p.getQuantityMinFortuneBase(), p.getQuantityMaxFortuneBase()) :

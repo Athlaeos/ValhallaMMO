@@ -52,19 +52,19 @@ public class Item extends DynamicItemModifier {
     public Map<Integer, ItemStack> getButtons() {
         Map<ItemStack, Integer> compressedItems = ItemUtils.compressStacks(rewards);
         List<String> tagLore = compressedItems.isEmpty() ? List.of("&cNothing") : compressedItems.entrySet().stream().map(t ->
-                String.format("&e%d&7x&e%s", t.getValue(), ItemUtils.getItemName(ItemUtils.getItemMeta(t.getKey()))))
+                String.format("&e%d&7x&e%s", t.getValue(), ItemUtils.getItemName(new ItemBuilder(t.getKey()))))
                 .collect(Collectors.toList());
         return new Pair<>(12,
                 new ItemBuilder(currentReward)
                         .name("&eWhat should the new item be?")
                         .lore("&6Click with another item to",
                                 "&6copy it over.",
-                                "&fSet to " + ItemUtils.getItemName(ItemUtils.getItemMeta(currentReward)))
+                                "&fSet to " + ItemUtils.getItemName(new ItemBuilder(currentReward)))
                         .get()).map(Set.of(
                 new Pair<>(17,
                         new ItemBuilder(Material.STRUCTURE_VOID)
                                 .name("&fConfirm Item")
-                                .lore("&fCurrently selected: &e" + ItemUtils.getItemName(ItemUtils.getItemMeta(currentReward)),
+                                .lore("&fCurrently selected: &e" + ItemUtils.getItemName(new ItemBuilder(currentReward)),
                                         "&6Click to add selected item to",
                                         "&6the list.",
                                         "&6Shift-Click to clear list",
@@ -97,7 +97,7 @@ public class Item extends DynamicItemModifier {
     @Override
     public String getActiveDescription() {
         return "&fGives the player the following items: /n&e" + (rewards.isEmpty() ? List.of("&cNothing") : rewards.stream().map(t ->
-                "&e" + ItemUtils.getItemName(ItemUtils.getItemMeta(t)))
+                "&e" + ItemUtils.getItemName(new ItemBuilder(t)))
                 .collect(Collectors.joining(", ")));
     }
 

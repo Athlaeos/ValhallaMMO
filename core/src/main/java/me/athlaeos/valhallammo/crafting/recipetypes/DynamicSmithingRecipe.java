@@ -73,13 +73,13 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
                         this.description
                                 .replace("%template%", SlotEntry.toString(template))
                                 .replace("%base%", SlotEntry.toString(base))
-                                .replace("%tinker%", tinkerBase ? SlotEntry.toString(base) : ItemUtils.getItemName(result.getMeta()))
-                                .replace("%result%", tinkerBase ? tinkerFormat.replace("%item%", SlotEntry.toString(base)) : ItemUtils.getItemName(result.getMeta()))
+                                .replace("%tinker%", tinkerBase ? SlotEntry.toString(base) : ItemUtils.getItemName(result))
+                                .replace("%result%", tinkerBase ? tinkerFormat.replace("%item%", SlotEntry.toString(base)) : ItemUtils.getItemName(result))
                                 .replace("%addition%", SlotEntry.toString(addition))
                                 .split("/n")
                 )
         ).name(displayName == null ?
-                (tinkerBase ? tinkerFormat.replace("%item%", SlotEntry.toString(base)) : ItemUtils.getItemName(result.getMeta())) :
+                (tinkerBase ? tinkerFormat.replace("%item%", SlotEntry.toString(base)) : ItemUtils.getItemName(result)) :
                 displayName).translate().get();
     }
 

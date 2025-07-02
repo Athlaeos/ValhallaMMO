@@ -51,7 +51,7 @@ public class EmbeddedToolsSet extends DynamicItemModifier {
                         .name("&dWhich embedded tools should be added?")
                         .lore(embeddedTools.isEmpty() ? List.of("&cEmbedded tools of item will", "&cbe cleared") :
                                 embeddedTools.stream().map(e ->
-                                        "&f> " + (e.getMaterial() == null ? ItemUtils.getItemName(e.getItem().getItemMeta()) : StringUtils.toPascalCase(e.getMaterial().toString().replace("_", " ")))
+                                        "&f> " + (e.getMaterial() == null ? ItemUtils.getItemName(new ItemBuilder(e.getItem())) : StringUtils.toPascalCase(e.getMaterial().toString().replace("_", " ")))
                                 ).toList())
                         .appendLore("&6Left-Click with item to add",
                                 "&6Right-Click with item to add type",

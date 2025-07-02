@@ -55,27 +55,27 @@ public class ItemSkillRequirements {
     /**
      * Returns the attribute penalty of the item
      * @param p the player for whom to check their skill requirements
-     * @param meta the item meta to check
+     * @param item the item meta to check
      * @param attribute the attribute for which the penalty should be obtained
      * @return the penalty value
      */
-    public static double getPenalty(Player p, ItemMeta meta, String attribute){
-        if (!meta.getPersistentDataContainer().has(SKILL_REQUIREMENT, PersistentDataType.STRING) || !attributePenalties.containsKey(attribute)) return 0;
+    public static double getPenalty(Player p, ItemBuilder item, String attribute){
+        if (!item.getMeta().getPersistentDataContainer().has(SKILL_REQUIREMENT, PersistentDataType.STRING) || !attributePenalties.containsKey(attribute)) return 0;
         double maxPenalty = attributePenalties.get(attribute);
-        Collection<SkillRequirement> requirements = getSkillRequirements(meta);
-        boolean shouldFulfillAny = requireAnySkillMatch(meta);
+        Collection<SkillRequirement> requirements = getSkillRequirements(item.getMeta());
+        boolean shouldFulfillAny = requireAnySkillMatch(item.getMeta());
         for (SkillRequirement r : requirements){
             Profile profile = ProfileCache.getOrCache(p, r.skill.getProfileType());
             if (shouldFulfillAny){
                 if (profile.getLevel() >= r.levelRequirement) return 0;
             } else {
                 if (profile.getLevel() < r.levelRequirement){
-                    Material stored = ItemUtils.getStoredType(meta);
+                    Material stored = item.getItem().getType();
                     double fractionLevel = (double) profile.getLevel() / (double) r.levelRequirement;
                     double formulaResult = Utils.eval(penaltyScaling.replace("%fraction_level%", String.format("%.3f", fractionLevel)));
-                    if (stored != null && Timer.isCooldownPassed(p.getUniqueId(), "cooldown_warning_overleveled_item_" + stored.toString().toLowerCase(java.util.Locale.US))){
+                    if (Timer.isCooldownPassed(p.getUniqueId(), "cooldown_warning_overleveled_item_" + stored.toString().toLowerCase(java.util.Locale.US))){
                         String message = warningTooAdvanced
-                                .replace("%item%", ItemUtils.getItemName(meta))
+                                .replace("%item%", ItemUtils.getItemName(item))
                                 .replace("%skill%", r.skill.getDisplayName())
                                 .replace("%level%", "" + r.levelRequirement);
                         if (warningDisplayType == 1 || warningDisplayType == 2){

@@ -55,7 +55,7 @@ public class ExactChoice extends RecipeOption {
 
     @Override
     public String ingredientDescription(ItemStack base) {
-        return ItemUtils.getItemName(ItemUtils.getItemMeta(base));
+        return ItemUtils.getItemName(new ItemBuilder(base));
     }
 
     @Override

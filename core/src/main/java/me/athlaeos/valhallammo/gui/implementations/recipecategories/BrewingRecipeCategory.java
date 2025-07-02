@@ -37,7 +37,7 @@ public class BrewingRecipeCategory extends RecipeCategory{
         List<ItemStack> icons = new ArrayList<>();
         for (DynamicBrewingRecipe recipe : CustomRecipeRegistry.getBrewingRecipes().values()){
             List<String> lore = new ArrayList<>(List.of(
-                    "&f" + SlotEntry.toString(recipe.getIngredient()) + " + " + SlotEntry.toString(recipe.getApplyOn()) + " = " + (recipe.tinker() ? "&eTinkered Input" : ItemUtils.getItemName(ItemUtils.getItemMeta(recipe.getResult()))),
+                    "&f" + SlotEntry.toString(recipe.getIngredient()) + " + " + SlotEntry.toString(recipe.getApplyOn()) + " = " + (recipe.tinker() ? "&eTinkered Input" : ItemUtils.getItemName(new ItemBuilder(recipe.getResult()))),
                     recipe.isUnlockedForEveryone() ? "&aAccessible to anyone" : "&aNeeds to be unlocked to craft",
                     "&8&m                <>                "
             ));
@@ -53,7 +53,7 @@ public class BrewingRecipeCategory extends RecipeCategory{
                     .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
                     .color(Color.fromRGB(210, 60, 200)).stringTag(RecipeOverviewMenu.KEY_RECIPE, recipe.getName()).get());
         }
-        icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));
+        icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(item)))));
         return icons;
     }
 

@@ -4,6 +4,8 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.loot.predicates.implementations.*;
+import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 
@@ -93,6 +95,8 @@ public class PredicateRegistry {
         register(new EntityLevelFilter());
         register(new BabyFilter());
         register(new NearbyStructureFilter());
+        for (Skill skill : SkillRegistry.getAllSkills().values())
+            register(new SkillLevelFilter(skill));
     }
 
     public static void register(LootPredicate predicate){

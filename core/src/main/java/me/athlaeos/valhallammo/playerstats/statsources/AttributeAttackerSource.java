@@ -2,7 +2,6 @@ package me.athlaeos.valhallammo.playerstats.statsources;
 
 import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
-import me.athlaeos.valhallammo.listeners.InteractListener;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatSource;
 import me.athlaeos.valhallammo.playerstats.EvEAccumulativeStatSource;
 import me.athlaeos.valhallammo.utility.EntityUtils;
@@ -68,7 +67,7 @@ public class AttributeAttackerSource implements AccumulativeStatSource, EvEAccum
             AttributeWrapper wrapper = ItemAttributesRegistry.getAnyAttribute(item.getMeta(), attribute);
             if (wrapper == null) return value;
             double multiplier = 1;
-            if (attribute != null && trueAttacker instanceof Player player) multiplier += ItemSkillRequirements.getPenalty(player, item.getMeta(), attribute);
+            if (attribute != null && trueAttacker instanceof Player player) multiplier += ItemSkillRequirements.getPenalty(player, item, attribute);
             value += wrapper.getValue() * multiplier;
         }
 
