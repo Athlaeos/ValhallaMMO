@@ -33,7 +33,7 @@ public class SmithingQualityScale extends DynamicItemModifier {
             skill += AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_" + materialClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
             skillMultiplier += AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_" + materialClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
         }
-        SmithingItemPropertyManager.setQuality(context.getItem().getMeta(), (int) (skillMultiplier * skill * skillEfficiency));
+        SmithingItemPropertyManager.setQuality(context.getItem(), (int) (skillMultiplier * skill * skillEfficiency));
     }
 
     @Override

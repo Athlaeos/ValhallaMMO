@@ -33,7 +33,7 @@ public class AlchemyQualityScale extends DynamicItemModifier {
         double typeMultiplier = effectClass == null || effectClass == EffectClass.NEUTRAL ? 0 : AccumulativeStatManager.getCachedStats("ALCHEMY_FRACTION_QUALITY_" + effectClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
         double generalMultiplier = 1 + AccumulativeStatManager.getCachedStats("ALCHEMY_FRACTION_QUALITY_GENERAL", context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
 
-        AlchemyItemPropertyManager.setQuality(context.getItem().getMeta(), (int) ((generalMultiplier + typeMultiplier) * ((typeSkill + generalSkill) * skillEfficiency)));
+        AlchemyItemPropertyManager.setQuality(context.getItem(), (int) ((generalMultiplier + typeMultiplier) * ((typeSkill + generalSkill) * skillEfficiency)));
     }
 
     @Override

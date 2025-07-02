@@ -3,7 +3,7 @@ package me.athlaeos.valhallammo.localization;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
@@ -164,18 +164,18 @@ public class TranslationManager {
 
     /**
      * Replaces any language placeholders in the display name and lore to their translated versions
-     * @param meta the item to translate
+     * @param item the item to translate
      */
-    public static void translateItemMeta(ItemMeta meta){
-        if (meta == null) return;
-        if (meta.hasDisplayName()){
-            String displayName = meta.getDisplayName();
+    public static void translateItem(ItemBuilder item){
+        if (item == null) return;
+        if (item.getName() != null){
+            String displayName = item.getName();
             if (displayName.contains("<lang.")){
-                meta.setDisplayName(Utils.chat(translatePlaceholders(displayName)));
+                item.name(Utils.chat(translatePlaceholders(displayName)));
             }
         }
-        if (meta.hasLore()){
-            List<String> lore = meta.getLore();
+        if (item.getLore() != null){
+            List<String> lore = item.getLore() == null ? new ArrayList<>() : item.getLore();
             List<String> newLore = new ArrayList<>();
             if (lore != null) {
                 for (String line : lore) {
@@ -190,7 +190,7 @@ public class TranslationManager {
                     newLore = lore;
                 }
             }
-            meta.setLore(newLore);
+            item.lore(newLore);
         }
     }
 

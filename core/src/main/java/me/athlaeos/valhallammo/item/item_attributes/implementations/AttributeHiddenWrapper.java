@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.item.item_attributes.implementations;
 
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import org.bukkit.Material;
@@ -32,12 +33,12 @@ public class AttributeHiddenWrapper extends AttributeWrapper {
     }
 
     @Override
-    public void onApply(ItemMeta i) {
+    public void onApply(ItemBuilder i) {
         // do nothing
     }
 
     @Override
-    public void onRemove(ItemMeta i) {
+    public void onRemove(ItemBuilder i) {
         // do nothing
     }
 

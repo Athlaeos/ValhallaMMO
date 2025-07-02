@@ -27,7 +27,7 @@ public class DefaultAttributeRemove extends DynamicItemModifier {
     @Override
     public void processItem(ModifierContext context) {
         AttributeWrapper attribute = ItemAttributesRegistry.getCopy(this.attribute);
-        ItemAttributesRegistry.removeStat(context.getItem().getMeta(), attribute);
+        ItemAttributesRegistry.removeStat(context.getItem(), attribute);
     }
 
     @Override

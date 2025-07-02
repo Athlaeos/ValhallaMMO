@@ -120,8 +120,8 @@ public class LightWeaponsSkill extends Skill implements Listener {
             );
         }
         clicked.flag(CustomFlag.TEMPORARY_POTION_DISPLAY);
-        PotionEffectRegistry.setDefaultStoredEffects(clicked.getMeta(), newEffects);
-        PotionEffectRegistry.setActualStoredEffects(clicked.getMeta(), newEffects);
+        PotionEffectRegistry.setDefaultStoredEffects(clicked, newEffects);
+        PotionEffectRegistry.setActualStoredEffects(clicked, newEffects);
         e.setCurrentItem(clicked.get());
         e.setCancelled(true);
         e.getWhoClicked().getWorld().playSound(e.getWhoClicked().getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1F, 1F);

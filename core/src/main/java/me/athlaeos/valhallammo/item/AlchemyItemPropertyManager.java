@@ -120,9 +120,9 @@ public class AlchemyItemPropertyManager {
         return tags;
     }
 
-    public static void setTagLore(ItemMeta meta){
-        if (meta == null) return;
-        List<String> currentLore = meta.getLore() != null ? meta.getLore() : new ArrayList<>();
+    public static void setTagLore(ItemBuilder item){
+        if (item == null) return;
+        List<String> currentLore = item.getLore() != null ? item.getLore() : new ArrayList<>();
         List<String> newLore = new ArrayList<>();
         int tagIndex = -1; // the purpose of this is to track where in the lore tags are placed, so the position doesn't change
         for (String l : currentLore){
@@ -130,29 +130,29 @@ public class AlchemyItemPropertyManager {
                 if (tagIndex < 0) tagIndex = currentLore.indexOf(l);
             } else newLore.add(l);
         }
-        Collection<Integer> tags = CustomFlag.hasFlag(meta, CustomFlag.HIDE_TAGS) ? new HashSet<>() : getTags(meta);
+        Collection<Integer> tags = CustomFlag.hasFlag(item.getMeta(), CustomFlag.HIDE_TAGS) ? new HashSet<>() : getTags(item.getMeta());
         for (Integer tag : tags.stream().filter(tagLore::containsKey).collect(Collectors.toSet())){
             if (tagIndex <= 0) newLore.add(tagLore.get(tag));
             else newLore.add(tagIndex, tagLore.get(tag));
         }
-        meta.setLore(newLore);
+        item.lore(newLore);
     }
 
-    public static void addTag(ItemMeta i, Integer... tag){
-        Collection<Integer> tags = getTags(i);
+    public static void addTag(ItemBuilder i, Integer... tag){
+        Collection<Integer> tags = getTags(i.getMeta());
         tags.addAll(Set.of(tag));
         setTags(i, tags);
     }
 
-    public static void removeTag(ItemMeta i, Integer... tag){
-        Collection<Integer> tags = getTags(i);
+    public static void removeTag(ItemBuilder i, Integer... tag){
+        Collection<Integer> tags = getTags(i.getMeta());
         tags.removeAll(Set.of(tag));
         setTags(i, tags);
     }
 
-    public static void setQualityLore(ItemMeta meta){
-        if (meta == null) return;
-        List<String> currentLore = meta.getLore() != null ? meta.getLore() : new ArrayList<>();
+    public static void setQualityLore(ItemBuilder item){
+        if (item == null) return;
+        List<String> currentLore = item.getLore() != null ? item.getLore() : new ArrayList<>();
         List<String> newLore = new ArrayList<>();
         int tagIndex = -1; // the purpose of this is to track where in the lore tags are placed, so the position doesn't change
         for (String l : currentLore){
@@ -160,13 +160,13 @@ public class AlchemyItemPropertyManager {
                 if (tagIndex < 0) tagIndex = currentLore.indexOf(l);
             } else newLore.add(l);
         }
-        String qualityLore = getQualityLore(getQuality(meta));
-        if (qualityLore == null || CustomFlag.hasFlag(meta, CustomFlag.HIDE_QUALITY)) return;
+        String qualityLore = getQualityLore(getQuality(item.getMeta()));
+        if (qualityLore == null || CustomFlag.hasFlag(item.getMeta(), CustomFlag.HIDE_QUALITY)) return;
 
         if (newLore.isEmpty() || tagIndex < 0) newLore.add(qualityLore);
         else newLore.add(tagIndex, qualityLore);
 
-        meta.setLore(newLore);
+        item.lore(newLore);
     }
 
     public static String getQualityLore(int quality){
@@ -184,29 +184,29 @@ public class AlchemyItemPropertyManager {
         return meta.getPersistentDataContainer().has(QUALITY_ALCHEMY, PersistentDataType.INTEGER);
     }
 
-    public static void setTags(ItemMeta meta, Collection<Integer> tags){
-        if (meta == null) return;
+    public static void setTags(ItemBuilder item, Collection<Integer> tags){
+        if (item == null) return;
 
-        if (tags == null || tags.isEmpty()) meta.getPersistentDataContainer().remove(NUMBER_TAGS);
-        else meta.getPersistentDataContainer().set(NUMBER_TAGS, PersistentDataType.STRING,
+        if (tags == null || tags.isEmpty()) item.getMeta().getPersistentDataContainer().remove(NUMBER_TAGS);
+        else item.stringTag(NUMBER_TAGS,
                 tags.stream().map(String::valueOf).collect(Collectors.joining(",")));
 
-        setTagLore(meta);
+        setTagLore(item);
     }
 
 
-    public static void setQuality(ItemMeta meta, Integer quality){
-        if (meta == null) return;
+    public static void setQuality(ItemBuilder item, Integer quality){
+        if (item == null) return;
 
-        if (quality == null) meta.getPersistentDataContainer().remove(QUALITY_ALCHEMY);
-        else meta.getPersistentDataContainer().set(QUALITY_ALCHEMY, PersistentDataType.INTEGER, (int) Math.round(Utils.roundToMultiple(quality, qualityRoundingPrecision)));
+        if (quality == null) item.getMeta().getPersistentDataContainer().remove(QUALITY_ALCHEMY);
+        else item.intTag(QUALITY_ALCHEMY, (int) Math.round(Utils.roundToMultiple(quality, qualityRoundingPrecision)));
 
-        setQualityLore(meta);
+        setQualityLore(item);
     }
 
-    public static void applyAttributeScaling(ItemMeta i, Scaling scaling, int quality, boolean duration, double minimumAmplifierFraction, double minimumDurationFraction){
-        Map<String, PotionEffectWrapper> defaultWrappers = PotionEffectRegistry.getStoredEffects(i, true);
-        Map<String, PotionEffectWrapper> actualWrappers = PotionEffectRegistry.getStoredEffects(i, false);
+    public static void applyAttributeScaling(ItemBuilder i, Scaling scaling, int quality, boolean duration, double minimumAmplifierFraction, double minimumDurationFraction){
+        Map<String, PotionEffectWrapper> defaultWrappers = PotionEffectRegistry.getStoredEffects(i.getMeta(), true);
+        Map<String, PotionEffectWrapper> actualWrappers = PotionEffectRegistry.getStoredEffects(i.getMeta(), false);
         Map<String, PotionEffectWrapper> newWrappers = new HashMap<>();
         for (PotionEffectWrapper wrapper : defaultWrappers.values()){
             PotionEffectWrapper actual = actualWrappers.get(wrapper.getEffect());

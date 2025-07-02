@@ -24,7 +24,7 @@ public class SmithingQualityAdd extends DynamicItemModifier {
     public void processItem(ModifierContext context) {
         int quality = SmithingItemPropertyManager.getQuality(context.getItem().getMeta());
         int newQuality = Math.max(0, quality + this.quality);
-        SmithingItemPropertyManager.setQuality(context.getItem().getMeta(), newQuality);
+        SmithingItemPropertyManager.setQuality(context.getItem(), newQuality);
     }
 
     @Override

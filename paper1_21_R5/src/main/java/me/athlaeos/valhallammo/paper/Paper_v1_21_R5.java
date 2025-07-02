@@ -9,7 +9,7 @@ import me.athlaeos.valhallammo.nms.Paper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.inventory.ItemStack;
 
-public final class Paper_v1_21_R4 implements Paper {
+public final class Paper_v1_21_R5 implements Paper {
     @SuppressWarnings("UnstableApiUsage")
     @Override
     public void setConsumable(ItemBuilder builder, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {

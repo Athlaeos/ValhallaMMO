@@ -135,17 +135,17 @@ public class SmithingItemPropertyManager {
         return tags;
     }
 
-    public static void addTag(ItemMeta i, Integer tag, Integer level){
+    public static void addTag(ItemBuilder i, Integer tag, Integer level){
         if (level <= 0) removeTag(i, tag);
         else {
-            Map<Integer, Integer> tags = getTags(i);
+            Map<Integer, Integer> tags = getTags(i.getMeta());
             tags.put(tag, level);
             setTags(i, tags);
         }
     }
 
-    public static void removeTag(ItemMeta i, Integer tag){
-        Map<Integer, Integer> tags = getTags(i);
+    public static void removeTag(ItemBuilder i, Integer tag){
+        Map<Integer, Integer> tags = getTags(i.getMeta());
         tags.remove(tag);
         setTags(i, tags);
     }
@@ -181,31 +181,6 @@ public class SmithingItemPropertyManager {
         builder.lore(newLore);
     }
 
-    public static void setTagLore(ItemMeta meta){
-        if (meta == null) return;
-        List<String> currentLore = meta.getLore() != null ? meta.getLore() : new ArrayList<>();
-        List<String> newLore = new ArrayList<>();
-        int tagIndex = -1; // the purpose of this is to track where in the lore tags are placed, so the position doesn't change
-        for (String l : currentLore){
-            String colorStrippedLine = ChatColor.stripColor(Utils.chat(l));
-            if (tagLore.values().stream().map(c -> ChatColor.stripColor(Utils.chat(c
-                    .replace("%lv_roman%", "")
-                    .replace("%lv_normal%", "")))
-            ).anyMatch(colorStrippedLine::contains)){ // if the current line of lore contains any of the tag lores (placeholders removed) then record this line index
-                if (tagIndex < 0) tagIndex = currentLore.indexOf(l);
-            } else newLore.add(l); // if not, just add the line as is
-        }
-        Map<Integer, Integer> tags = CustomFlag.hasFlag(meta, CustomFlag.HIDE_TAGS) ? new HashMap<>() : getTags(meta);
-        for (Integer tag : tags.keySet().stream().filter(tagLore::containsKey).collect(Collectors.toSet())){
-            String lore = tagLore.get(tag)
-                    .replace("%lv_roman%", StringUtils.toRoman(Math.max(1, tags.get(tag))))
-                    .replace("%lv_normal%", String.valueOf(tags.get(tag)));
-            if (tagIndex <= 0) newLore.add(lore);
-            else newLore.add(tagIndex, lore);
-        }
-        meta.setLore(newLore);
-    }
-
     public static String getTagLore(Integer i){
         return tagLore.get(i);
     }
@@ -218,9 +193,9 @@ public class SmithingItemPropertyManager {
         return tagRequiredErrors;
     }
 
-    public static void setQualityLore(ItemMeta meta){
-        if (meta == null) return;
-        List<String> currentLore = ItemUtils.getLore(meta);
+    public static void setQualityLore(ItemBuilder item){
+        if (item == null) return;
+        List<String> currentLore = item.getLore() == null ? new ArrayList<>() : item.getLore();
         List<String> newLore = new ArrayList<>();
         int tagIndex = -1; // the purpose of this is to track where in the lore tags are placed, so the position doesn't change
         for (String l : currentLore){
@@ -228,13 +203,13 @@ public class SmithingItemPropertyManager {
                 if (tagIndex < 0) tagIndex = currentLore.indexOf(l);
             } else newLore.add(l);
         }
-        String qualityLore = getQualityLore(getQuality(meta), getNeutralQuality(meta));
-        if (qualityLore == null || CustomFlag.hasFlag(meta, CustomFlag.HIDE_QUALITY)) return;
+        String qualityLore = getQualityLore(getQuality(item.getMeta()), getNeutralQuality(item.getMeta()));
+        if (qualityLore == null || CustomFlag.hasFlag(item.getMeta(), CustomFlag.HIDE_QUALITY)) return;
 
         if (newLore.isEmpty() || tagIndex < 0) newLore.add(qualityLore);
         else newLore.add(tagIndex, qualityLore);
 
-        meta.setLore(newLore);
+        item.lore(newLore);
     }
 
     /**
@@ -272,30 +247,30 @@ public class SmithingItemPropertyManager {
         return meta.getPersistentDataContainer().has(QUALITY_SMITHING, PersistentDataType.INTEGER);
     }
 
-    public static void setTags(ItemMeta meta, Map<Integer, Integer> tags){
-        if (meta == null) return;
+    public static void setTags(ItemBuilder item, Map<Integer, Integer> tags){
+        if (item == null) return;
 
-        if (tags == null || tags.isEmpty()) meta.getPersistentDataContainer().remove(NUMBER_TAGS);
-        else meta.getPersistentDataContainer().set(NUMBER_TAGS, PersistentDataType.STRING,
+        if (tags == null || tags.isEmpty()) item.getMeta().getPersistentDataContainer().remove(NUMBER_TAGS);
+        else item.stringTag(NUMBER_TAGS,
                 tags.entrySet().stream().map((e) -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(",")));
 
-        setTagLore(meta);
+        setTagLore(item);
     }
 
-    public static void setQuality(ItemMeta meta, Integer quality){
-        if (meta == null) return;
+    public static void setQuality(ItemBuilder item, Integer quality){
+        if (item == null) return;
 
-        if (quality == null) meta.getPersistentDataContainer().remove(QUALITY_SMITHING);
-        else meta.getPersistentDataContainer().set(QUALITY_SMITHING, PersistentDataType.INTEGER, (int) Math.round(Utils.roundToMultiple(quality, qualityRoundingPrecision)));
+        if (quality == null) item.getMeta().getPersistentDataContainer().remove(QUALITY_SMITHING);
+        else item.intTag(QUALITY_SMITHING, (int) Math.round(Utils.roundToMultiple(quality, qualityRoundingPrecision)));
 
-        setQualityLore(meta);
+        setQualityLore(item);
     }
 
-    public static void setNeutralQuality(ItemMeta meta, Integer quality){
+    public static void setNeutralQuality(ItemBuilder meta, Integer quality){
         if (meta == null) return;
 
-        if (quality == null) meta.getPersistentDataContainer().remove(NEUTRAL_QUALITY);
-        else meta.getPersistentDataContainer().set(NEUTRAL_QUALITY, PersistentDataType.INTEGER, quality);
+        if (quality == null) meta.getMeta().getPersistentDataContainer().remove(NEUTRAL_QUALITY);
+        else meta.intTag(NEUTRAL_QUALITY, quality);
 
         setQualityLore(meta);
     }
@@ -319,10 +294,10 @@ public class SmithingItemPropertyManager {
     }
 
 
-    public static void applyAttributeScaling(ItemMeta meta, Scaling scaling, int quality, String attribute, double minimumFraction){
+    public static void applyAttributeScaling(ItemBuilder item, Scaling scaling, int quality, String attribute, double minimumFraction){
         if (scaling == null) return;
-        if (!ItemAttributesRegistry.hasCustomStats(meta)) ItemAttributesRegistry.applyVanillaStats(meta);
-        AttributeWrapper defaultAttribute = ItemAttributesRegistry.getAttribute(meta, attribute, true);
+        if (!ItemAttributesRegistry.hasCustomStats(item.getMeta())) ItemAttributesRegistry.applyVanillaStats(item);
+        AttributeWrapper defaultAttribute = ItemAttributesRegistry.getAttribute(item.getMeta(), attribute, true);
         if (defaultAttribute == null) return;
         defaultAttribute = defaultAttribute.copy();
 
@@ -334,6 +309,6 @@ public class SmithingItemPropertyManager {
                 )
         );
         result = Math.max(minimumFraction * result, result);
-        ItemAttributesRegistry.setStat(meta, attribute, result, defaultAttribute.isHidden(), false);
+        ItemAttributesRegistry.setStat(item, attribute, result, defaultAttribute.isHidden(), false);
     }
 }

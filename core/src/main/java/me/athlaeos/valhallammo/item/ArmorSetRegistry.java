@@ -74,8 +74,10 @@ public class ArmorSetRegistry {
 
     public static void setArmorSet(ItemBuilder item, ArmorSet set){
         for (ArmorSet s : registeredSets.values()) {
-            ItemUtils.getLore(item.getMeta()).remove(Utils.chat(s.getName()));
-            ItemUtils.getLore(item.getMeta()).removeAll(Utils.chat(s.getLore()));
+            if (item.getLore() != null){
+                item.getLore().remove(Utils.chat(s.getName()));
+                item.getLore().removeAll(Utils.chat(s.getLore()));
+            }
         }
         if (set == null) {
             item.getMeta().getPersistentDataContainer().remove(ARMOR_SET);

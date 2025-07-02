@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.potioneffects.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.CustomFlag;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.potioneffects.EffectClass;
@@ -12,11 +13,8 @@ import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffectType;
 
@@ -46,10 +44,10 @@ public class GenericWrapper extends PotionEffectWrapper {
     }
 
     @Override
-    public void onApply(ItemMeta i) {
-        boolean customFlag = CustomFlag.hasFlag(i, CustomFlag.DISPLAY_ATTRIBUTES);
-        boolean vanillaFlag = i.hasItemFlag(MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? ItemFlag.valueOf("HIDE_ADDITIONAL_TOOLTIP") : ItemFlag.valueOf("HIDE_POTION_EFFECTS"));
-        boolean temporaryCoatingDisplay = CustomFlag.hasFlag(i, CustomFlag.TEMPORARY_POTION_DISPLAY);
+    public void onApply(ItemBuilder i) {
+        boolean customFlag = CustomFlag.hasFlag(i.getMeta(), CustomFlag.DISPLAY_ATTRIBUTES);
+        boolean vanillaFlag = i.getMeta().hasItemFlag(MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? ItemFlag.valueOf("HIDE_ADDITIONAL_TOOLTIP") : ItemFlag.valueOf("HIDE_POTION_EFFECTS"));
+        boolean temporaryCoatingDisplay = CustomFlag.hasFlag(i.getMeta(), CustomFlag.TEMPORARY_POTION_DISPLAY);
         // if vanilla, hide if either custom or vanilla flags are missing
         // if not vanilla, hide if vanilla flag is present unless custom flag is also present
         if (isVanilla && i instanceof PotionMeta && !customFlag ||
@@ -60,11 +58,9 @@ public class GenericWrapper extends PotionEffectWrapper {
             if (StringUtils.isEmpty(translation)) return;
             String prefix = prefix(isPositive.test(amplifier));
             long duration = this.duration;
-            Material base = ItemUtils.getStoredType(i);
-            if (base != null){
-                if (base == Material.LINGERING_POTION) duration = (long) Math.floor(duration / 4D);
-                else if (base == Material.TIPPED_ARROW) duration = (long) Math.floor(duration / 8D);
-            }
+            Material base = i.getItem().getType();
+            if (base == Material.LINGERING_POTION) duration = (long) Math.floor(duration / 4D);
+            else if (base == Material.TIPPED_ARROW) duration = (long) Math.floor(duration / 8D);
             String charges = TranslationManager.getTranslation("potion_effect_charges_format")
                     .replace("%prefix%", prefix)
                     .replace("%charges_roman%", this.charges >= 0 ? StringUtils.toRoman(this.charges) : "")
@@ -91,7 +87,7 @@ public class GenericWrapper extends PotionEffectWrapper {
     }
 
     @Override
-    public void onRemove(ItemMeta i) {
+    public void onRemove(ItemBuilder i) {
         String translation = getEffectName();
         if (StringUtils.isEmpty(translation)) return;
         ItemUtils.removeIfLoreContains(i, translation

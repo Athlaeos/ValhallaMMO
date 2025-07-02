@@ -2,14 +2,18 @@ package me.athlaeos.valhallammo.potioneffects;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
+import me.athlaeos.valhallammo.event.EntityCustomPotionEffectEvent;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
-import me.athlaeos.valhallammo.potioneffects.implementations.*;
-import me.athlaeos.valhallammo.utility.*;
-import me.athlaeos.valhallammo.event.EntityCustomPotionEffectEvent;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
+import me.athlaeos.valhallammo.potioneffects.implementations.*;
+import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.SideBarUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
+import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -337,12 +341,12 @@ public class PotionEffectRegistry {
         registerEffects();
     }
 
-    public static void setDefaultStoredEffects(ItemMeta meta, Map<String, PotionEffectWrapper> effects){
-        if (meta == null) return;
+    public static void setDefaultStoredEffects(ItemBuilder item, Map<String, PotionEffectWrapper> effects){
+        if (item == null) return;
         if (effects == null || effects.isEmpty()){
-            clean(meta);
+            clean(item);
         } else {
-            meta.getPersistentDataContainer().set(DEFAULT_STORED_EFFECTS, PersistentDataType.STRING,
+            item.stringTag(DEFAULT_STORED_EFFECTS,
                     effects.values().stream().map(s -> s.getEffect() + ":" + s.getAmplifier() + ":" + s.getDuration() + (s.getCharges() >= 0 ? ":" + s.getCharges() : ""))
                             .collect(Collectors.joining(";")));
         }
@@ -394,25 +398,25 @@ public class PotionEffectRegistry {
         return effects;
     }
 
-    public static void updateEffectLore(ItemMeta meta){
-        getStoredEffects(meta, false).values().forEach(w -> w.onApply(meta));
+    public static void updateEffectLore(ItemBuilder item){
+        getStoredEffects(item.getMeta(), false).values().forEach(w -> w.onApply(item));
     }
 
     /**
-     * Sets the given effects to the item as actualized effects. All effects will have {@link PotionEffectWrapper#onApply(ItemMeta)} executed,
-     * all other registered effects will have {@link PotionEffectWrapper#onRemove(ItemMeta)} executed.
-     * @param meta the item to set the actual effects on
+     * Sets the given effects to the item as actualized effects. All effects will have {@link PotionEffectWrapper#onApply(ItemBuilder)} executed,
+     * all other registered effects will have {@link PotionEffectWrapper#onRemove(ItemBuilder)} executed.
+     * @param item the item to set the actual effects on
      * @param effects the effects to set
      */
-    public static void setActualStoredEffects(ItemMeta meta, Map<String, PotionEffectWrapper> effects){
-        if (meta == null) return;
+    public static void setActualStoredEffects(ItemBuilder item, Map<String, PotionEffectWrapper> effects){
+        if (item == null) return;
         if (effects == null || effects.isEmpty()) {
-            clean(meta);
+            clean(item);
         } else {
-            if (meta instanceof PotionMeta p) p.clearCustomEffects();
-            registeredEffects.values().stream().filter(w -> effects.containsKey(w.getEffect())).forEach(w -> w.onRemove(meta));
+            if (item instanceof PotionMeta p) p.clearCustomEffects();
+            registeredEffects.values().stream().filter(w -> effects.containsKey(w.getEffect())).forEach(w -> w.onRemove(item));
 
-            Map<String, PotionEffectWrapper> defaultEffects = getStoredEffects(meta, true);
+            Map<String, PotionEffectWrapper> defaultEffects = getStoredEffects(item.getMeta(), true);
             Collection<String> exclude = new HashSet<>();
             List<PotionEffectWrapper> orderedWrappers = new ArrayList<>(effects.values());
             // sorts effects from shortest to biggest, because if a bigger name matches part of a shorter name
@@ -430,13 +434,13 @@ public class PotionEffectRegistry {
                     int amplifier = Math.max(0, (int) Math.floor(effect.getAmplifier()));
                     int duration = (int) effect.getDuration();
 
-                    if (meta instanceof PotionMeta p) p.addCustomEffect(new PotionEffect(effect.getVanillaEffect(), duration, amplifier), true);
+                    if (item instanceof PotionMeta p) p.addCustomEffect(new PotionEffect(effect.getVanillaEffect(), duration, amplifier), true);
                 }
-                effect.onApply(meta);
+                effect.onApply(item);
             }
 
-            if (meta instanceof PotionMeta p) ValhallaMMO.getNms().setPotionType(p, MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? null : PotionType.valueOf("UNCRAFTABLE"));
-            meta.getPersistentDataContainer().set(ACTUAL_STORED_EFFECTS, PersistentDataType.STRING,
+            if (item instanceof PotionMeta p) ValhallaMMO.getNms().setPotionType(p, MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? null : PotionType.valueOf("UNCRAFTABLE"));
+            item.stringTag(ACTUAL_STORED_EFFECTS,
                     effects.values().stream()
                             .filter(e -> !exclude.contains(e.getEffect()))
                             .map(e -> e.getEffect() + ":" + e.getAmplifier() + ":" + e.getDuration() + (e.getCharges() >= 0 ? ":" + e.getCharges() : ""))
@@ -458,84 +462,84 @@ public class PotionEffectRegistry {
 
     /**
      * Adds a new default effect to the item. If the item doesn't have the actual effect yet, set that also
-     * @param meta the item to add the effect to
+     * @param item the item to add the effect to
      * @param wrapper the effect to add
      */
-    public static void addDefaultEffect(ItemMeta meta, PotionEffectWrapper wrapper){
-        Map<String, PotionEffectWrapper> defaultEffects = getStoredEffects(meta, true);
+    public static void addDefaultEffect(ItemBuilder item, PotionEffectWrapper wrapper){
+        Map<String, PotionEffectWrapper> defaultEffects = getStoredEffects(item.getMeta(), true);
         if (wrapper.getAmplifier() != (wrapper.isVanilla ? -1 : 0)) defaultEffects.put(wrapper.getEffect(), wrapper);
         else defaultEffects.remove(wrapper.getEffect());
-        setDefaultStoredEffects(meta, defaultEffects);
+        setDefaultStoredEffects(item, defaultEffects);
 
-        Map<String, PotionEffectWrapper> actualEffects = getStoredEffects(meta, false);
+        Map<String, PotionEffectWrapper> actualEffects = getStoredEffects(item.getMeta(), false);
         if (wrapper.getAmplifier() != (wrapper.isVanilla ? -1 : 0)) actualEffects.putIfAbsent(wrapper.getEffect(), wrapper);
         else actualEffects.remove(wrapper.getEffect());
 
-        setActualStoredEffects(meta, actualEffects);
+        setActualStoredEffects(item, actualEffects);
     }
 
-    public static void removeEffect(ItemMeta meta, String effect){
-        Map<String, PotionEffectWrapper> defaultEffects = getStoredEffects(meta, true);
+    public static void removeEffect(ItemBuilder item, String effect){
+        Map<String, PotionEffectWrapper> defaultEffects = getStoredEffects(item.getMeta(), true);
         defaultEffects.remove(effect);
-        setDefaultStoredEffects(meta, defaultEffects);
+        setDefaultStoredEffects(item, defaultEffects);
 
-        Map<String, PotionEffectWrapper> actualEffects = getStoredEffects(meta, false);
+        Map<String, PotionEffectWrapper> actualEffects = getStoredEffects(item.getMeta(), false);
         actualEffects.remove(effect);
-        setActualStoredEffects(meta, actualEffects);
+        setActualStoredEffects(item, actualEffects);
     }
 
     /**
      * Changes an existing stored effect of an item. If the item does not have the effect, nothing happens.
-     * @param meta the item to set the effect to
+     * @param item the item to set the effect to
      * @param effect the name of the effect to set
      * @param amplifier the new amplifier of the effect
      * @param duration the new duration of the effect
      * @param def if the effect should be set to the item's default (true) effects or not (false)
      */
-    public static void setStoredEffect(ItemMeta meta, String effect, double amplifier, long duration, int charges, boolean def){
+    public static void setStoredEffect(ItemBuilder item, String effect, double amplifier, long duration, int charges, boolean def){
         PotionEffectWrapper wrapper = getEffect(effect);
         if (wrapper == null) return;
         wrapper.setAmplifier(amplifier);
         wrapper.setDuration(duration);
         wrapper.setCharges(charges);
-        setStoredEffect(meta, wrapper, def);
+        setStoredEffect(item, wrapper, def);
     }
 
     /**
      * Changes an existing stored effect of an item. If the item does not have the effect, nothing happens.
-     * @param meta the item to set the effect to
+     * @param item the item to set the effect to
      * @param wrapper the potion effect wrapper to override the existing effect
      * @param def if the effect should be set to the item's default (true) effects or not (false)
      */
-    public static void setStoredEffect(ItemMeta meta, PotionEffectWrapper wrapper, boolean def){
-        Map<String, PotionEffectWrapper> stats = getStoredEffects(meta, def);
+    public static void setStoredEffect(ItemBuilder item, PotionEffectWrapper wrapper, boolean def){
+        Map<String, PotionEffectWrapper> stats = getStoredEffects(item.getMeta(), def);
 
         if (!stats.containsKey(wrapper.getEffect())) return;
 
         stats.put(wrapper.getEffect(), wrapper);
-        if (def) setDefaultStoredEffects(meta, stats);
-        else setActualStoredEffects(meta, stats);
+        if (def) setDefaultStoredEffects(item, stats);
+        else setActualStoredEffects(item, stats);
     }
 
     /**
      * Spends a charge of the given effect. If the item has 1 charge left, the effect is removed from the item.
-     * @param meta the item meta to spend a charge on.
+     * @param item the item meta to spend a charge on.
      * @param effect the effect to spend a charge of.
      * @return true if a charge was successfully spent, or false if for whatever reason the item had 0 charges left.
      */
-    public static boolean spendCharge(ItemMeta meta, String effect){
-        PotionEffectWrapper wrapper = getStoredEffect(meta, effect, false);
+    public static boolean spendCharge(ItemBuilder item, String effect){
+        PotionEffectWrapper wrapper = getStoredEffect(item.getMeta(), effect, false);
         if (wrapper == null) return false;
         wrapper = wrapper.copy();
         if (wrapper.getCharges() < 0) return true;
         if (wrapper.getCharges() == 0) return false;
         if (wrapper.getCharges() == 1) {
-            removeEffect(meta, effect);
-            CustomFlag.removeItemFlag(meta, CustomFlag.TEMPORARY_POTION_DISPLAY);
-            if (ItemAttributesRegistry.hasCustomStats(meta)) ItemAttributesRegistry.setActualStats(meta, ItemAttributesRegistry.getStats(meta, false));
+            removeEffect(item, effect);
+            CustomFlag.removeItemFlag(item.getMeta(), CustomFlag.TEMPORARY_POTION_DISPLAY);
+            if (ItemAttributesRegistry.hasCustomStats(item.getMeta())) ItemAttributesRegistry.setActualStats(item, ItemAttributesRegistry.getStats(item.getMeta(), false));
         } else {
             wrapper.setCharges(wrapper.getCharges() - 1);
-            setStoredEffect(meta, wrapper, false);
+            setStoredEffect(item, wrapper, false);
         }
         return true;
     }
@@ -553,13 +557,13 @@ public class PotionEffectRegistry {
 
     /**
      * Cleans an ItemMeta of custom effects
-     * @param meta the meta to clean
+     * @param item the meta to clean
      */
-    public static void clean(ItemMeta meta){
-        meta.getPersistentDataContainer().remove(DEFAULT_STORED_EFFECTS);
-        meta.getPersistentDataContainer().remove(ACTUAL_STORED_EFFECTS);
-        if (meta instanceof PotionMeta p) p.clearCustomEffects();
-        registeredEffects.values().forEach(a -> a.onRemove(meta));
+    public static void clean(ItemBuilder item){
+        item.getMeta().getPersistentDataContainer().remove(DEFAULT_STORED_EFFECTS);
+        item.getMeta().getPersistentDataContainer().remove(ACTUAL_STORED_EFFECTS);
+        if (item instanceof PotionMeta p) p.clearCustomEffects();
+        registeredEffects.values().forEach(a -> a.onRemove(item));
     }
 
     /**
@@ -792,10 +796,9 @@ public class PotionEffectRegistry {
      * names. If override is disabled, nothing will happen if the item already has a custom name.
      * @param override whether the name should be changed regardless if the item has a custom name already
      */
-    public static void updateItemName(ItemMeta meta, boolean override, boolean combined){
-        if (meta == null) return;
-        Material base = ItemUtils.getStoredType(meta);
-        if (base == null) return;
+    public static void updateItemName(ItemBuilder item, boolean override, boolean combined){
+        if (item == null) return;
+        Material base = item.getItem().getType();
         String c = combined ? "combined_" : "";
         String key = switch (base) {
             case SPLASH_POTION -> "potion_splash_format";
@@ -807,11 +810,11 @@ public class PotionEffectRegistry {
         String plainFormat = TranslationManager.getTranslation(key);
         String format = TranslationManager.getTranslation(c + key);
         // if the meta has no display name, override is enabled, or the display name already contains the format it was previously, set the new display name
-        if (!meta.hasDisplayName() || override ||
-                ChatColor.stripColor(meta.getDisplayName()).contains(ChatColor.stripColor(Utils.chat(plainFormat.replace("%effect%", ""))))){
-            Map<String, PotionEffectWrapper> effects = getStoredEffects(meta, true);
+        if (item.getName() == null || override ||
+                ChatColor.stripColor(item.getName()).contains(ChatColor.stripColor(Utils.chat(plainFormat.replace("%effect%", ""))))){
+            Map<String, PotionEffectWrapper> effects = getStoredEffects(item.getMeta(), true);
             if (effects.isEmpty()) {
-                PotionType type = meta instanceof PotionMeta pm ? ValhallaMMO.getNms().getPotionType(pm) : null;
+                PotionType type = item instanceof PotionMeta pm ? ValhallaMMO.getNms().getPotionType(pm) : null;
                 if (type != null) {
                     for (PotionTypeEffectWrapper typeWrapper : typeToEffectWrappings.getOrDefault(type, new HashMap<>()).values()){
                         PotionEffectWrapper effectWrapper = typeWrapper.potionEffectType == null ? null : getEffect(typeWrapper.potionEffectType);
@@ -823,7 +826,7 @@ public class PotionEffectRegistry {
             if (effects.isEmpty()) return;
             PotionEffectWrapper effectForName = effects.values().stream().findAny().orElse(null);
             String effectName = effectForName.getPotionName();
-            meta.setDisplayName(Utils.chat(format.replace("%icon%", effectForName.getEffectIcon()).replace("%effect%", effectName).replace("%item%", ItemUtils.getItemName(meta))));
+            item.name(Utils.chat(format.replace("%icon%", effectForName.getEffectIcon()).replace("%effect%", effectName).replace("%item%", ItemUtils.getItemName(item.getMeta()))));
         }
     }
 

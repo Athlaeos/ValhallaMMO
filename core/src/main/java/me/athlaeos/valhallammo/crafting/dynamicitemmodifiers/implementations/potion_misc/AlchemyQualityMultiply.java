@@ -27,7 +27,7 @@ public class AlchemyQualityMultiply extends DynamicItemModifier {
     public void processItem(ModifierContext context) {
         int quality = AlchemyItemPropertyManager.getQuality(context.getItem().getMeta());
         int newQuality = Math.max(0, (int) Math.floor(quality * multiplyBy));
-        AlchemyItemPropertyManager.setQuality(context.getItem().getMeta(), newQuality);
+        AlchemyItemPropertyManager.setQuality(context.getItem(), newQuality);
     }
 
     @Override

@@ -23,15 +23,15 @@ public class ConversionMilkToChocolateMilk extends DynamicItemModifier {
     public void processItem(ModifierContext context) {
         Map<String, PotionEffectWrapper> defaultPotionEffects = PotionEffectRegistry.getStoredEffects(context.getItem().getMeta(), true);
         if (defaultPotionEffects.remove("MILK") == null) return;
-        PotionEffectRegistry.removeEffect(context.getItem().getMeta(), "MILK");
+        PotionEffectRegistry.removeEffect(context.getItem(), "MILK");
 
         PotionEffectWrapper chocolateMilkWrapper = PotionEffectRegistry.getEffect("CHOCOLATE_MILK");
         chocolateMilkWrapper.setAmplifier(1);
         chocolateMilkWrapper.setDuration(1);
         defaultPotionEffects.put(chocolateMilkWrapper.getEffect(), chocolateMilkWrapper);
 
-        PotionEffectRegistry.addDefaultEffect(context.getItem().getMeta(), chocolateMilkWrapper);
-        PotionEffectRegistry.updateItemName(context.getItem().getMeta(), true, false);
+        PotionEffectRegistry.addDefaultEffect(context.getItem(), chocolateMilkWrapper);
+        PotionEffectRegistry.updateItemName(context.getItem(), true, false);
     }
 
     @Override

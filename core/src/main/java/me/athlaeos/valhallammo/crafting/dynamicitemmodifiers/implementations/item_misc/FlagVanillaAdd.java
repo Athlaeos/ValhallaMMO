@@ -28,7 +28,7 @@ public class FlagVanillaAdd extends DynamicItemModifier {
     public void processItem(ModifierContext context) {
         correctFlag();
         context.getItem().flag(ItemFlag.valueOf(flag));
-        PotionEffectRegistry.updateEffectLore(context.getItem().getMeta());
+        PotionEffectRegistry.updateEffectLore(context.getItem());
     }
 
     private void correctFlag(){

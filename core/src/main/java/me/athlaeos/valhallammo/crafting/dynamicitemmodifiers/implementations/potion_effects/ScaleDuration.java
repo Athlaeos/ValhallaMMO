@@ -75,7 +75,7 @@ public class ScaleDuration extends DynamicItemModifier {
         }
 
         int finalQuality = (int) Math.round(skillEfficiency * skill);
-        AlchemyItemPropertyManager.applyAttributeScaling(context.getItem().getMeta(), scaling, finalQuality, true, minimumValue, 0);
+        AlchemyItemPropertyManager.applyAttributeScaling(context.getItem(), scaling, finalQuality, true, minimumValue, 0);
     }
 
     @Override

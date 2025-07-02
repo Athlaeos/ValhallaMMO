@@ -75,7 +75,7 @@ public class DurabilityScale extends DynamicItemModifier {
         }
 
         int finalQuality = (int) Math.round(skillEfficiency * skill);
-        CustomDurabilityManager.applyDurabilityScaling(context.getItem().getMeta(), scaling, finalQuality, minimumValue);
+        CustomDurabilityManager.applyDurabilityScaling(context.getItem(), scaling, finalQuality, minimumValue);
     }
 
     @Override

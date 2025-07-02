@@ -51,7 +51,7 @@ public class DefaultAttributeAdd extends DynamicItemModifier {
         attribute.setValue(value + extraValue);
         attribute.setOperation(operation);
         attribute.setHidden(hidden);
-        ItemAttributesRegistry.addDefaultStat(context.getItem().getMeta(), attribute);
+        ItemAttributesRegistry.addDefaultStat(context.getItem(), attribute);
     }
 
     @Override

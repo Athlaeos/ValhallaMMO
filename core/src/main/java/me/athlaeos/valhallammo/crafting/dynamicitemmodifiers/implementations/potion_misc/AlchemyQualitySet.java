@@ -23,7 +23,7 @@ public class AlchemyQualitySet extends DynamicItemModifier {
 
     @Override
     public void processItem(ModifierContext context) {
-        AlchemyItemPropertyManager.setQuality(context.getItem().getMeta(), quality);
+        AlchemyItemPropertyManager.setQuality(context.getItem(), quality);
     }
 
     @Override

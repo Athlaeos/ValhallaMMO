@@ -35,14 +35,14 @@ public class PotionEffectConvert extends DynamicItemModifier {
         Map<String, PotionEffectWrapper> effects = PotionEffectRegistry.getStoredEffects(context.getItem().getMeta(), true);
         for (String from : conversions.keySet()){
             if (effects.remove(from) == null) continue;
-            PotionEffectRegistry.removeEffect(context.getItem().getMeta(), from);
+            PotionEffectRegistry.removeEffect(context.getItem(), from);
             PotionEffectWrapper to = PotionEffectRegistry.getEffect(conversions.get(from).effect);
             to.setAmplifier(conversions.get(from).amplifier);
             to.setDuration(conversions.get(from).duration);
             effects.put(to.getEffect(), to);
-            PotionEffectRegistry.addDefaultEffect(context.getItem().getMeta(), to);
+            PotionEffectRegistry.addDefaultEffect(context.getItem(), to);
         }
-        PotionEffectRegistry.updateItemName(context.getItem().getMeta(), true, false);
+        PotionEffectRegistry.updateItemName(context.getItem(), true, false);
     }
 
     @Override

@@ -80,9 +80,9 @@ public class DefaultAttributeScale extends DynamicItemModifier {
         }
 
         int finalQuality = (int) Math.round(skillEfficiency * skill);
-        if (!ItemAttributesRegistry.hasCustomStats(context.getItem().getMeta())) ItemAttributesRegistry.applyVanillaStats(context.getItem().getMeta());
+        if (!ItemAttributesRegistry.hasCustomStats(context.getItem().getMeta())) ItemAttributesRegistry.applyVanillaStats(context.getItem());
 
-        SmithingItemPropertyManager.applyAttributeScaling(context.getItem().getMeta(), scaling, finalQuality, attribute, minimumValue);
+        SmithingItemPropertyManager.applyAttributeScaling(context.getItem(), scaling, finalQuality, attribute, minimumValue);
     }
 
     @Override
