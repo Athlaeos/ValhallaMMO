@@ -114,12 +114,12 @@ public class DynamicCookingRecipe implements ValhallaRecipe, ValhallaKeyedRecipe
                         def.toArray(new String[0]) :
                         this.description
                                 .replace("%input%", SlotEntry.toString(input))
-                                .replace("%tinker%", tinker ? SlotEntry.toString(input) : ItemUtils.getItemName(result.getMeta()))
-                                .replace("%result%", tinker ? tinkerFormat.replace("%item%", SlotEntry.toString(input)) : ItemUtils.getItemName(result.getMeta()))
+                                .replace("%tinker%", tinker ? SlotEntry.toString(input) : ItemUtils.getItemName(result))
+                                .replace("%result%", tinker ? tinkerFormat.replace("%item%", SlotEntry.toString(input)) : ItemUtils.getItemName(result))
                                 .split("/n")
                 )
         ).name(displayName == null ?
-                (tinker ? tinkerFormat.replace("%item%", SlotEntry.toString(input)) : ItemUtils.getItemName(result.getMeta())) :
+                (tinker ? tinkerFormat.replace("%item%", SlotEntry.toString(input)) : ItemUtils.getItemName(result)) :
                 displayName).translate().get();
     }
 

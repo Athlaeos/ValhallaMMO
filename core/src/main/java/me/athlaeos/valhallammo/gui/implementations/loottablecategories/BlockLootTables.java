@@ -46,7 +46,7 @@ public class BlockLootTables extends TableCategory {
             builder.appendLore("&fClick to set new loot table", "&fShift-Click to remove loot table");
             buttons.add(builder);
         }
-        buttons.sort(Comparator.comparing(b -> ItemUtils.getItemName(b.getMeta())));
+        buttons.sort(Comparator.comparing(ItemUtils::getItemName));
         return buttons.stream().map(ItemBuilder::get).collect(Collectors.toList());
     }
 

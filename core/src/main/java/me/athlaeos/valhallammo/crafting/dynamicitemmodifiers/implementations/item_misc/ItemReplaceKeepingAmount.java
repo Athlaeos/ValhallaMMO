@@ -53,7 +53,7 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier implements Res
                         .name("&eWhat should the new item be?")
                         .lore("&6Click with another item to",
                                 "&6copy it over.",
-                                "&fSet to " + ItemUtils.getItemName(ItemUtils.getItemMeta(replaceBy)))
+                                "&fSet to " + ItemUtils.getItemName(new ItemBuilder(replaceBy)))
                         .get()).map(new HashSet<>());
     }
 
@@ -74,7 +74,7 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier implements Res
 
     @Override
     public String getActiveDescription() {
-        return "&fItem will be replaced by " + ItemUtils.getItemName(ItemUtils.getItemMeta(replaceBy)) + ", but the original amount of the item stays the same.";
+        return "&fItem will be replaced by " + ItemUtils.getItemName(new ItemBuilder(replaceBy)) + ", but the original amount of the item stays the same.";
     }
 
     @Override

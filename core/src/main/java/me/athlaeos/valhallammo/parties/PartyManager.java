@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -23,7 +24,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.io.*;
@@ -280,8 +280,7 @@ public class PartyManager {
         if (!Timer.isCooldownPassed(from.getUniqueId(), "cooldown_share_item")) return ErrorStatus.ON_COOLDOWN;
         ItemStack hand = from.getInventory().getItemInMainHand();
         if (ItemUtils.isEmpty(hand)) return ErrorStatus.NO_ITEM;
-        ItemMeta handMeta = ItemUtils.getItemMeta(hand);
-        if (handMeta == null) return ErrorStatus.NO_ITEM;
+        ItemBuilder handMeta = new ItemBuilder(hand);
         to.sendMessage(Utils.chat(TranslationManager.getTranslation("status_command_party_item_received")
                 .replace("%player%", from.getName())
                 .replace("%amount%", String.valueOf(hand.getAmount()))

@@ -181,14 +181,14 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
 
         List<String> lore = new ArrayList<>();
         for (String l : this.description == null ? def.toArray(new String[0]) : this.description.split("/n")){
-            lore.add(TranslationManager.translatePlaceholders(l.replace("%result%", tinker ? tinkerFormat.replace("%item%", SlotEntry.toString(getGridTinkerEquipment())) : ItemUtils.getItemName(result.getMeta()))
-                    .replace("%tinker%", tinker ? SlotEntry.toString(getGridTinkerEquipment()) : ItemUtils.getItemName(result.getMeta()))));
+            lore.add(TranslationManager.translatePlaceholders(l.replace("%result%", tinker ? tinkerFormat.replace("%item%", SlotEntry.toString(getGridTinkerEquipment())) : ItemUtils.getItemName(result))
+                    .replace("%tinker%", tinker ? SlotEntry.toString(getGridTinkerEquipment()) : ItemUtils.getItemName(result))));
         }
 
         ItemBuilder icon = new ItemBuilder(i)
                 .lore(ItemUtils.setListPlaceholder(lore, "%ingredients%", gridDetails))
                 .translate();
-        if (displayName != null) icon.name(TranslationManager.translatePlaceholders(displayName).replace("%item%", ItemUtils.getItemName(result.getMeta())));
+        if (displayName != null) icon.name(TranslationManager.translatePlaceholders(displayName).replace("%item%", ItemUtils.getItemName(result)));
         else if (tinker) icon.name(tinkerFormat.replace("%item%", SlotEntry.toString(tinkerItem)));
         else if (result.getMeta().hasDisplayName()) icon.name(result.getMeta().getDisplayName());
 

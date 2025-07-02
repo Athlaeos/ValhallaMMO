@@ -3,11 +3,10 @@ package me.athlaeos.valhallammo.gui.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicBrewingRecipe;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
+import me.athlaeos.valhallammo.crafting.recipetypes.DynamicBrewingRecipe;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Question;
 import me.athlaeos.valhallammo.dom.Questionnaire;
@@ -28,7 +27,6 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -407,14 +405,14 @@ public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
         List<String> modifierLore = new ArrayList<>();
         modifiers.forEach(m -> modifierLore.addAll(StringUtils.separateStringIntoLines("&d> " + m.getActiveDescription(), 40)));
 
-        ItemMeta resultMeta = ItemUtils.getItemMeta(result);
+        ItemBuilder itemBuilder = new ItemBuilder(result);
         String tinkerFormat = TranslationManager.getTranslation("tinker_result_format");
         List<String> description = Arrays.asList(this.description == null ? "&eDefault".split("/n") :
                 this.description
                         .replace("%ingredient%", SlotEntry.toString(ingredient))
                         .replace("%applyon%", SlotEntry.toString(applyOn))
-                        .replace("%tinker%", tinker ? SlotEntry.toString(applyOn) : ItemUtils.getItemName(resultMeta))
-                        .replace("%result%", tinker ? tinkerFormat.replace("%item%", SlotEntry.toString(applyOn)) : ItemUtils.getItemName(resultMeta))
+                        .replace("%tinker%", tinker ? SlotEntry.toString(applyOn) : ItemUtils.getItemName(itemBuilder))
+                        .replace("%result%", tinker ? tinkerFormat.replace("%item%", SlotEntry.toString(applyOn)) : ItemUtils.getItemName(itemBuilder))
                         .split("/n"));
 
         inventory.setItem(0, new ItemBuilder(setDisplayNameButton).lore(ItemUtils.setListPlaceholder(ItemUtils.getLore(setDisplayNameButton), "%display_name%", List.of(displayName == null ? "&eDefault" : displayName))).get());

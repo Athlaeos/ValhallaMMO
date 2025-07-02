@@ -126,7 +126,7 @@ public class ValidationSelectionMenu extends Menu {
             }
             icons.add(builder.get());
         }
-        icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));
+        icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(item)))));
         Map<Integer, List<ItemStack>> pages = Utils.paginate(45, icons);
 
         currentPage = Math.max(1, Math.min(currentPage, pages.size()));

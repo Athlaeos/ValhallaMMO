@@ -204,7 +204,7 @@ public class LootFreeSelectionMenu extends Menu {
                     String quantity = (entry.getBaseQuantityMin() != entry.getBaseQuantityMax() ? (entry.getBaseQuantityMin() * existingAmount) + "-" + (entry.getBaseQuantityMax() * existingAmount) : String.valueOf(entry.getBaseQuantityMin() * existingAmount)) + "x ";
 
                     inventory.setItem(entrySelectLayoutPriority[index], i
-                            .name(TranslationManager.getTranslation("menu_loottablefreeselection_nameformat").replace("%quantity%", selection.containsKey(uuid) ? quantity : "").replace("%item%", ItemUtils.getItemName(i.getMeta())))
+                            .name(TranslationManager.getTranslation("menu_loottablefreeselection_nameformat").replace("%quantity%", selection.containsKey(uuid) ? quantity : "").replace("%item%", ItemUtils.getItemName(i)))
                             .prependLore(ItemUtils.setListPlaceholder(TranslationManager.getListTranslation("loot_selection_prefix"), "%rolls%", (allowedPicks > 0 ? "&a" : "&c") + allowedPicks))
                             .appendLore(ItemUtils.setListPlaceholder(TranslationManager.getListTranslation("loot_selection_suffix"), "%rolls%", (allowedPicks > 0 ? "&a" : "&c") + allowedPicks))
                             .translate().get()
@@ -212,7 +212,7 @@ public class LootFreeSelectionMenu extends Menu {
 
                     inventory.setItem(entrySelectLayoutPriority[index] + 9,
                             new ItemBuilder(selection.containsKey(uuid) ? selectedDropBase : unselectedDropBase)
-                                    .name(ItemUtils.getItemName(i.getMeta()))
+                                    .name(ItemUtils.getItemName(i))
                                     .prependLore(ItemUtils.setListPlaceholder(TranslationManager.getListTranslation("loot_selection_prefix"), "%rolls%", (allowedPicks > 0 ? "&a" : "&c") + allowedPicks))
                                     .appendLore(ItemUtils.setListPlaceholder(TranslationManager.getListTranslation("loot_selection_suffix"), "%rolls%", (allowedPicks > 0 ? "&a" : "&c") + allowedPicks))
                                     .stringTag(BUTTON_DATA, uuidString)

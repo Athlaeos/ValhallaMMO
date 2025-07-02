@@ -50,7 +50,7 @@ public class CauldronRecipeCategory extends RecipeCategory{
                 lore.add("&fLeaving ingredients in for " + StringUtils.toTimeStamp2(recipe.getCookTime(), 20) + "s");
             else
                 lore.add("&fThrowing " + recipe.getCatalyst().getItem().getAmount() + "x" + SlotEntry.toString(recipe.getCatalyst()) + " &finto cauldron");
-            lore.add("&fproduces " + (recipe.tinkerCatalyst() && !recipe.isTimedRecipe() ? "&eTinkered Catalyst" : ItemUtils.getItemName(ItemUtils.getItemMeta(recipe.getResult()))));
+            lore.add("&fproduces " + (recipe.tinkerCatalyst() && !recipe.isTimedRecipe() ? "&eTinkered Catalyst" : ItemUtils.getItemName(new ItemBuilder(recipe.getResult()))));
             lore.add("&8&m                <>                ");
             lore.add(recipe.requiresValhallaTools() ? "&fRequires ValhallaMMO equipment" : "&fVanilla equipment may be used");
             lore.add(recipe.isUnlockedForEveryone() ? "&aAccessible to anyone" : "&aNeeds to be unlocked to craft");
@@ -75,7 +75,7 @@ public class CauldronRecipeCategory extends RecipeCategory{
                     .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
                     .stringTag(RecipeOverviewMenu.KEY_RECIPE, recipe.getName()).get());
         }
-        icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));
+        icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(item)))));
         return icons;
     }
 

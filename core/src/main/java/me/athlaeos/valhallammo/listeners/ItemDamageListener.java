@@ -26,7 +26,7 @@ public class ItemDamageListener implements Listener {
         ItemStack itemStack = e.getItem();
         ItemBuilder builder = ItemUtils.isEmpty(itemStack) ? null : new ItemBuilder(itemStack);
         if (builder == null) return;
-        durabilityBonus += ItemSkillRequirements.getPenalty(e.getPlayer(), builder.getMeta(), "durability");
+        durabilityBonus += ItemSkillRequirements.getPenalty(e.getPlayer(), builder, "durability");
 
         // examples:
         // +0.2 leads to 1/1.2 = ~0.83 and so damage is multiplied by that to produce roughly +20% durability

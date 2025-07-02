@@ -153,8 +153,8 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                                                 Utils.chat((playersWhoReceivedFirstTimeMessage.contains(e.getWhoClicked().getUniqueId()) ?
                                                         TranslationManager.getTranslation("status_tinkering_recipe_selected") :
                                                         TranslationManager.getTranslation("status_onetime_tinkering_recipe_selected")))
-                                                        .replace("%recipe%", recipe.getDisplayName() == null ? ItemUtils.getItemName(ItemUtils.getItemMeta(clicked)) : recipe.getDisplayName())
-                                                        .replace("%item%", ItemUtils.getItemName(ItemUtils.getItemMeta(recipe.getResult())))
+                                                        .replace("%recipe%", recipe.getDisplayName() == null && clicked != null ? ItemUtils.getItemName(new ItemBuilder(clicked)) : recipe.getDisplayName())
+                                                        .replace("%item%", ItemUtils.getItemName(new ItemBuilder(recipe.getResult())))
                                         )
                                 );
                             } else {
@@ -162,8 +162,8 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                                                 Utils.chat((playersWhoReceivedFirstTimeMessage.contains(e.getWhoClicked().getUniqueId()) ?
                                                         TranslationManager.getTranslation("status_crafting_recipe_selected") :
                                                         TranslationManager.getTranslation("status_onetime_crafting_recipe_selected")))
-                                                        .replace("%recipe%", recipe.getDisplayName() == null ? ItemUtils.getItemName(ItemUtils.getItemMeta(clicked)) : recipe.getDisplayName())
-                                                        .replace("%item%", ItemUtils.getItemName(ItemUtils.getItemMeta(recipe.getResult())))
+                                                        .replace("%recipe%", recipe.getDisplayName() == null && clicked != null ? ItemUtils.getItemName(new ItemBuilder(clicked)) : recipe.getDisplayName())
+                                                        .replace("%item%", ItemUtils.getItemName(new ItemBuilder(recipe.getResult())))
                                         )
                                 );
                             }
@@ -197,7 +197,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
         inventory.setItem(23, tinkerOnlyButton);
 
         buildMenuItems((buttons) -> {
-            buttons.sort(java.util.Comparator.comparing(this::isIconFavourited, java.util.Comparator.reverseOrder()).thenComparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));
+            buttons.sort(java.util.Comparator.comparing(this::isIconFavourited, java.util.Comparator.reverseOrder()).thenComparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(item)))));
 
             List<ItemStack> p;
             int pageCount = 1;
@@ -256,7 +256,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                 }
 
                 if (selectedRecipe != null && selectedRecipe.getName().equals(recipe.getName()) && !ItemUtils.isEmpty(predictedItem.getItem())){
-                    icons.add(predictedItem.name("&r&f" + ItemUtils.getItemName(predictedItem.getMeta())).get());
+                    icons.add(predictedItem.name("&r&f" + ItemUtils.getItemName(predictedItem)).get());
                     continue;
                 }
 
@@ -286,7 +286,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                 String time = String.format("%.1f", (Math.max(0, recipe.getTimeToCraft() * (1 - craftingTimeReduction))/20D));
                 lore = lore.stream().map(l -> l.replace("%crafting_time%", time)).collect(Collectors.toList());
 
-                String displayName = recipe.getDisplayName() == null ? ItemUtils.getItemName(ItemUtils.getItemMeta(button)) : recipe.getDisplayName();
+                String displayName = recipe.getDisplayName() == null ? ItemUtils.getItemName(new ItemBuilder(button)) : recipe.getDisplayName();
                 String favouritePrefix = TranslationManager.getTranslation("recipe_favourited_prefix");
                 String favouriteSuffix = TranslationManager.getTranslation("recipe_favourited_suffix");
                 icons.add(new ItemBuilder(button).name("&r" +

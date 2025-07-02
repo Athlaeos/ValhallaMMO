@@ -37,7 +37,7 @@ public abstract class CookingRecipeCategory extends RecipeCategory{
         for (DynamicCookingRecipe recipe : CustomRecipeRegistry.getCookingRecipes().values()){
             if (recipe.getType() != type) continue;
             List<String> lore = new ArrayList<>(List.of(
-                    "&f" + SlotEntry.toString(recipe.getInput()) + " >> &e" + StringUtils.toTimeStamp2(recipe.getCookTime(), 20) + "s &f>> " + (recipe.tinker() ? "&eTinkered Input" : ItemUtils.getItemName(ItemUtils.getItemMeta(recipe.getResult()))),
+                    "&f" + SlotEntry.toString(recipe.getInput()) + " >> &e" + StringUtils.toTimeStamp2(recipe.getCookTime(), 20) + "s &f>> " + (recipe.tinker() ? "&eTinkered Input" : ItemUtils.getItemName(new ItemBuilder(recipe.getResult()))),
                     recipe.getExperience() > 0 ? "&aRewards " + recipe.getExperience() + " experience" : "&aRewards no experience",
                     recipe.requireValhallaTools() ? "&fRequires ValhallaMMO equipment" : "&fVanilla equipment may be used",
                     recipe.isUnlockedForEveryone() ? "&aAccessible to anyone" : "&aNeeds to be unlocked to craft",
@@ -65,7 +65,7 @@ public abstract class CookingRecipeCategory extends RecipeCategory{
                     .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
                     .color(Color.fromRGB(210, 60, 200)).stringTag(RecipeOverviewMenu.KEY_RECIPE, recipe.getName()).get());
         }
-        icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));
+        icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(item)))));
         return icons;
     }
 

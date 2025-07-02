@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOptionRegi
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.item.CustomItemRegistry;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -125,7 +126,7 @@ public class ItemExpense implements ResourceExpense {
         StringBuilder costBuilder = new StringBuilder();
         for (ItemStack i : vanillaItemCost.keySet()){
             costBuilder.append(entry
-                    .replace("%item%", ItemUtils.getItemName(ItemUtils.getItemMeta(i)))
+                    .replace("%item%", ItemUtils.getItemName(new ItemBuilder(i)))
                     .replace("%quantity%", String.valueOf(vanillaItemCost.get(i)))
             );
         }

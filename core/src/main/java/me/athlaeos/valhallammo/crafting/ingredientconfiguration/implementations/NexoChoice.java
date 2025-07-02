@@ -86,7 +86,7 @@ public class NexoChoice extends RecipeOption {
     public String ingredientDescription(ItemStack base) {
         if (!NexoHook.isHookFunctional()) {
             // If NexoHook is not functional, return item's material name
-            return ItemUtils.getItemName(ItemUtils.getItemMeta(base));
+            return ItemUtils.getItemName(new ItemBuilder(base));
         }
 
         // Return the item's display name for the recipe description
@@ -102,7 +102,7 @@ public class NexoChoice extends RecipeOption {
         }
 
         // Item name fallback
-        return ItemUtils.getItemName(ItemUtils.getItemMeta(base));
+        return ItemUtils.getItemName(new ItemBuilder(base));
     }
 
     @Override

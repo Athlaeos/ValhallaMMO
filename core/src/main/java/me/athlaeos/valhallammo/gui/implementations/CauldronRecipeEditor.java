@@ -7,11 +7,10 @@ import me.athlaeos.valhallammo.crafting.MetaRequirement;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCauldronRecipe;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
+import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCauldronRecipe;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Question;
 import me.athlaeos.valhallammo.dom.Questionnaire;
@@ -29,7 +28,6 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -447,7 +445,7 @@ public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetR
             }
         } else lore.add("&eReaction occurs for free");
 
-        ItemMeta resultMeta = ItemUtils.getItemMeta(result);
+        ItemBuilder resultMeta = new ItemBuilder(result);
 
         String tinkerFormat = TranslationManager.getTranslation("tinker_result_format");
         List<String> description = ItemUtils.setListPlaceholder(Arrays.asList(this.description == null ? "&eDefault".split("/n") :

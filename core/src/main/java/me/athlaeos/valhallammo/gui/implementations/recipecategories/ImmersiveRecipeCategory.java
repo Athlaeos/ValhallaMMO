@@ -46,7 +46,7 @@ public class ImmersiveRecipeCategory extends RecipeCategory{
             } else lore.add("&eRecipe is crafted for free");
             lore.add("&eCrafted on &f" + recipe.getBlock() + (recipe.destroysStation() ? "&e which is destroyed afterwards" : ""));
             if (recipe.tinker()) lore.add("&fHolding " + SlotEntry.toString(recipe.getTinkerInput()) + " for " + StringUtils.toTimeStamp2(recipe.getTimeToCraft(), 20) + "s upgrades it");
-            else lore.add("&fProduces " + ItemUtils.getItemName(ItemUtils.getItemMeta(recipe.getResult())) + " after " + StringUtils.toTimeStamp2(recipe.getTimeToCraft(), 20) + "s");
+            else lore.add("&fProduces " + ItemUtils.getItemName(new ItemBuilder(recipe.getResult())) + " after " + StringUtils.toTimeStamp2(recipe.getTimeToCraft(), 20) + "s");
             if (recipe.destroysStation()) lore.add("&eDestroys the crafting station afterwards");
             if (recipe.destroysStation()) lore.add("&fCan be crafted " + recipe.getConsecutiveCrafts() + " times before resetting");
             lore.add("&8&m                <>                ");
@@ -73,7 +73,7 @@ public class ImmersiveRecipeCategory extends RecipeCategory{
                     .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
                     .stringTag(RecipeOverviewMenu.KEY_RECIPE, recipe.getName()).get());
         }
-        icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));
+        icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(item)))));
         return icons;
     }
 

@@ -51,7 +51,7 @@ public class ItemReplace extends DynamicItemModifier implements ResultChangingMo
                         .name("&eWhat should the new item be?")
                         .lore("&6Click with another item to",
                                 "&6copy it over.",
-                                "&fSet to " + ItemUtils.getItemName(ItemUtils.getItemMeta(replaceBy)))
+                                "&fSet to " + ItemUtils.getItemName(new ItemBuilder(replaceBy)))
                         .get()).map(new HashSet<>());
     }
 
@@ -72,7 +72,7 @@ public class ItemReplace extends DynamicItemModifier implements ResultChangingMo
 
     @Override
     public String getActiveDescription() {
-        return "&fItem will be replaced by " + ItemUtils.getItemName(ItemUtils.getItemMeta(replaceBy));
+        return "&fItem will be replaced by " + ItemUtils.getItemName(new ItemBuilder(replaceBy));
     }
 
     @Override

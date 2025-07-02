@@ -70,7 +70,7 @@ public class ModifyCommand implements Command {
                     if (ItemUtils.isEmpty(builder.getItem()) || CustomFlag.hasFlag(builder.getMeta(), CustomFlag.UNCRAFTABLE)){
                         Utils.sendMessage(sender,
                                 TranslationManager.getTranslation("error_command_modifier_failed")
-                                        .replace("%item%", ItemUtils.getItemName(builder.getMeta()))
+                                        .replace("%item%", ItemUtils.getItemName(builder))
                                         .replace("%player%", target.getName())
                         );
                         return true;

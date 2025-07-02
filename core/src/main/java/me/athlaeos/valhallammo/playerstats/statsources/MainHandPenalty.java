@@ -21,7 +21,7 @@ public class MainHandPenalty implements AccumulativeStatSource {
             ItemBuilder offHand = ItemUtils.isEmpty(p.getInventory().getItemInOffHand()) ? null : new ItemBuilder(p.getInventory().getItemInOffHand());
             ItemBuilder used = ItemUtils.usedMainHand(mainHand, offHand) ? mainHand : offHand;
             if (used == null) return 0;
-            return ItemSkillRequirements.getPenalty(p, used.getMeta(), statPenalty);
+            return ItemSkillRequirements.getPenalty(p, used, statPenalty);
         }
         return 0;
     }

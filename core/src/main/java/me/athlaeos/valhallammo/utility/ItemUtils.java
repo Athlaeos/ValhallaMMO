@@ -422,7 +422,7 @@ public class ItemUtils {
                 return def;
             } catch (IllegalArgumentException ignored){
                 ValhallaMMO.logWarning(
-                        "ItemStack/Material " + value + " in config " + file + ":" + path + " did not lead to an item stack or proper material type. Defaulted to " + getItemName(getItemMeta(def))
+                        "ItemStack/Material " + value + " in config " + file + ":" + path + " did not lead to an item stack or proper material type. Defaulted to " + getItemName(new ItemBuilder(def))
                 );
             }
         }
@@ -434,12 +434,11 @@ public class ItemUtils {
         return item;
     }
 
-    public static String getItemName(ItemMeta meta){
+    public static String getItemName(ItemBuilder item){
         String name;
-        if (meta == null) return "null";
-        Material base = getStoredType(meta);
-        if (base == null) return "null";
-        if (meta.hasDisplayName()) name = meta.getDisplayName();
+        if (item == null) return "null";
+        Material base = item.getItem().getType();
+        if (item.getName() != null) name = item.getName();
         else if (TranslationManager.getMaterialTranslations().getMaterialTranslations().containsKey(base.toString())) name = Utils.chat(TranslationManager.getMaterialTranslation(base));
         else name = Utils.chat(me.athlaeos.valhallammo.utility.StringUtils.toPascalCase("&r" + base.toString().replace("_", " ")));
         return name;

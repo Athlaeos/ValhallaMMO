@@ -1,7 +1,6 @@
 package me.athlaeos.valhallammo.gui.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
@@ -13,7 +12,6 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.loot.*;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
-import me.athlaeos.valhallammo.loot.ReplacementEntry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -233,7 +231,7 @@ public class ReplacementPoolEditor extends Menu implements SetLootPredicatesMenu
         List<ItemStack> buttons = new ArrayList<>();
         entries.forEach(p -> {
             ItemBuilder builder = new ItemBuilder(p.tinker() ? pool.getToReplace().getItem() : p.getReplaceBy()).stringTag(BUTTON_DATA, p.getUuid().toString());
-            builder.name("&e" + (p.tinker() ? "Tinkered " + pool.getToReplace().getOption().ingredientDescription(pool.getToReplace().getItem()) : ItemUtils.getItemName(ItemUtils.getItemMeta(p.getReplaceBy()))));
+            builder.name("&e" + (p.tinker() ? "Tinkered " + pool.getToReplace().getOption().ingredientDescription(pool.getToReplace().getItem()) : ItemUtils.getItemName(new ItemBuilder(p.getReplaceBy()))));
 
             if (!p.getPredicates().isEmpty()) {
                 builder.appendLore("&6" + (p.getPredicateSelection() == LootTable.PredicateSelection.ANY ? "Any" : "All") + "&e of the following conditions");

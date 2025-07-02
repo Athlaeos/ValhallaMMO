@@ -41,7 +41,7 @@ public class SmithingRecipeCategory extends RecipeCategory{
         for (DynamicSmithingRecipe recipe : CustomRecipeRegistry.getSmithingRecipes().values()){
             List<String> lore = new ArrayList<>();
             if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20)) lore.add(recipe.getTemplate() == null ? "&fNo template" : "&fTemplate: " + SlotEntry.toString(recipe.getTemplate()));
-            lore.add("&f" + SlotEntry.toString(recipe.getBase()) + " + " + SlotEntry.toString(recipe.getAddition()) + " = " + (recipe.tinkerBase() ? "&eTinkered Base" : ItemUtils.getItemName(ItemUtils.getItemMeta(recipe.getResult()))));
+            lore.add("&f" + SlotEntry.toString(recipe.getBase()) + " + " + SlotEntry.toString(recipe.getAddition()) + " = " + (recipe.tinkerBase() ? "&eTinkered Base" : ItemUtils.getItemName(new ItemBuilder(recipe.getResult()))));
             lore.add(recipe.requireValhallaTools() ? "&fRequires ValhallaMMO equipment" : "&fVanilla equipment may be used");
             lore.add(recipe.isUnlockedForEveryone() ? "&aAccessible to anyone" : "&aNeeds to be unlocked to craft");
 
@@ -74,7 +74,7 @@ public class SmithingRecipeCategory extends RecipeCategory{
                     .flag(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE)
                     .color(Color.fromRGB(210, 60, 200)).stringTag(RecipeOverviewMenu.KEY_RECIPE, recipe.getName()).get());
         }
-        icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(ItemUtils.getItemMeta(item)))));
+        icons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(item)))));
         return icons;
     }
 
