@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.event.EntityStunEvent;
 import me.athlaeos.valhallammo.item.CustomFlag;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
@@ -21,7 +22,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 
@@ -53,10 +53,10 @@ public class Stun extends PotionEffectWrapper {
     }
 
     @Override
-    public void onApply(ItemMeta i) {
-        boolean customFlag = CustomFlag.hasFlag(i, CustomFlag.DISPLAY_ATTRIBUTES);
-        boolean vanillaFlag = i.hasItemFlag(ConventionUtils.getHidePotionEffectsFlag());
-        boolean temporaryCoatingDisplay = CustomFlag.hasFlag(i, CustomFlag.TEMPORARY_POTION_DISPLAY);
+    public void onApply(ItemBuilder i) {
+        boolean customFlag = CustomFlag.hasFlag(i.getMeta(), CustomFlag.DISPLAY_ATTRIBUTES);
+        boolean vanillaFlag = i.getMeta().hasItemFlag(ConventionUtils.getHidePotionEffectsFlag());
+        boolean temporaryCoatingDisplay = CustomFlag.hasFlag(i.getMeta(), CustomFlag.TEMPORARY_POTION_DISPLAY);
         // if vanilla, hide if either custom or vanilla flags are missing
         // if not vanilla, hide if vanilla flag is present unless custom flag is also present
         if ((isVanilla && i instanceof PotionMeta && (!customFlag || !vanillaFlag)) ||
@@ -137,7 +137,7 @@ public class Stun extends PotionEffectWrapper {
     }
 
     @Override
-    public void onRemove(ItemMeta i) {
+    public void onRemove(ItemBuilder i) {
         String translation = getEffectName();
         if (StringUtils.isEmpty(translation)) return;
         ItemUtils.removeIfLoreContains(i, translation

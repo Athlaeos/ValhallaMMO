@@ -61,11 +61,11 @@ public class PotionAttributeCommand implements Command {
 			if (result.getItem().getType().isEdible()) charges = -1; // consumable items can't really have charges, so they're always "infinite"
 
 			PotionEffectWrapper defaultWrapper = PotionEffectRegistry.getEffect(effect.toUpperCase(java.util.Locale.US)).setAmplifier(defaultValue).setDuration(defaultDuration).setCharges(charges);
-			PotionEffectRegistry.addDefaultEffect(result.getMeta(), defaultWrapper);
+			PotionEffectRegistry.addDefaultEffect(result, defaultWrapper);
 			if (actualValue != null){
-				PotionEffectRegistry.setStoredEffect(result.getMeta(), effect.toUpperCase(java.util.Locale.US), actualValue, actualDuration, charges, false);
+				PotionEffectRegistry.setStoredEffect(result, effect.toUpperCase(java.util.Locale.US), actualValue, actualDuration, charges, false);
 			}
-			PotionEffectRegistry.updateItemName(result.getMeta(), false, false);
+			PotionEffectRegistry.updateItemName(result, false, false);
 			target.getInventory().setItemInMainHand(result.get());
 			return true;
 		}

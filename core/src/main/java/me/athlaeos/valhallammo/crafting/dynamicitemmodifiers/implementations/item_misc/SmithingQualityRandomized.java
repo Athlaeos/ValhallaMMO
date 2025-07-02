@@ -39,7 +39,7 @@ public class SmithingQualityRandomized extends DynamicItemModifier {
         int lowerBound = quality + (int) Math.floor(this.lowerBound * quality);
         int upperBound = quality + (int) Math.ceil(this.upperBound * quality);
         int newQuality = (Utils.getRandom().nextInt((upperBound + 1) - lowerBound) + lowerBound);
-        SmithingItemPropertyManager.setQuality(context.getItem().getMeta(), Math.max(0, newQuality));
+        SmithingItemPropertyManager.setQuality(context.getItem(), Math.max(0, newQuality));
     }
 
     @Override

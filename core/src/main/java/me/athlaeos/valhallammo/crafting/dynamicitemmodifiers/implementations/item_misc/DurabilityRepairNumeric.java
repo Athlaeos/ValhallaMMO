@@ -24,7 +24,7 @@ public class DurabilityRepairNumeric extends DynamicItemModifier {
     @Override
     public void processItem(ModifierContext context) {
         if (!(context.getItem().getMeta() instanceof Damageable) || context.getItem().getItem().getType().getMaxDurability() <= 0) return;
-        CustomDurabilityManager.damage(context.getItem().getMeta(), -repair);
+        CustomDurabilityManager.damage(context.getItem(), -repair);
     }
 
     @Override

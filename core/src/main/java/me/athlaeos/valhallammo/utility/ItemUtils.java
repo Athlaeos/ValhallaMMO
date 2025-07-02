@@ -1,11 +1,13 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
-import me.athlaeos.valhallammo.item.*;
+import me.athlaeos.valhallammo.item.CustomDurabilityManager;
+import me.athlaeos.valhallammo.item.EquipmentClass;
+import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.MaterialClass;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.apache.commons.lang.StringUtils;
@@ -307,20 +309,12 @@ public class ItemUtils {
         return contents;
     }
 
-
-    public static void replaceOrAddLore(ItemBuilder builder, String find, String replacement){
-        if (builder == null) return;
-        List<String> lore = builder.getLore() == null ? new ArrayList<>() : builder.getLore();
-        replaceOrAddLore(lore, find, replacement);
-        builder.lore(lore);
-    }
-
-    public static void replaceOrAddLore(ItemMeta meta, String find, String replacement){
-        if (meta == null) return;
+    public static void replaceOrAddLore(ItemBuilder item, String find, String replacement){
+        if (item == null) return;
         find = ChatColor.stripColor(Utils.chat(find));
-        List<String> lore = meta.getLore() == null ? new ArrayList<>() : meta.getLore();
+        List<String> lore = item.getLore() == null ? new ArrayList<>() : item.getLore();
         replaceOrAddLore(lore, find, replacement);
-        meta.setLore(lore);
+        item.lore(lore);
     }
 
     public static void replaceOrAddLore(List<String> original, String find, String replacement){
@@ -595,14 +589,6 @@ public class ItemUtils {
         };
     }
 
-    public static void removeIfLoreContains(ItemMeta meta, String find){
-        if (meta == null || meta.getLore() == null) return;
-        final String stripped = ChatColor.stripColor(Utils.chat(find));
-        List<String> lore = meta.getLore();
-        lore.removeIf(l -> l.contains(stripped));
-        meta.setLore(lore);
-    }
-
     public static void removeIfLoreContains(ItemBuilder i, String find) {
         if (i == null || i.getLore() == null) return;
         final String stripped = ChatColor.stripColor(Utils.chat(find));
@@ -650,7 +636,7 @@ public class ItemUtils {
             if (!event.isCancelled()){
                 if (!CustomDurabilityManager.hasCustomDurability(meta)){
                     Damageable damageable = (Damageable) meta;
-                    damageable.setDamage(damageable.getDamage() + damage);
+                    damageable.setDamage(damageable.getDamage() + event.getDamage());
                     if (damageable.getDamage() > item.getType().getMaxDurability()){
                         who.playEffect(breakEffect);
                         return true;

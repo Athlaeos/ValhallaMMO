@@ -36,7 +36,7 @@ public class SmithingTagsAdd extends DynamicItemModifier {
 
         Map<Integer, Integer> existingTags = SmithingItemPropertyManager.getTags(context.getItem().getMeta());
         newTags.keySet().forEach(t ->
-                SmithingItemPropertyManager.addTag(context.getItem().getMeta(), t, existingTags.getOrDefault(t, 0) + newTags.get(t))
+                SmithingItemPropertyManager.addTag(context.getItem(), t, existingTags.getOrDefault(t, 0) + newTags.get(t))
         );
     }
 

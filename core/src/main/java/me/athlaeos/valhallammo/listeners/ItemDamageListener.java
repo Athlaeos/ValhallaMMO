@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.item.CustomDurabilityManager;
 import me.athlaeos.valhallammo.item.CustomFlag;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.ItemSkillRequirements;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -23,9 +24,9 @@ public class ItemDamageListener implements Listener {
         // the durabilityBonus represents a % chance to not spend durability, effectively raising it. If this amount is negative though it's treated as a damage multiplier
 
         ItemStack itemStack = e.getItem();
-        ItemMeta meta = ItemUtils.getItemMeta(itemStack);
-        if (meta == null) return;
-        durabilityBonus += ItemSkillRequirements.getPenalty(e.getPlayer(), meta, "durability");
+        ItemBuilder builder = ItemUtils.isEmpty(itemStack) ? null : new ItemBuilder(itemStack);
+        if (builder == null) return;
+        durabilityBonus += ItemSkillRequirements.getPenalty(e.getPlayer(), builder.getMeta(), "durability");
 
         // examples:
         // +0.2 leads to 1/1.2 = ~0.83 and so damage is multiplied by that to produce roughly +20% durability
@@ -33,14 +34,16 @@ public class ItemDamageListener implements Listener {
         double multiplier = durabilityBonus < 0 ? -durabilityBonus - 1 : 1 / (durabilityBonus + 1);
         e.setDamage(Utils.randomAverage(e.getDamage() * Math.max(0, multiplier)));
 
-        if (CustomDurabilityManager.hasCustomDurability(meta)){
-            CustomDurabilityManager.damage(meta, e.getDamage());
-            if (CustomDurabilityManager.getDurability(meta, false) > 0) {
+        if (CustomDurabilityManager.hasCustomDurability(builder.getMeta())){
+            CustomDurabilityManager.damage(builder, e.getDamage());
+            if (CustomDurabilityManager.getDurability(builder.getMeta(), false) > 0) {
                 e.setCancelled(true);
-                ItemUtils.setMetaNoClone(itemStack, meta);
-            } else if (meta instanceof Damageable d && itemStack.getType().getMaxDurability() > 0) {
+                ItemMeta meta = ItemUtils.getItemMeta(builder.get());
+                if (meta != null) ItemUtils.setMetaNoClone(itemStack, meta);
+            } else if (builder.getMeta() instanceof Damageable d && itemStack.getType().getMaxDurability() > 0) {
                 d.setDamage(itemStack.getType().getMaxDurability());
-                ItemUtils.setMetaNoClone(itemStack, d);
+                ItemMeta meta = ItemUtils.getItemMeta(builder.get());
+                if (meta != null) ItemUtils.setMetaNoClone(itemStack, meta);
             }
         }
     }
@@ -48,14 +51,16 @@ public class ItemDamageListener implements Listener {
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onItemMend(PlayerItemMendEvent e){
         if (ItemUtils.isEmpty(e.getItem())) return;
-        ItemMeta meta = ItemUtils.getItemMeta(e.getItem());
-        if (CustomFlag.hasFlag(meta, CustomFlag.UNMENDABLE)){
+        ItemBuilder item = new ItemBuilder(e.getItem());
+        if (CustomFlag.hasFlag(item.getMeta(), CustomFlag.UNMENDABLE)){
             e.setCancelled(true);
             return;
         }
-        if (CustomDurabilityManager.hasCustomDurability(meta)){
-            CustomDurabilityManager.damage(meta, -e.getRepairAmount());
+        if (CustomDurabilityManager.hasCustomDurability(item.getMeta())){
+            CustomDurabilityManager.damage(item, -e.getRepairAmount());
             e.setCancelled(true);
+            ItemMeta meta = ItemUtils.getItemMeta(item.get());
+            if (meta == null) return;
             ItemUtils.setMetaNoClone(e.getItem(), meta);
         }
     }

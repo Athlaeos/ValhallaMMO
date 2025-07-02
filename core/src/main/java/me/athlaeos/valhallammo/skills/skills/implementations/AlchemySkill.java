@@ -19,7 +19,10 @@ import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
-import org.bukkit.*;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -172,10 +175,10 @@ public class AlchemySkill extends Skill implements Listener {
             combinedEffects.put(wrapper.getEffect(), wrapper);
         }
 
-        PotionEffectRegistry.setDefaultStoredEffects(clicked.getMeta(), combinedEffects);
-        PotionEffectRegistry.setActualStoredEffects(clicked.getMeta(), combinedEffects);
+        PotionEffectRegistry.setDefaultStoredEffects(clicked, combinedEffects);
+        PotionEffectRegistry.setActualStoredEffects(clicked, combinedEffects);
         clicked.intTag(COMBINATIONS_KEY, clickedCombinations + cursorCombinations + 1);
-        PotionEffectRegistry.updateItemName(clicked.getMeta(), false, true);
+        PotionEffectRegistry.updateItemName(clicked, false, true);
         e.setCurrentItem(clicked.get());
         e.setCancelled(true);
         e.getWhoClicked().getWorld().playSound(e.getWhoClicked().getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1F, 1F);

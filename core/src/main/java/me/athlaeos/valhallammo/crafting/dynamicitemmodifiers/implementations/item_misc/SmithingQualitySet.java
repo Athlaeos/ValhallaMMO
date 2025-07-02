@@ -23,7 +23,7 @@ public class SmithingQualitySet extends DynamicItemModifier {
 
     @Override
     public void processItem(ModifierContext context) {
-        SmithingItemPropertyManager.setQuality(context.getItem().getMeta(), quality);
+        SmithingItemPropertyManager.setQuality(context.getItem(), quality);
     }
 
     @Override

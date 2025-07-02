@@ -22,60 +22,57 @@ public class CustomDurabilityManager {
      * Damages an item's custom durability by the given amount. This method does not let you know if the item should break
      * and doesn't account for non-custom tools. It's recommended to use {@link ItemUtils#damageItem(Player, ItemStack, int, EntityEffect, boolean)}
      * to damage items as this also calls the appropriate events.
-     * @param meta the item to damage
+     * @param item the item to damage
      * @param damage the amount to damage the item with
      */
-    public static void damage(ItemMeta meta, int damage){
-        Material baseType = ItemUtils.getStoredType(meta);
-        if (baseType == null) return;
-        if (baseType.getMaxDurability() > 0 && meta.getPersistentDataContainer().has(DURABILITY, PersistentDataType.INTEGER)){
-            int durability = meta.getPersistentDataContainer().getOrDefault(DURABILITY, PersistentDataType.INTEGER, 0);
-            int maxDurability = meta.getPersistentDataContainer().getOrDefault(MAX_DURABILITY, PersistentDataType.INTEGER, 0);
+    public static void damage(ItemBuilder item, int damage){
+        Material baseType = item.getItem().getType();
+        if (baseType.getMaxDurability() > 0 && item.getMeta().getPersistentDataContainer().has(DURABILITY, PersistentDataType.INTEGER)){
+            int durability = item.getMeta().getPersistentDataContainer().getOrDefault(DURABILITY, PersistentDataType.INTEGER, 0);
+            int maxDurability = item.getMeta().getPersistentDataContainer().getOrDefault(MAX_DURABILITY, PersistentDataType.INTEGER, 0);
             if (durability > maxDurability) durability = maxDurability;
             durability = Math.max(0, Math.min(maxDurability, durability - damage));
-            meta.getPersistentDataContainer().set(DURABILITY, PersistentDataType.INTEGER, durability);
-            updateLore(meta);
+            item.intTag(DURABILITY, durability);
+            updateLore(item);
         }
     }
 
     /**
      * Sets the item's custom current and max durability. If either durability or maxDurability are <0, remove the attributes.
      * The item's lore will be updated to reflect the durability change.
-     * @param meta the item to set the durability
+     * @param item the item to set the durability
      * @param durability the current durability to set to the item
      * @param maxDurability the max durability to set to the item
      */
-    public static void setDurability(ItemMeta meta, int durability, int maxDurability){
-        Material baseType = ItemUtils.getStoredType(meta);
-        if (baseType == null) return;
+    public static void setDurability(ItemBuilder item, int durability, int maxDurability){
+        Material baseType = item.getItem().getType();
         if (baseType.getMaxDurability() > 0){
             if (durability < 0 || maxDurability < 0){
-                meta.getPersistentDataContainer().remove(DURABILITY);
-                meta.getPersistentDataContainer().remove(MAX_DURABILITY);
+                item.getMeta().getPersistentDataContainer().remove(DURABILITY);
+                item.getMeta().getPersistentDataContainer().remove(MAX_DURABILITY);
             } else {
-                meta.getPersistentDataContainer().set(DURABILITY, PersistentDataType.INTEGER, Math.min(maxDurability, durability));
-                meta.getPersistentDataContainer().set(MAX_DURABILITY, PersistentDataType.INTEGER, Math.max(maxDurability, durability));
+                item.intTag(DURABILITY, Math.min(maxDurability, durability));
+                item.intTag(DURABILITY, Math.max(maxDurability, durability));
             }
-            updateLore(meta);
+            updateLore(item);
         }
     }
 
     /**
      * Sets an item's durability to a fraction of its max durability. Works for both vanilla and custom durability.
      * No matter the fraction, the new durability will always be at least 1.
-     * @param meta the item to set its new current durability
+     * @param item the item to set its new current durability
      * @param fraction the fraction of max durability the item should be set to
      */
-    public static void setDurability(ItemMeta meta, double fraction){
-        Material baseType = ItemUtils.getStoredType(meta);
-        if (baseType == null) return;
+    public static void setDurability(ItemBuilder item, double fraction){
+        Material baseType = item.getItem().getType();
         fraction = Math.max(0, Math.min(1, fraction));
-        boolean hasCustom = meta.getPersistentDataContainer().has(DURABILITY, PersistentDataType.INTEGER);
-        int maxDurability = hasCustom ? getDurability(meta, true) : baseType.getMaxDurability();
+        boolean hasCustom = item.getMeta().getPersistentDataContainer().has(DURABILITY, PersistentDataType.INTEGER);
+        int maxDurability = hasCustom ? getDurability(item.getMeta(), true) : baseType.getMaxDurability();
         int newDurability = Math.max(1, (int) Math.round(fraction * maxDurability));
-        if (baseType.getMaxDurability() > 0 && meta instanceof Damageable d){
+        if (baseType.getMaxDurability() > 0 && item instanceof Damageable d){
             if (hasCustom){
-                setDurability(meta, newDurability, maxDurability);
+                setDurability(item, newDurability, maxDurability);
             } else {
                 d.setDamage(maxDurability - (maxDurability - newDurability));
             }
@@ -129,56 +126,54 @@ public class CustomDurabilityManager {
     /**
      * Updates the item's lore to reflect custom durability changes, or removes it if the item has no custom durability.
      * Lore is also removed if the item has the HIDE_DURABILITY {@link CustomFlag}
-     * @param meta the item to update
+     * @param item the item to update
      */
-    public static void updateLore(ItemMeta meta){
-        Material baseType = ItemUtils.getStoredType(meta);
-        if (baseType == null) return;
+    public static void updateLore(ItemBuilder item){
+        Material baseType = item.getItem().getType();
         String translation = TranslationManager.getTranslation("translation_durability");
-        if (baseType.getMaxDurability() > 0 && meta instanceof Damageable d){
+        if (baseType.getMaxDurability() > 0 && item instanceof Damageable d){
             int maxVanillaDurability = baseType.getMaxDurability();
-            int maxCustomDurability = getDurability(meta, true);
-            int customDurability = getDurability(meta, false);
+            int maxCustomDurability = getDurability(item.getMeta(), true);
+            int customDurability = getDurability(item.getMeta(), false);
             double fraction = Math.max(0, Math.min(1, (double) customDurability / (double) maxCustomDurability));
             int newVanillaDurability = maxVanillaDurability - (int) Math.ceil(fraction * maxVanillaDurability);
             d.setDamage(newVanillaDurability);
 
-            if (CustomFlag.hasFlag(meta, CustomFlag.HIDE_DURABILITY) || !hasCustomDurability(meta)){
-                ItemUtils.removeIfLoreContains(meta, translation);
+            if (CustomFlag.hasFlag(item.getMeta(), CustomFlag.HIDE_DURABILITY) || !hasCustomDurability(item.getMeta())){
+                ItemUtils.removeIfLoreContains(item, translation);
             } else {
-                ItemUtils.replaceOrAddLore(meta,
+                ItemUtils.replaceOrAddLore(item,
                         translation,
                         String.format("%s %d/%d", translation, customDurability, maxCustomDurability));
             }
         } else {
-            ItemUtils.removeIfLoreContains(meta, translation);
+            ItemUtils.removeIfLoreContains(item, translation);
         }
     }
 
     /**
      * Scales an item's durability values given a quality value. This method is coded differently from {@link SmithingItemPropertyManager#applyAttributeScaling(ItemMeta, Scaling, int, String, double)}
      * as that method requires items to have a default custom durability attribute, which vanilla items are not configured to have.
-     * @param meta the item to scale its durability based on quality
+     * @param item the item to scale its durability based on quality
      * @param quality the quality to scale the item with
      * @param minimumFraction the minimum fraction of the item's max durability the item should be left with after calculations
      */
-    public static void applyDurabilityScaling(ItemMeta meta, Scaling scaling, int quality, double minimumFraction){
-        Material baseMaterial = ItemUtils.getStoredType(meta);
-        if (baseMaterial == null) return;
-        if (baseMaterial.getMaxDurability() > 0 && meta instanceof Damageable d){
-            AttributeWrapper durabilityWrapper = ItemAttributesRegistry.getAttribute(meta, "CUSTOM_MAX_DURABILITY", true);
+    public static void applyDurabilityScaling(ItemBuilder item, Scaling scaling, int quality, double minimumFraction){
+        Material baseMaterial = item.getItem().getType();
+        if (baseMaterial.getMaxDurability() > 0 && item instanceof Damageable d){
+            AttributeWrapper durabilityWrapper = ItemAttributesRegistry.getAttribute(item.getMeta(), "CUSTOM_MAX_DURABILITY", true);
             int defaultDurability = durabilityWrapper == null ? baseMaterial.getMaxDurability() : (int) durabilityWrapper.getValue();
             int minimum = (int) Math.round(Math.max(1, minimumFraction * defaultDurability));
             int newMaxDurability = Math.max(minimum, (int) Math.round(scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf(quality)), defaultDurability)));
             double fraction;
-            if (hasCustomDurability(meta)){
-                fraction = (double) getDurability(meta, false) / (double) getDurability(meta, true);
+            if (hasCustomDurability(item.getMeta())){
+                fraction = (double) getDurability(item.getMeta(), false) / (double) getDurability(item.getMeta(), true);
             } else {
                 fraction = (double) (baseMaterial.getMaxDurability() - d.getDamage()) / (double) baseMaterial.getMaxDurability();
             }
             fraction = Math.max(0, Math.min(1, fraction));
             int newDurability = (int) Math.ceil(fraction * newMaxDurability);
-            setDurability(meta, newDurability, newMaxDurability);
+            setDurability(item, newDurability, newMaxDurability);
         }
     }
 }

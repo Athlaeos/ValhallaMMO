@@ -27,7 +27,7 @@ public class SmithingQualityMultiply extends DynamicItemModifier {
     public void processItem(ModifierContext context) {
         int quality = SmithingItemPropertyManager.getQuality(context.getItem().getMeta());
         int newQuality = Math.max(0, (int) Math.floor(quality * multiplyBy));
-        SmithingItemPropertyManager.setQuality(context.getItem().getMeta(), newQuality);
+        SmithingItemPropertyManager.setQuality(context.getItem(), newQuality);
     }
 
     @Override

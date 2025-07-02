@@ -25,7 +25,7 @@ public class FlagCustomAdd extends DynamicItemModifier {
     @Override
     public void processItem(ModifierContext context) {
         context.getItem().flag(flag);
-        PotionEffectRegistry.updateEffectLore(context.getItem().getMeta());
+        PotionEffectRegistry.updateEffectLore(context.getItem());
     }
 
     @Override

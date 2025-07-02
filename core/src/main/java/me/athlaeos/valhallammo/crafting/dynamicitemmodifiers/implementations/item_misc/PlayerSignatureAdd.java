@@ -32,7 +32,7 @@ public class PlayerSignatureAdd extends DynamicItemModifier {
 
     @Override
     public void processItem(ModifierContext context) {
-        List<String> lore = context.getItem().getMeta().getLore() != null ? context.getItem().getMeta().getLore() : new ArrayList<>();
+        List<String> lore = context.getItem().getLore() != null ? context.getItem().getLore() : new ArrayList<>();
         String format = TranslationManager.getTranslation("format_signature");
         if (end || lore.isEmpty()) lore.add(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(Utils.chat(format
                 .replace("%player%", context.getCrafter().getName())

@@ -12,9 +12,10 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class AttributeDisplayWrapper extends AttributeWrapper {
@@ -112,24 +113,6 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
     }
 
     @Override
-    public void onApply(ItemMeta i) {
-        // if the item has HIDE_ATTRIBUTES, do not display in lore unless item also has DISPLAY_ATTRIBUTES
-        // HIDE_ATTRIBUTES will hide vanilla attributes regardless, but if DISPLAY_ATTRIBUTES is also present these vanilla attributes will be displayed as lore instead
-        boolean customFlag = CustomFlag.hasFlag(i, CustomFlag.DISPLAY_ATTRIBUTES);
-        boolean vanillaFlag = i.hasItemFlag(ItemFlag.HIDE_ATTRIBUTES);
-        if (isHidden || ((isVanilla && (!customFlag || !vanillaFlag)) || (!isVanilla && (vanillaFlag && !customFlag)))) onRemove(i);
-        else {
-            String translation = getAttributeName();
-            if (StringUtils.isEmpty(translation)) return;
-            ItemUtils.replaceOrAddLore(i,
-                    translation
-                            .replace("%icon%", "")
-                            .replace("%value%", "").trim(),
-                    getLoreDisplay().trim()
-            );
-        }
-    }
-    @Override
     public void onApply(ItemBuilder i) {
         // if the item has HIDE_ATTRIBUTES, do not display in lore unless item also has DISPLAY_ATTRIBUTES
         // HIDE_ATTRIBUTES will hide vanilla attributes regardless, but if DISPLAY_ATTRIBUTES is also present these vanilla attributes will be displayed as lore instead
@@ -160,15 +143,6 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
         return Utils.chat(prefix + translation
                 .replace("%value%", format)
                 .replace("%icon%", getAttributeIcon() + prefix));
-    }
-
-    @Override
-    public void onRemove(ItemMeta i) {
-        String translation = TranslationManager.getTranslation("attribute_" + attribute.toLowerCase(java.util.Locale.US));
-        if (StringUtils.isEmpty(translation)) return;
-        ItemUtils.removeIfLoreContains(i, translation
-                .replace("%icon%", "")
-                .replace("%value%", "").trim());
     }
 
     @Override

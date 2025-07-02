@@ -74,7 +74,7 @@ public class ScaleAmplifier extends DynamicItemModifier {
         }
 
         int finalQuality = (int) Math.round(skillEfficiency * skill);
-        AlchemyItemPropertyManager.applyAttributeScaling(context.getItem().getMeta(), scaling, finalQuality, false, minimumValue, 0);
+        AlchemyItemPropertyManager.applyAttributeScaling(context.getItem(), scaling, finalQuality, false, minimumValue, 0);
     }
 
     @Override

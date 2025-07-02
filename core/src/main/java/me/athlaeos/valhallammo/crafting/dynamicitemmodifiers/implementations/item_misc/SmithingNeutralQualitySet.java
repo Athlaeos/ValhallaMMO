@@ -26,7 +26,7 @@ public class SmithingNeutralQualitySet extends DynamicItemModifier {
 
     @Override
     public void processItem(ModifierContext context) {
-        SmithingItemPropertyManager.setNeutralQuality(context.getItem().getMeta(), neutral);
+        SmithingItemPropertyManager.setNeutralQuality(context.getItem(), neutral);
     }
 
     @Override

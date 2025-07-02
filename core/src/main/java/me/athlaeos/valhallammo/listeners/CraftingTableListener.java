@@ -7,21 +7,17 @@ import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
+import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
-import me.athlaeos.valhallammo.item.CustomDurabilityManager;
-import me.athlaeos.valhallammo.item.EquipmentClass;
-import me.athlaeos.valhallammo.item.CustomFlag;
-import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
-import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.EntityEffect;
@@ -35,13 +31,12 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 
 import java.util.*;
 
 public class CraftingTableListener implements Listener {
-    private static final Map<UUID, Map<Integer, ItemMeta>> matrixMetaCache = new HashMap<>();
+    private static final Map<UUID, Map<Integer, ItemBuilder>> matrixMetaCache = new HashMap<>();
     private static final boolean vanillaRepairing = ValhallaMMO.getPluginConfig().getBoolean("inventory_repairing_vanilla");
     private static final boolean valhallaRepairing = ValhallaMMO.getPluginConfig().getBoolean("inventory_repairing_valhalla");
 
@@ -108,11 +103,11 @@ public class CraftingTableListener implements Listener {
 
                     // the max amount of items the player could craft if they have enough inventory space,
                     int maxCraftable = 99;
-                    Map<Integer, ItemMeta> matrixMeta = matrixMetaCache.getOrDefault(e.getWhoClicked().getUniqueId(), new HashMap<>());
+                    Map<Integer, ItemBuilder> matrixMeta = matrixMetaCache.getOrDefault(e.getWhoClicked().getUniqueId(), new HashMap<>());
                     for (int i = 0; i < inventory.getMatrix().length; i++){
                         ItemStack slot = inventory.getMatrix()[i];
                         if (ItemUtils.isEmpty(slot) || toolRequired &&
-                                ToolRequirementType.getToolID(matrixMeta.get(i)) >= 0) continue;
+                                ToolRequirementType.getToolID(matrixMeta.get(i).getMeta()) >= 0) continue;
                         if (maxCraftable > slot.getAmount()) maxCraftable = slot.getAmount();
                     }
 
@@ -220,12 +215,12 @@ public class CraftingTableListener implements Listener {
         }
         Player crafter = e.getViewers().isEmpty() ? null : (Player) e.getViewers().get(0);
 
-        Map<Integer, ItemMeta> matrixMeta = new HashMap<>();
+        Map<Integer, ItemBuilder> matrixMeta = new HashMap<>();
         // mapping meta to matrix items, so they dont need to be fetched several times per event
         for (int i = 0; i < inventory.getMatrix().length; i++){
             ItemStack slot = inventory.getMatrix()[i];
             if (ItemUtils.isEmpty(slot)) continue;
-            matrixMeta.put(i, ItemUtils.getItemMeta(slot));
+            matrixMeta.put(i, new ItemBuilder(slot));
         }
         if (crafter != null) matrixMetaCache.put(crafter.getUniqueId(), matrixMeta);
 
@@ -236,10 +231,10 @@ public class CraftingTableListener implements Listener {
             for (int i = 0; i < inventory.getMatrix().length; i++){
                 ItemStack slot = inventory.getMatrix()[i];
                 if (ItemUtils.isEmpty(slot)) continue;
-                ItemMeta cachedMeta = matrixMeta.get(i);
-                if (cachedMeta == null) continue;
-                if (!anyCustom && SmithingItemPropertyManager.hasSmithingQuality(cachedMeta)) anyCustom = true;
-                if (anyNotCustom && SmithingItemPropertyManager.hasSmithingQuality(cachedMeta)) anyNotCustom = false;
+                ItemBuilder cachedItem = matrixMeta.get(i);
+                if (cachedItem == null) continue;
+                if (!anyCustom && SmithingItemPropertyManager.hasSmithingQuality(cachedItem.getMeta())) anyCustom = true;
+                if (anyNotCustom && SmithingItemPropertyManager.hasSmithingQuality(cachedItem.getMeta())) anyNotCustom = false;
             }
             if ((!vanillaRepairing && !anyCustom && anyNotCustom) || (!valhallaRepairing && anyCustom && !anyNotCustom)) {
                 inventory.setResult(null);
@@ -259,25 +254,25 @@ public class CraftingTableListener implements Listener {
                 int combinedDurability = 0;
                 int firstItemMaxDurability = -1;
                 ItemStack firstItem = null;
-                ItemMeta firstMeta = null;
+                ItemBuilder firstBuilder = null;
                 for (int i = 0; i < inventory.getMatrix().length; i++){
                     ItemStack item = inventory.getMatrix()[i];
                     if (!ItemUtils.isEmpty(item)){
-                        ItemMeta cachedMeta = matrixMeta.get(i);
-                        if (cachedMeta == null) continue;
+                        ItemBuilder first = matrixMeta.get(i);
+                        if (first == null) continue;
                         if (firstItemMaxDurability < 0) {
-                            firstItemMaxDurability = CustomDurabilityManager.getDurability(cachedMeta, true);
+                            firstItemMaxDurability = CustomDurabilityManager.getDurability(first.getMeta(), true);
                             firstItem = item.clone();
-                            firstMeta = cachedMeta;
+                            firstBuilder = first;
                         }
-                        combinedDurability += CustomDurabilityManager.getDurability(cachedMeta, false);
+                        combinedDurability += CustomDurabilityManager.getDurability(first.getMeta(), false);
                     }
                 }
                 // first non-empty item will be used as result
                 if (!ItemUtils.isEmpty(firstItem)){
                     int newDurability = Math.min(combinedDurability + (int) Math.floor(0.05 * firstItemMaxDurability), firstItemMaxDurability);
-                    CustomDurabilityManager.setDurability(firstMeta, newDurability, firstItemMaxDurability);
-                    ItemUtils.setMetaNoClone(firstItem, firstMeta);
+                    CustomDurabilityManager.setDurability(firstBuilder, newDurability, firstItemMaxDurability);
+                    firstItem = firstBuilder.get();
 
                     PowerProfile profile = crafter == null ? null : ProfileCache.getOrCache(crafter, PowerProfile.class);
                     if (profile == null || !profile.hasInventoryRepairingKeepEnchanting()) firstItem.getEnchantments().keySet().forEach(firstItem::removeEnchantment);
@@ -348,24 +343,24 @@ public class CraftingTableListener implements Listener {
                     ItemStack arrow = m[0].clone();
                     arrow.setAmount(8);
                     arrow.setType(Material.TIPPED_ARROW);
-                    PotionMeta arrowMeta = (PotionMeta) ItemUtils.getItemMeta(arrow);
+                    ItemBuilder arrowBuilder = ItemUtils.isEmpty(arrow) ? null : new ItemBuilder(arrow);
                     ItemStack potion = m[4].clone();
-                    PotionMeta potionMeta = (PotionMeta) ItemUtils.getItemMeta(potion);
-                    if (arrowMeta == null || potionMeta == null) return;
-                    if (CustomFlag.hasFlag(potionMeta, CustomFlag.DISPLAY_ATTRIBUTES)) CustomFlag.addItemFlag(arrowMeta, CustomFlag.DISPLAY_ATTRIBUTES);
-                    if (potionMeta.hasItemFlag(ItemFlag.HIDE_POTION_EFFECTS)) arrowMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+                    ItemBuilder potionBuilder = ItemUtils.isEmpty(potion) ? null : new ItemBuilder(potion);
+                    if (arrowBuilder == null || potionBuilder == null) return;
+                    if (CustomFlag.hasFlag(potionBuilder.getMeta(), CustomFlag.DISPLAY_ATTRIBUTES)) CustomFlag.addItemFlag(arrowBuilder.getMeta(), CustomFlag.DISPLAY_ATTRIBUTES);
+                    if (potionBuilder.getMeta().hasItemFlag(ItemFlag.HIDE_POTION_EFFECTS)) arrowBuilder.getMeta().addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
 
-                    Map<String, PotionEffectWrapper> defaultEffects = PotionEffectRegistry.getStoredEffects(potionMeta, true);
-                    Map<String, PotionEffectWrapper> actualEffects = PotionEffectRegistry.getStoredEffects(potionMeta, false);
+                    Map<String, PotionEffectWrapper> defaultEffects = PotionEffectRegistry.getStoredEffects(potionBuilder.getMeta(), true);
+                    Map<String, PotionEffectWrapper> actualEffects = PotionEffectRegistry.getStoredEffects(potionBuilder.getMeta(), false);
                     if (defaultEffects.isEmpty()) return; // potion is vanilla
 
-                    PotionEffectRegistry.setDefaultStoredEffects(arrowMeta, defaultEffects);
-                    PotionEffectRegistry.setActualStoredEffects(arrowMeta, actualEffects);
-                    PotionEffectRegistry.updateItemName(arrowMeta, true, false);
+                    PotionEffectRegistry.setDefaultStoredEffects(arrowBuilder, defaultEffects);
+                    PotionEffectRegistry.setActualStoredEffects(arrowBuilder, actualEffects);
+                    PotionEffectRegistry.updateItemName(arrowBuilder, true, false);
 
-                    arrowMeta.setColor(potionMeta.getColor());
-                    arrowMeta.addItemFlags(potionMeta.getItemFlags().toArray(new org.bukkit.inventory.ItemFlag[0]));
-                    ItemUtils.setMetaNoClone(arrow, arrowMeta);
+                    arrowBuilder.color(((PotionMeta) potionBuilder.getMeta()).getColor());
+                    arrowBuilder.flag(potionBuilder.getMeta().getItemFlags().toArray(new org.bukkit.inventory.ItemFlag[0]));
+                    arrow = arrowBuilder.get();
 
                     inventory.setResult(arrow);
                 } else {
@@ -380,21 +375,21 @@ public class CraftingTableListener implements Listener {
         ItemBuilder result = new ItemBuilder(recipe.getResult().clone());
         if (!clicker.hasPermission("valhalla.allrecipes") && !recipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(recipe.getName())
         && !clicker.hasPermission("valhalla.recipe." + recipe.getName())) return null;
-        Map<Integer, ItemMeta> matrixMeta = matrixMetaCache.getOrDefault(clicker.getUniqueId(), new HashMap<>());
+        Map<Integer, ItemBuilder> matrixMeta = matrixMetaCache.getOrDefault(clicker.getUniqueId(), new HashMap<>());
         if (recipe.tinker()){
             SlotEntry tinkerEntry = recipe.getGridTinkerEquipment();
             for (int i = 0; i < matrix.length; i++){
                 ItemStack slot = matrix[i];
                 // finding item to tinker
                 if (ItemUtils.isEmpty(slot)) continue;
-                ItemMeta meta = matrixMeta.get(i);
-                if (meta == null) continue;
+                ItemBuilder builder = matrixMeta.get(i);
+                if (builder == null) continue;
 
                 // If the recipe requires valhalla tools, the item is a tool, but has no
                 // custom smithing quality, return null
                 if (recipe.requireValhallaTools() &&
-                        EquipmentClass.getMatchingClass(meta) != null &&
-                        !SmithingItemPropertyManager.hasSmithingQuality(meta)) return null;
+                        EquipmentClass.getMatchingClass(builder.getMeta()) != null &&
+                        !SmithingItemPropertyManager.hasSmithingQuality(builder.getMeta())) return null;
 
                 if (defaultChoice(tinkerEntry).matches(tinkerEntry.getItem(), slot)){
                     result = new ItemBuilder(slot.clone());
@@ -409,19 +404,19 @@ public class CraftingTableListener implements Listener {
             ItemStack slot = matrix[i];
             // finding item to tinker
             if (ItemUtils.isEmpty(slot)) continue;
-            ItemMeta meta = matrixMeta.get(i);
-            if (meta == null) continue;
+            ItemBuilder builder = matrixMeta.get(i);
+            if (builder == null) continue;
 
             for (SlotEntry entry : new ArrayList<>(allIngredients)){
                 // If the item is either a matching tool
                 if (toolEntry != null){
                     if (recipe.getToolRequirement().getToolRequirementType() == ToolRequirementType.NONE_MANDATORY){
                         // It is mandatory no tool is present. If there is, return null
-                        if (ToolRequirementType.getToolID(meta) >= 0) return null;
+                        if (ToolRequirementType.getToolID(builder.getMeta()) >= 0) return null;
                     } else if (recipe.getToolRequirement().getToolRequirementType() != ToolRequirementType.NOT_REQUIRED &&
                             recipe.getToolRequirement().getRequiredToolID() >= 0){
                         // A tool is required, so if the item matches the tool requirement remove it from the list as well
-                        if (recipe.getToolRequirement().canCraft(ToolRequirementType.getToolID(meta))){
+                        if (recipe.getToolRequirement().canCraft(ToolRequirementType.getToolID(builder.getMeta()))){
                             allIngredients.removeIf(e -> e.isSimilar(entry));
                             continue;
                         }

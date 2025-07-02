@@ -19,7 +19,7 @@ public class SmithingTagsRemoveAll extends DynamicItemModifier {
 
     @Override
     public void processItem(ModifierContext context) {
-        SmithingItemPropertyManager.setTags(context.getItem().getMeta(), null);
+        SmithingItemPropertyManager.setTags(context.getItem(), null);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class AlchemyTagsRemove extends DynamicItemModifier {
 
     @Override
     public void processItem(ModifierContext context) {
-        AlchemyItemPropertyManager.removeTag(context.getItem().getMeta(), tags.toArray(new Integer[0]));
+        AlchemyItemPropertyManager.removeTag(context.getItem(), tags.toArray(new Integer[0]));
     }
 
     @Override

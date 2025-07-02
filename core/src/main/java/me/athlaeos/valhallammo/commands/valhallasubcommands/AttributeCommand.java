@@ -60,10 +60,10 @@ public class AttributeCommand implements Command {
 			ItemBuilder result = new ItemBuilder(target.getInventory().getItemInMainHand());
 			if (defaultValue != null){
 				AttributeWrapper defaultWrapper = ItemAttributesRegistry.getCopy(attribute.toUpperCase(java.util.Locale.US)).setValue(defaultValue);
-				ItemAttributesRegistry.addDefaultStat(result.getMeta(), defaultWrapper);
+				ItemAttributesRegistry.addDefaultStat(result, defaultWrapper);
 			}
 			if (actualValue != null){
-				ItemAttributesRegistry.setStat(result.getMeta(), attribute.toUpperCase(java.util.Locale.US), actualValue, hidden, false);
+				ItemAttributesRegistry.setStat(result, attribute.toUpperCase(java.util.Locale.US), actualValue, hidden, false);
 			}
 			target.getInventory().setItemInMainHand(result.get());
 			return true;

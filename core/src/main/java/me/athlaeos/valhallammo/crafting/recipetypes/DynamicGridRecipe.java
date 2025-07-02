@@ -17,8 +17,10 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -116,12 +118,10 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
         ShapelessRecipe recipe = new ShapelessRecipe(shapelessKey, recipeBookIcon(tinker ? getGridTinkerEquipment().getItem() : result));
         for (Integer i : items.keySet()){
             SlotEntry entry = items.get(i);
-            ItemStack item = entry.getItem().clone();
-            ItemMeta meta = ItemUtils.getItemMeta(item);
-            TranslationManager.translateItemMeta(meta);
-            ItemUtils.setMetaNoClone(item, meta);
-            RecipeChoice choice = entry.getOption() == null ? null : entry.getOption().getChoice(item); // if the ingredient or its choice are null, default to RecipeChoice.MaterialChoice
-            if (choice == null) choice = new RecipeChoice.MaterialChoice(item.getType());
+            ItemBuilder item = new ItemBuilder(entry.getItem());
+            TranslationManager.translateItem(item);
+            RecipeChoice choice = entry.getOption() == null ? null : entry.getOption().getChoice(item.get()); // if the ingredient or its choice are null, default to RecipeChoice.MaterialChoice
+            if (choice == null) choice = new RecipeChoice.MaterialChoice(item.getItem().getType());
             if (i == toolIndex) choice = new RecipeChoice.MaterialChoice(ItemUtils.getNonAirMaterialsArray());
 
             recipe.addIngredient(choice);
@@ -137,13 +137,10 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
         recipe.shape(details.shape);
         for (char ci : details.items.keySet()){
             SlotEntry entry = details.items.get(ci);
-            ItemStack i = entry.getItem().clone();
-            if (ItemUtils.isEmpty(i)) continue;
-            ItemMeta meta = ItemUtils.getItemMeta(i);
-            TranslationManager.translateItemMeta(meta);
-            ItemUtils.setMetaNoClone(i, meta);
-            RecipeChoice choice = entry.getOption() == null ? null : entry.getOption().getChoice(i);
-            if (choice == null) choice = new RecipeChoice.MaterialChoice(i.getType());
+            ItemBuilder i = new ItemBuilder(entry.getItem());
+            TranslationManager.translateItem(i);
+            RecipeChoice choice = entry.getOption() == null ? null : entry.getOption().getChoice(i.get());
+            if (choice == null) choice = new RecipeChoice.MaterialChoice(i.getItem().getType());
             if (items.get(toolIndex) != null && items.get(toolIndex).equals(entry)) choice = new RecipeChoice.MaterialChoice(ItemUtils.getNonAirMaterialsArray());
             recipe.setIngredient(ci, choice);
         }

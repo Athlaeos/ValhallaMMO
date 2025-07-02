@@ -56,9 +56,9 @@ public class TransformItemMaterial extends DynamicItemModifier implements Result
         context.getItem().type(transformTo);
         for (AttributeWrapper wrapper : ItemAttributesRegistry.getVanillaStats(transformTo).values()){
             // The item's vanilla stats are updated to their vanilla values, any added custom attributes are left alone
-            ItemAttributesRegistry.addDefaultStat(context.getItem().getMeta(), wrapper.copy());
+            ItemAttributesRegistry.addDefaultStat(context.getItem(), wrapper.copy());
         }
-        PotionEffectRegistry.updateEffectLore(context.getItem().getMeta());
+        PotionEffectRegistry.updateEffectLore(context.getItem());
     }
 
     @Override

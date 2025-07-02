@@ -94,10 +94,8 @@ public abstract class AttributeWrapper {
     public boolean isCompatible(ItemStack i){
         return true;
     }
-    public void onApply(ItemMeta i){}
-    public void onRemove(ItemMeta i) {}
-    public void onApply(ItemBuilder i){ onApply(i.getMeta()); }
-    public void onRemove(ItemBuilder i){ onRemove(i.getMeta()); }
+    public void onApply(ItemBuilder i){}
+    public void onRemove(ItemBuilder i) {}
 
     public Double getMin() { return min; }
     public Double getMax() { return max; }

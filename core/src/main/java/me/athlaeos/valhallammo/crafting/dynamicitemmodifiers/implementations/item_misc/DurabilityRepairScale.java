@@ -44,7 +44,7 @@ public class DurabilityRepairScale extends DynamicItemModifier {
             // Item has custom durability
             double fractionToRepair = scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf((skill * skillMultiplier * skillEfficiency))));
             int addDurability = (int) (fractionToRepair * (double) maxDurability);
-            CustomDurabilityManager.damage(context.getItem().getMeta(), -addDurability);
+            CustomDurabilityManager.damage(context.getItem(), -addDurability);
         }
     }
 

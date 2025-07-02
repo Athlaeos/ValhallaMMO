@@ -19,7 +19,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
 
@@ -276,29 +275,29 @@ public class ItemAttributesRegistry {
      * Sets the given stats as default for a specific item<br>
      * Default stats are used as reference during stat scaling, so if an item for example has a default
      * attack damage of 7 any damage scaling formulas will be applied to that 7 attack damage.<br>
-     * If the given stats are null or empty, the item will will have {@link ItemAttributesRegistry#clean(ItemMeta)} executed on it.
-     * @param meta the item meta to apply default stats to
+     * If the given stats are null or empty, the item will will have {@link ItemAttributesRegistry#clean(ItemBuilder)} executed on it.
+     * @param item the item meta to apply default stats to
      * @param stats the stats to apply
      */
-    public static void setDefaultStats(ItemMeta meta, Map<String, AttributeWrapper> stats){
-        if (meta == null) return;
+    public static void setDefaultStats(ItemBuilder item, Map<String, AttributeWrapper> stats){
+        if (item == null) return;
         if (stats == null || stats.isEmpty()) {
-            clean(meta);
+            clean(item);
             return;
         }
-        meta.getPersistentDataContainer().set(DEFAULT_STATS, PersistentDataType.STRING, serializeStats(stats.values()));
+        item.stringTag(DEFAULT_STATS, serializeStats(stats.values()));
     }
 
     /**
      * Attempts to clean an ItemMeta off any custom attributes.<br>
-     * Each registered attribute will run {@link AttributeWrapper#onRemove(ItemMeta)} on it
-     * @param meta the meta to clean
+     * Each registered attribute will run {@link AttributeWrapper#onRemove(ItemBuilder)} on it
+     * @param item the meta to clean
      */
-    public static void clean(ItemMeta meta){
-        meta.getPersistentDataContainer().remove(DEFAULT_STATS);
-        meta.getPersistentDataContainer().remove(ACTUAL_STATS);
-        meta.setAttributeModifiers(null);
-        registeredAttributes.values().forEach(a -> a.onRemove(meta));
+    public static void clean(ItemBuilder item){
+        item.getMeta().getPersistentDataContainer().remove(DEFAULT_STATS);
+        item.getMeta().getPersistentDataContainer().remove(ACTUAL_STATS);
+        item.getMeta().setAttributeModifiers(null);
+        registeredAttributes.values().forEach(a -> a.onRemove(item));
     }
 
     /**
@@ -373,27 +372,27 @@ public class ItemAttributesRegistry {
     /**
      * Sets the actualized stats of the item. If a stat in the given map is not included in the item's default
      * stats it will not be applied. <br>
-     * For each stat applied, {@link AttributeWrapper#onApply(ItemMeta)} is executed. <br>
-     * If the given stats are null or empty, the item will will have {@link ItemAttributesRegistry#clean(ItemMeta)} executed on it.
-     * @param meta the item meta to set its actual stats on
+     * For each stat applied, {@link AttributeWrapper#onApply(ItemBuilder)} is executed. <br>
+     * If the given stats are null or empty, the item will will have {@link ItemAttributesRegistry#clean(ItemBuilder)} executed on it.
+     * @param item the item meta to set its actual stats on
      * @param stats the stats to set to the item
      */
-    public static void setActualStats(ItemMeta meta, Map<String, AttributeWrapper> stats){
-        if (meta == null) return;
+    public static void setActualStats(ItemBuilder item, Map<String, AttributeWrapper> stats){
+        if (item == null) return;
 
         if (stats == null || stats.isEmpty()) {
-            clean(meta);
+            clean(item);
             return;
         }
 
-        meta.setAttributeModifiers(null);
+        item.getMeta().setAttributeModifiers(null);
         for (AttributeWrapper wrapper : stats.values()) {
             if (registeredAttributes.containsKey(wrapper.getAttribute())) {
-                wrapper.onRemove(meta);
+                wrapper.onRemove(item);
             }
         }
 
-        Map<String, AttributeWrapper> defaultStats = getStats(meta, true);
+        Map<String, AttributeWrapper> defaultStats = getStats(item.getMeta(), true);
         Collection<String> exclude = new HashSet<>();
         List<AttributeWrapper> orderedWrappers = new ArrayList<>(stats.values());
         orderedWrappers.sort(Comparator.comparingInt(wrapper -> wrapper.getAttributeName().length()));
@@ -409,17 +408,17 @@ public class ItemAttributesRegistry {
                 double value = wrapper.getValue();
                 if (attribute == Attribute.GENERIC_ATTACK_SPEED && wrapper.getOperation() == AttributeModifier.Operation.ADD_NUMBER) value -= 4; // player default attack speed
                 else if (attribute == Attribute.GENERIC_ATTACK_DAMAGE && wrapper.getOperation() == AttributeModifier.Operation.ADD_NUMBER) value -= 1; // player default attack damage
-                EquipmentSlot slot = ItemUtils.getEquipmentSlot(meta);
-                if (CustomFlag.hasFlag(meta, CustomFlag.ATTRIBUTE_FOR_HELMET)) slot = EquipmentSlot.HEAD;
-                else if (CustomFlag.hasFlag(meta, CustomFlag.ATTRIBUTE_FOR_BOTH_HANDS))
-                    meta.addAttributeModifier(attribute, new AttributeModifier(
+                EquipmentSlot slot = ItemUtils.getEquipmentSlot(item.getMeta());
+                if (CustomFlag.hasFlag(item.getMeta(), CustomFlag.ATTRIBUTE_FOR_HELMET)) slot = EquipmentSlot.HEAD;
+                else if (CustomFlag.hasFlag(item.getMeta(), CustomFlag.ATTRIBUTE_FOR_BOTH_HANDS))
+                    item.getMeta().addAttributeModifier(attribute, new AttributeModifier(
                             UUID.randomUUID(),
                             wrapper.getAttribute().replaceFirst("_", ".").toLowerCase(Locale.US),
                             value,
                             wrapper.getOperation(),
                             EquipmentSlot.OFF_HAND
                     ));
-                meta.addAttributeModifier(attribute, new AttributeModifier(
+                item.getMeta().addAttributeModifier(attribute, new AttributeModifier(
                         UUID.randomUUID(),
                         wrapper.getAttribute().replaceFirst("_", ".").toLowerCase(Locale.US),
                         value,
@@ -427,12 +426,12 @@ public class ItemAttributesRegistry {
                         slot
                 ));
             }
-            wrapper.onApply(meta);
+            wrapper.onApply(item);
         }
 
         Collection<AttributeWrapper> applied = new HashSet<>(stats.values());
         applied.removeIf(wrapper -> exclude.contains(wrapper.getAttribute()));
-        meta.getPersistentDataContainer().set(ACTUAL_STATS, PersistentDataType.STRING, serializeStats(applied));
+        item.stringTag(ACTUAL_STATS, serializeStats(applied));
     }
 
     private static String serializeStats(Collection<AttributeWrapper> wrappers) {
@@ -446,14 +445,14 @@ public class ItemAttributesRegistry {
 
     /**
      * Applies the item material's default AND actual stats on the item
-     * @param meta the item meta to set vanilla stats to
+     * @param item the item meta to set vanilla stats to
      * @return the vanilla stats if applied, or an empty hashmap if none
      */
-    public static Map<String, AttributeWrapper> applyVanillaStats(ItemMeta meta){
-        Map<String, AttributeWrapper> vanillaStats = getVanillaStats(ItemUtils.getStoredType(meta));
+    public static Map<String, AttributeWrapper> applyVanillaStats(ItemBuilder item){
+        Map<String, AttributeWrapper> vanillaStats = getVanillaStats(item.getItem().getType());
         if (!vanillaStats.isEmpty()) {
-            setDefaultStats(meta, vanillaStats);
-            setActualStats(meta, vanillaStats);
+            setDefaultStats(item, vanillaStats);
+            setActualStats(item, vanillaStats);
             return vanillaStats;
         }
         return new HashMap<>();
@@ -492,51 +491,51 @@ public class ItemAttributesRegistry {
      * it will be added to the item's actualized stats also. If it DOES have the actualized stat,
      * it will not be touched. <br>
      * If the item has no default stats yet, vanilla stats will be applied to it
-     * @param meta the item to add the default stat to
+     * @param item the item to add the default stat to
      * @param wrapper the stat to add
      */
-    public static void addDefaultStat(ItemMeta meta, AttributeWrapper wrapper){
-        Map<String, AttributeWrapper> defaultStats = getStats(meta, true);
-        if (defaultStats.isEmpty()) defaultStats = applyVanillaStats(meta);
+    public static void addDefaultStat(ItemBuilder item, AttributeWrapper wrapper){
+        Map<String, AttributeWrapper> defaultStats = getStats(item.getMeta(), true);
+        if (defaultStats.isEmpty()) defaultStats = applyVanillaStats(item);
         defaultStats.put(wrapper.getAttribute(), wrapper);
-        setDefaultStats(meta, defaultStats);
+        setDefaultStats(item, defaultStats);
 
-        Map<String, AttributeWrapper> actualStats = getStats(meta, false);
+        Map<String, AttributeWrapper> actualStats = getStats(item.getMeta(), false);
         actualStats.put(wrapper.getAttribute(), wrapper);
 
-        setActualStats(meta, actualStats);
+        setActualStats(item, actualStats);
     }
 
-    public static void removeStat(ItemMeta meta, AttributeWrapper wrapper){
-        Map<String, AttributeWrapper> defaultStats = getStats(meta, true);
-        if (defaultStats.isEmpty()) defaultStats = applyVanillaStats(meta);
+    public static void removeStat(ItemBuilder item, AttributeWrapper wrapper){
+        Map<String, AttributeWrapper> defaultStats = getStats(item.getMeta(), true);
+        if (defaultStats.isEmpty()) defaultStats = applyVanillaStats(item);
         defaultStats.remove(wrapper.getAttribute());
-        setDefaultStats(meta, defaultStats);
+        setDefaultStats(item, defaultStats);
 
-        Map<String, AttributeWrapper> actualStats = getStats(meta, false);
+        Map<String, AttributeWrapper> actualStats = getStats(item.getMeta(), false);
         actualStats.remove(wrapper.getAttribute());
 
-        wrapper.onRemove(meta);
-        setActualStats(meta, actualStats);
+        wrapper.onRemove(item);
+        setActualStats(item, actualStats);
     }
 
     /**
      * Changes the value of a stat on the item.
-     * @param meta the item to change a stat value of
+     * @param item the item to change a stat value of
      * @param attribute the stat to change
      * @param value the value to set it to
      * @param def if the default stat should be changed (true) or the actualized stat (false)
      */
-    public static void setStat(ItemMeta meta, String attribute, double value, boolean hidden, boolean def){
-        Map<String, AttributeWrapper> stats = getStats(meta, def);
+    public static void setStat(ItemBuilder item, String attribute, double value, boolean hidden, boolean def){
+        Map<String, AttributeWrapper> stats = getStats(item.getMeta(), def);
         AttributeWrapper wrapper = stats.get(attribute);
         if (wrapper == null) return;
         wrapper = wrapper.copy();
         wrapper.setValue(value);
         wrapper.setHidden(hidden);
         stats.put(wrapper.getAttribute(), wrapper);
-        if (def) setDefaultStats(meta, stats);
-        setActualStats(meta, stats);
+        if (def) setDefaultStats(item, stats);
+        setActualStats(item, stats);
     }
 
     /**

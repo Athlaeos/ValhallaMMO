@@ -25,7 +25,7 @@ public class ItemBuilder {
     private String name;
     private List<String> lore;
     private boolean translate = true;
-    private final Collection<MiningSpeed.EmbeddedTool> embeddedTools;
+    private Collection<MiningSpeed.EmbeddedTool> embeddedTools;
 
     public ItemBuilder copy(){
         return new ItemBuilder(item.clone(), meta.clone());
@@ -228,14 +228,14 @@ public class ItemBuilder {
 
     public ItemStack get(){
         if (ItemUtils.isEmpty(this.item)) return null;
+        if (translate) {
+            TranslationManager.translateItem(this);
+        }
         if (this.name != null) {
             meta.setDisplayName(Utils.chat(this.name));
         }
         if (this.lore != null) {
             meta.setLore(Utils.chat(this.lore));
-        }
-        if (translate) {
-            TranslationManager.translateItemMeta(meta);
         }
         ItemUtils.setMetaNoClone(this.item, meta);
         ItemUtils.storeType(meta, this.item.getType());
@@ -243,12 +243,12 @@ public class ItemBuilder {
     }
 
     public ItemBuilder attribute(String attribute, double value, AttributeModifier.Operation operation){
-        ItemAttributesRegistry.addDefaultStat(meta, ItemAttributesRegistry.getCopy(attribute).setOperation(operation).setValue(value));
+        ItemAttributesRegistry.addDefaultStat(this, ItemAttributesRegistry.getCopy(attribute).setOperation(operation).setValue(value));
         return this;
     }
 
     public ItemBuilder attribute(String attribute, double value){
-        ItemAttributesRegistry.addDefaultStat(meta, ItemAttributesRegistry.getCopy(attribute).setOperation(AttributeModifier.Operation.ADD_NUMBER).setValue(value));
+        ItemAttributesRegistry.addDefaultStat(this, ItemAttributesRegistry.getCopy(attribute).setOperation(AttributeModifier.Operation.ADD_NUMBER).setValue(value));
         return this;
     }
 
@@ -261,5 +261,11 @@ public class ItemBuilder {
     public ItemStack getItem() { return item; }
     public ItemMeta getMeta() { return meta; }
     public ItemBuilder setItem(ItemStack item) { this.item = item; return this; }
-    public ItemBuilder setMeta(ItemMeta meta) { this.meta = meta; return this; }
+    public ItemBuilder setMeta(ItemMeta meta) {
+        this.meta = meta;
+        this.embeddedTools = MiningSpeed.getEmbeddedTools(meta);
+        this.lore = this.meta.hasLore() && this.meta.getLore() != null ? new ArrayList<>(this.meta.getLore()) : new ArrayList<>();
+        this.name = this.meta.hasDisplayName() ? this.meta.getDisplayName() : null;
+        return this;
+    }
 }

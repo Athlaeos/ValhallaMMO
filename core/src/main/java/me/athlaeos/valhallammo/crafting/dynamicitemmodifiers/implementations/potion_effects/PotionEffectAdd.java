@@ -43,8 +43,8 @@ public class PotionEffectAdd extends DynamicItemModifier {
         effect.setAmplifier(value);
         effect.setDuration(duration);
         effect.setCharges(ItemUtils.isConsumable(context.getItem().getItem().getType()) ? -1 : charges);
-        PotionEffectRegistry.addDefaultEffect(context.getItem().getMeta(), effect);
-        PotionEffectRegistry.updateItemName(context.getItem().getMeta(), false, false);
+        PotionEffectRegistry.addDefaultEffect(context.getItem(), effect);
+        PotionEffectRegistry.updateItemName(context.getItem(), false, false);
     }
 
     @Override

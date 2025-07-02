@@ -27,7 +27,7 @@ public class DurabilityRandomized extends DynamicItemModifier {
         if (CustomDurabilityManager.hasCustomDurability(context.getItem().getMeta())){
             int maxDurability = CustomDurabilityManager.getDurability(context.getItem().getMeta(), true);
             int randomDurability = Utils.getRandom().nextInt(maxDurability) + 1;
-            CustomDurabilityManager.setDurability(context.getItem().getMeta(), randomDurability, maxDurability);
+            CustomDurabilityManager.setDurability(context.getItem(), randomDurability, maxDurability);
         } else {
             Damageable meta = (Damageable) context.getItem().getMeta();
             int maxDurability = context.getItem().getItem().getType().getMaxDurability();

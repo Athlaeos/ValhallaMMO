@@ -24,7 +24,7 @@ public class AlchemyTagsAdd extends DynamicItemModifier {
 
     @Override
     public void processItem(ModifierContext context) {
-        AlchemyItemPropertyManager.addTag(context.getItem().getMeta(), tags.toArray(new Integer[0]));
+        AlchemyItemPropertyManager.addTag(context.getItem(), tags.toArray(new Integer[0]));
     }
 
     @Override

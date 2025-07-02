@@ -28,7 +28,7 @@ public class ItemType extends DynamicItemModifier implements ResultChangingModif
     @Override
     public void processItem(ModifierContext context) {
         context.getItem().type(material);
-        PotionEffectRegistry.updateItemName(context.getItem().getMeta(), true, false);
+        PotionEffectRegistry.updateItemName(context.getItem(), true, false);
     }
 
     @Override

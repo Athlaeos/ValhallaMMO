@@ -39,7 +39,7 @@ public class AlchemyQualityRandomized extends DynamicItemModifier {
         int lowerBound = (int) Math.floor(this.lowerBound * quality);
         int upperBound = (int) Math.ceil(this.upperBound * quality);
         int newQuality = Utils.getRandom().nextInt((upperBound + 1) - lowerBound) + lowerBound;
-        AlchemyItemPropertyManager.setQuality(context.getItem().getMeta(), Math.max(0, newQuality));
+        AlchemyItemPropertyManager.setQuality(context.getItem(), Math.max(0, newQuality));
     }
 
     @Override

@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PermanentPotionEffectAdd;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -51,10 +52,10 @@ public abstract class PotionEffectWrapper {
         return addModifier(icon, 0.01, 0.1);
     }
 
-    public abstract void onApply(ItemMeta potion);
+    public abstract void onApply(ItemBuilder potion);
     public abstract void onInflict(LivingEntity entity, LivingEntity causedBy, double amplifier, int duration, double intensity);
 
-    public abstract void onRemove(ItemMeta potion);
+    public abstract void onRemove(ItemBuilder potion);
     public abstract void onExpire(LivingEntity entity);
 
     public abstract EffectClass getClassification(double amplifier);
