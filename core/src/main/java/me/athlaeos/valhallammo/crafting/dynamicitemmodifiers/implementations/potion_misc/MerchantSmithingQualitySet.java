@@ -35,7 +35,7 @@ public class MerchantSmithingQualitySet extends DynamicItemModifier {
         if (data == null) return;
         MerchantLevel level = CustomMerchantManager.getLevel(data);
         if (level == null) return;
-        SmithingItemPropertyManager.setQuality(context.getItem().getMeta(), qualityMap.get(level));
+        SmithingItemPropertyManager.setQuality(context.getItem(), qualityMap.get(level));
     }
 
     @Override

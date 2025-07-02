@@ -129,7 +129,7 @@ public class PotionBelt {
         ItemStack potion = potions.remove(selected);
         setPotions(belt.getMeta(), potions);
         setIndex(belt.getMeta(), Math.max(0, Math.min(potions.size() - 1, getIndex(belt.getMeta()))));
-        ItemStack oldBelt = getStoredBelt(belt.getMeta());
+        ItemStack oldBelt = getStoredBelt(belt);
         ItemStack newBelt = getNewBelt(belt);
         belt.setItem(newBelt);
         belt.setMeta(ItemUtils.getItemMeta(newBelt));
@@ -137,25 +137,24 @@ public class PotionBelt {
     }
 
     public static ItemStack getNewBelt(ItemBuilder belt){
-        ItemStack beltItem = getStoredBelt(belt.getMeta());
+        ItemStack beltItem = getStoredBelt(belt);
         if (ItemUtils.isEmpty(beltItem)) return belt.get();
-        ItemMeta beltMeta = ItemUtils.getItemMeta(beltItem);
-        ItemStack storedBelt = beltMeta == null ? null : getStoredBelt(beltMeta);
+        ItemBuilder beltBuilder = new ItemBuilder(beltItem);
+        ItemStack storedBelt = getStoredBelt(beltBuilder);
         if (ItemUtils.isEmpty(storedBelt)) {
-            setStoredBelt(beltMeta, beltItem);
-            ItemUtils.setItemMeta(beltItem, beltMeta);
+            setStoredBelt(beltBuilder, beltItem);
+            ItemUtils.setItemMeta(beltItem, ItemUtils.getItemMeta(beltBuilder.get()));
         }
 
-        UUID beltID = beltMeta == null ? UUID.randomUUID() : getPotionBeltID(beltMeta, false);
+        UUID beltID = getPotionBeltID(beltBuilder.getMeta(), false);
         ItemStack selectedPotion = getSelectedPotion(belt.getMeta());
         if (ItemUtils.isEmpty(selectedPotion)) return belt.get();
         List<ItemStack> potions = getPotions(belt.getMeta());
         int selectedIndex = getIndex(belt.getMeta());
-        ItemMeta potionMeta = ItemUtils.getItemMeta(selectedPotion);
-        if (potionMeta == null) return beltItem;
+        ItemBuilder potionBuilder = new ItemBuilder(selectedPotion);
         List<String> format = TranslationManager.getListTranslation("potion_belt_lore_format");
-        format = ItemUtils.setListPlaceholder(format, "%belt_lore%", beltMeta != null && beltMeta.hasLore() && beltMeta.getLore() != null ? beltMeta.getLore() : new ArrayList<>());
-        format = ItemUtils.setListPlaceholder(format, "%item_lore%", potionMeta.hasLore() && potionMeta.getLore() != null ? potionMeta.getLore() : new ArrayList<>());
+        format = ItemUtils.setListPlaceholder(format, "%belt_lore%", beltBuilder.getLore() != null ? beltBuilder.getLore() : new ArrayList<>());
+        format = ItemUtils.setListPlaceholder(format, "%item_lore%", potionBuilder.getLore() != null ? potionBuilder.getLore() : new ArrayList<>());
         format = ItemUtils.setListPlaceholder(format, "%current_count%", String.valueOf(potions.size()));
         format = ItemUtils.setListPlaceholder(format, "%max_count%", String.valueOf(getCapacity(belt.getMeta())));
 
@@ -169,44 +168,42 @@ public class PotionBelt {
         }
         format = ItemUtils.setListPlaceholder(format, "%entries%", entries);
 
-        String name = getName(potionMeta, selectedPotion);
-        potionMeta.setLore(Utils.chat(format));
-        potionMeta.setDisplayName(Utils.chat(TranslationManager.getTranslation("potion_belt_name_format").replace("%item_name%", name)));
-        setPotionBeltID(potionMeta, beltID);
-        setPotions(potionMeta, potions);
-        setIndex(potionMeta, selectedIndex);
-        setStoredBelt(potionMeta, beltItem);
-        setCapacity(potionMeta, getCapacity(belt.getMeta()));
-        ItemUtils.setItemMeta(selectedPotion, potionMeta);
+        String name = getName(potionBuilder, selectedPotion);
+        potionBuilder.lore(Utils.chat(format));
+        potionBuilder.name(Utils.chat(TranslationManager.getTranslation("potion_belt_name_format").replace("%item_name%", name)));
+        setPotionBeltID(potionBuilder.getMeta(), beltID);
+        setPotions(potionBuilder, potions);
+        setIndex(potionBuilder, selectedIndex);
+        setStoredBelt(potionBuilder, beltItem);
+        setCapacity(potionBuilder, getCapacity(belt.getMeta()));
+        ItemUtils.setItemMeta(selectedPotion, potionBuilder);
         return selectedPotion;
     }
 
-    private static String getName(ItemMeta potionMeta, ItemStack potion){
-        if (potionMeta.hasDisplayName()) return potionMeta.getDisplayName();
-        String name = PotionEffectRegistry.getItemName(potionMeta, false);
-        if (name == null) name = ItemUtils.getItemName(potionMeta);
+    private static String getName(ItemBuilder potionBuilder, ItemStack potion){
+        if (potionBuilder.getName() != null) return potionBuilder.getName();
+        String name = PotionEffectRegistry.getItemName(potionBuilder, false);
+        if (name == null) name = ItemUtils.getItemName(potionBuilder);
         return name;
     }
 
-    public static ItemStack getStoredBelt(ItemMeta meta){
-        String data = meta.getPersistentDataContainer().get(KEY_BELT_ITEM, PersistentDataType.STRING);
+    public static ItemStack getStoredBelt(ItemBuilder meta){
+        String data = meta.getMeta().getPersistentDataContainer().get(KEY_BELT_ITEM, PersistentDataType.STRING);
         if (data == null) return null;
         ItemStack stored = ItemUtils.deserialize(data);
         if (stored == null) return null;
-        ItemMeta storedMeta = ItemUtils.getItemMeta(stored);
-        if (storedMeta == null) return null;
-        TranslationManager.translateItemMeta(storedMeta);
-        ItemUtils.setItemMeta(stored, storedMeta);
-        return stored;
+        ItemBuilder storedItem = new ItemBuilder(stored);
+        TranslationManager.translateItem(storedItem);
+        return storedItem.get();
     }
 
-    public static void setStoredBelt(ItemMeta meta, ItemStack belt){
+    public static void setStoredBelt(ItemBuilder item, ItemStack belt){
         if (ItemUtils.isEmpty(belt)) {
-            meta.getPersistentDataContainer().remove(KEY_BELT_ITEM);
+            item.getMeta().getPersistentDataContainer().remove(KEY_BELT_ITEM);
         } else {
             String data = ItemUtils.serialize(belt);
             if (data == null) return;
-            meta.getPersistentDataContainer().set(KEY_BELT_ITEM, PersistentDataType.STRING, data);
+            item.stringTag(KEY_BELT_ITEM, data);
         }
     }
 
