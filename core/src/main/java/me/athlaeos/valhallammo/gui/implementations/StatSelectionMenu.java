@@ -27,7 +27,7 @@ public class StatSelectionMenu extends Menu {
 
     private static final ItemStack confirmButton = new ItemBuilder(Material.STRUCTURE_VOID).stringTag(KEY_ACTION, "confirmButton").name("&b&lSave").get();
     private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_DYE))
-            .name("&b&lAdd Condition")
+            .name("&b&lAdd Stat")
             .stringTag(KEY_ACTION, "createNewButton")
             .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack cancelButton = new ItemBuilder(Material.BARRIER).stringTag(KEY_ACTION, "cancelButton").name("&cDelete").get();
@@ -113,6 +113,7 @@ public class StatSelectionMenu extends Menu {
                 for (String stat : currentAttributes.keySet()){
                     if (stat.equals(clickedAttribute)){
                         currentAttribute = stat;
+                        value = currentAttributes.get(stat);
                         view = View.NEW_STAT;
                         break;
                     }
@@ -203,7 +204,7 @@ public class StatSelectionMenu extends Menu {
         for (String stat : stats){
             AttributeWrapper wrapper = ItemAttributesRegistry.getCopy(stat);
             if (wrapper == null || wrapper.getAttributeName() == null) continue;
-            wrapper.setValue(value);
+            wrapper.setValue(currentAttributes.get(stat));
             ItemStack icon = new ItemBuilder(wrapper.getIcon() == null ? Material.NAME_TAG : wrapper.getIcon())
                     .lore(wrapper.getLoreDisplay())
                     .name("&f" + wrapper.getAttributeName().replace("%icon%", "").replace("%value%", "").trim())

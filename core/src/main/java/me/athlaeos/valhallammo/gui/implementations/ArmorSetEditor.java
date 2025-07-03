@@ -118,7 +118,7 @@ public class ArmorSetEditor extends Menu implements SetStatsMenu {
                 case "backToMenuButton" -> currentSet = null;
                 case "deleteButton" -> {
                     confirmDeletion = true;
-                    Utils.sendMessage(e.getWhoClicked(), "&cAre you sure you want to delete this loot pool?");
+                    Utils.sendMessage(e.getWhoClicked(), "&cAre you sure you want to delete this armor set?");
                     setMenuItems();
                     return;
                 }
@@ -152,7 +152,7 @@ public class ArmorSetEditor extends Menu implements SetStatsMenu {
                                 String answer = question.getAnswer().replaceAll(" ", "_").toLowerCase(java.util.Locale.US);
                                 if (answer.contains("cancel")) playerMenuUtility.getPreviousMenu().open();
                                 else if (ArmorSetRegistry.getRegisteredSets().containsKey(answer))
-                                    Utils.sendMessage(getWho(), "&cPool key already exists!");
+                                    Utils.sendMessage(getWho(), "&cArmor set id already exists!");
                                 else {
                                     ArmorSetRegistry.register(new ArmorSet(answer));
                                     playerMenuUtility.getPreviousMenu().open();
