@@ -385,18 +385,13 @@ public class ValhallaMMO extends JavaPlugin {
     private void setupPaper() {
         try {
             String paperVersion = MinecraftVersion.getServerVersion().getNmsVersion();
-            if (paperVersion == null) {
-                System.out.println("\n\nno paper version\n\n");
-                return;
-            } else System.out.println("\n\npaper version " + paperVersion + "\n\n");
+            if (paperVersion == null) return;
             Class<?> clazz = Class.forName("me.athlaeos.valhallammo.paper.Paper_" + paperVersion);
 
             if (Paper.class.isAssignableFrom(clazz)) {
                 paper = (Paper) clazz.getDeclaredConstructor().newInstance();
             }
-        } catch (Exception | Error ignored) {
-            ignored.printStackTrace();
-        }
+        } catch (Exception | Error ignored) {}
     }
 
     public static NMS getNms() {

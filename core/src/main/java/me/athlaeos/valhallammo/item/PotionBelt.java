@@ -9,15 +9,12 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.persistence.ItemStackGSONAdapter;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.potion.PotionType;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -118,7 +115,7 @@ public class PotionBelt {
         ItemStack newBelt = getNewBelt(belt);
         belt.setItem(newBelt);
         belt.setMeta(ItemUtils.getItemMeta(newBelt));
-        return potions.isEmpty() ? getStoredBelt(belt.getMeta()) : belt.translate().get();
+        return potions.isEmpty() ? getStoredBelt(belt) : belt.translate().get();
     }
 
     public static PotionExtractionDetails removeSelectedPotion(ItemBuilder belt){
@@ -161,26 +158,25 @@ public class PotionBelt {
         List<String> entries = new ArrayList<>();
         for (int i = 0; i < potions.size(); i++){
             ItemStack potion = potions.get(i);
-            ItemMeta meta = ItemUtils.getItemMeta(potion);
-            if (meta == null) continue;
-            String name = (i == selectedIndex ? TranslationManager.getTranslation("potion_belt_entry_format_selected") : TranslationManager.getTranslation("potion_belt_entry_format_deselected")).replace("%potion%", getName(meta, potion));
+            ItemBuilder potBuilder = new ItemBuilder(potion);
+            String name = (i == selectedIndex ? TranslationManager.getTranslation("potion_belt_entry_format_selected") : TranslationManager.getTranslation("potion_belt_entry_format_deselected")).replace("%potion%", getName(potBuilder));
             entries.add(Utils.chat(name));
         }
         format = ItemUtils.setListPlaceholder(format, "%entries%", entries);
 
-        String name = getName(potionBuilder, selectedPotion);
+        String name = getName(potionBuilder);
         potionBuilder.lore(Utils.chat(format));
         potionBuilder.name(Utils.chat(TranslationManager.getTranslation("potion_belt_name_format").replace("%item_name%", name)));
         setPotionBeltID(potionBuilder.getMeta(), beltID);
-        setPotions(potionBuilder, potions);
-        setIndex(potionBuilder, selectedIndex);
+        setPotions(potionBuilder.getMeta(), potions);
+        setIndex(potionBuilder.getMeta(), selectedIndex);
         setStoredBelt(potionBuilder, beltItem);
-        setCapacity(potionBuilder, getCapacity(belt.getMeta()));
-        ItemUtils.setItemMeta(selectedPotion, potionBuilder);
+        setCapacity(potionBuilder.getMeta(), getCapacity(belt.getMeta()));
+        ItemUtils.setItemMeta(selectedPotion, ItemUtils.getItemMeta(potionBuilder.get()));
         return selectedPotion;
     }
 
-    private static String getName(ItemBuilder potionBuilder, ItemStack potion){
+    private static String getName(ItemBuilder potionBuilder){
         if (potionBuilder.getName() != null) return potionBuilder.getName();
         String name = PotionEffectRegistry.getItemName(potionBuilder, false);
         if (name == null) name = ItemUtils.getItemName(potionBuilder);

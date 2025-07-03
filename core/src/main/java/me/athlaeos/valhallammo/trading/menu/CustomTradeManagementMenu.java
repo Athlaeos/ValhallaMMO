@@ -585,8 +585,8 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                 .lore(
                         "&7Weight: " + trade.getWeight() + " (+" + trade.getDemandWeightModifier() + "/demand, up to " + trade.getDemandWeightMaxQuantity() + ")",
                         "",
-                        "&7Costs &e" + (trade.getScalingCostItem() == null ? "nothing" : trade.getScalingCostItem().getAmount() + "x " + ItemUtils.getItemName(ItemUtils.getItemMeta(trade.getScalingCostItem()))),
-                        trade.getOptionalCostItem() == null ? "&7and has no optional cost" : ("&7and " + trade.getOptionalCostItem().getAmount() + "x " + ItemUtils.getItemName(ItemUtils.getItemMeta(trade.getOptionalCostItem()))),
+                        "&7Costs &e" + (trade.getScalingCostItem() == null ? "nothing" : trade.getScalingCostItem().getAmount() + "x " + ItemUtils.getItemName(new ItemBuilder(trade.getScalingCostItem()))),
+                        trade.getOptionalCostItem() == null ? "&7and has no optional cost" : ("&7and " + trade.getOptionalCostItem().getAmount() + "x " + ItemUtils.getItemName(new ItemBuilder(trade.getOptionalCostItem()))),
                         "",
                         "&7Can be traded &e" + trade.getMaxUses() + "&7 times (+" + trade.getDemandMaxUsesModifier() + "/demand, up to " + trade.getDemandMaxUsesMaxQuantity() + ")",
                         "&7Progresses the merchant by " + trade.getVillagerExperience() + " experience"

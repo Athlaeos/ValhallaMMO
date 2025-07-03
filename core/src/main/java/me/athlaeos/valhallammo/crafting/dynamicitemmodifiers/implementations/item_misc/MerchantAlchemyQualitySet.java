@@ -35,7 +35,7 @@ public class MerchantAlchemyQualitySet extends DynamicItemModifier {
         if (data == null) return;
         MerchantLevel level = CustomMerchantManager.getLevel(data);
         if (level == null) return;
-        AlchemyItemPropertyManager.setQuality(context.getItem().getMeta(), qualityMap.get(level));
+        AlchemyItemPropertyManager.setQuality(context.getItem(), qualityMap.get(level));
     }
 
     @Override

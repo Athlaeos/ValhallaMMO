@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.potioneffects.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.CustomFlag;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.potioneffects.EffectClass;
@@ -13,7 +14,6 @@ import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 
 public class Pacification extends PotionEffectWrapper {
@@ -22,10 +22,10 @@ public class Pacification extends PotionEffectWrapper {
     }
 
     @Override
-    public void onApply(ItemMeta i) {
-        boolean customFlag = CustomFlag.hasFlag(i, CustomFlag.DISPLAY_ATTRIBUTES);
-        boolean vanillaFlag = i.hasItemFlag(ConventionUtils.getHidePotionEffectsFlag());
-        boolean temporaryCoatingDisplay = CustomFlag.hasFlag(i, CustomFlag.TEMPORARY_POTION_DISPLAY);
+    public void onApply(ItemBuilder i) {
+        boolean customFlag = CustomFlag.hasFlag(i.getMeta(), CustomFlag.DISPLAY_ATTRIBUTES);
+        boolean vanillaFlag = i.getMeta().hasItemFlag(ConventionUtils.getHidePotionEffectsFlag());
+        boolean temporaryCoatingDisplay = CustomFlag.hasFlag(i.getMeta(), CustomFlag.TEMPORARY_POTION_DISPLAY);
         // if vanilla, hide if either custom or vanilla flags are missing
         // if not vanilla, hide if vanilla flag is present unless custom flag is also present
         if ((isVanilla && i instanceof PotionMeta && (!customFlag || !vanillaFlag)) ||
@@ -64,7 +64,7 @@ public class Pacification extends PotionEffectWrapper {
     }
 
     @Override
-    public void onRemove(ItemMeta i) {
+    public void onRemove(ItemBuilder i) {
         String translation = getEffectName();
         if (StringUtils.isEmpty(translation)) return;
         ItemUtils.removeIfLoreContains(i, translation

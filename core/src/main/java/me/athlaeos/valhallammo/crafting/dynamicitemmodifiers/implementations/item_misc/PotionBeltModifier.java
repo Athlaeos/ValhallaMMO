@@ -102,8 +102,8 @@ public class PotionBeltModifier extends DynamicItemModifier{
     public void processItem(ModifierContext context) {
         PotionBelt.setPotions(context.getItem().getMeta(), new ArrayList<>());
         PotionBelt.setCapacity(context.getItem().getMeta(), capacity);
-        PotionBelt.setStoredBelt(context.getItem().getMeta(), context.getItem().get());
+        PotionBelt.setStoredBelt(context.getItem(), context.getItem().get());
         ItemStack belt = context.getItem().get();
-        PotionBelt.setStoredBelt(context.getItem().getMeta(), belt);
+        PotionBelt.setStoredBelt(context.getItem(), belt);
     }
 }

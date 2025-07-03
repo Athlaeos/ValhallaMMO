@@ -68,7 +68,7 @@ public class Space implements HappinessSource, Listener {
                 Block west2 = twoAbove.getRelative(BlockFace.WEST);
                 return (east2.getType().isAir() || !east2.getType().isOccluding()) && (west2.getType().isAir() || !west2.getType().isOccluding());
             }
-        }
+        } else if (oneAbove.getType().toString().contains("FENCE") || oneAbove.getType().toString().contains("WALL")) return false;
         return false;
     }
 

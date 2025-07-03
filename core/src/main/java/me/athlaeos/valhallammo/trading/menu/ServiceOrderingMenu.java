@@ -210,9 +210,9 @@ public class ServiceOrderingMenu extends Menu {
                 prefix.add(line
                         .replace("%max_orders%", String.valueOf((int) (maxOrderCountMultiplier * trade.getMaxOrderCount())))
                         .replace("%times_ordered%", String.valueOf(orders.getOrDefault(trade.getID(), 0)))
-                        .replace("%item%", ItemUtils.getItemName(item1.getMeta()))
+                        .replace("%item%", ItemUtils.getItemName(item1))
                         .replace("%amount%", String.format("%.2f", price))
-                        .replace("%item2%", item2 == null ? "": ItemUtils.getItemName(item2.getMeta()))
+                        .replace("%item2%", item2 == null ? "": ItemUtils.getItemName(item2))
                         .replace("%amount2%", item2 == null ? "": String.valueOf(item2.getItem().getAmount()))
                 );
             }
