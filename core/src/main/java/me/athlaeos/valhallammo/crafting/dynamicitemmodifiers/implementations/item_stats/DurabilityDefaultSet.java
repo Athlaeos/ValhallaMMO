@@ -23,7 +23,7 @@ public class DurabilityDefaultSet extends DynamicItemModifier {
 
     @Override
     public void processItem(ModifierContext context) {
-        double fraction = (double) CustomDurabilityManager.getDurability(context.getItem().getMeta(), false) / CustomDurabilityManager.getDurability(context.getItem().getMeta(), true);
+        double fraction = (double) CustomDurabilityManager.getDurability(context.getItem(), false) / CustomDurabilityManager.getDurability(context.getItem(), true);
         CustomDurabilityManager.setDurability(context.getItem(), (int) (value * fraction), value);
     }
 
