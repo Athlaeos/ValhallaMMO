@@ -52,7 +52,7 @@ public class CustomDurabilityManager {
                 item.getMeta().getPersistentDataContainer().remove(MAX_DURABILITY);
             } else {
                 item.intTag(DURABILITY, Math.min(maxDurability, durability));
-                item.intTag(DURABILITY, Math.max(maxDurability, durability));
+                item.intTag(MAX_DURABILITY, Math.max(maxDurability, durability));
             }
             updateLore(item);
         }
@@ -68,9 +68,9 @@ public class CustomDurabilityManager {
         Material baseType = item.getItem().getType();
         fraction = Math.max(0, Math.min(1, fraction));
         boolean hasCustom = item.getMeta().getPersistentDataContainer().has(DURABILITY, PersistentDataType.INTEGER);
-        int maxDurability = hasCustom ? getDurability(item.getMeta(), true) : baseType.getMaxDurability();
+        int maxDurability = hasCustom ? getDurability(item, true) : baseType.getMaxDurability();
         int newDurability = Math.max(1, (int) Math.round(fraction * maxDurability));
-        if (baseType.getMaxDurability() > 0 && item instanceof Damageable d){
+        if (baseType.getMaxDurability() > 0 && item.getMeta() instanceof Damageable d){
             if (hasCustom){
                 setDurability(item, newDurability, maxDurability);
             } else {
@@ -78,14 +78,13 @@ public class CustomDurabilityManager {
             }
         }
     }
-    public static double getDurabilityFraction(ItemMeta meta){
-        Material baseType = ItemUtils.getStoredType(meta);
-        if (baseType == null) return 0;
-        boolean hasCustom = meta.getPersistentDataContainer().has(DURABILITY, PersistentDataType.INTEGER);
-        int maxDurability = hasCustom ? getDurability(meta, true) : baseType.getMaxDurability();
-        if (baseType.getMaxDurability() > 0 && meta instanceof Damageable d){
+    public static double getDurabilityFraction(ItemBuilder item){
+        Material baseType = item.getItem().getType();
+        boolean hasCustom = item.getMeta().getPersistentDataContainer().has(DURABILITY, PersistentDataType.INTEGER);
+        int maxDurability = hasCustom ? getDurability(item, true) : baseType.getMaxDurability();
+        if (baseType.getMaxDurability() > 0 && item.getMeta() instanceof Damageable d){
             if (hasCustom){
-                return (double) getDurability(meta, false) / (double) maxDurability;
+                return (double) getDurability(item, false) / (double) maxDurability;
             } else {
                 return (double) (maxDurability - (maxDurability - d.getDamage())) / maxDurability;
             }
@@ -95,18 +94,17 @@ public class CustomDurabilityManager {
 
     /**
      * Returns the item's current or max durability. Works for both vanilla and custom tools.
-     * @param meta the item to get its durability from
+     * @param item the item to get its durability from
      * @param max whether you want to have the max durability (true) or current durability (false)
      * @return the (max)durability of the item
      */
-    public static int getDurability(ItemMeta meta, boolean max){
-        Material baseType = ItemUtils.getStoredType(meta);
-        if (baseType == null) return 0;
-        if (baseType.getMaxDurability() > 0 && meta instanceof Damageable d){
-            boolean hasCustom = meta.getPersistentDataContainer().has(DURABILITY, PersistentDataType.INTEGER);
-            if (hasCustom)
-                return Math.max(0, meta.getPersistentDataContainer().getOrDefault(max ? MAX_DURABILITY : DURABILITY, PersistentDataType.INTEGER, 0));
-            else {
+    public static int getDurability(ItemBuilder item, boolean max){
+        Material baseType = item.getItem().getType();
+        if (baseType.getMaxDurability() > 0 && item.getMeta() instanceof Damageable d){
+            boolean hasCustom = item.getMeta().getPersistentDataContainer().has(DURABILITY, PersistentDataType.INTEGER);
+            if (hasCustom) {
+                return Math.max(0, item.getMeta().getPersistentDataContainer().getOrDefault(max ? MAX_DURABILITY : DURABILITY, PersistentDataType.INTEGER, 0));
+            } else {
                 return max ? baseType.getMaxDurability() : baseType.getMaxDurability() - d.getDamage();
             }
         }
@@ -131,10 +129,10 @@ public class CustomDurabilityManager {
     public static void updateLore(ItemBuilder item){
         Material baseType = item.getItem().getType();
         String translation = TranslationManager.getTranslation("translation_durability");
-        if (baseType.getMaxDurability() > 0 && item instanceof Damageable d){
+        if (baseType.getMaxDurability() > 0 && item.getMeta() instanceof Damageable d){
             int maxVanillaDurability = baseType.getMaxDurability();
-            int maxCustomDurability = getDurability(item.getMeta(), true);
-            int customDurability = getDurability(item.getMeta(), false);
+            int maxCustomDurability = getDurability(item, true);
+            int customDurability = getDurability(item, false);
             double fraction = Math.max(0, Math.min(1, (double) customDurability / (double) maxCustomDurability));
             int newVanillaDurability = maxVanillaDurability - (int) Math.ceil(fraction * maxVanillaDurability);
             d.setDamage(newVanillaDurability);
@@ -152,7 +150,7 @@ public class CustomDurabilityManager {
     }
 
     /**
-     * Scales an item's durability values given a quality value. This method is coded differently from {@link SmithingItemPropertyManager#applyAttributeScaling(ItemMeta, Scaling, int, String, double)}
+     * Scales an item's durability values given a quality value. This method is coded differently from {@link SmithingItemPropertyManager#applyAttributeScaling(ItemBuilder, Scaling, int, String, double)}
      * as that method requires items to have a default custom durability attribute, which vanilla items are not configured to have.
      * @param item the item to scale its durability based on quality
      * @param quality the quality to scale the item with
@@ -160,14 +158,14 @@ public class CustomDurabilityManager {
      */
     public static void applyDurabilityScaling(ItemBuilder item, Scaling scaling, int quality, double minimumFraction){
         Material baseMaterial = item.getItem().getType();
-        if (baseMaterial.getMaxDurability() > 0 && item instanceof Damageable d){
+        if (baseMaterial.getMaxDurability() > 0 && item.getMeta() instanceof Damageable d){
             AttributeWrapper durabilityWrapper = ItemAttributesRegistry.getAttribute(item.getMeta(), "CUSTOM_MAX_DURABILITY", true);
             int defaultDurability = durabilityWrapper == null ? baseMaterial.getMaxDurability() : (int) durabilityWrapper.getValue();
             int minimum = (int) Math.round(Math.max(1, minimumFraction * defaultDurability));
             int newMaxDurability = Math.max(minimum, (int) Math.round(scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf(quality)), defaultDurability)));
             double fraction;
             if (hasCustomDurability(item.getMeta())){
-                fraction = (double) getDurability(item.getMeta(), false) / (double) getDurability(item.getMeta(), true);
+                fraction = (double) getDurability(item, false) / (double) getDurability(item, true);
             } else {
                 fraction = (double) (baseMaterial.getMaxDurability() - d.getDamage()) / (double) baseMaterial.getMaxDurability();
             }

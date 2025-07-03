@@ -211,8 +211,8 @@ public class SmithingTableListener implements Listener {
                     return;
                 }
             }
-            if (CustomDurabilityManager.getDurability(result.getMeta(), true) > 0 && CustomDurabilityManager.getDurability(result.getMeta(), false) <= 0) result = null;
-            if (CustomDurabilityManager.getDurability(addition.getMeta(), true) > 0 && CustomDurabilityManager.getDurability(addition.getMeta(), false) <= 0) result = null;
+            if (CustomDurabilityManager.getDurability(result, true) > 0 && CustomDurabilityManager.getDurability(result, false) <= 0) result = null;
+            if (CustomDurabilityManager.getDurability(addition, true) > 0 && CustomDurabilityManager.getDurability(addition, false) <= 0) result = null;
             smithingAdditionInfoMap.put(p.getUniqueId(), new SmithingAdditionInfo(recipe, base.get(), originalAddition, addition.get()));
             s.setResult(result == null ? null : result.get());
         }, 1L);

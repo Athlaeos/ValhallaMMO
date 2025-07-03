@@ -37,8 +37,8 @@ public class DurabilityRepairScale extends DynamicItemModifier {
             skill += AccumulativeStatManager.getCachedStats("SMITHING_QUALITY_" + materialClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
             skillMultiplier += AccumulativeStatManager.getCachedStats("SMITHING_FRACTION_QUALITY_" + materialClass, context.getCrafter(), 10000, context.shouldExecuteUsageMechanics());
         }
-        int itemDurability = CustomDurabilityManager.getDurability(context.getItem().getMeta(), false);
-        int maxDurability = CustomDurabilityManager.getDurability(context.getItem().getMeta(), true);
+        int itemDurability = CustomDurabilityManager.getDurability(context.getItem(), false);
+        int maxDurability = CustomDurabilityManager.getDurability(context.getItem(), true);
         if (itemDurability >= maxDurability) return;
         if (itemDurability > 0){
             // Item has custom durability

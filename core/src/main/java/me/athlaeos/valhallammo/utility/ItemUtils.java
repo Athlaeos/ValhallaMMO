@@ -614,10 +614,10 @@ public class ItemUtils {
      * @return true if the item would break as a result of the damage dealt, false otherwise
      */
     public static boolean damageItem(Player who, ItemStack item, int damage, EntityEffect breakEffect, boolean respectAttributes){
-        ItemMeta meta = getItemMeta(item);
-        if (meta instanceof Damageable && item.getType().getMaxDurability() > 0){
+        ItemBuilder wrapper = new ItemBuilder(item);
+        if (wrapper.getMeta() instanceof Damageable && item.getType().getMaxDurability() > 0){
             if (respectAttributes){
-                if (meta.isUnbreakable()) return false;
+                if (wrapper.getMeta().isUnbreakable()) return false;
                 int unbreakableLevel = item.getEnchantmentLevel(EnchantmentMappings.UNBREAKING.getEnchantment());
                 if (unbreakableLevel > 0){
                     double damageChance = 1D / (unbreakableLevel + 1D);
@@ -628,8 +628,8 @@ public class ItemUtils {
             PlayerItemDamageEvent event = new PlayerItemDamageEvent(who, item, damage);
             Bukkit.getPluginManager().callEvent(event);
             if (!event.isCancelled()){
-                if (!CustomDurabilityManager.hasCustomDurability(meta)){
-                    Damageable damageable = (Damageable) meta;
+                if (!CustomDurabilityManager.hasCustomDurability(wrapper.getMeta())){
+                    Damageable damageable = (Damageable) wrapper.getMeta();
                     damageable.setDamage(damageable.getDamage() + event.getDamage());
                     if (damageable.getDamage() > item.getType().getMaxDurability()){
                         who.playEffect(breakEffect);
@@ -638,7 +638,7 @@ public class ItemUtils {
                         setMetaNoClone(item, damageable);
                     }
                 } else {
-                    if (CustomDurabilityManager.getDurability(meta, false) <= 0){
+                    if (CustomDurabilityManager.getDurability(wrapper, false) <= 0){
                         who.playEffect(breakEffect);
                         return true;
                     }

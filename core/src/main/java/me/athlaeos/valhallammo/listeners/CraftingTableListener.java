@@ -261,11 +261,11 @@ public class CraftingTableListener implements Listener {
                         ItemBuilder first = matrixMeta.get(i);
                         if (first == null) continue;
                         if (firstItemMaxDurability < 0) {
-                            firstItemMaxDurability = CustomDurabilityManager.getDurability(first.getMeta(), true);
+                            firstItemMaxDurability = CustomDurabilityManager.getDurability(first, true);
                             firstItem = item.clone();
                             firstBuilder = first;
                         }
-                        combinedDurability += CustomDurabilityManager.getDurability(first.getMeta(), false);
+                        combinedDurability += CustomDurabilityManager.getDurability(first, false);
                     }
                 }
                 // first non-empty item will be used as result

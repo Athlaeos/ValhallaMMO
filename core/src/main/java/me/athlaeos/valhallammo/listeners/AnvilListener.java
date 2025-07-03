@@ -38,7 +38,7 @@ public class AnvilListener implements Listener {
         if (!(resultBuilder.getMeta() instanceof Damageable d) || result.getType().getMaxDurability() <= 0) return;
         double fraction = (((int) result.getType().getMaxDurability() - d.getDamage()) / (double) result.getType().getMaxDurability());
 
-        int maxDurability = CustomDurabilityManager.getDurability(resultBuilder.getMeta(), true);
+        int maxDurability = CustomDurabilityManager.getDurability(resultBuilder, true);
         if (fraction >= 0.97) CustomDurabilityManager.setDurability(resultBuilder, maxDurability, maxDurability);
         else CustomDurabilityManager.setDurability(resultBuilder, fraction);
 

@@ -36,7 +36,7 @@ public class ItemDamageListener implements Listener {
 
         if (CustomDurabilityManager.hasCustomDurability(builder.getMeta())){
             CustomDurabilityManager.damage(builder, e.getDamage());
-            if (CustomDurabilityManager.getDurability(builder.getMeta(), false) > 0) {
+            if (CustomDurabilityManager.getDurability(builder, false) > 0) {
                 e.setCancelled(true);
                 ItemMeta meta = ItemUtils.getItemMeta(builder.get());
                 if (meta != null) ItemUtils.setMetaNoClone(itemStack, meta);
