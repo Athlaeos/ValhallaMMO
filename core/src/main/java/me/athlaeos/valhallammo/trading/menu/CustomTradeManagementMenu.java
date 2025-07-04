@@ -583,7 +583,8 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
         return new ItemBuilder(trade.getResult())
                 .name("&f" + trade.getID())
                 .lore(
-                        "&7Weight: " + trade.getWeight() + " (+" + trade.getDemandWeightModifier() + "/demand, up to " + trade.getDemandWeightMaxQuantity() + ")",
+                        trade.getWeight() == -1 ? ("&aTrade is always present and does take rolls") :
+                        ("&7Weight: " + trade.getWeight() + " (+" + trade.getDemandWeightModifier() + "/demand, up to " + trade.getDemandWeightMaxQuantity() + ")"),
                         "",
                         "&7Costs &e" + (trade.getScalingCostItem() == null ? "nothing" : trade.getScalingCostItem().getAmount() + "x " + ItemUtils.getItemName(new ItemBuilder(trade.getScalingCostItem()))),
                         trade.getOptionalCostItem() == null ? "&7and has no optional cost" : ("&7and " + trade.getOptionalCostItem().getAmount() + "x " + ItemUtils.getItemName(new ItemBuilder(trade.getOptionalCostItem()))),
@@ -1078,7 +1079,9 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                         .lore("",
                                 "&7Determines how rare the trade is.",
                                 "&7Higher weight means higher likelihood",
-                                "&7of occurring")
+                                "&7of occurring",
+                                "&cPutting exactly -1 guarantees the trade",
+                                "&cto be present and doesn't consume rolls")
                         .stringTag(KEY_BUTTON, "tradeWeightButton")
                         .get();
         private static final ItemStack tradeWeightQualityButton =

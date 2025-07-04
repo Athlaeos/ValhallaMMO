@@ -90,11 +90,13 @@ public class SQLite extends MerchantDataPersistence implements Database {
                 try {
                     PreparedStatement stmt = conn.prepareStatement("SELECT * FROM merchants WHERE id = ?;");
                     stmt.setString(1, id.toString());
+                    MerchantData data = null;
                     ResultSet result = stmt.executeQuery();
-                    MerchantData data = MerchantData.deserialize(result.getString("data"));
-                    allData.put(id, data);
-                    if (result.next()) callback.whenReady(data);
-                    else callback.whenReady(null);
+                    if (result.next()) {
+                        data = MerchantData.deserialize(result.getString("data"));
+                        allData.put(id, data);
+                        callback.whenReady(data);
+                    } else callback.whenReady(null);
                 } catch (SQLException ex){
                     ValhallaMMO.logSevere("SQLException when trying to fetch MerchantData with id " + id);
                     ex.printStackTrace();
