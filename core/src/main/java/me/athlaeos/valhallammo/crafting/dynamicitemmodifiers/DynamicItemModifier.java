@@ -92,7 +92,7 @@ public abstract class DynamicItemModifier {
         modifiers:
         for (DynamicItemModifier modifier : event.getModifiers()){
             if (!modifier.meetsRequirement(context)) {
-                if (context.getCrafter() != null) Utils.sendMessage(context.getCrafter(), "&cWhatever you just created was improperly configured. Please notify admin. A modifier was used that doesn't function in this context");
+                if (context.getCrafter() != null) Utils.sendMessage(context.getCrafter(), "&cWhatever you just created was improperly configured. Please notify admin. Modifier " + modifier.getClass().getSimpleName() + " was used which doesn't function in this context");
                 context.getItem().flag(CustomFlag.UNCRAFTABLE);
                 return;
             }
