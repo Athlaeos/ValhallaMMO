@@ -39,7 +39,7 @@ public class CustomItemRegistry {
     }
 
     public static ItemStack getProcessedItem(String id){
-        return getProcessedItem(id, null);
+        return getProcessedItem(id, (Player) null);
     }
 
     public static ItemStack getProcessedItem(String id, Player p){
@@ -47,6 +47,14 @@ public class CustomItemRegistry {
         if (item == null) return null;
         ItemBuilder builder = new ItemBuilder(item.getItem().clone());
         DynamicItemModifier.modify(ModifierContext.builder(builder).crafter(p).executeUsageMechanics().validate().get(), item.getModifiers());
+        return builder.get();
+    }
+
+    public static ItemStack getProcessedItem(String id, ModifierContext context){
+        CustomItem item = items.get(id);
+        if (item == null) return null;
+        ItemBuilder builder = new ItemBuilder(item.getItem().clone());
+        DynamicItemModifier.modify(context, item.getModifiers());
         return builder.get();
     }
 

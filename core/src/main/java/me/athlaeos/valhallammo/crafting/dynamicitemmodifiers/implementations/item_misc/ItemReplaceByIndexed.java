@@ -11,7 +11,6 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,7 +25,7 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
 
     @Override
     public void processItem(ModifierContext context) {
-        ItemStack customItem = CustomItemRegistry.getProcessedItem(item, context.getCrafter());
+        ItemStack customItem = CustomItemRegistry.getProcessedItem(item, context);
         if (ItemUtils.isEmpty(customItem)) return;
         context.getItem().setItem(customItem);
         context.getItem().setMeta(ItemUtils.getItemMeta(customItem));
@@ -34,7 +33,7 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
 
     @Override
     public ItemStack getNewResult(ModifierContext context) {
-        return item == null ? null : CustomItemRegistry.getProcessedItem(item, context.getCrafter());
+        return item == null ? null : CustomItemRegistry.getProcessedItem(item, context);
     }
 
     @Override
