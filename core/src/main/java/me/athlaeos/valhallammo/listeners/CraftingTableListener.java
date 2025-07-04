@@ -46,8 +46,8 @@ public class CraftingTableListener implements Listener {
             DynamicGridRecipe recipe = CustomRecipeRegistry.getGridRecipesByKey().get(((Keyed) e.getRecipe()).getKey());
             if (recipe == null) return; // not a valhalla recipe, don't do anything
             CraftingInventory inventory = e.getInventory();
-            if (((inventory.getLocation() != null && inventory.getLocation().getWorld() != null && ValhallaMMO.isWorldBlacklisted(inventory.getLocation().getWorld().getName())) ||
-                    (WorldGuardHook.inDisabledRegion(inventory.getLocation(), WorldGuardHook.VMMO_CRAFTING_CRAFTINGTABLE))) || inventory.getResult() == null) {
+            if ((ValhallaMMO.isWorldBlacklisted(crafter.getWorld().getName()) ||
+                    WorldGuardHook.inDisabledRegion(inventory.getLocation(), WorldGuardHook.VMMO_CRAFTING_CRAFTINGTABLE)) || inventory.getResult() == null) {
                 // If the recipe or the player's profile are null, the player hasn't unlocked
                 // the recipe, the world is blacklisted, or the location is in a region which blocks custom recipes,
                 // nullify result
@@ -291,7 +291,7 @@ public class CraftingTableListener implements Listener {
             DynamicGridRecipe recipe = CustomRecipeRegistry.getGridRecipesByKey().get(((Keyed) crafted).getKey());
             if (recipe == null) return; // not a valhalla recipe, don't do anything
 
-            if (crafter == null){
+            if (crafter == null || ValhallaMMO.isWorldBlacklisted(crafter.getWorld().getName())){
                 inventory.setResult(null);
                 return;
             }
