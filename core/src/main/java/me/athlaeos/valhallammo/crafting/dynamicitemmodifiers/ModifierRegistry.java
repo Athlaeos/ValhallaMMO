@@ -210,6 +210,7 @@ public class ModifierRegistry {
 
         register(new MerchantSmithingQualitySet("merchant_smithing_skill"));
         register(new MerchantAlchemyQualitySet("merchant_alchemy_skill"));
+        register(new MerchantEnchantRandomly("merchant_enchant_randomly"));
     }
 
     public static void register(DynamicItemModifier m) {

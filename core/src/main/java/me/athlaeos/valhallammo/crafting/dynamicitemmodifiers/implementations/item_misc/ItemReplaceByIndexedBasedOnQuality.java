@@ -118,7 +118,7 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
         return new Pair<>(6,
                 new ItemBuilder(Material.ENDER_CHEST)
                         .name("&fWhich item?")
-                        .lore("&fItem set to &e" + items,
+                        .lore("&fItem set to &e" + currentItem,
                                 "&7If the smithing quality of the item",
                                 "&7has exceeded " + currentQuality + ", it is",
                                 "&7replaced with " + currentItem,
@@ -138,7 +138,10 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
                 new Pair<>(8,
                         new ItemBuilder(Material.EMERALD)
                                 .name("&fAdd Selection")
-                                .lore("&fItem set to &e" + items,
+                                .lore("&fCurrent setup:")
+                                .appendLore(lore)
+                                .appendLore(
+                                        "",
                                         "&7If the smithing quality of the item",
                                         "&7has exceeded " + currentQuality + ", it is",
                                         "&7replaced with " + currentItem,

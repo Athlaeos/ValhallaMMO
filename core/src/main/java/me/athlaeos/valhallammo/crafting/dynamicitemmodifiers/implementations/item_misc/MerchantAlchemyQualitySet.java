@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.AlchemyItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.trading.dom.MerchantLevel;
@@ -35,7 +36,7 @@ public class MerchantAlchemyQualitySet extends DynamicItemModifier {
         if (data == null) return;
         MerchantLevel level = CustomMerchantManager.getLevel(data);
         if (level == null) return;
-        AlchemyItemPropertyManager.setQuality(context.getItem(), qualityMap.get(level));
+        AlchemyItemPropertyManager.setQuality(context.getItem(), (int) Math.round(qualityMap.get(level) * (1 + AccumulativeStatManager.getCachedStats("TRADING_SKILL_MULTIPLIER", context.getCrafter(), 10000, true))));
     }
 
     @Override
