@@ -33,7 +33,8 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
 
     @Override
     public ItemStack getNewResult(ModifierContext context) {
-        return item == null ? null : CustomItemRegistry.getProcessedItem(item, context);
+        CustomItem item = CustomItemRegistry.getItem(this.item);
+        return item == null ? null : item.getItem();
     }
 
     @Override
