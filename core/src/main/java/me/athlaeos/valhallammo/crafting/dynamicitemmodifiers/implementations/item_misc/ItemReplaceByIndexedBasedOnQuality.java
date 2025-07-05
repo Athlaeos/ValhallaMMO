@@ -43,7 +43,7 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
         }
         String item = items.get(highestItem);
         if (item == null) return;
-        ItemStack customItem = CustomItemRegistry.getProcessedItem(item, context.getCrafter());
+        ItemStack customItem = CustomItemRegistry.getProcessedItem(item, context);
         if (ItemUtils.isEmpty(customItem)) return;
         context.getItem().setItem(customItem);
         context.getItem().setMeta(ItemUtils.getItemMeta(customItem));
@@ -65,7 +65,7 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
             highestItem = i;
         }
         String customItem = items.get(highestItem);
-        return customItem == null ? context.getItem().get() : CustomItemRegistry.getProcessedItem(customItem, context.getCrafter());
+        return customItem == null ? context.getItem().get() : CustomItemRegistry.getProcessedItem(customItem, context);
     }
 
     @Override

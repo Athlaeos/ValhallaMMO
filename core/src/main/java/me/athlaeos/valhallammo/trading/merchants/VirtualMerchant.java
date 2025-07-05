@@ -21,10 +21,10 @@ public abstract class VirtualMerchant {
     private boolean changeRecipes = true;
 
     public VirtualMerchant(PlayerMenuUtility utility, UUID merchantID, MerchantData data, List<MerchantRecipe> recipes){
+        this.data = data;
         this.playerMenuUtility = utility;
         this.merchantID = merchantID;
         this.merchant = Bukkit.createMerchant(getMenuName());
-        this.data = data;
         this.recipes = recipes;
     }
 

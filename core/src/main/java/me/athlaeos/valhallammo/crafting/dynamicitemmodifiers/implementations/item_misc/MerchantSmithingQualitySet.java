@@ -1,4 +1,4 @@
-package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_misc;
+package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc;
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
