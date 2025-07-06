@@ -54,7 +54,9 @@ public class CustomItemRegistry {
         CustomItem item = items.get(id);
         if (item == null) return null;
         ItemBuilder builder = new ItemBuilder(item.getItem().clone());
-        DynamicItemModifier.modify(context, item.getModifiers());
+        ModifierContext.ModifierContextBuilder contextBuilder = context.toBuilder();
+        contextBuilder.item(builder);
+        DynamicItemModifier.modify(contextBuilder.get(), item.getModifiers());
         return builder.get();
     }
 

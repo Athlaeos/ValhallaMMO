@@ -49,6 +49,7 @@ public class Trust implements HappinessSource, Listener {
     public float get(Player contextPlayer, Entity entity) {
         if (contextPlayer == null || !(entity instanceof AbstractVillager villager)) return 0;
         long time = getHarmed(contextPlayer, villager);
+        if (time < 0) return trustingHappiness;
         long difference = CustomMerchantManager.time() - time;
         if (difference <= distrustingTime) return distrustingHappiness;
         else if (difference >= trustingTime) return trustingHappiness;

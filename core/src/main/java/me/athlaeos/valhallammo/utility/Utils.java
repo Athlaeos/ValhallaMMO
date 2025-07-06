@@ -411,6 +411,33 @@ public class Utils {
         return selectedEntries;
     }
 
+    public static <T extends Weighted> List<T> weightedSelectionNoDuplicates(Collection<T> entries, int rolls, double luck, double fortune){
+        // weighted selection
+        double totalWeight = 0;
+        List<T> selectedEntries = new ArrayList<>();
+        Collection<T> remainingEntries = new HashSet<>(entries);
+        if (entries.isEmpty()) return selectedEntries;
+        for (int i = 0; i < rolls; i++){
+            if (remainingEntries.isEmpty()) return selectedEntries;
+            List<Pair<T, Double>> totalEntries = new ArrayList<>();
+            for (T entry : remainingEntries){
+                totalWeight += entry.getWeight(luck, fortune);
+                totalEntries.add(new Pair<>(entry, totalWeight));
+            }
+
+            double random = Utils.getRandom().nextDouble() * totalWeight;
+            for (Pair<T, Double> pair : totalEntries){
+                if (pair.getTwo() >= random) {
+                    selectedEntries.add(pair.getOne());
+                    remainingEntries.remove(pair.getOne());
+                    break;
+                }
+            }
+        }
+
+        return selectedEntries;
+    }
+
     /**
      * Quicker method to check if the server is using 1.20.5 and above, which would result in different mappings
      */

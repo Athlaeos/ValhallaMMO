@@ -60,6 +60,13 @@ public class MerchantData {
         if (!playerMemory.containsKey(player)) playerMemory.put(player, new MerchantPlayerMemory());
         return playerMemory.get(player);
     }
+
+    public void setTrades(Collection<TradeData> trades) {
+        this.trades.clear();
+        for (TradeData datum : trades)
+            this.trades.put(datum.getTrade(), datum);
+    }
+
     public Map<UUID, MerchantPlayerMemory> getPlayerMemory() {
         return playerMemory;
     }

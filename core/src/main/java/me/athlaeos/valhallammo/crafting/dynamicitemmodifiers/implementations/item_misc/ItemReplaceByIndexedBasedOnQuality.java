@@ -195,6 +195,10 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
         this.items.putAll(items);
     }
 
+    public Map<Integer, String> getItems() {
+        return items;
+    }
+
     @Override
     public DynamicItemModifier copy() {
         ItemReplaceByIndexedBasedOnQuality m = new ItemReplaceByIndexedBasedOnQuality(getName());

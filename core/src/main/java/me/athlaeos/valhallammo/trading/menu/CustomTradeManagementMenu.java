@@ -527,7 +527,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     currentTrade.getPredicates().forEach(p -> predicateLore.addAll(StringUtils.separateStringIntoLines("&d> " + p.getActiveDescription(), 40)));
                     inventory.setItem(0, new ItemBuilder(Buttons.tradePredicatesButton).placeholderLore("%predicates%", predicateLore).get());
                     inventory.setItem(1, new ItemBuilder(Buttons.tradePredicateModeButton).prependLore("&e" + currentTrade.getPredicateSelection()).get());
-                    String weight = String.format("&8%.1f + %.2f/demand, up to %d, +%.1f/luck", currentTrade.getWeight(), currentTrade.getDemandWeightModifier(), currentTrade.getDemandWeightMaxQuantity(), currentTrade.getWeightQuality());
+                    String weight = ((int) currentTrade.getWeight()) == -1 ? "&aAlways present" : String.format("&8%.1f + %.2f/demand, up to %d, +%.1f/luck", currentTrade.getWeight(), currentTrade.getDemandWeightModifier(), currentTrade.getDemandWeightMaxQuantity(), currentTrade.getWeightQuality());
                     inventory.setItem(2, new ItemBuilder(Buttons.tradeWeightButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getWeight()), weight).get());
                     inventory.setItem(3, new ItemBuilder(Buttons.tradeWeightQualityButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getWeightQuality()), weight).get());
 
@@ -583,8 +583,8 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
         return new ItemBuilder(trade.getResult())
                 .name("&f" + trade.getID())
                 .lore(
-                        trade.getWeight() == -1 ? ("&aTrade is always present and does take rolls") :
-                        ("&7Weight: " + trade.getWeight() + " (+" + trade.getDemandWeightModifier() + "/demand, up to " + trade.getDemandWeightMaxQuantity() + ")"),
+                        ((int) trade.getWeight()) == -1 ? ("&aTrade is always present and does take rolls") :
+                        ("&7Weight: " + String.format("%.2f", trade.getWeight()) + " (+" + String.format("%.2f", trade.getDemandWeightModifier()) + "/demand, up to " + trade.getDemandWeightMaxQuantity() + ")"),
                         "",
                         "&7Costs &e" + (trade.getScalingCostItem() == null ? "nothing" : trade.getScalingCostItem().getAmount() + "x " + ItemUtils.getItemName(new ItemBuilder(trade.getScalingCostItem()))),
                         trade.getOptionalCostItem() == null ? "&7and has no optional cost" : ("&7and " + trade.getOptionalCostItem().getAmount() + "x " + ItemUtils.getItemName(new ItemBuilder(trade.getOptionalCostItem()))),

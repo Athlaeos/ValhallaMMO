@@ -83,7 +83,6 @@ public class ServiceUpgradingMenu extends Menu {
         } else if (e.getRawSlot() == indexOutput) {
             if (selectedService == null || ItemUtils.isEmpty(input)) {
                 setMenuItems();
-                System.out.println("input null");
                 return;
             }
             Map<ItemStack, Integer> cost = new HashMap<>(Map.of(selectedService.getCost().getItem(), getCostQuantity(selectedService)));
@@ -91,7 +90,6 @@ public class ServiceUpgradingMenu extends Menu {
                 // first check if player can afford it. cancel if not
                 e.setCancelled(true);
                 setMenuItems();
-                System.out.println("cant afford");
                 Utils.sendMessage(playerMenuUtility.getOwner(), TranslationManager.getTranslation("service_upgrading_cant_afford"));
                 return;
             }
@@ -99,7 +97,6 @@ public class ServiceUpgradingMenu extends Menu {
 
             if (clicked == null || CustomFlag.hasFlag(clicked.getMeta(), CustomFlag.UNCRAFTABLE)) {
                 e.setCancelled(true);
-                System.out.println("invalid modifiers 1");
             } else {
                 ItemBuilder testOutput = new ItemBuilder(input);
                 DynamicItemModifier.modify(ModifierContext.builder(testOutput)
@@ -109,7 +106,6 @@ public class ServiceUpgradingMenu extends Menu {
                         .validate()
                         .get(), selectedService.getModifiers());
                 if (CustomFlag.hasFlag(testOutput.getMeta(), CustomFlag.UNCRAFTABLE)) {
-                    System.out.println("invalid modifiers 2");
                     e.setCancelled(true);
                 } else {
                     ItemBuilder finalOutput = new ItemBuilder(input);
@@ -152,7 +148,6 @@ public class ServiceUpgradingMenu extends Menu {
                 return;
             }
         } else {
-            System.out.println("something else");
             ItemUtils.calculateClickEvent(e, 1, indexInput);
             ItemStack input = inventory.getItem(indexInput);
             if (ItemUtils.isEmpty(input)) {
