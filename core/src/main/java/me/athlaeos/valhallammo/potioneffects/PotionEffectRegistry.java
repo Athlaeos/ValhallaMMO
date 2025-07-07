@@ -414,7 +414,7 @@ public class PotionEffectRegistry {
         if (effects == null || effects.isEmpty()) {
             clean(item);
         } else {
-            if (item instanceof PotionMeta p) p.clearCustomEffects();
+            if (item.getMeta() instanceof PotionMeta p) p.clearCustomEffects();
             registeredEffects.values().stream().filter(w -> effects.containsKey(w.getEffect())).forEach(w -> w.onRemove(item));
 
             Map<String, PotionEffectWrapper> defaultEffects = getStoredEffects(item.getMeta(), true);
@@ -435,12 +435,12 @@ public class PotionEffectRegistry {
                     int amplifier = Math.max(0, (int) Math.floor(effect.getAmplifier()));
                     int duration = (int) effect.getDuration();
 
-                    if (item instanceof PotionMeta p) p.addCustomEffect(new PotionEffect(effect.getVanillaEffect(), duration, amplifier), true);
+                    if (item.getMeta() instanceof PotionMeta p) p.addCustomEffect(new PotionEffect(effect.getVanillaEffect(), duration, amplifier), true);
                 }
                 effect.onApply(item);
             }
 
-            if (item instanceof PotionMeta p) ValhallaMMO.getNms().setPotionType(p, MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? null : PotionType.valueOf("UNCRAFTABLE"));
+            if (item.getMeta() instanceof PotionMeta p) ValhallaMMO.getNms().setPotionType(p, MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? null : PotionType.valueOf("UNCRAFTABLE"));
             item.stringTag(ACTUAL_STORED_EFFECTS,
                     effects.values().stream()
                             .filter(e -> !exclude.contains(e.getEffect()))
@@ -563,7 +563,7 @@ public class PotionEffectRegistry {
     public static void clean(ItemBuilder item){
         item.getMeta().getPersistentDataContainer().remove(DEFAULT_STORED_EFFECTS);
         item.getMeta().getPersistentDataContainer().remove(ACTUAL_STORED_EFFECTS);
-        if (item instanceof PotionMeta p) p.clearCustomEffects();
+        if (item.getMeta() instanceof PotionMeta p) p.clearCustomEffects();
         registeredEffects.values().forEach(a -> a.onRemove(item));
     }
 
@@ -815,7 +815,7 @@ public class PotionEffectRegistry {
                 ChatColor.stripColor(item.getName()).contains(ChatColor.stripColor(Utils.chat(plainFormat.replace("%effect%", ""))))){
             Map<String, PotionEffectWrapper> effects = getStoredEffects(item.getMeta(), true);
             if (effects.isEmpty()) {
-                PotionType type = item instanceof PotionMeta pm ? ValhallaMMO.getNms().getPotionType(pm) : null;
+                PotionType type = item.getMeta() instanceof PotionMeta pm ? ValhallaMMO.getNms().getPotionType(pm) : null;
                 if (type != null) {
                     for (PotionTypeEffectWrapper typeWrapper : typeToEffectWrappings.getOrDefault(type, new HashMap<>()).values()){
                         PotionEffectWrapper effectWrapper = typeWrapper.potionEffectType == null ? null : getEffect(typeWrapper.potionEffectType);
@@ -847,7 +847,7 @@ public class PotionEffectRegistry {
         if (ChatColor.stripColor(item.getName()).contains(ChatColor.stripColor(Utils.chat(plainFormat.replace("%effect%", ""))))){
             Map<String, PotionEffectWrapper> effects = getStoredEffects(item.getMeta(), true);
             if (effects.isEmpty()) {
-                PotionType type = item instanceof PotionMeta pm ? ValhallaMMO.getNms().getPotionType(pm) : null;
+                PotionType type = item.getMeta() instanceof PotionMeta pm ? ValhallaMMO.getNms().getPotionType(pm) : null;
                 if (type != null) {
                     for (PotionTypeEffectWrapper typeWrapper : typeToEffectWrappings.getOrDefault(type, new HashMap<>()).values()){
                         PotionEffectWrapper effectWrapper = typeWrapper.potionEffectType == null ? null : getEffect(typeWrapper.potionEffectType);
