@@ -1,127 +1,105 @@
 package me.athlaeos.valhallammo;
 
-import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierPriority;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.crafting_conditionals.SmithingTagsAdd;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.crafting_conditionals.SmithingTagsLevelRequirement;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.*;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
-import me.athlaeos.valhallammo.dom.Pair;
-import me.athlaeos.valhallammo.item.CustomItem;
-import me.athlaeos.valhallammo.item.CustomItemRegistry;
-import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
-import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
+import me.athlaeos.valhallammo.trading.CustomMerchantManager;
+import me.athlaeos.valhallammo.trading.dom.MerchantLevel;
+import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
+import me.athlaeos.valhallammo.trading.dom.MerchantType;
+import me.athlaeos.valhallammo.trading.dom.ProfessionWrapper;
 import org.bukkit.Material;
-import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+public class Scripts implements Listener {
+    private static final QuickTrade[] args = new QuickTrade[]{
+            new QuickTrade("armorer_sell_diamond", ProfessionWrapper.ARMORER, MerchantLevel.EXPERT, "12x 100% 1-10%-2xDIAMOND for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=3"),
+            new QuickTrade("armorer_diamond_helmet", ProfessionWrapper.ARMORER, MerchantLevel.EXPERT, "2x W25 25-25%-40xDIAMOND for 1xDIAMOND_HELMET G5 EXP=1600 ENCH=32 VIL=12"),
+            new QuickTrade("armorer_diamond_chestplate", ProfessionWrapper.ARMORER, MerchantLevel.EXPERT, "2x W25 40-25%-64xEMERALD for 1xDIAMOND_CHESTPLATE G5 EXP=1600 ENCH=32 VIL=12"),
+            new QuickTrade("armorer_diamond_leggings", ProfessionWrapper.ARMORER, MerchantLevel.EXPERT, "2x W25 35-25%-54xEMERALD for 1xDIAMOND_LEGGINGS G5 EXP=1600 ENCH=32 VIL=12"),
+            new QuickTrade("armorer_diamond_boots", ProfessionWrapper.ARMORER, MerchantLevel.EXPERT, "2x W25 20-25%-32xEMERALD for 1xDIAMOND_BOOTS G5 EXP=1600 ENCH=32 VIL=12"),
+            new QuickTrade("armorer_buy_netherite_scrap", ProfessionWrapper.ARMORER, MerchantLevel.MASTER, "1x 100% 32-25%-64xEMERALD for 1xNETHERITE_SCRAP NOGIFT EXP=1600 ENCH=32 VIL=12"),
+            new QuickTrade("armorer_royal_diamond_helmet", ProfessionWrapper.ARMORER, MerchantLevel.MASTER, "E1x W25 10-0%-10xEMERALD_BLOCK for 1xDIAMOND_HELMET NOGIFT EXP=3200 ENCH=50 VIL=32"),
+            new QuickTrade("armorer_royal_diamond_chestplate", ProfessionWrapper.ARMORER, MerchantLevel.MASTER, "E1x W25 16-0%-16xEMERALD_BLOCK for 1xDIAMOND_CHESTPLATE NOGIFT EXP=3200 ENCH=50 VIL=32"),
+            new QuickTrade("armorer_royal_diamond_leggings", ProfessionWrapper.ARMORER, MerchantLevel.MASTER, "E1x W25 14-0%-14xEMERALD_BLOCK for 1xDIAMOND_LEGGINGS NOGIFT EXP=3200 ENCH=50 VIL=32"),
+            new QuickTrade("armorer_royal_diamond_boots", ProfessionWrapper.ARMORER, MerchantLevel.MASTER, "E1x W25 8-0%-8xEMERALD_BLOCK for 1xDIAMOND_BOOTS NOGIFT EXP=3200 ENCH=50 VIL=32")
+    };
 
-public class Scripts {
-    private static final Map<String, Pair<ItemStack, IngredientChoice>> classifications = new HashMap<>();
-    static {
-        classifications.put("tools", new Pair<>(new ItemStack(Material.IRON_PICKAXE), new ToolChoice()));
-        classifications.put("melee", new Pair<>(new ItemStack(Material.IRON_SWORD), new MeleeWeaponChoice()));
-        classifications.put("weapons", new Pair<>(new ItemStack(Material.IRON_SWORD), new WeaponChoice()));
-        classifications.put("ranged", new Pair<>(new ItemStack(Material.BOW), new ConfigurableMaterialsChoice().setValidChoices(Set.of(Material.BOW, Material.CROSSBOW))));
-        classifications.put("armor", new Pair<>(new ItemStack(Material.IRON_CHESTPLATE), new ArmorChoice()));
-        classifications.put("any", new Pair<>(new ItemStack(Material.IRON_PICKAXE), new ToolArmorChoice()));
-        classifications.put("helmets", new Pair<>(new ItemStack(Material.IRON_HELMET), new SimilarMaterialsChoice()));
-        classifications.put("chestplates", new Pair<>(new ItemStack(Material.IRON_CHESTPLATE), new SimilarMaterialsChoice()));
-        classifications.put("leggings", new Pair<>(new ItemStack(Material.IRON_LEGGINGS), new SimilarMaterialsChoice()));
-        classifications.put("boots", new Pair<>(new ItemStack(Material.IRON_BOOTS), new SimilarMaterialsChoice()));
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent e){
+        if (e.getMessage().startsWith("runthing"))
+            run();
     }
 
-    public static void createUpgradeRecipe(String attribute, String on, int tag, int maxLevel, double value){
-        String name = "tinker_upgrade_" + attribute.toLowerCase(java.util.Locale.US);
-        DynamicGridRecipe recipe = new DynamicGridRecipe(name);
-        recipe.setShapeless(true);
-        recipe.setRequireValhallaTools(true);
-        recipe.setTinker(true);
-        recipe.setUnlockedForEveryone(true);
-
-        Map<Integer, SlotEntry> items = new HashMap<>();
-        Pair<ItemStack, IngredientChoice> matchDetails = classifications.get(on);
-        if (matchDetails == null) {
-            ValhallaMMO.getInstance().getServer().broadcastMessage("Failed");
-            return;
+    public static void run(){
+        for (ProfessionWrapper profession : ProfessionWrapper.values()){
+            String id = String.format("%s_simple", profession.toString().toLowerCase());
+            if (CustomMerchantManager.getMerchantType(id) == null)
+                CustomMerchantManager.registerMerchantType(new MerchantType(id));
         }
-        items.put(4, new SlotEntry(matchDetails.getOne(), matchDetails.getTwo()));
-        recipe.setItems(items);
 
-        List<DynamicItemModifier> modifiers = new ArrayList<>();
-        SmithingTagsLevelRequirement m1 = (SmithingTagsLevelRequirement) ModifierRegistry.createModifier("smithing_tags_require_with_levels");
-        m1.setTags(Set.of(new SmithingTagsLevelRequirement.LevelRequirement(tag, maxLevel - 1, true), new SmithingTagsLevelRequirement.LevelRequirement(8, 1, false)));
-        m1.setPriority(ModifierPriority.SOONEST);
-        modifiers.add(m1);
-        SmithingTagsAdd m2 = (SmithingTagsAdd) ModifierRegistry.createModifier("smithing_tags_add");
-        m2.setPriority(ModifierPriority.SOON);
-        m2.setNewTags(Map.of(tag, 1, 8, -1));
-        modifiers.add(m2);
-        DefaultAttributeAdd m3 = (DefaultAttributeAdd) ModifierRegistry.createModifier("attribute_add_" + attribute.toLowerCase(java.util.Locale.US));
-        m3.setValue(value);
-        m3.setHidden(false);
-        m3.setAdd(true);
-        m3.setPriority(ModifierPriority.NEUTRAL);
-        modifiers.add(m3);
+        for (QuickTrade trade : args){
+            if (CustomMerchantManager.getTrade(trade.id) != null) continue;
+            String id = String.format("%s_simple", trade.profession.toString().toLowerCase());
+            MerchantTrade t = parse(trade.id, trade.arg);
+            CustomMerchantManager.registerTrade(t);
 
-        DynamicItemModifier.sortModifiers(modifiers);
-        recipe.setModifiers(modifiers);
+            MerchantType type = CustomMerchantManager.getMerchantType(id);
+            type.addTrade(trade.level, t);
+        }
 
-        CustomRecipeRegistry.register(recipe, true);
-        ValhallaMMO.getInstance().getServer().broadcastMessage("Recipe created");
+        ValhallaMMO.getInstance().getServer().broadcast("Done!", "Done!");
     }
 
-    // the following script was used to quickly transfer all custom items from recipes to the custom item registry, for ease of access ingame
-    public static void convert(){
-        Collection<DynamicGridRecipe> skillScalingRecipes = new HashSet<>();
+    private static MerchantTrade parse(String name, String arg){
+        String[] args = arg.split(" ");
+        boolean exclusive = args[0].startsWith("E");
+        int quant = Integer.parseInt(args[0].replace("E", "").replace("x", ""));
+        float weight = args[1].equalsIgnoreCase("100%") ? -1 : Float.parseFloat(args[1].replace("W", ""));
 
-        for (DynamicGridRecipe recipe : CustomRecipeRegistry.getGridRecipes().values()){
-            if (!recipe.getName().contains("craft_")) continue;
-            CustomItem item = CustomItemRegistry.register(recipe.getName().replace("craft_", ""), recipe.getResult());
-            List<DynamicItemModifier> modifiers = new ArrayList<>(recipe.getModifiers().stream()
-                    .filter(m -> {
-                        if (!(m instanceof DefaultAttributeScale) &&
-                                !(m instanceof SkillExperience) &&
-                                !(m instanceof SmithingNeutralQualitySet) &&
-                                !(m instanceof SmithingQualityScale) &&
-                                !(m instanceof DurabilityScale)){
-                            skillScalingRecipes.add(recipe);
-                            return true;
-                        } else return false;
-                    }).map(DynamicItemModifier::copy).toList());
+        Material priceItem = Material.valueOf(args[2].split("x")[1]);
+        String[] priceArgs = args[2].split("x")[0].split("-");
+        int priceLowest = Integer.parseInt(priceArgs[0]);
+        float priceDemandStep = Float.parseFloat(priceArgs[1].replace("%", "")) / 100;
+        int priceHighest = Integer.parseInt(priceArgs[2]);
 
-            if (modifiers.stream().noneMatch(m -> m instanceof DefaultAttributeAdd)){
-                for (AttributeWrapper wrapper : ItemAttributesRegistry.getVanillaStats(recipe.getResult().getType()).values()){
-                    DefaultAttributeAdd modifier = (DefaultAttributeAdd) ModifierRegistry.createModifier("attribute_add_" + wrapper.getAttribute().toLowerCase(java.util.Locale.US));
-                    modifier.setPriority(ModifierPriority.NEUTRAL);
-                    modifier.setValue(wrapper.getValue());
-                    modifier.setOperation(AttributeModifier.Operation.ADD_NUMBER);
-                    modifiers.add(0, modifier);
-                }
-            }
+        int resultQuantity = Integer.parseInt(args[4].split("x")[0]);
+        Material resultItem = Material.valueOf(args[4].split("x")[1]);
 
-            item.setModifiers(modifiers);
+        float giftWeight = args[5].equalsIgnoreCase("nogift") ? 0 : Float.parseFloat(args[5]);
+        float skillExp = Float.parseFloat(args[5].replace("EXP=", ""));
+        float enchantingExp = Float.parseFloat(args[6].replace("ENCH=", ""));
+        int merchantExp = Integer.parseInt(args[7].replace("VIL=", ""));
+
+        MerchantTrade trade = new MerchantTrade(name);
+        trade.setMaxOrderCount(quant);
+        trade.setSkillExp(skillExp);
+        trade.setPriceRandomNegativeOffset(-1);
+        trade.setPriceRandomPositiveOffset(1);
+        trade.setEnchantingExperience(enchantingExp);
+        trade.setDemandPriceMax(priceHighest - priceLowest);
+        trade.setDemandPriceMultiplier(priceDemandStep);
+        trade.setVillagerExperience(merchantExp);
+        trade.setRefreshes(true);
+        trade.setGiftWeight(giftWeight);
+        trade.setScalingCostItem(new ItemStack(priceItem, priceLowest));
+        trade.setWeight(weight);
+        trade.setResult(new ItemStack(resultItem, resultQuantity));
+        trade.setExclusive(exclusive);
+        return trade;
+    }
+
+    private static class QuickTrade{
+        private final String id;
+        private final ProfessionWrapper profession;
+        private final MerchantLevel level;
+        private final String arg;
+
+        private QuickTrade(String id, ProfessionWrapper profession, MerchantLevel level, String arg){
+            this.id = id;
+            this.profession = profession;
+            this.level = level;
+            this.arg = arg;
         }
-
-        for (DynamicGridRecipe recipe : skillScalingRecipes){
-            CustomItem item = CustomItemRegistry.register(recipe.getName().replace("craft_", "") + "_scaling_with_skill", recipe.getResult());
-            List<DynamicItemModifier> modifiers = new ArrayList<>(recipe.getModifiers().stream()
-                    .filter(m -> !(m instanceof SkillExperience)).map(DynamicItemModifier::copy).toList());
-
-            item.setModifiers(modifiers);
-        }
-
-        CustomItemRegistry.saveItems();
     }
 }

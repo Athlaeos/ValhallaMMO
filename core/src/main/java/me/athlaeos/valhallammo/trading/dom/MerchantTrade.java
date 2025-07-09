@@ -18,6 +18,7 @@ import java.util.List;
 
 public class MerchantTrade implements Weighted {
     private final String id;
+    private int priority = 0; // sorting order within villager trading GUI
     private ItemStack result = new ItemBuilder(Material.WHEAT).name("&fPlaceholder Trade").lore("&cReplace me!").get();
     private ItemStack scalingCostItem = new ItemStack(Material.EMERALD, 8);
     private ItemStack optionalCostItem = null;
@@ -88,7 +89,9 @@ public class MerchantTrade implements Weighted {
     public double getSkillExp() { return skillExp; }
     public boolean isTradeable() { return isTradeable; }
     public int getMaxOrderCount() { return maxOrderCount; }
+    public int getPriority() { return priority; }
 
+    public void setPriority(int priority) { this.priority = priority; }
     public void setFixedUseCount(boolean fixedUseCount) { this.fixedUseCount = fixedUseCount; }
     public void setResult(ItemStack result) { this.result = result; }
     public void setEnchantingExperience(float rewardsExperience) { this.rewardsExperience = rewardsExperience; }
@@ -140,5 +143,9 @@ public class MerchantTrade implements Weighted {
             case ALL -> predicates.stream().allMatch(p -> p.test(context));
             case ANY -> predicates.stream().anyMatch(p -> p.test(context));
         };
+    }
+
+    public boolean isGuaranteedPresent(){
+        return weight < -0.98 && weight > -1.02;
     }
 }

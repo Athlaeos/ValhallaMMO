@@ -77,46 +77,46 @@ public class MerchantEnchantRandomly extends DynamicItemModifier {
 
     @Override
     public Map<Integer, ItemStack> getButtons() {
-        return new Pair<>(5,
+        return new Pair<>(15,
                 new ItemBuilder(Material.PAPER)
                         .name("&eWhat quality should novices get?")
-                        .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.NOVICE, 0) + "&f quality to the item",
+                        .lore("&fEnchants at &e" + qualityMap.getOrDefault(MerchantLevel.NOVICE, 0) + "&f enchantment skill",
                                 "&fif the merchant is a NOVICE",
                                 "",
                                 "&6Click to add/subtract 1",
                                 "&6Shift-Click to add/subtract 10")
                         .get()).map(Set.of(
-                new Pair<>(6,
+                new Pair<>(16,
                         new ItemBuilder(Material.PAPER)
                                 .name("&eWhat quality should novices get?")
-                                .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.APPRENTICE, 0) + "&f quality to the item",
+                                .lore("&fEnchants at &e" + qualityMap.getOrDefault(MerchantLevel.APPRENTICE, 0) + "&f enchantment skill",
                                         "&fif the merchant is a APPRENTICE",
                                         "",
                                         "&6Click to add/subtract 1",
                                         "&6Shift-Click to add/subtract 10")
                                 .get()),
-                new Pair<>(7,
+                new Pair<>(17,
                         new ItemBuilder(Material.PAPER)
                                 .name("&eWhat quality should novices get?")
-                                .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.JOURNEYMAN, 0) + "&f quality to the item",
+                                .lore("&fEnchants at &e" + qualityMap.getOrDefault(MerchantLevel.JOURNEYMAN, 0) + "&f enchantment skill",
                                         "&fif the merchant is a JOURNEYMAN",
                                         "",
                                         "&6Click to add/subtract 1",
                                         "&6Shift-Click to add/subtract 10")
                                 .get()),
-                new Pair<>(8,
+                new Pair<>(18,
                         new ItemBuilder(Material.PAPER)
                                 .name("&eWhat quality should novices get?")
-                                .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.EXPERT, 0) + "&f quality to the item",
+                                .lore("&fEnchants at &e" + qualityMap.getOrDefault(MerchantLevel.EXPERT, 0) + "&f enchantment skill",
                                         "&fif the merchant is a EXPERT",
                                         "",
                                         "&6Click to add/subtract 1",
                                         "&6Shift-Click to add/subtract 10")
                                 .get()),
-                new Pair<>(9,
+                new Pair<>(19,
                         new ItemBuilder(Material.PAPER)
                                 .name("&eWhat quality should novices get?")
-                                .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.MASTER, 0) + "&f quality to the item",
+                                .lore("&fEnchants at &e" + qualityMap.getOrDefault(MerchantLevel.MASTER, 0) + "&f enchantment skill",
                                         "&fif the merchant is a MASTER",
                                         "",
                                         "&6Click to add/subtract 1",

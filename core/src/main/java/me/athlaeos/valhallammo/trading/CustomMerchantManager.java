@@ -9,12 +9,9 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexedBasedOnQuality;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.item.CustomFlag;
-import me.athlaeos.valhallammo.item.CustomItem;
-import me.athlaeos.valhallammo.item.CustomItemRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import me.athlaeos.valhallammo.persistence.Database;
@@ -125,8 +122,8 @@ public class CustomMerchantManager {
                     ValhallaMMO.logWarning("Merchant Type " + type.getType() + " had trade " + trade + " added to it, but it doesn't exist! Removed.");
                 }
             }
-            Collection<MerchantTrade> selectedTrades = new HashSet<>(merchantTrades.stream().filter(t -> ((int) t.getWeight()) == -1 && t.isTradeable()).toList());
-            merchantTrades.removeIf(t -> ((int) t.getWeight()) == -1 || !t.isTradeable());
+            Collection<MerchantTrade> selectedTrades = new HashSet<>(merchantTrades.stream().filter(t -> t.isGuaranteedPresent() && t.isTradeable()).toList());
+            merchantTrades.removeIf(t -> t.isGuaranteedPresent() || !t.isTradeable());
             selectedTrades.addAll(Utils.weightedSelection(merchantTrades, Utils.randomAverage(type.getRolls(level)), luck, 0));
             selectedTrades.forEach(t -> {
                 ItemBuilder result = prepareTradeResult(data, t, player);
@@ -176,6 +173,7 @@ public class CustomMerchantManager {
         if (type == null || level == null) return null;
         List<MerchantRecipe> recipes = new ArrayList<>();
         List<MerchantTrade> trades = new ArrayList<>();
+        Map<String, MerchantLevel> byLevel = new HashMap<>();
         for (String tradeName : new HashSet<>(data.getTrades().keySet())){
             MerchantTrade trade = registeredMerchantTrades.get(tradeName);
             if (trade == null){
@@ -187,6 +185,17 @@ public class CustomMerchantManager {
             }
             trades.add(trade);
         }
+        trades:
+        for (MerchantTrade trade : trades){
+            for (MerchantLevel l : type.getTrades().keySet()){
+                if (l.getLevel() > level.getLevel()) continue;
+                if (type.getTrades().get(l).getTrades().contains(trade.getID())) {
+                    byLevel.put(trade.getID(), l);
+                    continue trades;
+                }
+            }
+        }
+        trades = trades.stream().sorted(Comparator.comparingInt(m -> byLevel.getOrDefault(((MerchantTrade) m).getID(), MerchantLevel.NOVICE).getLevel()).thenComparingInt(m -> ((MerchantTrade) m).getPriority())).toList();
         AbstractVillager villager = data.getVillager();
         float happiness = villager == null ? 0F : HappinessSourceRegistry.getHappiness(player, villager);
         float renown = data.getPlayerMemory(player.getUniqueId()).getRenownReputation();

@@ -198,8 +198,14 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                 } else if (e.isLeftClick() && e.isShiftClick()) {
                     if (confirmDeletion) CustomMerchantManager.removeTrade(clickedTrade);
                 } else {
-                    currentTrade = clickedTrade;
-                    switchView(View.TRADE);
+                    if (e.getClick() == ClickType.DROP) {
+                        clickedTrade.setPriority(clickedTrade.getPriority() - 1);
+                    } else if (e.getClick() == ClickType.MIDDLE) {
+                        clickedTrade.setPriority(clickedTrade.getPriority() + 1);
+                    } else {
+                        currentTrade = clickedTrade;
+                        switchView(View.TRADE);
+                    }
                 }
             } else {
                 String clickedFunction = clickedItem == null ? null : clickedItem.getMeta().getPersistentDataContainer().get(KEY_BUTTON, PersistentDataType.STRING);
@@ -459,11 +465,16 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     List<ItemStack> expertTradesButtons = new ArrayList<>();
                     List<ItemStack> masterTradesButtons = new ArrayList<>();
 
-                    List<MerchantTrade> noviceTrades = currentSubType.getTrades(MerchantLevel.NOVICE).getTrades().stream().map(CustomMerchantManager::getTrade).filter(Objects::nonNull).toList();
-                    List<MerchantTrade> apprenticeTrades = currentSubType.getTrades(MerchantLevel.APPRENTICE).getTrades().stream().map(CustomMerchantManager::getTrade).filter(Objects::nonNull).toList();
-                    List<MerchantTrade> journeymanTrades = currentSubType.getTrades(MerchantLevel.JOURNEYMAN).getTrades().stream().map(CustomMerchantManager::getTrade).filter(Objects::nonNull).toList();
-                    List<MerchantTrade> expertTrades = currentSubType.getTrades(MerchantLevel.EXPERT).getTrades().stream().map(CustomMerchantManager::getTrade).filter(Objects::nonNull).toList();
-                    List<MerchantTrade> masterTrades = currentSubType.getTrades(MerchantLevel.MASTER).getTrades().stream().map(CustomMerchantManager::getTrade).filter(Objects::nonNull).toList();
+                    List<MerchantTrade> noviceTrades = new ArrayList<>(currentSubType.getTrades(MerchantLevel.NOVICE).getTrades().stream().map(CustomMerchantManager::getTrade).filter(Objects::nonNull).toList());
+                    noviceTrades.sort(Comparator.comparingInt(MerchantTrade::getPriority));
+                    List<MerchantTrade> apprenticeTrades = new ArrayList<>(currentSubType.getTrades(MerchantLevel.APPRENTICE).getTrades().stream().map(CustomMerchantManager::getTrade).filter(Objects::nonNull).toList());
+                    apprenticeTrades.sort(Comparator.comparingInt(MerchantTrade::getPriority));
+                    List<MerchantTrade> journeymanTrades = new ArrayList<>(currentSubType.getTrades(MerchantLevel.JOURNEYMAN).getTrades().stream().map(CustomMerchantManager::getTrade).filter(Objects::nonNull).toList());
+                    journeymanTrades.sort(Comparator.comparingInt(MerchantTrade::getPriority));
+                    List<MerchantTrade> expertTrades = new ArrayList<>(currentSubType.getTrades(MerchantLevel.EXPERT).getTrades().stream().map(CustomMerchantManager::getTrade).filter(Objects::nonNull).toList());
+                    expertTrades.sort(Comparator.comparingInt(MerchantTrade::getPriority));
+                    List<MerchantTrade> masterTrades = new ArrayList<>(currentSubType.getTrades(MerchantLevel.MASTER).getTrades().stream().map(CustomMerchantManager::getTrade).filter(Objects::nonNull).toList());
+                    masterTrades.sort(Comparator.comparingInt(MerchantTrade::getPriority));
 
                     for (MerchantTrade trade : noviceTrades) noviceTradesButtons.add(fromTrade(trade));
                     for (MerchantTrade trade : apprenticeTrades) apprenticeTradesButtons.add(fromTrade(trade));
@@ -527,7 +538,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     currentTrade.getPredicates().forEach(p -> predicateLore.addAll(StringUtils.separateStringIntoLines("&d> " + p.getActiveDescription(), 40)));
                     inventory.setItem(0, new ItemBuilder(Buttons.tradePredicatesButton).placeholderLore("%predicates%", predicateLore).get());
                     inventory.setItem(1, new ItemBuilder(Buttons.tradePredicateModeButton).prependLore("&e" + currentTrade.getPredicateSelection()).get());
-                    String weight = ((int) currentTrade.getWeight()) == -1 ? "&aAlways present" : String.format("&8%.1f + %.2f/demand, up to %d, +%.1f/luck", currentTrade.getWeight(), currentTrade.getDemandWeightModifier(), currentTrade.getDemandWeightMaxQuantity(), currentTrade.getWeightQuality());
+                    String weight = currentTrade.isGuaranteedPresent() ? "&aAlways present" : String.format("&8%.1f + %.2f/demand, up to %.0f, +%.1f/luck", currentTrade.getWeight(), currentTrade.getDemandWeightModifier(), currentTrade.getWeight() + currentTrade.getDemandWeightMaxQuantity(), currentTrade.getWeightQuality());
                     inventory.setItem(2, new ItemBuilder(Buttons.tradeWeightButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getWeight()), weight).get());
                     inventory.setItem(3, new ItemBuilder(Buttons.tradeWeightQualityButton).prependLore(String.format("&7Currently &e%.1f", currentTrade.getWeightQuality()), weight).get());
 
@@ -539,12 +550,12 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                             inventory.setItem(5, new ItemBuilder(Buttons.tradeRefreshesButton).prependLore("&7Currently &e" + (currentTrade.refreshes() ? "On" : "Off")).get());
                         }
 
-                        String uses = String.format("&8%d + %.2f/demand, up to %d", currentTrade.getMaxUses(), currentTrade.getDemandMaxUsesModifier(), currentTrade.getDemandMaxUsesMaxQuantity());
+                        String uses = String.format("&8%d + %.2f/demand, up to %d", currentTrade.getMaxUses(), currentTrade.getDemandMaxUsesModifier(), currentTrade.getMaxUses() + currentTrade.getDemandMaxUsesMaxQuantity());
                         inventory.setItem(6, new ItemBuilder(Buttons.tradeUsesButton).prependLore(String.format("&7Currently &e%d", currentTrade.getMaxUses()), uses).get());
                         inventory.setItem(7, new ItemBuilder(Buttons.tradeUsesDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandMaxUsesModifier()), uses).get());
                         inventory.setItem(8, new ItemBuilder(Buttons.tradeUsesDemandMaxButton).prependLore(String.format("&7Currently &e%d", currentTrade.getDemandMaxUsesMaxQuantity()), uses).get());
                         inventory.setItem(9, new ItemBuilder(Buttons.tradeReputationPositiveModButton).prependLore(String.format("&7Currently &ex%.1f", currentTrade.getPositiveReputationMultiplier())).get());
-                        String price = String.format("&8%d + %.0f%%/demand, up to %s", currentTrade.getScalingCostItem().getAmount(), currentTrade.getDemandPriceMultiplier() * 100, (currentTrade.getDemandPriceMax() > 0 ? "+" : "") + currentTrade.getDemandPriceMax());
+                        String price = String.format("&8%d + %.0f%%/demand, up to %d", currentTrade.getScalingCostItem().getAmount(), currentTrade.getDemandPriceMultiplier() * 100, currentTrade.getScalingCostItem().getAmount() + currentTrade.getDemandPriceMax());
                         inventory.setItem(11, new ItemBuilder(Buttons.tradePriceDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandPriceMultiplier()), price).get());
                         inventory.setItem(13, new ItemBuilder(Buttons.tradeVillagerExperienceButton).prependLore(String.format("&7Currently &e%d", currentTrade.getVillagerExperience())).get());
 
@@ -565,8 +576,8 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     inventory.setItem(24, new ItemBuilder(Buttons.tradeModifierButton).placeholderLore("%modifiers%", modifierLore).get());
                     inventory.setItem(43, new ItemBuilder(Buttons.tradeExclusiveButton).prependLore("&7Currently &e" + (currentTrade.isExclusive() ? "On" : "Off")).get());
                     inventory.setItem(26, new ItemBuilder(Buttons.tradeOrderableButton).prependLore(String.format("&7Currently &e%d", currentTrade.getMaxOrderCount())).get());
-                    String giftWeight = currentTrade.getGiftWeight() < 0 ? "&cCan only be gifted once per player" : currentTrade.getGiftWeight() == 0 ? "&eCannot be gifted" : "&aMay be gifted indefinitely";
-                    inventory.setItem(17, new ItemBuilder(Buttons.tradeGiftWeightButton).prependLore(String.format("&7Currently %s%.1f", currentTrade.getGiftWeight() < 0 ? "&c" : currentTrade.getGiftWeight() == 0 ? "&7" : "&a", Math.abs(currentTrade.getGiftWeight())), giftWeight).get());
+                    String giftWeight = currentTrade.getGiftWeight() < 0 ? "&cCan only be gifted once per player" : ((int) currentTrade.getGiftWeight()) == 0 ? "&eCannot be gifted" : "&aMay be gifted indefinitely";
+                    inventory.setItem(17, new ItemBuilder(Buttons.tradeGiftWeightButton).prependLore(String.format("&7Currently %s%.1f", currentTrade.getGiftWeight() < 0 ? "&c" : ((int) currentTrade.getGiftWeight()) == 0 ? "&7" : "&a", Math.abs(currentTrade.getGiftWeight())), giftWeight).get());
                 }
                 inventory.setItem(49, Buttons.backToMenuButton);
             }
@@ -583,14 +594,20 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
         return new ItemBuilder(trade.getResult())
                 .name("&f" + trade.getID())
                 .lore(
-                        ((int) trade.getWeight()) == -1 ? ("&aTrade is always present and does take rolls") :
-                        ("&7Weight: " + String.format("%.2f", trade.getWeight()) + " (+" + String.format("%.2f", trade.getDemandWeightModifier()) + "/demand, up to " + trade.getDemandWeightMaxQuantity() + ")"),
+                        ((int) trade.getWeight()) == -1 ? ("&aTrade is always present and doesn't take rolls") :
+                        ("&7Weight: " + String.format("%.2f", trade.getWeight()) + " (+" + String.format("%.2f", trade.getDemandWeightModifier()) + "/demand, up to " + (trade.getWeight() + trade.getDemandWeightMaxQuantity()) + ")"),
                         "",
                         "&7Costs &e" + (trade.getScalingCostItem() == null ? "nothing" : trade.getScalingCostItem().getAmount() + "x " + ItemUtils.getItemName(new ItemBuilder(trade.getScalingCostItem()))),
                         trade.getOptionalCostItem() == null ? "&7and has no optional cost" : ("&7and " + trade.getOptionalCostItem().getAmount() + "x " + ItemUtils.getItemName(new ItemBuilder(trade.getOptionalCostItem()))),
                         "",
-                        "&7Can be traded &e" + trade.getMaxUses() + "&7 times (+" + trade.getDemandMaxUsesModifier() + "/demand, up to " + trade.getDemandMaxUsesMaxQuantity() + ")",
-                        "&7Progresses the merchant by " + trade.getVillagerExperience() + " experience"
+                        "&7Can be traded &e" + trade.getMaxUses() + "&7 times (+" + trade.getDemandMaxUsesModifier() + "/demand, up to " + (trade.getMaxUses() + trade.getDemandMaxUsesMaxQuantity()) + ")",
+                        "&7Progresses the merchant by " + trade.getVillagerExperience() + " experience",
+                        "",
+                        "&6Click to open",
+                        confirmDeletion ? "&4Shift-left click to confirm deletion" : "&cShift-right click to delete",
+                        "&eMiddle click to move right",
+                        "&eDrop to move left",
+                        "&8(this affects ordering in trading UI)"
                 ).stringTag(KEY_TRADE, trade.getID())
                 .get();
     }
