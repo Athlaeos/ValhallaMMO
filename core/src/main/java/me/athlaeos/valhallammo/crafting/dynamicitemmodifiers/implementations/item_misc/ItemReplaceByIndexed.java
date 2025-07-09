@@ -26,7 +26,10 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
     @Override
     public void processItem(ModifierContext context) {
         ItemStack customItem = CustomItemRegistry.getProcessedItem(item, context);
-        if (ItemUtils.isEmpty(customItem)) return;
+        if (ItemUtils.isEmpty(customItem)) {
+            System.out.println("invalid item");
+            return;
+        } else System.out.println("gonna replace with " + customItem);
         context.getItem().setItem(customItem);
         context.getItem().setMeta(ItemUtils.getItemMeta(customItem));
     }
