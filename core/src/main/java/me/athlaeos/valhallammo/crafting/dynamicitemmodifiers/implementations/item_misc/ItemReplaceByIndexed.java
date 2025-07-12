@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.CustomItem;
 import me.athlaeos.valhallammo.item.CustomItemRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -33,8 +34,17 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
 
     @Override
     public ItemStack getNewResult(ModifierContext context) {
-        CustomItem item = CustomItemRegistry.getItem(this.item);
-        return item == null ? null : item.getItem();
+        ItemStack item = CustomItemRegistry.getProcessedItem(this.item, context);
+        if (item == null) {
+            CustomItem backup = CustomItemRegistry.getItem(this.item);
+            return backup == null ? null : backup.getItem();
+        }
+        ItemBuilder asBuilder = new ItemBuilder(item);
+        if (CustomFlag.hasFlag(asBuilder.getMeta(), CustomFlag.UNCRAFTABLE)) {
+            CustomItem backup = CustomItemRegistry.getItem(this.item);
+            return backup == null ? null : backup.getItem();
+        }
+        return item;
     }
 
     @Override

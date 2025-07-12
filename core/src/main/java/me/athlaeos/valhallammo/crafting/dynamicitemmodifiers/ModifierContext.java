@@ -23,6 +23,17 @@ public class ModifierContext {
         this.item = item;
     }
 
+    public ModifierContext.ModifierContextBuilder toBuilder(){
+        return new ModifierContextBuilder(this.item.copy())
+                .crafter(this.crafter)
+                .entity(this.relativeEntity)
+                .itemBuilders(this.otherInvolvedItems.stream().map(ItemBuilder::copy).toList())
+                .count(this.timesExecuted)
+                .sort(this.shouldSort)
+                .validate(this.shouldValidate)
+                .setOtherTypes(this.otherArgs);
+    }
+
     public static ModifierContextBuilder builder(ItemBuilder item){
         return new ModifierContextBuilder(item);
     }
