@@ -17,7 +17,8 @@ public enum EntityClassification {
             "PIGLIN_BRUTE", "PILLAGER", "PLAYER", "POLAR_BEAR", "PUFFERFISH", "RABBIT", "RAVAGER", "SALMON",
             "SHEEP", "SHULKER", "SILVERFISH", "SLIME", "SNOWMAN", "SPIDER", "SQUID", "STRIDER", "TADPOLE",
             "TRADER_LLAMA", "TROPICAL_FISH", "TURTLE", "VEX", "VILLAGER", "VINDICATOR", "WANDERING_TRADER",
-            "WARDEN", "WITCH", "WOLF", "CAMEL", "SNIFFER", "ARMADILLO", "BREEZE", "CREAKING", "CREAKING_TRANSIENT"), // living entities
+            "WARDEN", "WITCH", "WOLF", "CAMEL", "SNIFFER", "ARMADILLO", "BREEZE", "CREAKING", "CREAKING_TRANSIENT",
+            "COPPER_GOLEM"), // living entities
     UNALIVE("AREA_EFFECT_CLOUD", "ARMOR_STAND", "ARROW", "BOAT", "CHEST_BOAT", "DRAGON_FIREBALL", "DROPPED_ITEM",
             "EGG", "ENDER_CRYSTAL", "ENDER_PEARL", "ENDER_SIGNAL", "EVOKER_FANGS", "EXPERIENCE_ORB", "FALLING_BLOCK",
             "FIREBALL", "FIREWORK", "FISHING_HOOK", "GLOW_ITEM_FRAME", "ITEM_FRAME", "LEASH_HITCH", "LIGHTNING",
@@ -44,9 +45,11 @@ public enum EntityClassification {
     PASSIVE("ALLAY", "AXOLOTL", "BAT", "CAT", "CHICKEN", "COD", "COW", "DOLPHIN", "DONKEY", "FOX", "FROG",
             "GLOW_SQUID", "HORSE", "MULE", "MUSHROOM_COW", "MOOSHROOM", "OCELOT", "PARROT", "PIG", "POLAR_BEAR", "PUFFERFISH",
             "RABBIT", "SALMON", "SHEEP", "SKELETON_HORSE", "SQUID", "STRIDER", "TADPOLE", "TROPICAL_FISH",
-            "TURTLE", "VILLAGER", "WANDERING_TRADER", "ZOMBIE_HORSE", "SNIFFER", "CAMEL", "ARMADILLO"), // passive entities
+            "TURTLE", "VILLAGER", "WANDERING_TRADER", "ZOMBIE_HORSE", "SNIFFER", "CAMEL", "ARMADILLO",
+            "COPPER_GOLEM"), // passive entities
     FRIENDLY("ALLAY", "AXOLOTL", "CAT", "DOLPHIN", "DONKEY", "FOX", "HORSE", "LLAMA", "MULE", "PARROT",
-            "PIGLIN", "SKELETON_HORSE", "SNOWMAN", "TRADER_LLAMA", "WOLF", "ZOMBIE_HORSE"), // friendly/tameable entities (e.g. ALLAY, WOLF, PARROT)
+            "PIGLIN", "SKELETON_HORSE", "SNOWMAN", "TRADER_LLAMA", "WOLF", "ZOMBIE_HORSE",
+            "COPPER_GOLEM"), // friendly/tameable entities (e.g. ALLAY, WOLF, PARROT)
     VILLAGER("VILLAGER", "WANDERING_TRADER"), // villagers
     ILLAGER("EVOKER", "ILLUSIONER", "PILLAGER", "RAVAGER", "VEX", "VINDICATOR", "WITCH"), // illagers
     ANIMAL("AXOLOTL", "BAT", "BEE", "CAT", "CHICKEN", "COD", "COW", "DOLPHIN", "DONKEY", "FOX", "FROG",
@@ -59,7 +62,8 @@ public enum EntityClassification {
             "PHANTOM", "PIG", "PILLAGER", "PUFFERFISH", "RABBIT", "RAVAGER", "SALMON", "SHEEP", "SILVERFISH",
             "SKELETON", "SKELETON_HORSE", "SLIME", "SPIDER", "SQUID", "STRAY", "TADPOLE", "TRADER_LLAMA",
             "TROPICAL_FISH", "TURTLE", "VEX", "VILLAGER", "VINDICATOR", "WANDERING_TRADER", "WARDEN", "WITCH",
-            "WOLF", "ZOMBIE", "ZOMBIE_VILLAGER", "ARMADILLO", "BREEZE", "BOGGED", "CREAKING", "CREAKING_TRANSIENT"), // creatures that spawn in the overworld
+            "WOLF", "ZOMBIE", "ZOMBIE_VILLAGER", "ARMADILLO", "BREEZE", "BOGGED", "CREAKING", "CREAKING_TRANSIENT",
+            "COPPER_GOLEM"), // creatures that spawn in the overworld
     NETHER_NATIVE("BLAZE", "GHAST", "HOGLIN", "MAGMA_CUBE", "PIGLIN", "PIGLIN_BRUTE", "SKELETON", "STRIDER",
             "WITHER_SKELETON", "ZOMBIFIED_PIGLIN"), // creatures that spawn in the nether
     END_NATIVE("ENDER_DRAGON", "ENDERMAN", "ENDERMITE", "SHULKER"), // creatures that spawn in the end
@@ -78,7 +82,7 @@ public enum EntityClassification {
             "MANGROVE_CHEST_BOAT", "BAMBOO_CHEST_RAFT"), // entities that are naturally rideable by player (not through commands/API)
     STRUCTURE("ARMOR_STAND", "ENDER_CRYSTAL", "GLOW_ITEM_FRAME", "ITEM_FRAME", "PAINTING"), // structural entities (e.g. ENDER_CRYSTAL or ARMOR_STAND)
     UNNATURAL("GIANT", "ILLUSIONER", "ZOMBIE_HORSE"), // entities that do not spawn (e.g. GIANT or ILLUSIONER)
-    BUILDABLE("IRON_GOLEM", "SNOWMAN", "WITHER"), // entities that can be spawned through structures (e.g. SNOW_GOLEM or IRON_GOLEM)
+    BUILDABLE("IRON_GOLEM", "SNOWMAN", "WITHER", "COPPER_GOLEM"), // entities that can be spawned through structures (e.g. SNOW_GOLEM or IRON_GOLEM)
     EXPLODABLE("CREEPER", "DRAGON_FIREBALL", "ENDER_CRYSTAL", "FIREBALL", "FIREWORK", "MINECART_TNT",
             "PRIMED_TNT"), // entities that are capable of exploding
     OTHER("EVOKER_FANGS", "EXPERIENCE_ORB", "FALLING_BLOCK", "FISHING_HOOK", "LEASH_HITCH", "LIGHTNING",
