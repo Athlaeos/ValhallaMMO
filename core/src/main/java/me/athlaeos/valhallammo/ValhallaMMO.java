@@ -164,6 +164,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerHook(new NexoHook());
         registerHook(new CoreProtectHook());
         registerHook(new MythicMobsHook());
+        registerHook(new LootinHook());
     }
 
     @Override

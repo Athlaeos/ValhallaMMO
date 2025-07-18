@@ -12,7 +12,7 @@
     </parent>
 
     <properties>
-        <spigotVersion>1.21.7</spigotVersion>
+        <spigotVersion>1.21.8</spigotVersion>
     </properties>
 
     <dependencies>

@@ -7,20 +7,23 @@ import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.PlayerBlocksDropItemsEvent;
-import me.athlaeos.valhallammo.hooks.WorldGuardHook;
-import me.athlaeos.valhallammo.localization.TranslationManager;
-import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.EquipmentClass;
-import me.athlaeos.valhallammo.listeners.*;
+import me.athlaeos.valhallammo.listeners.CustomBreakSpeedListener;
+import me.athlaeos.valhallammo.listeners.LootListener;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
+import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfile;
 import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.utility.BlockUtils;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
-import me.athlaeos.valhallammo.utility.*;
+import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -30,7 +33,10 @@ import org.bukkit.block.Container;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.*;
+import org.bukkit.entity.AbstractArrow;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -266,23 +272,29 @@ public class MiningSkill extends Skill implements Listener {
         double blastingLuck = AccumulativeStatManager.getCachedStats("BLASTING_LUCK", responsible, 10000, true);
 
         double exp = 0;
-        List<Block> blockList = new ArrayList<>(e.blockList());
-//        if (ValhallaMMO.isHookFunctional(CoreProtectHook.class)) CoreProtectHook.markBlocksExploded(e.getEntity().getWorld(), e.blockList());
+        List<Block> ourBlockList = new ArrayList<>();
+        for (Block block : e.blockList()){
+            if (block.getState() instanceof Container) continue;
+            if (block.getType().isAir() || (!tntPreventChaining && block.getType() == Material.TNT) || !BlockUtils.canReward(block)) continue;
+            ourBlockList.add(block);
+        }
+        e.blockList().removeAll(ourBlockList);
 
-        // calls another explosion event to make sure other plugins like coreprotect can pick up on it
         recursionPrevention.add(e.getEntity().getUniqueId());
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(ValhallaMMO.getNms().getExplosionEvent(e.getEntity(), e.getLocation(), blockList, e.getYield(), 1));
+        EntityExplodeEvent explodeEvent = ValhallaMMO.getNms().getExplosionEvent(e.getEntity(), e.getLocation(), ourBlockList, e.getYield(), 1);
+        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(explodeEvent);
         recursionPrevention.remove(e.getEntity().getUniqueId());
 
-        Map<Block, List<ItemStack>> blocksAndItems = new HashMap<>();
-        for (Block b : blockList){
-            if (b.getState() instanceof Container) continue;
-            LootListener.addPreparedLuck(b, blastingLuck);
-            if (b.getType().isAir() || (!tntPreventChaining && b.getType() == Material.TNT) || !BlockUtils.canReward(b)) continue;
-            e.blockList().remove(b);
+        if (explodeEvent.isCancelled()) {
+            e.setCancelled(true);
+            return;
+        }
 
+        Map<Block, List<ItemStack>> blocksAndItems = new HashMap<>();
+        for (Block b : ourBlockList) {
+            LootListener.addPreparedLuck(b, blastingLuck);
             List<ItemStack> predictedDrops = new ArrayList<>(b.getDrops(normalPickaxe));
-            if (!(b.getState() instanceof Container)) ItemUtils.multiplyItems(predictedDrops, 1 + blastingDropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
+            ItemUtils.multiplyItems(predictedDrops, 1 + blastingDropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
             LootListener.markExploded(b);
             LootListener.setFortuneLevel(e.getEntity(), profile.getBlastFortuneLevel());
             LootListener.setEntityOwner(e.getEntity(), responsible);
@@ -291,6 +303,7 @@ public class MiningSkill extends Skill implements Listener {
 
             blocksAndItems.put(b, predictedDrops);
         }
+
         PlayerBlocksDropItemsEvent event = new PlayerBlocksDropItemsEvent(responsible, blocksAndItems);
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
         for (Block b : event.getBlocksAndItems().keySet()){

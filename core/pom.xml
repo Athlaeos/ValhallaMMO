@@ -147,5 +147,12 @@
             <version>5.9.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.sachin</groupId>
+            <artifactId>lootin</artifactId>
+            <version>13.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/Lootin-13.4.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
