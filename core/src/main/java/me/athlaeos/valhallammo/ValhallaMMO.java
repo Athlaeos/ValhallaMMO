@@ -178,10 +178,13 @@ public class ValhallaMMO extends JavaPlugin {
         registerHook(new NexoHook());
         registerHook(new CoreProtectHook());
         registerHook(new MythicMobsHook());
+        registerHook(new LootinHook());
     }
 
     @Override
     public void onEnable() {
+        if (pluginConfig.getBoolean("check_updates")) UpdateChecker.checkUpdate(); // ignore for the time being
+
         if (!enabled){
             logSevere("This version of Minecraft is not compatible with ValhallaMMO. Sorry!");
             getServer().getPluginManager().disablePlugin(this);

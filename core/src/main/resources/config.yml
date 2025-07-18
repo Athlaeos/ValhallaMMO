@@ -1,3 +1,6 @@
+# UPDATE CHECKER
+check_updates: true
+
 # PERSISTENCY
 # Database credentials for profile storage
 # If the database credentials are wrong or absent, the plugin will use a sqlite implementation to store profiles instead.

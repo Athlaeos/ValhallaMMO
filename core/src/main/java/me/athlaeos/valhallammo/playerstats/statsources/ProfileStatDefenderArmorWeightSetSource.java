@@ -87,6 +87,7 @@ public class ProfileStatDefenderArmorWeightSetSource implements AccumulativeStat
                 case LIGHT -> properties.getLightArmorCount();
                 case HEAVY -> properties.getHeavyArmorCount();
                 case WEIGHTLESS -> properties.getWeightlessArmorCount();
+                case NONE -> properties.getNoArmorCount();
             };
             Profile profile = ProfileCache.getOrCache(pl, type);
             String requiredPermission = SkillRegistry.isRegistered(profile.getSkillType()) ? SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission() : null;

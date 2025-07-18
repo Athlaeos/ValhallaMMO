@@ -31,6 +31,7 @@ public class EntityProperties {
     private int heavyArmorCount = 0;
     private int lightArmorCount = 0;
     private int weightlessArmorCount = 0;
+    private int noWeightArmorCount = 0;
     private final Map<String, CustomPotionEffect> activePotionEffects = new HashMap<>();
     private final Map<Enchantment, Integer> combinedEnchantments = new HashMap<>();
     private final List<PotionEffect> permanentPotionEffects = new ArrayList<>();
@@ -60,6 +61,8 @@ public class EntityProperties {
     public int getHeavyArmorCount() { return heavyArmorCount; }
     public void setHeavyArmorCount(int heavyArmorCount) { this.heavyArmorCount = heavyArmorCount; }
     public int getLightArmorCount() { return lightArmorCount; }
+    public int getNoArmorCount() { return noWeightArmorCount; }
+    public void setNoArmorCount(int count) { noWeightArmorCount = count; }
     public void setLightArmorCount(int lightArmorCount) { this.lightArmorCount = lightArmorCount; }
     public int getWeightlessArmorCount() { return weightlessArmorCount; }
     public void setWeightlessArmorCount(int weightlessArmorCount) { this.weightlessArmorCount = weightlessArmorCount; }

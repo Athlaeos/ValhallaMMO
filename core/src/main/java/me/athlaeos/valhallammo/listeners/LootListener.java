@@ -17,6 +17,7 @@ import me.athlaeos.valhallammo.event.ValhallaLootPopulateEvent;
 import me.athlaeos.valhallammo.event.ValhallaLootReplacementEvent;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.gui.implementations.LootFreeSelectionMenu;
+import me.athlaeos.valhallammo.hooks.LootinHook;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.loot.LootEntry;
@@ -466,6 +467,12 @@ public class LootListener implements Listener {
         AttributeInstance luckInstance = e.getPlayer().getAttribute(Attribute.GENERIC_LUCK);
         double luck = luckInstance == null ? 0 : luckInstance.getValue();
         LootContext context = new LootContext.Builder(b.getLocation()).killer(null).lootedEntity(e.getPlayer()).lootingModifier(0).luck((float) luck).build();
+
+        if (ValhallaMMO.isHookFunctional(LootinHook.class)){
+            LootinHook.prepareChestOpeningForLootin(e.getPlayer(), l.getLootTable(), table, context);
+            return;
+        }
+
         if (table != null) {
             LootTableRegistry.setLootTable(b, null);
             List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.CONTAINER);
