@@ -169,6 +169,8 @@ public class ValhallaMMO extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (pluginConfig.getBoolean("check_updates")) UpdateChecker.checkUpdate(); // ignore for the time being
+
         if (!enabled){
             logSevere("This version of Minecraft is not compatible with ValhallaMMO. Sorry!");
             getServer().getPluginManager().disablePlugin(this);
