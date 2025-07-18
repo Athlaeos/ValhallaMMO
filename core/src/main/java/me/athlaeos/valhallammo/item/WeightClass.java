@@ -25,7 +25,8 @@ public enum WeightClass {
             "NETHERITE_HELMET", "NETHERITE_CHESTPLATE", "NETHERITE_LEGGINGS", "NETHERITE_BOOTS",
             "WOODEN_AXE", "STONE_AXE", "IRON_AXE", "GOLDEN_AXE", "DIAMOND_AXE",
             "NETHERITE_AXE", "TRIDENT", "MACE"),
-    WEIGHTLESS();
+    WEIGHTLESS(),// the default weight class for items. when used to attack, considered "unarmed"
+    NONE(); // only used to explicitly tell the plugin "this has no weight class and i don't want it to be used for unarmed either"
 
     private static final NamespacedKey WEIGHT_CLASS = new NamespacedKey(ValhallaMMO.getInstance(), "weight_class");
     private final Collection<Material> matchingMaterials = new HashSet<>();
@@ -89,12 +90,13 @@ public enum WeightClass {
      * @return an array of the weight class counts, index 0 -> weightless, 1 -> light, 2 -> heavy
      */
     public static int[] getWeightClasses(EntityProperties properties) {
-        int[] classes = {0, 0, 0};
+        int[] classes = {0, 0, 0, 0};
         for (ItemBuilder builder : properties.getArmor()) {
             switch (getWeightClass(builder.getMeta())) {
                 case WEIGHTLESS -> classes[0] += 1;
                 case LIGHT -> classes[1] += 1;
                 case HEAVY -> classes[2] += 1;
+                case NONE -> classes[3] += 1;
             }
         }
         return classes;
@@ -115,6 +117,7 @@ public enum WeightClass {
         return switch (value) {
             case "HEAVY" -> HEAVY;
             case "LIGHT" -> LIGHT;
+            case "NONE" -> NONE;
             default -> WEIGHTLESS;
         };
     }

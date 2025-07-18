@@ -49,6 +49,7 @@ public class ItemWeightClass extends DynamicItemModifier {
                     case HEAVY -> Material.NETHERITE_CHESTPLATE;
                     case LIGHT -> Material.LEATHER_CHESTPLATE;
                     case WEIGHTLESS -> Material.FEATHER;
+                    case NONE -> Material.BARRIER;
                 })
                         .name("&eWhich weight class should it be?")
                         .lore("&fWeight class set to &e" + weightClass,

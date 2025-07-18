@@ -70,6 +70,7 @@ public class ProfileStatDefenderArmorWeightSource implements AccumulativeStatSou
                 case LIGHT -> properties.getLightArmorCount();
                 case HEAVY -> properties.getHeavyArmorCount();
                 case WEIGHTLESS -> properties.getWeightlessArmorCount();
+                case NONE -> properties.getNoArmorCount();
             };
             if (quantity == 0) return def;
             Profile profile = ProfileCache.getOrCache(pl, type);

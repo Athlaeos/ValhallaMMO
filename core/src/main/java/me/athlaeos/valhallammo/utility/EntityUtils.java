@@ -410,8 +410,9 @@ public class EntityUtils {
     public static boolean isUnarmed(LivingEntity player){
         EntityProperties properties = EntityCache.getAndCacheProperties(player);
 
+        WeightClass weightClass = properties.getMainHand() == null ? null : WeightClass.getWeightClass(properties.getMainHand().getMeta());
         // player is holding something that's not weightless, not unarmed!
-        if (properties.getMainHand() != null && WeightClass.getWeightClass(properties.getMainHand().getMeta()) != WeightClass.WEIGHTLESS) return false;
+        if (weightClass != WeightClass.WEIGHTLESS) return false;
 
         // player is not holding anything, unarmed!
         if (properties.getMainHand() == null) return true;
