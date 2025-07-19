@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public class UpdateChecker {
-    private static final int resourceId = 94921;
+    private static final int resourceId = 94921; // TODO ID change to premium once released
 
     private static void getVersion(Consumer<String> consumer) {
         Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {

@@ -183,7 +183,7 @@ public class ValhallaMMO extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (pluginConfig.getBoolean("check_updates")) UpdateChecker.checkUpdate(); // ignore for the time being
+        if (false && pluginConfig.getBoolean("check_updates")) UpdateChecker.checkUpdate(); // TODO make possible again once premium is released properly
 
         if (!enabled){
             logSevere("This version of Minecraft is not compatible with ValhallaMMO. Sorry!");
