@@ -15,45 +15,50 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResourcePack {
+    private static final String PACK_1_21_2_OLDER_URL = "https://github.com/user-attachments/files/19273979/ValhallaMMO_1.21.2-.zip";
+    private static final String PACK_1_21_2_OLDER_SHA = "a0925253a4691f262572281178c3c7d75247c3ef";
+    private static final String PACK_1_21_3_URL = "https://github.com/user-attachments/files/19273980/ValhallaMMO_1.21.3.zip";
+    private static final String PACK_1_21_3_SHA = "9e1216aeaabeb04b2983f0aec3fb94cae6baa490";
+    private static final String PACK_1_21_4_NEWER_URL = "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip";
+    private static final String PACK_1_21_4_NEWER_SHA = "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9";
+    
     /*
      * I copied most of this from thesheepdev's Simple Resourcepack, so code credit for resource pack hosting goes to them
      */
     private static File pack;
     private static final Map<MinecraftVersion, ResourcePackDetails> resourcePacks = new HashMap<>();
-    private static final String legacyPackLink = "https://github.com/user-attachments/files/19273979/ValhallaMMO_1.21.2-.zip";
-    private static final String legacySha1 = "a0925253a4691f262572281178c3c7d75247c3ef";
     static {
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_26, null, null);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_25, null, null);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_24, null, null);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_23, null, null);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_3, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_2, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_1, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_10, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_9, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_8, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_7, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_6, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_5, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_4, "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip", "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_3, "https://github.com/user-attachments/files/19273980/ValhallaMMO_1.21.3.zip", "9e1216aeaabeb04b2983f0aec3fb94cae6baa490");
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_2, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_1, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_6, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_5, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_4, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_3, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_2, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_1, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19_4, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19_3, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19_2, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19_1, legacyPackLink, legacySha1);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19, legacyPackLink, legacySha1);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_3, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_2, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_1, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_10, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_9, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_8, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_7, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_6, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_5, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_4, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_3, PACK_1_21_3_URL, PACK_1_21_3_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_2, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_1, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_6, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_5, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_4, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_3, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_2, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20_1, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_20, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19_4, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19_3, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19_2, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19_1, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_19, PACK_1_21_2_OLDER_URL, PACK_1_21_2_OLDER_SHA);
     }
 
     private static void mapResourcePackDetails(MinecraftVersion version, String packLink, String packSha1){
@@ -90,14 +95,14 @@ public class ResourcePack {
         ResourcePackDetails details = resourcePacks.get(MinecraftVersion.getServerVersion());
         if (details == null) {
             ValhallaMMO.logWarning("Warning! An up-to-date resource pack for this version has not yet been made! Using default version. This may not work well or at all");
-            return legacyPackLink;
+            return PACK_1_21_2_OLDER_URL;
         }
         return details.link;
     }
 
     public static String getResourcePackSha1(){
         ResourcePackDetails details = resourcePacks.get(MinecraftVersion.getServerVersion());
-        if (details == null) return legacySha1;
+        if (details == null) return PACK_1_21_2_OLDER_SHA;
         return details.sha1;
     }
 
@@ -153,12 +158,12 @@ public class ResourcePack {
         return true;
     }
 
-    public static String getLegacyPackLink() {
-        return legacyPackLink;
+    public static String getPACK_1_21_2_OLDER_URL() {
+        return PACK_1_21_2_OLDER_URL;
     }
 
-    public static String getLegacySha1() {
-        return legacySha1;
+    public static String getPACK_1_21_2_OLDER_SHA() {
+        return PACK_1_21_2_OLDER_SHA;
     }
 
     private static record ResourcePackDetails(String link, String sha1){}
