@@ -68,6 +68,9 @@ permissions:
   valhalla.recipe.#:
     default: false
     description: "Replace the # with a recipe ID and the recipe becomes accessible to anyone with the permission"
+  valhalla.debugger:
+    default: op
+    description: "Allows players with the permission to see debug messages, if enabled"
   valhalla.ignorenoobprotection:
     default: op
     description: "Allows the attacking of players even if their level is much lower than your own"

@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.skills.skills.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.commands.valhallasubcommands.Debugger;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.event.PlayerBlocksDropItemsEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
@@ -123,7 +124,10 @@ public class WoodcuttingSkill extends Skill implements Listener {
                 !dropsExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         WoodcuttingProfile profile = ProfileCache.getOrCache(e.getPlayer(), WoodcuttingProfile.class);
 
-        if (!hasPermissionAccess(e.getPlayer())) return;
+        if (!hasPermissionAccess(e.getPlayer())) {
+            Debugger.send(e.getPlayer(), "tree_capitator", "&cDoes not have permission access to Woodcutting");
+            return;
+        }
         double woodCuttingLuck = AccumulativeStatManager.getCachedStats("WOODCUTTING_LUCK", e.getPlayer(), 10000, true);
         if (BlockUtils.canReward(e.getBlock())){
             e.setExpToDrop(e.getExpToDrop() + Utils.randomAverage(profile.getBlockExperienceRate()));
@@ -138,7 +142,10 @@ public class WoodcuttingSkill extends Skill implements Listener {
                 isTree(e.getBlock()) &&
                 !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_TREECAPITATOR)){
             Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), treeCapitatorLimit, this::isLog, treeCapitatorScanArea);
-            if (vein.size() > profile.getTreeCapitatorLimit()) return;
+            if (vein.size() > profile.getTreeCapitatorLimit()) {
+                Debugger.send(e.getPlayer(), "tree_capitator", "&cTree size " + vein.size() + " is above limit " + profile.getTreeCapitatorLimit());
+                return;
+            }
             treeCapitatingPlayers.add(e.getPlayer().getUniqueId());
             e.setCancelled(true);
 
@@ -178,6 +185,16 @@ public class WoodcuttingSkill extends Skill implements Listener {
                 });
             Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getTreeCapitatorCooldown() * 50, "woodcutting_tree_capitator");
         } else {
+            if (Debugger.isDebuggerEnabled(e.getPlayer(), "tree_capitator")) {
+                if (!e.getPlayer().isSneaking()) Debugger.send(e.getPlayer(), "tree_capitator", "&cPlayer is not sneaking");
+                if (treeCapitatingPlayers.contains(e.getPlayer().getUniqueId())) Debugger.send(e.getPlayer(), "tree_capitator", "&cPlayer is already processing a tree (This is only of concern if this message is sent once. If it is spammed, it is expected tree capitator worked here)");
+                if (!profile.isTreeCapitatorUnlocked()) Debugger.send(e.getPlayer(), "tree_capitator", "&cPlayer doesn't have tree capitator unlocked");
+                if (!profile.getTreeCapitatorValidBlocks().contains(e.getBlock().getType().toString())) Debugger.send(e.getPlayer(), "tree_capitator", "&cPlayer cannot tree capitate " + e.getBlock().getType());
+                if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "woodcutting_tree_capitator")) Debugger.send(e.getPlayer(), "tree_capitator", "&cTree capitator is on cooldown");
+                if (!isTree(e.getBlock())) Debugger.send(e.getPlayer(), "tree_capitator", "&cThis block (" + e.getBlock().getType() + ") is not considered part of a tree");
+                if (WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_TREECAPITATOR)) Debugger.send(e.getPlayer(), "tree_capitator", "&cAttempted tree capitation in worldguard blocked area");
+            }
+
             if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "woodcutting_tree_capitator")) Timer.sendCooldownStatus(e.getPlayer(), "woodcutting_tree_capitator", TranslationManager.getTranslation("ability_tree_capitator"));
         }
     }
