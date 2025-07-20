@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.entities.EntityAttributeStats;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.entities.damageindicators.DamageIndicatorRegistry;
 import me.athlaeos.valhallammo.event.EntityCriticallyHitEvent;
+import me.athlaeos.valhallammo.event.EntityDodgeAttackEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
@@ -142,10 +143,14 @@ public class EntityAttackListener implements Listener {
             // the dodge is also considered first, as dodging an attack voids all following effects
             if (facing || !requireFacingForDodge){
                 if (Utils.proc(AccumulativeStatManager.getCachedRelationalStats("DODGE_CHANCE", v, e.getDamager(), 10000, true), 0, false)){
-                    if (dodgeParticle != null) e.getEntity().getWorld().spawnParticle(dodgeParticle, e.getEntity().getLocation().add(0, 1, 0), 10, 0.2, 0.5, 0.2);
-                    if (e.getEntity() instanceof Player p) Utils.sendActionBar(p, dodgeMessage);
-                    e.setCancelled(true);
-                    return;
+                    EntityDodgeAttackEvent event = new EntityDodgeAttackEvent(e.getEntity(), e);
+                    ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+                    if (!event.isCancelled()){
+                        if (dodgeParticle != null) event.getEntity().getWorld().spawnParticle(dodgeParticle, event.getEntity().getLocation().add(0, 1, 0), 10, 0.2, 0.5, 0.2);
+                        if (event.getEntity() instanceof Player p) Utils.sendActionBar(p, dodgeMessage);
+                        e.setCancelled(true);
+                        return;
+                    }
                 }
             }
 
