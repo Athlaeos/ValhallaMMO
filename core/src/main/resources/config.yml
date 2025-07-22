@@ -333,7 +333,7 @@ custom_damage_system: true # If false, there is no custom damage system
 # and further reduces heavy damage with toughness. Toughness is not very effective if the player doesn't have
 # a lot of armor or if the player doesn't take very heavy damage. This formula normally breaks at extreme damage numbers,
 # but damage reduction cannot go below a certain fraction to make sure the formula can never go into the negatives
-damage_formula_physical: '%damage% * (15 / (15 + %armor%)) * (1 / (1 + (0.001 * %toughness% * %damage%)))'
+damage_formula_physical: '(%damage% - %absorption%) * (15 / (15 + %armor%)) * (1 / (1 + (0.001 * %toughness% * %damage%)))'
 damage_formula_mode: SET # Valid modes are SET and MULTIPLY
 # SET sets physical damage to the outcome of this formula. The outcome cannot go below 0
 # MULTIPLY multiplies the original damage and sets that as the final damage. The outcome cannot go below 0

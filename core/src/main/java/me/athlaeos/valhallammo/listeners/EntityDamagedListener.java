@@ -63,6 +63,10 @@ public class EntityDamagedListener implements Listener {
         oneShotProtectionSound = Catch.catchOrElse(() -> Sound.valueOf(c.getString("oneshot_protection_sound")), Sound.ITEM_TOTEM_USE);
     }
 
+    public static Map<String, Double> getPhysicalDamageTypes() {
+        return physicalDamageTypes;
+    }
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDamageRecord(EntityDamageEvent e){
         if (e instanceof EntityDamageByEntityEvent eve) EntityDamagedListener.setDamager(e.getEntity(), eve.getDamager());
@@ -230,6 +234,7 @@ public class EntityDamagedListener implements Listener {
             }
         } else return e.getDamage();
 
+
         double resistedDamage = e.getDamage();
         YamlConfiguration c = ValhallaMMO.getPluginConfig();
         if (physicalDamageTypes.containsKey(damageCause)){
@@ -248,12 +253,14 @@ public class EntityDamagedListener implements Listener {
             String scaling = c.getString("damage_formula_physical", "%damage% * (15 / (15 + %armor%)) - (%toughness% * 0.15)");
             boolean mode = c.getString("damage_formula_mode", "SET").equalsIgnoreCase("set");
             double minimumFraction = c.getDouble("damage_reduction_cap");
+            double damageAbsorption = AccumulativeStatManager.getCachedRelationalStats("DAMAGE_ABSORPTION", l, lastDamager, 10000, true);
             double damageResult = Utils.eval(scaling
                     .replace("%damage%", String.format("%.4f", resistedDamage))
                     .replace("%armor%", String.format("%.4f", totalArmor))
-                    .replace("%toughness%", String.format("%.4f", toughness)));
+                    .replace("%toughness%", String.format("%.4f", toughness))
+                    .replace("%absorption%", String.format("%.4f", damageAbsorption)));
 
-            if (mode) return Math.max(damageResult, minimumFraction * resistedDamage);
+            if (mode) return Math.max(damageResult - damageAbsorption, minimumFraction * resistedDamage);
             else return resistedDamage * Math.max(minimumFraction, damageResult);
         } else return resistedDamage;
     }

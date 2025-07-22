@@ -334,6 +334,13 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("PVP_RESISTANCE", (i) -> i >= 0, "\uEEA3", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.IRON_CHESTPLATE));
         registerNewEffect(new GenericWrapper("DAMAGE_PLAYER", (i) -> i >= 0, "\uEEA4", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.IRON_SWORD));
         registerNewEffect(new GenericWrapper("DAMAGE_MOUNTED", (i) -> i >= 0, "\uEEA5", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.SADDLE));
+        registerNewEffect(new GenericWrapper("WATER_MOVEMENT_EFFICIENCY_BONUS", (i) -> i >= 0, "\uEEA6", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.CONDUIT));
+        registerNewEffect(new GenericWrapper("SUBMERGED_MINING_SPEED_BONUS", (i) -> i >= 0, "\uEEA7", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.HEART_OF_THE_SEA));
+        registerNewEffect(new GenericWrapper("FLIGHT_SPEED_BONUS", (i) -> i >= 0, "\uEEA8", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.FEATHER));
+        registerNewEffect(new GenericWrapper("OXYGEN_BONUS", (i) -> i >= 0, "\uEEA9", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.TURTLE_HELMET));
+        registerNewEffect(new GenericWrapper("BACK_PROTECTION", (i) -> i >= 0, "\uEEAA", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.TURTLE_HELMET));
+        registerNewEffect(new GenericWrapper("FRONT_PROTECTION", (i) -> i >= 0, "\uEEAB", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.OBSERVER));
+        registerNewEffect(new GenericWrapper("DAMAGE_ABSORPTION", (i) -> i >= 0, "\uEEAC", StatFormat.FLOAT_P2).addModifier(Material.OBSIDIAN));
     }
 
     public static void reload(){
