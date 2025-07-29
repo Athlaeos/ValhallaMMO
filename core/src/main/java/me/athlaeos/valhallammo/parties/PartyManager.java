@@ -183,7 +183,8 @@ public class PartyManager {
         String expForNext = nextLevel == null ?
                 TranslationManager.getTranslation("max_level") : // if either current level or max level are null, assume max level is reached
                 String.format("%,.1f", levelRequirements.getOrDefault(nextLevel.level, 0D) - levelRequirements.getOrDefault(level.getOne().level, 0D));
-        partyInfoFormat.forEach(s -> p.sendMessage(Utils.chat(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(s.replace("%rank%", title)
+        partyInfoFormat.forEach(s -> p.sendMessage(Utils.chat(PlaceholderRegistry.parsePapi(PlaceholderRegistry.parse(s
+                .replace("%rank%", title)
                 .replace("%level%", level != null ? level.getOne().name : "")
                 .replace("%level_numeric%", level != null ? String.valueOf(level.getOne().level) : "")
                 .replace("%level_roman%", level != null ? StringUtils.toRoman(level.getOne().level) : "")
@@ -856,6 +857,10 @@ public class PartyManager {
             this.title = title;
             this.permissions = new HashSet<>(permissions);
         }
+    }
+
+    public static Map<Integer, Double> getLevelRequirements() {
+        return levelRequirements;
     }
 
     public enum ErrorStatus{

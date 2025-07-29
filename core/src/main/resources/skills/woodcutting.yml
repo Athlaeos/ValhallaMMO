@@ -21,3 +21,13 @@ forgiving_multipliers: true # drop multipliers below 0 will, if false, sometimes
 # if true, the drop amount can not go below 1 so only blocks that drop multiple items (such as redstone ore, lapis lazuli ore,
 # gold/iron ore with fortune) will be affected, but everything else will drop at least 1.
 # This may be set to false if you desire a more grindy experience for your players, though it might be frustrating for them
+
+tree_capitator_prevention_blocks:
+  - REDSTONE_BLOCK
+  - LAPIS_LAZULI_BLOCK
+  - COPPER_BLOCK
+  - IRON_BLOCK
+  - GOLD_BLOCK
+  - DIAMOND_BLOCK
+  - NETHERITE_BLOCK
+  - OBSIDIAN

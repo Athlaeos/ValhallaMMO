@@ -3,10 +3,6 @@ package me.athlaeos.valhallammo.placeholder;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.hooks.PAPIHook;
 import me.athlaeos.valhallammo.placeholder.placeholders.*;
-import me.athlaeos.valhallammo.playerstats.format.StatFormat;
-import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
-import me.athlaeos.valhallammo.playerstats.profiles.Profile;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -24,6 +20,21 @@ public class PlaceholderRegistry {
         registerPlaceholder(new RegionalDifficultyLevelRoundedPlaceholder("%difficulty_regional_rounded%"));
         registerPlaceholder(new PartyNamePlaceholder("%party_name%"));
         registerPlaceholder(new PartyDescriptionPlaceholder("%party_description%"));
+        registerPlaceholder(new PartyExpPlaceholder("%party_current_exp%"));
+        registerPlaceholder(new PartyExpRequiredPlaceholder("%party_exp_next_level%"));
+        registerPlaceholder(new PartyExpSharingPlaceholder("%party_exp_sharing_enabled%"));
+        registerPlaceholder(new PartyItemSharingPlaceholder("%party_item_sharing_enabled%"));
+        registerPlaceholder(new PartyLeaderPlaceholder("%party_leader%"));
+        registerPlaceholder(new PartyLevelNumericPlaceholder("%party_level_numeric%"));
+        registerPlaceholder(new PartyLevelPlaceholder("%party_level_name%"));
+        registerPlaceholder(new PartyLevelRomanPlaceholder("%party_level_roman%"));
+        registerPlaceholder(new PartyMemberCapPlaceholder("%party_member_capacity%"));
+        registerPlaceholder(new PartyMemberCountPlaceholder("%party_member_count%"));
+        registerPlaceholder(new PartyMembersPlaceholder("%party_members%"));
+        registerPlaceholder(new PartyNearbyMembersPlaceholder("%party_members_nearby%"));
+        registerPlaceholder(new PartyOnlineMembersPlaceholder("%party_members_online%"));
+        registerPlaceholder(new PartyOpenPlaceholder("%party_open%"));
+        registerPlaceholder(new PartyRankPlaceholder("%party_rank%"));
     }
 
     public static void registerPlaceholder(Placeholder p) {

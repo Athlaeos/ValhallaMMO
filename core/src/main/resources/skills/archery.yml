@@ -7,13 +7,17 @@ levelbar_title: '<lang.skill-archery-level-bar>'
 levelbar_color: YELLOW # You can choose between BLUE, YELLOW, GREEN, PINK, PURPLE, RED, WHITE
 levelbar_style: SEGMENTED_6 # You can choose between SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20, and SOLID
 
-# NOT IMPLEMENTED YET, the arrow damage formula is not configurable
 # Arrows shot from a non-fully charged bow
-# The default vanilla formula is ceil(%velocity% * %arrow_basedamage%)
-damage_formula_normal: "ceil((%velocity% * 0.8) * %arrow_basedamage%)"
+# The default vanilla formula is ceil(%velocity% * %arrow_basedamage% * (1 + 0.25 * %power%))
+# IF YOU LEAVE THIS EMPTY (damage_formula_normal: "") IT WILL NOT INTERFERE WITH DAMAGE
+damage_formula_normal: "sqrt(%velocity%) * %basedamage% * (1 + (0.25 * %power%))"
 # Arrows shot from a fully charged bow
 # The default vanilla formula is %normaldamage% + (random(0) * ((%normaldamage%/2) + 2))
 damage_formula_critical: "%normaldamage% * 1.3"
+# Every time the arrow damages an entity, its damage is reduced by the following factor
+# (default 0.2, meaning the arrow damage is reduced by 20% for each entity hit)
+# This is to make it so that when an arrow pierces multiple entities, it weakens a little with each pass
+damage_piercing_reduction: 0.2
 
 # The distance between shooter and target can increase the damage on an arrow, but to prevent this from being exploited
 # to one-shot targets there's a limit to how far this damage can go.

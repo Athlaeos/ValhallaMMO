@@ -174,21 +174,41 @@ public class RecipeOverviewMenu extends Menu {
         else setViewCategoriesView();
     }
 
+    private static final Map<String, List<ItemStack>> cachedButtons = new HashMap<>();
     private void setPickRecipeView(){
         if (!ValhallaMMO.getPluginConfig().getBoolean("admin_gui_filler_removal")) for (int i = 45; i < 54; i++) inventory.setItem(i, filler);
-        List<ItemStack> recipes = currentCategory.getRecipeButtons();
-        if (!this.currentCategory.equals(DISABLED)) recipes.add(createNewButton);
-        Map<Integer, List<ItemStack>> pages = Utils.paginate(45, recipes);
 
-        currentPage = Math.max(1, Math.min(currentPage, pages.size()));
+        buildButtons((c) -> {
+            Map<Integer, List<ItemStack>> pages = Utils.paginate(45, c);
 
-        if (!pages.isEmpty()){
-            pages.get(currentPage - 1).forEach(inventory::addItem);
-        }
+            currentPage = Math.max(1, Math.min(currentPage, pages.size()));
+
+            if (!pages.isEmpty()){
+                pages.get(currentPage - 1).forEach(inventory::addItem);
+            }
+        });
 
         inventory.setItem(45, previousPageButton);
         inventory.setItem(49, backToMenuButton);
         inventory.setItem(53, nextPageButton);
+    }
+
+    private void buildButtons(ItemBuilderCallback callback){
+        List<ItemStack> recipes = cachedButtons.get(currentCategory.getId());
+        if (recipes == null) {
+            recipes = currentCategory.getRecipeButtons();
+            cachedButtons.put(currentCategory.getId(), recipes);
+        }
+        if (!this.currentCategory.equals(DISABLED)) recipes.add(createNewButton);
+        callback.onItemsBuilt(recipes);
+    }
+
+    public static void resetCache(String category){
+        cachedButtons.remove(category);
+    }
+
+    private interface ItemBuilderCallback{
+        void onItemsBuilt(List<ItemStack> items);
     }
 
     private void setViewCategoriesView(){

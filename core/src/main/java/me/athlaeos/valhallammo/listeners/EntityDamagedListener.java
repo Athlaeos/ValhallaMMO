@@ -114,7 +114,7 @@ public class EntityDamagedListener implements Listener {
                 e.setDamage(0);
                 applyImmunity = true;
             }
-            if (e instanceof EntityDamageByEntityEvent && e.getFinalDamage() == 0 && l instanceof Player p && p.isBlocking()) return; // blocking with shield damage reduction
+            if (e instanceof EntityDamageByEntityEvent && e.getFinalDamage() <= 0.000001 && l instanceof Player p && p.isBlocking()) return; // blocking with shield damage reduction
 
             if (((lastDamager == null || EntityClassification.matchesClassification(lastDamager.getType(), EntityClassification.UNALIVE)) && environmentalOneShotProtection) || ((pvpOneShotProtection && lastDamager instanceof Player) || (pveOneShotProtection && lastDamager != null && !EntityClassification.matchesClassification(lastDamager.getType(), EntityClassification.UNALIVE)))) {
                 double oneShotProtectionFraction = AccumulativeStatManager.getCachedRelationalStats("ONESHOT_PROTECTION_FRACTION", l, lastDamager, 10000, true);
