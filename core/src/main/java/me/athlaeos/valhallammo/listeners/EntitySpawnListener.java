@@ -67,7 +67,6 @@ public class EntitySpawnListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntitySpawn(CreatureSpawnEvent e){
-        if (e.getSpawnReason() != CreatureSpawnEvent.SpawnReason.SPAWNER) return;
         e.getEntity().setMetadata("valhallammo_spawnreason", new FixedMetadataValue(ValhallaMMO.getInstance(), e.getSpawnReason().toString()));
     }
 
@@ -125,5 +124,10 @@ public class EntitySpawnListener implements Listener {
     public static boolean isTrialSpawned(Entity e){
         CreatureSpawnEvent.SpawnReason reason = getSpawnReason(e);
         return reason != null && reason.toString().equalsIgnoreCase("TRIAL_SPAWNER");
+    }
+
+    public static boolean isSpawnerSpawned(Entity e) {
+        CreatureSpawnEvent.SpawnReason reason = getSpawnReason(e);
+        return reason != null && reason.toString().equalsIgnoreCase("SPAWNER");
     }
 }

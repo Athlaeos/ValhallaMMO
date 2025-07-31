@@ -39,17 +39,19 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.*;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -57,24 +59,36 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.util.*;
 
 import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class MartialArtsSkill extends Skill implements Listener {
+    private static final String MEDITATION_FOV_KEY = "meditation_fov_changer";
+    private static final UUID MEDITATION_FOV_UUID = UUID.fromString("6bc4beec-6a6f-4c34-8ad3-a07dc5e81226");
+    private static final NamespacedKey KEY_MEDITATION_VEHICLE = new NamespacedKey(ValhallaMMO.getInstance(), "meditation_vehicle");
+    private static final Attribute interactionReachAttribute = AttributeMappings.ENTITY_INTERACTION_RANGE.getAttribute();
+
+    private final Map<UUID, Integer> meditationTimeTracker = new HashMap<>();
+    private final Map<UUID, GrappleDetails> grappleDetails = new HashMap<>();
+
     private final Map<EntityType, Double> entityExpMultipliers = new HashMap<>();
     private double expPerDamage = 0;
     private double spawnerMultiplier = 0;
+
     private String grappleTooStrongMessage;
-    private String meditationPromptQuestion;
-    private String meditationInvalidAnswer;
-    private String meditationCooldownType;
     private String disarmingCooldownType;
     private boolean playerDisarming;
     private boolean playerDisarmedItemOwnership;
     private boolean mobDisarming;
+
     private final Map<String, String> meditationPromptAnswer = new HashMap<>();
+    private String meditationPromptQuestion;
+    private String meditationInvalidAnswer;
+    private String meditationCooldownType;
+
     private boolean maxHealthLimitation = false;
 
     public MartialArtsSkill(String type) {
@@ -120,11 +134,8 @@ public class MartialArtsSkill extends Skill implements Listener {
         expPerDamage = progressionConfig.getDouble("experience.exp_per_damage");
         spawnerMultiplier = progressionConfig.getDouble("experience.spawner_spawned_multiplier");
 
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
-
-    private static final Map<UUID, GrappleDetails> grappleDetails = new HashMap<>();
-    private static final Attribute interactionReachAttribute = AttributeMappings.ENTITY_INTERACTION_RANGE.getAttribute();
 
     @EventHandler(priority = EventPriority.LOW)
     public void onAttemptedAttack(PlayerInteractEvent e){
@@ -148,18 +159,14 @@ public class MartialArtsSkill extends Skill implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onGrapple(PlayerInteractEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.isCancelled() ||
-                EntityClassification.matchesClassification(e.getRightClicked().getType(), EntityClassification.UNALIVE) ||
-                !(e.getRightClicked() instanceof LivingEntity l) ||
-                !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "grappling_attempt_cooldown") ||
-                !EntityUtils.isUnarmed(e.getPlayer())) return;
-        if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "grappling_attack_cooldown")) return;
-        if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_disarming")) {
-            Timer.sendCooldownStatus(e.getPlayer(), "cooldown_disarming", disarmingCooldownType);
-            return;
-        }
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || EntityClassification.matchesClassification(e.getRightClicked().getType(), EntityClassification.UNALIVE)
+                || !(e.getRightClicked() instanceof LivingEntity l) || !EntityUtils.isUnarmed(e.getPlayer())
+                || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "grappling_attempt_cooldown")
+                || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "grappling_attack_cooldown")
+                || Timer.sendIfNotPassed(e.getPlayer(),"cooldown_disarming", disarmingCooldownType)) return;
+
         MartialArtsProfile grapplerProfile = ProfileCache.getOrCache(e.getPlayer(), MartialArtsProfile.class);
         if (!grapplerProfile.isGrapplingUnlocked()) return;
         boolean canGrapple = true;
@@ -237,9 +244,9 @@ public class MartialArtsSkill extends Skill implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
         if (trueDamager instanceof Player p && !(e.getDamager() instanceof Projectile) && e.getEntity() instanceof LivingEntity l){
             if (!EntityUtils.isUnarmed(p)) return;
@@ -257,10 +264,10 @@ public class MartialArtsSkill extends Skill implements Listener {
                     1.5 + AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_DAMAGE_MULTIPLIER", p, l, 10000, true) :
                     1)));
 
-            if (p.isSneaking() && EntityUtils.isOnGround(l) && profile.isUppercutUnlocked() && (l instanceof Player ? Timer.isCooldownPassed(p.getUniqueId(), "unarmed_uppercut_pvp_cooldown") : Timer.isCooldownPassed(p.getUniqueId(), "unarmed_uppercut_pve_cooldown"))){
+            if (p.isSneaking() && l.isOnGround() && profile.isUppercutUnlocked() && (l instanceof Player ? Timer.isCooldownPassed(p.getUniqueId(), "unarmed_uppercut_pvp_cooldown") : Timer.isCooldownPassed(p.getUniqueId(), "unarmed_uppercut_pve_cooldown"))){
                 e.setDamage(e.getDamage() + profile.getUppercutDamage());
                 double knockUpMagnitude = profile.getUppercutKnockUpStrength();
-                AttributeInstance knockBackResistance = l.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+                AttributeInstance knockBackResistance = l.getAttribute(AttributeMappings.KNOCKBACK_RESISTANCE.getAttribute());
                 if (knockBackResistance != null) knockUpMagnitude *= Math.max(0, 1 - knockBackResistance.getValue());
                 final double magnitude = knockUpMagnitude;
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
@@ -271,7 +278,7 @@ public class MartialArtsSkill extends Skill implements Listener {
                         (l instanceof Player ? profile.getUppercutPVPCooldown() : profile.getUppercutPVECooldown()) * 50,
                         (l instanceof Player ? "cooldown_uppercut_pvp" : "cooldown_uppercut_pve")
                 );
-            } else if (!EntityUtils.isOnGround(l) && profile.isDropKickUnlocked()) {
+            } else if (!l.isOnGround() && profile.isDropKickUnlocked()) {
                 Vector direction = l.getEyeLocation().toVector().subtract(p.getEyeLocation().toVector()).normalize();
                 e.setDamage(e.getDamage() + profile.getDropKickDamage());
                 l.setVelocity(direction.multiply(profile.getDropKickKnockBackStrength()));
@@ -280,7 +287,7 @@ public class MartialArtsSkill extends Skill implements Listener {
                     int duration = 20;
                     @Override
                     public void run() {
-                        if (duration <= 0 || !l.isValid() || l.isDead() || EntityUtils.isOnGround(l) || !p.isOnline() || p.isDead()){
+                        if (duration <= 0 || !l.isValid() || l.isDead() || l.isOnGround() || !p.isOnline() || p.isDead()){
                             cancel();
                             return;
                         }
@@ -334,9 +341,9 @@ public class MartialArtsSkill extends Skill implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onExpAttack(EntityDamageEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled() ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) ||
                 EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE) ||
                 e.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK || !(e.getEntity() instanceof LivingEntity l) ||
                 EntityClassification.matchesClassification(l.getType(), EntityClassification.PASSIVE)) return;
@@ -344,7 +351,7 @@ public class MartialArtsSkill extends Skill implements Listener {
         Player p = damager instanceof Player pl ? pl : damager instanceof Trident t && t.getShooter() instanceof Player pl ? pl : null;
         if (p != null && EntityUtils.isUnarmed(p)){
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                if (e.isCancelled() || !p.isOnline()) return;
+                if (!p.isOnline()) return;
                 double chunkNerf = EntitySpawnListener.isTrialSpawned(l) ? 1 : ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);
                 addEXP(p,
@@ -352,7 +359,7 @@ public class MartialArtsSkill extends Skill implements Listener {
                                 expPerDamage *
                                 entityExpMultiplier *
                                 chunkNerf *
-                                (EntitySpawnListener.getSpawnReason(l) == CreatureSpawnEvent.SpawnReason.SPAWNER ? spawnerMultiplier : 1),
+                                (EntitySpawnListener.isSpawnerSpawned(l) ? spawnerMultiplier : 1),
                         false,
                         PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
                 if (!EntitySpawnListener.isTrialSpawned(l)) ChunkEXPNerf.increment(l.getLocation().getChunk(), p, "weapons");
@@ -360,9 +367,9 @@ public class MartialArtsSkill extends Skill implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCrit(EntityCriticallyHitEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         if (e.getCritter() instanceof Player p && e.getEntity() instanceof LivingEntity l && EntityUtils.isUnarmed(l)){
             ItemBuilder weapon = EntityCache.getAndCacheProperties(p).getMainHand();
             if (weapon != null && WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.WEIGHTLESS) return;
@@ -374,140 +381,111 @@ public class MartialArtsSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onMeditate(PlayerInteractEvent e){
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK || ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) ||
-                e.getClickedBlock() == null || e.getBlockFace() != BlockFace.UP || getMeditationVehicle(e.getPlayer()) != null ||
-                e.getHand() == EquipmentSlot.OFF_HAND || e.getPlayer().isSneaking() || !EntityUtils.isUnarmed(e.getPlayer())) return;
-        if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_meditation")) {
-            Timer.sendCooldownStatus(e.getPlayer(), "cooldown_meditation", meditationCooldownType);
+        Player player = e.getPlayer();
+        Block rightClicked = e.getClickedBlock();
+        if (e.useInteractedBlock() == Event.Result.DENY || e.getAction() != Action.RIGHT_CLICK_BLOCK || ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) ||
+                rightClicked == null || e.getBlockFace() != BlockFace.UP || isMeditationVehicle(player.getVehicle()) ||
+                e.getHand() == EquipmentSlot.OFF_HAND || player.isSneaking() || !EntityUtils.isUnarmed(player)
+                || Timer.sendIfNotPassed(player, "cooldown_meditation", meditationCooldownType)) {
             return;
         }
-        MartialArtsProfile profile = ProfileCache.getOrCache(e.getPlayer(), MartialArtsProfile.class);
-        if (!profile.isMeditationUnlocked()) return;
-        Block rightClicked = e.getClickedBlock();
-        if (!profile.getMeditationSittingMaterials().contains(rightClicked.getType().toString())) return;
-        if (e.getPlayer().getLocation().getY() < profile.getMeditationElevationRequirement()) return;
-        if (profile.isMeditationSkyLightRequirement() && e.getPlayer().getLocation().getBlock().getLightFromSky() < (byte) 15) return;
+
+        MartialArtsProfile profile = ProfileCache.getOrCache(player, MartialArtsProfile.class);
+        if (!profile.isMeditationUnlocked() || !profile.getMeditationSittingMaterials().contains(rightClicked.getType().toString())
+                || player.getLocation().getY() < profile.getMeditationElevationRequirement()
+                || (profile.isMeditationSkyLightRequirement() && player.getLocation().getBlock().getLightFromSky() < (byte) 15)) return;
 
         Questionnaire questionnaire = new Questionnaire(e.getPlayer(), null, null,
-                new Question(meditationPromptQuestion, s -> true, meditationInvalidAnswer)
+                new Question(
+                        meditationPromptQuestion,
+                        s -> true,
+                        meditationInvalidAnswer
+                )
         ) {
             @Override
             public me.athlaeos.valhallammo.dom.Action<Player> getOnFinish() {
-                if (getQuestions().isEmpty()) return super.getOnFinish();
                 Question question = getQuestions().getFirst();
-                if (question.getAnswer() == null) return super.getOnFinish();
-                return (p) -> {
-                    String response = meditationPromptAnswer.keySet().stream().filter(question.getAnswer().toLowerCase(Locale.US)::contains).findFirst().orElse(null);
-                    if (response == null) return;
-                    Utils.sendMessage(p, meditationPromptAnswer.get(response));
+                if (question == null) return super.getOnFinish();
+                String answer = question.getAnswer();
+                if (answer == null) return super.getOnFinish();
+                String response = meditationPromptAnswer.keySet().stream()
+                        .filter(answer.toLowerCase(Locale.US)::contains).findFirst().orElse(null);
+                if (response == null) return super.getOnFinish();
+                Utils.sendMessage(player, meditationPromptAnswer.get(response));
 
-                    Location sitLocation = rightClicked.getType().isOccluding() ? rightClicked.getLocation().add(0.5, 0, 0.5) : rightClicked.getLocation().add(0.5, -1, 0.5);
+                Location sitLocation = rightClicked.getType().isOccluding()
+                        ? rightClicked.getLocation().add(0.5, 0, 0.5)
+                        : rightClicked.getLocation().add(0.5, -1, 0.5);
 
-                    ArmorStand seatEntity = rightClicked.getWorld().spawn(sitLocation, ArmorStand.class);
-                    seatEntity.setGravity(false);
-                    seatEntity.setInvulnerable(true);
-                    seatEntity.setSmall(true);
-                    seatEntity.setInvisible(true);
-                    seatEntity.setBasePlate(false);
-                    seatEntity.getPersistentDataContainer().set(KEY_MEDITATION_VEHICLE, PersistentDataType.BYTE, (byte) 0);
-                    seatEntity.addPassenger(e.getPlayer());
+                rightClicked.getWorld().spawn(sitLocation, ArmorStand.class, stand -> {
+                    stand.setGravity(false);
+                    stand.setInvulnerable(true);
+                    stand.setSmall(true);
+                    stand.setInvisible(true);
+                    stand.setBasePlate(false);
+                    stand.getPersistentDataContainer().set(KEY_MEDITATION_VEHICLE, PersistentDataType.BYTE, (byte) 0);
+                    stand.addPassenger(e.getPlayer());
+                });
 
-                    new BukkitRunnable(){
-                        final int required = 400;
-                        double yaw = e.getPlayer().getEyeLocation().getYaw();
-                        double pitch = e.getPlayer().getEyeLocation().getPitch();
-                        @Override
-                        public void run() {
-                            if (!e.getPlayer().isOnline() || e.getPlayer().isDead()) {
-                                endMeditation(e.getPlayer());
-                                return;
-                            }
-                            Location eye = e.getPlayer().getEyeLocation();
-                            if (Math.abs(eye.getYaw() - yaw) > 0.1 || Math.abs(eye.getPitch() - pitch) > 0.1){
-                                // moved eyes
-                                resetMeditation(e.getPlayer());
-                            }
-                            yaw = eye.getYaw();
-                            pitch = eye.getPitch();
-
-                            int meditatingFor = meditationTimeTracker.getOrDefault(e.getPlayer().getUniqueId(), 0);
-
-                            if (cancelMeditation.contains(e.getPlayer().getUniqueId())){
-                                cancel();
-                                cancelMeditation.remove(e.getPlayer().getUniqueId());
-                                return;
-                            }
-                            if (getMeditationVehicle(p) == null) {
-                                endMeditation(p);
-                                cancel();
-                                return;
-                            }
-
-                            if (meditatingFor >= required) {
-                                ValhallaMMO.getNms().removeUniqueAttribute(p, "meditation_fov_changer", Attribute.GENERIC_MOVEMENT_SPEED);
-                                Map<String, Collection<MeditationEffect>> effects = MeditationEffect.fromString(profile.getMeditationBuffs());
-                                for (MeditationEffect effect : effects.getOrDefault(response, new HashSet<>())){
-                                    effect.applyPotionEffect(e.getPlayer());
-                                }
-                                p.playSound(p, Sound.BLOCK_BELL_RESONATE, 1F, 1F);
-                                Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getMeditationCooldown() * 50, "cooldown_meditation");
-                                endMeditation(e.getPlayer());
-                                cancel();
-                            } else {
-                                if (meditatingFor > 100 && meditatingFor <= 200){
-                                    if (meditatingFor % 10 == 0) p.playSound(p, Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1F, meditatingFor / 100F);
-                                } else if (meditatingFor > 200 && meditatingFor <= 220){
-                                    ValhallaMMO.getNms().addUniqueAttribute(p, MEDITATION_FOV_UUID, "meditation_fov_changer", Attribute.GENERIC_MOVEMENT_SPEED, Math.pow(1.05, (meditatingFor - 200)) - 1, AttributeModifier.Operation.ADD_SCALAR);
-                                } else if (meditatingFor > 220 && meditatingFor <= 390){
-                                    ValhallaMMO.getNms().addUniqueAttribute(p, MEDITATION_FOV_UUID, "meditation_fov_changer", Attribute.GENERIC_MOVEMENT_SPEED, -1, AttributeModifier.Operation.MULTIPLY_SCALAR_1);
-                                    p.stopAllSounds();
-                                    if (meditatingFor == 221){
-                                        p.addPotionEffect(new PotionEffect(PotionEffectMappings.DARKNESS.getPotionEffectType(), 180, 0, true, false, false));
-                                        p.addPotionEffect(new PotionEffect(PotionEffectMappings.NAUSEA.getPotionEffectType(), 180, 0, true, false, false));
-                                    }
-                                }
-
-                                meditatingFor++;
-                                meditationTimeTracker.put(e.getPlayer().getUniqueId(), meditatingFor);
-                            }
-                        }
-                    }.runTaskTimer(ValhallaMMO.getInstance(), 10L, 1L);
-                };
+                new MeditationRunnable(player, response).runTaskTimer(ValhallaMMO.getInstance(), 10L, 1L);
+                return super.getOnFinish();
             }
         };
         Questionnaire.startQuestionnaire(e.getPlayer(), questionnaire);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onHandSwap(PlayerSwapHandItemsEvent e){
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onDisruptMeditation(PlayerItemHeldEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
-        resetMeditation(e.getPlayer());
+        Player player = e.getPlayer();
+        meditationTimeTracker.put(player.getUniqueId(), 0);
+        ValhallaMMO.getNms().removeUniqueAttribute(player, MEDITATION_FOV_KEY, AttributeMappings.MOVEMENT_SPEED.getAttribute());
     }
 
-    private static final UUID MEDITATION_FOV_UUID = UUID.fromString("6bc4beec-6a6f-4c34-8ad3-a07dc5e81226");
-    public void resetMeditation(Player player){
-        meditationTimeTracker.remove(player.getUniqueId());
-        ValhallaMMO.getNms().removeUniqueAttribute(player, "meditation_fov_changer", Attribute.GENERIC_MOVEMENT_SPEED);
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onDismount(EntityDismountEvent event) {
+        if (ValhallaMMO.isWorldBlacklisted(event.getDismounted().getWorld().getName()) || !(event.getEntity() instanceof Player)) return;
+        if (isMeditationVehicle(event.getDismounted())) {
+            event.getDismounted().remove(); // remove meditation vehicle
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onQuit(PlayerQuitEvent e) {
+        endMeditation(e.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void removeInvalidVehicles(EntitiesLoadEvent event) {
+        int invalid = 0;
+        for (Entity entity : event.getChunk().getEntities()){
+            if (isMeditationVehicle(entity)) {
+                entity.remove(); // remove invalid meditation vehicles
+                invalid++;
+            }
+        }
+
+        if (invalid > 0) {
+            ValhallaMMO.getInstance().getLogger().info("Removed " + invalid + " invalid meditation vehicles from (" + event.getChunk().getX() + ", " + event.getChunk().getZ() + ").");
+        }
+    }
+
+    public boolean resetMeditation(Player player){
+
+        return meditationTimeTracker.remove(player.getUniqueId()) != null;
     }
 
     public void endMeditation(Player player){
-        resetMeditation(player);
-        cancelMeditation.add(player.getUniqueId());
-        ArmorStand vehicle = getMeditationVehicle(player);
-        if (vehicle == null) return;
+        if (meditationTimeTracker.remove(player.getUniqueId()) == null) return;
         player.leaveVehicle();
-        vehicle.remove();
         player.teleport(player.getLocation().add(0, 1, 0));
         player.removePotionEffect(PotionEffectMappings.NAUSEA.getPotionEffectType());
         player.removePotionEffect(PotionEffectMappings.DARKNESS.getPotionEffectType());
+        ValhallaMMO.getNms().removeUniqueAttribute(player, MEDITATION_FOV_KEY, AttributeMappings.MOVEMENT_SPEED.getAttribute());
     }
 
-    private final Map<UUID, Integer> meditationTimeTracker = new HashMap<>();
-    private final Collection<UUID> cancelMeditation = new HashSet<>();
-
-    public static final NamespacedKey KEY_MEDITATION_VEHICLE = new NamespacedKey(ValhallaMMO.getInstance(), "meditation_vehicle");
-    public ArmorStand getMeditationVehicle(Player player){
-        return player.getVehicle() instanceof ArmorStand a && a.getPersistentDataContainer().has(KEY_MEDITATION_VEHICLE, PersistentDataType.BYTE) ? a : null;
+    public boolean isMeditationVehicle(Entity entity) {
+        return entity instanceof ArmorStand stand && stand.getPersistentDataContainer().has(KEY_MEDITATION_VEHICLE, PersistentDataType.BYTE);
     }
 
     @Override
@@ -528,12 +506,73 @@ public class MartialArtsSkill extends Skill implements Listener {
     @Override
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION) {
-            amount *= (1 + AccumulativeStatManager.getStats("MARTIAL_ARTS_EXP_GAIN", p, true));
+            amount *= (1 + AccumulativeStatManager.getCachedStats("MARTIAL_ARTS_EXP_GAIN", p, 10000, true));
         }
         super.addEXP(p, amount, silent, reason);
     }
 
-    private static class GrappleDetails{
+    private class MeditationRunnable extends BukkitRunnable {
+        final Player player;
+        final MartialArtsProfile profile;
+        final String response;
+        final int required = 400;
+
+        Location eye;
+
+        public MeditationRunnable(Player player, String response) {
+            this.player = player;
+            this.response = response;
+            this.profile = ProfileCache.getOrCache(player, MartialArtsProfile.class);
+            this.eye = player.getEyeLocation();
+        }
+
+        @Override
+        public void run() {
+            if (!player.isValid() || !isMeditationVehicle(player.getVehicle())) {
+                endMeditation(player);
+                cancel();
+                return;
+            }
+
+            Location eye = player.getEyeLocation();
+            if (Math.abs(eye.getYaw() - this.eye.getYaw()) > 0.1 || Math.abs(eye.getPitch() - this.eye.getPitch()) > 0.1){
+                meditationTimeTracker.put(player.getUniqueId(), 0);
+                ValhallaMMO.getNms().removeUniqueAttribute(player, MEDITATION_FOV_KEY, AttributeMappings.MOVEMENT_SPEED.getAttribute());
+            }
+            this.eye = eye;
+
+            int meditatingFor = meditationTimeTracker.getOrDefault(player.getUniqueId(), 0);
+            if (meditatingFor >= required) {
+                ValhallaMMO.getNms().removeUniqueAttribute(player, "meditation_fov_changer", AttributeMappings.MOVEMENT_SPEED.getAttribute());
+                Map<String, Collection<MeditationEffect>> effects = MeditationEffect.fromString(profile.getMeditationBuffs());
+                for (MeditationEffect effect : effects.getOrDefault(response, new HashSet<>())){
+                    effect.applyPotionEffect(player);
+                }
+                player.playSound(player, Sound.BLOCK_BELL_RESONATE, 1F, 1F);
+                Timer.setCooldownIgnoreIfPermission(player, profile.getMeditationCooldown() * 50, "cooldown_meditation");
+                endMeditation(player);
+                cancel();
+                return;
+            }
+
+            if (meditatingFor > 100 && meditatingFor <= 200){
+                if (meditatingFor % 10 == 0) player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1F, meditatingFor / 100F);
+            } else if (meditatingFor > 200 && meditatingFor <= 220){
+                ValhallaMMO.getNms().addUniqueAttribute(player, MEDITATION_FOV_UUID, "meditation_fov_changer", AttributeMappings.MOVEMENT_SPEED.getAttribute(), Math.pow(1.05, (meditatingFor - 200)) - 1, AttributeModifier.Operation.ADD_SCALAR);
+            } else if (meditatingFor > 220 && meditatingFor <= 390){
+                ValhallaMMO.getNms().addUniqueAttribute(player, MEDITATION_FOV_UUID, "meditation_fov_changer", AttributeMappings.MOVEMENT_SPEED.getAttribute(), -1, AttributeModifier.Operation.MULTIPLY_SCALAR_1);
+                player.stopAllSounds();
+                if (meditatingFor == 221){
+                    player.addPotionEffect(new PotionEffect(PotionEffectMappings.DARKNESS.getPotionEffectType(), 180, 0, true, false, false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectMappings.NAUSEA.getPotionEffectType(), 180, 0, true, false, false));
+                }
+            }
+
+            meditationTimeTracker.put(player.getUniqueId(), ++meditatingFor);
+        }
+    }
+
+    private static class GrappleDetails {
         private final UUID grappled;
         private final UUID grappler;
         private final int grappleDuration;
@@ -565,17 +604,16 @@ public class MartialArtsSkill extends Skill implements Listener {
     }
 
     private record MeditationEffect(String category, String effect, int duration, float amplifier){
+        private static final Map<String, MeditationEffect> cachedEffects = new HashMap<>();
+
         private void applyPotionEffect(LivingEntity on){
             PotionEffectWrapper potionEffect = PotionEffectRegistry.getEffect(effect);
             if (potionEffect == null) return;
-
             potionEffect.setAmplifier(amplifier);
             potionEffect.setDuration(duration);
             if (potionEffect.isVanilla()) on.addPotionEffect(new PotionEffect(potionEffect.getVanillaEffect(), duration, (int) Math.round(amplifier), true, false, true));
             else PotionEffectRegistry.addEffect(on, on, new CustomPotionEffect(potionEffect, duration, potionEffect.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
         }
-
-        private static final Map<String, MeditationEffect> cachedEffects = new HashMap<>();
 
         private static Map<String, Collection<MeditationEffect>> fromString(Collection<String> effects){
             Map<String, Collection<MeditationEffect>> meditationEffects = new HashMap<>();
@@ -608,8 +646,10 @@ public class MartialArtsSkill extends Skill implements Listener {
     }
 
     private record StackableEffect(String effect, int duration, String amplifierFormula, int maxStacks){
+        private static final Map<String, StackableEffect> cachedEffects = new HashMap<>();
+
         private double getAmplifier(int stacks){
-            return me.athlaeos.valhallammo.utility.Utils.eval(amplifierFormula.replace("%stacks%", String.valueOf(stacks)));
+            return Utils.eval(amplifierFormula.replace("%stacks%", String.valueOf(stacks)));
         }
 
         private void applyPotionEffect(LivingEntity on, LivingEntity causedBy, int stacks){
@@ -620,8 +660,6 @@ public class MartialArtsSkill extends Skill implements Listener {
             if (potionEffect.isVanilla()) on.addPotionEffect(new PotionEffect(potionEffect.getVanillaEffect(), duration, (int) Math.round(getAmplifier(stacks) - 1), true, false, true));
             else PotionEffectRegistry.addEffect(on, causedBy, new CustomPotionEffect(potionEffect, duration, potionEffect.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
         }
-
-        private static final Map<String, StackableEffect> cachedEffects = new HashMap<>();
 
         private static Collection<StackableEffect> fromString(Collection<String> effects){
             Map<String, StackableEffect> stackableEffects = new HashMap<>();

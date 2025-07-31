@@ -30,6 +30,14 @@ public class Timer {
         allCooldowns.get(cooldownKey).put(entity, System.currentTimeMillis() + timems);
     }
 
+    public static boolean sendIfNotPassed(Player player, String cooldownKey, String type){
+        if (!isCooldownPassed(player.getUniqueId(), cooldownKey)){
+            sendCooldownStatus(player, cooldownKey, type);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Sets a cooldown of a given duration. Cooldown is ignored by the entity's COOLDOWN_REDUCTION stat, and is ignored
      * completely if the player has the valhalla.ignorecooldowns permission.
