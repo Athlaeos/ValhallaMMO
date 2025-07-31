@@ -421,7 +421,7 @@ public class EntityUtils {
 
         WeightClass weightClass = properties.getMainHand() == null ? null : WeightClass.getWeightClass(properties.getMainHand().getMeta());
         // player is holding something that's not weightless, not unarmed!
-        if (weightClass != WeightClass.WEIGHTLESS) return false;
+        if (weightClass != null && weightClass != WeightClass.WEIGHTLESS) return false;
 
         // player is not holding anything, unarmed!
         if (properties.getMainHand() == null) return true;

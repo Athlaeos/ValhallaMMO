@@ -144,6 +144,12 @@ public class PowerProfile extends Profile {
         floatStat("oneShotProtectionFraction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         intStat("oneShotProtectionCooldown", new PropertyBuilder().format(StatFormat.TIME_SECONDS_BASE_20_P1).perkReward().create());
         booleanStat("flight", new BooleanProperties(true, false));
+        floatStat("waterMovementEfficiencyBonus", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("submergedMiningSpeedBonus", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("oxygenBonus", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("frontDamageReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("backDamageReduction", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("damageAbsorption", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
 
         stringSetStat("unlockedPerks");
         stringSetStat("permanentlyUnlockedPerks"); // if a perk is really permanently unlocked, it will persist through soft resets as well
@@ -232,6 +238,27 @@ public class PowerProfile extends Profile {
 
     public float getOneShotProtectionFraction() { return getFloat("oneShotProtectionFraction"); }
     public void setOneShotProtectionFraction(float volume) { setFloat("oneShotProtectionFraction", volume); }
+
+    public float getWaterMovementEfficiencyBonus() { return getFloat("waterMovementEfficiencyBonus"); }
+    public void setWaterMovementEfficiencyBonus(float volume) { setFloat("waterMovementEfficiencyBonus", volume); }
+
+    public float getSubmergedMiningSpeedBonus() { return getFloat("submergedMiningSpeedBonus"); }
+    public void setSubmergedMiningSpeedBonus(float volume) { setFloat("submergedMiningSpeedBonus", volume); }
+
+    public float getFrontDamageReduction() { return getFloat("frontDamageReduction"); }
+    public void setFrontDamageReduction(float volume) { setFloat("frontDamageReduction", volume); }
+
+    public float getBackDamageReduction() { return getFloat("backDamageReduction"); }
+    public void setBackDamageReduction(float volume) { setFloat("backDamageReduction", volume); }
+
+    public float getDamageAbsorption() { return getFloat("damageAbsorption"); }
+    public void setDamageAbsorption(float volume) { setFloat("damageAbsorption", volume); }
+
+    public float getFlightSpeedBonus() { return getFloat("flightSpeedBonus"); }
+    public void setFlightSpeedBonus(float volume) { setFloat("flightSpeedBonus", volume); }
+
+    public float getOxygenBonus() { return getFloat("oxygenBonus"); }
+    public void setOxygenBonus(float volume) { setFloat("oxygenBonus", volume); }
 
     public float getCraftingSoundVolume() { return getFloat("craftingEffectVolume"); }
     public void setCraftingSoundVolume(float volume) { setFloat("craftingEffectVolume", volume); }

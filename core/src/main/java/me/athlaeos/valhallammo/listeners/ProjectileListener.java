@@ -1,8 +1,10 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.entities.EntityClassification;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -14,6 +16,7 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.item.arrow_attributes.ArrowBehaviorRegistry;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.GameMode;
@@ -34,6 +37,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.BlockProjectileSource;
 import org.bukkit.util.Vector;
@@ -43,6 +47,9 @@ import java.util.*;
 public class ProjectileListener implements Listener {
     private final Map<Location, ItemStack> dispensedItems = new HashMap<>();
     private final double infinityAmmoConsumption = ValhallaMMO.getPluginConfig().getDouble("infinity_ammo_consumption_reduction");
+    private final String arrowDamageOverhaulFormula = ConfigManager.getConfig("skills/archery.yml").get().getString("damage_formula_normal");
+    private final String arrowCriticalDamageFormula = ConfigManager.getConfig("skills/archery.yml").get().getString("damage_formula_critical");
+    private final double arrowDamagePiercingReduction = ConfigManager.getConfig("skills/archery.yml").get().getDouble("damage_piercing_reduction");
 
     private static final Map<UUID, ItemBuilder> projectileShotByMap = new HashMap<>();
 
@@ -237,15 +244,52 @@ public class ProjectileListener implements Listener {
     }
 
     private void setProjectileProperties(Projectile p, ItemMeta i){
+        boolean wasCrit = false;
         if (p instanceof AbstractArrow a && !(a instanceof Trident)) {
+            wasCrit = a.isCritical();
             a.setCritical(false);
             AttributeWrapper damage = ItemAttributesRegistry.getAttribute(i, "ARROW_DAMAGE", false);
-            if (damage != null) a.setDamage(Math.max(0, a.getDamage() + damage.getValue()));
+            if (damage != null) a.setDamage(Math.max(0, a.getDamage() + damage.getValue() - 2)); // arrows have a base damage value of 2, which needs to be subtracted for an accurate reading
             AttributeWrapper piercing = ItemAttributesRegistry.getAttribute(i, "ARROW_PIERCING", false);
             if (piercing != null) a.setPierceLevel(Math.max(0, a.getPierceLevel() + ((int) piercing.getValue())));
         }
         AttributeWrapper speedWrapper = ItemAttributesRegistry.getAttribute(i, "ARROW_VELOCITY", false);
         if (speedWrapper != null) p.setVelocity(p.getVelocity().multiply(1 + speedWrapper.getValue()));
+
+        ItemBuilder bow = getBow(p);
+        if (!(p instanceof AbstractArrow a) || p instanceof Trident || !(p.getShooter() instanceof Player) || StringUtils.isEmpty(arrowDamageOverhaulFormula) || bow == null) return;
+
+        double baseDamage = a.getDamage();
+        int power = bow.getMeta().getEnchantLevel(EnchantmentMappings.POWER.getEnchantment());
+        double velocitySquared = a.getVelocity().lengthSquared();
+        String formula = arrowDamageOverhaulFormula
+                .replace("%basedamage%", String.format("%.3f", baseDamage))
+                .replace("%power%", String.valueOf(power))
+                .replace("%velocitysquared%", String.format("%.3f", velocitySquared));
+        if (formula.contains("%velocity%")) formula = formula.replace("%velocity%", String.format("%.3f", Math.sqrt(velocitySquared)));
+        double result = Utils.eval(formula);
+        if (wasCrit && !StringUtils.isEmpty(arrowCriticalDamageFormula))
+            result = Utils.eval(arrowCriticalDamageFormula.replace("%normaldamage%", String.format("%.6f", result)));
+        a.setMetadata("damage_overhaul", new FixedMetadataValue(ValhallaMMO.getInstance(), result));
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void arrowDamageOverhaul(EntityDamageByEntityEvent e){
+        if (StringUtils.isEmpty(arrowDamageOverhaulFormula) || e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) ||
+                !(e.getDamager() instanceof AbstractArrow a) || a instanceof Trident || !(a.getShooter() instanceof Player p) ||
+                WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
+
+        Optional<MetadataValue> damageOptional = a.getMetadata("damage_overhaul").stream().findAny();
+        if (damageOptional.isEmpty()) return;
+        MetadataValue metaData = damageOptional.get();
+        double value = metaData.asDouble();
+        e.setDamage(value);
+
+        if (arrowDamagePiercingReduction != 0) {
+            double multiplier = 1 - arrowDamagePiercingReduction;
+            a.removeMetadata("damage_overhaul", ValhallaMMO.getInstance());
+            a.setMetadata("damage_overhaul", new FixedMetadataValue(ValhallaMMO.getInstance(), value * multiplier));
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

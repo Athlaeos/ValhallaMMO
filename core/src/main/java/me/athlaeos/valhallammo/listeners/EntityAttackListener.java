@@ -117,25 +117,36 @@ public class EntityAttackListener implements Listener {
         AttributeInstance vL = v.getAttribute(Attribute.GENERIC_LUCK);
         double victimLuck = vL != null ? vL.getValue() : 0;
 
-        if (v instanceof Player p && p.getCooldown(Material.SHIELD) <= 0 && p.isBlocking() && e.getFinalDamage() == 0 &&
-                (!(e.getDamager() instanceof Player a) || a.getAttackCooldown() >= 0.9)){ // Shield disabling may only occur if the shield is being held up
+        if (v instanceof Player p){
             int shieldDisabling = (int) Math.round(AccumulativeStatManager.getCachedAttackerRelationalStats("SHIELD_DISARMING", p, trueDamager, 10000, true));
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                        p.setCooldown(Material.SHIELD, p.getCooldown(Material.SHIELD) + shieldDisabling);
-                        p.playEffect(EntityEffect.SHIELD_BREAK);
-                        ItemStack temp = ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ? null : p.getInventory().getItemInMainHand().clone();
-                        p.getInventory().setItemInMainHand(p.getInventory().getItemInOffHand());
-                        p.getInventory().setItemInOffHand(temp);
-                        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                            ItemStack temp2 = ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ? null : p.getInventory().getItemInMainHand().clone();
+            if (shieldDisabling != 0 && p.getCooldown(Material.SHIELD) <= 0 && p.isBlocking() && e.getFinalDamage() == 0 &&
+                    (!(e.getDamager() instanceof Player a) || a.getAttackCooldown() >= 0.9)){ // Shield disabling may only occur if the shield is being held up
+                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                            p.setCooldown(Material.SHIELD, p.getCooldown(Material.SHIELD) + shieldDisabling);
+                            p.playEffect(EntityEffect.SHIELD_BREAK);
+                            ItemStack temp = ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ? null : p.getInventory().getItemInMainHand().clone();
                             p.getInventory().setItemInMainHand(p.getInventory().getItemInOffHand());
-                            p.getInventory().setItemInOffHand(temp2);
+                            p.getInventory().setItemInOffHand(temp);
+                            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                                ItemStack temp2 = ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ? null : p.getInventory().getItemInMainHand().clone();
+                                p.getInventory().setItemInMainHand(p.getInventory().getItemInOffHand());
+                                p.getInventory().setItemInOffHand(temp2);
                             }, 1L);
                         },
-                    1L);
+                        1L);
+            }
         }
         if (!sweep){
             boolean facing = EntityUtils.isEntityFacing(v, e.getDamager().getLocation(), facingAngleCos) || (e.getDamager() instanceof LivingEntity le && EntityUtils.isEntityFacing(v, le.getEyeLocation(), facingAngleCos));
+
+            // directional damage reduction mechanics
+            if (facing){
+                double facingDamageMultiplier = 1 + AccumulativeStatManager.getCachedRelationalStats("FRONT_PROTECTION", v, e.getDamager(), 10000, true);
+                e.setDamage(e.getDamage() * facingDamageMultiplier);
+            } else {
+                double facingAwayDamageMultiplier = 1 + AccumulativeStatManager.getCachedRelationalStats("BACK_PROTECTION", v, e.getDamager(), 10000, true);
+                e.setDamage(e.getDamage() * facingAwayDamageMultiplier);
+            }
 
             // dodging mechanic
             // for this and following mechanics where the victim is hit by a sweep attack the mechanic does not activate, because large clusters of victims will cause a lag spike
@@ -246,13 +257,15 @@ public class EntityAttackListener implements Listener {
                 } else {
                     // melee damage buffs
                     damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedAttackerRelationalStats(combatType == CombatType.MELEE_UNARMED ? "UNARMED_DAMAGE_DEALT" : "MELEE_DAMAGE_DEALT", v, e.getDamager(), 10000, true));
-                    double velocityBonus = AccumulativeStatManager.getRelationalStats("VELOCITY_DAMAGE_BONUS", v, e.getDamager(), true);
-                    if (velocityBonus > 0 && e.getDamager() instanceof LivingEntity l){
-                        Vector moveSpeedDirection = MovementListener.getLastMovementVectors().get(e.getDamager().getUniqueId());
-                        if (moveSpeedDirection != null){
-                            double speed = moveSpeedDirection.length();
-                            double multiplier = Math.max(0, l.getEyeLocation().getDirection().dot(moveSpeedDirection));
-                            if (!Double.isNaN(speed) && !Double.isNaN(multiplier)) damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + ((speed / velocityDamageConstant) * multiplier));
+                    if (cause == null || EntityDamagedListener.getPhysicalDamageTypes().containsKey(cause)) {
+                        double velocityBonus = AccumulativeStatManager.getRelationalStats("VELOCITY_DAMAGE_BONUS", v, e.getDamager(), true);
+                        if (velocityBonus > 0 && e.getDamager() instanceof LivingEntity l){
+                            Vector moveSpeedDirection = MovementListener.getLastMovementVectors().get(e.getDamager().getUniqueId());
+                            if (moveSpeedDirection != null){
+                                double speed = moveSpeedDirection.length();
+                                double multiplier = Math.max(0, l.getEyeLocation().getDirection().dot(moveSpeedDirection));
+                                if (!Double.isNaN(speed) && !Double.isNaN(multiplier)) damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + ((speed / velocityDamageConstant) * multiplier));
+                            }
                         }
                     }
                 }

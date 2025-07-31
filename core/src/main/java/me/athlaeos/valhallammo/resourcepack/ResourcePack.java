@@ -15,12 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResourcePack {
-    private static final String PACK_1_21_2_OLDER_URL = "https://github.com/user-attachments/files/19273979/ValhallaMMO_1.21.2-.zip";
-    private static final String PACK_1_21_2_OLDER_SHA = "a0925253a4691f262572281178c3c7d75247c3ef";
-    private static final String PACK_1_21_3_URL = "https://github.com/user-attachments/files/19273980/ValhallaMMO_1.21.3.zip";
-    private static final String PACK_1_21_3_SHA = "9e1216aeaabeb04b2983f0aec3fb94cae6baa490";
-    private static final String PACK_1_21_4_NEWER_URL = "https://github.com/user-attachments/files/19391618/ValhallaMMO_1.21.4%2B.zip";
-    private static final String PACK_1_21_4_NEWER_SHA = "cb9bc29bf59b691c08513f8eec8cf10e8c42daa9";
+    private static final String PACK_1_21_2_OLDER_URL = "https://github.com/user-attachments/files/21531992/ValhallaMMO_1.21.2-.zip";
+    private static final String PACK_1_21_2_OLDER_SHA = "32c3957311075650ff76a4cc74a49ad705f46ff1";
+    private static final String PACK_1_21_3_URL = "https://github.com/user-attachments/files/21531994/ValhallaMMO_1.21.3.zip";
+    private static final String PACK_1_21_3_SHA = "e0fc8c4fa9f2a6763c7f5c1857b9235e8989943d";
+    private static final String PACK_1_21_4_NEWER_URL = "https://github.com/user-attachments/files/21531995/ValhallaMMO_1.21.4%2B.zip";
+    private static final String PACK_1_21_4_NEWER_SHA = "7cd3df9cc3361eccc096de28bf19b2634ee38621";
     
     /*
      * I copied most of this from thesheepdev's Simple Resourcepack, so code credit for resource pack hosting goes to them

@@ -40,10 +40,12 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class WoodcuttingSkill extends Skill implements Listener {
     private final Map<Material, Double> dropsExpValues = new HashMap<>();
     private final Map<Material, Double> stripExpValues = new HashMap<>();
+    private final Collection<Material> treeCapitatorPreventionBlocks = new HashSet<>();
 
     private int treeCapitatorLimit = 128;
     private boolean treeCapitatorInstant = true;
@@ -72,6 +74,11 @@ public class WoodcuttingSkill extends Skill implements Listener {
         treeCapitatorLeavesLimit = skillConfig.getInt("leaf_decay_limit_tree_capitator");
         forgivingDropMultipliers = skillConfig.getBoolean("forgiving_multipliers");
         treeScanLimit = skillConfig.getInt("tree_scan_limit");
+
+        for (String s : skillConfig.getStringList("tree_capitator_prevention_blocks")) {
+            Material m = ItemUtils.stringToMaterial(s, null);
+            if (m != null) treeCapitatorPreventionBlocks.add(m);
+        }
 
         Collection<String> invalidMaterials = new HashSet<>();
         ConfigurationSection blockBreakSection = progressionConfig.getConfigurationSection("experience.woodcutting_break");
@@ -141,9 +148,13 @@ public class WoodcuttingSkill extends Skill implements Listener {
                 Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "woodcutting_tree_capitator") &&
                 isTree(e.getBlock()) &&
                 !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_TREECAPITATOR)){
-            Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), treeCapitatorLimit, this::isLog, treeCapitatorScanArea);
+            Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), treeCapitatorLimit, b -> isLog(b) || treeCapitatorPreventionBlocks.contains(b.getType()), treeCapitatorScanArea);
             if (vein.size() > profile.getTreeCapitatorLimit()) {
                 Debugger.send(e.getPlayer(), "tree_capitator", "&cTree size " + vein.size() + " is above limit " + profile.getTreeCapitatorLimit());
+                return;
+            }
+            if (vein.stream().anyMatch(b -> treeCapitatorPreventionBlocks.contains(b.getType()))) {
+                Debugger.send(e.getPlayer(), "tree_capitator", "&cTree contains one of the following blocks: " + String.join(treeCapitatorPreventionBlocks.stream().map(Material::toString).collect(Collectors.joining(", ")) + ", which are tree capitator protection blocks"));
                 return;
             }
             treeCapitatingPlayers.add(e.getPlayer().getUniqueId());
@@ -233,6 +244,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
     }
 
     private boolean isLeaves(Block block){
+        if (BlockStore.isPlaced(block)) return false;
         if (Tag.LEAVES.isTagged(block.getType()) && block.getBlockData() instanceof Leaves l) return true;
         return block.getType() == Material.NETHER_WART_BLOCK || block.getType() == Material.WARPED_WART_BLOCK || block.getType() == Material.SHROOMLIGHT;
     }

@@ -36,6 +36,10 @@ public class EntityAttributeStats {
     public static final UUID SAFE_FALLING_DISTANCE = UUID.fromString("2805f0d6-9830-4c3c-82c9-88cce6ae1919");
     public static final UUID FALL_DAMAGE_MULTIPLIER = UUID.fromString("b55d80e9-2762-4688-8ae3-d8c71467d670");
     public static final UUID JUMP_HEIGHT_MULTIPLIER = UUID.fromString("7a57e7db-5f30-4f57-a9fb-332ea5cc9226");
+    public static final UUID WATER_MOVEMENT_EFFICIENCY = UUID.fromString("fe98ce5a-4d56-46d3-9b42-d4ea9d76818b");
+    public static final UUID SUBMERGED_MINING_SPEED = UUID.fromString("411e4540-bce8-49ea-8fb8-724d68ce9b0e");
+    public static final UUID FLIGHT_SPEED = UUID.fromString("b9998ce0-ec29-48a7-913f-695725bc3f6e");
+    public static final UUID OXYGEN_BONUS = UUID.fromString("f527595d-ef69-4866-982e-c79f39353a69");
 
     static{
         registerAttributeToUpdate(new AttributeDataHolder("valhalla_movement_modifier", MOVEMENT_SPEED_BONUS, "MOVEMENT_SPEED_BONUS", AttributeMappings.MOVEMENT_SPEED, AttributeModifier.Operation.ADD_SCALAR));
@@ -55,6 +59,10 @@ public class EntityAttributeStats {
         registerAttributeToUpdate(new AttributeDataHolder("valhalla_safe_fall_distance_modifier", SAFE_FALLING_DISTANCE, "SAFE_FALLING_DISTANCE", AttributeMappings.SAFE_FALL_DISTANCE, AttributeModifier.Operation.ADD_NUMBER));
         registerAttributeToUpdate(new AttributeDataHolder("valhalla_fall_damage_multiplier_modifier", FALL_DAMAGE_MULTIPLIER, "FALL_DAMAGE_MULTIPLIER", AttributeMappings.FALL_DAMAGE_MULTIPLIER, AttributeModifier.Operation.ADD_SCALAR));
         registerAttributeToUpdate(new AttributeDataHolder("valhalla_jump_height_multiplier_modifier", JUMP_HEIGHT_MULTIPLIER, "JUMP_HEIGHT_MULTIPLIER", AttributeMappings.JUMP_STRENGTH, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_water_movement_efficiency", WATER_MOVEMENT_EFFICIENCY, "WATER_MOVEMENT_EFFICIENCY_BONUS", AttributeMappings.WATER_MOVEMENT_EFFICIENCY, AttributeModifier.Operation.ADD_SCALAR));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_submerged_mining_speed", SUBMERGED_MINING_SPEED, "SUBMERGED_MINING_SPEED_BONUS", AttributeMappings.SUBMERGED_MINING_SPEED, AttributeModifier.Operation.ADD_NUMBER));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_flight_speed", FLIGHT_SPEED, "FLIGHT_SPEED_BONUS", AttributeMappings.FLYING_SPEED, AttributeModifier.Operation.ADD_SCALAR));
+        registerAttributeToUpdate(new AttributeDataHolder("valhalla_oxygen_bonus", OXYGEN_BONUS, "OXYGEN_BONUS", AttributeMappings.OXYGEN_BONUS, AttributeModifier.Operation.ADD_NUMBER));
     }
 
     public static void updateStats(LivingEntity e){
@@ -85,7 +93,7 @@ public class EntityAttributeStats {
     }
 
     private static void registerAttributeToUpdate(AttributeDataHolder holder){
-        if (holder.type.getAttribute() == null) return;
+        if (holder.type.getAttribute() == null) return; // not compatible for this version
         attributesToUpdate.put(holder.name, holder);
     }
 

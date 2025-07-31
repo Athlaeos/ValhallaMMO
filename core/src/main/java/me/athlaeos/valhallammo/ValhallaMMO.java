@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo;
 
+import me.athlaeos.valhallammo.block.BlockBreakNetworkHandlerImpl;
 import me.athlaeos.valhallammo.block.BlockInteractConversions;
 import me.athlaeos.valhallammo.commands.*;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
@@ -19,7 +20,6 @@ import me.athlaeos.valhallammo.listeners.*;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.nms.NMS;
-import me.athlaeos.valhallammo.block.BlockBreakNetworkHandlerImpl;
 import me.athlaeos.valhallammo.nms.PacketListener;
 import me.athlaeos.valhallammo.nms.Paper;
 import me.athlaeos.valhallammo.parties.PartyManager;
@@ -27,12 +27,12 @@ import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
 import me.athlaeos.valhallammo.persistence.implementations.SQL;
 import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.resourcepack.Host;
 import me.athlaeos.valhallammo.resourcepack.ResourcePack;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpenseRegistry;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockConditionRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.tools.BlockHardnessStick;
