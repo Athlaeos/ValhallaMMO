@@ -301,20 +301,6 @@ public class ValhallaMMO extends JavaPlugin {
         for (PluginHook hook : activeHooks.values()) hook.whenPresent();
     }
 
-    private String justify(String s){
-        StringBuilder justifiedText = new StringBuilder();
-        int counter = 0;
-        for (char c : s.toCharArray()) {
-            justifiedText.append(c);
-            counter++;
-            if (counter >= 30 && s.length() != 30) {
-                justifiedText.append("`<br>`");
-                counter = 0;
-            }
-        }
-        return justifiedText.toString();
-    }
-
     @Override
     public void onDisable() {
         if (!enabled) return;
