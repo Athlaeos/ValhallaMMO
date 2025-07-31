@@ -413,6 +413,22 @@ public class CustomMerchantManager {
         }
     }
 
+    public static void removeTradeFromType(MerchantTrade trade, MerchantType type, MerchantLevel level){
+        MerchantType.MerchantLevelTrades trades = type.getTrades(level);
+        if (trades == null) return;
+        type.getTrades().get(level).getTrades().remove(trade.getID());
+
+        // delete trade if it is not referenced anywhere else
+        for (MerchantType t : registeredMerchantTypes.values()){
+            for (MerchantLevel l : MerchantLevel.values()){
+                MerchantType.MerchantLevelTrades levelTrades = t.getTrades(l);
+                if (levelTrades == null) continue;
+                if (levelTrades.getTrades().contains(trade.getID())) return; // Found elsewhere, do not delete
+            }
+        }
+        removeTrade(trade);
+    }
+
     public static float getTradingLuck(Player p){
         if (p == null) return 0;
         AttributeInstance luckInstance = p.getAttribute(AttributeMappings.LUCK.getAttribute());
@@ -452,6 +468,15 @@ public class CustomMerchantManager {
     }
 
     public static void removeType(MerchantType type){
+        // first try to delete all the recipes associated with the type, as long as they are not referenced elsewhere
+        for (MerchantLevel level : type.getTrades().keySet()){
+            MerchantType.MerchantLevelTrades trades = type.getTrades(level);
+            for (String tradeID : trades.getTrades()){
+                MerchantTrade trade = getTrade(tradeID);
+                if (trade != null) removeTradeFromType(trade, type, level);
+            }
+        }
+
         registeredMerchantTypes.remove(type.getType());
     }
 

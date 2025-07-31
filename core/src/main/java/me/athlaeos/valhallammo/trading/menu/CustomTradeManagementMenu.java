@@ -196,7 +196,10 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                     setMenuItems();
                     return;
                 } else if (e.isLeftClick() && e.isShiftClick()) {
-                    if (confirmDeletion) CustomMerchantManager.removeTrade(clickedTrade);
+                    if (confirmDeletion) {
+                        MerchantLevel clickedLevel = getClickedLevel(e.getRawSlot());
+                        if (clickedLevel != null) CustomMerchantManager.removeTradeFromType(clickedTrade, currentSubType, clickedLevel);
+                    }
                 } else {
                     if (e.getClick() == ClickType.DROP) {
                         clickedTrade.setPriority(clickedTrade.getPriority() - 1);
@@ -220,7 +223,7 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                         playerMenuUtility.setPreviousMenu(this); // fallback in case player doesn't wanna
                         e.getWhoClicked().closeInventory();
                         Questionnaire questionnaire = new Questionnaire((Player) e.getWhoClicked(), null, null,
-                                new Question("&fWhat should the trade's ID be? (type in chat, or 'cancel' to cancel)", s -> CustomMerchantManager.getTrade(s.replaceAll(" ", "_").toLowerCase(java.util.Locale.US)) == null, "&cTrade with this key already exists! Try again")
+                                new Question("&fWhat should the trade's ID be? (type in chat, or 'cancel' to cancel)", s -> true, "")
                         ) {
                             @Override
                             public Action<Player> getOnFinish() {
@@ -229,13 +232,13 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                                 if (question.getAnswer() == null) return super.getOnFinish();
                                 return (p) -> {
                                     String answer = question.getAnswer().replaceAll(" ", "_").toLowerCase(java.util.Locale.US);
+                                    MerchantTrade existingTrade = CustomMerchantManager.getTrade(answer);
                                     if (answer.contains("cancel")) playerMenuUtility.getPreviousMenu().open();
-                                    else if (CustomMerchantManager.getTrade(answer) != null)
-                                        Utils.sendMessage(getWho(), "&cThe given trade already exists!");
                                     else {
-                                        MerchantTrade trade = new MerchantTrade(answer);
+                                        MerchantTrade trade = existingTrade == null ? new MerchantTrade(answer) : existingTrade;
                                         currentTrade = trade;
-                                        CustomMerchantManager.registerTrade(trade);
+                                        if (existingTrade == null) CustomMerchantManager.registerTrade(trade);
+                                        else Utils.sendMessage(getWho(), "&cCareful! This trade already exists. It was added to this merchant, but modifying this trade will affect every merchant who already possesses this trade");
                                         currentSubType.getTrades(clickedLevel).getTrades().add(trade.getID());
                                         switchView(View.TRADE);
                                     }
@@ -350,6 +353,16 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
         setMenuItems();
     }
 
+    private MerchantLevel getClickedLevel(int rawSlot){
+        if (view != View.TRADES) return null;
+        if (noviceTradeIndexes.contains(rawSlot)) return MerchantLevel.NOVICE;
+        if (apprenticeTradeIndexes.contains(rawSlot)) return MerchantLevel.APPRENTICE;
+        if (journeymanTradeIndexes.contains(rawSlot)) return MerchantLevel.JOURNEYMAN;
+        if (expertTradeIndexes.contains(rawSlot)) return MerchantLevel.EXPERT;
+        if (masterTradeIndexes.contains(rawSlot)) return MerchantLevel.MASTER;
+        return null;
+    }
+
     @Override
     public void handleMenu(InventoryDragEvent e) {
         e.setCancelled(true);
@@ -402,7 +415,9 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                                         "    &7Master:        &d" + type.getTrades().get(MerchantLevel.MASTER).getTrades().size(),
                                         "",
                                         "&6Click to edit",
-                                        "&cShift-Right-Click to delete")
+                                        "&cShift-Right-Click to delete",
+                                        "&4Warning: Deleting type will also try to remove",
+                                        "&4all its trades (if not referenced elsewhere)")
                                 .stringTag(KEY_SUBTYPE, type.getType())
                                 .get();
                         buttons.add(icon);
@@ -605,6 +620,9 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                         "",
                         "&6Click to open",
                         confirmDeletion ? "&4Shift-left click to confirm deletion" : "&cShift-right click to delete",
+                        "&4Deleting will permanently delete trade if not",
+                        "&4referenced in other merchant types.",
+                        "&4(Cannot be re-used in the future)",
                         "&eMiddle click to move right",
                         "&eDrop to move left",
                         "&8(this affects ordering in trading UI)"
