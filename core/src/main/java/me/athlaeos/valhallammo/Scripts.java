@@ -187,14 +187,205 @@ public class Scripts implements Listener {
             new QuickTrade("leatherworker_buy_golden_horse_armor", ProfessionWrapper.LEATHERWORKER, MerchantLevel.JOURNEYMAN, "3x W25 8-25%-16xTRIPWIRE_HOOK for 1xEMERALD NOGIFT EXP=400 ENCH=4 VIL=4 ORD=0"),
             new QuickTrade("leatherworker_sell_turtle_scute", ProfessionWrapper.LEATHERWORKER, MerchantLevel.EXPERT, "12x 100% 4-10%-8xTARGET for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
             new QuickTrade("leatherworker_buy_bundle", ProfessionWrapper.LEATHERWORKER, MerchantLevel.EXPERT, "12x W25 8-10%-16xEMERALD for 16xARROW G7.5 EXP=800 ENCH=8 VIL=8 ORD=16"),
-            new QuickTrade("leatherworker_", ProfessionWrapper.LEATHERWORKER, MerchantLevel.EXPERT, "12x W25 24-10%-48xEMERALD for 1xBOW G7.5 EXP=2400 ENCH=24 VIL=24 ORD=16"),
-            new QuickTrade("leatherworker_", ProfessionWrapper.LEATHERWORKER, MerchantLevel.EXPERT, "12x W25 36-10%-64xEMERALD for 1xCROSSBOW G7.5 EXP=3600 ENCH=36 VIL=36 ORD=16"),
-            new QuickTrade("leatherworker_", ProfessionWrapper.LEATHERWORKER, MerchantLevel.MASTER, "4x 100% 8-10%-16xEMERALD for 1xARROW G5 EXP=800 ENCH=8 VIL=8 ORD=8"),
-            new QuickTrade("leatherworker_", ProfessionWrapper.LEATHERWORKER, MerchantLevel.MASTER, "E12x W20 32-10%-64xEMERALD for 1xBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
-            new QuickTrade("leatherworker_", ProfessionWrapper.LEATHERWORKER, MerchantLevel.MASTER, "E12x W20 32-10%-64xEMERALD for 1xCROSSBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
-            new QuickTrade("leatherworker_", ProfessionWrapper.LEATHERWORKER, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 1xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
-            new QuickTrade("leatherworker_", ProfessionWrapper.LEATHERWORKER, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 2xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
-            new QuickTrade("leatherworker_", ProfessionWrapper.LEATHERWORKER, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 4xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16")
+            new QuickTrade("leatherworker_buy_turtle_helmet", ProfessionWrapper.LEATHERWORKER, MerchantLevel.EXPERT, "12x W25 24-10%-48xEMERALD for 1xBOW G7.5 EXP=2400 ENCH=24 VIL=24 ORD=16"),
+            new QuickTrade("leatherworker_buy_turtle_chestplate", ProfessionWrapper.LEATHERWORKER, MerchantLevel.EXPERT, "12x W25 36-10%-64xEMERALD for 1xCROSSBOW G7.5 EXP=3600 ENCH=36 VIL=36 ORD=16"),
+            new QuickTrade("leatherworker_buy_turtle_leggings", ProfessionWrapper.LEATHERWORKER, MerchantLevel.EXPERT, "4x 100% 8-10%-16xEMERALD for 1xARROW G5 EXP=800 ENCH=8 VIL=8 ORD=8"),
+            new QuickTrade("leatherworker_buy_turtle_boots", ProfessionWrapper.LEATHERWORKER, MerchantLevel.EXPERT, "E12x W20 32-10%-64xEMERALD for 1xBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
+            new QuickTrade("leatherworker_buy_diamond_horse_armor", ProfessionWrapper.LEATHERWORKER, MerchantLevel.MASTER, "12x W25 24-10%-48xEMERALD for 1xBOW G7.5 EXP=2400 ENCH=24 VIL=24 ORD=16"),
+            new QuickTrade("leatherworker_buy_assassin_helmet", ProfessionWrapper.LEATHERWORKER, MerchantLevel.MASTER, "E12x W20 32-10%-64xEMERALD for 1xCROSSBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
+            new QuickTrade("leatherworker_buy_assassin_chestplate", ProfessionWrapper.LEATHERWORKER, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 1xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+            new QuickTrade("leatherworker_buy_assassin_leggings", ProfessionWrapper.LEATHERWORKER, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 2xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+            new QuickTrade("leatherworker_buy_assassin_boots", ProfessionWrapper.LEATHERWORKER, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 4xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+
+            new QuickTrade("librarian_sell_paper", ProfessionWrapper.LIBRARIAN, MerchantLevel.NOVICE, "12x 100% 32-10%-64xSTICK for 1xEMERALD NOGIFT EXP=100 ENCH=1 VIL=1 ORD=0"),
+            new QuickTrade("librarian_buy_bookshelf", ProfessionWrapper.LIBRARIAN, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 16xARROW NOGIFT EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_random_enchanted_book_t1", ProfessionWrapper.LIBRARIAN, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 8xFLINT G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_efficiency_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 8xFEATHER G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_sharpness_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_power_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_smite_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_bane_of_arthropods_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_projectile_protection_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_blast_protection_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_fire_protection_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_sell_books", ProfessionWrapper.LIBRARIAN, MerchantLevel.APPRENTICE, "12x 100% 16-10%-32xFLINT for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_lantern", ProfessionWrapper.LIBRARIAN, MerchantLevel.APPRENTICE, "12x W25 2-10%-4xEMERALD for 1xBOW G15 EXP=300 ENCH=3 VIL=3 ORD=16"),
+            new QuickTrade("librarian_buy_piercing_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.APPRENTICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_impaling_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.APPRENTICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_protection_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.APPRENTICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_fire_aspect_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_knockback_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_punch_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_quick_charge_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_lure_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_sell_ink_sacs", ProfessionWrapper.LIBRARIAN, MerchantLevel.JOURNEYMAN, "12x 100% 16-10%-32xFEATHER for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_glass", ProfessionWrapper.LIBRARIAN, MerchantLevel.JOURNEYMAN, "12x W25 6-10%-12xEMERALD for 1xBOW G10 EXP=600 ENCH=6 VIL=6 ORD=16"),
+            new QuickTrade("librarian_buy_random_enchanted_book_t2", ProfessionWrapper.LIBRARIAN, MerchantLevel.JOURNEYMAN, "12x W25 6-10%-12xEMERALD for 1xBOW G10 EXP=600 ENCH=6 VIL=6 ORD=16"),
+            new QuickTrade("librarian_buy_aqua_affinity_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.JOURNEYMAN, "12x W25 4-10%-8xEMERALD for 1xCROSSBOW G15 EXP=400 ENCH=4 VIL=4 ORD=16"),
+            new QuickTrade("librarian_buy_feather_falling_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_unbreaking_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.JOURNEYMAN, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("librarian_buy_sweeping_edge_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_respiration_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_depth_strider_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_multishot_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_sell_book_and_quill", ProfessionWrapper.LIBRARIAN, MerchantLevel.EXPERT, "12x 100% 4-10%-8xTARGET for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_compass", ProfessionWrapper.LIBRARIAN, MerchantLevel.EXPERT, "12x W25 8-10%-16xEMERALD for 16xARROW G7.5 EXP=800 ENCH=8 VIL=8 ORD=16"),
+            new QuickTrade("librarian_buy_clock", ProfessionWrapper.LIBRARIAN, MerchantLevel.EXPERT, "12x W25 8-10%-16xEMERALD for 16xARROW G7.5 EXP=800 ENCH=8 VIL=8 ORD=16"),
+            new QuickTrade("librarian_buy_fortune_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.EXPERT, "12x W25 2-10%-4xEMERALD for 1xARROW G15 EXP=300 ENCH=3 VIL=3 ORD=16"),
+            new QuickTrade("librarian_buy_looting_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.EXPERT, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_luck_of_the_sea_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.EXPERT, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("librarian_buy_frost_walker_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.EXPERT, "12x W25 24-10%-48xEMERALD for 1xBOW G7.5 EXP=2400 ENCH=24 VIL=24 ORD=16"),
+            new QuickTrade("librarian_buy_channeling_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.EXPERT, "12x W25 36-10%-64xEMERALD for 1xCROSSBOW G7.5 EXP=3600 ENCH=36 VIL=36 ORD=16"),
+            new QuickTrade("librarian_buy_loyalty_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.EXPERT, "4x 100% 8-10%-16xEMERALD for 1xARROW G5 EXP=800 ENCH=8 VIL=8 ORD=8"),
+            new QuickTrade("librarian_buy_riptide_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.EXPERT, "E12x W20 32-10%-64xEMERALD for 1xBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
+            new QuickTrade("librarian_buy_name_tag", ProfessionWrapper.LIBRARIAN, MerchantLevel.MASTER, "12x W25 24-10%-48xEMERALD for 1xBOW G7.5 EXP=2400 ENCH=24 VIL=24 ORD=16"),
+            new QuickTrade("librarian_buy_random_enchanted_book_t3", ProfessionWrapper.LIBRARIAN, MerchantLevel.MASTER, "E12x W20 32-10%-64xEMERALD for 1xCROSSBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
+            new QuickTrade("librarian_buy_infinity_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.MASTER, "E12x W20 32-10%-64xEMERALD for 1xCROSSBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
+            new QuickTrade("librarian_buy_mending_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 1xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+            new QuickTrade("librarian_buy_silk_touch_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 2xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+            new QuickTrade("librarian_buy_thorns_book", ProfessionWrapper.LIBRARIAN, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 4xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+            // TODO create custom enchantments and add to enchanter exclusive trades
+            // custom enchantments
+            // Dreamgate (levelled) replaces parry. sneak right click (hold) sword into ground surface to create waypoint.
+            // requires block placement permissions. sneak right click (hold) sword into sky (looking up) to teleport to waypoint.
+            // cost scales with distance. enchantment level increases max distance. location is saved on sword
+
+            // Resonance (levelled) replaces vein miner. right clicking pickaxe onto rock sends a resonating wave, briefly lighting up
+            // all ores around. radius scales with level. consumes durability
+
+            // Mjolnir (levelled) replaces overhead slam. right clicking right after jumping lunges player forward.
+            // while in the air after lunging forward, hitting an entity deals a lot more damage in a larger aoe
+            // lunge range increases with levels, radius and damage increase with height (up to limit)
+
+            // Knocking (levelled) replaces tree capitator. shift mining a log block shakes the tree heavily, scanning the
+            // tree for leaf blocks and generating drops for each leaf block that would be broken (as well as custom loot)
+            // the player's loot luck increases with level. the drops are dropped down from the leaves but leave the tree and
+            // its leaves intact. this cannot be repeated on the same tree for some time
+
+            // Homing (levelled) replaces charged shot. firing charged shots do not benefit from charged shot stats.
+            // charged shots fly much slower, are not affected by gravity, but home in on the nearest target to
+            // the crosshair (within fov). right before hitting, the arrow's velocity is restored to its previous velocity.
+            // homing strength increases with level
+
+            // Philosopher's Stone (levelled) replaces divine harvest, requires transmutation. Divine harvest still harvests
+            // all crops in a large field, but all the drops are converted to other items.
+            // beetroots are converted to diamonds. wheat to emeralds. potatoes to iron. carrots to gold. nether warts to coal. cocoa to copper
+            // conversion isn't 1:1 and depends on material
+
+            // Aspect of Kali (levelled) replaces rage. Taking damage that would have killed you starts a timer, during
+            // you are invulnerable and deal increased damage. your health bar now represents this timer, starting at full
+            // but ticking down. you cannot heal during this period. you also cannot lose exhaustion during this time.
+            // if you kill the entity that dealt the finishing blow to you during this time, the timer stops and you
+            // remain at the health the timer set you at. if you fail to kill the killer, you simply run out of health
+            // and die anyway. this utilizes a resurrection event. Duration and damage increase with levels.
+            // a message should be sent telling you to kill your attacker
+
+            // Aspect of Hermes (levelled) replaces adrenaline. Taking damage that would have killed you starts a timer.
+            // you are teleported a distance away from the attacker, cleansed from all debuffs, bleeds, fire, and are granted
+            // a speed boost. you stay at minimal health during this time and cannot heal. taking a single hit of damage
+            // from the attacker kills you, but nothing else can harm you. if you take no damage from the attacker during
+            // by the end of the timer, you heal to some percentage of your hp. teleport distance and speed increase with levels, duration decreases
+
+            // Divine Judgement (levelled) replaces disarming. fully disarming the opponent instead equalizes the hp of the grappler
+            // and the opponent. the grappler is then granted additional attack damage equal to some fraction of the difference in HP for some time
+            // levels increase the damage dealt
+
+            new QuickTrade("mason_sell_clay_ball", ProfessionWrapper.MASON, MerchantLevel.NOVICE, "12x 100% 32-10%-64xSTICK for 1xEMERALD NOGIFT EXP=100 ENCH=1 VIL=1 ORD=0"),
+            new QuickTrade("mason_buy_stone", ProfessionWrapper.MASON, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 16xARROW NOGIFT EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("mason_buy_smooth_stone", ProfessionWrapper.MASON, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 8xFLINT G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("mason_buy_cobblestone", ProfessionWrapper.MASON, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 8xFEATHER G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("mason_buy_mossy_cobblestone", ProfessionWrapper.MASON, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("mason_buy_mossy_stone_bricks", ProfessionWrapper.MASON, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("mason_buy_bricks", ProfessionWrapper.MASON, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("mason_buy_mud", ProfessionWrapper.MASON, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("mason_sell_stone", ProfessionWrapper.MASON, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_buy_deepslate", ProfessionWrapper.MASON, MerchantLevel.APPRENTICE, "12x 100% 16-10%-32xFLINT for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_buy_terracotta", ProfessionWrapper.MASON, MerchantLevel.APPRENTICE, "12x W25 2-10%-4xEMERALD for 1xBOW G15 EXP=300 ENCH=3 VIL=3 ORD=16"),
+            new QuickTrade("mason_buy_andesite", ProfessionWrapper.MASON, MerchantLevel.APPRENTICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("mason_buy_granite", ProfessionWrapper.MASON, MerchantLevel.APPRENTICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("mason_buy_diorite", ProfessionWrapper.MASON, MerchantLevel.APPRENTICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("mason_buy_sandstone", ProfessionWrapper.MASON, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_buy_tuff", ProfessionWrapper.MASON, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_sell_granite", ProfessionWrapper.MASON, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_sell_andesite", ProfessionWrapper.MASON, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_sell_diorite", ProfessionWrapper.MASON, MerchantLevel.JOURNEYMAN, "12x 100% 16-10%-32xFEATHER for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_buy_basalt", ProfessionWrapper.MASON, MerchantLevel.JOURNEYMAN, "12x W25 6-10%-12xEMERALD for 1xBOW G10 EXP=600 ENCH=6 VIL=6 ORD=16"),
+            new QuickTrade("mason_buy_calcite", ProfessionWrapper.MASON, MerchantLevel.JOURNEYMAN, "12x W25 6-10%-12xEMERALD for 1xBOW G10 EXP=600 ENCH=6 VIL=6 ORD=16"),
+            new QuickTrade("mason_buy_glass", ProfessionWrapper.MASON, MerchantLevel.JOURNEYMAN, "12x W25 4-10%-8xEMERALD for 1xCROSSBOW G15 EXP=400 ENCH=4 VIL=4 ORD=16"),
+            new QuickTrade("mason_buy_dripstone", ProfessionWrapper.MASON, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_buy_blackstone", ProfessionWrapper.MASON, MerchantLevel.JOURNEYMAN, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("mason_buy_red_sandstone", ProfessionWrapper.MASON, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_buy_nether_bricks", ProfessionWrapper.MASON, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_sell_nether_quartz", ProfessionWrapper.MASON, MerchantLevel.EXPERT, "12x 100% 4-10%-8xTARGET for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_buy_quartz_block", ProfessionWrapper.MASON, MerchantLevel.EXPERT, "12x W25 8-10%-16xEMERALD for 16xARROW G7.5 EXP=800 ENCH=8 VIL=8 ORD=16"),
+            new QuickTrade("mason_buy_tinted_glass", ProfessionWrapper.MASON, MerchantLevel.EXPERT, "12x W25 8-10%-16xEMERALD for 16xARROW G7.5 EXP=800 ENCH=8 VIL=8 ORD=16"),
+            new QuickTrade("mason_buy_amethyst_block", ProfessionWrapper.MASON, MerchantLevel.EXPERT, "12x W25 2-10%-4xEMERALD for 1xARROW G15 EXP=300 ENCH=3 VIL=3 ORD=16"),
+            new QuickTrade("mason_buy_prismarine_blocks", ProfessionWrapper.MASON, MerchantLevel.EXPERT, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_buy_dark_prismarine_blocks", ProfessionWrapper.MASON, MerchantLevel.EXPERT, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("mason_buy_prismarine_lanterns", ProfessionWrapper.MASON, MerchantLevel.EXPERT, "12x W25 24-10%-48xEMERALD for 1xBOW G7.5 EXP=2400 ENCH=24 VIL=24 ORD=16"),
+            new QuickTrade("mason_buy_glowstone", ProfessionWrapper.MASON, MerchantLevel.EXPERT, "12x W25 36-10%-64xEMERALD for 1xCROSSBOW G7.5 EXP=3600 ENCH=36 VIL=36 ORD=16"),
+            new QuickTrade("mason_buy_end_stone", ProfessionWrapper.MASON, MerchantLevel.MASTER, "12x W25 24-10%-48xEMERALD for 1xBOW G7.5 EXP=2400 ENCH=24 VIL=24 ORD=16"),
+            new QuickTrade("mason_buy_purpur", ProfessionWrapper.MASON, MerchantLevel.MASTER, "E12x W20 32-10%-64xEMERALD for 1xCROSSBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
+            new QuickTrade("mason_buy_obsidian", ProfessionWrapper.MASON, MerchantLevel.MASTER, "E12x W20 32-10%-64xEMERALD for 1xCROSSBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
+            new QuickTrade("mason_buy_light", ProfessionWrapper.MASON, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 1xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+            new QuickTrade("mason_buy_reinforced_deepslate", ProfessionWrapper.MASON, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 2xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+
+            // TODO light placement and breaking mechanics
+
+
+            new QuickTrade("shepherd_buy_shears", ProfessionWrapper.SHEPHERD, MerchantLevel.NOVICE, "12x 100% 32-10%-64xSTICK for 1xEMERALD NOGIFT EXP=100 ENCH=1 VIL=1 ORD=0"),
+            new QuickTrade("shepherd_sell_white_wool", ProfessionWrapper.SHEPHERD, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 16xARROW NOGIFT EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("shepherd_sell_brown_wool", ProfessionWrapper.SHEPHERD, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 8xFLINT G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("shepherd_sell_black_wool", ProfessionWrapper.SHEPHERD, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 8xFEATHER G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("shepherd_sell_gray_wool", ProfessionWrapper.SHEPHERD, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("shepherd_sell_random_dye_common", ProfessionWrapper.SHEPHERD, MerchantLevel.APPRENTICE, "12x 100% 16-10%-32xFLINT for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("shepherd_buy_random_wool_1", ProfessionWrapper.SHEPHERD, MerchantLevel.APPRENTICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("shepherd_buy_random_wool_2", ProfessionWrapper.SHEPHERD, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("shepherd_buy_random_wool_3", ProfessionWrapper.SHEPHERD, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("shepherd_buy_random_wool_4", ProfessionWrapper.SHEPHERD, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("shepherd_sell_random_dye_common", ProfessionWrapper.SHEPHERD, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("shepherd_buy_random_dye_common_1", ProfessionWrapper.SHEPHERD, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("shepherd_buy_random_dye_common_2", ProfessionWrapper.SHEPHERD, MerchantLevel.JOURNEYMAN, "12x W25 6-10%-12xEMERALD for 1xBOW G10 EXP=600 ENCH=6 VIL=6 ORD=16"),
+            new QuickTrade("shepherd_buy_random_dye_uncommon_1", ProfessionWrapper.SHEPHERD, MerchantLevel.JOURNEYMAN, "12x 100% 16-10%-32xFEATHER for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("shepherd_buy_random_dye_uncommon_2", ProfessionWrapper.SHEPHERD, MerchantLevel.JOURNEYMAN, "12x W25 6-10%-12xEMERALD for 1xBOW G10 EXP=600 ENCH=6 VIL=6 ORD=16"),
+            new QuickTrade("shepherd_sell_random_dye_uncommon", ProfessionWrapper.SHEPHERD, MerchantLevel.EXPERT, "12x W25 4-10%-8xEMERALD for 1xCROSSBOW G15 EXP=400 ENCH=4 VIL=4 ORD=16"),
+            new QuickTrade("shepherd_buy_field_masoned_pattern", ProfessionWrapper.SHEPHERD, MerchantLevel.EXPERT, "12x 100% 4-10%-8xTARGET for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("shepherd_buy_bordure_indented_pattern", ProfessionWrapper.SHEPHERD, MerchantLevel.EXPERT, "12x W25 8-10%-16xEMERALD for 16xARROW G7.5 EXP=800 ENCH=8 VIL=8 ORD=16"),
+            new QuickTrade("shepherd_buy_flower_charge_pattern", ProfessionWrapper.SHEPHERD, MerchantLevel.EXPERT, "12x W25 8-10%-16xEMERALD for 16xARROW G7.5 EXP=800 ENCH=8 VIL=8 ORD=16"),
+            new QuickTrade("shepherd_buy_creeper_charge_pattern", ProfessionWrapper.SHEPHERD, MerchantLevel.MASTER, "12x W25 24-10%-48xEMERALD for 1xBOW G7.5 EXP=2400 ENCH=24 VIL=24 ORD=16"),
+            new QuickTrade("shepherd_buy_skull_charge_pattern", ProfessionWrapper.SHEPHERD, MerchantLevel.MASTER, "E12x W20 32-10%-64xEMERALD for 1xCROSSBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
+            new QuickTrade("shepherd_buy_mojang_pattern", ProfessionWrapper.SHEPHERD, MerchantLevel.MASTER, "E12x W20 32-10%-64xEMERALD for 1xCROSSBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
+            new QuickTrade("shepherd_buy_snout_pattern", ProfessionWrapper.SHEPHERD, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 1xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+            new QuickTrade("shepherd_buy_flow_pattern", ProfessionWrapper.SHEPHERD, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 2xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+            new QuickTrade("shepherd_buy_guster_pattern", ProfessionWrapper.SHEPHERD, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 2xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+            new QuickTrade("shepherd_buy_globe_pattern", ProfessionWrapper.SHEPHERD, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 2xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+
+            new QuickTrade("toolsmith_sell_coal", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "12x 100% 32-10%-64xSTICK for 1xEMERALD NOGIFT EXP=100 ENCH=1 VIL=1 ORD=0"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 16xARROW NOGIFT EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 8xFLINT G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 8xFEATHER G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "12x 100% 16-10%-32xFLINT for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "12x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.JOURNEYMAN, "12x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.JOURNEYMAN, "12x W25 6-10%-12xEMERALD for 1xBOW G10 EXP=600 ENCH=6 VIL=6 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.JOURNEYMAN, "12x 100% 16-10%-32xFEATHER for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.JOURNEYMAN, "12x W25 6-10%-12xEMERALD for 1xBOW G10 EXP=600 ENCH=6 VIL=6 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.EXPERT, "12x W25 4-10%-8xEMERALD for 1xCROSSBOW G15 EXP=400 ENCH=4 VIL=4 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.EXPERT, "12x 100% 4-10%-8xTARGET for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.EXPERT, "12x W25 8-10%-16xEMERALD for 16xARROW G7.5 EXP=800 ENCH=8 VIL=8 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.EXPERT, "12x W25 8-10%-16xEMERALD for 16xARROW G7.5 EXP=800 ENCH=8 VIL=8 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.MASTER, "12x W25 24-10%-48xEMERALD for 1xBOW G7.5 EXP=2400 ENCH=24 VIL=24 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.MASTER, "E12x W20 32-10%-64xEMERALD for 1xCROSSBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.MASTER, "E12x W20 32-10%-64xEMERALD for 1xCROSSBOW G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 1xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 2xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 2xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16"),
+            new QuickTrade("toolsmith_", ProfessionWrapper.TOOLSMITH, MerchantLevel.MASTER, "E12x W20 16-10%-32xEMERALD for 2xARROW G5 EXP=1600 ENCH=16 VIL=16 ORD=16")
     };
 
     @EventHandler
