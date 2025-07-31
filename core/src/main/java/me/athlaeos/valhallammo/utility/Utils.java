@@ -15,7 +15,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -386,6 +385,28 @@ public class Utils {
 
     public static void sendTitle(Player whomst, String title, String subtitle, int duration, int fade){
         if (!StringUtils.isEmpty(title)) whomst.sendTitle(chat(title), chat(subtitle), fade, duration, fade);
+    }
+
+    public static <T> List<T> weightedSelection(Map<T, Float> entries, int rolls){
+        double totalWeight = 0;
+        List<T> selectedEntries = new ArrayList<>();
+        if (entries.isEmpty()) return selectedEntries;
+        List<Pair<T, Double>> totalEntries = new ArrayList<>();
+        for (T entry : entries.keySet()){
+            totalWeight += entries.get(entry);
+            totalEntries.add(new Pair<>(entry, totalWeight));
+        }
+
+        for (int i = 0; i < rolls; i++){
+            double random = Utils.getRandom().nextDouble() * totalWeight;
+            for (Pair<T, Double> pair : totalEntries){
+                if (pair.getTwo() >= random) {
+                    selectedEntries.add(pair.getOne());
+                    break;
+                }
+            }
+        }
+        return selectedEntries;
     }
 
     public static <T extends Weighted> List<T> weightedSelection(Collection<T> entries, int rolls, double luck, double fortune){
