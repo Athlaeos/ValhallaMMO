@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
@@ -44,8 +45,13 @@ public class SideBarUtils {
             this.p = p;
             if (scoreboard != null){
                 this.objective = scoreboard.getObjective(key);
-                if (this.objective == null) this.objective = scoreboard.registerNewObjective(key, Criteria.DUMMY, Utils.chat(title));
-                this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+                if (this.objective == null) {
+                    if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20)) {
+                        this.objective = scoreboard.registerNewObjective(key, Criteria.DUMMY, Utils.chat(title));
+                    } else {
+                        this.objective = scoreboard.registerNewObjective(key, "dummy", Utils.chat(title));
+                    }
+                }                this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
                 updateContents(entries);
             }
         }
