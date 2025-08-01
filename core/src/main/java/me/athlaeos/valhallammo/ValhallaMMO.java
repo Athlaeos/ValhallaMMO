@@ -56,7 +56,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class ValhallaMMO extends JavaPlugin {
-    private static final boolean premium = false;
+    private static final boolean premium = true;
     private static boolean customMiningSystem = false;
     private static boolean tradingSystemEnabled = false;
     private static NMS nms = null;
