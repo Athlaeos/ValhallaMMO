@@ -82,6 +82,8 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
         return 54;
     }
 
+    private boolean modifyingResultModifiers = true;
+
     @Override
     public void handleMenu(InventoryClickEvent e) {
         e.setCancelled(!(e.getClickedInventory() instanceof PlayerInventory));
@@ -326,6 +328,13 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                 case "tradePriceDemandModButton" -> currentTrade.setDemandPriceMultiplier(currentTrade.getDemandPriceMultiplier() + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.01F : -0.01F)));
                 case "tradeVillagerExperienceButton" -> currentTrade.setVillagerExperience(currentTrade.getVillagerExperience() + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1)));
                 case "tradeModifierButton" -> {
+                    modifyingResultModifiers = true;
+                    playerMenuUtility.setPreviousMenu(this);
+                    new DynamicModifierMenu(playerMenuUtility, this).open();
+                    return;
+                }
+                case "tradePriceModifierButton" -> {
+                    modifyingResultModifiers = false;
                     playerMenuUtility.setPreviousMenu(this);
                     new DynamicModifierMenu(playerMenuUtility, this).open();
                     return;
@@ -574,6 +583,9 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                         inventory.setItem(11, new ItemBuilder(Buttons.tradePriceDemandModButton).prependLore(String.format("&7Currently &e%.2f", currentTrade.getDemandPriceMultiplier()), price).get());
                         inventory.setItem(13, new ItemBuilder(Buttons.tradeVillagerExperienceButton).prependLore(String.format("&7Currently &e%d", currentTrade.getVillagerExperience())).get());
 
+                        List<String> priceModifierLore = new ArrayList<>();
+                        currentTrade.getPriceModifiers().forEach(m -> priceModifierLore.addAll(StringUtils.separateStringIntoLines("&d> " + m.getActiveDescription(), 40)));
+                        inventory.setItem(19, new ItemBuilder(Buttons.tradePriceModifierButton).placeholderLore("%modifiers%", priceModifierLore).get());
                         inventory.setItem(20, currentTrade.getScalingCostItem());
                         inventory.setItem(21, currentTrade.getOptionalCostItem());
                         inventory.setItem(27, new ItemBuilder(Buttons.tradeReputationNegativeModButton).prependLore(String.format("&7Currently &ex%.1f", currentTrade.getNegativeReputationMultiplier())).get());
@@ -648,12 +660,14 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
 
     @Override
     public void setResultModifiers(List<DynamicItemModifier> resultModifiers) {
-        currentTrade.setModifiers(resultModifiers);
+        if (modifyingResultModifiers) currentTrade.setModifiers(resultModifiers);
+        else currentTrade.setPriceModifiers(resultModifiers);
     }
 
     @Override
     public List<DynamicItemModifier> getResultModifiers() {
-        return currentTrade.getModifiers();
+        if (modifyingResultModifiers) return currentTrade.getModifiers();
+        else return currentTrade.getPriceModifiers();
     }
 
     private enum View{
@@ -1099,12 +1113,29 @@ public class CustomTradeManagementMenu extends Menu implements SetModifiersMenu,
                         "%predicates%")
                 .get();
         private static final ItemStack tradeModifierButton = new ItemBuilder(getButtonData("editor_trading_trade_modifiers", Material.WRITABLE_BOOK))
-                .name("&dDynamic Item Modifiers")
+                .name("&dResult Item Modifiers")
                 .stringTag(KEY_BUTTON, "tradeModifierButton")
                 .lore("",
                         "&7Modifiers are functions to edit",
                         "&7the output item based on player",
                         "&7stats.",
+                        "&eClick to open the menu",
+                        "&8&m                <>                ")
+                .get();
+        private static final ItemStack tradePriceModifierButton = new ItemBuilder(getButtonData("editor_trading_trade_modifiers", Material.WRITABLE_BOOK))
+                .name("&dPrice Item Modifiers")
+                .stringTag(KEY_BUTTON, "tradePriceModifierButton")
+                .lore("",
+                        "&7Modifiers are functions to edit",
+                        "&7the price item based on player",
+                        "&7stats. ",
+                        "&cFor the price only simple item",
+                        "&cmodifiers should be used as players",
+                        "&cneed to match the price item exactly,",
+                        "&cand modifiers can easily make an item",
+                        "&ctoo complex to be used.",
+                        "&cFor example, it's fine to change only",
+                        "&cthe base type of the price item",
                         "&eClick to open the menu",
                         "&8&m                <>                ")
                 .get();

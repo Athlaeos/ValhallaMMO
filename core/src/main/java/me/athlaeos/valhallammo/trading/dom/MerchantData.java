@@ -94,6 +94,7 @@ public class MerchantData {
     public static class TradeData{
         private final String trade;
         private final int level;
+        private ItemStack price = null;
         private ItemStack item;
         private final int maxUses;
         private double remainingUses;
@@ -124,6 +125,7 @@ public class MerchantData {
             if (perPlayerStock) return perPlayerRemainingUses.getOrDefault(player.getUniqueId(), (double) maxUses);
             else return remainingUses;
         }
+        public ItemStack getPrice() { return price; }
 
         public void setDemand(int demand) { this.demand = Math.min(demandMax, demand); }
         public void setRemainingUses(double remainingUses) { this.remainingUses = remainingUses; }
@@ -138,6 +140,7 @@ public class MerchantData {
         public void setLastRestocked(long lastRestocked) { this.lastRestocked = lastRestocked; }
         public void setLastTraded(long lastTraded) { this.lastTraded = lastTraded; }
         public void setItem(ItemStack item) { this.item = item; }
+        public void setPrice(ItemStack price) { this.price = price; }
     }
 
     public static class MerchantPlayerMemory{

@@ -13,11 +13,11 @@ public class MerchantType implements Weighted {
     private boolean perPlayerStock = false; // if perPlayerStock, each player can trade up to the trade's limit times
     private double weight = 10; // the weight determines how likely this merchant type is to be picked as a new villager's type
     private final Map<MerchantLevel, MerchantLevelTrades> trades = new HashMap<>(Map.of(
-            MerchantLevel.NOVICE, new MerchantLevelTrades(0, 2, 0, new HashSet<>()),
-            MerchantLevel.APPRENTICE, new MerchantLevelTrades(10, 2, 0, new HashSet<>()),
-            MerchantLevel.JOURNEYMAN, new MerchantLevelTrades(40, 2, 0, new HashSet<>()),
-            MerchantLevel.EXPERT, new MerchantLevelTrades(160, 2, 0, new HashSet<>()),
-            MerchantLevel.MASTER, new MerchantLevelTrades(640, 2, 0, new HashSet<>())
+            MerchantLevel.NOVICE, new MerchantLevelTrades(0, 2, 0, new ArrayList<>()),
+            MerchantLevel.APPRENTICE, new MerchantLevelTrades(10, 2, 0, new ArrayList<>()),
+            MerchantLevel.JOURNEYMAN, new MerchantLevelTrades(40, 2, 0, new ArrayList<>()),
+            MerchantLevel.EXPERT, new MerchantLevelTrades(160, 2, 0, new ArrayList<>()),
+            MerchantLevel.MASTER, new MerchantLevelTrades(640, 2, 0, new ArrayList<>())
     ));
     private final Set<String> services = new HashSet<>(Set.of("trading"));
 
@@ -91,9 +91,9 @@ public class MerchantType implements Weighted {
         private double rolls;
         private double rollQuality;
         private int expRequirement;
-        private final Collection<String> trades;
+        private final List<String> trades;
 
-        private MerchantLevelTrades(int expRequirement, double rolls, double rollQuality, Collection<String> trades){
+        private MerchantLevelTrades(int expRequirement, double rolls, double rollQuality, List<String> trades){
             this.expRequirement = expRequirement;
             this.rolls = rolls;
             this.rollQuality = rollQuality;

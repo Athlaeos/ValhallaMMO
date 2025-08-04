@@ -48,12 +48,12 @@ demand_max: 24 # To prevent demand getting out of control and taking too long to
 
 # Determines the % price discount based on happiness, renown, and reputation (can be negative)
 # By default this produces a discount of
-# -20% to +20% from happiness -10 to 10
-# -20% to +20% from reputation -100 to 100
-# -20% to +20% from renown -100 to 100
-# Totalling 60% off when a villager is perfectly happy and confident around you :)
+# -10% to +10% from happiness -10 to 10
+# -10% to +10% from reputation -100 to 100
+# -10% to +10% from renown -100 to 100
+# Totalling 30% off when a villager is perfectly happy and confident around you :)
 # The price is first affected by the "demand" mechanic, and then reduced by discount. Finally, by the player's own discount (charisma) stat
-discount: "(0.02 * %happiness%) + (0.002 * %reputation%) + (0.002 * %renown%)"
+discount: "(0.01 * %happiness%) + (0.001 * %reputation%) + (0.001 * %renown%)"
 
 happiness_upper_limit: 10 # Happiness cannot go above this value
 happiness_lower_limit: -10 # Happiness cannot go below this value
@@ -73,6 +73,8 @@ renown_hurt_iron_golem: 0 # Renown lost to all nearby villagers when an iron gol
 renown_death_villager: -5 # Renown lost to all nearby villager if a villager merely dies under a player's watch
 renown_death_baby_villager: -10 # Renown lost to all nearby villagers if a baby villager merely dies under a player's watch
 renown_death_iron_golem: -2 # Renown lost to all nearby villagers if an iron golem merely dies under a player's watch
+renown_cure_villager: 5 # Renown gained when curing a villager (that hasn't already been cured before) of being a zombie
+reputation_trade: 0.5
 reputation_kill_villager: -50 # etc.
 reputation_kill_baby_villager: -75
 reputation_kill_iron_golem: -15
@@ -82,6 +84,7 @@ reputation_hurt_iron_golem: 0
 reputation_death_villager: 0
 reputation_death_baby_villager: 0
 reputation_death_iron_golem: 0
+reputation_cure_villager: 70 # Reputation gained with the villager cured of being a zombie, if they haven't been cured before
 renown_hero: 20 # Renown gained when winning a raid
 # There is no renown when losing a raid because losing a raid means all villagers are dead
 renown_happiness: 1 # Renown gained when making a villager happy (this cannot be repeated on a single villager)

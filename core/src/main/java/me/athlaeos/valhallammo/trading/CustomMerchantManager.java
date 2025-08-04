@@ -129,11 +129,14 @@ public class CustomMerchantManager {
                 ItemBuilder result = prepareTradeResult(data, t, player);
                 if (result == null) return;
 
-                ItemBuilder cost = new ItemBuilder(t.getScalingCostItem());
+                ItemBuilder cost = !t.getPriceModifiers().isEmpty() ? prepareTradePrice(data, t, player) : new ItemBuilder(t.getScalingCostItem());
+                if (cost == null) return;
                 int boundMax = t.getPriceRandomPositiveOffset() - t.getPriceRandomNegativeOffset();
                 int randomOffset = boundMax <= 0 ? 0 : (Utils.getRandom().nextInt(boundMax) + t.getPriceRandomNegativeOffset());
                 int price = Math.max(1, Math.min(ValhallaMMO.getNms().getMaxStackSize(cost.getMeta(), cost.getItem().getType()), cost.getItem().getAmount() + randomOffset));
-                trades.add(new MerchantData.TradeData(t.getID(), price, level.getLevel(), result.get(), t.getMaxUses()));
+                MerchantData.TradeData tradeData = new MerchantData.TradeData(t.getID(), price, level.getLevel(), result.get(), t.getMaxUses());
+                if (!t.getPriceModifiers().isEmpty()) tradeData.setPrice(cost.get());
+                trades.add(tradeData);
             });
         }
         return trades;
@@ -145,6 +148,13 @@ public class CustomMerchantManager {
         if (CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) return null;
         setTradeKey(result.getMeta(), t);
         return result;
+    }
+
+    public static ItemBuilder prepareTradePrice(MerchantData data, MerchantTrade t, Player player){
+        ItemBuilder price = new ItemBuilder(t.getScalingCostItem());
+        DynamicItemModifier.modify(ModifierContext.builder(price).crafter(player).validate().entity(data.getVillager()).setOtherType(data).executeUsageMechanics().get(), t.getPriceModifiers());
+        if (CustomFlag.hasFlag(price.getMeta(), CustomFlag.UNCRAFTABLE)) return null;
+        return price;
     }
 
     public static void getMerchantData(AbstractVillager villager, Callback<MerchantData> whenReady){

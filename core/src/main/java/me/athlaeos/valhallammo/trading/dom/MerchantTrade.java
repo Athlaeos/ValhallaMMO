@@ -23,6 +23,7 @@ public class MerchantTrade implements Weighted {
     private ItemStack scalingCostItem = new ItemStack(Material.EMERALD, 8);
     private ItemStack optionalCostItem = null;
     private List<DynamicItemModifier> modifiers = new ArrayList<>(); // modifiers executed on the result item before inserted as trade
+    private List<DynamicItemModifier> priceModifiers = new ArrayList<>(); // modifiers executed on the price item before inserted as trade
     private Collection<LootPredicate> predicates = new HashSet<>(); // predicates that must be met for this trade to be a viable option
     private LootTable.PredicateSelection predicateSelection = LootTable.PredicateSelection.ANY;
     private float weight = 10; // the weight determines how likely this trade is to be picked as a villager's trade. a weight of exactly -1 means the trade is ALWAYS SELECTED and not included in the random selection
@@ -90,6 +91,7 @@ public class MerchantTrade implements Weighted {
     public boolean isTradeable() { return isTradeable; }
     public int getMaxOrderCount() { return maxOrderCount; }
     public int getPriority() { return priority; }
+    public List<DynamicItemModifier> getPriceModifiers() { return priceModifiers; }
 
     public void setPriority(int priority) { this.priority = priority; }
     public void setFixedUseCount(boolean fixedUseCount) { this.fixedUseCount = fixedUseCount; }
@@ -124,6 +126,7 @@ public class MerchantTrade implements Weighted {
     public void setSkillExp(double skillExp) { this.skillExp = skillExp; }
     public void setTradeable(boolean tradeable) { isTradeable = tradeable; }
     public void setMaxOrderCount(int maxOrderCount) { this.maxOrderCount = maxOrderCount; }
+    public void setPriceModifiers(List<DynamicItemModifier> priceModifiers) { this.priceModifiers = priceModifiers; DynamicItemModifier.sortModifiers(this.priceModifiers); }
 
     public float getPerTradeWeight(Player player, MerchantData.TradeData tradeData){
         if (!fixedUseCount){
