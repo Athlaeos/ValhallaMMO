@@ -140,8 +140,11 @@ public class CustomItemManagementMenu extends Menu implements SetModifiersMenu {
                 } else {
                     deleteConfirm = null;
                     if (reApplyConfirm != null && reApplyConfirm.equals(storedValue)) {
-                        CustomItemRegistry.register(storedValue, cursor);
-                        e.getWhoClicked().sendMessage(Utils.chat("&aItem replaced!"));
+                        CustomItem item = CustomItemRegistry.getItem(storedValue);
+                        if (item != null) {
+                            item.setItem(cursor.clone());
+                            e.getWhoClicked().sendMessage(Utils.chat("&aItem replaced!"));
+                        } else e.getWhoClicked().sendMessage(Utils.chat("&cItem no longer exists"));
                     } else reApplyConfirm = storedValue;
                 }
             }
