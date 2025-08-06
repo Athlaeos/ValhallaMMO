@@ -3,11 +3,13 @@ package me.athlaeos.valhallammo.playerstats.profiles.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.FishingSkill;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class FishingProfile extends Profile {
@@ -35,7 +37,7 @@ public class FishingProfile extends Profile {
     public double getFishingEXPMultiplier(){ return getDouble("fishingEXPMultiplier");}
     public void setFishingEXPMultiplier(double value){ setDouble("fishingEXPMultiplier", value);}
 
-    public FishingProfile(Player owner) {
+    public FishingProfile(UUID owner) {
         super(owner);
     }
 
@@ -47,8 +49,8 @@ public class FishingProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_fishing");
 
     @Override
-    public FishingProfile getBlankProfile(Player owner) {
-        return new FishingProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new FishingProfile(owner));
     }
 
     @Override

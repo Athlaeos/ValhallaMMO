@@ -81,6 +81,7 @@ public class ValhallaMMO extends JavaPlugin {
     }
 
     private static boolean enabled = true;
+    private static boolean disabling = false;
 
     @Override
     public void onLoad() {
@@ -149,7 +150,7 @@ public class ValhallaMMO extends JavaPlugin {
             enabled = false;
             return;
         }
-        setupPaper();
+        if (usingPaperMC) setupPaper();
 
         // initialize modifiers and perk rewards
         ResourceExpenseRegistry.registerDefaultExpenses();
@@ -284,7 +285,7 @@ public class ValhallaMMO extends JavaPlugin {
         // During reloads profiles are persisted. This makes sure profiles of players who are already online are ensured
         // to be loaded, otherwise their progress is reset
         for (Player p : getServer().getOnlinePlayers()){
-            ProfileRegistry.getPersistence().loadProfile(p);
+            ProfileRegistry.getPersistence().loadProfile(p.getUniqueId());
         }
 
         worldBlacklist.addAll(pluginConfig.getStringList("world_blacklist"));
@@ -304,7 +305,8 @@ public class ValhallaMMO extends JavaPlugin {
     @Override
     public void onDisable() {
         if (!enabled) return;
-        ProfileRegistry.getPersistence().saveAllProfiles();
+        disabling = true;
+        ProfileRegistry.getPersistence().saveAllProfiles(false);
         if (ProfileRegistry.getPersistence() instanceof Database database) {
             try {
                 database.getConnection().close();
@@ -477,5 +479,9 @@ public class ValhallaMMO extends JavaPlugin {
 
     public static boolean isPremium() {
         return premium;
+    }
+
+    public static boolean disabling() {
+        return disabling;
     }
 }

@@ -2,23 +2,26 @@
 check_updates: true
 
 # PERSISTENCY
-# Database credentials for profile storage
-# If the database credentials are wrong or absent, the plugin will use a sqlite implementation to store profiles instead.
-# If the sqlite implementation failed, the plugin will use PersistentDataContainer instead. This is hard to manage and
-# disables some stat-related features such as leaderboards. If you notice this occurring in your console, it's recommended you
-# try and fix or add the database implementation or sqlite implementation.
+# Supported types: 'sqlite', 'mysql'
+db_type: 'sqlite'
 db_host: 'host'
 db_database: 'database'
 db_username: 'username'
 db_password: 'password'
 db_port: 3306
-db_ping_delay: 24000 # delay (in game ticks) where the database is pinged to keep the connection alive
-db_persist_delay: 6000 # delay (in game ticks) where all profiles currently in memory are persisted.
-# Leaderboards are also reset after this happens.
-# Should a crash happen, it will not roll back too much progress. Resets immediately persist someone's profile
+db_ping_delay: 1200000 # delay (in milliseconds) where the database is pinged to keep the connection alive
+db_persist_delay: 300000 # delay (in milliseconds) where all profiles currently in memory are persisted.
+# Leaderboards are also reset after this happens. Should a crash happen, it will not roll back too much progress. Resets immediately persist someone's profile
+profile-thread-timeout: 180000 # The amount of time (in milliseconds) a profile thread can be idle before expiring
+profile-thread-count: 10 # The maximum number of threads that can be running to handle saving, loading, and managing profiles and the database
+# Different db types will have different minimum thread counts based on what tasks need to be run, if you fall below the minimum, it will alert you & automatically increase
 profile_caching: 10000 # duration (in milliseconds) where profiles are cached in memory. Changes to profiles should
 # immediately reset the cache, so it shouldn't really matter how high this is set to.
-minimum_exp: 500 # Skill profiles with less than the given amount of EXP will not be saved at all. This is to prevent essentially empty profiles from being saved
+
+# REDIS
+# Should the plugin use redis for data loading & saving locks, only works with 'mysql' db_type
+redis_lock: false
+redis_url: 'url'
 
 # RESOURCE PACK
 # Self hosting details

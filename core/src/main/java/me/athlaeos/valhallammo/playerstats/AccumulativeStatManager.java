@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.placeholder.placeholders.TotalRawStatPlaceholder;
 import me.athlaeos.valhallammo.placeholder.placeholders.TotalStatPlaceholder;
+import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.playerstats.statsources.*;
@@ -434,7 +435,7 @@ public class AccumulativeStatManager {
         }
     }
 
-    private static final Map<UUID, Map<String, Map.Entry<Long, Double>>> statCache = new ConcurrentHashMap<>();
+    private static final Map<UUID, Map<String, Map.Entry<Long, Double>>> STAT_CACHE = new ConcurrentHashMap<>();
 
     private static long lastMapCleanup = System.currentTimeMillis();
 
@@ -447,7 +448,7 @@ public class AccumulativeStatManager {
      * @return the cached stat value, or 0 if the stat is not cached. This will still return the value even if the stat is expired
      */
     private static double getCachedStatIgnoringExpiration(Entity e, String stat){
-        Map<String, Map.Entry<Long, Double>> currentCachedStats = statCache.getOrDefault(e.getUniqueId(), new HashMap<>());
+        Map<String, Map.Entry<Long, Double>> currentCachedStats = STAT_CACHE.getOrDefault(e.getUniqueId(), new HashMap<>());
         if (currentCachedStats.get(stat) != null) return currentCachedStats.get(stat).getValue();
         return 0;
     }
@@ -460,8 +461,10 @@ public class AccumulativeStatManager {
      * @param cacheFor the amount of time the cached value will be valid for, in milliseconds
      */
     public static void cacheStat(Entity e, String stat, double amount, long cacheFor){
-        statCache.compute(e.getUniqueId(), (uuid, cache) -> {
-            if (cache == null) cache = new HashMap<>();
+        STAT_CACHE.compute(e.getUniqueId(), (uuid, cache) -> {
+            if (cache == null) {
+                cache = new HashMap<>();
+            }
             cache.put(stat, new AbstractMap.SimpleEntry<>(System.currentTimeMillis() + cacheFor, amount));
             return cache;
         });
@@ -485,8 +488,10 @@ public class AccumulativeStatManager {
      */
     private static Double getValidCachedStat(Entity e, String stat) {
         attemptMapCleanup();
-        Map<String, Map.Entry<Long, Double>> stats = statCache.get(e.getUniqueId());
-        if (stats == null) return null;
+        Map<String, Map.Entry<Long, Double>> stats = STAT_CACHE.get(e.getUniqueId());
+        if (stats == null) {
+            return null;
+        }
         Map.Entry<Long, Double> cache = stats.get(stat);
         return cache != null && cache.getKey() > System.currentTimeMillis() ? cache.getValue() : null;
     }
@@ -494,21 +499,57 @@ public class AccumulativeStatManager {
     private static void attemptMapCleanup(){
         Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
             if (lastMapCleanup + 120000 < System.currentTimeMillis()){
-                for (UUID uuid : new HashSet<>(statCache.keySet())) {
+                for (UUID uuid : new HashSet<>(STAT_CACHE.keySet())) {
                     Entity entity = Bukkit.getEntity(uuid);
-                    if (entity == null || !entity.isValid()) statCache.remove(uuid);
+                    if (entity == null || !entity.isValid()) {
+                        STAT_CACHE.remove(uuid);
+                    }
                 }
                 lastMapCleanup = System.currentTimeMillis();
             }
         });
     }
 
-    public static void resetCache(Entity e){
-        statCache.remove(e.getUniqueId());
+    public static void uncacheStat(Entity e, String stat){
+        Map<String, Map.Entry<Long, Double>> stats = STAT_CACHE.get(e.getUniqueId());
+        if (stats != null) {
+            stats.remove(stat);
+        }
     }
 
-    public static void updateStats(Entity e) {
-        resetCache(e);
+    public static void uncacheStat(UUID uuid, String stat){
+        Map<String, Map.Entry<Long, Double>> stats = STAT_CACHE.get(uuid);
+        if (stats != null) {
+            stats.remove(stat);
+        }
+    }
+
+    public static void uncache(UUID uuid){
+        STAT_CACHE.remove(uuid);
+    }
+
+    public static void uncache(Entity e){
+        STAT_CACHE.remove(e.getUniqueId());
+    }
+
+    public static void uncacheProfile(Player player, Class<? extends Profile> type) {
+        uncacheProfile(player.getUniqueId(), type);
+    }
+
+    public static void uncacheProfile(UUID uuid, Class<? extends Profile> type) {
+        uncache(uuid);
+        ProfileCache.resetCache(uuid, type);
+    }
+
+    public static void resetAllCaches(UUID uuid) {
+        uncache(uuid);
+        MovementListener.resetAttributeStats(uuid);
+        ProfileCache.resetCache(uuid);
+        DigPacketInfo.resetMinerCache(uuid);
+    }
+
+    public static void resetAllCaches(Entity e) {
+        uncache(e);
         if (e instanceof Player p) {
             MovementListener.resetAttributeStats(p);
             ProfileCache.resetCache(p);

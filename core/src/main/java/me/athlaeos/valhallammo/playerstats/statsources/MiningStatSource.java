@@ -11,6 +11,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class MiningStatSource implements AccumulativeStatSource {
     private final String stat;
     private final Class<? extends Number> numberType;
@@ -22,7 +24,7 @@ public class MiningStatSource implements AccumulativeStatSource {
     public MiningStatSource(String stat){
         this.stat = stat;
 
-        Profile baseProfile = ProfileRegistry.getBlankProfile(null, MiningProfile.class);
+        Profile baseProfile = ProfileRegistry.getBlankProfile((UUID) null, MiningProfile.class);
         if (baseProfile.intStatNames().contains(stat)) {
             def = baseProfile.getDefaultInt(stat);
             numberType = Integer.class;

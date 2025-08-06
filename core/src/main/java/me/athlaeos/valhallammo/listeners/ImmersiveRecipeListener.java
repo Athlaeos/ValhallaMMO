@@ -134,17 +134,22 @@ public class ImmersiveRecipeListener implements Listener {
                         List<ItemStack> removedItems = p.getGameMode() == GameMode.CREATIVE ? new ArrayList<>() : ItemUtils.removeItems(p.getInventory(), recipe.getIngredients(), 1, recipe.getMetaRequirement().getChoice());
                         if (removedItems != null){
                             ItemBuilder result = recipe.tinker() ? held : new ItemBuilder(recipe.getResult());
-                            DynamicItemModifier.modify(ModifierContext.builder(result).items(removedItems).crafter(p).executeUsageMechanics().validate().get(), recipe.getModifiers());
                             if (result == null || ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                                 Utils.sendMessage(p, ItemUtils.getPDCString(DynamicItemModifier.ERROR_MESSAGE, heldItem, ""));
                                 selectedImmersiveRecipe.remove(p.getUniqueId());
                             } else {
+                                if (recipe.tinker()) result.amount(1);
+                                DynamicItemModifier.modify(ModifierContext.builder(result).items(removedItems).crafter(p).executeUsageMechanics().validate().get(), recipe.getModifiers());
                                 Animation animation = AnimationRegistry.getAnimation(AnimationRegistry.BLOCK_SPARKS_CRAFTSOUND.id());
                                 if (animation != null) animation.animate(p, clicked.getLocation(), p.getEyeLocation().getDirection(), 0);
                                 incrementPlayerCraftFrequency(e.getPlayer(), recipe);
-                                if (recipe.tinker())
-                                    p.getInventory().setItemInMainHand(result.get());
-                                else {
+                                if (recipe.tinker()) {
+                                    if (heldItem.getAmount() <= 1) p.getInventory().setItemInMainHand(result.get());
+                                    else {
+                                        heldItem.setAmount(heldItem.getAmount() - 1);
+                                        ItemUtils.addItem(p, result.get(), true);
+                                    }
+                                } else {
                                     if (ValhallaMMO.getPluginConfig().getBoolean("craft_item_drop", true)){
                                         Item itemDrop = e.getPlayer().getWorld().dropItem(clicked.getLocation().add(0.5, 1.2, 0.5), result.get());
                                         itemDrop.setPickupDelay(0);

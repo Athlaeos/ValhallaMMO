@@ -35,7 +35,7 @@ public class PotionEffectSingleUseSource implements AccumulativeStatSource {
                 effect.setEffectiveUntil(0);
                 PotionEffectRegistry.addEffect(l, null, effect, true, 1, EntityPotionEffectEvent.Cause.EXPIRATION, EntityPotionEffectEvent.Action.REMOVED);
             }
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> AccumulativeStatManager.resetCache(l), 1L);
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> AccumulativeStatManager.uncache(l), 1L);
             return amplifier;
         }
         return 0;

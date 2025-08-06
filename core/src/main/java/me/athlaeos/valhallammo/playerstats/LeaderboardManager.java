@@ -2,8 +2,8 @@ package me.athlaeos.valhallammo.playerstats;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
-import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.placeholder.placeholders.LeaderboardPlaceholder;
@@ -18,6 +18,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class LeaderboardManager {
     private static final Map<String, Leaderboard> leaderboards = new HashMap<>();
@@ -56,10 +57,33 @@ public class LeaderboardManager {
             String format = config.getString("leaderboards." + leaderboard + ".entry_display");
             double lowerLimit = config.getDouble("leaderboards." + leaderboard + ".lower_limit", -999999);
             String mainStat = config.getString("leaderboards." + leaderboard + ".main_stat");
-            Map<String, String> extraStats = new LinkedHashMap<>();
+            if (mainStat == null) continue;
+            Pair<String, Double> mainStatRequirement;
+            if (mainStat.contains(":")) {
+                String[] split = mainStat.split(":");
+                Double minimumValue = Double.parseDouble(split[1]);
+                String stat = split[0];
+                mainStatRequirement = new Pair<>(stat, minimumValue);
+            } else {
+                mainStatRequirement = new Pair<>(mainStat, null);
+            }
+            Map<String, Pair<String, Double>> extraStats = new LinkedHashMap<>();
             ConfigurationSection extraStatSection = config.getConfigurationSection("leaderboards." + leaderboard + ".extra_stats");
-            if (extraStatSection != null) extraStatSection.getKeys(false).forEach(e -> extraStats.put(e, config.getString("leaderboards." + leaderboard + ".extra_stats." + e)));
-            leaderboards.put(leaderboard, new Leaderboard(leaderboard, profile, mainStat, displayName, placeholderDisplay, format, extraStats, lowerLimit));
+            if (extraStatSection != null) {
+                for (String statName : extraStatSection.getKeys(false)) {
+                    String statTotal = config.getString("leaderboards." + leaderboard + ".extra_stats." + statName);
+                    if (statTotal == null) continue;
+                    Double minimum = null;
+                    String stat = statTotal;
+                    if (statTotal.contains(":")) {
+                        String[] split = statTotal.split(":");
+                        stat = split[0];
+                        minimum = Catch.catchOrElse(() -> Double.parseDouble(split[1]), null, "Invalid minimum " + split[0] + " value passed to leaderboard " + leaderboard + ", " + split[1] + " is not a number");
+                    }
+                    extraStats.put(statName, new Pair<>(stat, minimum));
+                }
+            }
+            leaderboards.put(leaderboard, new Leaderboard(leaderboard, profile, mainStatRequirement, displayName, placeholderDisplay, format, extraStats, lowerLimit));
 
             // placeholder format leaderboard_<leaderboard>_<place>
             // place from 1-10
@@ -97,28 +121,28 @@ public class LeaderboardManager {
         }
     }
 
-    public static void fetchLeaderboard(String leaderboard, boolean cache, Action<Map<Integer, LeaderboardEntry>> callback, boolean reload){
+    public static void fetchLeaderboard(String leaderboard, boolean cache, Consumer<Map<Integer, LeaderboardEntry>> callback, boolean reload){
         Leaderboard l = leaderboards.get(leaderboard);
-        if (l == null || !(ProfileRegistry.getPersistence() instanceof LeaderboardCompatible f)) return;
+        if (l == null) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             if (cachedLeaderboardsByRank.containsKey(l.key) && !reload) {
-                if (callback != null) callback.act(cachedLeaderboardsByRank.get(l.key));
+                if (callback != null) callback.accept(cachedLeaderboardsByRank.get(l.key));
             } else {
-                Map<Integer, LeaderboardEntry> results = f.queryLeaderboardEntries(l);
+                Map<Integer, LeaderboardEntry> results = ProfileRegistry.getPersistence().queryLeaderboardEntries(l);
                 if (cache) cache(l, results);
-                if (callback != null) callback.act(results);
+                if (callback != null) callback.accept(results);
             }
         });
     }
 
-    public static void fetchLeaderboardEntry(UUID uuid, String leaderboard, Action<LeaderboardEntry> callback){
+    public static void fetchLeaderboardEntry(UUID uuid, String leaderboard, Consumer<LeaderboardEntry> callback){
         Leaderboard l = leaderboards.get(leaderboard);
-        if (l == null || !(ProfileRegistry.getPersistence() instanceof LeaderboardCompatible f)) return;
+        if (l == null) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
-            if (!cachedLeaderboardsByRank.containsKey(l.key)) cache(l, f.queryLeaderboardEntries(l));
+            if (!cachedLeaderboardsByRank.containsKey(l.key)) cache(l, ProfileRegistry.getPersistence().queryLeaderboardEntries(l));
             LeaderboardEntry entry = cachedLeaderboardsByPlayer.getOrDefault(l.key, new HashMap<>()).get(uuid);
             if (entry == null) return;
-            callback.act(entry);
+            callback.accept(entry);
         });
     }
 
@@ -152,7 +176,8 @@ public class LeaderboardManager {
     }
 
     private static String entryString(Leaderboard stat, LeaderboardEntry entry){
-        StatFormat format = Profile.getFormat(stat.profile, stat.mainStat);
+        Profile profile = ProfileRegistry.getRegisteredProfiles().get(stat.profile);
+        StatFormat format = profile.getStatFormat(stat.mainStat.getOne());
         String finalEntry = stat.entryFormat
                 .replace("%rank%", String.valueOf(entry.place()))
                 .replace("%prefix%", placementPrefixes.getOrDefault(entry.place(), ""))
@@ -160,7 +185,7 @@ public class LeaderboardManager {
                 .replace("%main_stat%", format == null ? "" : format.format(entry.mainStat()));
         for (String e : entry.extraStats().keySet()){
             double value = entry.extraStats().get(e);
-            StatFormat f = Profile.getFormat(stat.profile, e);
+            StatFormat f = profile.getStatFormat(e);
             finalEntry = finalEntry.replace("%" + e + "%", f == null ? "" : f.format(value));
         }
         return finalEntry;
@@ -178,7 +203,7 @@ public class LeaderboardManager {
         return pageEntryLimit;
     }
 
-    public record Leaderboard(String key, Class<? extends Profile> profile, String mainStat, String displayName, String placeholderDisplay, String entryFormat, Map<String, String> extraStats, double lowerLimit){}
+    public record Leaderboard(String key, Class<? extends Profile> profile, Pair<String, Double> mainStat, String displayName, String placeholderDisplay, String entryFormat, Map<String, Pair<String, Double>> extraStats, double lowerLimit){}
 
     public static Collection<String> getExcludedPlayers() {
         return excludedPlayers;

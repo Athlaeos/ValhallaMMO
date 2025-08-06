@@ -66,7 +66,11 @@ public class MovementListener implements Listener {
     }
 
     public static void resetAttributeStats(Player p){
-        Timer.setCooldown(p.getUniqueId(), 0, "delay_movement_update");
+        resetAttributeStats(p.getUniqueId());
+    }
+
+    public static void resetAttributeStats(UUID uuid){
+        Timer.setCooldown(uuid, 0, "delay_movement_update");
     }
 
     @EventHandler(ignoreCancelled = true)

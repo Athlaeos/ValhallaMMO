@@ -94,7 +94,7 @@ public class ArmorSwitchListener implements Listener {
         public void run() {
             if (timer <= 0){
                 EntityCache.resetEquipment(who);
-                AccumulativeStatManager.updateStats(who);
+                AccumulativeStatManager.uncache(who);
                 taskLimiters.remove(who.getUniqueId());
                 cancel();
             } else {

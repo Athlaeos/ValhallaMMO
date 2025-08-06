@@ -36,10 +36,12 @@ public class ProfileFloatAdd extends PerkReward implements MultiplicativeReward 
 
         profile.setFloat(stat, profile.getFloat(stat) + (value * multiplyBy));
 
-        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
-        else ProfileRegistry.setSkillProfile(player, profile, type);
+        if (isPersistent()) {
+            profile.setShouldForcePersist(true);
+            ProfileRegistry.setPersistentProfile(player, profile, type);
+        } else ProfileRegistry.setSkillProfile(player, profile, type);
 
-        AccumulativeStatManager.updateStats(player);
+        AccumulativeStatManager.uncacheProfile(player, type);
     }
 
     @Override
@@ -53,7 +55,7 @@ public class ProfileFloatAdd extends PerkReward implements MultiplicativeReward 
             profile.setFloat(stat, profile.getFloat(stat) - (value * multiplyBy));
             ProfileRegistry.setSkillProfile(player, profile, type);
         }
-        AccumulativeStatManager.updateStats(player);
+        AccumulativeStatManager.uncacheProfile(player, type);
     }
 
     @Override

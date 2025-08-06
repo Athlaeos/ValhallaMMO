@@ -18,7 +18,7 @@ import java.util.List;
 public class SaveAllCommand implements Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        ProfileRegistry.saveAll();
+        ProfileRegistry.saveAll(true);
         CustomRecipeRegistry.saveRecipes(true);
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {

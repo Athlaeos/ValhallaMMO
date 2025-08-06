@@ -3,12 +3,14 @@ package me.athlaeos.valhallammo.playerstats.profiles.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.ArcherySkill;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class ArcheryProfile extends Profile {
@@ -142,7 +144,7 @@ public class ArcheryProfile extends Profile {
     public double getArcheryEXPMultiplier(){ return getDouble("archeryEXPMultiplier");}
     public void setArcheryEXPMultiplier(double value){ setDouble("archeryEXPMultiplier", value);}
 
-    public ArcheryProfile(Player owner) {
+    public ArcheryProfile(UUID owner) {
         super(owner);
     }
 
@@ -154,8 +156,8 @@ public class ArcheryProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_archery");
 
     @Override
-    public ArcheryProfile getBlankProfile(Player owner) {
-        return new ArcheryProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new ArcheryProfile(owner));
     }
 
     @Override

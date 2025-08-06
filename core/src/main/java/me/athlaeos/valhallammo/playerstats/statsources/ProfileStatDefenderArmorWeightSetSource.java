@@ -13,6 +13,8 @@ import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class ProfileStatDefenderArmorWeightSetSource implements AccumulativeStatSource, EvEAccumulativeStatSource {
     private final Class<? extends Profile> type;
     private final String stat;
@@ -29,7 +31,7 @@ public class ProfileStatDefenderArmorWeightSetSource implements AccumulativeStat
         this.stat = stat;
         this.qtyStat = qtyStat;
         this.weightClass = weightClass;
-        baseProfile = ProfileRegistry.getBlankProfile(null, type);
+        baseProfile = ProfileRegistry.getBlankProfile((UUID) null, type);
 
         if (baseProfile.intStatNames().contains(stat)) {
             def = baseProfile.getDefaultInt(stat);

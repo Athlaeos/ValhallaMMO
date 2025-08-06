@@ -11,6 +11,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class WoodcuttingStatSource implements AccumulativeStatSource {
     private final String stat;
     private final Class<? extends Number> numberType;
@@ -22,7 +24,7 @@ public class WoodcuttingStatSource implements AccumulativeStatSource {
     public WoodcuttingStatSource(String stat){
         this.stat = stat;
 
-        Profile baseProfile = ProfileRegistry.getBlankProfile(null, WoodcuttingProfile.class);
+        Profile baseProfile = ProfileRegistry.getBlankProfile((UUID) null, WoodcuttingProfile.class);
         if (baseProfile.intStatNames().contains(stat)) {
             def = baseProfile.getDefaultInt(stat);
             numberType = Integer.class;

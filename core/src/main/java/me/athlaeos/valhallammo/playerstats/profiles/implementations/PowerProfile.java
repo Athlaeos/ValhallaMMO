@@ -4,14 +4,15 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.FoodClass;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.PowerSkill;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class PowerProfile extends Profile {
@@ -578,7 +579,7 @@ public class PowerProfile extends Profile {
     public Collection<String> getPermanentPotionEffects(){ return getStringSet("permanentPotionEffects");}
     public void setPermanentPotionEffects(Collection<String> value){ setStringSet("permanentPotionEffects", value);}
 
-    public PowerProfile(Player owner) {
+    public PowerProfile(UUID owner) {
         super(owner);
     }
 
@@ -590,8 +591,8 @@ public class PowerProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_power");
 
     @Override
-    public PowerProfile getBlankProfile(Player owner) {
-        return new PowerProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new PowerProfile(owner));
     }
 
     @Override

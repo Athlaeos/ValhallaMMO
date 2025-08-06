@@ -11,6 +11,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class DiggingStatSource implements AccumulativeStatSource {
     private final String stat;
     private final Class<? extends Number> numberType;
@@ -22,7 +24,7 @@ public class DiggingStatSource implements AccumulativeStatSource {
     public DiggingStatSource(String stat){
         this.stat = stat;
 
-        Profile baseProfile = ProfileRegistry.getBlankProfile(null, DiggingProfile.class);
+        Profile baseProfile = ProfileRegistry.getBlankProfile((UUID) null, DiggingProfile.class);
         if (baseProfile.intStatNames().contains(stat)) {
             def = baseProfile.getDefaultInt(stat);
             numberType = Integer.class;
