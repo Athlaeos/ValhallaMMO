@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.event.ItemModificationEvent;
+import me.athlaeos.valhallammo.gui.implementations.DynamicModifierMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -53,6 +54,9 @@ public abstract class DynamicItemModifier {
      */
     public abstract Map<Integer, ItemStack> getButtons();
     public abstract void onButtonPress(InventoryClickEvent e, int button);
+    public void onButtonPress(InventoryClickEvent e, DynamicModifierMenu menu, int button){
+        onButtonPress(e, button);
+    }
 
     public ModifierPriority getPriority() {
         return priority;
