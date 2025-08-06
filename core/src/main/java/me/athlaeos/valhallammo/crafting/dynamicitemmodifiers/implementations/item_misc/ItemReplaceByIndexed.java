@@ -21,6 +21,7 @@ import java.util.*;
 
 public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultChangingModifier {
     private String item = null;
+    private boolean onlyExecuteModifiers = false;
 
     public ItemReplaceByIndexed(String name) {
         super(name);
@@ -28,10 +29,15 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
 
     @Override
     public void processItem(ModifierContext context) {
-        ItemStack customItem = CustomItemRegistry.getProcessedItem(item, context);
-        if (ItemUtils.isEmpty(customItem)) return;
-        context.getItem().setItem(customItem);
-        context.getItem().setMeta(ItemUtils.getItemMeta(customItem));
+        if (onlyExecuteModifiers) {
+            CustomItem customItem = CustomItemRegistry.getItem(item);
+            DynamicItemModifier.modify(context, customItem.getModifiers());
+        } else {
+            ItemStack customItem = CustomItemRegistry.getProcessedItem(item, context);
+            if (ItemUtils.isEmpty(customItem)) return;
+            context.getItem().setItem(customItem);
+            context.getItem().setMeta(ItemUtils.getItemMeta(customItem));
+        }
     }
 
     @Override
@@ -56,6 +62,7 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
 
     @Override
     public void onButtonPress(InventoryClickEvent e, DynamicModifierMenu menu, int button) {
+        if (button == 7) onlyExecuteModifiers = !onlyExecuteModifiers;
         if (button == 12){
             new CustomItemSelectionMenu(menu.getPlayerMenuUtility(), (item) -> {
                 this.item = item.getId();
@@ -70,8 +77,18 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
                 new ItemBuilder(Material.CHEST)
                         .name("&fWhich item?")
                         .lore("&fItem set to &e" + item,
-                                "&6Click to cycle")
-                        .get()).map(new HashSet<>());
+                                "&6Click to select")
+                        .get()).map(Set.of(
+                new Pair<>(7,
+                        new ItemBuilder(Material.REDSTONE_TORCH)
+                                .name("&fShould only its modifiers be executed?")
+                                .lore("&fSet to &e" + onlyExecuteModifiers,
+                                        "&7If enabled, the item will not be",
+                                        "&7replaced. Instead, the modifiers",
+                                        "&7of the index item are executed",
+                                        "&6Click to toggle")
+                                .get())
+        ));
     }
 
     @Override
@@ -103,11 +120,16 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
         this.item = item;
     }
 
+    public void setOnlyExecuteModifiers(boolean onlyExecuteModifiers) {
+        this.onlyExecuteModifiers = onlyExecuteModifiers;
+    }
+
     @Override
     public DynamicItemModifier copy() {
         ItemReplaceByIndexed m = new ItemReplaceByIndexed(getName());
         m.setItem(this.item);
         m.setPriority(this.getPriority());
+        m.setOnlyExecuteModifiers(this.onlyExecuteModifiers);
         return m;
     }
 
