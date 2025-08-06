@@ -256,7 +256,7 @@ public abstract class Profile {
     protected void intStat(String name){ intStat(name, 0, new PropertyBuilder().format(StatFormat.INT).perkReward().create()); }
     protected void intStat(String name, StatProperties properties){ intStat(name, 0, properties); }
     protected void intStat(String name, int def, StatProperties properties){
-        if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
+        if (allStatNames.contains(name)) return;
         allStatNames.add(name);
         ints.put(name, new NumberHolder<>(def, def, properties));
         if (properties != null) this.numberStatProperties.put(name, properties);
@@ -270,7 +270,7 @@ public abstract class Profile {
     protected void floatStat(String name){ floatStat(name, 0, new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create()); }
     protected void floatStat(String name, StatProperties properties){ floatStat(name, 0, properties); }
     protected void floatStat(String name, float def, StatProperties properties){
-        if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
+        if (allStatNames.contains(name)) return;
         allStatNames.add(name);
         floats.put(name, new NumberHolder<>(def, def, properties));
         if (properties != null) this.numberStatProperties.put(name, properties);
@@ -284,7 +284,7 @@ public abstract class Profile {
     protected void doubleStat(String name){ doubleStat(name, 0, new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create()); }
     protected void doubleStat(String name, StatProperties properties){ doubleStat(name, 0, properties); }
     protected void doubleStat(String name, double def, StatProperties properties){
-        if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
+        if (allStatNames.contains(name)) return;
         allStatNames.add(name);
         doubles.put(name, new NumberHolder<>(def, def, properties));
         if (properties != null) this.numberStatProperties.put(name, properties);
@@ -292,7 +292,7 @@ public abstract class Profile {
     }
 
     protected void stringSetStat(String name){
-        if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
+        if (allStatNames.contains(name)) return;
         allStatNames.add(name);
         stringSets.put(name, new HashSet<>());
         tablesToUpdate.add(name);
@@ -301,7 +301,7 @@ public abstract class Profile {
     protected void booleanStat(String name){ booleanStat(name, false, new BooleanProperties(true, true)); }
     protected void booleanStat(String name, BooleanProperties properties){ booleanStat(name, false, properties); }
     protected void booleanStat(String name, boolean def, BooleanProperties properties){
-        if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
+        if (allStatNames.contains(name)) return;
         allStatNames.add(name);
         booleans.put(name, new BooleanHolder(def, def, properties));
         tablesToUpdate.add(name);
