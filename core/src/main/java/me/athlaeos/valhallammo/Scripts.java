@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierPriority;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexedBasedOnQuality;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale;
@@ -500,9 +501,10 @@ public class Scripts implements Listener {
                 String scalingItemID = String.format("%s_scaling", recipe.getName().replace("craft_", ""));
                 CustomItem scalingItem = CustomItemRegistry.getItem(scalingItemID);
                 if (scalingItem == null) scalingItem = new CustomItem(scalingItemID, new ItemStack(Material.BARRIER));
+                scalingItem.setItem(recipe.getResult());
 
                 List<DynamicItemModifier> filteredRecipeModifiers = new ArrayList<>(recipe.getModifiers().stream().map(DynamicItemModifier::copy).toList());
-                filteredRecipeModifiers.removeIf(m -> m instanceof DefaultAttributeScale || m instanceof DurabilityScale || m instanceof SkillExperience || m instanceof SmithingQualityScale);
+                filteredRecipeModifiers.removeIf(m -> m instanceof DefaultAttributeScale || m instanceof SmithingNeutralQualitySet || m instanceof DurabilityScale || m instanceof SkillExperience || m instanceof SmithingQualityScale);
                 scalingItem.setModifiers(filteredRecipeModifiers);
 
                 List<DynamicItemModifier> attributeScalingAndExperienceModifiers = new ArrayList<>(recipe.getModifiers().stream().filter(m -> m instanceof DefaultAttributeScale || m instanceof DurabilityScale || m instanceof SkillExperience).map(DynamicItemModifier::copy).toList());
