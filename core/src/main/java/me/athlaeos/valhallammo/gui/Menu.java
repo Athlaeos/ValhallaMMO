@@ -61,6 +61,10 @@ public abstract class Menu {
     public void onClose(){
         // do nothing by default
     }
+
+    public PlayerMenuUtility getPlayerMenuUtility() {
+        return playerMenuUtility;
+    }
 }
 
 //Credit for menu and manager go to Kody Simpson

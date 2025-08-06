@@ -36,10 +36,12 @@ public class ProfileDoubleAdd extends PerkReward implements MultiplicativeReward
 
         profile.setDouble(stat, profile.getDouble(stat) + (value * multiplyBy));
 
-        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
-        else ProfileRegistry.setSkillProfile(player, profile, type);
+        if (isPersistent()) {
+            profile.setShouldForcePersist(true);
+            ProfileRegistry.setPersistentProfile(player, profile, type);
+        } else ProfileRegistry.setSkillProfile(player, profile, type);
 
-        AccumulativeStatManager.updateStats(player);
+        AccumulativeStatManager.uncacheProfile(player, type);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class ProfileDoubleAdd extends PerkReward implements MultiplicativeReward
         if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
         else ProfileRegistry.setSkillProfile(player, profile, type);
 
-        AccumulativeStatManager.updateStats(player);
+        AccumulativeStatManager.uncacheProfile(player, type);
     }
 
     @Override

@@ -17,6 +17,7 @@ import org.bukkit.entity.Projectile;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.UUID;
 
 public class ProfileStatAttackerHeldItemSource implements AccumulativeStatSource, EvEAccumulativeStatSource {
     private final Class<? extends Profile> type;
@@ -31,7 +32,7 @@ public class ProfileStatAttackerHeldItemSource implements AccumulativeStatSource
         this.type = type;
         this.stat = stat;
         this.heldItems = Set.of(heldItem);
-        baseProfile = ProfileRegistry.getBlankProfile(null, type);
+        baseProfile = ProfileRegistry.getBlankProfile((UUID) null, type);
 
         if (baseProfile.intStatNames().contains(stat)) {
             def = baseProfile.getDefaultInt(stat);

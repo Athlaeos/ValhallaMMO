@@ -131,6 +131,7 @@ public class ModifierRegistry {
         register(new AmountSet("amount_set"));
         register(new ColorDecimal("color_decimal"));
         register(new ColorRGB("color_rgb"));
+        register(new FancyPantsOrEquippable("fancypants_or_equippable"));
         register(new CustomModelDataSet("custom_model_data"));
         register(new CustomIDSet("custom_id"));
         register(new DisplayNameSet("rename"));

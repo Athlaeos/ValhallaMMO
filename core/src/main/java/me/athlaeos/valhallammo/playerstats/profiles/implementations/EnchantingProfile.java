@@ -4,14 +4,15 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.EnchantmentClassification;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.EnchantingSkill;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class EnchantingProfile extends Profile {
@@ -169,7 +170,7 @@ public class EnchantingProfile extends Profile {
     public double getEnchantingEXPMultiplier(){ return getDouble("enchantingEXPMultiplier");}
     public void setEnchantingEXPMultiplier(double value){ setDouble("enchantingEXPMultiplier", value);}
 
-    public EnchantingProfile(Player owner) {
+    public EnchantingProfile(UUID owner) {
         super(owner);
     }
 
@@ -181,8 +182,8 @@ public class EnchantingProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_enchanting");
 
     @Override
-    public EnchantingProfile getBlankProfile(Player owner) {
-        return new EnchantingProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new EnchantingProfile(owner));
     }
 
     @Override

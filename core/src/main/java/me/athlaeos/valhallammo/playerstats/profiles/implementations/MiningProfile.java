@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.MiningSpeed;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
@@ -14,9 +15,9 @@ import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class MiningProfile extends Profile {
@@ -132,7 +133,7 @@ public class MiningProfile extends Profile {
         emptyHandTool = new ItemBuilder(item.get());
     }
 
-    public MiningProfile(Player owner) {
+    public MiningProfile(UUID owner) {
         super(owner);
     }
 
@@ -144,8 +145,8 @@ public class MiningProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_mining");
 
     @Override
-    public MiningProfile getBlankProfile(Player owner) {
-        return new MiningProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new MiningProfile(owner));
     }
 
     @Override

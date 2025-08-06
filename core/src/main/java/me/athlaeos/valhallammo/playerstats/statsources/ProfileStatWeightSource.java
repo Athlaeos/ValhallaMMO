@@ -13,6 +13,8 @@ import me.athlaeos.valhallammo.utility.EntityUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class ProfileStatWeightSource implements AccumulativeStatSource {
     private final Class<? extends Profile> type;
     private final String stat;
@@ -27,7 +29,7 @@ public class ProfileStatWeightSource implements AccumulativeStatSource {
         this.stat = stat;
         this.weightClass = weightClass;
         this.negative = negative;
-        baseProfile = ProfileRegistry.getBlankProfile(null, type);
+        baseProfile = ProfileRegistry.getBlankProfile((UUID) null, type);
 
         if (baseProfile.intStatNames().contains(stat)) {
             def = baseProfile.getDefaultInt(stat);

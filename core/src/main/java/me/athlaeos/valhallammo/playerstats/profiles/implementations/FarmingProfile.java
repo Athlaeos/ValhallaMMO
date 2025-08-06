@@ -3,12 +3,14 @@ package me.athlaeos.valhallammo.playerstats.profiles.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.FarmingSkill;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class FarmingProfile extends Profile {
@@ -69,7 +71,7 @@ public class FarmingProfile extends Profile {
     public double getFarmingEXPMultiplier(){ return getDouble("farmingEXPMultiplier");}
     public void setFarmingEXPMultiplier(double value){ setDouble("farmingEXPMultiplier", value);}
 
-    public FarmingProfile(Player owner) {
+    public FarmingProfile(UUID owner) {
         super(owner);
     }
 
@@ -81,8 +83,8 @@ public class FarmingProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_farming");
 
     @Override
-    public FarmingProfile getBlankProfile(Player owner) {
-        return new FarmingProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new FarmingProfile(owner));
     }
 
     @Override

@@ -538,7 +538,7 @@ public abstract class Skill {
             double nextLevelEXP = expForLevel(profile.getLevel() + 1);
             if ((nextLevelEXP > 0 && profile.getEXP() >= nextLevelEXP) || profile.getEXP() < 0) {
                 updateLevelUpConditions(p, silent);
-                AccumulativeStatManager.updateStats(p);
+                AccumulativeStatManager.uncacheProfile(p.getUniqueId(), profile.getClass());
             }
         }
     }

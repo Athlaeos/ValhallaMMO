@@ -3,12 +3,14 @@ package me.athlaeos.valhallammo.playerstats.profiles.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.HeavyWeaponsSkill;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class HeavyWeaponsProfile extends Profile {
@@ -194,7 +196,7 @@ public class HeavyWeaponsProfile extends Profile {
     public double getHeavyWeaponsEXPGain(){ return getDouble("heavyWeaponsEXPMultiplier");}
     public void setHeavyWeaponsEXPGain(double value){ setDouble("heavyWeaponsEXPMultiplier", value);}
 
-    public HeavyWeaponsProfile(Player owner) {
+    public HeavyWeaponsProfile(UUID owner) {
         super(owner);
     }
 
@@ -206,8 +208,8 @@ public class HeavyWeaponsProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_heavy_weapons");
 
     @Override
-    public HeavyWeaponsProfile getBlankProfile(Player owner) {
-        return new HeavyWeaponsProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new HeavyWeaponsProfile(owner));
     }
 
     @Override

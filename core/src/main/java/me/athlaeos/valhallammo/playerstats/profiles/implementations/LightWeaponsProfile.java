@@ -3,12 +3,14 @@ package me.athlaeos.valhallammo.playerstats.profiles.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.LightWeaponsSkill;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class LightWeaponsProfile extends Profile {
@@ -194,7 +196,7 @@ public class LightWeaponsProfile extends Profile {
     public double getLightWeaponsEXPGain(){ return getDouble("lightWeaponsEXPMultiplier");}
     public void setLightWeaponsEXPGain(double value){ setDouble("lightWeaponsEXPMultiplier", value);}
 
-    public LightWeaponsProfile(Player owner) {
+    public LightWeaponsProfile(UUID owner) {
         super(owner);
     }
 
@@ -206,8 +208,8 @@ public class LightWeaponsProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_light_weapons");
 
     @Override
-    public LightWeaponsProfile getBlankProfile(Player owner) {
-        return new LightWeaponsProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new LightWeaponsProfile(owner));
     }
 
     @Override

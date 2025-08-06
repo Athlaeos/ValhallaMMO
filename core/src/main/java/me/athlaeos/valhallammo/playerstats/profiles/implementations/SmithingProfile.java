@@ -4,11 +4,13 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.item.MaterialClass;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.SmithingSkill;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class SmithingProfile extends Profile {
@@ -170,7 +172,7 @@ public class SmithingProfile extends Profile {
             }
     }
 
-    public SmithingProfile(Player owner) {
+    public SmithingProfile(UUID owner) {
         super(owner);
     }
 
@@ -182,8 +184,8 @@ public class SmithingProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_smithing");
 
     @Override
-    public SmithingProfile getBlankProfile(Player owner) {
-        return new SmithingProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new SmithingProfile(owner));
     }
 
     @Override

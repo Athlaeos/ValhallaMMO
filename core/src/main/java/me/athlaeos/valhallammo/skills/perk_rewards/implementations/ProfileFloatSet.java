@@ -25,9 +25,11 @@ public class ProfileFloatSet extends PerkReward {
 
         profile.setFloat(stat, value);
 
-        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
-        else ProfileRegistry.setSkillProfile(player, profile, type);
-        AccumulativeStatManager.updateStats(player);
+        if (isPersistent()) {
+            profile.setShouldForcePersist(true);
+            ProfileRegistry.setPersistentProfile(player, profile, type);
+        } else ProfileRegistry.setSkillProfile(player, profile, type);
+        AccumulativeStatManager.uncacheProfile(player, type);
     }
 
     @Override

@@ -11,6 +11,8 @@ import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class ProfileStatAttackerVictimClassSource implements AccumulativeStatSource, EvEAccumulativeStatSource {
     private final Class<? extends Profile> type;
     private final String stat;
@@ -24,7 +26,7 @@ public class ProfileStatAttackerVictimClassSource implements AccumulativeStatSou
         this.type = type;
         this.stat = stat;
         this.entityClassification = entityClassification;
-        baseProfile = ProfileRegistry.getBlankProfile(null, type);
+        baseProfile = ProfileRegistry.getBlankProfile((UUID) null, type);
 
         if (baseProfile.intStatNames().contains(stat)) {
             def = baseProfile.getDefaultInt(stat);

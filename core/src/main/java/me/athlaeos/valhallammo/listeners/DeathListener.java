@@ -85,6 +85,6 @@ public class DeathListener implements Listener {
     public void onEntityDeath(EntityDeathEvent e){
         EntityCache.removeProperties(e.getEntity());
         Bleeder.removeBleed(e.getEntity());
-        AccumulativeStatManager.updateStats(e.getEntity());
+        AccumulativeStatManager.uncache(e.getEntity());
     }
 }

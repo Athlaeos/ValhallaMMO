@@ -3,11 +3,13 @@ package me.athlaeos.valhallammo.playerstats.profiles.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.DiggingSkill;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class DiggingProfile extends Profile {
@@ -55,7 +57,7 @@ public class DiggingProfile extends Profile {
     public double getDiggingEXPMultiplier(){ return getDouble("diggingEXPMultiplier");}
     public void setDiggingEXPMultiplier(double value){ setDouble("diggingEXPMultiplier", value);}
 
-    public DiggingProfile(Player owner) {
+    public DiggingProfile(UUID owner) {
         super(owner);
     }
 
@@ -67,8 +69,8 @@ public class DiggingProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_digging");
 
     @Override
-    public DiggingProfile getBlankProfile(Player owner) {
-        return new DiggingProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new DiggingProfile(owner));
     }
 
     @Override

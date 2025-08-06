@@ -198,7 +198,7 @@ public class DynamicModifierMenu extends Menu {
 
         if (ItemUtils.getPDCInt(KEY_MODIFIER_BUTTON, clickedItem, 0) > 0 && currentModifier != null){
             int buttonPressed = modifierButtonIndexes.indexOf(e.getRawSlot());
-            currentModifier.onButtonPress(e, buttonPressed);
+            currentModifier.onButtonPress(e, this, buttonPressed);
         }
 
         setMenuItems();

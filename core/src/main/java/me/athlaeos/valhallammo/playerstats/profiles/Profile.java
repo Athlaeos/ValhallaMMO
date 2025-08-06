@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.skills.skills.Skill;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import java.util.*;
 
 /**
@@ -33,9 +34,9 @@ public abstract class Profile {
 
     public abstract String getTableName();
 
-    public Profile(Player owner){
+    public Profile(UUID owner){
         if (owner == null) return;
-        this.owner = owner.getUniqueId();
+        this.owner = owner;
     }
 
     public void onCacheRefresh() {
@@ -48,6 +49,7 @@ public abstract class Profile {
         doubleStat("exp_total", new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).create());
         intStat("newGamePlus"); // amount of times the player has entered a new skill loop
         intStat("maxAllowedLevel", Short.MAX_VALUE, new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+        booleanStat("forcePersist", new BooleanProperties(true, true));
     }
 
     public int getLevel(){
@@ -85,6 +87,13 @@ public abstract class Profile {
         setInt("maxAllowedLevel", maxAllowedLevel);
     }
 
+    public boolean shouldForcePersist() {
+        return getBoolean("forcePersist");
+    }
+    public void setShouldForcePersist(boolean forcePersist){
+        setBoolean("forcePersist", forcePersist);
+    }
+
     public abstract Class<? extends Skill> getSkillType();
 
     public Collection<String> getInts() {
@@ -107,6 +116,9 @@ public abstract class Profile {
         return booleans.keySet();
     }
 
+    public boolean isInt(String stat) {
+        return ints.containsKey(stat);
+    }
     public int getInt(String stat) {
         NumberHolder<Integer> holder = ints.get(stat);
         if (holder == null) throw new IllegalArgumentException("No int stat with name " + stat + " is registered under " + getClass().getSimpleName());
@@ -128,6 +140,9 @@ public abstract class Profile {
         holder.setValue(value);
     }
 
+    public boolean isFloat(String stat) {
+        return floats.containsKey(stat);
+    }
     public float getFloat(String stat) {
         NumberHolder<Float> holder = floats.get(stat);
         if (holder == null) throw new IllegalArgumentException("No float stat with name " + stat + " is registered under " + getClass().getSimpleName());
@@ -149,6 +164,9 @@ public abstract class Profile {
         holder.setValue(value);
     }
 
+    public boolean isDouble(String stat) {
+        return doubles.containsKey(stat);
+    }
     public double getDouble(String stat) {
         NumberHolder<Double> holder = doubles.get(stat);
         if (holder == null) throw new IllegalArgumentException("No double stat with name " + stat + " is registered under " + getClass().getSimpleName());
@@ -170,6 +188,9 @@ public abstract class Profile {
         holder.setValue(value);
     }
 
+    public boolean isStringSet(String stat) {
+        return stringSets.containsKey(stat);
+    }
     public Collection<String> getStringSet(String stat) {
         Collection<String> strings = stringSets.get(stat);
         if (strings == null) throw new IllegalArgumentException("No stringSet stat with name " + stat + " is registered under " + getClass().getSimpleName());
@@ -180,6 +201,9 @@ public abstract class Profile {
         stringSets.put(stat, value);
     }
 
+    public boolean isBoolean(String stat) {
+        return booleans.containsKey(stat);
+    }
     public boolean getBoolean(String stat) {
         BooleanHolder holder = booleans.get(stat);
         if (holder == null) throw new IllegalArgumentException("No boolean stat with name " + stat + " is registered under " + getClass().getSimpleName());
@@ -232,7 +256,7 @@ public abstract class Profile {
     protected void intStat(String name){ intStat(name, 0, new PropertyBuilder().format(StatFormat.INT).perkReward().create()); }
     protected void intStat(String name, StatProperties properties){ intStat(name, 0, properties); }
     protected void intStat(String name, int def, StatProperties properties){
-        if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
+        if (allStatNames.contains(name)) return;
         allStatNames.add(name);
         ints.put(name, new NumberHolder<>(def, def, properties));
         if (properties != null) this.numberStatProperties.put(name, properties);
@@ -246,7 +270,7 @@ public abstract class Profile {
     protected void floatStat(String name){ floatStat(name, 0, new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create()); }
     protected void floatStat(String name, StatProperties properties){ floatStat(name, 0, properties); }
     protected void floatStat(String name, float def, StatProperties properties){
-        if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
+        if (allStatNames.contains(name)) return;
         allStatNames.add(name);
         floats.put(name, new NumberHolder<>(def, def, properties));
         if (properties != null) this.numberStatProperties.put(name, properties);
@@ -260,7 +284,7 @@ public abstract class Profile {
     protected void doubleStat(String name){ doubleStat(name, 0, new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create()); }
     protected void doubleStat(String name, StatProperties properties){ doubleStat(name, 0, properties); }
     protected void doubleStat(String name, double def, StatProperties properties){
-        if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
+        if (allStatNames.contains(name)) return;
         allStatNames.add(name);
         doubles.put(name, new NumberHolder<>(def, def, properties));
         if (properties != null) this.numberStatProperties.put(name, properties);
@@ -268,7 +292,7 @@ public abstract class Profile {
     }
 
     protected void stringSetStat(String name){
-        if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
+        if (allStatNames.contains(name)) return;
         allStatNames.add(name);
         stringSets.put(name, new HashSet<>());
         tablesToUpdate.add(name);
@@ -277,7 +301,7 @@ public abstract class Profile {
     protected void booleanStat(String name){ booleanStat(name, false, new BooleanProperties(true, true)); }
     protected void booleanStat(String name, BooleanProperties properties){ booleanStat(name, false, properties); }
     protected void booleanStat(String name, boolean def, BooleanProperties properties){
-        if (allStatNames.contains(name)) throw new IllegalArgumentException("Duplicate stat name " + name);
+        if (allStatNames.contains(name)) return;
         allStatNames.add(name);
         booleans.put(name, new BooleanHolder(def, def, properties));
         tablesToUpdate.add(name);
@@ -292,11 +316,50 @@ public abstract class Profile {
         return owner;
     }
 
+    public StatFormat getStatFormat(String stat) {
+        StatProperties properties = numberStatProperties.get(stat);
+        return properties != null ? properties.getFormat() : null;
+    }
+    public StatProperties getStatProperties(String stat) {
+        return numberStatProperties.get(stat);
+    }
     public Map<String, StatProperties> getNumberStatProperties() {
         return numberStatProperties;
     }
 
-    public abstract Profile getBlankProfile(Player owner);
+    public Profile getBlankProfile(Player player){
+        return getBlankProfile(player.getUniqueId());
+    }
+    public abstract Profile getBlankProfile(UUID owner);
+
+    @OverridingMethodsMustInvokeSuper
+    public void initStats() {
+        intStat("level", new PropertyBuilder().format(StatFormat.INT).min(0).create());
+        doubleStat("exp", new PropertyBuilder().format(StatFormat.FLOAT_P2).create());
+        doubleStat("exp_total", new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).create());
+        intStat("newGamePlus"); // amount of times the player has entered a new skill loop
+        intStat("maxAllowedLevel", Short.MAX_VALUE, new PropertyBuilder().format(StatFormat.INT).min(0).perkReward().create());
+    }
+    public void copyStats(Profile profile) {
+        this.numberStatProperties.putAll(profile.numberStatProperties);
+        this.tablesToUpdate.addAll(profile.tablesToUpdate);
+        this.allStatNames.addAll(profile.allStatNames);
+        for (Map.Entry<String, NumberHolder<Integer>> entry : profile.ints.entrySet()) {
+            this.ints.put(entry.getKey(), entry.getValue().copy());
+        }
+        for (Map.Entry<String, NumberHolder<Float>> entry : profile.floats.entrySet()) {
+            this.floats.put(entry.getKey(), entry.getValue().copy());
+        }
+        for (Map.Entry<String, NumberHolder<Double>> entry : profile.doubles.entrySet()) {
+            this.doubles.put(entry.getKey(), entry.getValue().copy());
+        }
+        for (Map.Entry<String, Collection<String>> entry : profile.stringSets.entrySet()) {
+            this.stringSets.put(entry.getKey(), new HashSet<>(entry.getValue()));
+        }
+        for (Map.Entry<String, BooleanHolder> entry : profile.booleans.entrySet()) {
+            this.booleans.put(entry.getKey(), entry.getValue().copy());
+        }
+    }
 
     /**
      * Merges this profile with the given profile, and assigns the new owner.<br>
@@ -309,7 +372,7 @@ public abstract class Profile {
      * @return the new merged profile
      */
     public Profile merge(Profile profile, Player owner){
-        Profile merged = getBlankProfile(owner);
+        Profile merged = getBlankProfile(owner.getUniqueId());
         for (String s : allStatNames){
             NumberHolder<Integer> intStat = ints.get(s);
             if (intStat != null) {
@@ -389,6 +452,10 @@ public abstract class Profile {
         public T getDefault() {
             return def;
         }
+
+        public NumberHolder<T> copy() {
+            return new NumberHolder<>(value, def, properties);
+        }
     }
 
     protected static class BooleanHolder {
@@ -415,6 +482,10 @@ public abstract class Profile {
 
         public boolean getDefault() {
             return def;
+        }
+
+        public BooleanHolder copy() {
+            return new BooleanHolder(value, def, properties);
         }
     }
 

@@ -3,14 +3,15 @@ package me.athlaeos.valhallammo.playerstats.profiles.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.WoodcuttingSkill;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class WoodcuttingProfile extends Profile {
@@ -57,7 +58,7 @@ public class WoodcuttingProfile extends Profile {
     public double getWoodcuttingEXPMultiplier(){ return getDouble("woodcuttingEXPMultiplier");}
     public void setWoodcuttingEXPMultiplier(double value){ setDouble("woodcuttingEXPMultiplier", value);}
 
-    public WoodcuttingProfile(Player owner) {
+    public WoodcuttingProfile(UUID owner) {
         super(owner);
     }
 
@@ -69,8 +70,8 @@ public class WoodcuttingProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_woodcutting");
 
     @Override
-    public WoodcuttingProfile getBlankProfile(Player owner) {
-        return new WoodcuttingProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new WoodcuttingProfile(owner));
     }
 
     @Override

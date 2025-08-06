@@ -37,7 +37,7 @@ public class HandSwitchListener implements Listener {
 
     private static void reset(LivingEntity l){
         EntityCache.resetHands(l);
-        AccumulativeStatManager.updateStats(l);
+        AccumulativeStatManager.uncache(l);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

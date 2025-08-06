@@ -41,8 +41,10 @@ public class FlightReward extends PerkReward implements Listener {
 
         profile.setBoolean("flight", true);
 
-        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, PowerProfile.class);
-        else ProfileRegistry.setSkillProfile(player, profile, PowerProfile.class);
+        if (isPersistent()) {
+            profile.setShouldForcePersist(true);
+            ProfileRegistry.setPersistentProfile(player, profile, PowerProfile.class);
+        } else ProfileRegistry.setSkillProfile(player, profile, PowerProfile.class);
         ProfileCache.resetCache(player);
 
         setFlight(player, true);

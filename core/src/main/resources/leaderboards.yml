@@ -17,19 +17,19 @@ leaderboards:
     placeholder_display: "&cLV%level% &7%player%"
     profile: PowerProfile # The profile from which to gather the given stat(s)
     lower_limit: 0 # The minimum of the main_stat to achieve before you're allowed on the leaderboard (in this example, players who haven't reached lv1 yet won't appear)
-    main_stat: exp_total # The main stat player's ranks will be based off.
+    main_stat: exp_total:100 # The main stat player's ranks will be based off. Must be at least 500 exp or the entry will not be fetched
     extra_stats: # (optional) Additional stats you can place in the entry_display property, names should not match other placeholders
-      level: level # In this case we're wanting to get another stat, the level, and we name it 'level' so we can use it as %level%
+      level: level # In this case we're wanting to get another stat, the level, and we name it 'level' so we can use it as %level%.
   smithing:
     display_name: "<lang.leaderboard_smithing_level>"
     entry_display: "&7#&e%rank% &8: &7%prefix%%player% &7|&eNG %main_stat% &7- &eLV %level%&7| &8(%exp_total% EXP)"
     placeholder_display: "&eNG%main_stat% LV%level% &7%player%"
     profile: SmithingProfile
     lower_limit: 0
-    main_stat: newGamePlus
+    main_stat: newGamePlus # if no stat requirement is given, it will not be checked and this is always accepted
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500 # exp_total requires a minimum value of 500 to be considered
+      level: level:1 # level requires a minimum value of 1 to be considered, ALL requirements need to pass
   alchemy:
     display_name: "<lang.leaderboard_alchemy_level>"
     entry_display: "&7#&d%rank% &8: &7%prefix%%player% &7|&dNG %main_stat% &7- &dLV %level%&7| &8(%exp_total% EXP)"
@@ -38,8 +38,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   enchanting:
     display_name: "<lang.leaderboard_enchanting_level>"
     entry_display: "&7#&b%rank% &8: &7%prefix%%player% &7|&bNG %main_stat% &7- &bLV %level%&7| &8(%exp_total% EXP)"
@@ -48,8 +48,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   mining:
     display_name: "<lang.leaderboard_mining_level>"
     entry_display: "&7#&c%rank% &8: &7%prefix%%player% &7|&cNG %main_stat% &7- &cLV %level%&7| &8(%exp_total% EXP)"
@@ -58,8 +58,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   farming:
     display_name: "<lang.leaderboard_farming_level>"
     entry_display: "&7#&a%rank% &8: &7%prefix%%player% &7|&aNG %main_stat% &7- &aLV %level%&7| &8(%exp_total% EXP)"
@@ -68,8 +68,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   fishing:
     display_name: "<lang.leaderboard_fishing_level>"
     entry_display: "&7#&9%rank% &8: &7%prefix%%player% &7|&9NG %main_stat% &7- &9LV %level%&7| &8(%exp_total% EXP)"
@@ -78,8 +78,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   woodcutting:
     display_name: "<lang.leaderboard_woodcutting_level>"
     entry_display: "&7#&a%rank% &8: &7%prefix%%player% &7|&aNG %main_stat% &7- &aLV %level%&7| &8(%exp_total% EXP)"
@@ -88,8 +88,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   digging:
     display_name: "<lang.leaderboard_digging_level>"
     entry_display: "&7#&e%rank% &8: &7%prefix%%player% &7|&eNG %main_stat% &7- &eLV %level%&7| &8(%exp_total% EXP)"
@@ -98,8 +98,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   archery:
     display_name: "<lang.leaderboard_archery_level>"
     entry_display: "&7#&#00ffaa%rank% &8: &7%prefix%%player% &7|&#00ffaaNG %main_stat% &7- &#00ffaaLV %level%&7| &8(%exp_total% EXP)"
@@ -108,8 +108,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   lightweapons:
     display_name: "<lang.leaderboard_light_weapons_level>"
     entry_display: "&7#&#ffac40%rank% &8: &7%prefix%%player% &7|&#ffac40NG %main_stat% &7- &#ffac40LV %level%&7| &8(%exp_total% EXP)"
@@ -118,8 +118,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   heavyweapons:
     display_name: "<lang.leaderboard_heavy_weapons_level>"
     entry_display: "&7#&#ff7640%rank% &8: &7%prefix%%player% &7|&#ff7640NG %main_stat% &7- &#ff7640LV %level%&7| &8(%exp_total% EXP)"
@@ -128,8 +128,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   lightarmor:
     display_name: "<lang.leaderboard_light_armor_level>"
     entry_display: "&7#&#ffac40%rank% &8: &7%prefix%%player% &7|&#ffac40NG %main_stat% &7- &#ffac40LV %level%&7| &8(%exp_total% EXP)"
@@ -138,8 +138,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   heavyarmor:
     display_name: "<lang.leaderboard_heavy_armor_level>"
     entry_display: "&7#&#ff7640%rank% &8: &7%prefix%%player% &7|&#ff7640NG %main_stat% &7- &#ff7640LV %level%&7| &8(%exp_total% EXP)"
@@ -148,8 +148,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   martial_arts:
     display_name: "<lang.leaderboard_martial_arts_level>"
     entry_display: "&7#&a%rank% &8: &7%prefix%%player% &7|&aNG %main_stat% &7- &aLV %level%&7| &8(%exp_total% EXP)"
@@ -158,8 +158,8 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1
   trading:
     display_name: "<lang.leaderboard_trading_level>"
     entry_display: "&7#&a%rank% &8: &7%prefix%%player% &7|&aNG %main_stat% &7- &aLV %level%&7| &8(%exp_total% EXP)"
@@ -168,5 +168,5 @@ leaderboards:
     lower_limit: 0
     main_stat: newGamePlus
     extra_stats:
-      exp_total: exp_total
-      level: level
+      exp_total: exp_total:500
+      level: level:1

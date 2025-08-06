@@ -58,10 +58,12 @@ public class ProfileStringListAdd extends PerkReward {
         profile.setStringSet(stat, existing);
         if (addAction != null) value.forEach(s -> addAction.act(s, player));
 
-        if (isPersistent() || alwaysPersistent) ProfileRegistry.setPersistentProfile(player, profile, type);
-        else ProfileRegistry.setSkillProfile(player, profile, type);
+        if (isPersistent() || alwaysPersistent) {
+            profile.setShouldForcePersist(true);
+            ProfileRegistry.setPersistentProfile(player, profile, type);
+        } else ProfileRegistry.setSkillProfile(player, profile, type);
 
-        AccumulativeStatManager.updateStats(player);
+        AccumulativeStatManager.uncacheProfile(player, type);
     }
 
     @Override
@@ -76,7 +78,7 @@ public class ProfileStringListAdd extends PerkReward {
         if (isPersistent() || alwaysPersistent) ProfileRegistry.setPersistentProfile(player, profile, type);
         else ProfileRegistry.setSkillProfile(player, profile, type);
 
-        AccumulativeStatManager.updateStats(player);
+        AccumulativeStatManager.uncacheProfile(player, type);
     }
 
     @Override

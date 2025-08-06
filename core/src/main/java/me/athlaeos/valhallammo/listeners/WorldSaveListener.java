@@ -17,7 +17,7 @@ public class WorldSaveListener implements Listener {
     public void onWorldSave(WorldSaveEvent e){
         if (e.getWorld().equals(ValhallaMMO.getInstance().getServer().getWorlds().get(0))) {
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
-                ProfileRegistry.saveAll();
+                ProfileRegistry.saveAll(true);
                 CustomRecipeRegistry.saveRecipes(false);
                 LootTableRegistry.saveAll();
                 ArmorSetRegistry.saveArmorSets();

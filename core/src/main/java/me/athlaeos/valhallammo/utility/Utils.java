@@ -15,6 +15,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -485,5 +490,23 @@ public class Utils {
 
     public static void repeat(int times, Action<Integer> what){
         for (int i = 0; i < times; i++) what.act(i);
+    }
+
+    public static ScheduledExecutorService threadPool(String name, int timeoutMs, boolean daemon, int count) {
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(count, threadFactory(name, daemon));
+        if (timeoutMs > 0) {
+            executor.setKeepAliveTime(timeoutMs, TimeUnit.MILLISECONDS);
+            executor.allowCoreThreadTimeOut(true);
+        }
+        return executor;
+    }
+
+    public static ThreadFactory threadFactory(String name, boolean daemon) {
+        return r -> {
+            Thread thread = new Thread(r);
+            thread.setName("ValhallaMMO-Async-" + name + "-Thread");
+            thread.setDaemon(daemon);
+            return thread;
+        };
     }
 }

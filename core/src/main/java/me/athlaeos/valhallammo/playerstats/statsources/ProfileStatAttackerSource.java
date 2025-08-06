@@ -12,6 +12,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
+import java.util.UUID;
+
 public class ProfileStatAttackerSource implements AccumulativeStatSource, EvEAccumulativeStatSource {
     private final Class<? extends Profile> type;
     private final String stat;
@@ -23,7 +25,7 @@ public class ProfileStatAttackerSource implements AccumulativeStatSource, EvEAcc
     public ProfileStatAttackerSource(Class<? extends Profile> type, String stat){
         this.type = type;
         this.stat = stat;
-        baseProfile = ProfileRegistry.getBlankProfile(null, type);
+        baseProfile = ProfileRegistry.getBlankProfile((UUID) null, type);
 
         if (baseProfile.intStatNames().contains(stat)) {
             def = baseProfile.getDefaultInt(stat);

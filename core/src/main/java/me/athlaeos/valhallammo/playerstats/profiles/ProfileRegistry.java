@@ -1,9 +1,12 @@
 package me.athlaeos.valhallammo.playerstats.profiles;
 
+import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.ImmutableClassToInstanceMap;
+import com.google.common.collect.MutableClassToInstanceMap;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.persistence.*;
-import me.athlaeos.valhallammo.persistence.implementations.PDC;
+import me.athlaeos.valhallammo.persistence.implementations.RedisLockedSQL;
 import me.athlaeos.valhallammo.persistence.implementations.SQL;
 import me.athlaeos.valhallammo.persistence.implementations.SQLite;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
@@ -15,11 +18,10 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerEvent;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class ProfileRegistry {
     private static ProfilePersistence persistence = null;
@@ -50,12 +52,13 @@ public class ProfileRegistry {
      * @param p the profile to persist. Any profile properties or owner is not relevant here and may be null.
      */
     public static void registerProfileType(Profile p){
-        Map<Class<? extends Profile>, Profile> profiles = new HashMap<>(registeredProfiles);
+        ClassToInstanceMap<Profile> profiles = MutableClassToInstanceMap.create(new HashMap<>(registeredProfiles));
         profiles.put(p.getClass(), p);
-        registeredProfiles = Collections.unmodifiableMap(profiles);
+        registeredProfiles = ImmutableClassToInstanceMap.copyOf(profiles);
+        p.initStats();
         p.registerPerkRewards();
 
-        persistence.onProfileRegistration(p);
+        persistence.createProfileTable(p);
 
         for (String numberStat : p.getNumberStatProperties().keySet()) {
             StatFormat format = p.getNumberStatProperties().get(numberStat).getFormat();
@@ -66,28 +69,58 @@ public class ProfileRegistry {
         PlaceholderRegistry.registerPlaceholder(new ProfileNextLevelEXPPlaceholder("%" + p.getClass().getSimpleName().toLowerCase(Locale.US) + "_next_level_exp%", p.getClass(), StatFormat.INT));
     }
 
-    public static void setupDatabase(){
-        if (persistence != null) return;
-        persistence = new SQL();
-        if (((Database) persistence).getConnection() == null) persistence = new SQLite(); // if SQL connection fails, choose SQLite
-        if (((Database) persistence).getConnection() == null) persistence = new PDC(); // if SQLite fails, choose PDC
+    public static boolean setupDatabase() {
+        if (persistence != null) return true;
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(ValhallaMMO.getInstance(), () -> {
-            saveAll();
-            LeaderboardManager.refreshLeaderboards();
-        }, delay_profile_saving, delay_profile_saving);
+        var config = ValhallaMMO.getPluginConfig();
+        String type = config.getString("db_type", "sqlite").toLowerCase(Locale.ROOT);
+        boolean redis = config.getBoolean("redis_lock", false);
+        if (type.equals("mysql")) {
+            if (redis) {
+                persistence = new RedisLockedSQL();
+                if (((RedisLockedSQL) persistence).getPool() == null) {
+                    return false;
+                }
+            } else {
+                persistence = new SQL();
+            }
+        } else {
+            if (!type.equals("sqlite")) {
+                ValhallaMMO.logWarning("Invalid database type " + type + ", defaulting to sqlite");
+            }
+            if (redis) {
+                ValhallaMMO.logWarning("Redis locking is enabled, but database is not MySQL, no redis locking will be used.");
+            }
+            persistence = new SQLite();
+        }
+
+        if (persistence.getConnection() == null) return false; // if SQLite fails, stop the plugin
+
+        persistence.profileThreads.scheduleAtFixedRate(() -> {
+            try {
+                long start = System.currentTimeMillis();
+                ValhallaMMO.logFine("Starting saving all profiles");
+                saveAll(false);
+                long end = System.currentTimeMillis();
+                ValhallaMMO.logFine("Finished saving all profiles in " + ((end - start) / 1000d) + "s");
+                LeaderboardManager.refreshLeaderboards();
+            } catch (Exception e) {
+                throw new RuntimeException("An error occurred while saving profiles", e);
+            }
+        }, delay_profile_saving, delay_profile_saving, TimeUnit.MILLISECONDS);
+        return true;
     }
 
-    public static void saveAll(){
-        persistence.saveAllProfiles();
+    public static void saveAll(boolean async){
+        persistence.saveAllProfiles(async);
         ProfileCache.cleanCache();
         LeaderboardManager.refreshLeaderboards();
     }
 
     /**
-     * Grabs the persistence implementation used. By default, this may be {@link SQL}, {@link SQLite},
-     * or {@link PDC} (Persistent Data Container). If a SQL connection could not be made, SQLite is attempted. If such a connection could
-     * still not be made, whether the file could not be created or the SQLite library is absent, PDC is used.
+     * Grabs the persistence implementation used. By default, this may be {@link SQL} or {@link SQLite}
+     * If a SQL connection could not be made, SQLite is attempted. If such a connection could
+     * still not be made, whether the file could not be created or the SQLite library is absent, the plugin will disable.
      * @return the persistence implementation
      */
     public static ProfilePersistence getPersistence() {
@@ -104,6 +137,14 @@ public class ProfileRegistry {
         persistence = p;
     }
 
+    public static boolean isLoaded(PlayerEvent e) {
+        return persistence.isLoaded(e.getPlayer().getUniqueId());
+    }
+
+    public static boolean isLoaded(Player p) {
+        return p != null && persistence.isLoaded(p.getUniqueId());
+    }
+
     /**
      * Sets a profile as the player's persistent profile.
      * Persistent profiles are profiles that are persisted regularly and on leaving the server and so should be used
@@ -113,7 +154,11 @@ public class ProfileRegistry {
      * @param type the class of profile it should be saved as
      */
     public static void setPersistentProfile(Player p, Profile profile, Class<? extends Profile> type) {
-        persistence.setPersistentProfile(p, profile, type);
+        persistence.trySetPersistentProfile(p.getUniqueId(), profile, type);
+    }
+
+    public static void setBlankSkillProfile(Player p, Class<? extends Profile> type) {
+        setSkillProfile(p, getBlankProfile(p, type), type);
     }
 
     /**
@@ -129,24 +174,24 @@ public class ProfileRegistry {
      * @param type the class of profile it should be saved as
      */
     public static void setSkillProfile(Player p, Profile profile, Class<? extends Profile> type) {
-        persistence.setSkillProfile(p, profile, type);
+        persistence.trySetSkillProfile(p.getUniqueId(), profile, type);
     }
 
-    public static <T extends Profile> T getPersistentProfile(Player p, Class<T> type) {
-        T profile = persistence.getPersistentProfile(p, type);
+    public static <P extends Profile> P getPersistentProfile(Player p, Class<P> type) {
+        P profile = persistence.getPersistentProfile(p.getUniqueId(), type);
         return profile == null ? getBlankProfile(p, type) : profile;
     }
 
-    public static <T extends Profile> T getSkillProfile(Player p, Class<T> type) {
-        T profile = persistence.getSkillProfile(p, type);
+    public static <P extends Profile> P getSkillProfile(Player p, Class<P> type) {
+        P profile = persistence.getSkillProfile(p.getUniqueId(), type);
         return profile == null ? getBlankProfile(p, type) : profile;
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Profile> T getMergedProfile(Player p, Class<T> type) {
-        Profile p1 = getPersistentProfile(p, type);
-        Profile p2 = getSkillProfile(p, type);
-        return (T) p2.merge(p1, p);
+    public static <P extends Profile> P getMergedProfile(Player p, Class<P> type) {
+        P p1 = getPersistentProfile(p, type);
+        P p2 = getSkillProfile(p, type);
+        return (P) p2.merge(p1, p);
     }
 
     /**
@@ -158,17 +203,32 @@ public class ProfileRegistry {
         return new HashMap<>(registeredProfiles);
     }
 
+    public static <P extends Profile> P getBlankProfile(Class<P> type){
+        return getBlankProfile((UUID) null, type);
+    }
+
+    public static <P extends Profile> P getBlankProfile(Player owner, Class<P> type){
+        return getBlankProfile(owner.getUniqueId(), type);
+    }
+
     @SuppressWarnings("unchecked") // Registered profiles will always match the class type given how registerProfileType() works
-    public static <T extends Profile> T getBlankProfile(Player owner, Class<T> type){
+    public static <P extends Profile> P getBlankProfile(UUID owner, Class<P> type){
         if (!registeredProfiles.containsKey(type)) throw new IllegalArgumentException("Profile type " + type.getSimpleName() + " was not yet registered for usage");
-        return (T) registeredProfiles.get(type).getBlankProfile(owner);
+        return (P) registeredProfiles.get(type).getBlankProfile(owner);
     }
 
     public static void reset(Player p, ResetType type) {
         persistence.resetProfile(p, type);
     }
 
-    public static void reset(Player p, Class<? extends Skill> type) {
+    public static <S extends Skill> void reset(Player p, Class<S> type) {
         persistence.resetSkillProgress(p, type);
+    }
+
+    public static <P extends Profile> P copyDefaultStats(P profile) {
+        P defaultProfile = (P) registeredProfiles.get(profile.getClass());
+        if (defaultProfile == null) return profile;
+        profile.copyStats(defaultProfile);
+        return profile;
     }
 }

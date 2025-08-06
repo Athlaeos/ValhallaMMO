@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.playerstats.profiles;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -11,10 +12,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ProfileCache {
     private static final Map<UUID, Map<Class<? extends Profile>, CacheEntry>> cache = new ConcurrentHashMap<>();
-    private static long cacheDuration = 10000L;
+    private static final long cacheDuration = ValhallaMMO.getPluginConfig().getLong("profile_caching", 10000L);
 
-    public static void resetCacheDuration(){
-        cacheDuration = ValhallaMMO.getPluginConfig().getLong("profile_caching", 10000L);
+    public static void resetCache(UUID uuid) {
+        cache.remove(uuid);
     }
 
     /**
@@ -24,6 +25,21 @@ public class ProfileCache {
      */
     public static void resetCache(Player player) {
         cache.remove(player.getUniqueId());
+    }
+
+    public static void resetCache(Player player, Class<? extends Profile> type) {
+        resetCache(player.getUniqueId(), type);
+    }
+
+    public static void resetCache(UUID uuid, Class<? extends Profile> type) {
+        Map<Class<? extends Profile>, CacheEntry> profiles = cache.get(uuid);
+        if (profiles != null) {
+            profiles.remove(type);
+        }
+    }
+
+    public static void resetAllCaches() {
+        cache.clear();
     }
 
     /**
@@ -37,7 +53,9 @@ public class ProfileCache {
         Map<Class<? extends Profile>, CacheEntry> profiles = cache.getOrDefault(player.getUniqueId(), new HashMap<>());
         CacheEntry entry = profiles.get(type);
         if (entry == null || entry.getCacheUntil() < System.currentTimeMillis()) {
-            entry = new CacheEntry(ProfileRegistry.getMergedProfile(player, type), cacheDuration);
+            entry = new CacheEntry(ProfileRegistry.isLoaded(player)
+                    ? ProfileRegistry.getMergedProfile(player, type)
+                    : ProfileRegistry.getBlankProfile(player, type), cacheDuration);
             profiles.put(type, entry);
             entry.getCachedProfile().onCacheRefresh();
             cache.put(player.getUniqueId(), profiles);
@@ -50,7 +68,7 @@ public class ProfileCache {
      */
     public static void cleanCache(){
         for (UUID uuid : new HashSet<>(cache.keySet())){
-            Player p = ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+            Player p = Bukkit.getPlayer(uuid);
             if (p == null || !p.isOnline()) cache.remove(uuid);
         }
     }

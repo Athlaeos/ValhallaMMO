@@ -4,19 +4,22 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
-import me.athlaeos.valhallammo.dom.EquippableWrapper;
-import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.dom.*;
+import me.athlaeos.valhallammo.gui.Menu;
+import me.athlaeos.valhallammo.gui.implementations.DynamicModifierMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class Equippable extends DynamicItemModifier {
     private String model = null;
@@ -69,6 +72,52 @@ public class Equippable extends DynamicItemModifier {
                 default -> EquipmentSlot.HEAD;
             };
         }
+    }
+
+    @Override
+    public void onButtonPress(InventoryClickEvent e, DynamicModifierMenu menu, int button) {
+        if (button == 12){
+            if (e.isShiftClick()) model = null;
+            else {
+                ask((Player) e.getWhoClicked(), menu, "What armor model should be used?", (answer) -> {
+                    model = answer;
+                });
+            }
+        } else if (button == 18){
+            if (e.isShiftClick()) cameraOverlay = null;
+            else {
+                ask((Player) e.getWhoClicked(), menu, "What camera overlay should be used?", (answer) -> {
+                    cameraOverlay = answer;
+                });
+            }
+        } else if (button == 16){
+            slot = switch(slot){
+                case HEAD -> EquipmentSlot.CHEST;
+                case CHEST -> EquipmentSlot.LEGS;
+                case LEGS -> EquipmentSlot.FEET;
+                default -> EquipmentSlot.HEAD;
+            };
+        }
+    }
+
+    private void ask(Player player, Menu menu, String question, Consumer<String> onAnswer){
+        player.closeInventory();
+        Questionnaire questionnaire = new Questionnaire(player, null, null,
+                new Question("&f" + question + " (type in chat, or 'cancel' to cancel)", s -> true, "")
+        ) {
+            @Override
+            public Action<Player> getOnFinish() {
+                if (getQuestions().isEmpty()) return super.getOnFinish();
+                Question question = getQuestions().get(0);
+                if (question.getAnswer() == null) return super.getOnFinish();
+                return (p) -> {
+                    String answer = question.getAnswer();
+                    if (!answer.contains("cancel")) onAnswer.accept(answer);
+                    menu.open();
+                };
+            }
+        };
+        Questionnaire.startQuestionnaire(player, questionnaire);
     }
 
     @Override

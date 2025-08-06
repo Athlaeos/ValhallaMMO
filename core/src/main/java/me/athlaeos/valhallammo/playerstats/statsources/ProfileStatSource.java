@@ -9,6 +9,8 @@ import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class ProfileStatSource implements AccumulativeStatSource {
     private final Class<? extends Profile> type;
     private final String stat;
@@ -19,7 +21,7 @@ public class ProfileStatSource implements AccumulativeStatSource {
     public ProfileStatSource(Class<? extends Profile> type, String stat){
         this.type = type;
         this.stat = stat;
-        baseProfile = ProfileRegistry.getBlankProfile(null, type);
+        baseProfile = ProfileRegistry.getBlankProfile((UUID) null, type);
 
         if (baseProfile.intStatNames().contains(stat)) {
             def = baseProfile.getDefaultInt(stat);

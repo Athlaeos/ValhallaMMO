@@ -23,10 +23,12 @@ public class ProfileBooleanToggle extends PerkReward {
 
         profile.setBoolean(stat, !profile.getBoolean(stat));
 
-        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
-        else ProfileRegistry.setSkillProfile(player, profile, type);
+        if (isPersistent()) {
+            profile.setShouldForcePersist(true);
+            ProfileRegistry.setPersistentProfile(player, profile, type);
+        } else ProfileRegistry.setSkillProfile(player, profile, type);
 
-        AccumulativeStatManager.updateStats(player);
+        AccumulativeStatManager.uncacheProfile(player, type);
     }
 
     @Override
@@ -38,7 +40,7 @@ public class ProfileBooleanToggle extends PerkReward {
         if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
         else ProfileRegistry.setSkillProfile(player, profile, type);
 
-        AccumulativeStatManager.updateStats(player);
+        AccumulativeStatManager.uncacheProfile(player, type);
     }
 
     @Override

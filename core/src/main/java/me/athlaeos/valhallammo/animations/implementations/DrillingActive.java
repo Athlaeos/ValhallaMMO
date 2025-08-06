@@ -43,7 +43,7 @@ public class DrillingActive extends Animation {
 
     @Override
     public void animate(LivingEntity entity, Location location, Vector direction, int tick) {
-        AccumulativeStatManager.updateStats(entity);
+        AccumulativeStatManager.uncache(entity);
         if (entity instanceof Player p && particle != null) new DrillingAnimation(p).runTaskTimer(ValhallaMMO.getInstance(), 1L, 1L);
     }
 
@@ -59,7 +59,7 @@ public class DrillingActive extends Animation {
             || ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) || !p.getInventory().getItemInMainHand().getType().toString().endsWith("_PICKAXE")) {
                 cancel();
                 Utils.sendActionBar(p, drillingOff);
-                AccumulativeStatManager.updateStats(p);
+                AccumulativeStatManager.uncacheStat(p, "BLOCK_SPECIFIC_DIG_SPEED");
                 Timer.setCooldown(p.getUniqueId(), 0, "mining_drilling_duration");
             }
             RayTraceResult result = p.rayTraceBlocks(5, FluidCollisionMode.NEVER);

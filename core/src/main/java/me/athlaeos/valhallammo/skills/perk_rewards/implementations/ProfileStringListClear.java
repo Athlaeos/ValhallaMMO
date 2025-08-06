@@ -24,10 +24,12 @@ public class ProfileStringListClear extends PerkReward {
 
         profile.setStringSet(stat, new HashSet<>());
 
-        if (isPersistent()) ProfileRegistry.setPersistentProfile(player, profile, type);
-        else ProfileRegistry.setSkillProfile(player, profile, type);
+        if (isPersistent()) {
+            profile.setShouldForcePersist(true);
+            ProfileRegistry.setPersistentProfile(player, profile, type);
+        } else ProfileRegistry.setSkillProfile(player, profile, type);
 
-        AccumulativeStatManager.updateStats(player);
+        AccumulativeStatManager.uncacheProfile(player, type);
     }
 
     @Override
