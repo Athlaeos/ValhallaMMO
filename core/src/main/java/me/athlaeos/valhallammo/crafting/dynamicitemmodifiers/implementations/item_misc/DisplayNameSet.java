@@ -3,12 +3,16 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
+import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.dom.Question;
+import me.athlaeos.valhallammo.dom.Questionnaire;
+import me.athlaeos.valhallammo.gui.implementations.DynamicModifierMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -29,13 +33,31 @@ public class DisplayNameSet extends DynamicItemModifier {
 
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
+
+    }
+
+    @Override
+    public void onButtonPress(InventoryClickEvent e, DynamicModifierMenu menu, int button) {
         if (button == 12) {
-            ItemStack cursor = e.getCursor();
-            if (ItemUtils.isEmpty(cursor)) displayName = null;
+            if (e.isShiftClick()) displayName = null;
             else {
-                ItemMeta meta = cursor.getItemMeta();
-                if (meta != null && meta.hasDisplayName()) displayName = meta.getDisplayName();
-                else displayName = null;
+                e.getWhoClicked().closeInventory();
+                Questionnaire questionnaire = new Questionnaire((Player) e.getWhoClicked(), null, null,
+                        new Question("&fWhat should the item's name be? (type in chat, or 'cancel' to cancel)", s -> true, "")
+                ) {
+                    @Override
+                    public Action<Player> getOnFinish() {
+                        if (getQuestions().isEmpty()) return super.getOnFinish();
+                        Question question = getQuestions().get(0);
+                        if (question.getAnswer() == null) return super.getOnFinish();
+                        return (p) -> {
+                            String answer = question.getAnswer();
+                            if (!answer.contains("cancel")) displayName = answer;
+                            menu.open();
+                        };
+                    }
+                };
+                Questionnaire.startQuestionnaire((Player) e.getWhoClicked(), questionnaire);
             }
         }
     }
@@ -46,10 +68,8 @@ public class DisplayNameSet extends DynamicItemModifier {
                 new ItemBuilder(Material.INK_SAC)
                         .name("&eWhat should the name be?")
                         .lore("&fSet to " + displayName,
-                                "&6Click with another named item",
-                                "&6to copy the name over.",
-                                "&6Or with empty cursor to reset",
-                                "&6the name back to nothing.")
+                                "&6Click to enter name (in chat)",
+                                "&6Shift-Click to reset the name back to nothing.")
                         .get()).map(new HashSet<>());
     }
 

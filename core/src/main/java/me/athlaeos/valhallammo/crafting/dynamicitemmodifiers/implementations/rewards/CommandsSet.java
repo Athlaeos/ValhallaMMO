@@ -4,16 +4,21 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
+import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.dom.Question;
+import me.athlaeos.valhallammo.dom.Questionnaire;
+import me.athlaeos.valhallammo.gui.Menu;
+import me.athlaeos.valhallammo.gui.implementations.DynamicModifierMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class CommandsSet extends DynamicItemModifier {
     private List<String> commands = new ArrayList<>();
@@ -41,17 +46,39 @@ public class CommandsSet extends DynamicItemModifier {
 
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
+
+    }
+
+    @Override
+    public void onButtonPress(InventoryClickEvent e, DynamicModifierMenu menu, int button) {
         if (button == 12) {
-            if (e.isShiftClick()) commands.clear();
+            if (e.isShiftClick()) this.commands.clear();
             else {
-                ItemStack cursor = e.getCursor();
-                if (!ItemUtils.isEmpty(cursor)) {
-                    ItemMeta meta = cursor.getItemMeta();
-                    if (meta != null && meta.hasLore() && meta.getLore() != null) commands = new ArrayList<>(meta.getLore());
-                    else commands.clear();
-                }
+                ask((Player) e.getWhoClicked(), menu, "What commands should be used? Valid placeholders are %player%, %x%, %y%, and %z%. Use /c for new commands or /_ for forceful spaces", (answer) -> {
+                    this.commands = new ArrayList<>(List.of(answer.replace("/_", " ").split("/c")));
+                });
             }
         }
+    }
+
+    private void ask(Player player, Menu menu, String question, Consumer<String> onAnswer){
+        player.closeInventory();
+        Questionnaire questionnaire = new Questionnaire(player, null, null,
+                new Question("&f" + question + " (type in chat, or 'cancel' to cancel)", s -> true, "")
+        ) {
+            @Override
+            public Action<Player> getOnFinish() {
+                if (getQuestions().isEmpty()) return super.getOnFinish();
+                Question question = getQuestions().get(0);
+                if (question.getAnswer() == null) return super.getOnFinish();
+                return (p) -> {
+                    String answer = question.getAnswer();
+                    if (!answer.contains("cancel")) onAnswer.accept(answer);
+                    menu.open();
+                };
+            }
+        };
+        Questionnaire.startQuestionnaire(player, questionnaire);
     }
 
     @Override

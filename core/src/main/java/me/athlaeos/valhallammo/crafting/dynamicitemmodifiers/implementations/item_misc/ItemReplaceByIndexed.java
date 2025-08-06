@@ -5,6 +5,8 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.gui.implementations.CustomItemSelectionMenu;
+import me.athlaeos.valhallammo.gui.implementations.DynamicModifierMenu;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.CustomItem;
 import me.athlaeos.valhallammo.item.CustomItemRegistry;
@@ -49,13 +51,16 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
 
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
-        List<CustomItem> items = new ArrayList<>(CustomItemRegistry.getItems().values());
-        if (items.isEmpty()) return;
+
+    }
+
+    @Override
+    public void onButtonPress(InventoryClickEvent e, DynamicModifierMenu menu, int button) {
         if (button == 12){
-            CustomItem i = item == null ? null : CustomItemRegistry.getItems().get(item);
-            int currentItem = i == null ? -1 : items.indexOf(i);
-            if (e.isLeftClick()) item = items.get(Math.max(0, Math.min(items.size() - 1, currentItem + 1))).getId();
-            else item = items.get(Math.max(0, Math.min(items.size() - 1, currentItem - 1))).getId();
+            new CustomItemSelectionMenu(menu.getPlayerMenuUtility(), (item) -> {
+                this.item = item.getId();
+                menu.open();
+            }).open();
         }
     }
 

@@ -4,20 +4,24 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
+import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.dom.Question;
+import me.athlaeos.valhallammo.dom.Questionnaire;
+import me.athlaeos.valhallammo.gui.Menu;
+import me.athlaeos.valhallammo.gui.implementations.DynamicModifierMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class ItemModel extends DynamicItemModifier {
     private String model = null;
@@ -33,16 +37,39 @@ public class ItemModel extends DynamicItemModifier {
 
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
+
+    }
+
+    @Override
+    public void onButtonPress(InventoryClickEvent e, DynamicModifierMenu menu, int button) {
         if (button == 12){
-            ItemStack cursor = e.getCursor();
-            if (ItemUtils.isEmpty(cursor)) model = null;
+            if (e.isShiftClick()) model = null;
             else {
-                ItemMeta cursorMeta = cursor.getItemMeta();
-                String model = ValhallaMMO.getNms().getItemModel(cursorMeta);
-                if (model == null) e.getWhoClicked().sendMessage(Utils.chat("&cItem has no model"));
-                else this.model = model;
+                ask((Player) e.getWhoClicked(), menu, "What model should be used?", (answer) -> {
+                    this.model = answer;
+                });
             }
         }
+    }
+
+    private void ask(Player player, Menu menu, String question, Consumer<String> onAnswer){
+        player.closeInventory();
+        Questionnaire questionnaire = new Questionnaire(player, null, null,
+                new Question("&f" + question + " (type in chat, or 'cancel' to cancel)", s -> true, "")
+        ) {
+            @Override
+            public Action<Player> getOnFinish() {
+                if (getQuestions().isEmpty()) return super.getOnFinish();
+                Question question = getQuestions().get(0);
+                if (question.getAnswer() == null) return super.getOnFinish();
+                return (p) -> {
+                    String answer = question.getAnswer();
+                    if (!answer.contains("cancel")) onAnswer.accept(answer);
+                    menu.open();
+                };
+            }
+        };
+        Questionnaire.startQuestionnaire(player, questionnaire);
     }
 
     @Override
@@ -53,8 +80,8 @@ public class ItemModel extends DynamicItemModifier {
                         .lore("&fCurrently set to &e" + (model == null ? "&cnothing" : model),
                                 "&fDetermines the visual appearance",
                                 "&fof the item",
-                                "&6Click with another item to",
-                                "&6copy the model of the item over")
+                                "&6Click to enter model (in chat)",
+                                "&6Shift-Click to clear")
                         .get()).map(Set.of());
     }
 
