@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CustomItem {
     private final String id;
-    private final ItemStack item;
+    private ItemStack item;
     private List<DynamicItemModifier> modifiers = new ArrayList<>();
 
     public CustomItem(String id, ItemStack item){
@@ -24,4 +24,5 @@ public class CustomItem {
         this.modifiers = modifiers;
         DynamicItemModifier.sortModifiers(this.modifiers);
     }
+    public void setItem(ItemStack item) { this.item = item; }
 }
