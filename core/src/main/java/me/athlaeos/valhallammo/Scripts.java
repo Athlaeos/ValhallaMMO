@@ -504,10 +504,11 @@ public class Scripts implements Listener {
                 scalingItem.setItem(recipe.getResult());
 
                 List<DynamicItemModifier> filteredRecipeModifiers = new ArrayList<>(recipe.getModifiers().stream().map(DynamicItemModifier::copy).toList());
-                filteredRecipeModifiers.removeIf(m -> m instanceof DefaultAttributeScale || m instanceof SmithingNeutralQualitySet || m instanceof DurabilityScale || m instanceof SkillExperience || m instanceof SmithingQualityScale);
+                filteredRecipeModifiers.removeIf(m -> m instanceof SkillExperience || m instanceof SmithingQualityScale);
                 scalingItem.setModifiers(filteredRecipeModifiers);
 
                 List<DynamicItemModifier> attributeScalingAndExperienceModifiers = new ArrayList<>(recipe.getModifiers().stream().filter(m -> m instanceof DefaultAttributeScale || m instanceof DurabilityScale || m instanceof SkillExperience).map(DynamicItemModifier::copy).toList());
+                attributeScalingAndExperienceModifiers.add(qualitySetModifier);
                 ItemReplaceByIndexed modifier = (ItemReplaceByIndexed) ModifierRegistry.createModifier("replace_by_custom");
                 modifier.setItem(scalingItemID);
                 modifier.setPriority(ModifierPriority.SOON);
