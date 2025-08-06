@@ -5,6 +5,10 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryReg
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.gui.implementations.CustomItemSelectionMenu;
+import me.athlaeos.valhallammo.gui.implementations.DynamicModifierMenu;
+import me.athlaeos.valhallammo.item.CustomItem;
+import me.athlaeos.valhallammo.item.CustomItemRegistry;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -15,25 +19,27 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class ItemRandomize extends DynamicItemModifier implements ResultChangingModifier {
+public class ItemRandomizeIndexed extends DynamicItemModifier implements ResultChangingModifier {
     private final ItemStack previewItem = new ItemBuilder(Material.PAPER).name("&fdivine tome of randomization :3").lore("&cshould not generally be visible", "&cbut someone used a randomizer", "&cwithout knowing what it does").get();
-    private final Map<ItemStack, Float> items = new HashMap<>();
-    private ItemStack currentItem = null;
-    private float currentWeight = 0F;
+    private final Map<String, Float> items = new HashMap<>();
+    private String currentItem = null;
+    private float currentWeight = 0;
 
-    public ItemRandomize(String name) {
+    public ItemRandomizeIndexed(String name) {
         super(name);
     }
 
     @Override
     public void processItem(ModifierContext context) {
-        ItemStack selected = Utils.weightedSelection(items, 1).getFirst();
-        if (ItemUtils.isEmpty(selected)) {
-            failedRecipe(context.getItem(), "&cImproperly configured randomization modifier!");
+        String selected = Utils.weightedSelection(items, 1).getFirst();
+        CustomItem selectedItem = selected == null ? null : CustomItemRegistry.getItem(selected);
+        if (selectedItem == null) {
+            failedRecipe(context.getItem(), "&cImproperly configured indexed randomization modifier!");
             return;
         }
-        context.getItem().setItem(selected);
-        context.getItem().setMeta(ItemUtils.getItemMeta(selected));
+        ItemStack processed = CustomItemRegistry.getProcessedItem(selected, context);
+        context.getItem().setItem(processed);
+        context.getItem().setMeta(ItemUtils.getItemMeta(processed));
     }
 
     @Override
@@ -43,8 +49,16 @@ public class ItemRandomize extends DynamicItemModifier implements ResultChanging
 
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
+
+    }
+
+    @Override
+    public void onButtonPress(InventoryClickEvent e, DynamicModifierMenu menu, int button) {
         if (button == 6){
-            if (!ItemUtils.isEmpty(e.getCursor())) currentItem = e.getCursor().clone();
+            new CustomItemSelectionMenu(menu.getPlayerMenuUtility(), (item) -> {
+                this.currentItem = item.getId();
+                menu.open();
+            }).open();
         }
         if (button == 7) currentWeight = Math.max(0, currentWeight + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.1F : -0.1F)));
         if (button == 8) {
@@ -64,28 +78,26 @@ public class ItemRandomize extends DynamicItemModifier implements ResultChanging
         List<String> lore = new ArrayList<>();
         if (items.isEmpty()) lore.add("&cNo items");
         else {
-            List<Pair<ItemStack, Float>> sortedByWeight = new ArrayList<>();
-            for (ItemStack itemStack : items.keySet()) sortedByWeight.add(new Pair<>(itemStack, items.get(itemStack)));
+            List<Pair<String, Float>> sortedByWeight = new ArrayList<>();
+            for (String itemID : items.keySet()) sortedByWeight.add(new Pair<>(itemID, items.get(itemID)));
             sortedByWeight.sort(Comparator.comparingDouble(Pair::getTwo));
-            for (Pair<ItemStack, Float> pair : sortedByWeight){
+            for (Pair<String, Float> pair : sortedByWeight){
                 float chance = Math.max(0, Math.min(1, pair.getTwo() / totalWeight));
-                ItemBuilder asBuilder = new ItemBuilder(pair.getOne());
-                String format = String.format("&7>> &e%.1f%% %s &8(%.1f)", chance * 100, ItemUtils.getItemName(asBuilder), pair.getTwo());
+                String format = String.format("&7>> &e%.1f%% %s &8(%.1f)", chance * 100, pair.getOne(), pair.getTwo());
                 lore.add(format);
             }
         }
-        ItemBuilder currentAsBuilder = currentItem == null ? null : new ItemBuilder(currentItem);
         float chanceIfAdded = currentWeight / (totalWeight + currentWeight);
-        if (currentAsBuilder != null){
+        if (currentItem != null){
             lore.add("");
-            lore.add("&6Click to add " + ItemUtils.getItemName(currentAsBuilder) + "&6,");
+            lore.add("&6Click to add " + currentItem + "&6,");
             lore.add(String.format("&6which has a pick chance of %.1f%%", chanceIfAdded));
         }
 
         return new Pair<>(6,
-                new ItemBuilder(currentItem == null ? new ItemStack(Material.BARRIER) : currentItem)
+                new ItemBuilder(currentItem == null || CustomItemRegistry.getItem(currentItem) == null ? new ItemStack(Material.BARRIER) : CustomItemRegistry.getItem(currentItem).getItem())
                         .name("&fWhich item?")
-                        .lore("&fItem set to &e" + (currentAsBuilder == null ? "nothing" : ItemUtils.getItemName(currentAsBuilder)),
+                        .lore("&fItem set to &e" + (currentItem == null ? "nothing" : currentItem),
                                 "&fIf this item were added, it would have",
                                 String.format("&7a &e%.1f%%&f chance of occurring", chanceIfAdded * 100),
                                 "&6Click with item in cursor to set")
@@ -109,17 +121,17 @@ public class ItemRandomize extends DynamicItemModifier implements ResultChanging
 
     @Override
     public ItemStack getModifierIcon() {
-        return new ItemBuilder(Material.DISPENSER).get();
+        return new ItemBuilder(Material.ENDER_CHEST).get();
     }
 
     @Override
     public String getDisplayName() {
-        return "&dReplace By Random Item";
+        return "&dReplace By Random Indexed Item";
     }
 
     @Override
     public String getDescription() {
-        return "&fReplaces the item by one of the given items at random, from a weighted picking system";
+        return "&fReplaces the item by one of the given indexed items at random, from a weighted picking system";
     }
 
     @Override
@@ -132,18 +144,18 @@ public class ItemRandomize extends DynamicItemModifier implements ResultChanging
         return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
     }
 
-    public void setItems(Map<ItemStack, Float> items) {
+    public void setItems(Map<String, Float> items) {
         this.items.clear();
         this.items.putAll(items);
     }
 
-    public Map<ItemStack, Float> getItems() {
+    public Map<String, Float> getItems() {
         return items;
     }
 
     @Override
     public DynamicItemModifier copy() {
-        ItemRandomize m = new ItemRandomize(getName());
+        ItemRandomizeIndexed m = new ItemRandomizeIndexed(getName());
         m.setItems(this.items);
         m.setPriority(this.getPriority());
         return m;

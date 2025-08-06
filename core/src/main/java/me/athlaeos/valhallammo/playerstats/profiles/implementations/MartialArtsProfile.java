@@ -3,14 +3,15 @@ package me.athlaeos.valhallammo.playerstats.profiles.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.MartialArtsSkill;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class MartialArtsProfile extends Profile {
@@ -326,7 +327,7 @@ public class MartialArtsProfile extends Profile {
     public double getMartialArtsEXPGain(){ return getDouble("martialArtsEXPMultiplier");}
     public void setMartialArtsEXPGain(double value){ setDouble("martialArtsEXPMultiplier", value);}
 
-    public MartialArtsProfile(Player owner) {
+    public MartialArtsProfile(UUID owner) {
         super(owner);
     }
 
@@ -338,8 +339,8 @@ public class MartialArtsProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_martial_arts");
 
     @Override
-    public MartialArtsProfile getBlankProfile(Player owner) {
-        return new MartialArtsProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new MartialArtsProfile(owner));
     }
 
     @Override

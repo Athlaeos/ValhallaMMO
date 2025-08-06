@@ -3,6 +3,8 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.*;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.gui.implementations.CustomItemSelectionMenu;
+import me.athlaeos.valhallammo.gui.implementations.DynamicModifierMenu;
 import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
@@ -70,16 +72,18 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
 
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
+
+    }
+
+    @Override
+    public void onButtonPress(InventoryClickEvent e, DynamicModifierMenu menu, int button) {
         List<CustomItem> items = new ArrayList<>(CustomItemRegistry.getItems().values());
         if (items.isEmpty()) return;
         if (button == 6){
-            if (e.isShiftClick()) currentItem = null;
-            else {
-                CustomItem i = this.currentItem == null ? null : CustomItemRegistry.getItems().get(this.currentItem);
-                int currentItem = i == null ? -1 : items.indexOf(i);
-                if (e.isLeftClick()) this.currentItem = items.get(Math.max(0, Math.min(items.size() - 1, currentItem + 1))).getId();
-                else this.currentItem = items.get(Math.max(0, Math.min(items.size() - 1, currentItem - 1))).getId();
-            }
+            new CustomItemSelectionMenu(menu.getPlayerMenuUtility(), (item) -> {
+                this.currentItem = item.getId();
+                menu.open();
+            }).open();
         }
         if (button == 7) currentQuality = Math.max(0, currentQuality + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1)));
         if (button == 8) {

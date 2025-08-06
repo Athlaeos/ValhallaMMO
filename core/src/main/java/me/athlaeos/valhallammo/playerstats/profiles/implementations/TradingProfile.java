@@ -3,13 +3,14 @@ package me.athlaeos.valhallammo.playerstats.profiles.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.implementations.TradingSkill;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class TradingProfile extends Profile {
@@ -106,7 +107,7 @@ public class TradingProfile extends Profile {
     public void setTradingEXPMultiplier(double value){ setDouble("tradingEXPMultiplier", value);}
 
 
-    public TradingProfile(Player owner) {
+    public TradingProfile(UUID owner) {
         super(owner);
     }
 
@@ -118,8 +119,8 @@ public class TradingProfile extends Profile {
     private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_trading");
 
     @Override
-    public TradingProfile getBlankProfile(Player owner) {
-        return new TradingProfile(owner);
+    public Profile getBlankProfile(UUID owner) {
+        return ProfileRegistry.copyDefaultStats(new TradingProfile(owner));
     }
 
     @Override

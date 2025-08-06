@@ -51,11 +51,6 @@ public class SQLite extends ProfilePersistence {
     }
 
     @Override
-    public void createTable(Profile profileType) {
-        SQL.createTable(profileType, this);
-    }
-
-    @Override
     public void addColumnIfNotExists(String tableName, String columnName, String columnType) {
         try {
             PreparedStatement procedureCreationStatement = conn.prepareStatement(

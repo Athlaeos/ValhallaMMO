@@ -155,6 +155,7 @@ public class ModifierRegistry {
         register(new ItemReplace("replace"));
         register(new ItemReplaceKeepingAmount("replace_keep_amount"));
         register(new ItemRandomize("randomize"));
+        register(new ItemRandomizeIndexed("randomize_indexed"));
         register(new ItemType("material"));
         register(new ItemUnbreakable("unbreakable"));
         register(new ItemWeightClass("weight_class"));

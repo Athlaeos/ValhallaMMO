@@ -495,18 +495,22 @@ public class Scripts implements Listener {
                     System.out.println(recipe.getName() + " did not have quality scaling");
                     continue;
                 }
+                qualitySetModifier.setPriority(ModifierPriority.SOONEST);
                 // not scaling
                 String scalingItemID = String.format("%s_scaling", recipe.getName().replace("craft_", ""));
                 CustomItem scalingItem = CustomItemRegistry.getItem(scalingItemID);
                 if (scalingItem == null) scalingItem = new CustomItem(scalingItemID, new ItemStack(Material.BARRIER));
 
-                List<DynamicItemModifier> attributeScalingAndExperienceModifiers = recipe.getModifiers().stream().filter(m -> m instanceof DefaultAttributeScale || m instanceof DurabilityScale || m instanceof SkillExperience).map(DynamicItemModifier::copy).toList();
-                recipe.getModifiers().removeIf(m -> m instanceof DefaultAttributeScale || m instanceof DurabilityScale || m instanceof SkillExperience || m instanceof SmithingQualityScale);
-                List<DynamicItemModifier> itemModifiers = new ArrayList<>();
-                itemModifiers.add(qualitySetModifier);
-                itemModifiers.addAll(attributeScalingAndExperienceModifiers);
-                scalingItem.setModifiers(itemModifiers);
-                // TODO set item
+                List<DynamicItemModifier> filteredRecipeModifiers = new ArrayList<>(recipe.getModifiers().stream().map(DynamicItemModifier::copy).toList());
+                filteredRecipeModifiers.removeIf(m -> m instanceof DefaultAttributeScale || m instanceof DurabilityScale || m instanceof SkillExperience || m instanceof SmithingQualityScale);
+                scalingItem.setModifiers(filteredRecipeModifiers);
+
+                List<DynamicItemModifier> attributeScalingAndExperienceModifiers = new ArrayList<>(recipe.getModifiers().stream().filter(m -> m instanceof DefaultAttributeScale || m instanceof DurabilityScale || m instanceof SkillExperience).map(DynamicItemModifier::copy).toList());
+                ItemReplaceByIndexed modifier = (ItemReplaceByIndexed) ModifierRegistry.createModifier("replace_by_custom");
+                modifier.setItem(scalingItemID);
+                modifier.setPriority(ModifierPriority.SOON);
+                attributeScalingAndExperienceModifiers.add(modifier);
+                recipe.setModifiers(attributeScalingAndExperienceModifiers);
             }
         }
     }
