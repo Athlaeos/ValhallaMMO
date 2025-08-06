@@ -272,6 +272,7 @@ public class SmithingItemPropertyManager {
         if (quality == null) meta.getMeta().getPersistentDataContainer().remove(NEUTRAL_QUALITY);
         else meta.intTag(NEUTRAL_QUALITY, quality);
 
+        if (!hasSmithingQuality(meta.getMeta())) return;
         setQualityLore(meta);
     }
 
