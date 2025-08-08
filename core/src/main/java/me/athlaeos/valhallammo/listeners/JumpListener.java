@@ -8,9 +8,12 @@ import me.athlaeos.valhallammo.event.PlayerJumpEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.MathUtils;
+import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,6 +31,7 @@ public class JumpListener implements Listener {
     private static Animation multiJumpAnimation = AnimationRegistry.MULTI_JUMP;
     private static final Collection<UUID> playersGivenFlight = new HashSet<>();
     private final Map<UUID, Integer> jumpsLeft = new HashMap<>();
+    private final Attribute jumpHeightAttribute = AttributeMappings.JUMP_STRENGTH.getAttribute();
 
     public static void setMultiJumpAnimation(Animation multiJumpAnimation) {
         JumpListener.multiJumpAnimation = multiJumpAnimation;
@@ -88,19 +92,26 @@ public class JumpListener implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !playersGivenFlight.contains(e.getPlayer().getUniqueId()) ||
         e.getPlayer().getGameMode() == GameMode.CREATIVE || e.getPlayer().getGameMode() == GameMode.SPECTATOR) return;
         e.setCancelled(true);
-        double jumpHeightBonus = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? 0 : AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getPlayer(), 10000, true);
+        double jumpHeightBonus = 0;
+        if (jumpHeightAttribute == null) {
+            jumpHeightBonus = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? 0 : AccumulativeStatManager.getCachedStats("JUMP_HEIGHT_MULTIPLIER", e.getPlayer(), 10000, true);
+        } else {
+            AttributeInstance instance = e.getPlayer().getAttribute(jumpHeightAttribute);
+            if (instance != null) jumpHeightBonus = instance.getValue();
+        }
 
         if (!WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_DOUBLE_JUMPING)){
             PotionEffect jumpEffect = e.getPlayer().getPotionEffect(PotionEffectMappings.JUMP_BOOST.getPotionEffectType());
-            int jumpLevel = 0;
+            double jumpLevel = 0;
             if (jumpEffect != null) jumpLevel = jumpEffect.getAmplifier() + 1;
+            jumpLevel += 2 * jumpHeightBonus;
             float f = e.getPlayer().getEyeLocation().getYaw() * 0.017453292F;
             double motionX = e.getPlayer().getVelocity().getX() - (e.getPlayer().isSprinting() ? MathUtils.sin(f) * 0.2 : 0);
             double motionY = 0.42 + (jumpLevel * 0.1F);
             double motionZ = e.getPlayer().getVelocity().getZ() + (e.getPlayer().isSprinting() ? MathUtils.cos(f) * 0.2 : 0);
             if (multiJumpAnimation != null) multiJumpAnimation.animate(e.getPlayer(), e.getPlayer().getLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
-                            e.getPlayer().setVelocity(new Vector(motionX, motionY, motionZ).add(new Vector(0, (jumpHeightBonus * 0.1), 0))),
+                            e.getPlayer().setVelocity(new Vector(motionX, motionY, motionZ)),
                     1L);
             e.getPlayer().setFallDistance(0);
         }

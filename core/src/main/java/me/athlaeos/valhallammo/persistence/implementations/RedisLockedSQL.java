@@ -88,13 +88,8 @@ public class RedisLockedSQL extends SQL {
     @Override
     public void saveProfile(UUID uuid) {
         CompletableFuture<ClassToInstanceMap<Profile>> future = persistentProfiles.getIfPresent(uuid);
-        if (future == null || !future.isDone()) {
-            ValhallaMMO.logWarning("Profile for " + uuid + " is not loaded yet, skipping save.");
-            return;
-        } else if (!saving.add(uuid)) {
-            ValhallaMMO.logWarning("Profile for " + uuid + " is already being saved, skipping save.");
-            return;
-        }
+        if (future == null || !future.isDone()) return;
+        else if (!saving.add(uuid)) return;
 
         ClassToInstanceMap<Profile> profiles = future.join();
         String lockKey = uuid.toString();
