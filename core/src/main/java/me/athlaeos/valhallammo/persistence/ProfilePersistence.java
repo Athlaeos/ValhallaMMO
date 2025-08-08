@@ -250,10 +250,7 @@ public abstract class ProfilePersistence {
         }
     }
     public void saveProfileAsync(UUID p) {
-        if (!saving.add(p)) {
-            ValhallaMMO.logWarning("Profile for " + p + " is already being saved, skipping save.");
-            return;
-        }
+        if (!saving.add(p)) return;
 
         CompletableFuture.runAsync(() -> saveProfile(p), profileThreads).whenComplete((ignored, ex) -> {
             if (ex != null) {
@@ -265,13 +262,8 @@ public abstract class ProfilePersistence {
     }
 
     public void saveProfile(UUID p) {
-        if (!isLoaded(p)) {
-            ValhallaMMO.logWarning("Profile for " + p + " is not loaded yet, skipping save.");
-            return;
-        } else if (!saving.add(p)) {
-            ValhallaMMO.logWarning("Profile for " + p + " is already being saved, skipping save.");
-            return;
-        }
+        if (!isLoaded(p)) return;
+        else if (!saving.add(p)) return;
 
         ClassToInstanceMap<Profile> profiles = persistentProfiles.get(p).join();
         for (Profile profile : profiles.values()) {
