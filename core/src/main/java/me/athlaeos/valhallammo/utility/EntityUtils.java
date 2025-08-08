@@ -190,13 +190,13 @@ public class EntityUtils {
     public static double combinedAttackerAttributeValue(LivingEntity entity, String attribute, WeightClass weightFilter, String equipmentPenalty, boolean mainHand){
         double total = 0;
         EntityProperties properties = EntityCache.getAndCacheProperties(entity);
-        if (properties.getHelmet() != null && WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter)
+        if (properties.getHelmet() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getHelmet().getMeta()) == weightFilter))
             total += getValue(entity, equipmentPenalty, properties.getHelmet(), properties.getHelmetAttributes(), attribute, null);
-        if (properties.getChestplate() != null && WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter)
+        if (properties.getChestplate() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getChestplate().getMeta()) == weightFilter))
             total += getValue(entity, equipmentPenalty, properties.getChestplate(), properties.getChestPlateAttributes(), attribute, null);
-        if (properties.getLeggings() != null && WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter)
+        if (properties.getLeggings() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getLeggings().getMeta()) == weightFilter))
             total += getValue(entity, equipmentPenalty, properties.getLeggings(), properties.getLeggingsAttributes(), attribute, null);
-        if (properties.getBoots() != null && WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter)
+        if (properties.getBoots() != null && (weightFilter == null || WeightClass.getWeightClass(properties.getBoots().getMeta()) == weightFilter))
             total += getValue(entity, equipmentPenalty, properties.getBoots(), properties.getBootsAttributes(), attribute, null);
 
         if (mainHand && properties.getMainHand() != null)
