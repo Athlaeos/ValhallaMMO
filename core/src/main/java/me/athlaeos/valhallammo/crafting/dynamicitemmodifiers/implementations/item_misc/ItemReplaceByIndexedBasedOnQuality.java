@@ -23,6 +23,7 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
     private String currentItem = null;
     private int currentQuality = 0;
     private String skillToScaleWith = "SMITHING";
+    private boolean onlyExecuteModifiers = false;
 
     public ItemReplaceByIndexedBasedOnQuality(String name) {
         super(name);
@@ -45,10 +46,15 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
         }
         String item = items.get(highestItem);
         if (item == null) return;
-        ItemStack customItem = CustomItemRegistry.getProcessedItem(item, context);
-        if (ItemUtils.isEmpty(customItem)) return;
-        context.getItem().setItem(customItem);
-        context.getItem().setMeta(ItemUtils.getItemMeta(customItem));
+        if (onlyExecuteModifiers) {
+            CustomItem customItem = CustomItemRegistry.getItem(item);
+            DynamicItemModifier.modify(context, customItem.getModifiers());
+        } else {
+            ItemStack customItem = CustomItemRegistry.getProcessedItem(item, context);
+            if (ItemUtils.isEmpty(customItem)) return;
+            context.getItem().setItem(customItem);
+            context.getItem().setMeta(ItemUtils.getItemMeta(customItem));
+        }
     }
 
     @Override
@@ -79,14 +85,15 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
     public void onButtonPress(InventoryClickEvent e, DynamicModifierMenu menu, int button) {
         List<CustomItem> items = new ArrayList<>(CustomItemRegistry.getItems().values());
         if (items.isEmpty()) return;
-        if (button == 6){
+        if (button == 7) onlyExecuteModifiers = !onlyExecuteModifiers;
+        if (button == 11){
             new CustomItemSelectionMenu(menu.getPlayerMenuUtility(), (item) -> {
                 this.currentItem = item.getId();
                 menu.open();
             }).open();
         }
-        if (button == 7) currentQuality = Math.max(0, currentQuality + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1)));
-        if (button == 8) {
+        if (button == 12) currentQuality = Math.max(0, currentQuality + ((e.isShiftClick() ? 10 : 1) * (e.isLeftClick() ? 1 : -1)));
+        if (button == 13) {
             if (currentItem == null) this.items.remove(currentQuality);
             else this.items.put(currentQuality, currentItem);
         }
@@ -119,7 +126,7 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
             }
         }
 
-        return new Pair<>(6,
+        return new Pair<>(11,
                 new ItemBuilder(Material.ENDER_CHEST)
                         .name("&fWhich item?")
                         .lore("&fItem set to &e" + currentItem,
@@ -129,7 +136,7 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
                                 "&6Click to cycle",
                                 "&cShift-Click to select 'nothing'")
                         .get()).map(Set.of(
-                new Pair<>(7,
+                new Pair<>(12,
                         new ItemBuilder(Material.NETHER_STAR)
                                 .name("&fAt which quality should the item appear?")
                                 .lore("&fQuality set to &e" + currentQuality,
@@ -139,7 +146,7 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
                                         "&6Click to increase/decrease by 1",
                                         "&6Shift-Click to do so by 10")
                                 .get()),
-                new Pair<>(8,
+                new Pair<>(13,
                         new ItemBuilder(Material.EMERALD)
                                 .name("&fAdd Selection")
                                 .lore("&fCurrent setup:")
@@ -165,7 +172,16 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
                                 "&eSmithing and Alchemy are exceptions",
                                 "&fwhere they base %rating% off of the",
                                 "&fitem's quality instead of player skill",
-                                "&6Click to cycle").get())
+                                "&6Click to cycle").get()),
+                new Pair<>(7,
+                        new ItemBuilder(Material.REDSTONE_TORCH)
+                                .name("&fShould only its modifiers be executed?")
+                                .lore("&fSet to &e" + onlyExecuteModifiers,
+                                        "&7If enabled, the item will not be",
+                                        "&7replaced. Instead, the modifiers",
+                                        "&7of the index item are executed",
+                                        "&6Click to toggle")
+                                .get())
         ));
     }
 

@@ -24,6 +24,7 @@ public class ItemRandomizeIndexed extends DynamicItemModifier implements ResultC
     private final Map<String, Float> items = new HashMap<>();
     private String currentItem = null;
     private float currentWeight = 0;
+    private boolean onlyExecuteModifiers = false;
 
     public ItemRandomizeIndexed(String name) {
         super(name);
@@ -37,9 +38,13 @@ public class ItemRandomizeIndexed extends DynamicItemModifier implements ResultC
             failedRecipe(context.getItem(), "&cImproperly configured indexed randomization modifier!");
             return;
         }
-        ItemStack processed = CustomItemRegistry.getProcessedItem(selected, context);
-        context.getItem().setItem(processed);
-        context.getItem().setMeta(ItemUtils.getItemMeta(processed));
+        if (onlyExecuteModifiers) {
+            DynamicItemModifier.modify(context, selectedItem.getModifiers());
+        } else {
+            ItemStack processed = CustomItemRegistry.getProcessedItem(selected, context);
+            context.getItem().setItem(processed);
+            context.getItem().setMeta(ItemUtils.getItemMeta(processed));
+        }
     }
 
     @Override
@@ -54,14 +59,15 @@ public class ItemRandomizeIndexed extends DynamicItemModifier implements ResultC
 
     @Override
     public void onButtonPress(InventoryClickEvent e, DynamicModifierMenu menu, int button) {
-        if (button == 6){
+        if (button == 7) onlyExecuteModifiers = !onlyExecuteModifiers;
+        if (button == 11){
             new CustomItemSelectionMenu(menu.getPlayerMenuUtility(), (item) -> {
                 this.currentItem = item.getId();
                 menu.open();
             }).open();
         }
-        if (button == 7) currentWeight = Math.max(0, currentWeight + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.1F : -0.1F)));
-        if (button == 8) {
+        if (button == 12) currentWeight = Math.max(0, currentWeight + ((e.isShiftClick() ? 25 : 1) * (e.isLeftClick() ? 0.1F : -0.1F)));
+        if (button == 13) {
             if (e.isShiftClick()) this.items.clear();
             else if (currentItem != null) {
                 this.items.put(currentItem, currentWeight);
@@ -94,7 +100,7 @@ public class ItemRandomizeIndexed extends DynamicItemModifier implements ResultC
             lore.add(String.format("&6which has a pick chance of %.1f%%", chanceIfAdded));
         }
 
-        return new Pair<>(6,
+        return new Pair<>(11,
                 new ItemBuilder(currentItem == null || CustomItemRegistry.getItem(currentItem) == null ? new ItemStack(Material.BARRIER) : CustomItemRegistry.getItem(currentItem).getItem())
                         .name("&fWhich item?")
                         .lore("&fItem set to &e" + (currentItem == null ? "nothing" : currentItem),
@@ -102,7 +108,7 @@ public class ItemRandomizeIndexed extends DynamicItemModifier implements ResultC
                                 String.format("&7a &e%.1f%%&f chance of occurring", chanceIfAdded * 100),
                                 "&6Click with item in cursor to set")
                         .get()).map(Set.of(
-                new Pair<>(7,
+                new Pair<>(12,
                         new ItemBuilder(Material.NETHER_STAR)
                                 .name("&fWhat should the chance (weight) of it be?")
                                 .lore("&fWeight set to &e" + currentWeight + ",",
@@ -110,11 +116,20 @@ public class ItemRandomizeIndexed extends DynamicItemModifier implements ResultC
                                         "&6Click to increase/decrease by 0.1",
                                         "&6Shift-Click to do so by 2.5")
                                 .get()),
-                new Pair<>(8,
+                new Pair<>(13,
                         new ItemBuilder(Material.EMERALD)
                                 .name("&fAdd Selection")
                                 .lore("&fReplaces randomly to one of the following:")
                                 .appendLore(lore)
+                                .get()),
+                new Pair<>(7,
+                        new ItemBuilder(Material.REDSTONE_TORCH)
+                                .name("&fShould only its modifiers be executed?")
+                                .lore("&fSet to &e" + onlyExecuteModifiers,
+                                        "&7If enabled, the item will not be",
+                                        "&7replaced. Instead, the modifiers",
+                                        "&7of the index item are executed",
+                                        "&6Click to toggle")
                                 .get())
         ));
     }

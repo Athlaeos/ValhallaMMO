@@ -6,7 +6,6 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierPriority;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexedBasedOnQuality;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale;
@@ -33,16 +32,16 @@ import java.util.Map;
 public class Scripts implements Listener {
     private static final QuickTrade[] args = new QuickTrade[]{
             new QuickTrade("generic_sell_coal", ProfessionWrapper.ARMORER, MerchantLevel.JOURNEYMAN, "6x 100% 8-0%-16xCOAL for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
-            new QuickTrade("armorer_buy_leather_to_chainmail_helmet_t1", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "3x W25 3-25%-6xEMERALD for 1xLEATHER_HELMET G25 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_helmet_scaling|125:chainmail_helmet_scaling"),
-            new QuickTrade("armorer_buy_leather_to_chainmail_chestplate_t1", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "3x W25 6-25%-12xEMERALD for 1xLEATHER_CHESTPLATE G25 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_chestplate_scaling|125:chainmail_chestplate_scaling"),
-            new QuickTrade("armorer_buy_leather_to_chainmail_leggings_t1", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "3x W25 5-25%-10xEMERALD for 1xLEATHER_LEGGINGS G25 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_leggings_scaling|125:chainmail_leggings_scaling"),
-            new QuickTrade("armorer_buy_leather_to_chainmail_boots_t1", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "3x W25 2-25%-4xEMERALD for 1xLEATHER_BOOTS G25 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_boots_scaling|125:chainmail_boots_scaling"),
+            new QuickTrade("armorer_buy_leather_to_chainmail_helmet_t1", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "3x W25 3-25%-6xEMERALD for 1xLEATHER_HELMET G25 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_helmet_scaling/125:chainmail_helmet_scaling"),
+            new QuickTrade("armorer_buy_leather_to_chainmail_chestplate_t1", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "3x W25 6-25%-12xEMERALD for 1xLEATHER_CHESTPLATE G25 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_chestplate_scaling/125:chainmail_chestplate_scaling"),
+            new QuickTrade("armorer_buy_leather_to_chainmail_leggings_t1", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "3x W25 5-25%-10xEMERALD for 1xLEATHER_LEGGINGS G25 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_leggings_scaling/125:chainmail_leggings_scaling"),
+            new QuickTrade("armorer_buy_leather_to_chainmail_boots_t1", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "3x W25 2-25%-4xEMERALD for 1xLEATHER_BOOTS G25 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_boots_scaling/125:chainmail_boots_scaling"),
             new QuickTrade("generic_sell_iron", ProfessionWrapper.ARMORER, MerchantLevel.JOURNEYMAN, "6x 100% 4-10%-8xIRON_INGOT for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
             new QuickTrade("generic_buy_bell", ProfessionWrapper.ARMORER, MerchantLevel.JOURNEYMAN, "3x 100% 16-25%-32xEMERALD for 1xBELL G15 EXP=200 ENCH=2 VIL=2 ORD=6"),
-            new QuickTrade("armorer_buy_leather_to_chainmail_helmet_t2", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "3x W25 5-25%-10xEMERALD for 1xCHAINMAIL_HELMET G15 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_helmet_scaling|125:chainmail_helmet_scaling"),
-            new QuickTrade("armorer_buy_leather_to_chainmail_chestplate_t2", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "3x W25 8-25%-16xEMERALD for 1xCHAINMAIL_CHESTPLATE G15 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_chestplate_scaling|125:chainmail_chestplate_scaling"),
-            new QuickTrade("armorer_buy_leather_to_chainmail_leggings_t2", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "3x W25 7-25%-14xEMERALD for 1xCHAINMAIL_LEGGINGS G15 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_leggings_scaling|125:chainmail_leggings_scaling"),
-            new QuickTrade("armorer_buy_leather_to_chainmail_boots_t2", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "3x W25 4-25%-8xEMERALD for 1xCHAINMAIL_BOOTS G15 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_boots_scaling|125:chainmail_boots_scaling"),
+            new QuickTrade("armorer_buy_leather_to_chainmail_helmet_t2", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "3x W25 5-25%-10xEMERALD for 1xCHAINMAIL_HELMET G15 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_helmet_scaling/125:chainmail_helmet_scaling"),
+            new QuickTrade("armorer_buy_leather_to_chainmail_chestplate_t2", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "3x W25 8-25%-16xEMERALD for 1xCHAINMAIL_CHESTPLATE G15 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_chestplate_scaling/125:chainmail_chestplate_scaling"),
+            new QuickTrade("armorer_buy_leather_to_chainmail_leggings_t2", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "3x W25 7-25%-14xEMERALD for 1xCHAINMAIL_LEGGINGS G15 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_leggings_scaling/125:chainmail_leggings_scaling"),
+            new QuickTrade("armorer_buy_leather_to_chainmail_boots_t2", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "3x W25 4-25%-8xEMERALD for 1xCHAINMAIL_BOOTS G15 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_boots_scaling/125:chainmail_boots_scaling"),
             new QuickTrade("armorer_sell_lava_bucket", ProfessionWrapper.ARMORER, MerchantLevel.JOURNEYMAN, "6x 100% 1-0%-1xLAVA_BUCKET for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
             new QuickTrade("armorer_buy_enchanted_iron_helmet", ProfessionWrapper.ARMORER, MerchantLevel.JOURNEYMAN, "3x W25 10-25%-20xEMERALD for 1xIRON_HELMET G10 EXP=1500 ENCH=15 VIL=15 ORD=8 ITEMREF=iron_helmet_scaling"),
             new QuickTrade("armorer_buy_enchanted_iron_chestplate", ProfessionWrapper.ARMORER, MerchantLevel.JOURNEYMAN, "3x W25 16-25%-32xEMERALD for 1xIRON_CHESTPLATE G10 EXP=2400 ENCH=24 VIL=24 ORD=8 ITEMREF=iron_chestplate_scaling"),
@@ -164,22 +163,22 @@ public class Scripts implements Listener {
             new QuickTrade("fisherman_buy_uni_sushi", ProfessionWrapper.FISHERMAN, MerchantLevel.MASTER, "E4x W25 8-10%-16xEMERALD for 1xGOLDEN_APPLE G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=uni_sushi"),
 
             new QuickTrade("fletcher_sell_sticks", ProfessionWrapper.FLETCHER, MerchantLevel.NOVICE, "6x 100% 32-10%-64xSTICK for 1xEMERALD NOGIFT EXP=100 ENCH=1 VIL=1 ORD=0"),
-            new QuickTrade("fletcher_buy_flint_arrows", ProfessionWrapper.FLETCHER, MerchantLevel.NOVICE, "6x W25 1-10%-2xEMERALD for 16xARROW NOGIFT EXP=200 ENCH=2 VIL=2 ORD=16 ITEMREF=flint_arrow"),
+            new QuickTrade("fletcher_buy_flint_arrows", ProfessionWrapper.FLETCHER, MerchantLevel.NOVICE, "6x W25 1-10%-2xEMERALD for 16xARROW NOGIFT EXP=200 ENCH=2 VIL=2 ORD=16 ITEMREF=flint_arrows"),
             new QuickTrade("fletcher_buy_flint", ProfessionWrapper.FLETCHER, MerchantLevel.NOVICE, "6x W25 1-10%-2xEMERALD for 8xFLINT G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
             new QuickTrade("fletcher_buy_feathers", ProfessionWrapper.FLETCHER, MerchantLevel.NOVICE, "6x W25 1-10%-2xEMERALD for 8xFEATHER G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
             new QuickTrade("fletcher_buy_string", ProfessionWrapper.FLETCHER, MerchantLevel.NOVICE, "6x W25 1-10%-2xEMERALD for 4xSTRING G25 EXP=200 ENCH=2 VIL=2 ORD=16"),
             new QuickTrade("generic_sell_flint", ProfessionWrapper.FLETCHER, MerchantLevel.APPRENTICE, "6x 100% 8-10%-16xFLINT for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
             new QuickTrade("fletcher_buy_bow_t1", ProfessionWrapper.FLETCHER, MerchantLevel.APPRENTICE, "3x W25 2-10%-4xEMERALD for 1xBOW G15 EXP=300 ENCH=3 VIL=3 ORD=16 ITEMREF=bow_scaling"),
-            new QuickTrade("fletcher_buy_copper_arrows", ProfessionWrapper.FLETCHER, MerchantLevel.APPRENTICE, "6x W25 2-10%-4xEMERALD for 1xARROW G15 EXP=300 ENCH=3 VIL=3 ORD=16 ITEMREF=copper_arrow"),
+            new QuickTrade("fletcher_buy_copper_arrows", ProfessionWrapper.FLETCHER, MerchantLevel.APPRENTICE, "6x W25 2-10%-4xEMERALD for 1xARROW G15 EXP=300 ENCH=3 VIL=3 ORD=16 ITEMREF=copper_arrows"),
             new QuickTrade("fletcher_buy_crossbow_t1", ProfessionWrapper.FLETCHER, MerchantLevel.APPRENTICE, "3x W25 4-10%-8xEMERALD for 1xCROSSBOW G15 EXP=400 ENCH=4 VIL=4 ORD=16 ITEMREF=crossbow_scaling"),
             new QuickTrade("fletcher_sell_string", ProfessionWrapper.FLETCHER, MerchantLevel.APPRENTICE, "6x W25 12-10%-24xSTRING for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
             new QuickTrade("fletcher_sell_feathers", ProfessionWrapper.FLETCHER, MerchantLevel.JOURNEYMAN, "6x 100% 16-10%-32xFEATHER for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
             new QuickTrade("fletcher_buy_bow_t2", ProfessionWrapper.FLETCHER, MerchantLevel.JOURNEYMAN, "3x W25 6-10%-12xEMERALD for 1xBOW G10 EXP=600 ENCH=6 VIL=6 ORD=16 ITEMREF=bow_scaling"),
             new QuickTrade("fletcher_buy_crossbow_t2", ProfessionWrapper.FLETCHER, MerchantLevel.JOURNEYMAN, "3x W25 12-10%-24xEMERALD for 1xCROSSBOW G10 EXP=1200 ENCH=12 VIL=12 ORD=16 ITEMREF=crossbow_scaling"),
-            new QuickTrade("fletcher_buy_golden_arrows", ProfessionWrapper.FLETCHER, MerchantLevel.JOURNEYMAN, "6x W25 8-10%-16xEMERALD for 16xARROW G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=golden_arrow"),
+            new QuickTrade("fletcher_buy_golden_arrows", ProfessionWrapper.FLETCHER, MerchantLevel.JOURNEYMAN, "6x W25 8-10%-16xEMERALD for 16xARROW G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=golden_arrows"),
             new QuickTrade("fletcher_sell_tripwire_hooks", ProfessionWrapper.FLETCHER, MerchantLevel.JOURNEYMAN, "6x W25 8-25%-16xTRIPWIRE_HOOK for 1xEMERALD NOGIFT EXP=400 ENCH=4 VIL=4 ORD=0"),
             new QuickTrade("fletcher_sell_targets", ProfessionWrapper.FLETCHER, MerchantLevel.EXPERT, "6x 100% 4-10%-8xTARGET for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
-            new QuickTrade("fletcher_buy_iron_arrows", ProfessionWrapper.FLETCHER, MerchantLevel.EXPERT, "6x W25 8-10%-16xEMERALD for 16xARROW G7.5 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=iron_arrow"),
+            new QuickTrade("fletcher_buy_iron_arrows", ProfessionWrapper.FLETCHER, MerchantLevel.EXPERT, "6x W25 8-10%-16xEMERALD for 16xARROW G7.5 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=iron_arrows"),
             new QuickTrade("fletcher_buy_bow_t3", ProfessionWrapper.FLETCHER, MerchantLevel.EXPERT, "2x W25 24-10%-48xEMERALD for 1xBOW G7.5 EXP=2400 ENCH=24 VIL=24 ORD=16 ITEMREF=bow_scaling"),
             new QuickTrade("fletcher_buy_crossbow_t3", ProfessionWrapper.FLETCHER, MerchantLevel.EXPERT, "2x W25 36-10%-64xEMERALD for 1xCROSSBOW G7.5 EXP=3600 ENCH=36 VIL=36 ORD=16 ITEMREF=crossbow_scaling"),
             new QuickTrade("fletcher_buy_random_tipped_arrows", ProfessionWrapper.FLETCHER, MerchantLevel.EXPERT, "6x W5 6-10%-12xEMERALD for 4xTIPPED_ARROW G3 EXP=600 ENCH=6 VIL=6 ORD=16"),
@@ -403,16 +402,16 @@ public class Scripts implements Listener {
             new QuickTrade("shepherd_buy_warden_banner", ProfessionWrapper.SHEPHERD, MerchantLevel.EXPERT, "E6x W25 2-25%-4xEMERALD for 1xWHITE_BANNER G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=banner_dragon"),
 
             new QuickTrade("generic_sell_coal", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, ""),
-            new QuickTrade("toolsmith_buy_stone_to_iron_axe_t1", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "3x W25 3-25%-6xEMERALD for 1xSTONE_AXE G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_axe_scaling|125:iron_pickaxe_scaling"),
-            new QuickTrade("toolsmith_buy_stone_to_iron_shovel_t1", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "3x W25 1-25%-2xEMERALD for 1xSTONE_SHOVEL G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_shovel_scaling|125:iron_shovel_scaling"),
-            new QuickTrade("toolsmith_buy_stone_to_iron_pickaxe_t1", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "3x W25 3-25%-6xEMERALD for 1xSTONE_PICKAXE G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_pickaxe_scaling|125:iron_pickaxe_scaling"),
-            new QuickTrade("toolsmith_buy_stone_to_iron_hoe_t1", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "3x W25 2-25%-4xEMERALD for 1xSTONE_HOE G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_hoe_scaling|125:iron_hoe_scaling"),
+            new QuickTrade("toolsmith_buy_stone_to_iron_axe_t1", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "3x W25 3-25%-6xEMERALD for 1xSTONE_AXE G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_axe_scaling/125:iron_pickaxe_scaling"),
+            new QuickTrade("toolsmith_buy_stone_to_iron_shovel_t1", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "3x W25 1-25%-2xEMERALD for 1xSTONE_SHOVEL G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_shovel_scaling/125:iron_shovel_scaling"),
+            new QuickTrade("toolsmith_buy_stone_to_iron_pickaxe_t1", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "3x W25 3-25%-6xEMERALD for 1xSTONE_PICKAXE G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_pickaxe_scaling/125:iron_pickaxe_scaling"),
+            new QuickTrade("toolsmith_buy_stone_to_iron_hoe_t1", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "3x W25 2-25%-4xEMERALD for 1xSTONE_HOE G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_hoe_scaling/125:iron_hoe_scaling"),
             new QuickTrade("generic_sell_iron", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, ""),
             new QuickTrade("generic_buy_bell", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, ""),
-            new QuickTrade("toolsmith_buy_stone_to_iron_axe_t2", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "3x W25 6-25%-12xEMERALD for 1xSTONE_AXE G15 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_axe_scaling|125:iron_pickaxe_scaling"),
-            new QuickTrade("toolsmith_buy_stone_to_iron_shovel_t2", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "3x W25 2-25%-4xEMERALD for 1xSTONE_SHOVEL G15 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_shovel_scaling|125:iron_shovel_scaling"),
-            new QuickTrade("toolsmith_buy_stone_to_iron_pickaxe_t2", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "3x W25 6-25%-12xEMERALD for 1xSTONE_PICKAXE G15 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_pickaxe_scaling|125:iron_pickaxe_scaling"),
-            new QuickTrade("toolsmith_buy_stone_to_iron_hoe_t2", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "3x W25 4-25%-8xEMERALD for 1xSTONE_HOE G15 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_hoe_scaling|125:iron_hoe_scaling"),
+            new QuickTrade("toolsmith_buy_stone_to_iron_axe_t2", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "3x W25 6-25%-12xEMERALD for 1xSTONE_AXE G15 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_axe_scaling/125:iron_pickaxe_scaling"),
+            new QuickTrade("toolsmith_buy_stone_to_iron_shovel_t2", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "3x W25 2-25%-4xEMERALD for 1xSTONE_SHOVEL G15 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_shovel_scaling/125:iron_shovel_scaling"),
+            new QuickTrade("toolsmith_buy_stone_to_iron_pickaxe_t2", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "3x W25 6-25%-12xEMERALD for 1xSTONE_PICKAXE G15 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_pickaxe_scaling/125:iron_pickaxe_scaling"),
+            new QuickTrade("toolsmith_buy_stone_to_iron_hoe_t2", ProfessionWrapper.TOOLSMITH, MerchantLevel.APPRENTICE, "3x W25 4-25%-8xEMERALD for 1xSTONE_HOE G15 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_hoe_scaling/125:iron_hoe_scaling"),
             new QuickTrade("generic_sell_flint", ProfessionWrapper.TOOLSMITH, MerchantLevel.JOURNEYMAN, ""),
             new QuickTrade("toolsmith_buy_enchanted_iron_axe", ProfessionWrapper.TOOLSMITH, MerchantLevel.JOURNEYMAN, "3x W25 12-25%-24xEMERALD for 1xIRON_AXE G10 EXP=200 ENCH=2 VIL=2 ORD=16 ITEMREF=iron_axe_scaling"),
             new QuickTrade("toolsmith_buy_enchanted_iron_shovel", ProfessionWrapper.TOOLSMITH, MerchantLevel.JOURNEYMAN, "3x W25 4-25%-8xEMERALD for 1xIRON_SHOVEL G10 EXP=200 ENCH=2 VIL=2 ORD=16 ITEMREF=iron_shovel_scaling"),
@@ -430,15 +429,15 @@ public class Scripts implements Listener {
             new QuickTrade("toolsmith_royal_diamond_hoe", ProfessionWrapper.TOOLSMITH, MerchantLevel.MASTER, "E1x W25 6-25%-12xEMERALD_BLOCK for 1xDIAMOND_HOE NOGIFT EXP=1600 ENCH=16 VIL=16 ORD=16 ITEMREF=royal_diamond_hoe"),
 
             new QuickTrade("generic_sell_coal", ProfessionWrapper.WEAPONSMITH, MerchantLevel.NOVICE, ""),
-            new QuickTrade("weaponsmith_buy_random_stone_to_iron_heavy_weapon_t1", ProfessionWrapper.WEAPONSMITH, MerchantLevel.NOVICE, "3x W25 5-25%-10xEMERALD for 1xSTONE_AXE G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:random_stone_heavy_weapon|125:random_iron_heavy_weapon"),
+            new QuickTrade("weaponsmith_buy_random_stone_to_iron_heavy_weapon_t1", ProfessionWrapper.WEAPONSMITH, MerchantLevel.NOVICE, "3x W25 5-25%-10xEMERALD for 1xSTONE_AXE G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:random_stone_heavy_weapon/125:random_iron_heavy_weapon"),
             new QuickTrade("weaponsmith_buy_random_stone_to_iron_heavy_weapon_t1", ProfessionWrapper.WEAPONSMITH, MerchantLevel.NOVICE, ""),
-            new QuickTrade("weaponsmith_buy_random_stone_to_iron_light_weapon_t1", ProfessionWrapper.WEAPONSMITH, MerchantLevel.NOVICE, "3x W25 5-25%-10xEMERALD for 1xSTONE_SWORD G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:random_stone_light_weapon|125:random_iron_light_weapon"),
+            new QuickTrade("weaponsmith_buy_random_stone_to_iron_light_weapon_t1", ProfessionWrapper.WEAPONSMITH, MerchantLevel.NOVICE, "3x W25 5-25%-10xEMERALD for 1xSTONE_SWORD G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:random_stone_light_weapon/125:random_iron_light_weapon"),
             new QuickTrade("weaponsmith_buy_random_stone_to_iron_light_weapon_t1", ProfessionWrapper.WEAPONSMITH, MerchantLevel.NOVICE, ""),
             new QuickTrade("generic_sell_iron", ProfessionWrapper.WEAPONSMITH, MerchantLevel.APPRENTICE, ""),
             new QuickTrade("generic_buy_bell", ProfessionWrapper.WEAPONSMITH, MerchantLevel.APPRENTICE, ""),
-            new QuickTrade("weaponsmith_buy_random_stone_to_iron_heavy_weapon_t2", ProfessionWrapper.WEAPONSMITH, MerchantLevel.APPRENTICE, "3x W25 8-25%-16xEMERALD for 1xSTONE_AXE G15 EXP=200 ENCH=2 VIL=2 ORD=0 DYNREF=0:random_stone_heavy_weapon|125:random_iron_heavy_weapon"),
+            new QuickTrade("weaponsmith_buy_random_stone_to_iron_heavy_weapon_t2", ProfessionWrapper.WEAPONSMITH, MerchantLevel.APPRENTICE, "3x W25 8-25%-16xEMERALD for 1xSTONE_AXE G15 EXP=200 ENCH=2 VIL=2 ORD=0 DYNREF=0:random_stone_heavy_weapon/125:random_iron_heavy_weapon"),
             new QuickTrade("weaponsmith_buy_random_stone_to_iron_heavy_weapon_t2", ProfessionWrapper.WEAPONSMITH, MerchantLevel.APPRENTICE, ""),
-            new QuickTrade("weaponsmith_buy_random_stone_to_iron_light_weapon_t2", ProfessionWrapper.WEAPONSMITH, MerchantLevel.APPRENTICE, "3x W25 8-25%-16xEMERALD for 1xSTONE_SWORD G15 EXP=200 ENCH=2 VIL=2 ORD=0 DYNREF=0:random_stone_light_weapon|125:random_iron_light_weapon"),
+            new QuickTrade("weaponsmith_buy_random_stone_to_iron_light_weapon_t2", ProfessionWrapper.WEAPONSMITH, MerchantLevel.APPRENTICE, "3x W25 8-25%-16xEMERALD for 1xSTONE_SWORD G15 EXP=200 ENCH=2 VIL=2 ORD=0 DYNREF=0:random_stone_light_weapon/125:random_iron_light_weapon"),
             new QuickTrade("weaponsmith_buy_random_stone_to_iron_light_weapon_t2", ProfessionWrapper.WEAPONSMITH, MerchantLevel.APPRENTICE, ""),
             new QuickTrade("generic_sell_flint", ProfessionWrapper.WEAPONSMITH, MerchantLevel.JOURNEYMAN, ""),
             new QuickTrade("weaponsmith_buy_random_enchanted_iron_heavy_weapon", ProfessionWrapper.WEAPONSMITH, MerchantLevel.JOURNEYMAN, "3x W25 12-25%-24xEMERALD for 1xIRON_AXE G10 EXP=600 ENCH=6 VIL=6 ORD=16 ITEMREF=random_iron_heavy_weapon"),
@@ -497,24 +496,38 @@ public class Scripts implements Listener {
                     continue;
                 }
                 qualitySetModifier.setPriority(ModifierPriority.SOONEST);
-                // not scaling
+
                 String scalingItemID = String.format("%s_scaling", recipe.getName().replace("craft_", ""));
                 CustomItem scalingItem = CustomItemRegistry.getItem(scalingItemID);
-                if (scalingItem == null) scalingItem = new CustomItem(scalingItemID, new ItemStack(Material.BARRIER));
+                if (scalingItem == null) {
+                    scalingItem = new CustomItem(scalingItemID, new ItemStack(Material.BARRIER));
+                    CustomItemRegistry.register(scalingItemID, scalingItem);
+                }
                 scalingItem.setItem(recipe.getResult());
 
                 List<DynamicItemModifier> filteredRecipeModifiers = new ArrayList<>(recipe.getModifiers().stream().map(DynamicItemModifier::copy).toList());
                 filteredRecipeModifiers.removeIf(m -> m instanceof SkillExperience || m instanceof SmithingQualityScale);
                 scalingItem.setModifiers(filteredRecipeModifiers);
 
-                List<DynamicItemModifier> attributeScalingAndExperienceModifiers = new ArrayList<>(recipe.getModifiers().stream().filter(m -> m instanceof DefaultAttributeScale || m instanceof DurabilityScale || m instanceof SkillExperience).map(DynamicItemModifier::copy).toList());
+                List<DynamicItemModifier> attributeScalingAndExperienceModifiers = new ArrayList<>(recipe.getModifiers().stream().filter(m -> m instanceof SkillExperience).map(DynamicItemModifier::copy).toList());
                 attributeScalingAndExperienceModifiers.add(qualitySetModifier);
                 ItemReplaceByIndexed modifier = (ItemReplaceByIndexed) ModifierRegistry.createModifier("replace_by_custom");
+                modifier.setOnlyExecuteModifiers(true);
                 modifier.setItem(scalingItemID);
                 modifier.setPriority(ModifierPriority.SOON);
                 attributeScalingAndExperienceModifiers.add(modifier);
                 recipe.setModifiers(attributeScalingAndExperienceModifiers);
             }
+
+            String nonScalingItemID = String.format("%s", recipe.getName().replace("craft_", ""));
+            CustomItem nonScalingItem = CustomItemRegistry.getItem(nonScalingItemID);
+            if (nonScalingItem == null) nonScalingItem = new CustomItem(nonScalingItemID, new ItemStack(Material.BARRIER));
+            nonScalingItem.setItem(recipe.getResult());
+            nonScalingItem.getItem().setAmount(1);
+
+            List<DynamicItemModifier> filteredRecipeModifiers = new ArrayList<>(recipe.getModifiers().stream().map(DynamicItemModifier::copy).toList());
+            filteredRecipeModifiers.removeIf(m -> m instanceof DefaultAttributeScale || m instanceof DurabilityScale || m instanceof SkillExperience || m instanceof SmithingQualityScale);
+            nonScalingItem.setModifiers(filteredRecipeModifiers);
         }
     }
 
@@ -522,10 +535,14 @@ public class Scripts implements Listener {
         return name.startsWith("craft_wooden_") ||
                 name.startsWith("craft_leather_") ||
                 name.startsWith("craft_stone_") ||
+                name.startsWith("craft_copper_") ||
                 name.startsWith("craft_chainmail_") ||
                 name.startsWith("craft_iron_") ||
-                name.startsWith("craft_gold_") ||
-                name.startsWith("craft_diamond_");
+                name.startsWith("craft_golden_") ||
+                name.startsWith("craft_diamond_") ||
+                name.startsWith("craft_elytra") ||
+                name.startsWith("craft_unholy_") ||
+                name.startsWith("craft_ender");
     }
 
     private static MerchantTrade parse(String name, String arg){
