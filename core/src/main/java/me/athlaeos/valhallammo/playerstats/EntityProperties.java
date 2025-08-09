@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.playerstats;
 
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.PermanentPotionEffects;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -16,18 +17,26 @@ import java.util.Map;
 public class EntityProperties {
     private ItemBuilder helmet = null;
     private Map<String, AttributeWrapper> helmetAttributes = new HashMap<>();
+    private List<PotionEffect> helmetPotionEffects = new ArrayList<>();
     private ItemBuilder chestplate = null;
     private Map<String, AttributeWrapper> chestplateAttributes = new HashMap<>();
+    private List<PotionEffect> chestplatePotionEffects = new ArrayList<>();
     private ItemBuilder leggings = null;
     private Map<String, AttributeWrapper> leggingsAttributes = new HashMap<>();
+    private List<PotionEffect> leggingsPotionEffects = new ArrayList<>();
     private ItemBuilder boots = null;
     private Map<String, AttributeWrapper> bootsAttributes = new HashMap<>();
+    private List<PotionEffect> bootsPotionEffects = new ArrayList<>();
     private ItemBuilder mainHand = null;
     private Map<String, AttributeWrapper> mainHandAttributes = new HashMap<>();
+    private List<PotionEffect> mainHandPotionEffects = new ArrayList<>();
     private ItemBuilder offHand = null;
     private Map<String, AttributeWrapper> offHandAttributes = new HashMap<>();
+    private List<PotionEffect> offHandPotionEffects = new ArrayList<>();
     private final List<ItemBuilder> miscEquipment = new ArrayList<>();
     private final Map<ItemBuilder, Map<String, AttributeWrapper>> miscEquipmentAttributes = new HashMap<>();
+    private final Map<ItemBuilder, List<PotionEffect>> miscEquipmentPotionEffects = new HashMap<>();
+    private List<PotionEffect> powerPotionEffects = new ArrayList<>();
     private int heavyArmorCount = 0;
     private int lightArmorCount = 0;
     private int weightlessArmorCount = 0;
@@ -81,6 +90,21 @@ public class EntityProperties {
     public void setOffHand(ItemStack offHand) { this.offHand = ItemUtils.isEmpty(offHand) ? null : new ItemBuilder(offHand); }
     public Map<Enchantment, Integer> getCombinedEnchantments() { return combinedEnchantments; }
     public List<PotionEffect> getPermanentPotionEffects() { return permanentPotionEffects; }
+    public List<PotionEffect> getPowerPotionEffects() { return powerPotionEffects; }
+    public List<PotionEffect> getBootsPotionEffects() { return bootsPotionEffects; }
+    public List<PotionEffect> getChestplatePotionEffects() { return chestplatePotionEffects; }
+    public List<PotionEffect> getHelmetPotionEffects() { return helmetPotionEffects; }
+    public List<PotionEffect> getLeggingsPotionEffects() { return leggingsPotionEffects; }
+    public Map<ItemBuilder, List<PotionEffect>> getMiscEquipmentPotionEffects() { return miscEquipmentPotionEffects; }
+    public List<PotionEffect> getMainHandPotionEffects() { return mainHandPotionEffects; }
+    public List<PotionEffect> getOffHandPotionEffects() { return offHandPotionEffects; }
+    public void setPowerPotionEffects(List<PotionEffect> powerPotionEffects) { this.powerPotionEffects = powerPotionEffects; }
+    public void setBootsPotionEffects(List<PotionEffect> bootsPotionEffects) { this.bootsPotionEffects = bootsPotionEffects; }
+    public void setChestplatePotionEffects(List<PotionEffect> chestplatePotionEffects) { this.chestplatePotionEffects = chestplatePotionEffects; }
+    public void setHelmetPotionEffects(List<PotionEffect> helmetPotionEffects) { this.helmetPotionEffects = helmetPotionEffects; }
+    public void setLeggingsPotionEffects(List<PotionEffect> leggingsPotionEffects) { this.leggingsPotionEffects = leggingsPotionEffects; }
+    public void setMainHandPotionEffects(List<PotionEffect> mainHandPotionEffects) { this.mainHandPotionEffects = mainHandPotionEffects; }
+    public void setOffHandPotionEffects(List<PotionEffect> offHandPotionEffects) { this.offHandPotionEffects = offHandPotionEffects; }
 
     /**
      * Returns a list containing all of the entity's equipment.
@@ -147,4 +171,17 @@ public class EntityProperties {
     public void setLeggingsAttributes(Map<String, AttributeWrapper> leggingsAttributes) { this.leggingsAttributes = leggingsAttributes; }
     public void setMainHandAttributes(Map<String, AttributeWrapper> mainHandAttributes) { this.mainHandAttributes = mainHandAttributes; }
     public void setOffHandAttributes(Map<String, AttributeWrapper> offHandAttributes) { this.offHandAttributes = offHandAttributes; }
+    public void computePermanentEffects(){
+        permanentPotionEffects.clear();
+        List<List<PotionEffect>> effects = new ArrayList<>();
+        effects.add(powerPotionEffects);
+        effects.add(helmetPotionEffects);
+        effects.add(chestplatePotionEffects);
+        effects.add(leggingsPotionEffects);
+        effects.add(bootsPotionEffects);
+        effects.add(mainHandPotionEffects);
+        effects.add(offHandPotionEffects);
+        effects.addAll(miscEquipmentPotionEffects.values());
+        permanentPotionEffects.addAll(PermanentPotionEffects.getCombinedEffects(effects));
+    }
 }

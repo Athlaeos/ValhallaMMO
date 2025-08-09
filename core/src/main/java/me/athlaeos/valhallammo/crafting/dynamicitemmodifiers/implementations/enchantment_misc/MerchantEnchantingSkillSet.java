@@ -1,11 +1,10 @@
-package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc;
+package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc;
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
@@ -17,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class MerchantSmithingQualitySet extends DynamicItemModifier {
+public class MerchantEnchantingSkillSet extends DynamicItemModifier {
     private final Map<MerchantLevel, Integer> qualityMap = new HashMap<>(Map.of(
             MerchantLevel.NOVICE, 30,
             MerchantLevel.APPRENTICE, 60,
@@ -27,7 +26,7 @@ public class MerchantSmithingQualitySet extends DynamicItemModifier {
     ));
     private boolean shouldScaleWithStats = true;
 
-    public MerchantSmithingQualitySet(String name) {
+    public MerchantEnchantingSkillSet(String name) {
         super(name);
     }
 
@@ -37,12 +36,7 @@ public class MerchantSmithingQualitySet extends DynamicItemModifier {
         if (data == null) return;
         MerchantLevel level = CustomMerchantManager.getLevel(data);
         if (level == null) return;
-        SmithingItemPropertyManager.setQuality(context.getItem(), (int) Math.round(qualityMap.get(level) * (1 + (shouldScaleWithStats ? AccumulativeStatManager.getCachedStats("TRADING_SKILL_MULTIPLIER", context.getCrafter(), 10000, true) : 0))));
-    }
-
-    @Override
-    public boolean meetsRequirement(ModifierContext context) {
-        return context.getOtherType(MerchantData.class) != null;
+        context.getOtherArgs().put(MerchantEnchantingSkill.class, new MerchantEnchantingSkill((int) Math.round(qualityMap.get(level) * (1 + (shouldScaleWithStats ? AccumulativeStatManager.getCachedStats("TRADING_SKILL_MULTIPLIER", context.getCrafter(), 10000, true) : 0)))));
     }
 
     @Override
@@ -60,8 +54,8 @@ public class MerchantSmithingQualitySet extends DynamicItemModifier {
         return new Pair<>(10,
                 new ItemBuilder(Material.PAPER)
                         .name("&eWhat quality should novices get?")
-                        .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.NOVICE, 0) + "&f quality to the item",
-                                "&fif the merchant is a NOVICE",
+                        .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.NOVICE, 0) + "&f enchanting skill",
+                                "&fto following modifiers if the merchant is a NOVICE",
                                 "",
                                 "&6Click to add/subtract 1",
                                 "&6Shift-Click to add/subtract 10")
@@ -69,8 +63,8 @@ public class MerchantSmithingQualitySet extends DynamicItemModifier {
                 new Pair<>(11,
                         new ItemBuilder(Material.PAPER)
                                 .name("&eWhat quality should novices get?")
-                                .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.APPRENTICE, 0) + "&f quality to the item",
-                                        "&fif the merchant is a APPRENTICE",
+                                .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.APPRENTICE, 0) + "&f enchanting skill",
+                                        "&fto following modifiers if the merchant is a APPRENTICE",
                                         "",
                                         "&6Click to add/subtract 1",
                                         "&6Shift-Click to add/subtract 10")
@@ -78,8 +72,8 @@ public class MerchantSmithingQualitySet extends DynamicItemModifier {
                 new Pair<>(12,
                         new ItemBuilder(Material.PAPER)
                                 .name("&eWhat quality should novices get?")
-                                .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.JOURNEYMAN, 0) + "&f quality to the item",
-                                        "&fif the merchant is a JOURNEYMAN",
+                                .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.JOURNEYMAN, 0) + "&f enchanting skill",
+                                        "&fto following modifiers if the merchant is a JOURNEYMAN",
                                         "",
                                         "&6Click to add/subtract 1",
                                         "&6Shift-Click to add/subtract 10")
@@ -87,8 +81,8 @@ public class MerchantSmithingQualitySet extends DynamicItemModifier {
                 new Pair<>(13,
                         new ItemBuilder(Material.PAPER)
                                 .name("&eWhat quality should novices get?")
-                                .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.EXPERT, 0) + "&f quality to the item",
-                                        "&fif the merchant is a EXPERT",
+                                .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.EXPERT, 0) + "&f enchanting skill",
+                                        "&fto following modifiers if the merchant is a EXPERT",
                                         "",
                                         "&6Click to add/subtract 1",
                                         "&6Shift-Click to add/subtract 10")
@@ -96,8 +90,8 @@ public class MerchantSmithingQualitySet extends DynamicItemModifier {
                 new Pair<>(14,
                         new ItemBuilder(Material.PAPER)
                                 .name("&eWhat quality should novices get?")
-                                .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.MASTER, 0) + "&f quality to the item",
-                                        "&fif the merchant is a MASTER",
+                                .lore("&fApplies &e" + qualityMap.getOrDefault(MerchantLevel.MASTER, 0) + "&f enchanting skill",
+                                        "&fto following modifiers if the merchant is a MASTER",
                                         "",
                                         "&6Click to add/subtract 1",
                                         "&6Shift-Click to add/subtract 10")
@@ -118,27 +112,27 @@ public class MerchantSmithingQualitySet extends DynamicItemModifier {
 
     @Override
     public ItemStack getModifierIcon() {
-        return new ItemBuilder(Material.EMERALD).get();
+        return new ItemBuilder(Material.ENCHANTING_TABLE).get();
     }
 
     @Override
     public String getDisplayName() {
-        return "&eMerchant Smithing Skill";
+        return "&dEnchanting Skill to Following Modifiers";
     }
 
     @Override
     public String getDescription() {
-        return "&fSets the quality of the item based on the merchant's skill level. &cCan only be used in custom trades";
+        return "&fApplies an enchanting skill value to this context based on the merchant's level. Any enchanting-related modifiers afterwards will use this merchant skill instead of player skill";
     }
 
     @Override
     public String getActiveDescription() {
-        return "&fSets the quality of the item based on the merchant's skill level. &cCan only be used in custom trades";
+        return "&fApplies an enchanting skill value to this context based on the merchant's level. Any enchanting-related modifiers afterwards will use this merchant skill instead of player skill";
     }
 
     @Override
     public Collection<String> getCategories() {
-        return Set.of(ModifierCategoryRegistry.ITEM_MISC.id());
+        return Set.of(ModifierCategoryRegistry.ENCHANTMENT_MISC.id());
     }
 
     public void setShouldScaleWithStats(boolean shouldScaleWithStats) {
@@ -152,7 +146,7 @@ public class MerchantSmithingQualitySet extends DynamicItemModifier {
 
     @Override
     public DynamicItemModifier copy() {
-        MerchantSmithingQualitySet m = new MerchantSmithingQualitySet(getName());
+        MerchantEnchantingSkillSet m = new MerchantEnchantingSkillSet(getName());
         m.setQualities(this.qualityMap);
         m.setPriority(this.getPriority());
         m.setShouldScaleWithStats(this.shouldScaleWithStats);
@@ -161,7 +155,7 @@ public class MerchantSmithingQualitySet extends DynamicItemModifier {
 
     @Override
     public String parseCommand(CommandSender executor, String[] args) {
-        return "This modifier cannot be used in a command context";
+        return "This modifier cannot be used from a command context";
     }
 
     @Override
@@ -173,4 +167,6 @@ public class MerchantSmithingQualitySet extends DynamicItemModifier {
     public int commandArgsRequired() {
         return 0;
     }
+
+    public record MerchantEnchantingSkill(int skill) {}
 }

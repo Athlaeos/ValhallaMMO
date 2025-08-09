@@ -35,6 +35,8 @@ public class ModifierContext {
     public boolean shouldSort() { return shouldSort; }
     public boolean shouldValidate() { return shouldValidate; }
     public boolean shouldExecuteUsageMechanics() { return executeUsageMechanics; }
+    public Map<Class<?>, Object> getOtherArgs() { return otherArgs; }
+
     @SuppressWarnings("unchecked")
     public <T> T getOtherType(Class<T> clazz){
         Object o = otherArgs.get(clazz);

@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.MerchantEnchantingSkillSet;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.EnchantingItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -42,8 +43,9 @@ public class EnchantmentAdd extends DynamicItemModifier {
         if (level <= 0) context.getItem().getItem().removeEnchantment(e);
         else {
             if (scaleWithSkill){
-                int skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, true);
-                skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", context.getCrafter(), 10000, true)));
+                int skill = context.getOtherType(MerchantEnchantingSkillSet.MerchantEnchantingSkill.class) == null ?
+                        (int) (AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, true) * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", context.getCrafter(), 10000, true))) :
+                        context.getOtherType(MerchantEnchantingSkillSet.MerchantEnchantingSkill.class).skill();
                 level = EnchantingItemPropertyManager.getScaledLevel(e, skill, level);
             }
             context.getItem().enchant(e, level);
@@ -102,7 +104,7 @@ public class EnchantmentAdd extends DynamicItemModifier {
         Enchantment e = keyEnchantmentMap.get(this.enchantment);
         if (e == null) return "&cInvalid enchantment";
         String enchant = StringUtils.toPascalCase(e.getKey().getKey().replace("_", " "));
-        return "&fAdds &e" + enchant + "&f on the item if level > 0 or cancels the recipe is the item already has it.";
+        return "&fAdds &e" + enchant + "&f on the item if level > 0 or cancels the recipe is the item already has it. If the 'merchant enchanting skill' modifier was used before, it is used for enchanting skill instead of the player's";
     }
 
     @Override
@@ -111,7 +113,7 @@ public class EnchantmentAdd extends DynamicItemModifier {
         if (e == null) return "&cInvalid enchantment";
         String enchant = StringUtils.toPascalCase(e.getKey().getKey().replace("_", " "));
         return level > 0 ?
-                "&fAdds &e" + enchant + " " + StringUtils.toRoman(level) + " &for cancels if the item already has the enchantment" :
+                "&fAdds &e" + enchant + " " + StringUtils.toRoman(level) + " &for cancels if the item already has the enchantment. If the 'merchant enchanting skill' modifier was used before, it is used for enchanting skill instead of the player's" :
                 "&fRemoves &e" + enchant + " &for cancels if the item doesn't have it yet";
     }
 

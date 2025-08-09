@@ -38,8 +38,9 @@ public class EnchantmentRandomize extends DynamicItemModifier {
         for (Enchantment e : chosenEnchantments.keySet()){
             int lv = chosenEnchantments.get(e);
             if (scaleWithSkill){
-                int skill = (int) AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, true);
-                skill = (int) (skill * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", context.getCrafter(), 10000, true)));
+                int skill = context.getOtherType(MerchantEnchantingSkillSet.MerchantEnchantingSkill.class) == null ?
+                        (int) ((AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, true)) * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTI)ON_QUALITY", context.getCrafter(), 10000, true))) :
+                        context.getOtherType(MerchantEnchantingSkillSet.MerchantEnchantingSkill.class).skill();
                 lv = EnchantingItemPropertyManager.getScaledLevel(e, skill, lv);
             }
             if (context.getItem().getMeta() instanceof EnchantmentStorageMeta eMeta) eMeta.addStoredEnchant(e, lv, false);
@@ -101,12 +102,12 @@ public class EnchantmentRandomize extends DynamicItemModifier {
 
     @Override
     public String getDescription() {
-        return "&fEnchants item randomly given a level";
+        return "&fEnchants item randomly given a level. If configured to scale and the 'merchant enchanting skill' modifier was used before, it is used for enchanting skill instead of the player's";
     }
 
     @Override
     public String getActiveDescription() {
-        return "&fEnchants item randomly at level &e" + level + (includeTreasure ? " &fincluding treasure enchantments" : "");
+        return ("&fEnchants item randomly at level &e" + level + (includeTreasure ? " &fincluding treasure enchantments" : "") + (scaleWithSkill ? "If the 'merchant enchanting skill' modifier was used before, it is used for enchanting skill instead of the player's" : ""));
     }
 
     @Override

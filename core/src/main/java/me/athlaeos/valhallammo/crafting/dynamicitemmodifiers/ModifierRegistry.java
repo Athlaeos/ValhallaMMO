@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers;
 
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.MerchantEnchantingSkillSet;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.food.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.crafting_conditionals.*;
@@ -213,7 +214,7 @@ public class ModifierRegistry {
 
         register(new MerchantSmithingQualitySet("merchant_smithing_skill"));
         register(new MerchantAlchemyQualitySet("merchant_alchemy_skill"));
-        register(new MerchantEnchantRandomly("merchant_enchant_randomly"));
+        register(new MerchantEnchantingSkillSet("merchant_enchanting_skill"));
     }
 
     public static void register(DynamicItemModifier m) {
