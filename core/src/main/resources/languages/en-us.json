@@ -533,6 +533,7 @@
     "attribute_front_protection": "%icon%%value% Frontal Damage Reduction",
     "attribute_damage_absorption": "%icon%%value% Damage Absorption",
     "attribute_player_block_interaction_range": "%icon%%value% Block Reach",
+    "attribute_armor_invisibility": "%icon% Adaptive Armor",
     "stat_attribute_negative_prefix": "&c",
     "stat_attribute_positive_prefix": "&7",
 
@@ -750,6 +751,7 @@
     "potion_name_damage_absorption": "Cushioning",
     "potion_name_milk": "Milk",
     "potion_name_pacification": "Peace",
+    "potion_name_armor_invisibility": "Glass",
 
     "effect_name_heal": "%icon% Instant Health %value%",
     "effect_name_bad_omen": "%icon% Bad Omen %value% %duration%",
@@ -960,6 +962,7 @@
     "effect_name_generic_safe_fall_distance": "%icon% Fall Capacity %value% %duration%",
     "effect_name_generic_fall_damage_multiplier": "%icon% Fall Damage %value% %duration%",
     "effect_name_pacification": "%icon% Pacifying %duration%",
+    "effect_name_armor_invisibility": "%icon% Adaptive Armor %duration%",
     "stat_potion_positive_prefix": "&a",
     "stat_potion_negative_prefix": "&c",
 
@@ -1177,6 +1180,7 @@
     "stat_icon_radiant_resistance": "",
     "stat_icon_necrotic_resistance": "",
     "stat_icon_pacification": "",
+    "stat_icon_armor_invisibility": "",
 
     "translation_next_page": "&7&lNext Page",
     "translation_previous_page": "&7&lPrevious Page",

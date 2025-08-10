@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.utility.MathUtils;
+import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,9 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class PacketListener implements Listener {
 
@@ -84,9 +83,19 @@ public class PacketListener implements Listener {
     }
 
     public static void broadcastPlayerPacket(LivingEntity origin, Object packet, boolean includeOrigin){
-        for(Player p : origin.getWorld().getPlayers()){
-            if(p.getLocation().distanceSquared(origin.getLocation()) < MathUtils.pow(ValhallaMMO.getInstance().getServer().getViewDistance(), 2) * 16 && (!includeOrigin && p.equals(origin))) continue;
+        for (Player p : getPlayersInPacketRange(origin.getLocation())) {
+            if (!includeOrigin && p.equals(origin)) continue;
             sendPacket(p, packet);
         }
+    }
+
+    public static Collection<Player> getPlayersInPacketRange(Location origin){
+        Collection<Player> players = new HashSet<>();
+        if (origin.getWorld() == null) return players;
+        for(Player p : origin.getWorld().getPlayers()){
+            if((p.getLocation().distanceSquared(origin) * 16) > MathUtils.pow(ValhallaMMO.getInstance().getServer().getViewDistance(), 2) * 16) continue;
+            players.add(p);
+        }
+        return players;
     }
 }

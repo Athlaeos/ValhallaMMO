@@ -236,6 +236,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerListener(new BrewingStandListener());
         registerListener(new CauldronCraftingListener());
         registerListener(new ChatListener());
+        registerListener(new InvisibilityListener());
         registerListener(new CookingListener());
         registerListener(new CraftingTableListener());
         registerListener(new DeathListener());
