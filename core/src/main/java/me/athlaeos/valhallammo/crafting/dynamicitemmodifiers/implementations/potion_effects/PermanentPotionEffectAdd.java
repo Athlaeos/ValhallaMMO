@@ -8,53 +8,92 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.PermanentPotionEffects;
+import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
+import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTriggerRegistry;
 import me.athlaeos.valhallammo.utility.StringUtils;
-import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
 public class PermanentPotionEffectAdd extends DynamicItemModifier {
     private final String effect;
-    private int amplifier = 0;
+    private double amplifier = 0;
+    private int duration = 200;
+    private String condition = "constant";
     private final Material icon;
 
     public PermanentPotionEffectAdd(String name, String attribute, Material icon) {
         super(name);
-        this.effect = attribute;
+        this.effect = attribute.toUpperCase(Locale.US);
         this.icon = icon;
     }
 
     @Override
     public void processItem(ModifierContext context) {
-        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectMappings.getEffect(effect).getPotionEffectType(), null);
-        if (potionEffectType == null) return;
-        List<PotionEffect> effects = PermanentPotionEffects.getPermanentPotionEffects(context.getItem().getMeta());
-        effects.add(new PotionEffect(potionEffectType, 0, amplifier));
+        PotionEffectWrapper baseWrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(this.effect), null);
+        if (baseWrapper == null) return;
+        baseWrapper.setAmplifier(this.amplifier);
+        baseWrapper.setDuration(this.duration);
+        Map<String, List<PotionEffectWrapper>> effects = PermanentPotionEffects.getPermanentPotionEffects(context.getItem().getMeta());
+        List<PotionEffectWrapper> existingEffects = effects.getOrDefault(this.condition, new ArrayList<>());
+        existingEffects.add(baseWrapper);
+        effects.put(this.condition, existingEffects);
         PermanentPotionEffects.setPermanentPotionEffects(context.getItem().getMeta(), effects);
     }
 
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
-        if (button == 12) amplifier = amplifier + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 3 : 1));
+        if (button == 11) duration = Math.max(0, duration + ((e.isShiftClick() ? 30 : 1) * (e.isLeftClick() ? 20 : -20)));
+        else if (button == 12) amplifier = amplifier + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.25 : 0.1));
+        else if (button == 13) {
+            List<String> conditions = new ArrayList<>(EffectTriggerRegistry.getRegisteredTriggers().keySet());
+
+            int currentCondition = conditions.indexOf(condition);
+            if (e.isLeftClick()) {
+                if (currentCondition + 1 >= conditions.size()) currentCondition = 0;
+                else currentCondition++;
+            } else {
+                if (currentCondition - 1 < 0) currentCondition = conditions.size() - 1;
+                else currentCondition--;
+            }
+            condition = conditions.get(currentCondition);
+        }
     }
 
     @Override
     public Map<Integer, ItemStack> getButtons() {
-        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectMappings.getEffect(effect).getPotionEffectType(), null);
-        if (potionEffectType == null) return new HashMap<>();
+        PotionEffectWrapper wrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(effect), null);
+        if (wrapper == null) return new HashMap<>();
+        String effect = wrapper.isVanilla() ? (this.effect.toLowerCase(java.util.Locale.US).replace("_", " ") + " " +StringUtils.toRoman(Math.max(0, (int) amplifier) + 1) + " " + StringUtils.toTimeStamp(duration, 20)) :
+                wrapper.getFormattedEffectName(amplifier > 0, amplifier, duration);
         return new Pair<>(12,
                 new ItemBuilder(Material.PAPER)
                         .name("&dHow strong should this effect be?")
-                        .lore("&f" + effect.toLowerCase(java.util.Locale.US).replace("_", " ") + " " + StringUtils.toRoman(Math.max(0, amplifier) + 1),
-                                "&6Click to add/subtract 1",
-                                "&6Shift-Click to add/subtract 3")
-                        .get()).map(Set.of());
+                        .lore("&f" + effect,
+                                "&fTrigger type: &e" + condition.replace("_", " "),
+                                "&6Click to add/subtract 0.01",
+                                "&6Shift-Click to add/subtract 0.25")
+                        .get()).map(Set.of(
+                new Pair<>(11,
+                        new ItemBuilder(Material.PAPER)
+                                .name("&dHow long should this effect last?")
+                                .lore("&f" + effect,
+                                        "&fTrigger type: &e" + condition.replace("_", " "),
+                                        "&6Click to add/subtract 1 second",
+                                        "&6Shift-Click to add/subtract 30 seconds")
+                                .get()),
+                new Pair<>(13,
+                        new ItemBuilder(Material.PAPER)
+                                .name("&dWhen should this effect trigger?")
+                                .lore("&f" + effect,
+                                        "&fTrigger type: &e" + condition.replace("_", " "),
+                                        "&6Click to cycle")
+                                .get())
+        ));
     }
 
     @Override
@@ -64,49 +103,67 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
 
     @Override
     public String getDisplayName() {
-        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectMappings.getEffect(effect).getPotionEffectType(), null);
-        if (potionEffectType == null) return "&cThis effect doesn't exist!";
+        PotionEffectWrapper wrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(this.effect), null);
+        if (wrapper == null) return "&cThis effect doesn't exist!";
         return "&fAdd Permanent Potion Effect: " + effect;
     }
 
     @Override
     public String getDescription() {
-        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectMappings.getEffect(effect).getPotionEffectType(), null);
-        if (potionEffectType == null) return "&8";
-        return "&fAdds " + effect + " as permanent effect to the item. ";
+        PotionEffectWrapper wrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(this.effect), null);
+        if (wrapper == null) return "&8";
+        return "&fAdds " + effect + " to the item, triggering under certain circumstances. ";
     }
 
     @Override
     public String getActiveDescription() {
-        PotionEffectType potionEffectType = Catch.catchOrElse(() -> PotionEffectMappings.getEffect(effect).getPotionEffectType(), null);
-        if (potionEffectType == null) return "&8";
-        return "&fAdds " + effect + " " + StringUtils.toRoman(Math.max(0, amplifier) + 1) + " as permanent effect to the item. ";
+        PotionEffectWrapper wrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(this.effect), null);
+        if (wrapper == null) return "&8";
+        String effect = wrapper.isVanilla() ? (this.effect.toLowerCase(java.util.Locale.US).replace("_", " ") + " " + StringUtils.toRoman(Math.max(0, (int) amplifier) + 1) + " " + StringUtils.toTimeStamp(duration, 20)) :
+                wrapper.getFormattedEffectName(amplifier > 0, amplifier, duration);
+
+        return "&fAdds " + effect + " to the item, with trigger type " + condition.replace("_", " ");
     }
 
     @Override
     public Collection<String> getCategories() {
-        return Set.of(ModifierCategoryRegistry.VANILLA_POTION_EFFECTS.id());
+        PotionEffectWrapper wrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(this.effect), null);
+        if (wrapper == null) return new HashSet<>();
+        return Set.of(wrapper.isVanilla() ? ModifierCategoryRegistry.VANILLA_POTION_EFFECTS.id() : ModifierCategoryRegistry.CUSTOM_POTION_EFFECTS.id());
     }
 
-    public void setAmplifier(int amplifier) {
+    public void setAmplifier(double amplifier) {
         this.amplifier = amplifier;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     @Override
     public DynamicItemModifier copy() {
         PermanentPotionEffectAdd m = new PermanentPotionEffectAdd(getName(), effect, icon);
         m.setAmplifier(this.amplifier);
+        m.setDuration(this.duration);
+        m.setCondition(this.condition);
         m.setPriority(this.getPriority());
         return m;
     }
 
     @Override
     public String parseCommand(CommandSender executor, String[] args) {
-        if (args.length != 1) return "One argument expected: an amplifier";
+        if (args.length != 3) return "Three arguments expected: an amplifier, a duration, and a trigger condition";
         try {
-            amplifier = Integer.parseInt(args[0]);
+            amplifier = Double.parseDouble(args[0]);
+            duration = Integer.parseInt(args[1]);
+            condition = args[2];
+            if (EffectTriggerRegistry.getTrigger(condition) == null) return "Invalid trigger condition given";
         } catch (IllegalArgumentException ignored){
-            return "One argument expected: an amplifier. It was not a number";
+            return "Three arguments expected: an amplifier, a duration, and a trigger condition. Amplifier or duration were not a number";
         }
         return null;
     }
@@ -114,11 +171,13 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
     @Override
     public List<String> commandSuggestions(CommandSender executor, int currentArg) {
         if (currentArg == 0) return List.of("<amplifier>");
+        if (currentArg == 1) return List.of("<duration_in_ticks>");
+        if (currentArg == 2) return new ArrayList<>(EffectTriggerRegistry.getRegisteredTriggers().keySet());
         return Command.noSubcommandArgs();
     }
 
     @Override
     public int commandArgsRequired() {
-        return 1;
+        return 3;
     }
 }

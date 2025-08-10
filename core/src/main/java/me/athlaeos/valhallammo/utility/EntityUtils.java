@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTriggerRegistry;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -22,7 +23,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
@@ -279,11 +279,9 @@ public class EntityUtils {
     public static EntityProperties updateProperties(EntityProperties properties, LivingEntity e, boolean equipment, boolean hands, boolean getPotionEffects){
         EntityEquipment eEquipment = e.getEquipment();
         if (eEquipment != null) {
-            properties.getPermanentPotionEffects().clear();
-            List<List<PotionEffect>> permanentEffects = new ArrayList<>();
             if (e instanceof Player p) {
                 PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
-                permanentEffects.add(PermanentPotionEffects.fromString(String.join(";", profile.getPermanentPotionEffects())));
+                properties.setPowerPotionEffects(PermanentPotionEffects.fromString(String.join(";", profile.getPermanentPotionEffects())));
             }
             if (equipment){
                 properties.getCombinedEnchantments().clear();
@@ -301,32 +299,32 @@ public class EntityUtils {
                 if (helmet != null) {
                     properties.addCombinedEnchantments(helmet);
                     properties.setHelmetAttributes(ItemAttributesRegistry.getStats(helmet.getMeta(), false));
-                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(helmet.getMeta()));
+                    properties.setHelmetPotionEffects(PermanentPotionEffects.getPermanentPotionEffects(helmet.getMeta()));
                 }
                 ItemBuilder chestPlate = properties.getChestplate();
                 if (chestPlate != null) {
                     properties.addCombinedEnchantments(chestPlate);
                     properties.setChestPlateAttributes(ItemAttributesRegistry.getStats(chestPlate.getMeta(), false));
-                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(chestPlate.getMeta()));
+                    properties.setChestplatePotionEffects(PermanentPotionEffects.getPermanentPotionEffects(chestPlate.getMeta()));
                 }
                 ItemBuilder leggings = properties.getLeggings();
                 if (leggings != null) {
                     properties.addCombinedEnchantments(leggings);
                     properties.setLeggingsAttributes(ItemAttributesRegistry.getStats(leggings.getMeta(), false));
-                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(leggings.getMeta()));
+                    properties.setLeggingsPotionEffects(PermanentPotionEffects.getPermanentPotionEffects(leggings.getMeta()));
                 }
                 ItemBuilder boots = properties.getBoots();
                 if (boots != null) {
                     properties.addCombinedEnchantments(boots);
                     properties.setBootsAttributes(ItemAttributesRegistry.getStats(boots.getMeta(), false));
-                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(boots.getMeta()));
+                    properties.setBootsPotionEffects(PermanentPotionEffects.getPermanentPotionEffects(boots.getMeta()));
                 }
                 for (BiFetcher<List<ItemStack>, LivingEntity> fetcher : otherEquipmentFetchers){
                     for (ItemStack otherEquipment : fetcher.get(e)) {
                         ItemBuilder builder = new ItemBuilder(otherEquipment);
                         properties.getMiscEquipment().add(builder);
                         properties.getMiscEquipmentAttributes().put(builder, ItemAttributesRegistry.getStats(builder.getMeta(), false));
-                        permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(builder.getMeta()));
+                        properties.getMiscEquipmentPotionEffects().put(builder, PermanentPotionEffects.getPermanentPotionEffects(builder.getMeta()));
                     }
                 }
             }
@@ -338,24 +336,29 @@ public class EntityUtils {
                 properties.addCombinedEnchantments(mainHand);
                 if (mainHand != null && EquipmentClass.isHandHeld(mainHand.getMeta()) && EquipmentClass.getMatchingClass(mainHand.getMeta()) != EquipmentClass.TRINKET) {
                     properties.setMainHandAttributes(ItemAttributesRegistry.getStats(mainHand.getMeta(), false));
-                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(mainHand.getMeta()));
+                    properties.setMainHandPotionEffects(PermanentPotionEffects.getPermanentPotionEffects(mainHand.getMeta()));
                 }
 
                 ItemBuilder offHand = properties.getOffHand();
                 properties.addCombinedEnchantments(offHand);
                 if (offHand != null && EquipmentClass.isHandHeld(offHand.getMeta()) && EquipmentClass.getMatchingClass(offHand.getMeta()) != EquipmentClass.TRINKET) {
                     properties.setOffHandAttributes(ItemAttributesRegistry.getStats(offHand.getMeta(), false));
-                    permanentEffects.add(PermanentPotionEffects.getPermanentPotionEffects(offHand.getMeta()));
+                    properties.setOffHandPotionEffects(PermanentPotionEffects.getPermanentPotionEffects(offHand.getMeta()));
                 }
             }
-            List<PotionEffect> combinedPermanentEffects = PermanentPotionEffects.getCombinedEffects(permanentEffects);
-            if (!combinedPermanentEffects.isEmpty()) PermanentPotionEffects.setHasPermanentEffects(e);
-            else PermanentPotionEffects.setHasNoPermanentEffects(e);
-            properties.getPermanentPotionEffects().addAll(combinedPermanentEffects);
         }
         if (getPotionEffects) {
             properties.getActivePotionEffects().clear();
             properties.getActivePotionEffects().putAll(PotionEffectRegistry.getActiveEffects(e));
+        }
+        if (equipment || hands || getPotionEffects) {
+            properties.computePermanentEffects();
+            EffectTriggerRegistry.setEntityTriggerTypesAffected(e, properties.getPermanentPotionEffects().keySet());
+            if (properties.getPermanentPotionEffects().isEmpty()) {
+                PermanentPotionEffects.setHasNoPermanentEffects(e);
+            } else {
+                PermanentPotionEffects.setHasPermanentEffects(e);
+            }
         }
         return properties;
     }

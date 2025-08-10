@@ -11,7 +11,6 @@ import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
@@ -42,9 +41,7 @@ public abstract class PotionEffectWrapper {
 
     public PotionEffectWrapper addModifier(Material icon, double smallIncrement, double bigIncrement){
         ModifierRegistry.register(new PotionEffectAdd("potion_effect_add_" + newToOldEffectMappings.getOrDefault(effect, effect).toLowerCase(java.util.Locale.US), effect, smallIncrement, bigIncrement, icon));
-        if (isVanilla) {
-            ModifierRegistry.register(new PermanentPotionEffectAdd("permanent_effect_add_" + newToOldEffectMappings.getOrDefault(effect, effect).toLowerCase(java.util.Locale.US), effect, icon));
-        }
+        ModifierRegistry.register(new PermanentPotionEffectAdd("permanent_effect_add_" + newToOldEffectMappings.getOrDefault(effect, effect).toLowerCase(java.util.Locale.US), effect, icon));
         return this;
     }
 

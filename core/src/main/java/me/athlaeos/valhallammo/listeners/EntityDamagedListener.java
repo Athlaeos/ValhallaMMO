@@ -77,6 +77,11 @@ public class EntityDamagedListener implements Listener {
 
     private static final Map<UUID, Runnable> damageProcesses = new HashMap<>();
 
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onDamageFirst(EntityDamageEvent e){
+        setCustomDamageCause(e.getEntity().getUniqueId(), e.getCause().toString());
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDamageTaken(EntityDamageEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !customDamageEnabled) return;

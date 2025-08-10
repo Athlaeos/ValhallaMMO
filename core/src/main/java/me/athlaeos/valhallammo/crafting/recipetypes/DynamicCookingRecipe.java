@@ -92,7 +92,7 @@ public class DynamicCookingRecipe implements ValhallaRecipe, ValhallaKeyedRecipe
         if (input == null || ItemUtils.isEmpty(input.getItem()) ||
                 ItemUtils.isEmpty(result)) return null;
         if (input.getOption() == null) input.setOption(new MaterialChoice());
-        ItemStack i = result.clone();
+        ItemStack i = tinker ? input.getItem() : result.clone();
         ResultChangingModifier changer = (ResultChangingModifier) modifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
         if (changer != null) {
             i = Utils.thisorDefault(changer.getNewResult(ModifierContext.builder(new ItemBuilder(i)).get()), i);

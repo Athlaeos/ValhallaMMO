@@ -4,19 +4,22 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
+import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
+import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
+import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTrigger;
+import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTriggerRegistry;
 import me.athlaeos.valhallammo.utility.StringUtils;
-import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class PermanentPotionEffects {
     private static final NamespacedKey PERMANENT_EFFECTS = new NamespacedKey(ValhallaMMO.getInstance(), "permanent_potion_effects");
@@ -28,63 +31,117 @@ public class PermanentPotionEffects {
 
     private static final Collection<UUID> entitiesWithPermanentEffects = new HashSet<>();
 
+    private static final Map<String, Integer> triggerDelay = new HashMap<>();
     public static void initializeRunnable(){
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+            Map<String, Integer> triggersToDelay = new HashMap<>();
             for (UUID uuid : new HashSet<>(entitiesWithPermanentEffects)){
                 Entity e = ValhallaMMO.getInstance().getServer().getEntity(uuid);
                 if (e == null || !e.isValid() || e.isDead() || !(e instanceof LivingEntity l) || (e instanceof Player p && !p.isOnline())) {
                     entitiesWithPermanentEffects.remove(uuid);
+                    if (e instanceof LivingEntity l) EffectTriggerRegistry.setEntityTriggerTypesAffected(l, new ArrayList<>());
                     continue;
                 }
                 EntityProperties properties = EntityCache.getAndCacheProperties(l);
-                List<PotionEffect> effects = properties.getPermanentPotionEffects();
-                if (effects.isEmpty()){
+                Map<String, List<PotionEffectWrapper>> permanentEffects = properties.getPermanentPotionEffects();
+                if (permanentEffects.isEmpty()){
                     entitiesWithPermanentEffects.remove(uuid);
                     continue;
                 }
-                for (PotionEffect effect : effects) l.addPotionEffect(effect);
+                for (String triggerID : permanentEffects.keySet()){
+                    EffectTrigger trigger = EffectTriggerRegistry.getTrigger(triggerID);
+                    if (trigger instanceof EffectTrigger.ConstantTrigger constantTrigger) {
+                        triggersToDelay.put(triggerID, constantTrigger.tickDelay());
+                        if (triggerDelay.getOrDefault(triggerID, 0) > 0) continue;
+                        if (!constantTrigger.shouldTrigger(l)) continue;
+                        for (PotionEffectWrapper effect : permanentEffects.getOrDefault(triggerID, new ArrayList<>())){
+                            if (effect.isVanilla()) l.addPotionEffect(new PotionEffect(effect.getVanillaEffect(), (int) effect.getDuration(), (int) effect.getAmplifier(), true, false, false));
+                            else {
+                                CustomPotionEffect customEffect = new CustomPotionEffect(effect, (int) effect.getDuration(), effect.getAmplifier());
+                                PotionEffectRegistry.addEffect(l, null, customEffect, false, 1, EntityPotionEffectEvent.Cause.PLUGIN);
+                            }
+                        }
+                    }
+                }
             }
-        }, 80L, 80L);
+            for (String trigger : triggersToDelay.keySet()){
+                int existingDelay = triggerDelay.getOrDefault(trigger, 0);
+                if (existingDelay > 0) triggerDelay.put(trigger, existingDelay - 10);
+                else triggerDelay.put(trigger, existingDelay + triggersToDelay.get(trigger));
+            }
+        }, 10L, 10L);
     }
 
-    public static List<PotionEffect> fromString(String str){
-        List<PotionEffect> effects = new ArrayList<>();
+    public static Map<String, List<PotionEffectWrapper>> fromString(String str){
+        Map<String, List<PotionEffectWrapper>> effects = new HashMap<>();
         if (StringUtils.isEmpty(str)) return effects;
         String[] effectStrings = str.split(";");
         for (String s : effectStrings){
             String[] args = s.split(":");
             if (args.length <= 1) continue;
-            PotionEffectType type = PotionEffectMappings.getPotionEffectType(args[0]);
-            if (type == null) continue;
-            int amplifier = Catch.catchOrElse(() -> Integer.parseInt(args[1]), -1);
+            double amplifier = Catch.catchOrElse(() -> Double.parseDouble(args[1]), -1D);
             if (amplifier < 0) continue;
-            effects.add(new PotionEffect(type, type == PotionEffectType.NIGHT_VISION ? 300 : 100, amplifier, false, false, false));
+            PotionEffectWrapper wrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(args[0]), null);
+            if (wrapper == null) continue;
+            int duration = args.length > 2 ? Catch.catchOrElse(() -> Integer.parseInt(args[2]), 0) : (args[0].equals("NIGHT_VISION") ? 300 : 100);
+            if (duration == 0) continue;
+            wrapper.setDuration(duration);
+            wrapper.setAmplifier(amplifier);
+
+            String trigger = args.length > 3 ? args[3] : "constant";
+            List<PotionEffectWrapper> existingWrappers = effects.getOrDefault(trigger, new ArrayList<>());
+            existingWrappers.add(wrapper);
+            effects.put(trigger, existingWrappers);
         }
         return effects;
     }
 
-    public static List<PotionEffect> getPermanentPotionEffects(ItemMeta meta){
+    public static Map<String, List<PotionEffectWrapper>> getPermanentPotionEffects(ItemMeta meta){
         return fromString(meta.getPersistentDataContainer().get(PERMANENT_EFFECTS, PersistentDataType.STRING));
     }
 
-    public static void setPermanentPotionEffects(ItemMeta meta, List<PotionEffect> effects){
-        meta.getPersistentDataContainer().set(PERMANENT_EFFECTS, PersistentDataType.STRING, effects.stream().map(p ->
-                p.getType().getName() + ":" + p.getAmplifier()).collect(Collectors.joining(";"))
-        );
-    }
-
-    public static List<PotionEffect> getCombinedEffects(List<List<PotionEffect>> effects){
-        Map<PotionEffectType, Integer> totalEffects = new HashMap<>();
-        for (List<PotionEffect> effectList : effects){
-            for (PotionEffect effect : effectList){
-                totalEffects.put(effect.getType(), additionType.get(totalEffects.getOrDefault(effect.getType(), -1), effect.getAmplifier() + 1) - 1);
+    public static void setPermanentPotionEffects(ItemMeta meta, Map<String, List<PotionEffectWrapper>> effects){
+        List<String> dataStrings = new ArrayList<>();
+        for (String trigger : effects.keySet()){
+            for (PotionEffectWrapper wrapper : effects.getOrDefault(trigger, new ArrayList<>())) {
+                dataStrings.add(wrapper.getEffect() + ":" + wrapper.getAmplifier() + ":" + wrapper.getDuration() + ":" + trigger);
             }
         }
-        List<PotionEffect> finalEffects = new ArrayList<>();
-        for (PotionEffectType type : totalEffects.keySet()){
-            finalEffects.add(
-                    new PotionEffect(type, type == PotionEffectType.NIGHT_VISION ? 300 : 100, totalEffects.get(type), false, false, false)
-            );
+        meta.getPersistentDataContainer().set(PERMANENT_EFFECTS, PersistentDataType.STRING, String.join(";", dataStrings));
+    }
+
+    public static Map<String, List<PotionEffectWrapper>> getCombinedEffects(List<Map<String, List<PotionEffectWrapper>>> effects){
+        Map<String, Map<String, Double>> totalEffectAmplifiers = new HashMap<>();
+        Map<String, Map<String, Integer>> totalEffectDurations = new HashMap<>();
+        for (Map<String, List<PotionEffectWrapper>> effectMap : effects){
+            for (String target : effectMap.keySet()){
+                List<PotionEffectWrapper> targetEffects = effectMap.getOrDefault(target, new ArrayList<>());
+                for (PotionEffectWrapper effect : targetEffects){
+                    Map<String, Double> combinedAmplifiersOfTarget = totalEffectAmplifiers.getOrDefault(target, new HashMap<>());
+                    if (effect.isVanilla()) combinedAmplifiersOfTarget.put(effect.getEffect(), additionType.get(combinedAmplifiersOfTarget.getOrDefault(effect.getEffect(), -1D), effect.getAmplifier() + 1) - 1);
+                    else combinedAmplifiersOfTarget.put(effect.getEffect(), additionType.get(combinedAmplifiersOfTarget.getOrDefault(effect.getEffect(), 0D), effect.getAmplifier()));
+                    totalEffectAmplifiers.put(target, combinedAmplifiersOfTarget);
+
+                    Map<String, Integer> combinedDurationsOfTarget = totalEffectDurations.getOrDefault(target, new HashMap<>());
+                    combinedDurationsOfTarget.put(effect.getEffect(), (int) additionType.get(combinedDurationsOfTarget.getOrDefault(effect.getEffect(), 0), effect.getDuration()));
+                    totalEffectDurations.put(target, combinedDurationsOfTarget);
+                }
+            }
+        }
+        Map<String, List<PotionEffectWrapper>> finalEffects = new HashMap<>();
+        for (String trigger : totalEffectAmplifiers.keySet()){
+            for (String type : totalEffectAmplifiers.getOrDefault(trigger, new HashMap<>()).keySet()){
+                PotionEffectWrapper effect = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(type), null);
+                if (effect == null) continue;
+                double amplifier = totalEffectAmplifiers.getOrDefault(trigger, new HashMap<>()).getOrDefault(type, 0D);
+                int duration = totalEffectDurations.getOrDefault(trigger, new HashMap<>()).getOrDefault(type, 0);
+                if (duration == 0 || (!effect.isVanilla() && amplifier > -0.00001 && amplifier < 0.00001)) continue; // amplifier is practically 0
+                effect.setAmplifier(amplifier);
+                effect.setDuration(duration);
+                List<PotionEffectWrapper> otherEffects = finalEffects.getOrDefault(trigger, new ArrayList<>());
+                otherEffects.add(effect);
+                finalEffects.put(trigger, otherEffects);
+            }
         }
         return finalEffects;
     }
@@ -103,19 +160,19 @@ public class PermanentPotionEffects {
 
     private enum AdditionType{
         HIGHEST(Math::max),
-        ADD(Integer::sum);
-        Comparator compare;
+        ADD(Double::sum);
+        final Comparator compare;
 
         AdditionType(Comparator compare){
             this.compare = compare;
         }
 
-        private int get(int i1, int i2){
+        private double get(double i1, double i2){
             return compare.get(i1, i2);
         }
     }
 
     private interface Comparator{
-        int get(int i1, int i2);
+        double get(double i1, double i2);
     }
 }
