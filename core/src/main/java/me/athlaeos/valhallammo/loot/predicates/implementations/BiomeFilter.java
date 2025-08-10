@@ -2,11 +2,11 @@ package me.athlaeos.valhallammo.loot.predicates.implementations;
 
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -18,12 +18,17 @@ import java.util.*;
 public class BiomeFilter extends LootPredicate {
     private final Material icon;
     private final String name;
-    private final Collection<Biome> biomes;
+    private final Collection<NamespacedKey> biomes;
 
     public BiomeFilter(Material icon, String name, Biome... biomes){
         this.icon = icon;
         this.name = name;
-        this.biomes = Set.of(biomes);
+        this.biomes = new HashSet<>(Arrays.stream(biomes).map(Biome::getKey).toList());
+    }
+    public BiomeFilter(Material icon, String name, NamespacedKey... biomes){
+        this.icon = icon;
+        this.name = name;
+        this.biomes = new HashSet<>(Set.of(biomes));
     }
 
     @Override
@@ -53,7 +58,7 @@ public class BiomeFilter extends LootPredicate {
 
     @Override
     public LootPredicate createNew() {
-        return new BiomeFilter(icon, name, biomes.toArray(new Biome[0]));
+        return new BiomeFilter(icon, name, biomes.toArray(new NamespacedKey[0]));
     }
 
     @Override
@@ -76,7 +81,7 @@ public class BiomeFilter extends LootPredicate {
     @Override
     public boolean test(LootContext context) {
         Block b = context.getLocation().getBlock();
-        return biomes.contains(b.getBiome()) != inverted;
+        return biomes.contains(b.getBiome().getKey()) != inverted;
     }
 
 }

@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTriggerRegistry;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -22,7 +23,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
@@ -354,6 +354,7 @@ public class EntityUtils {
         }
         if (equipment || hands || getPotionEffects) {
             properties.computePermanentEffects();
+            EffectTriggerRegistry.setEntityTriggerTypesAffected(e, properties.getPermanentPotionEffects().keySet());
             if (properties.getPermanentPotionEffects().isEmpty()) {
                 PermanentPotionEffects.setHasNoPermanentEffects(e);
             } else {
