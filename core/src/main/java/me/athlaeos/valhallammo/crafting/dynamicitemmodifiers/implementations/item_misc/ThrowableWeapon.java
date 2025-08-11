@@ -110,7 +110,7 @@ public class ThrowableWeapon extends DynamicItemModifier {
                                         "&fDetermines what fraction of the weapon's",
                                         "&fbase damage should be converted as thrown",
                                         "&fdamage. A 9 damage axe for example will do",
-                                        "&f" + StatFormat.FLOAT_P1.format(9 * damageMultiplier) + " damage when thrown",
+                                        "&f" + StatFormat.FLOAT_P2.format(9 * damageMultiplier) + " damage when thrown",
                                         "&6Click to increase/decrease by 1%",
                                         "&6Shift-Click to increase/decrease by 10%")
                                 .get()),

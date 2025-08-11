@@ -160,7 +160,7 @@ public class CustomDurabilityManager {
         Material baseMaterial = item.getItem().getType();
         if (baseMaterial.getMaxDurability() > 0 && item.getMeta() instanceof Damageable d){
             AttributeWrapper durabilityWrapper = ItemAttributesRegistry.getAttribute(item.getMeta(), "CUSTOM_MAX_DURABILITY", true);
-            int defaultDurability = durabilityWrapper == null ? baseMaterial.getMaxDurability() : (int) durabilityWrapper.getValue();
+            int defaultDurability = durabilityWrapper == null ? getDurability(item, true) : (int) durabilityWrapper.getValue();
             int minimum = (int) Math.round(Math.max(1, minimumFraction * defaultDurability));
             int newMaxDurability = Math.max(minimum, (int) Math.round(scaling.evaluate(scaling.getExpression().replace("%rating%", String.valueOf(quality)), defaultDurability)));
             double fraction;

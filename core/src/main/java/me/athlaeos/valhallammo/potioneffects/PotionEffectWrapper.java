@@ -41,7 +41,7 @@ public abstract class PotionEffectWrapper {
 
     public PotionEffectWrapper addModifier(Material icon, double smallIncrement, double bigIncrement){
         ModifierRegistry.register(new PotionEffectAdd("potion_effect_add_" + newToOldEffectMappings.getOrDefault(effect, effect).toLowerCase(java.util.Locale.US), effect, smallIncrement, bigIncrement, icon));
-        ModifierRegistry.register(new PermanentPotionEffectAdd("permanent_effect_add_" + newToOldEffectMappings.getOrDefault(effect, effect).toLowerCase(java.util.Locale.US), effect, icon));
+        ModifierRegistry.register(new PermanentPotionEffectAdd("permanent_effect_add_" + newToOldEffectMappings.getOrDefault(effect, effect).toLowerCase(java.util.Locale.US), effect, icon, isVanilla ? 1 : smallIncrement, isVanilla ? 3 : bigIncrement));
         return this;
     }
 
@@ -94,7 +94,7 @@ public abstract class PotionEffectWrapper {
 
     public String getFormattedEffectName(boolean positive, double value, long duration){
         return getEffectName().replace("%icon%", getEffectIcon() + prefix(positive))
-                .replace("%value%", format == null ? "" :  format.format(value + (isVanilla ? 1 : 0)))
+                .replace("%value%", getFormat() == null ? "" :  getFormat().format(value + (isVanilla ? 1 : 0)))
                 .replace("%duration%", String.format("(%s)", StringUtils.toTimeStamp(duration, 20)))
                 .trim();
     }

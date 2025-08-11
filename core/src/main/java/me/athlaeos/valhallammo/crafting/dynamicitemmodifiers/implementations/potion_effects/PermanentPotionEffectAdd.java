@@ -25,11 +25,15 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
     private int duration = 200;
     private String condition = "constant";
     private final Material icon;
+    private final double smallStep;
+    private final double bigStep;
 
-    public PermanentPotionEffectAdd(String name, String attribute, Material icon) {
+    public PermanentPotionEffectAdd(String name, String attribute, Material icon, double smallStep, double bigStep) {
         super(name);
         this.effect = attribute.toUpperCase(Locale.US);
         this.icon = icon;
+        this.smallStep = smallStep;
+        this.bigStep = bigStep;
     }
 
     @Override
@@ -48,10 +52,10 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
         if (button == 11) duration = Math.max(0, duration + ((e.isShiftClick() ? 30 : 1) * (e.isLeftClick() ? 20 : -20)));
-        else if (button == 12) amplifier = amplifier + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.25 : 0.1));
+        else if (button == 12) amplifier = amplifier + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? bigStep : smallStep));
         else if (button == 13) {
             List<String> conditions = new ArrayList<>(EffectTriggerRegistry.getRegisteredTriggers().keySet());
-
+            conditions.sort(Comparator.comparing(s -> s));
             int currentCondition = conditions.indexOf(condition);
             if (e.isLeftClick()) {
                 if (currentCondition + 1 >= conditions.size()) currentCondition = 0;
@@ -69,7 +73,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
         PotionEffectWrapper wrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(effect), null);
         if (wrapper == null) return new HashMap<>();
         String effect = wrapper.isVanilla() ? (this.effect.toLowerCase(java.util.Locale.US).replace("_", " ") + " " +StringUtils.toRoman(Math.max(0, (int) amplifier) + 1) + " " + StringUtils.toTimeStamp(duration, 20)) :
-                wrapper.getFormattedEffectName(amplifier > 0, amplifier, duration);
+                wrapper.getFormattedEffectName(amplifier >= 0, amplifier, duration);
         return new Pair<>(12,
                 new ItemBuilder(Material.PAPER)
                         .name("&dHow strong should this effect be?")
@@ -105,14 +109,14 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
     public String getDisplayName() {
         PotionEffectWrapper wrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(this.effect), null);
         if (wrapper == null) return "&cThis effect doesn't exist!";
-        return "&fAdd Permanent Potion Effect: " + effect;
+        return "&fAdd Permanent Potion Effect: &e" + effect;
     }
 
     @Override
     public String getDescription() {
         PotionEffectWrapper wrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(this.effect), null);
         if (wrapper == null) return "&8";
-        return "&fAdds " + effect + " to the item, triggering under certain circumstances. ";
+        return "&fAdds &e" + effect + " &fto the item, triggering under certain circumstances. ";
     }
 
     @Override
@@ -122,7 +126,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
         String effect = wrapper.isVanilla() ? (this.effect.toLowerCase(java.util.Locale.US).replace("_", " ") + " " + StringUtils.toRoman(Math.max(0, (int) amplifier) + 1) + " " + StringUtils.toTimeStamp(duration, 20)) :
                 wrapper.getFormattedEffectName(amplifier > 0, amplifier, duration);
 
-        return "&fAdds " + effect + " to the item, with trigger type " + condition.replace("_", " ");
+        return "&fAdds &e" + effect + "&f to the item, with trigger type &e" + condition.replace("_", " ");
     }
 
     @Override
@@ -146,7 +150,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
 
     @Override
     public DynamicItemModifier copy() {
-        PermanentPotionEffectAdd m = new PermanentPotionEffectAdd(getName(), effect, icon);
+        PermanentPotionEffectAdd m = new PermanentPotionEffectAdd(getName(), effect, icon, this.smallStep, this.bigStep);
         m.setAmplifier(this.amplifier);
         m.setDuration(this.duration);
         m.setCondition(this.condition);

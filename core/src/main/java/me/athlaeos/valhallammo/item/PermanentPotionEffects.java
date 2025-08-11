@@ -4,7 +4,6 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
-import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTrigger;
@@ -14,10 +13,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.potion.PotionEffect;
 
 import java.util.*;
 
@@ -54,13 +51,7 @@ public class PermanentPotionEffects {
                         triggersToDelay.put(triggerID, constantTrigger.tickDelay());
                         if (triggerDelay.getOrDefault(triggerID, 0) > 0) continue;
                         if (!constantTrigger.shouldTrigger(l)) continue;
-                        for (PotionEffectWrapper effect : permanentEffects.getOrDefault(triggerID, new ArrayList<>())){
-                            if (effect.isVanilla()) l.addPotionEffect(new PotionEffect(effect.getVanillaEffect(), (int) effect.getDuration(), (int) effect.getAmplifier(), true, false, false));
-                            else {
-                                CustomPotionEffect customEffect = new CustomPotionEffect(effect, (int) effect.getDuration(), effect.getAmplifier());
-                                PotionEffectRegistry.addEffect(l, null, customEffect, false, 1, EntityPotionEffectEvent.Cause.PLUGIN);
-                            }
-                        }
+                        trigger.trigger(l, permanentEffects.getOrDefault(triggerID, new ArrayList<>()));
                     }
                 }
             }

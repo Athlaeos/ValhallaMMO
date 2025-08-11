@@ -17,9 +17,9 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public class AlchemyProfile extends Profile {
     {
-        floatStat("genericBrewingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
-        floatStat("buffBrewingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
-        floatStat("debuffBrewingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("genericBrewingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).perkReward().create());
+        floatStat("buffBrewingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).perkReward().create());
+        floatStat("debuffBrewingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).perkReward().create());
 
         floatStat("genericBrewingSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("buffBrewingSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());

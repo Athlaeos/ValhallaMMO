@@ -197,9 +197,9 @@ public class RecipeOverviewMenu extends Menu {
         List<ItemStack> recipes = cachedButtons.get(currentCategory.getId());
         if (recipes == null) {
             recipes = currentCategory.getRecipeButtons();
+            if (!this.currentCategory.equals(DISABLED)) recipes.add(createNewButton);
             cachedButtons.put(currentCategory.getId(), recipes);
         }
-        if (!this.currentCategory.equals(DISABLED)) recipes.add(createNewButton);
         callback.onItemsBuilt(recipes);
     }
 
