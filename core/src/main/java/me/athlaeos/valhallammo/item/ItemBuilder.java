@@ -24,7 +24,7 @@ public class ItemBuilder {
     private ItemMeta meta;
     private String name;
     private List<String> lore;
-    private boolean translate = true;
+    private boolean translate = false;
     private Collection<MiningSpeed.EmbeddedTool> embeddedTools;
 
     public ItemBuilder copy(){

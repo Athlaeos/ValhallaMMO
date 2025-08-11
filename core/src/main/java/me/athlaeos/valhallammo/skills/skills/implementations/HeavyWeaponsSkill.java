@@ -6,12 +6,9 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.CombatType;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
-import me.athlaeos.valhallammo.item.WeightClass;
+import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.event.EntityCriticallyHitEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
-import me.athlaeos.valhallammo.item.CustomFlag;
-import me.athlaeos.valhallammo.item.EquipmentClass;
-import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.listeners.EntityAttackListener;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
 import me.athlaeos.valhallammo.listeners.EntitySpawnListener;
@@ -110,7 +107,7 @@ public class HeavyWeaponsSkill extends Skill implements Listener {
         ItemBuilder cursor = new ItemBuilder(e.getCursor());
         if (WeightClass.getWeightClass(clicked.getMeta()) != WeightClass.HEAVY || !EquipmentClass.isHandHeld(clicked.getMeta())) return; // clicked item must be heavy handheld item
         Map<String, PotionEffectWrapper> effects = PotionEffectRegistry.getStoredEffects(cursor.getMeta(), false);
-        if (effects.isEmpty()) return; // cursor must have potion effects stored
+        if (effects.isEmpty() || PotionBelt.isPotionBelt(cursor.getMeta())) return; // cursor must have potion effects stored
         Map<String, PotionEffectWrapper> newEffects = new HashMap<>();
         for (PotionEffectWrapper wrapper : effects.values()){
             newEffects.put(wrapper.getEffect(), wrapper

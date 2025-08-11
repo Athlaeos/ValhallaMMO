@@ -4,15 +4,20 @@ import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierPriority;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexedBasedOnQuality;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
 import me.athlaeos.valhallammo.item.CustomItem;
 import me.athlaeos.valhallammo.item.CustomItemRegistry;
+import me.athlaeos.valhallammo.loot.LootTableRegistry;
+import me.athlaeos.valhallammo.loot.ReplacementEntry;
+import me.athlaeos.valhallammo.loot.ReplacementPool;
+import me.athlaeos.valhallammo.loot.ReplacementTable;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantLevel;
 import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
@@ -24,10 +29,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Scripts implements Listener {
     private static final QuickTrade[] args = new QuickTrade[]{
@@ -529,7 +531,156 @@ public class Scripts implements Listener {
             filteredRecipeModifiers.removeIf(m -> m instanceof DefaultAttributeScale || m instanceof DurabilityScale || m instanceof SkillExperience || m instanceof SmithingQualityScale);
             nonScalingItem.setModifiers(filteredRecipeModifiers);
         }
+
+        ReplacementTable table = new ReplacementTable("loot_valhallafication");
+        for (String p : pools){
+            ReplacementPool pool = table.addPool(p);
+            String material = p.replace("_swords", "")
+                    .replace("_tools", "")
+                    .replace("_armor", "");
+            List<DynamicItemModifier> modifiers = new ArrayList<>();
+            SmithingQualitySet m1 = (SmithingQualitySet) ModifierRegistry.createModifier("smithing_quality_set");
+            m1.setQuality(baseQualityValues.get(material));
+            m1.setPriority(ModifierPriority.SOONEST);
+            SmithingQualityRandomized m2 = (SmithingQualityRandomized) ModifierRegistry.createModifier("smithing_quality_randomize");
+            m2.setLowerBound(-0.2);
+            m2.setUpperBound(0.2);
+            m2.setPriority(ModifierPriority.SOON);
+            modifiers.add(m1);
+            modifiers.add(m2);
+            if (p.contains("swords")) {
+                Material weapon = ofConjugation(material, "sword");
+                pool.setToReplace(new SlotEntry(new ItemStack(weapon), new MaterialChoice()));
+
+                weaponEntry(pool, weapon, "sword", material, modifiers);
+                weaponEntry(pool, weapon, "rapier", material, modifiers);
+                weaponEntry(pool, weapon, "dagger", material, modifiers);
+                weaponEntry(pool, weapon, "mace", material, modifiers);
+                weaponEntry(pool, weapon, "spear", material, modifiers);
+                weaponEntry(pool, weapon, "warhammer", material, modifiers);
+                weaponEntry(pool, weapon, "greataxe", material, modifiers);
+            } else if (p.contains("tools")) {
+                Material pickaxe = ofConjugation(material, "pickaxe");
+                ConfigurableMaterialsChoice choice = new ConfigurableMaterialsChoice();
+                Material axe = ofConjugation(material, "axe");
+                Material hoe = ofConjugation(material, "hoe");
+                Material shovel = ofConjugation(material, "shovel");
+                choice.setValidChoices(new HashSet<>(Set.of(axe, hoe, shovel, pickaxe)));
+                pool.setToReplace(new SlotEntry(new ItemStack(pickaxe), choice));
+
+                ItemReplaceByIndexed m3 = (ItemReplaceByIndexed) ModifierRegistry.createModifier("replace_by_custom");
+                m3.setOnlyExecuteModifiers(true);
+                m3.setItem(createItemIfAbsent(material + "_pickaxe_scaling"));
+                modifiers.add(m3);
+                ReplacementEntry entry = pool.addEntry(new ItemStack(pickaxe));
+                entry.setTinker(true);
+                entry.setModifiers(modifiers);
+            } else if (p.contains("armor")) {
+                ConfigurableMaterialsChoice choice = new ConfigurableMaterialsChoice();
+                Material helmet = ofConjugation(material, "helmet");
+                Material chestplate = ofConjugation(material, "chestplate");
+                Material leggings = ofConjugation(material, "leggings");
+                Material boots = ofConjugation(material, "boots");
+                choice.setValidChoices(new HashSet<>(Set.of(helmet, chestplate, leggings, boots)));
+                pool.setToReplace(new SlotEntry(new ItemStack(chestplate), choice));
+
+                ItemReplaceByIndexed m3 = (ItemReplaceByIndexed) ModifierRegistry.createModifier("replace_by_custom");
+                m3.setOnlyExecuteModifiers(true);
+                m3.setItem(createItemIfAbsent(material + "_chestplate_scaling"));
+                modifiers.add(m3);
+                ReplacementEntry entry = pool.addEntry(new ItemStack(chestplate));
+                entry.setTinker(true);
+                entry.setModifiers(modifiers);
+            } else if (p.contains("bows")) {
+                ConfigurableMaterialsChoice choice = new ConfigurableMaterialsChoice();
+                Material bow = Material.BOW;
+                Material crossbow = Material.CROSSBOW;
+                choice.setValidChoices(new HashSet<>(Set.of(bow, crossbow)));
+                pool.setToReplace(new SlotEntry(new ItemStack(bow), choice));
+
+                ItemReplaceByIndexed m3 = (ItemReplaceByIndexed) ModifierRegistry.createModifier("replace_by_custom");
+                m3.setOnlyExecuteModifiers(true);
+                m3.setItem(createItemIfAbsent("bow_scaling"));
+                modifiers.add(m3);
+                ReplacementEntry entry = pool.addEntry(new ItemStack(bow));
+                entry.setTinker(true);
+                entry.setModifiers(modifiers);
+            } else if (p.contains("tridents")) {
+                Material trident = Material.TRIDENT;
+                pool.setToReplace(new SlotEntry(new ItemStack(trident), new MaterialChoice()));
+
+                ItemReplaceByIndexed m3 = (ItemReplaceByIndexed) ModifierRegistry.createModifier("replace_by_custom");
+                m3.setOnlyExecuteModifiers(true);
+                m3.setItem(createItemIfAbsent("trident_scaling"));
+                modifiers.add(m3);
+                ReplacementEntry entry = pool.addEntry(new ItemStack(trident));
+                entry.setTinker(true);
+                entry.setModifiers(modifiers);
+            }
+        }
+        LootTableRegistry.registerReplacementTable(table, true);
     }
+
+    private static void weaponEntry(ReplacementPool pool, Material weapon, String weaponType, String material, List<DynamicItemModifier> modifiers){
+        modifiers = new ArrayList<>(modifiers.stream().map(DynamicItemModifier::copy).toList());
+        ReplacementEntry sword = pool.addEntry(new ItemStack(weapon));
+        sword.setTinker(true);
+
+        ItemReplaceByIndexed m3 = (ItemReplaceByIndexed) ModifierRegistry.createModifier("replace_by_custom");
+        m3.setOnlyExecuteModifiers(true);
+        m3.setItem(createItemIfAbsent(material + "_" + weaponType + "_scaling"));
+        m3.setPriority(ModifierPriority.NEUTRAL);
+        modifiers.add(m3);
+
+        sword.setModifiers(modifiers);
+    }
+
+    private static final Map<String, Integer> baseQualityValues = Map.of(
+            "wooden", 80,
+            "leather", 80,
+            "stone", 110,
+            "chainmail", 110,
+            "iron", 140,
+            "golden", 140,
+            "diamond", 170,
+            "tridents", 155,
+            "bows", 110,
+            "crossbows", 110
+    );
+
+    private static String createItemIfAbsent(String item){
+        CustomItem scalingItem = CustomItemRegistry.getItem(item);
+        if (scalingItem == null) {
+            scalingItem = new CustomItem(item, new ItemStack(Material.BARRIER));
+            CustomItemRegistry.register(item, scalingItem);
+        }
+        return item;
+    }
+
+    private static Material ofConjugation(String material, String type){
+        return Material.valueOf(material.toUpperCase() + "_" + type.toUpperCase());
+    }
+
+    private static final String[] pools = new String[]{
+            "wooden_swords",
+            "stone_swords",
+            "iron_swords",
+            "golden_swords",
+            "diamond_swords",
+            "wooden_tools",
+            "stone_tools",
+            "iron_tools",
+            "golden_tools",
+            "diamond_tools",
+            "leather_armor",
+            "chainmail_armor",
+            "iron_armor",
+            "golden_armor",
+            "diamond_armor",
+            "bows",
+            "crossbows",
+            "tridents"
+    };
 
     private static boolean isGoodRecipe(String name){
         return name.startsWith("craft_wooden_") ||

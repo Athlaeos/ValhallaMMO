@@ -343,6 +343,7 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("FRONT_PROTECTION", (i) -> i >= 0, "\uEEAB", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.OBSERVER));
         registerNewEffect(new GenericWrapper("DAMAGE_ABSORPTION", (i) -> i >= 0, "\uEEAC", StatFormat.FLOAT_P2).addModifier(Material.OBSIDIAN));
         registerNewEffect(new GenericWrapper("ARMOR_INVISIBILITY", (i) -> true, "\uEEAD", StatFormat.NONE).addModifier(Material.GLASS, 0, 0));
+        registerNewEffect(new GenericWrapper("BLOCKING_SPEED", (i) -> i >= 0, "\uEEAE", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.SHIELD));
     }
 
     public static void reload(){

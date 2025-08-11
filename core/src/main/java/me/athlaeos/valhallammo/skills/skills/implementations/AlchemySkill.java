@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.PotionBelt;
 import me.athlaeos.valhallammo.listeners.BrewingStandListener;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -140,6 +141,7 @@ public class AlchemySkill extends Skill implements Listener {
 
         ItemBuilder clicked = new ItemBuilder(e.getCurrentItem());
         ItemBuilder cursor = new ItemBuilder(e.getCursor());
+        if (PotionBelt.isPotionBelt(clicked.getMeta()) || PotionBelt.isPotionBelt(cursor.getMeta())) return;
         int clickedCombinations = ItemUtils.getPDCInt(COMBINATIONS_KEY, clicked.getMeta(), 0);
         int cursorCombinations = ItemUtils.getPDCInt(COMBINATIONS_KEY, cursor.getMeta(), 0);
         if (clickedCombinations + cursorCombinations + 1 > profile.getPotionCombiningMaxCombinations()) return; // combining the two potions would exceed the max allowed combinations

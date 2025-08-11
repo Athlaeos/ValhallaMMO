@@ -31,6 +31,7 @@ public class PowerProfile extends Profile {
         floatStat("movementSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("sneakMovementSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("sprintMovementSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("blockingMovementSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("knockbackResistanceBonus", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("armorBonus", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create());
         floatStat("armorlessArmor", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create());
@@ -353,6 +354,9 @@ public class PowerProfile extends Profile {
 
     public float getSprintMovementSpeedBonus(){ return getFloat("sprintMovementSpeedBonus");}
     public void setSprintMovementSpeedBonus(float value){ setFloat("sprintMovementSpeedBonus", value);}
+
+    public float getBlockingMovementSpeedBonus(){ return getFloat("blockingMovementSpeedBonus");}
+    public void setBlockingMovementSpeedBonus(float value){ setFloat("blockingMovementSpeedBonus", value);}
 
     public float getKnockbackResistanceBonus(){ return getFloat("knockbackResistanceBonus");}
     public void setKnockbackResistanceBonus(float value){ setFloat("knockbackResistanceBonus", value);}

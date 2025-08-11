@@ -191,6 +191,7 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("FRONT_PROTECTION", StatFormat.PERCENTILE_BASE_1_P1, "\uEEAB", (i) -> i >= 0).addModifier(Material.OBSERVER));
         register(new AttributeDisplayWrapper("DAMAGE_ABSORPTION", StatFormat.FLOAT_P2, "\uEEAC", (i) -> i >= 0).addModifier(Material.OBSIDIAN));
         register(new AttributeDisplayWrapper("ARMOR_INVISIBILITY", StatFormat.NONE, "\uEEAD", (i) -> true).addModifier(Material.GLASS, 0, 0));
+        register(new AttributeDisplayWrapper("BLOCKING_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEEAE", (i) -> i >= 0).addModifier(Material.SHIELD));
 
         addVanillaStat(Material.WOODEN_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
         addVanillaStat(Material.WOODEN_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2), getCopy("MINING_SPEED").setValue(2).setHidden(true));

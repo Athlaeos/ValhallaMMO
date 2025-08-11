@@ -20,6 +20,7 @@ public class EntityAttributeStats {
     public static final UUID ARMOR_DISPLAY = UUID.fromString("25b57c1e-5d34-450b-ac9b-c88febc8f1c3");
     public static final UUID SNEAK_MOVEMENT = UUID.fromString("6597cee2-73a0-48e6-ae96-fb8ab4ed1440");
     public static final UUID SPRINT_MOVEMENT = UUID.fromString("41a06dac-306d-4093-a55d-2db7408e06d8");
+    public static final UUID BLOCKING_MOVEMENT = UUID.fromString("ecb0e871-fa49-4d9a-bfd2-d19ab1502b17");
     public static final UUID MOVEMENT_SPEED_BONUS = UUID.fromString("18053ff8-ca47-4212-8753-47a537aeb4a3");
     public static final UUID HEALTH_BONUS = UUID.fromString("7e5c7906-792f-40d8-b1a1-e5b7194b77d2");
     public static final UUID HEALTH_MULTIPLIER_BONUS = UUID.fromString("7bf71943-e92b-4ba6-b404-2d592e3a520d");

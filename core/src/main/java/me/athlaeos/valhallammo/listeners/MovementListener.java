@@ -4,7 +4,10 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.entities.EntityAttributeStats;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.version.AttributeMappings;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -12,9 +15,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
@@ -94,6 +99,33 @@ public class MovementListener implements Listener {
         } else {
             EntityUtils.removeUniqueAttribute(e.getPlayer(), "valhalla_sprint_movement_modifier", Attribute.GENERIC_MOVEMENT_SPEED);
         }
+    }
+
+    private final Map<UUID, BukkitRunnable> shieldBlockingRunnables = new HashMap<>();
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerToggleBlock(PlayerInteractEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || ItemUtils.isEmpty(e.getItem()) || e.getItem().getType() != Material.SHIELD) return;
+        double shieldMovementSpeedBonus = AccumulativeStatManager.getCachedStats("BLOCKING_MOVEMENT_SPEED_BONUS", e.getPlayer(), 10000, true);
+        if (shieldMovementSpeedBonus > -0.0001 && shieldMovementSpeedBonus < 0.0001) return;
+        BukkitRunnable runnable = shieldBlockingRunnables.get(e.getPlayer().getUniqueId());
+        if (runnable != null && !runnable.isCancelled()) runnable.cancel();
+        Player p = e.getPlayer();
+        runnable = new BukkitRunnable() {
+            {
+                EntityUtils.addUniqueAttribute(p, EntityAttributeStats.BLOCKING_MOVEMENT, "valhalla_blocking_movement_modifier", AttributeMappings.MOVEMENT_SPEED.getAttribute(), shieldMovementSpeedBonus, AttributeModifier.Operation.ADD_SCALAR);
+            }
+
+            @Override
+            public void run() {
+                if (!p.isOnline() || p.isDead() || !p.isValid() || !p.isBlocking()) {
+                    cancel();
+                    shieldBlockingRunnables.remove(p.getUniqueId());
+                    EntityUtils.removeUniqueAttribute(p, "valhalla_blocking_movement_modifier", AttributeMappings.MOVEMENT_SPEED.getAttribute());
+                }
+            }
+        };
+        runnable.runTaskTimer(ValhallaMMO.getInstance(), 5, 10);
     }
 
     /**
