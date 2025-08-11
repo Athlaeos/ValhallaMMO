@@ -14,6 +14,7 @@ import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.inventory.meta.PotionMeta;
 
@@ -64,6 +65,7 @@ public class InstantCustomHeal extends PotionEffectWrapper {
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
         AttributeInstance healthInstance = p.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (event.isCancelled() || healthInstance == null) return;
+        if (p instanceof Player pl) pl.sendHealthUpdate(p.getHealth() + event.getAmount(), pl.getFoodLevel(), pl.getSaturation()); // makes health bar flash white for regeneration
         p.setHealth(Math.min(healthInstance.getValue(), p.getHealth() + event.getAmount()));
     }
 

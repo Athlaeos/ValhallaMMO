@@ -1668,15 +1668,15 @@
     "material-royal-diamond-pickaxe": "&bRoyal Diamond Pickaxe",
     "material-royal-diamond-shovel": "&bRoyal Diamond Shovel",
     "material-royal-diamond-hoe": "&bRoyal Diamond Hoe",
-    "material-royal-netherite-helmet": "&bRoyal Netherite Helmet",
-    "material-royal-netherite-chestplate": "&bRoyal Netherite Chestplate",
-    "material-royal-netherite-leggings": "&bRoyal Netherite Leggings",
-    "material-royal-netherite-boots": "&bRoyal Netherite Boots",
-    "material-royal-netherite-sword": "&bRoyal Netherite Sword",
-    "material-royal-netherite-axe": "&bRoyal Netherite Axe",
-    "material-royal-netherite-pickaxe": "&bRoyal Netherite Pickaxe",
-    "material-royal-netherite-shovel": "&bRoyal Netherite Shovel",
-    "material-royal-netherite-hoe": "&bRoyal Netherite Hoe",
+    "material-royal-netherite-helmet": "&eRoyal Netherite Helmet",
+    "material-royal-netherite-chestplate": "&eRoyal Netherite Chestplate",
+    "material-royal-netherite-leggings": "&eRoyal Netherite Leggings",
+    "material-royal-netherite-boots": "&eRoyal Netherite Boots",
+    "material-royal-netherite-sword": "&eRoyal Netherite Sword",
+    "material-royal-netherite-axe": "&eRoyal Netherite Axe",
+    "material-royal-netherite-pickaxe": "&eRoyal Netherite Pickaxe",
+    "material-royal-netherite-shovel": "&eRoyal Netherite Shovel",
+    "material-royal-netherite-hoe": "&eRoyal Netherite Hoe",
     "material-assassins-hood": "&fAssassin's Hood",
     "material-assassins-cloak": "&fAssassin's Cloak",
     "material-assassins-leggings": "&fAssassin's Leggings",
@@ -3650,6 +3650,14 @@
     ],
     "service_training_unavailable_button_lore": [
       "&cI have nothing more to teach you"
+    ],
+    "lore_royal_diamond_equipment": [
+      "&7A brilliant piece of gemstone armor. ",
+      "&aConverts light into healing."
+    ],
+    "lore_royal_netherite_equipment": [
+      "&7A profane piece of hellish armor. ",
+      "&eGrants crit chance in darkness"
     ]
   },
   "stringIndex": {},
