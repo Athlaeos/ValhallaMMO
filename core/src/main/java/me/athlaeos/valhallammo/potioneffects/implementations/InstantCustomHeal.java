@@ -108,6 +108,6 @@ public class InstantCustomHeal extends PotionEffectWrapper {
 
     @Override
     public StatFormat getFormat() {
-        return StatFormat.FLOAT_P1;
+        return StatFormat.FLOAT_P2;
     }
 }

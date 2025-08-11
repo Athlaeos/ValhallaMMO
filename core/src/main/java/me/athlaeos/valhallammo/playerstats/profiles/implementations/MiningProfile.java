@@ -50,7 +50,7 @@ public class MiningProfile extends Profile {
 
         stringSetStat("emptyHandToolMaterial");
         intStat("emptyHandToolFortune", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
-        floatStat("emptyHandToolMiningStrength", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create());
+        floatStat("emptyHandToolMiningStrength", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
     }
 
     public boolean isVeinMiningUnlocked() { return getBoolean("veinMiningUnlocked"); }

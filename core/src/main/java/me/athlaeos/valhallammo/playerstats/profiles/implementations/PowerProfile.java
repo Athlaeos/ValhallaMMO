@@ -26,24 +26,24 @@ public class PowerProfile extends Profile {
         intStat("itemCounterLimit", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
 
         doubleStat("allSkillEXPMultiplier", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P2).perkReward().create());
-        floatStat("healthBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("healthBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
         floatStat("healthMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("movementSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("sneakMovementSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("sprintMovementSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("blockingMovementSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("knockbackResistanceBonus", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
-        floatStat("armorBonus", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create());
-        floatStat("armorlessArmor", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create());
+        floatStat("armorBonus", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
+        floatStat("armorlessArmor", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
         floatStat("armorMultiplierBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
-        floatStat("toughnessBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("toughnessBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
         floatStat("attackReachBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
         floatStat("attackReachMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("blockReachBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
         floatStat("stepHeightBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
         floatStat("scaleMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("gravity", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
-        floatStat("safeFallingDistance", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("safeFallingDistance", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
         floatStat("attackDamageBonus", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
         floatStat("fireDamageBonus", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
         floatStat("explosionDamageBonus", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
@@ -74,7 +74,7 @@ public class PowerProfile extends Profile {
         floatStat("mountedDamageMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("attackSpeedBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("attackKnockbackBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
-        floatStat("luckBonus", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create());
+        floatStat("luckBonus", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
         floatStat("healthRegenerationBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("hungerSaveChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("damageResistance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());

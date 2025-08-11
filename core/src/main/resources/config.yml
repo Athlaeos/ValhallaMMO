@@ -41,7 +41,7 @@ resource_pack_config_override: false # If true, certain config options are overr
 # Valid modes are
 # HIGHEST : only the highest amplifier of all effects is considered
 # ADD : all effect amplifiers are added to each-other. For example, having 2x REGENERATION II results in REGENERATION IV
-permanent_effect_stacking: HIGHEST
+permanent_effect_stacking: ADD
 
 selectable_loot_modifiers: false # If true, the loot drops within selectable loot will be modified according to the player opening said loot.
 # If not, the loot displayed will be equal to the raw item drop in the loot table

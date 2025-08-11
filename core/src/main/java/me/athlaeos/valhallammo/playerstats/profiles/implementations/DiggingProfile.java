@@ -20,7 +20,7 @@ public class DiggingProfile extends Profile {
         floatStat("blockExperienceRate", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
 
         floatStat("archaeologyRepeatChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create()); // chance for suspicious block to regenerate after brushing
-        floatStat("archaeologyLuck", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create()); // extra luck for archaeology loot tables
+        floatStat("archaeologyLuck", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create()); // extra luck for archaeology loot tables
         floatStat("archaeologySandGenerationChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P6).perkReward().create()); // chance for adjacent blocks to a mined block to turn into suspicious sand
         floatStat("archaeologyGravelGenerationChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P6).perkReward().create()); // same with gravel
         floatStat("archaeologySandNearStructureGenerationChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P6).perkReward().create()); // same as generation chance, but only if block is near a structure

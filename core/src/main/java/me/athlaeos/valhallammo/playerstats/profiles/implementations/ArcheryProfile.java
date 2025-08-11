@@ -22,7 +22,7 @@ public class ArcheryProfile extends Profile {
         floatStat("crossbowCritChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("ammoSaveChance", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("critDamage", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
-        floatStat("inaccuracy", new PropertyBuilder().format(StatFormat.FLOAT_P1).perkReward().create());
+        floatStat("inaccuracy", new PropertyBuilder().format(StatFormat.FLOAT_P2).perkReward().create());
         floatStat("distanceDamageBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("distanceDamageBase", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("bowStunChance", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
@@ -36,7 +36,7 @@ public class ArcheryProfile extends Profile {
         intStat("chargedShotPiercing", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
         intStat("chargedShotKnockback", new PropertyBuilder().format(StatFormat.INT).perkReward().create());
         floatStat("chargedShotDamageMultiplier", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
-        floatStat("chargedShotAccuracy", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("chargedShotAccuracy", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P2).perkReward().create());
         floatStat("chargedShotVelocityBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         booleanStat("chargedShotFullVelocity", new BooleanProperties(true, true));
         booleanStat("chargedShotCrossbowInstantReload", new BooleanProperties(true, true));

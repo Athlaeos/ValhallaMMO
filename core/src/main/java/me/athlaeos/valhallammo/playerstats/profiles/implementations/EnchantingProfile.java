@@ -17,8 +17,8 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public class EnchantingProfile extends Profile {
     {
-        floatStat("enchantingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
-        floatStat("anvilSkill", new PropertyBuilder().format(StatFormat.FLOAT_P1).min(0).perkReward().create());
+        floatStat("enchantingSkill", new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).perkReward().create());
+        floatStat("anvilSkill", new PropertyBuilder().format(StatFormat.FLOAT_P2).min(0).perkReward().create());
 
         floatStat("enchantingSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("anvilSkillFractionBonus", new PropertyBuilder().format(StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).perkReward().create());

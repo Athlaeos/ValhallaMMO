@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -167,7 +168,10 @@ public class CustomItemManagementMenu extends Menu implements SetModifiersMenu {
     public void setMenuItems() {
         inventory.clear();
         List<ItemStack> buttons = new ArrayList<>();
-        for (String item : CustomItemRegistry.getItems().keySet()){
+        List<String> itemIDs = new ArrayList<>(CustomItemRegistry.getItems().keySet());
+        itemIDs.sort(Comparator.comparing(s -> s));
+
+        for (String item : itemIDs){
             ItemBuilder icon = new ItemBuilder(CustomItemRegistry.getItem(item).getItem()).name("&f" + item)
                     .lore("&fClick to edit its modifiers",
                             "&fShift-Click to get a copy",
