@@ -113,18 +113,14 @@ public class ModifierRegistry {
             register(new EnchantmentAdd("enchant_add_density", EnchantmentMappings.DENSITY.getEnchantment(), Material.valueOf("MACE")));
             register(new EnchantmentAdd("enchant_add_wind_burst", EnchantmentMappings.WIND_BURST.getEnchantment(), Material.valueOf("MACE")));
         }
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21)){
-            register(new MaxStackSizeSet("max_stack_size"));
-            register(new HideToolTip("tooltip_hide"));
-            register(new FireResistant("fire_resistant_item"));
-            register(new EnchantmentGlint("glint"));
-            register(new MakeEdible("edible"));
-        }
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21_3)){
-            register(new ToolTip("tooltip"));
-            register(new ItemModel("model"));
-            register(new Equippable("equippable"));
-        }
+        register(new MaxStackSizeSet("max_stack_size"));
+        register(new HideToolTip("tooltip_hide"));
+        register(new FireResistant("fire_resistant_item"));
+        register(new EnchantmentGlint("glint"));
+        register(new MakeEdible("edible"));
+        register(new ToolTip("tooltip"));
+        register(new ItemModel("model"));
+        register(new Equippable("equippable"));
 
         register(new AmountAdd("amount_add"));
         register(new AmountRandomized("amount_randomized"));
