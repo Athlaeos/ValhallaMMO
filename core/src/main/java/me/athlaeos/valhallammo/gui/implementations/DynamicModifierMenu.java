@@ -271,9 +271,7 @@ public class DynamicModifierMenu extends Menu {
         }
         recipeButtons.addAll(buttons);
 
-        buttons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(item)))));
         Map<Integer, List<ItemStack>> pages = Utils.paginate(45, buttons);
-
         currentPage = Math.max(1, Math.min(currentPage, pages.size()));
 
         if (!pages.isEmpty()){
