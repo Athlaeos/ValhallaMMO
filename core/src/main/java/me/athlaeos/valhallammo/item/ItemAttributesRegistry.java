@@ -169,14 +169,13 @@ public class ItemAttributesRegistry {
         // \uEE98 is occupied by fall damage icon
         register(new AttributeDisplayWrapper("CROSSBOW_MAGAZINE", StatFormat.INT, "\uEE99", (i) -> i >= 0).addModifier(Material.CROSSBOW, 1, 5));
 
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
-            register(new AttributeDisplayWrapper("GENERIC_SCALE", "\uEE9A", (i) -> i >= 0, StatFormat.DIFFERENCE_FLOAT_P2, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).setOperation(AttributeModifier.Operation.ADD_SCALAR).addModifier(Material.RED_MUSHROOM, 0.01, 0.1));
-            register(new AttributeDisplayWrapper("PLAYER_BLOCK_INTERACTION_RANGE", "\uEE9B", (i) -> i >= 0, StatFormat.FLOAT_P2, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.SCAFFOLDING, 0.01, 0.25));
-            register(new AttributeDisplayWrapper("GENERIC_STEP_HEIGHT", "\uEE9C", (i) -> i >= 0, StatFormat.FLOAT_P2, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.RABBIT_FOOT, 0.01, 0.1));
-            register(new AttributeDisplayWrapper("GENERIC_GRAVITY", "\uEEA0", (i) -> i <= 0, StatFormat.DIFFERENCE_FLOAT_P2, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.BEDROCK, 0.01, 0.1));
-            register(new AttributeDisplayWrapper("GENERIC_SAFE_FALL_DISTANCE", "\uEEA1", (i) -> i >= 0, StatFormat.DIFFERENCE_FLOAT_P2, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.LEATHER_BOOTS, 0.01, 0.1));
-            register(new AttributeDisplayWrapper("GENERIC_FALL_DAMAGE_MULTIPLIER", "\uEEA2", (i) -> i <= 0, StatFormat.DIFFERENCE_FLOAT_P2, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.NETHERITE_BOOTS, 0.01, 0.1));
-        }
+        register(new AttributeDisplayWrapper("GENERIC_SCALE", "\uEE9A", (i) -> i >= 0, StatFormat.DIFFERENCE_FLOAT_P2, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).setOperation(AttributeModifier.Operation.ADD_SCALAR).addModifier(Material.RED_MUSHROOM, 0.01, 0.1));
+        register(new AttributeDisplayWrapper("PLAYER_BLOCK_INTERACTION_RANGE", "\uEE9B", (i) -> i >= 0, StatFormat.FLOAT_P2, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.SCAFFOLDING, 0.01, 0.25));
+        register(new AttributeDisplayWrapper("GENERIC_STEP_HEIGHT", "\uEE9C", (i) -> i >= 0, StatFormat.FLOAT_P2, StatFormat.PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.RABBIT_FOOT, 0.01, 0.1));
+        register(new AttributeDisplayWrapper("GENERIC_GRAVITY", "\uEEA0", (i) -> i <= 0, StatFormat.DIFFERENCE_FLOAT_P2, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.BEDROCK, 0.01, 0.1));
+        register(new AttributeDisplayWrapper("GENERIC_SAFE_FALL_DISTANCE", "\uEEA1", (i) -> i >= 0, StatFormat.DIFFERENCE_FLOAT_P2, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.LEATHER_BOOTS, 0.01, 0.1));
+        register(new AttributeDisplayWrapper("GENERIC_FALL_DAMAGE_MULTIPLIER", "\uEEA2", (i) -> i <= 0, StatFormat.DIFFERENCE_FLOAT_P2, StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1, StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.NETHERITE_BOOTS, 0.01, 0.1));
+
         register(new AttributeDisplayWrapper("ATTACK_REACH_MULTIPLIER", StatFormat.PERCENTILE_BASE_1_P1, "\uEE9D", (i) -> i >= 0).addModifier(Material.ENDER_PEARL, 0.1, 1));
         register(new AttributeDisplayWrapper("SHIELD_DISARMING", StatFormat.DIFFERENCE_TIME_SECONDS_BASE_20_P1, "\uEE9E", (i) -> i >= 0).addModifier(Material.NETHERITE_AXE, 1, 10));
         register(new AttributeDisplayWrapper("LIFE_STEAL", StatFormat.PERCENTILE_BASE_1_P2, "\uEE9F", (i) -> i >= 0).addModifier(Material.GHAST_TEAR, 0.001, 0.01));
