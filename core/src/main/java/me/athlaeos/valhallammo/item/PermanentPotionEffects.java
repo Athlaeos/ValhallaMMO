@@ -114,7 +114,7 @@ public class PermanentPotionEffects {
                     totalEffectAmplifiers.put(target, combinedAmplifiersOfTarget);
 
                     Map<String, Integer> combinedDurationsOfTarget = totalEffectDurations.getOrDefault(target, new HashMap<>());
-                    combinedDurationsOfTarget.put(effect.getEffect(), (int) additionType.get(combinedDurationsOfTarget.getOrDefault(effect.getEffect(), 0), effect.getDuration()));
+                    combinedDurationsOfTarget.put(effect.getEffect(), (int) AdditionType.HIGHEST.get(combinedDurationsOfTarget.getOrDefault(effect.getEffect(), 0), effect.getDuration()));
                     totalEffectDurations.put(target, combinedDurationsOfTarget);
                 }
             }
