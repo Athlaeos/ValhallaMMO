@@ -243,7 +243,7 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("ALCHEMY_MASTERPIECE_FLAT", (i) -> i >= 0, false, true, "\uEE4D", StatFormat.DIFFERENCE_INT).addModifier(Material.BREWING_STAND, 1, 10));
         registerNewEffect(new GenericWrapper("ALCHEMY_MASTERPIECE_FRACTION", (i) -> i >= 0, false, true, "\uEE4E", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.BREWING_STAND));
 
-        registerNewEffect(new GenericWrapper("CUSTOM_LUCK", (i) -> i >= 0, "\uEE4F", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.RABBIT_FOOT, 0.1, 1));
+        registerNewEffect(new GenericWrapper("CUSTOM_LUCK", (i) -> i >= 0, "\uEE4F", StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.RABBIT_FOOT, 0.01, 0.1));
         registerNewEffect(new GenericWrapper("ARMOR_FLAT", (i) -> i >= 0, "\uEE50", StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.IRON_CHESTPLATE, 0.1, 1));
         registerNewEffect(new GenericWrapper("ARMOR_FRACTION", (i) -> i >= 0, "\uEE51", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.IRON_CHESTPLATE, 0.1, 1));
         registerNewEffect(new GenericWrapper("ARMOR_TOUGHNESS_FLAT", (i) -> i >= 0, "\uEE52", StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.DIAMOND_CHESTPLATE, 0.1, 1));
@@ -252,7 +252,7 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("ATTACK_SPEED", (i) -> i >= 0, "\uEE55", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.GOLDEN_SWORD, 0.1, 1));
         registerNewEffect(new GenericWrapper("KNOCKBACK_RESISTANCE", (i) -> i >= 0, "\uEE56", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.NETHERITE_CHESTPLATE));
         registerNewEffect(new GenericWrapper("MAX_HEALTH_FLAT", (i) -> i >= 0, "\uEE57", StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.GOLDEN_APPLE, 0.1, 1));
-        registerNewEffect(new GenericWrapper("MAX_HEALTH_FRACTION", (i) -> i >= 0, "\uEE58", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.GOLDEN_APPLE, 0.1, 1));
+        registerNewEffect(new GenericWrapper("MAX_HEALTH_FRACTION", (i) -> i >= 0, "\uEE58", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.GOLDEN_APPLE, 0.01, 0.1));
         registerNewEffect(new GenericWrapper("MOVEMENT_SPEED", (i) -> i >= 0, "\uEE59", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.SUGAR));
 
         registerNewEffect(new ChocolateMilk("CHOCOLATE_MILK", "\uEE5A").addModifier(Material.COCOA_BEANS, 0, 0));
@@ -318,19 +318,17 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("ENTITY_RARE_DROPS", (i) -> i >= 0, "\uEE95", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.CHEST));
         registerNewEffect(new GenericWrapper("DIG_SPEED", (i) -> i >= 0, "\uEE96", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.DIAMOND_PICKAXE));
         // \uEE97 is occupied by mining speed
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5)){
-            registerNewEffect(new GenericWrapper("GENERIC_SCALE", (i) -> i >= 0, "\uEE9A", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.RED_MUSHROOM, 0.01, 0.1));
-            registerNewEffect(new GenericWrapper("GENERIC_BLOCK_INTERACTION_RANGE", (i) -> i >= 0, "\uEE9B", StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.SCAFFOLDING, 0.01, 0.25));
-            registerNewEffect(new GenericWrapper("GENERIC_STEP_HEIGHT", (i) -> i >= 0, "\uEE9C", StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.RABBIT_FOOT, 0.01, 0.1));
-        }
+        registerNewEffect(new GenericWrapper("GENERIC_SCALE", (i) -> i >= 0, "\uEE9A", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.RED_MUSHROOM, 0.01, 0.1));
+        registerNewEffect(new GenericWrapper("GENERIC_BLOCK_INTERACTION_RANGE", (i) -> i >= 0, "\uEE9B", StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.SCAFFOLDING, 0.01, 0.25));
+        registerNewEffect(new GenericWrapper("GENERIC_STEP_HEIGHT", (i) -> i >= 0, "\uEE9C", StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.RABBIT_FOOT, 0.01, 0.1));
+
         registerNewEffect(new GenericWrapper("ATTACK_REACH_MULTIPLIER", (i) -> i >= 0, "\uEE9D", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.ENDER_PEARL));
         registerNewEffect(new GenericWrapper("SHIELD_DISARMING", (i) -> i >= 0, "\uEE9E", StatFormat.DIFFERENCE_TIME_SECONDS_BASE_20_P1).addModifier(Material.NETHERITE_AXE));
         registerNewEffect(new GenericWrapper("LIFE_STEAL", (i) -> i >= 0, "\uEE9F", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.GHAST_TEAR));
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21)){
-            registerNewEffect(new GenericWrapper("GENERIC_GRAVITY", (i) -> i <= 0, "\uEEA0",  StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.BEDROCK, 0.01, 0.1));
-            registerNewEffect(new GenericWrapper("GENERIC_SAFE_FALL_DISTANCE", (i) -> i >= 0, "\uEEA1",  StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.LEATHER_BOOTS, 0.01, 0.1));
-            registerNewEffect(new GenericWrapper("GENERIC_FALL_DAMAGE_MULTIPLIER", (i) -> i <= 0, "\uEEA2",  StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.NETHERITE_BOOTS, 0.01, 0.1));
-        }
+        registerNewEffect(new GenericWrapper("GENERIC_GRAVITY", (i) -> i <= 0, "\uEEA0",  StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.BEDROCK, 0.01, 0.1));
+        registerNewEffect(new GenericWrapper("GENERIC_SAFE_FALL_DISTANCE", (i) -> i >= 0, "\uEEA1",  StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.LEATHER_BOOTS, 0.01, 0.1));
+        registerNewEffect(new GenericWrapper("GENERIC_FALL_DAMAGE_MULTIPLIER", (i) -> i <= 0, "\uEEA2",  StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.NETHERITE_BOOTS, 0.01, 0.1));
+
         registerNewEffect(new GenericWrapper("PVP_RESISTANCE", (i) -> i >= 0, "\uEEA3", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.IRON_CHESTPLATE));
         registerNewEffect(new GenericWrapper("DAMAGE_PLAYER", (i) -> i >= 0, "\uEEA4", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.IRON_SWORD));
         registerNewEffect(new GenericWrapper("DAMAGE_MOUNTED", (i) -> i >= 0, "\uEEA5", StatFormat.PERCENTILE_BASE_1_P2).addModifier(Material.SADDLE));
