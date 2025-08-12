@@ -4,9 +4,9 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
-import me.athlaeos.valhallammo.dom.EquippableWrapper;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
-import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.dom.*;
+import me.athlaeos.valhallammo.gui.Menu;
+import me.athlaeos.valhallammo.gui.implementations.DynamicModifierMenu;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -14,6 +14,7 @@ import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -21,6 +22,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Colorable;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class FancyPantsOrEquippable extends DynamicItemModifier {
     private Material newMaterial = Material.IRON_CHESTPLATE;
@@ -59,6 +61,11 @@ public class FancyPantsOrEquippable extends DynamicItemModifier {
 
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
+    }
+
+    @Override
+    public void onButtonPress(InventoryClickEvent e, DynamicModifierMenu menu, int button) {
+
         if (button == 5) {
             if (!ItemUtils.isEmpty(e.getCursor())) oldMaterial = e.getCursor().getType();
         } else if (button == 7 || button == 8 || button == 9) {
@@ -82,22 +89,18 @@ public class FancyPantsOrEquippable extends DynamicItemModifier {
         } else if (button == 15) {
             if (!ItemUtils.isEmpty(e.getCursor())) newMaterial = e.getCursor().getType();
         } else if (button == 17){
-            ItemStack cursor = e.getCursor();
-            if (ItemUtils.isEmpty(cursor)) model = null;
+            if (e.isShiftClick()) model = null;
             else {
-                ItemMeta cursorMeta = cursor.getItemMeta();
-                EquippableWrapper wrapper = ValhallaMMO.getNms().getEquippable(cursorMeta);
-                if (wrapper == null) e.getWhoClicked().sendMessage(Utils.chat("&cItem has no custom model"));
-                else model = wrapper.modelKey();
+                ask((Player) e.getWhoClicked(), menu, "What armor model should be used?", (answer) -> {
+                    model = answer;
+                });
             }
         } else if (button == 18){
-            ItemStack cursor = e.getCursor();
-            if (ItemUtils.isEmpty(cursor)) cameraOverlay = null;
+            if (e.isShiftClick()) cameraOverlay = null;
             else {
-                ItemMeta cursorMeta = cursor.getItemMeta();
-                EquippableWrapper wrapper = ValhallaMMO.getNms().getEquippable(cursorMeta);
-                if (wrapper == null) e.getWhoClicked().sendMessage(Utils.chat("&cItem has no custom camera overlay"));
-                else cameraOverlay = wrapper.cameraOverlayKey();
+                ask((Player) e.getWhoClicked(), menu, "What camera overlay should be used?", (answer) -> {
+                    cameraOverlay = answer;
+                });
             }
         } else if (button == 19){
             slot = switch(slot){
@@ -107,6 +110,26 @@ public class FancyPantsOrEquippable extends DynamicItemModifier {
                 default -> EquipmentSlot.HEAD;
             };
         }
+    }
+
+    private void ask(Player player, Menu menu, String question, Consumer<String> onAnswer){
+        player.closeInventory();
+        Questionnaire questionnaire = new Questionnaire(player, null, null,
+                new Question("&f" + question + " (type in chat, or 'cancel' to cancel)", s -> true, "")
+        ) {
+            @Override
+            public Action<Player> getOnFinish() {
+                if (getQuestions().isEmpty()) return super.getOnFinish();
+                Question question = getQuestions().get(0);
+                if (question.getAnswer() == null) return super.getOnFinish();
+                return (p) -> {
+                    String answer = question.getAnswer();
+                    if (!answer.contains("cancel")) onAnswer.accept(answer);
+                    menu.open();
+                };
+            }
+        };
+        Questionnaire.startQuestionnaire(player, questionnaire);
     }
 
     @Override
