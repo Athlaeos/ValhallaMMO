@@ -252,7 +252,7 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("ATTACK_SPEED", (i) -> i >= 0, "\uEE55", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.GOLDEN_SWORD, 0.1, 1));
         registerNewEffect(new GenericWrapper("KNOCKBACK_RESISTANCE", (i) -> i >= 0, "\uEE56", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.NETHERITE_CHESTPLATE));
         registerNewEffect(new GenericWrapper("MAX_HEALTH_FLAT", (i) -> i >= 0, "\uEE57", StatFormat.DIFFERENCE_FLOAT_P2).addModifier(Material.GOLDEN_APPLE, 0.1, 1));
-        registerNewEffect(new GenericWrapper("MAX_HEALTH_FRACTION", (i) -> i >= 0, "\uEE58", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.GOLDEN_APPLE, 0.1, 1));
+        registerNewEffect(new GenericWrapper("MAX_HEALTH_FRACTION", (i) -> i >= 0, "\uEE58", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.GOLDEN_APPLE, 0.01, 0.1));
         registerNewEffect(new GenericWrapper("MOVEMENT_SPEED", (i) -> i >= 0, "\uEE59", StatFormat.DIFFERENCE_PERCENTILE_BASE_1_P1).addModifier(Material.SUGAR));
 
         registerNewEffect(new ChocolateMilk("CHOCOLATE_MILK", "\uEE5A").addModifier(Material.COCOA_BEANS, 0, 0));
