@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.*;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.recipetypes.*;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.gui.SetModifiersMenu;
@@ -260,7 +261,15 @@ public class DynamicModifierMenu extends Menu {
 
     private void setItemIndexModifiersView(){
         List<ItemStack> buttons = new ArrayList<>();
-        for (CustomItem item : CustomItemRegistry.getItems().values()) buttons.add(icon(item.getId(), "&6Grid Recipes", item.getItem(), item.getModifiers(), false));            recipeButtons.addAll(buttons);
+        List<String> itemIDs = new ArrayList<>(CustomItemRegistry.getItems().keySet());
+        itemIDs.sort(Comparator.comparing(s -> s));
+
+        for (String i : itemIDs){
+            CustomItem item = Catch.catchOrElse(() -> CustomItemRegistry.getItem(i), null);
+            if (item == null) continue;
+            buttons.add(icon(item.getId(), "&6Grid Recipes", item.getItem(), item.getModifiers(), false));
+        }
+        recipeButtons.addAll(buttons);
 
         buttons.sort(Comparator.comparing(ItemStack::getType).thenComparing(item -> ChatColor.stripColor(ItemUtils.getItemName(new ItemBuilder(item)))));
         Map<Integer, List<ItemStack>> pages = Utils.paginate(45, buttons);
