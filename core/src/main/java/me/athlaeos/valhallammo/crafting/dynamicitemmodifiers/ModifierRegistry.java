@@ -160,6 +160,7 @@ public class ModifierRegistry {
         register(new ItemType("material"));
         register(new ItemUnbreakable("unbreakable"));
         register(new ItemWeightClass("weight_class"));
+        register(new ItemRarity("rarity"));
         register(new ItemReplaceByIndexed("replace_by_custom"));
         register(new ItemReplaceByIndexedBasedOnQuality("replace_by_custom_quality_based"));
         register(new PlayerSignatureAdd("signature"));

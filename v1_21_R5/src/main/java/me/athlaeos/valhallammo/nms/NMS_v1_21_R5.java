@@ -3,10 +3,7 @@ package me.athlaeos.valhallammo.nms;
 import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
-import me.athlaeos.valhallammo.dom.Catch;
-import me.athlaeos.valhallammo.dom.EquippableWrapper;
-import me.athlaeos.valhallammo.dom.Pair;
-import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.dom.*;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -50,6 +47,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.components.CustomModelDataComponent;
@@ -513,5 +511,25 @@ public final class NMS_v1_21_R5 implements NMS {
         Activity activity = ((CraftLivingEntity) entity).getHandle().getBrain().getActiveNonCoreActivity().orElse(null);
         if (activity != null) return ActivityMappings.fromName(activity.getName());
         return null;
+    }
+
+    @Override
+    public ItemRarityWrapper getItemRarity(ItemMeta meta) {
+        return switch (meta.getRarity()){
+            case COMMON -> ItemRarityWrapper.COMMON;
+            case UNCOMMON ->  ItemRarityWrapper.UNCOMMON;
+            case RARE ->  ItemRarityWrapper.RARE;
+            case EPIC ->  ItemRarityWrapper.EPIC;
+        };
+    }
+
+    @Override
+    public void setItemRarity(ItemMeta meta, ItemRarityWrapper rarity) {
+        switch (rarity){
+            case COMMON -> meta.setRarity(ItemRarity.COMMON);
+            case UNCOMMON -> meta.setRarity(ItemRarity.UNCOMMON);
+            case RARE -> meta.setRarity(ItemRarity.RARE);
+            case EPIC -> meta.setRarity(ItemRarity.EPIC);
+        }
     }
 }

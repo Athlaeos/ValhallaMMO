@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.nms;
 import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
+import me.athlaeos.valhallammo.dom.ItemRarityWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -122,4 +123,10 @@ public interface NMS extends Listener {
         return new EntityExplodeEvent(tnt, at, blockList, yield);
     }
     ActivityMappings getActivity(LivingEntity entity);
+    default void setItemRarity(ItemMeta meta, ItemRarityWrapper rarity){
+
+    }
+    default ItemRarityWrapper getItemRarity(ItemMeta meta){
+        return null;
+    }
 }
