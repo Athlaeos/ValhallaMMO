@@ -87,7 +87,7 @@ public class ToolTip extends DynamicItemModifier {
 
     @Override
     public ItemStack getModifierIcon() {
-        return new ItemBuilder(Material.BRUSH).get();
+        return new ItemBuilder(Material.GLOW_ITEM_FRAME).get();
     }
 
     @Override
