@@ -120,4 +120,8 @@ public class GenericWrapper extends PotionEffectWrapper {
     public PotionEffectWrapper copy() {
         return new GenericWrapper(getEffect(), isPositive, isRemovable(), singleUse, defaultIcon, format).setDuration(duration).setAmplifier(amplifier).setCharges(charges);
     }
+
+    public Predicate<Double> getIsPositive() {
+        return isPositive;
+    }
 }

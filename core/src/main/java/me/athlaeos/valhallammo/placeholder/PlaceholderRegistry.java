@@ -35,6 +35,7 @@ public class PlaceholderRegistry {
         registerPlaceholder(new PartyOnlineMembersPlaceholder("%party_members_online%"));
         registerPlaceholder(new PartyOpenPlaceholder("%party_open%"));
         registerPlaceholder(new PartyRankPlaceholder("%party_rank%"));
+        for (int i = 0; i < 10; i++) registerPlaceholder(new PotionEffectPlaceholder("%custom_effect_" + i + "%", i));
     }
 
     public static void registerPlaceholder(Placeholder p) {
