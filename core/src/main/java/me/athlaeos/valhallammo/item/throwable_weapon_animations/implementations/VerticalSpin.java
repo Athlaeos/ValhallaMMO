@@ -72,7 +72,7 @@ public class VerticalSpin extends ThrowableWeaponAnimation {
                 .rayTrace(a.getEyeLocation(), normal, dx.length() * 1.5, FluidCollisionMode.NEVER,
                         false, 0.2, e -> e instanceof LivingEntity && !e.equals(item.getStand()) &&
                                 !e.equals(item.getThrower()) && !item.getHitEntities().contains(e.getUniqueId()) &&
-                                !EntityClassification.matchesClassification(e.getType(), EntityClassification.UNALIVE)
+                                !EntityClassification.matchesClassification(e, EntityClassification.UNALIVE)
                 );
         if (result != null && result.getHitEntity() != null){
             AttributeWrapper damageWrapper = ItemAttributesRegistry.getAnyAttribute(item.getItem().getMeta(), "GENERIC_ATTACK_DAMAGE");

@@ -107,6 +107,9 @@ public class PerkRewardRegistry {
         register(new ProfileStringListRemove("exclusive_trades_lock", "exclusiveTrades", TradingProfile.class));
         register(new ProfileStringListFill("exclusive_trades_unlock_all", "exclusiveTrades", TradingProfile.class, CustomMerchantManager.getRegisteredMerchantTrades()::keySet));
         register(new ProfileStringListClear("exclusive_trades_lock_all", "exclusiveTrades", TradingProfile.class));
+        register(new ProfileStringListRemove("entity_classifications_remove", "entityClassifications", PowerProfile.class));
+        register(new ProfileStringListClear("entity_classifications_reset", "entityClassifications", PowerProfile.class));
+        register(new ProfileStringListAdd("entity_classifications_add", "entityClassifications", PowerProfile.class));
         register(new FlightReward());
         register(new FlightRemoveReward());
     }

@@ -1,13 +1,21 @@
 package me.athlaeos.valhallammo.entities;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public enum EntityClassification {
     ALIVE("ALLAY", "AXOLOTL", "BAT", "BEE", "BLAZE", "CAT", "CAVE_SPIDER", "CHICKEN", "COD", "COW", "CREEPER",
@@ -109,6 +117,38 @@ public enum EntityClassification {
 
     public static boolean matchesClassification(EntityType type, EntityClassification classification) {
         return classification.getTypes().contains(type.toString());
+    }
+
+    public static boolean matchesClassification(Entity type, EntityClassification classification) {
+        if (type.getPersistentDataContainer().has(KEY_ENTITY_CLASSIFICATION, PersistentDataType.STRING)) return getClassifications(type).contains(classification);
+        return classification.getTypes().contains(type.getType().toString());
+    }
+
+    private static final NamespacedKey KEY_ENTITY_CLASSIFICATION = new NamespacedKey(ValhallaMMO.getInstance(), "entity_classification");
+    public static void setClassificationTypes(Entity entity, Collection<EntityClassification> classification){
+        entity.getPersistentDataContainer().set(KEY_ENTITY_CLASSIFICATION, PersistentDataType.STRING, classification.stream().map(EntityClassification::toString).collect(Collectors.joining(";")));
+    }
+
+    public static void resetClassifications(Entity entity){
+        entity.getPersistentDataContainer().remove(KEY_ENTITY_CLASSIFICATION);
+    }
+
+    public static Collection<EntityClassification> getClassifications(Entity entity){
+        String data = entity.getPersistentDataContainer().get(KEY_ENTITY_CLASSIFICATION, PersistentDataType.STRING);
+        if (data == null) {
+            if (entity instanceof Player p){
+                PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
+                if (!profile.getEntityClassifications().isEmpty()) data = String.join(";", profile.getEntityClassifications());
+                else return getMatchingClassifications(entity.getType());
+            } else return getMatchingClassifications(entity.getType());
+        }
+        Collection<EntityClassification> classifications = new HashSet<>();
+        for (String subString : data.split(";")) {
+            EntityClassification classification = Catch.catchOrElse(() -> EntityClassification.valueOf(subString), null);
+            if (classification == null) continue;
+            classifications.add(classification);
+        }
+        return classifications;
     }
 
     public static Collection<EntityType> getEntityTypes(Predicate<EntityClassification> filter){

@@ -161,7 +161,7 @@ public class MartialArtsSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onGrapple(PlayerInteractEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || EntityClassification.matchesClassification(e.getRightClicked().getType(), EntityClassification.UNALIVE)
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || EntityClassification.matchesClassification(e.getRightClicked(), EntityClassification.UNALIVE)
                 || !(e.getRightClicked() instanceof LivingEntity l) || !EntityUtils.isUnarmed(e.getPlayer())
                 || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "grappling_attempt_cooldown")
                 || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "grappling_attack_cooldown")
@@ -195,7 +195,7 @@ public class MartialArtsSkill extends Skill implements Listener {
                     (!ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ||
                             !ItemUtils.isEmpty(p.getInventory().getItemInOffHand()))) ||
                     (mobDisarming &&
-                            EntityClassification.matchesClassification(l.getType(), EntityClassification.HOSTILE) &&
+                            EntityClassification.matchesClassification(l, EntityClassification.HOSTILE) &&
                             l.getEquipment() != null && !ItemUtils.isEmpty(l.getEquipment().getItemInMainHand())
                     )){
                 if (l instanceof Player p && playerDisarming){
@@ -344,9 +344,9 @@ public class MartialArtsSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onExpAttack(EntityDamageEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) ||
-                EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE) ||
+                EntityClassification.matchesClassification(e.getEntity(), EntityClassification.UNALIVE) ||
                 e.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK || !(e.getEntity() instanceof LivingEntity l) ||
-                EntityClassification.matchesClassification(l.getType(), EntityClassification.PASSIVE)) return;
+                EntityClassification.matchesClassification(l, EntityClassification.PASSIVE)) return;
         Entity damager = EntityDamagedListener.getLastDamager(l);
         Player p = damager instanceof Player pl ? pl : damager instanceof Trident t && t.getShooter() instanceof Player pl ? pl : null;
         if (p != null && EntityUtils.isUnarmed(p)){

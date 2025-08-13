@@ -326,7 +326,7 @@ public class ProjectileListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
-        if (e.getDamager() instanceof Projectile p && e.getEntity() instanceof LivingEntity l && !EntityClassification.matchesClassification(e.getEntity().getType(), EntityClassification.UNALIVE)){
+        if (e.getDamager() instanceof Projectile p && e.getEntity() instanceof LivingEntity l && !EntityClassification.matchesClassification(e.getEntity(), EntityClassification.UNALIVE)){
             ItemBuilder stored = ItemUtils.getStoredItem(p);
             if (stored == null) return;
             ItemMeta storedMeta = stored.getMeta();

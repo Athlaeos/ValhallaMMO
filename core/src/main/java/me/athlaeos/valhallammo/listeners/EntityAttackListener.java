@@ -72,6 +72,21 @@ public class EntityAttackListener implements Listener {
 
     private static final boolean multiplyDamageNumbers = ValhallaMMO.getPluginConfig().getBoolean("damage_multipliers_multiplicative");
 
+    private static final Map<EntityClassification, String> entityClassificationDamageStatSources = new HashMap<>();
+
+    static {
+        entityClassificationDamageStatSources.put(EntityClassification.ANIMAL, "ANIMAL_DAMAGE_DEALT");
+        entityClassificationDamageStatSources.put(EntityClassification.UNDEAD, "UNDEAD_DAMAGE_DEALT");
+        entityClassificationDamageStatSources.put(EntityClassification.ARTHROPOD, "ATHROPOD_DAMAGE_DEALT");
+        entityClassificationDamageStatSources.put(EntityClassification.NETHER_NATIVE, "NETHER_DAMAGE_DEALT");
+        entityClassificationDamageStatSources.put(EntityClassification.OVERWORLD_NATIVE, "OVERWORLD_DAMAGE_DEALT");
+        entityClassificationDamageStatSources.put(EntityClassification.END_NATIVE, "END_DAMAGE_DEALT");
+        entityClassificationDamageStatSources.put(EntityClassification.AQUATIC, "AQUATIC_DAMAGE_DEALT");
+        entityClassificationDamageStatSources.put(EntityClassification.ALIVE, "LIVING_DAMAGE_DEALT");
+        entityClassificationDamageStatSources.put(EntityClassification.BOSS, "BOSS_DAMAGE_DEALT");
+        entityClassificationDamageStatSources.put(EntityClassification.ILLAGER, "ILLAGER_DAMAGE_DEALT");
+    }
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onSkillGapDamage(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof LivingEntity v)) return;
@@ -101,6 +116,13 @@ public class EntityAttackListener implements Listener {
         Entity trueDamager = EntityUtils.getTrueDamager(e);
 
         double damageMultiplier = 1;
+
+        for (EntityClassification entityClassification : entityClassificationDamageStatSources.keySet()){
+            if (EntityClassification.matchesClassification(v, entityClassification)) {
+                String statSource = entityClassificationDamageStatSources.get(entityClassification);
+                damageMultiplier += AccumulativeStatManager.getCachedAttackerRelationalStats(statSource, v, e.getDamager(), 10000, true);
+            }
+        }
 
         String cause = EntityDamagedListener.getLastDamageCause(v);
         boolean sweep = e.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK || (cause != null && cause.equals("ENTITY_SWEEP_ATTACK"));
@@ -348,7 +370,7 @@ public class EntityAttackListener implements Listener {
                             double damage = e.getDamage() * fraction;
                             if (damage > 0 && radius > 0){
                                 for (Entity entity : e.getEntity().getWorld().getNearbyEntities(e.getEntity().getLocation(), radius, radius, radius, (en) -> en instanceof LivingEntity)){
-                                    if (EntityClassification.matchesClassification(entity.getType(), EntityClassification.UNALIVE) || entity.equals(a)) continue;
+                                    if (EntityClassification.matchesClassification(entity, EntityClassification.UNALIVE) || entity.equals(a)) continue;
                                     EntityUtils.damage((LivingEntity) entity, a, damage, "ENTITY_SWEEP_ATTACK", false);
                                 }
                             }
@@ -369,7 +391,7 @@ public class EntityAttackListener implements Listener {
 
                         EntityDamagedListener.setCustomDamageCause(v.getUniqueId(), originalCause.toString());
 
-                        if (lifeStealValue > 0 && trueDamager instanceof LivingEntity td && !EntityClassification.matchesClassification(v.getType(), EntityClassification.UNALIVE)){
+                        if (lifeStealValue > 0 && trueDamager instanceof LivingEntity td && !EntityClassification.matchesClassification(v, EntityClassification.UNALIVE)){
                             EntityRegainHealthEvent healEvent = new EntityRegainHealthEvent(td, lifeStealValue, EntityRegainHealthEvent.RegainReason.CUSTOM);
                             ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(healEvent);
                             if (!healEvent.isCancelled()){

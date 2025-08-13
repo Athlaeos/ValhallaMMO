@@ -716,7 +716,7 @@ public class LootListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDrops(EntityDeathEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || EntityClassification.matchesClassification(e.getEntity(), EntityClassification.UNALIVE)) return;
         LivingEntity entity = e.getEntity();
         Entity killer = entity.getKiller();
         EntityDamageEvent lastDamageSource = entity.getLastDamageCause();
@@ -798,7 +798,7 @@ public class LootListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityEquipmentSpawn(EntitySpawnEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof LivingEntity le) || le.getEquipment() == null ||
-                EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.UNALIVE)) return;
+                EntityClassification.matchesClassification(e.getEntity(), EntityClassification.UNALIVE)) return;
         AttributeInstance maxHealth = le.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (e.getEntity().getCustomName() != null || (maxHealth != null && maxHealth.getDefaultValue() != maxHealth.getValue())) return; // do not modify equipment if entity is modified themselves
 

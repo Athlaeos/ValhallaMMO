@@ -64,7 +64,7 @@ public class ProfileStatAttackerVictimClassSource implements AccumulativeStatSou
 
     @Override
     public double fetch(Entity victim, Entity attackedBy, boolean use) {
-        if (attackedBy instanceof Player pl && EntityClassification.matchesClassification(victim.getType(), entityClassification)){
+        if (attackedBy instanceof Player pl && EntityClassification.matchesClassification(victim, entityClassification)){
             Profile profile = ProfileCache.getOrCache(pl, type);
             String requiredPermission = SkillRegistry.isRegistered(profile.getSkillType()) ? SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission() : null;
             if (requiredPermission != null && !pl.hasPermission(requiredPermission)) return def;

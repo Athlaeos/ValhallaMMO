@@ -342,6 +342,17 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("DAMAGE_ABSORPTION", (i) -> i >= 0, "\uEEAC", StatFormat.FLOAT_P2).addModifier(Material.OBSIDIAN));
         registerNewEffect(new GenericWrapper("ARMOR_INVISIBILITY", (i) -> true, "\uEEAD", StatFormat.NONE).addModifier(Material.GLASS, 0, 0));
         registerNewEffect(new GenericWrapper("BLOCKING_SPEED", (i) -> i >= 0, "\uEEAE", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.SHIELD));
+        registerNewEffect(new GenericWrapper("DAMAGE_ANIMAL", (i) -> i >= 0, "\uEEAF", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.COOKED_BEEF));
+        registerNewEffect(new GenericWrapper("DAMAGE_UNDEAD", (i) -> i >= 0, "\uEEB0", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.ROTTEN_FLESH));
+        registerNewEffect(new GenericWrapper("DAMAGE_ARTHROPODS", (i) -> i >= 0, "\uEEB1", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.SPIDER_EYE));
+        registerNewEffect(new GenericWrapper("DAMAGE_NETHER", (i) -> i >= 0, "\uEEb2", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.NETHERRACK));
+        registerNewEffect(new GenericWrapper("DAMAGE_OVERWORLD", (i) -> i >= 0, "\uEEB3", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.GRASS_BLOCK));
+        registerNewEffect(new GenericWrapper("DAMAGE_END", (i) -> i >= 0, "\uEEB4", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.END_STONE));
+        registerNewEffect(new GenericWrapper("DAMAGE_AQUATIC", (i) -> i >= 0, "\uEEB5", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.SPONGE));
+        registerNewEffect(new GenericWrapper("DAMAGE_LIVING", (i) -> i >= 0, "\uEEB6", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.OAK_SAPLING));
+        registerNewEffect(new GenericWrapper("DAMAGE_BOSS", (i) -> i >= 0, "\uEEB7", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.DRAGON_EGG));
+        registerNewEffect(new GenericWrapper("DAMAGE_ILLAGER", (i) -> i >= 0, "\uEEB8", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.TOTEM_OF_UNDYING));
+        registerNewEffect(new GenericWrapper("BUTCHERY_DROPS", (i) -> i >= 0, "\uEEB9", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.BEEF));
     }
 
     public static void reload(){

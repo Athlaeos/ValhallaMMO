@@ -160,6 +160,7 @@ public class PowerProfile extends Profile {
         stringSetStat("unlockedRecipes");
         stringSetStat("unlockedBlockConversions");
         stringSetStat("permanentPotionEffects");
+        stringSetStat("entityClassifications");
 
         booleanStat("hidePotionEffectBar");
         booleanStat("hideCraftingEffects");
@@ -582,6 +583,9 @@ public class PowerProfile extends Profile {
 
     public Collection<String> getPermanentPotionEffects(){ return getStringSet("permanentPotionEffects");}
     public void setPermanentPotionEffects(Collection<String> value){ setStringSet("permanentPotionEffects", value);}
+
+    public Collection<String> getEntityClassifications(){ return getStringSet("entityClassifications");}
+    public void setEntityClassifications(Collection<String> value){ setStringSet("entityClassifications", value);}
 
     public PowerProfile(UUID owner) {
         super(owner);

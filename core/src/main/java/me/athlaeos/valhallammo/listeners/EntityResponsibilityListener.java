@@ -48,7 +48,7 @@ public class EntityResponsibilityListener implements Listener {
             CustomDamageType type = effectToDamageTypeMapping.get(effect.getType());
             if (type == null) continue;
             for (LivingEntity affected : e.getAffectedEntities()){
-                boolean isUndead = EntityClassification.matchesClassification(affected.getType(), EntityClassification.UNDEAD);
+                boolean isUndead = EntityClassification.matchesClassification(affected, EntityClassification.UNDEAD);
                 // undead creatures are an exception, because they are harmed from healing and healed from harm
                 if (isUndead && effect.getType() == PotionEffectMappings.INSTANT_DAMAGE.getPotionEffectType()) continue;
                 if (!isUndead && effect.getType() == PotionEffectMappings.INSTANT_HEALTH.getPotionEffectType()) continue;
@@ -73,7 +73,7 @@ public class EntityResponsibilityListener implements Listener {
             CustomDamageType type = effectToDamageTypeMapping.get(effect.getType());
             if (type == null) continue;
             for (LivingEntity affected : e.getAffectedEntities()){
-                boolean isUndead = EntityClassification.matchesClassification(affected.getType(), EntityClassification.UNDEAD);
+                boolean isUndead = EntityClassification.matchesClassification(affected, EntityClassification.UNDEAD);
                 // undead creatures are an exception, because they are harmed from healing and healed from harm
                 if (isUndead && effect.getType() == PotionEffectMappings.INSTANT_DAMAGE.getPotionEffectType()) continue;
                 if (!isUndead && effect.getType() == PotionEffectMappings.INSTANT_HEALTH.getPotionEffectType()) continue;

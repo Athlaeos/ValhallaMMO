@@ -380,7 +380,7 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onAnimalKill(EntityDeathEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.ANIMAL)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !EntityClassification.matchesClassification(e.getEntity(), EntityClassification.ANIMAL)) return;
         Player killer = e.getEntity().getKiller();
         if (killer == null) return;
         if (WorldGuardHook.inDisabledRegion(killer.getLocation(), killer, WorldGuardHook.VMMO_SKILL_FARMING)) return;
@@ -399,7 +399,7 @@ public class FarmingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onAnimalBreed(EntityBreedEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) ||
-                !EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.ANIMAL)) return;
+                !EntityClassification.matchesClassification(e.getEntity(), EntityClassification.ANIMAL)) return;
         if (!(e.getBreeder() instanceof Player p) || !(e.getEntity() instanceof org.bukkit.entity.Ageable a)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_FARMING)) return;
 
@@ -417,7 +417,7 @@ public class FarmingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onAnimalShear(PlayerShearEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) ||
-                !EntityClassification.matchesClassification(e.getEntity().getType(), EntityClassification.ANIMAL) ||
+                !EntityClassification.matchesClassification(e.getEntity(), EntityClassification.ANIMAL) ||
                 !entityShearExpValues.containsKey(e.getEntity().getType())) return;
         if (WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
 
