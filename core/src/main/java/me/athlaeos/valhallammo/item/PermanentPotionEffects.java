@@ -45,7 +45,7 @@ public class PermanentPotionEffects {
                     entitiesWithPermanentEffects.remove(uuid);
                     continue;
                 }
-                for (String triggerID : permanentEffects.keySet()){
+                for (String triggerID : new HashSet<>(permanentEffects.keySet())){
                     EffectTrigger trigger = EffectTriggerRegistry.getTrigger(triggerID);
                     if (trigger instanceof EffectTrigger.ConstantTrigger constantTrigger) {
                         triggersToDelay.put(triggerID, constantTrigger.tickDelay());
@@ -55,7 +55,7 @@ public class PermanentPotionEffects {
                     }
                 }
             }
-            for (String trigger : triggersToDelay.keySet()){
+            for (String trigger : new HashSet<>(triggersToDelay.keySet())){
                 int existingDelay = triggerDelay.getOrDefault(trigger, 0);
                 if (existingDelay > 0) triggerDelay.put(trigger, existingDelay - 10);
                 else triggerDelay.put(trigger, existingDelay + triggersToDelay.get(trigger));
