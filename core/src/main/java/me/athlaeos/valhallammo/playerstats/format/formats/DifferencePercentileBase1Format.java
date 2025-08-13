@@ -7,12 +7,12 @@ import me.athlaeos.valhallammo.utility.Utils;
 public class DifferencePercentileBase1Format extends StatFormat {
     String precision;
     public DifferencePercentileBase1Format(int precision){
-        this.precision = "%,." + precision + "f%%";
+        this.precision = "%,." + precision + "f";
     }
 
     @Override
     public String format(Number stat) {
         double val = Utils.round6Decimals(stat.doubleValue());
-        return (val >= 0 ? "+" : "") + StringUtils.trimTrailingZeroes(String.format(precision, val * 100));
+        return (val >= 0 ? "+" : "") + StringUtils.trimTrailingZeroes(String.format(precision, val * 100)) + "%";
     }
 }
