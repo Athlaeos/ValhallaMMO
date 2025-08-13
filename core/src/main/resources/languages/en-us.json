@@ -1659,20 +1659,32 @@
     "material-iron-spear": "&fIron Spear",
     "material-diamond-spear": "&fDiamond Spear",
     "material-netherite-spear": "&fNetherite Spear",
-    "material-royal-diamond-helmet": "&bRoyal Diamond Helmet",
-    "material-royal-diamond-chestplate": "&bRoyal Diamond Chestplate",
-    "material-royal-diamond-leggings": "&bRoyal Diamond Leggings",
-    "material-royal-diamond-boots": "&bRoyal Diamond Boots",
-    "material-royal-diamond-sword": "&bRoyal Diamond Sword",
-    "material-royal-diamond-axe": "&bRoyal Diamond Axe",
-    "material-royal-diamond-pickaxe": "&bRoyal Diamond Pickaxe",
-    "material-royal-diamond-shovel": "&bRoyal Diamond Shovel",
-    "material-royal-diamond-hoe": "&bRoyal Diamond Hoe",
+    "material-royal-diamond-helmet": "&eRoyal Diamond Helmet",
+    "material-royal-diamond-chestplate": "&eRoyal Diamond Chestplate",
+    "material-royal-diamond-leggings": "&eRoyal Diamond Leggings",
+    "material-royal-diamond-boots": "&eRoyal Diamond Boots",
+    "material-royal-diamond-sword": "&eRoyal Diamond Sword",
+    "material-royal-diamond-dagger": "&eRoyal Diamond Dagger",
+    "material-royal-diamond-rapier": "&eRoyal Diamond Rapier",
+    "material-royal-diamond-mace": "&eRoyal Diamond Mace",
+    "material-royal-diamond-spear": "&eRoyal Diamond Spear",
+    "material-royal-diamond-greataxe": "&eRoyal Diamond Greataxe",
+    "material-royal-diamond-warhammer": "&eRoyal Diamond Warhammer",
+    "material-royal-diamond-axe": "&eRoyal Diamond Axe",
+    "material-royal-diamond-pickaxe": "&eRoyal Diamond Pickaxe",
+    "material-royal-diamond-shovel": "&eRoyal Diamond Shovel",
+    "material-royal-diamond-hoe": "&eRoyal Diamond Hoe",
     "material-royal-netherite-helmet": "&eRoyal Netherite Helmet",
     "material-royal-netherite-chestplate": "&eRoyal Netherite Chestplate",
     "material-royal-netherite-leggings": "&eRoyal Netherite Leggings",
     "material-royal-netherite-boots": "&eRoyal Netherite Boots",
     "material-royal-netherite-sword": "&eRoyal Netherite Sword",
+    "material-royal-netherite-dagger": "&eRoyal Netherite Dagger",
+    "material-royal-netherite-rapier": "&eRoyal Netherite Rapier",
+    "material-royal-netherite-mace": "&eRoyal Netherite Mace",
+    "material-royal-netherite-spear": "&eRoyal Netherite Spear",
+    "material-royal-netherite-greataxe": "&eRoyal Netherite Greataxe",
+    "material-royal-netherite-warhammer": "&eRoyal Netherite Warhammer",
     "material-royal-netherite-axe": "&eRoyal Netherite Axe",
     "material-royal-netherite-pickaxe": "&eRoyal Netherite Pickaxe",
     "material-royal-netherite-shovel": "&eRoyal Netherite Shovel",
@@ -1681,8 +1693,8 @@
     "material-assassins-cloak": "&fAssassin's Cloak",
     "material-assassins-leggings": "&fAssassin's Leggings",
     "material-assassins-boots": "&fAssassin's Boots",
-    "material-royal-bow": "&bRoyal Bow",
-    "material-royal-crossbow": "&bRoyal Crossbow",
+    "material-royal-bow": "&eRoyal Bow",
+    "material-royal-crossbow": "&eRoyal Crossbow",
     "material-battle-burrito": "&fBattle Burrito",
     "material-aegis-stroganoff": "&fAegis Stroganoff",
     "material-wagyu-steak": "&fWagyu Steak",
@@ -3657,13 +3669,74 @@
     "service_training_unavailable_button_lore": [
       "&cI have nothing more to teach you"
     ],
+    "lore_assassin_equipment": [
+      "&aPerfect stealth armor. Grants &f\uED0D&eTrue Invisibility"
+    ],
+    "lore_assassin_helmet": [
+      "&aGrants &f\uED10&aNight Vision in darkness"
+    ],
+    "lore_assassin_chestplate": [
+      "&aGrants &f\uEE0C&aCrit Damage out of combat"
+    ],
+    "lore_assassin_leggings": [
+      "&aGrants &f\uED00&aSpeed Boost in darkness"
+    ],
+    "lore_assassin_boots": [
+      "&aGrants &f\uEE0D&aArmor Penetration out of combat"
+    ],
     "lore_royal_diamond_equipment": [
-      "&7A brilliant piece of gemstone armor. ",
-      "&aConverts light into healing."
+      "&aConverts light into &f\uEE8E&aHealing."
     ],
     "lore_royal_netherite_equipment": [
-      "&7A profane piece of hellish armor. ",
-      "&eGrants crit chance in darkness"
+      "&aGrants &f\uEE0B&aCrit Chance in darkness"
+    ],
+    "lore_royal_sword": [
+      "&aGrants &f\uEE1F&aDamage Resistance when attacked"
+    ],
+    "lore_royal_dagger": [
+      "&aGrants &f\uEE0B&aCrit Chance and &f\uEE0C&aCrit Damage",
+      "&awhile out of combat"
+    ],
+    "lore_royal_spear": [
+      "&aGrants &f\uEE59&aMovement Speed while out of combat"
+    ],
+    "lore_royal_greataxe": [
+      "&aGrants &f\uEE19&aMelee Damage when attacked"
+    ],
+    "lore_royal_mace": [
+      "&aGrants high &f\uEE1D&aVelocity Damage while out",
+      "&aof combat"
+    ],
+    "lore_royal_warhammer": [
+      "&aInflicts vulnerability to &f\uEE06&aKnockback",
+      "&aon hit, as well as nausea"
+    ],
+    "lore_royal_rapier": [
+      "&aAttacking steals the enemy's &f\uEE59&aMovement",
+      "&aSpeed and grants it to you"
+    ],
+    "lore_royal_knuckles": [
+      "&aAttacking steals the enemy's &f\uEE59&aAttack",
+      "&aDamage and grants it to you"
+    ],
+    "lore_royal_axes": [
+      "&aIncreases &f\uEE3E&aWoodcutting Drops"
+    ],
+    "lore_royal_pickaxes": [
+      "&aIncreases &f\uEE3C&aMining Drops"
+    ],
+    "lore_royal_shovels": [
+      "&aIncreases &f\uEE40&aDigging Drops"
+    ],
+    "lore_royal_hoes": [
+      "&aIncreases &f\uEE42&aFarming Drops"
+    ],
+    "lore_royal_bows": [
+      "&aGrants &f\uEE10&aArmor Penetration while",
+      "&aout of combat"
+    ],
+    "lore_royal_crossbows": [
+      "&aInflicts &f\uEE10&aArmor Break on enemies"
     ]
   },
   "stringIndex": {},
