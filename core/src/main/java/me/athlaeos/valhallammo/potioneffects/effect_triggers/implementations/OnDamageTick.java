@@ -46,9 +46,9 @@ public class OnDamageTick implements EffectTrigger, Listener {
         singleListenerInstance = this;
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityDamaged(EntityDamageEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof LivingEntity le) || e.isCancelled()) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof LivingEntity le)) return;
         EntityProperties properties = EntityCache.getAndCacheProperties(le);
         if (!properties.getPermanentPotionEffects().isEmpty() && !properties.getPermanentPotionEffects().getOrDefault("on_damaged", new ArrayList<>()).isEmpty()) {
             trigger(le, properties.getPermanentPotionEffects().getOrDefault("on_damaged", new ArrayList<>()));
