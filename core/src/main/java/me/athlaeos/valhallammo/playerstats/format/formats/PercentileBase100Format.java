@@ -7,11 +7,11 @@ import me.athlaeos.valhallammo.utility.Utils;
 public class PercentileBase100Format extends StatFormat {
     String precision;
     public PercentileBase100Format(int precision){
-        this.precision = "%,." + precision + "f%%";
+        this.precision = "%,." + precision + "f";
     }
 
     @Override
     public String format(Number stat) {
-        return StringUtils.trimTrailingZeroes(String.format(precision, Utils.round6Decimals(stat.doubleValue())));
+        return StringUtils.trimTrailingZeroes(String.format(precision, Utils.round6Decimals(stat.doubleValue()))) + "%";
     }
 }
