@@ -35,9 +35,9 @@ public class JoinLeaveListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e) {
-        ProfileRegistry.getPersistence().loadProfile(e.getPlayer().getUniqueId());
         EntityCache.getAndCacheProperties(e.getPlayer());
         PotionEffectRegistry.updatePlayerAffectedStatus(e.getPlayer());
+        ProfileRegistry.getPersistence().requestProfile(e.getPlayer().getUniqueId());
         GlobalEffect.temporarilyRevealBossBar(e.getPlayer());
         PlayerMenuUtilManager.removePlayerMenuUtility(e.getPlayer().getUniqueId());
 

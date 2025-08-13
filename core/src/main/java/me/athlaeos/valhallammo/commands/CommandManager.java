@@ -44,6 +44,7 @@ public class CommandManager implements TabExecutor {
 		commands.put("export", new ExportCommand());
 		if (ValhallaMMO.isTradingSystemEnabled()) commands.put("merchants", new ManageMerchantsCommand());
 		commands.put("debug", new Debugger());
+		commands.put("migrate", new MigrateCommand());
 //		commands.put("toggleexp", new HideBossBarsCommand());
 //		commands.put("revealrecipekeys", new RecipeRevealToggleCommand());
 	}
