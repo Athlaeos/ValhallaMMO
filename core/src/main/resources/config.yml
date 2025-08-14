@@ -127,6 +127,31 @@ block_recovery_speed: 0.015 # The amount of health (of max 1, per tick) at which
 
 # GAMEPLAY
 
+attribute_stat_priorities:
+  GENERIC_ATTACK_DAMAGE: 10.0 # primary stat
+  EXTRA_BLUDGEONING_DAMAGE: 10.0
+  ARROW_DAMAGE: 10.0
+  GENERIC_ARMOR: 10.0
+  GENERIC_ATTACK_SPEED: 9.0 # secondary stat
+  GENERIC_ARMOR_TOUGHNESS: 9.0
+  ARROW_VELOCITY: 9.0
+  CRIT_CHANCE: 8.0 # ternary stats
+  STUN_CHANCE: 8.0
+  ARROW_PIERCING: 8.0
+  DAMAGE_ABSORPTION: 8.0
+  GENERIC_KNOCKBACK_RESISTANCE: 7.0
+  DIG_SPEED: 6.0
+  ATTACK_REACH: 6.0
+  MINING_DROPS: 5.0
+  WOODCUTTING_DROPS: 5.0
+  DIGGING_DROPS: 5.0
+  FARMING_DROPS: 5.0
+  MINING_RARE_DROPS: 4.0
+  WOODCUTTING_RARE_DROPS: 4.0
+  DIGGING_RARE_DROPS: 4.0
+  FARMING_RARE_DROPS: 4.0
+  FISHING_LUCK: 4.0
+
 inventory_repairing_vanilla: true # If false, players will no longer be able to repair vanilla items in their inventories
 inventory_repairing_valhalla: true # If false, players will no longer be able to repair valhalla items in their inventories
 
