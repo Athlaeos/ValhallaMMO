@@ -42,19 +42,12 @@ public class InstantCustomDamage extends PotionEffectWrapper {
                     .replace("%prefix%", prefix)
                     .replace("%charges_roman%", this.charges >= 0 ? StringUtils.toRoman(this.charges) : "")
                     .replace("%charges_numeric%", String.valueOf(this.charges));
-            ItemUtils.replaceOrAddLore(i,
-                    translation
-                            .replace("%icon%", "")
-                            .replace("%value%", "")
-                            .replace("%duration%", "").trim(),
-                    Utils.chat(prefix +
-                            (translation
-                                    .replace("%icon%", getEffectIcon() + prefix)
-                                    .replace("%value%", String.format("%,.1f", amplifier))
-                                    .replace("%duration%", "") +
-                                    ((this.charges <= 0) ? "" : charges)).trim()
-                    )
-            );
+            i.appendLore(prefix +
+                    (translation
+                            .replace("%icon%", getEffectIcon() + prefix)
+                            .replace("%value%", String.format("%,.1f", amplifier))
+                            .replace("%duration%", "") +
+                            ((this.charges <= 0) ? "" : charges)).trim());
         }
     }
 

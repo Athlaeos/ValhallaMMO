@@ -44,19 +44,12 @@ public class Bleed extends PotionEffectWrapper {
             int stacks = (int) Math.max(1, Math.floor(this.amplifier)); // the amount of stacks applied will be the first decimal number of the amplifier
             double damage = (this.amplifier - stacks) * 10; // the damage will be the decimals of the amplifier multiplied by 10
             // example: 2.05 will deal 2 stacks of bleed each doing 0.5 damage (0.05 * 10)
-            ItemUtils.replaceOrAddLore(i,
-                    translation
-                            .replace("%icon%", "")
-                            .replace("%value%", "")
-                            .replace("%duration%", "").trim(),
-                    Utils.chat(prefix +
-                            (translation
-                                    .replace("%icon%", getEffectIcon() + prefix)
-                                    .replace("%value%", String.format("%s %.1f", StringUtils.toRoman(Math.max(1, stacks)), damage))
-                                    .replace("%duration%", String.format("(%s)", StringUtils.toTimeStamp(duration, 20))) +
-                                    ((this.charges <= 0) ? "" : charges)).trim()
-                    )
-            );
+            i.appendLore(prefix +
+                    (translation
+                            .replace("%icon%", getEffectIcon() + prefix)
+                            .replace("%value%", String.format("%s %.1f", StringUtils.toRoman(Math.max(1, stacks)), damage))
+                            .replace("%duration%", String.format("(%s)", StringUtils.toTimeStamp(duration, 20))) +
+                            ((this.charges <= 0) ? "" : charges)).trim());
         }
     }
 

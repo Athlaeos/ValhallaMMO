@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeRemove;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.item.item_attributes.implementations.AttributeDisplayWrapper;
 import me.athlaeos.valhallammo.item.item_attributes.implementations.AttributeHiddenWrapper;
@@ -197,19 +198,6 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("BACK_PROTECTION", StatFormat.PERCENTILE_BASE_1_P1, "\uEEAA", (i) -> i >= 0).addModifier(Material.TURTLE_HELMET));
         register(new AttributeDisplayWrapper("FRONT_PROTECTION", StatFormat.PERCENTILE_BASE_1_P1, "\uEEAB", (i) -> i >= 0).addModifier(Material.OBSERVER));
         register(new AttributeDisplayWrapper("DAMAGE_ABSORPTION", StatFormat.FLOAT_P2, "\uEEAC", (i) -> i >= 0).addModifier(Material.OBSIDIAN));
-        register(new AttributeDisplayWrapper("ARMOR_INVISIBILITY", StatFormat.NONE, "\uEEAD", (i) -> true).addModifier(Material.GLASS, 0, 0));
-        register(new AttributeDisplayWrapper("BLOCKING_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEEAE", (i) -> i >= 0).addModifier(Material.SHIELD));
-        register(new AttributeDisplayWrapper("DAMAGE_ANIMAL", StatFormat.PERCENTILE_BASE_1_P1, "\uEEAF", (i) -> i >= 0).addModifier(Material.COOKED_BEEF));
-        register(new AttributeDisplayWrapper("DAMAGE_UNDEAD", StatFormat.PERCENTILE_BASE_1_P1, "\uEEB0", (i) -> i >= 0).addModifier(Material.ROTTEN_FLESH));
-        register(new AttributeDisplayWrapper("DAMAGE_ARTHROPODS", StatFormat.PERCENTILE_BASE_1_P1, "\uEEB1", (i) -> i >= 0).addModifier(Material.SPIDER_EYE));
-        register(new AttributeDisplayWrapper("DAMAGE_NETHER", StatFormat.PERCENTILE_BASE_1_P1, "\uEEb2", (i) -> i >= 0).addModifier(Material.NETHERRACK));
-        register(new AttributeDisplayWrapper("DAMAGE_OVERWORLD", StatFormat.PERCENTILE_BASE_1_P1, "\uEEB3", (i) -> i >= 0).addModifier(Material.GRASS_BLOCK));
-        register(new AttributeDisplayWrapper("DAMAGE_END", StatFormat.PERCENTILE_BASE_1_P1, "\uEEB4", (i) -> i >= 0).addModifier(Material.END_STONE));
-        register(new AttributeDisplayWrapper("DAMAGE_AQUATIC", StatFormat.PERCENTILE_BASE_1_P1, "\uEEB5", (i) -> i >= 0).addModifier(Material.SPONGE));
-        register(new AttributeDisplayWrapper("DAMAGE_LIVING", StatFormat.PERCENTILE_BASE_1_P1, "\uEEB6", (i) -> i >= 0).addModifier(Material.OAK_SAPLING));
-        register(new AttributeDisplayWrapper("DAMAGE_BOSS", StatFormat.PERCENTILE_BASE_1_P1, "\uEEB7", (i) -> i >= 0).addModifier(Material.DRAGON_EGG));
-        register(new AttributeDisplayWrapper("DAMAGE_ILLAGER", StatFormat.PERCENTILE_BASE_1_P1, "\uEEB8", (i) -> i >= 0).addModifier(Material.TOTEM_OF_UNDYING));
-        register(new AttributeDisplayWrapper("BUTCHERY_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEEB9", (i) -> i >= 0).addModifier(Material.BEEF));
 
         addVanillaStat(Material.WOODEN_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
         addVanillaStat(Material.WOODEN_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2), getCopy("MINING_SPEED").setValue(2).setHidden(true));
@@ -425,7 +413,7 @@ public class ItemAttributesRegistry {
         Collection<String> exclude = new HashSet<>();
         List<AttributeWrapper> orderedWrappers = new ArrayList<>(stats.values());
         orderedWrappers.sort(Comparator.comparingDouble(wrapper ->
-            attributePriorities.getOrDefault(((AttributeWrapper) wrapper).getAttribute(), 0D)
+                attributePriorities.getOrDefault(((AttributeWrapper) wrapper).getAttribute(), 0D)
         ).thenComparing(wrapper -> ((AttributeWrapper) wrapper).getAttribute()));
         Collections.reverse(orderedWrappers);
         for (AttributeWrapper wrapper : orderedWrappers){

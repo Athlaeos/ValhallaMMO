@@ -440,7 +440,8 @@ public class PotionEffectRegistry {
             List<PotionEffectWrapper> orderedWrappers = new ArrayList<>(effects.values());
             // sorts effects from shortest to biggest, because if a bigger name matches part of a shorter name
             // its line will be overwritten because the plugin thinks the bigger name belongs to the smaller name effect
-            orderedWrappers.sort(Comparator.comparingInt((PotionEffectWrapper a) -> a.getEffectName().length()));
+            orderedWrappers.sort(Comparator.comparingInt((PotionEffectWrapper a) -> a.getEffectName().length())
+                    .thenComparing(PotionEffectWrapper::getEffect));
             Collections.reverse(orderedWrappers);
             for (PotionEffectWrapper effect : orderedWrappers){
                 if (!defaultEffects.containsKey(effect.getEffect()) || effect.getCharges() == 0) {

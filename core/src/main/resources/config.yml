@@ -17,6 +17,7 @@ profile-thread-count: 10 # The maximum number of threads that can be running to 
 # Different db types will have different minimum thread counts based on what tasks need to be run, if you fall below the minimum, it will alert you & automatically increase
 profile_caching: 10000 # duration (in milliseconds) where profiles are cached in memory. Changes to profiles should
 # immediately reset the cache, so it shouldn't really matter how high this is set to.
+saving_profiles_notification: true
 
 # REDIS
 # Should the plugin use redis for data loading & saving locks, only works with 'mysql' db_type
