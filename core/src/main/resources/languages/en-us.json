@@ -535,6 +535,17 @@
     "attribute_player_block_interaction_range": "%icon%%value% Block Reach",
     "attribute_armor_invisibility": "%icon% Adaptive Armor",
     "attribute_blocking_speed": "%icon%%value% Shield Mobility",
+    "attribute_damage_animal": "%icon%%value% Animal Damage",
+    "attribute_damage_undead": "%icon%%value% Undead Damage",
+    "attribute_damage_arthropods": "%icon%%value% Arthropod Damage",
+    "attribute_damage_nether": "%icon%%value% Nether Damage",
+    "attribute_damage_overworld": "%icon%%value% Overworld Damage",
+    "attribute_damage_end": "%icon%%value% End Damage",
+    "attribute_damage_aquatic": "%icon%%value% Aquatic Damage",
+    "attribute_damage_living": "%icon%%value% Living Damage",
+    "attribute_damage_boss": "%icon%%value% Boss Damage",
+    "attribute_damage_illager": "%icon%%value% Illager Damage",
+    "attribute_butchery_drops": "%icon%%value% Animal Drops",
     "stat_attribute_negative_prefix": "&c",
     "stat_attribute_positive_prefix": "&7",
 
@@ -754,6 +765,17 @@
     "potion_name_pacification": "Peace",
     "potion_name_armor_invisibility": "Glass",
     "potion_name_blocking_speed": "The Paladin",
+    "potion_name_damage_animal": "Butchering",
+    "potion_name_damage_undead": "Cleansing",
+    "potion_name_damage_arthropods": "Extermination",
+    "potion_name_damage_nether": "Purification",
+    "potion_name_damage_overworld": "Extinction",
+    "potion_name_damage_end": "Genocide",
+    "potion_name_damage_aquatic": "Thalassophobia",
+    "potion_name_damage_living": "Necrosis",
+    "potion_name_damage_boss": "Slaying",
+    "potion_name_damage_illager": "Justice",
+    "potion_name_butchery_drops": "Butchering",
 
     "effect_name_heal": "%icon% Instant Health %value%",
     "effect_name_bad_omen": "%icon% Bad Omen %value% %duration%",
@@ -966,6 +988,17 @@
     "effect_name_pacification": "%icon% Pacifying %duration%",
     "effect_name_armor_invisibility": "%icon% Adaptive Armor %duration%",
     "effect_name_blocking_speed": "%icon% Shield Mobility %value% %duration%",
+    "effect_name_damage_animal": "%icon% Animal Damage %value% %duration%",
+    "effect_name_damage_undead": "%icon% Undead Damage %value% %duration%",
+    "effect_name_damage_arthropods": "%icon% Arthropod Damage %value% %duration%",
+    "effect_name_damage_nether": "%icon% Nether Damage %value% %duration%",
+    "effect_name_damage_overworld": "%icon% Overworld Damage %value% %duration%",
+    "effect_name_damage_end": "%icon% End Damage %value% %duration%",
+    "effect_name_damage_aquatic": "%icon% Aquatic Damage %value% %duration%",
+    "effect_name_damage_living": "%icon% Living Damage %value% %duration%",
+    "effect_name_damage_boss": "%icon% Boss Damage %value% %duration%",
+    "effect_name_damage_illager": "%icon% Illager Damage %value% %duration%",
+    "effect_name_butchery_drops": "%icon% Animal Drops %value% %duration%",
     "stat_potion_positive_prefix": "&a",
     "stat_potion_negative_prefix": "&c",
 
@@ -1185,6 +1218,17 @@
     "stat_icon_pacification": "",
     "stat_icon_armor_invisibility": "",
     "stat_icon_blocking_speed": "",
+    "stat_icon_damage_animal": "",
+    "stat_icon_damage_undead": "",
+    "stat_icon_damage_arthropods": "",
+    "stat_icon_damage_nether": "",
+    "stat_icon_damage_overworld": "",
+    "stat_icon_damage_end": "",
+    "stat_icon_damage_aquatic": "",
+    "stat_icon_damage_living": "",
+    "stat_icon_damage_boss": "",
+    "stat_icon_damage_illager": "",
+    "stat_icon_butchery_drops": "",
 
     "translation_next_page": "&7&lNext Page",
     "translation_previous_page": "&7&lPrevious Page",
@@ -1531,6 +1575,7 @@
     "trinket-tag-mask": "&8Mask",
     "trinket-tag-pin": "&8Pin",
     "trinket-tag-circlet": "&8Circlet",
+    "material-cleaver": "&fCleaver",
     "material-potion-belt": "&dAlchemist Belt",
     "material-dummy-head": "&fDummy Head",
     "material-crystal-apple": "&aCrystal Apple",
@@ -1568,19 +1613,18 @@
     "material-silver-armring": "&fSilver Armring",
     "material-attuned-parchment": "&dAttuned Parchment",
     "material-melted-wax": "&6Melted Wax",
-    "material-tutor-lotus": "&fTutor's Lotus",
-    "material-noxious-spores": "&fNoxious Spores",
-    "material-withered-filament": "&fWithered Filament",
-    "material-steelblossom": "&fSteelblossom",
+    "material-tutor-lotus": "&fLotus",
+    "material-noxious-spores": "&fSpores",
+    "material-withered-filament": "&fWithered Stalk",
+    "material-steelblossom": "&fTinblossom",
     "material-shimmerleaf": "&fShimmerleaf",
-    "material-pollen-stalk": "&fPollen Stalk",
-    "material-burnt-bark": "&fDessicated Bark",
+    "material-burnt-bark": "&fCharred Bark",
     "material-goldroot": "&fGoldroot",
-    "material-calcified-seed": "&fCalcified Seed",
+    "material-calcified-seed": "&fPale Seed",
     "material-knightsreed": "&fKnightsreed",
-    "material-ambrosial-nectar": "&fAmbrosial Nectar",
+    "material-ambrosial-nectar": "&fNectar",
     "material-bustling-fungus": "&fBustling Fungus",
-    "material-pollen-stalks": "&fPollen Stalks",
+    "material-pollen-stalks": "&fSaffron",
     "material-empty-vial": "&fEmpty Vial",
     "material-vial-poison": "&fVial 'o' Poison",
     "material-vial-harming": "&fVial 'o' Harming",
@@ -1592,7 +1636,7 @@
     "material-carbon-arrow": "&fCarbon Arrow",
     "material-stone-arrow": "&fStone Arrow",
     "material-copper-arrow": "&fCopper Arrow",
-    "material-golden-arrow": "&fGold Arrow",
+    "material-golden-arrow": "&fGolden Arrow",
     "material-iron-arrow": "&fIron Arrow",
     "material-diamond-arrow": "&fDiamond Arrow",
     "material-netherite-arrow": "&fNetherite Arrow",
@@ -1659,20 +1703,34 @@
     "material-iron-spear": "&fIron Spear",
     "material-diamond-spear": "&fDiamond Spear",
     "material-netherite-spear": "&fNetherite Spear",
-    "material-royal-diamond-helmet": "&bRoyal Diamond Helmet",
-    "material-royal-diamond-chestplate": "&bRoyal Diamond Chestplate",
-    "material-royal-diamond-leggings": "&bRoyal Diamond Leggings",
-    "material-royal-diamond-boots": "&bRoyal Diamond Boots",
-    "material-royal-diamond-sword": "&bRoyal Diamond Sword",
-    "material-royal-diamond-axe": "&bRoyal Diamond Axe",
-    "material-royal-diamond-pickaxe": "&bRoyal Diamond Pickaxe",
-    "material-royal-diamond-shovel": "&bRoyal Diamond Shovel",
-    "material-royal-diamond-hoe": "&bRoyal Diamond Hoe",
+    "material-royal-diamond-helmet": "&eRoyal Diamond Helmet",
+    "material-royal-diamond-chestplate": "&eRoyal Diamond Chestplate",
+    "material-royal-diamond-leggings": "&eRoyal Diamond Leggings",
+    "material-royal-diamond-boots": "&eRoyal Diamond Boots",
+    "material-royal-diamond-sword": "&eRoyal Diamond Sword",
+    "material-royal-diamond-dagger": "&eRoyal Diamond Dagger",
+    "material-royal-diamond-rapier": "&eRoyal Diamond Rapier",
+    "material-royal-diamond-mace": "&eRoyal Diamond Morningstar",
+    "material-royal-diamond-spear": "&eRoyal Diamond Spear",
+    "material-royal-diamond-knuckles": "&eRoyal Diamond Knuckles",
+    "material-royal-diamond-greataxe": "&eRoyal Diamond Greataxe",
+    "material-royal-diamond-warhammer": "&eRoyal Diamond Warhammer",
+    "material-royal-diamond-axe": "&eRoyal Diamond Axe",
+    "material-royal-diamond-pickaxe": "&eRoyal Diamond Pickaxe",
+    "material-royal-diamond-shovel": "&eRoyal Diamond Shovel",
+    "material-royal-diamond-hoe": "&eRoyal Diamond Hoe",
     "material-royal-netherite-helmet": "&eRoyal Netherite Helmet",
     "material-royal-netherite-chestplate": "&eRoyal Netherite Chestplate",
     "material-royal-netherite-leggings": "&eRoyal Netherite Leggings",
     "material-royal-netherite-boots": "&eRoyal Netherite Boots",
     "material-royal-netherite-sword": "&eRoyal Netherite Sword",
+    "material-royal-netherite-dagger": "&eRoyal Netherite Dagger",
+    "material-royal-netherite-rapier": "&eRoyal Netherite Rapier",
+    "material-royal-netherite-mace": "&eRoyal Netherite Mace",
+    "material-royal-netherite-spear": "&eRoyal Netherite Spear",
+    "material-royal-netherite-greataxe": "&eRoyal Netherite Greataxe",
+    "material-royal-netherite-knuckles": "&eRoyal Netherite Knuckles",
+    "material-royal-netherite-warhammer": "&eRoyal Netherite Warhammer",
     "material-royal-netherite-axe": "&eRoyal Netherite Axe",
     "material-royal-netherite-pickaxe": "&eRoyal Netherite Pickaxe",
     "material-royal-netherite-shovel": "&eRoyal Netherite Shovel",
@@ -1681,8 +1739,8 @@
     "material-assassins-cloak": "&fAssassin's Cloak",
     "material-assassins-leggings": "&fAssassin's Leggings",
     "material-assassins-boots": "&fAssassin's Boots",
-    "material-royal-bow": "&bRoyal Bow",
-    "material-royal-crossbow": "&bRoyal Crossbow",
+    "material-royal-bow": "&eRoyal Bow",
+    "material-royal-crossbow": "&eRoyal Crossbow",
     "material-battle-burrito": "&fBattle Burrito",
     "material-aegis-stroganoff": "&fAegis Stroganoff",
     "material-wagyu-steak": "&fWagyu Steak",
@@ -1701,6 +1759,7 @@
     "material-cooked-lionfish": "&fCooked Lionfish",
     "material-stuffed-hen": "&fStuffed Hen",
     "material-luxurious-stew": "&fHearty Stew",
+    "material-fishing-bait-t1": "&fTreasure Bait",
     "recipe-displayname-salvage": "&fSalvage %item%",
     "martialarts_perk_1_name": "&aHands of Stone",
     "martialarts_perk_1_description": "&7Grants you &a+{martialarts_damagebonus_add} &7extra unarmed damage",
@@ -3657,13 +3716,78 @@
     "service_training_unavailable_button_lore": [
       "&cI have nothing more to teach you"
     ],
+    "lore_assassin_equipment": [
+      "&aPerfect stealth armor. Grants &f\uED0D&eTrue Invisibility"
+    ],
+    "lore_assassin_helmet": [
+      "&aGrants &f\uED10&aNight Vision in darkness"
+    ],
+    "lore_assassin_chestplate": [
+      "&aGrants &f\uEE0C&aCrit Damage out of combat"
+    ],
+    "lore_assassin_leggings": [
+      "&aGrants &f\uED00&aSpeed Boost in darkness"
+    ],
+    "lore_assassin_boots": [
+      "&aGrants &f\uEE0D&aArmor Penetration out of combat"
+    ],
     "lore_royal_diamond_equipment": [
-      "&7A brilliant piece of gemstone armor. ",
-      "&aConverts light into healing."
+      "&aConverts light into &f\uEE8E&aHealing."
     ],
     "lore_royal_netherite_equipment": [
-      "&7A profane piece of hellish armor. ",
-      "&eGrants crit chance in darkness"
+      "&aGrants &f\uEE0B&aCrit Chance in darkness"
+    ],
+    "lore_royal_sword": [
+      "&aGrants &f\uEE1F&aDamage Resistance when attacked"
+    ],
+    "lore_royal_dagger": [
+      "&aGrants &f\uEE0B&aCrit Chance and &f\uEE0C&aCrit Damage",
+      "&awhile out of combat"
+    ],
+    "lore_royal_spear": [
+      "&aGrants &f\uEE59&aMovement Speed while out of combat"
+    ],
+    "lore_royal_greataxe": [
+      "&aGrants &f\uEE19&aMelee Damage when attacked"
+    ],
+    "lore_royal_mace": [
+      "&aGrants high &f\uEE1D&aVelocity Damage while out",
+      "&aof combat"
+    ],
+    "lore_royal_warhammer": [
+      "&aInflicts vulnerability to &f\uEE06&aKnockback",
+      "&aon hit, as well as nausea"
+    ],
+    "lore_royal_rapier": [
+      "&aAttacking steals the enemy's &f\uEE59&aMovement",
+      "&aSpeed and grants it to you"
+    ],
+    "lore_royal_knuckles": [
+      "&aAttacking steals the enemy's &f\uEE54&aAttack",
+      "&aDamage and grants it to you"
+    ],
+    "lore_royal_axes": [
+      "&aIncreases &f\uEE3E&aWoodcutting Drops"
+    ],
+    "lore_royal_pickaxes": [
+      "&aIncreases &f\uEE3C&aMining Drops"
+    ],
+    "lore_royal_shovels": [
+      "&aIncreases &f\uEE40&aDigging Drops"
+    ],
+    "lore_royal_hoes": [
+      "&aIncreases &f\uEE42&aFarming Drops"
+    ],
+    "lore_royal_bows": [
+      "&aGrants &f\uEE10&aArmor Penetration while",
+      "&aout of combat"
+    ],
+    "lore_royal_crossbows": [
+      "&aInflicts &f\uEE10&aArmor Break on enemies"
+    ],
+    "lore_fishing_bait": [
+      "&8Improves fishing luck by &95 &8when used.",
+      "&8Keep in hotbar while fishing to use."
     ]
   },
   "stringIndex": {},
