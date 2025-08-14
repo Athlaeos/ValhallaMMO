@@ -592,7 +592,7 @@ public class PotionEffectRegistry {
      */
     public static Map<String, CustomPotionEffect> getActiveEffects(LivingEntity p){
         Map<String, CustomPotionEffect> effects = new HashMap<>();
-        if (p instanceof Player pl && !pl.isOnline() || !p.isValid() || p.isDead()) return effects;
+        if ((p instanceof Player pl && !pl.isOnline()) || !p.isValid() || p.isDead()) return effects;
         String encodedEffects = p.getPersistentDataContainer().getOrDefault(POTION_EFFECTS, PersistentDataType.STRING, "");
         if (!StringUtils.isEmpty(encodedEffects)){
             for (String encodedEffect : encodedEffects.split(";")){

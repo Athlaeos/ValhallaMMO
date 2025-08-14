@@ -1613,19 +1613,18 @@
     "material-silver-armring": "&fSilver Armring",
     "material-attuned-parchment": "&dAttuned Parchment",
     "material-melted-wax": "&6Melted Wax",
-    "material-tutor-lotus": "&fTutor's Lotus",
-    "material-noxious-spores": "&fNoxious Spores",
-    "material-withered-filament": "&fWithered Filament",
-    "material-steelblossom": "&fSteelblossom",
+    "material-tutor-lotus": "&fLotus",
+    "material-noxious-spores": "&fSpores",
+    "material-withered-filament": "&fWithered Stalk",
+    "material-steelblossom": "&fTinblossom",
     "material-shimmerleaf": "&fShimmerleaf",
-    "material-pollen-stalk": "&fPollen Stalk",
-    "material-burnt-bark": "&fDessicated Bark",
+    "material-burnt-bark": "&fCharred Bark",
     "material-goldroot": "&fGoldroot",
-    "material-calcified-seed": "&fCalcified Seed",
+    "material-calcified-seed": "&fPale Seed",
     "material-knightsreed": "&fKnightsreed",
-    "material-ambrosial-nectar": "&fAmbrosial Nectar",
+    "material-ambrosial-nectar": "&fNectar",
     "material-bustling-fungus": "&fBustling Fungus",
-    "material-pollen-stalks": "&fPollen Stalks",
+    "material-pollen-stalks": "&fSaffron",
     "material-empty-vial": "&fEmpty Vial",
     "material-vial-poison": "&fVial 'o' Poison",
     "material-vial-harming": "&fVial 'o' Harming",
@@ -1637,7 +1636,7 @@
     "material-carbon-arrow": "&fCarbon Arrow",
     "material-stone-arrow": "&fStone Arrow",
     "material-copper-arrow": "&fCopper Arrow",
-    "material-golden-arrow": "&fGold Arrow",
+    "material-golden-arrow": "&fGolden Arrow",
     "material-iron-arrow": "&fIron Arrow",
     "material-diamond-arrow": "&fDiamond Arrow",
     "material-netherite-arrow": "&fNetherite Arrow",
@@ -1711,8 +1710,9 @@
     "material-royal-diamond-sword": "&eRoyal Diamond Sword",
     "material-royal-diamond-dagger": "&eRoyal Diamond Dagger",
     "material-royal-diamond-rapier": "&eRoyal Diamond Rapier",
-    "material-royal-diamond-mace": "&eRoyal Diamond Mace",
+    "material-royal-diamond-mace": "&eRoyal Diamond Morningstar",
     "material-royal-diamond-spear": "&eRoyal Diamond Spear",
+    "material-royal-diamond-knuckles": "&eRoyal Diamond Knuckles",
     "material-royal-diamond-greataxe": "&eRoyal Diamond Greataxe",
     "material-royal-diamond-warhammer": "&eRoyal Diamond Warhammer",
     "material-royal-diamond-axe": "&eRoyal Diamond Axe",
@@ -1729,6 +1729,7 @@
     "material-royal-netherite-mace": "&eRoyal Netherite Mace",
     "material-royal-netherite-spear": "&eRoyal Netherite Spear",
     "material-royal-netherite-greataxe": "&eRoyal Netherite Greataxe",
+    "material-royal-netherite-knuckles": "&eRoyal Netherite Knuckles",
     "material-royal-netherite-warhammer": "&eRoyal Netherite Warhammer",
     "material-royal-netherite-axe": "&eRoyal Netherite Axe",
     "material-royal-netherite-pickaxe": "&eRoyal Netherite Pickaxe",
@@ -1758,6 +1759,7 @@
     "material-cooked-lionfish": "&fCooked Lionfish",
     "material-stuffed-hen": "&fStuffed Hen",
     "material-luxurious-stew": "&fHearty Stew",
+    "material-fishing-bait-t1": "&fTreasure Bait",
     "recipe-displayname-salvage": "&fSalvage %item%",
     "martialarts_perk_1_name": "&aHands of Stone",
     "martialarts_perk_1_description": "&7Grants you &a+{martialarts_damagebonus_add} &7extra unarmed damage",
@@ -3761,7 +3763,7 @@
       "&aSpeed and grants it to you"
     ],
     "lore_royal_knuckles": [
-      "&aAttacking steals the enemy's &f\uEE59&aAttack",
+      "&aAttacking steals the enemy's &f\uEE54&aAttack",
       "&aDamage and grants it to you"
     ],
     "lore_royal_axes": [
@@ -3782,6 +3784,10 @@
     ],
     "lore_royal_crossbows": [
       "&aInflicts &f\uEE10&aArmor Break on enemies"
+    ],
+    "lore_fishing_bait": [
+      "&8Improves fishing luck by &95 &8when used.",
+      "&8Keep in hotbar while fishing to use."
     ]
   },
   "stringIndex": {},
