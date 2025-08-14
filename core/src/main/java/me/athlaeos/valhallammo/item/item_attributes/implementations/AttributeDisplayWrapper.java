@@ -122,12 +122,7 @@ public class AttributeDisplayWrapper extends AttributeWrapper {
         else {
             String translation = getAttributeName();
             if (StringUtils.isEmpty(translation)) return;
-            ItemUtils.replaceOrAddLore(i,
-                    translation
-                            .replace("%icon%", "")
-                            .replace("%value%", "").trim(),
-                    getLoreDisplay().trim()
-            );
+            i.appendLore(getLoreDisplay().trim());
         }
     }
 

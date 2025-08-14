@@ -27,6 +27,7 @@ public class ProfileRegistry {
     private static ProfilePersistence persistence = null;
     private static final int delay_profile_saving = ConfigManager.getConfig("config.yml").reload().get().getInt("db_persist_delay");
     private static Map<Class<? extends Profile>, Profile> registeredProfiles = Collections.unmodifiableMap(new HashMap<>());
+    private static final boolean savingProfilesMessage = ValhallaMMO.getPluginConfig().getBoolean("saving_profiles_notification");
 
     public static void registerDefaultProfiles(){
         registerProfileType(new PowerProfile(null));
@@ -97,10 +98,10 @@ public class ProfileRegistry {
         persistence.profileThreads.scheduleAtFixedRate(() -> {
             try {
                 long start = System.currentTimeMillis();
-                ValhallaMMO.logFine("Starting saving all profiles");
+                if (savingProfilesMessage) ValhallaMMO.logFine("Starting saving all profiles");
                 saveAll(false);
                 long end = System.currentTimeMillis();
-                ValhallaMMO.logFine("Finished saving all profiles in " + ((end - start) / 1000d) + "s");
+                if (savingProfilesMessage) ValhallaMMO.logFine("Finished saving all profiles in " + ((end - start) / 1000d) + "s");
                 LeaderboardManager.refreshLeaderboards();
             } catch (Exception e) {
                 throw new RuntimeException("An error occurred while saving profiles", e);

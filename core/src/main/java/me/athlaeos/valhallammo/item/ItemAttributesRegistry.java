@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -28,8 +29,16 @@ public class ItemAttributesRegistry {
 
     private static final Map<Material, Map<String, AttributeWrapper>> vanillaAttributes = new HashMap<>();
     private static final Map<String, AttributeWrapper> registeredAttributes = new HashMap<>();
+    private static final Map<String, Double> attributePriorities = new HashMap<>();
 
     public static void registerAttributes() {
+        ConfigurationSection section = ValhallaMMO.getPluginConfig().getConfigurationSection("attribute_stat_priorities");
+        if (section != null){
+            for (String key : section.getKeys(false)) {
+                attributePriorities.put(key, ValhallaMMO.getPluginConfig().getDouble("attribute_stat_priorities." + key));
+            }
+        }
+
         register(new AttributeHiddenWrapper("CUSTOM_MAX_DURABILITY", StatFormat.INT)); // custom durability is already displayed elsewhere, so this one is hidden
         ModifierRegistry.register(new DefaultAttributeAdd("custom_durability_set", "CUSTOM_MAX_DURABILITY", 1, 25, Material.DIAMOND));
         ModifierRegistry.register(new DefaultAttributeRemove("custom_durability_remove", "CUSTOM_MAX_DURABILITY", Material.COAL));
@@ -403,8 +412,10 @@ public class ItemAttributesRegistry {
         Map<String, AttributeWrapper> defaultStats = getStats(item.getMeta(), true);
         Collection<String> exclude = new HashSet<>();
         List<AttributeWrapper> orderedWrappers = new ArrayList<>(stats.values());
-        orderedWrappers.sort(Comparator.comparingInt(wrapper -> wrapper.getAttributeName().length()));
-        //Collections.reverse(orderedWrappers);
+        orderedWrappers.sort(Comparator.comparingDouble(wrapper ->
+                attributePriorities.getOrDefault(((AttributeWrapper) wrapper).getAttribute(), 0D)
+        ).thenComparing(wrapper -> ((AttributeWrapper) wrapper).getAttribute()));
+        Collections.reverse(orderedWrappers);
         for (AttributeWrapper wrapper : orderedWrappers){
             if (!defaultStats.containsKey(wrapper.getAttribute())) {
                 exclude.add(wrapper.getAttribute());
