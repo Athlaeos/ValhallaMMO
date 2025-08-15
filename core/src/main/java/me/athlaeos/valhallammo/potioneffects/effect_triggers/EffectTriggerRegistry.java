@@ -32,6 +32,8 @@ public class EffectTriggerRegistry {
         register(new DayTimeOrLightExposure(false, true)); // while_night_or_light
         register(new DayTimeOrLightExposure(true, false)); // while_day_or_dark
         register(new DayTimeOrLightExposure(true, true)); // while_day_or_light
+        register(new Submerged(true)); // while_in_water
+        register(new Submerged(false)); // while_not_in_water
     }
 
     public static void register(EffectTrigger trigger){

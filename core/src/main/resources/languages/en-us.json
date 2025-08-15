@@ -1760,6 +1760,10 @@
     "material-stuffed-hen": "&fStuffed Hen",
     "material-luxurious-stew": "&fHearty Stew",
     "material-fishing-bait-t1": "&fTreasure Bait",
+    "material-turtle-helmet": "&fTurtle Shellmet",
+    "material-turtle-chestplate": "&fTurtle Shell",
+    "material-turtle-leggings": "&fTurtle Knee Pads",
+    "material-turtle-boots": "&fTurtle Flippers",
     "recipe-displayname-salvage": "&fSalvage %item%",
     "martialarts_perk_1_name": "&aHands of Stone",
     "martialarts_perk_1_description": "&7Grants you &a+{martialarts_damagebonus_add} &7extra unarmed damage",
@@ -3788,6 +3792,18 @@
     "lore_fishing_bait": [
       "&8Improves fishing luck by &95 &8when used.",
       "&8Keep in hotbar while fishing to use."
+    ],
+    "lore_turtle_helmet": [
+      "&aGrants permanent &f\uED0C&aWater Breathing"
+    ],
+    "lore_turtle_chestplate": [
+      "&aGreatly reduces damage taken from your back"
+    ],
+    "lore_turtle_leggings": [
+      "&aGrants &f\uED09&aHealth regeneration while in water"
+    ],
+    "lore_turtle_boots": [
+      "&aGrants permanent &f\uED1E&aDolphin's Grace"
     ]
   },
   "stringIndex": {},
