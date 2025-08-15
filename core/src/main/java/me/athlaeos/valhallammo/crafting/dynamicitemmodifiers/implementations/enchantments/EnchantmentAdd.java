@@ -39,7 +39,11 @@ public class EnchantmentAdd extends DynamicItemModifier {
             ValhallaMMO.logWarning("EnchantmentAdd modifier was instantiated with an enchantment that doesn't exist: " + enchantment);
             return;
         }
-        if (level <= 0) context.getItem().getItem().removeEnchantment(e);
+        if (level <= 0) {
+            context.getItem().getItem().removeEnchantment(e);
+            if (context.getItem().getItem().getEnchantments().isEmpty() && context.getItem().getItem().getType() == Material.ENCHANTED_BOOK)
+                context.getItem().type(Material.BOOK);
+        }
         else {
             if (context.getItem().getItem().getType() == Material.BOOK) context.getItem().type(Material.ENCHANTED_BOOK);
             if (scaleWithSkill){
