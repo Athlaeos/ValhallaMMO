@@ -1,12 +1,14 @@
 package me.athlaeos.valhallammo.trading.services.type_implementations;
 
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantConfiguration;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
+import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
 import me.athlaeos.valhallammo.trading.menu.MerchantServicesMenu;
 import me.athlaeos.valhallammo.trading.menu.ServiceMenu;
 import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
@@ -36,7 +38,7 @@ public class TradingService extends ServiceType {
         AbstractVillager v = data.getVillager();
         MerchantConfiguration configuration = v instanceof Villager villager ? CustomMerchantManager.getMerchantConfigurations().get(villager.getProfession()) : CustomMerchantManager.getTravelingMerchantConfiguration();
         if (configuration == null || configuration.getMerchantTypes().isEmpty()) return;
-        List<MerchantRecipe> recipes = CustomMerchantManager.recipesFromData(data, menu.getPlayerMenuUtility().getOwner());
+        List<Pair<MerchantTrade, MerchantRecipe>> recipes = CustomMerchantManager.recipesFromData(data, menu.getPlayerMenuUtility().getOwner());
         if (recipes != null && !recipes.isEmpty()) {
             VirtualMerchant merchant = new SimpleMerchant(PlayerMenuUtilManager.getPlayerMenuUtility(menu.getPlayerMenuUtility().getOwner()), v.getUniqueId(), data, recipes);
             if (merchant.getRecipes().isEmpty()) {

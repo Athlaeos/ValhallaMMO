@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
+import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Weighted;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -36,7 +37,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.io.*;
@@ -54,7 +54,6 @@ public class CustomMerchantManager {
             .disableHtmlEscaping()
             .enableComplexMapKeySerialization()
             .create();
-    private static final NamespacedKey KEY_TRADE_ID = new NamespacedKey(ValhallaMMO.getInstance(), "trade_id");
     private static final NamespacedKey KEY_CUSTOM_VILLAGER = new NamespacedKey(ValhallaMMO.getInstance(), "is_custom_villager");
 
     private static final int delayUntilWorking = getTradingConfig().getInt("delay_until_working"); // the time it takes for a villager who just got a profession to be able to work/be interacted with, in game time
@@ -146,7 +145,7 @@ public class CustomMerchantManager {
         ItemBuilder result = new ItemBuilder(t.getResult());
         DynamicItemModifier.modify(ModifierContext.builder(result).crafter(player).validate().entity(data.getVillager()).setOtherType(data).executeUsageMechanics().get(), t.getModifiers());
         if (CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) return null;
-        setTradeKey(result.getMeta(), t);
+        //setTradeKey(result.getMeta(), t);
         return result;
     }
 
@@ -177,11 +176,11 @@ public class CustomMerchantManager {
         return currentLevel;
     }
 
-    public static List<MerchantRecipe> recipesFromData(MerchantData data, Player player){
+    public static List<Pair<MerchantTrade, MerchantRecipe>> recipesFromData(MerchantData data, Player player){
         MerchantType type = registeredMerchantTypes.get(data.getType());
         MerchantLevel level = getLevel(data);
         if (type == null || level == null) return null;
-        List<MerchantRecipe> recipes = new ArrayList<>();
+        List<Pair<MerchantTrade, MerchantRecipe>> recipes = new ArrayList<>();
         List<MerchantTrade> trades = new ArrayList<>();
         Map<String, MerchantLevel> byLevel = new HashMap<>();
         for (String tradeName : new HashSet<>(data.getTrades().keySet())){
@@ -239,13 +238,13 @@ public class CustomMerchantManager {
             cost.setAmount(tradeData.getBasePrice());
 
             ItemBuilder result = new ItemBuilder(tradeData.getItem());
-            setTradeKey(result.getMeta(), trade);
+            //setTradeKey(result.getMeta(), trade);
             MerchantRecipe recipe = new MerchantRecipe(result.get(), uses, finalMaxUses, false, villagerExperience, 1, 0, specialPrice);
             List<ItemStack> ingredients = new ArrayList<>();
             ingredients.add(cost);
             if (!ItemUtils.isEmpty(trade.getOptionalCostItem())) ingredients.add(trade.getOptionalCostItem());
             recipe.setIngredients(ingredients);
-            recipes.add(recipe);
+            recipes.add(new Pair<>(trade, recipe));
         }
         return recipes;
     }
@@ -276,18 +275,6 @@ public class CustomMerchantManager {
 
     public static Map<String, MerchantType> getRegisteredMerchantTypes() {
         return new HashMap<>(registeredMerchantTypes);
-    }
-
-    public static void removeTradeKey(ItemMeta meta){
-        meta.getPersistentDataContainer().remove(KEY_TRADE_ID);
-    }
-
-    public static void setTradeKey(ItemMeta meta, MerchantTrade trade){
-        meta.getPersistentDataContainer().set(KEY_TRADE_ID, PersistentDataType.STRING, trade.getID());
-    }
-
-    public static MerchantTrade tradeFromKeyedMeta(ItemMeta meta){
-        return registeredMerchantTrades.get(meta.getPersistentDataContainer().getOrDefault(KEY_TRADE_ID, PersistentDataType.STRING, ""));
     }
 
     @SuppressWarnings("all")

@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.trading.merchants.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
@@ -25,27 +26,37 @@ import java.util.List;
 import java.util.UUID;
 
 public class SimpleMerchant extends VirtualMerchant {
-    public SimpleMerchant(PlayerMenuUtility utility, UUID merchantID, MerchantData data, List<MerchantRecipe> recipes) {
+    public SimpleMerchant(PlayerMenuUtility utility, UUID merchantID, MerchantData data, List<Pair<MerchantTrade, MerchantRecipe>> recipes) {
         super(utility, merchantID, data, recipes);
 
         TradingProfile profile = ProfileCache.getOrCache(utility.getOwner(), TradingProfile.class);
-        Collection<MerchantRecipe> toRemove = new HashSet<>();
+        Collection<Pair<MerchantTrade, MerchantRecipe>> toRemove = new HashSet<>();
         AttributeInstance luckAttribute = utility.getOwner().getAttribute(Attribute.GENERIC_LUCK);
         double luck = AccumulativeStatManager.getCachedStats("TRADING_LUCK", utility.getOwner(), 10000, true);
         if (luckAttribute != null) luck += luckAttribute.getValue();
         LootContext context = new LootContext.Builder(utility.getOwner().getLocation()).killer(utility.getOwner()).lootedEntity(ValhallaMMO.getInstance().getServer().getEntity(merchantID) instanceof Villager v ? v : null).lootingModifier(0).luck((float) luck).build();
-        for (MerchantRecipe recipe : recipes){
+        for (Pair<MerchantTrade, MerchantRecipe> pair : recipes){
+            MerchantRecipe recipe = pair.getTwo();
             ItemMeta meta = recipe.getResult().getItemMeta();
             if (meta == null) {
-                toRemove.add(recipe);
+                toRemove.add(pair);
                 continue;
             }
-            MerchantTrade trade = CustomMerchantManager.tradeFromKeyedMeta(meta);
+            recipe.getResult().setItemMeta(meta);
+            MerchantTrade trade = pair.getOne();
             if (trade == null){
-                toRemove.add(recipe);
+                toRemove.add(pair);
                 continue;
             }
-            if (trade.failsPredicates(trade.getPredicateSelection(), context) || (trade.isExclusive() && !profile.getExclusiveTrades().contains(trade.getID()))) toRemove.add(recipe);
+            if (trade.failsPredicates(trade.getPredicateSelection(), context) || (trade.isExclusive() && !profile.getExclusiveTrades().contains(trade.getID()))) {
+                toRemove.add(pair);
+                continue;
+            }
+            MerchantData.TradeData tradeData = data.getTrades().get(trade.getID());
+            if (tradeData == null) continue;
+            double perTradeWeight = trade.getPerTradeWeight(utility.getOwner(), tradeData);
+            if (perTradeWeight <= 0) continue;
+            setMaxTimesTradeable(trade.getID(), (int) (tradeData.getRemainingUses() / perTradeWeight));
         }
         getRecipes().removeIf(toRemove::contains);
     }

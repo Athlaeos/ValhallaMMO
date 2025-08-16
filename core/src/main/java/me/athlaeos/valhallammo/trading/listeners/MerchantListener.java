@@ -126,35 +126,19 @@ public class MerchantListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPrepareTrade(TradeSelectEvent e){
-        if (e.getMerchant().getTrader() == null || e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())) return;
-        VirtualMerchant merchantInterface = activeTradingMenus.get(e.getMerchant().getTrader().getUniqueId());
-        if (merchantInterface == null) return;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            ItemStack result = e.getInventory().getItem(2);
-            if (ItemUtils.isEmpty(result)) return;
-            ItemMeta meta = result.getItemMeta();
-            if (meta == null) return;
-            CustomMerchantManager.removeTradeKey(meta);
-            result.setItemMeta(meta);
-        }, 1L);
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
     public void onTrade(InventoryClickEvent e){
         if (!(e.getClickedInventory() instanceof MerchantInventory m) || e.isCancelled() || m.getSelectedRecipe() == null ||
                 e.getRawSlot() != 2 || ItemUtils.isEmpty(m.getItem(2)) || ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())) return;
         VirtualMerchant merchantInterface = activeTradingMenus.get(e.getWhoClicked().getUniqueId());
         if (merchantInterface == null || merchantInterface.getMerchantID() == null) return;
         UUID merchantID = merchantInterface.getMerchantID();
-        MerchantRecipe recipe = m.getSelectedRecipe();
-        ItemStack result = recipe.getResult();
-        ItemMeta meta = ItemUtils.isEmpty(result) ? null : result.getItemMeta();
+        Pair<MerchantTrade, MerchantRecipe> recipePair = merchantInterface.getRecipes().get(m.getSelectedRecipeIndex());
+        MerchantRecipe recipe = recipePair.getTwo();
+        ItemStack result = ItemUtils.isEmpty(recipe.getResult()) ? null : recipe.getResult();//.clone()
+        ItemMeta meta = result == null ? null : result.getItemMeta();
         if (meta == null) return;
-        MerchantTrade trade = CustomMerchantManager.tradeFromKeyedMeta(meta);
+        MerchantTrade trade = recipePair.getOne();// CustomMerchantManager.tradeFromKeyedMeta(meta);
         if (trade == null) return;
-        CustomMerchantManager.removeTradeKey(meta);
-        result.setItemMeta(meta);
 
         ItemStack item1 = m.getItem(0);
         ItemStack item2 = m.getItem(1);
@@ -198,16 +182,16 @@ public class MerchantListener implements Listener {
                     if (!ItemUtils.isEmpty(item2)) timesTraded = Math.min(timesTraded, (int) Math.floor(item2.getAmount() / (double) cost2.getAmount()));
                     else timesTraded = 0;
                 }
-                timesTraded = Math.min(timesTraded, recipe.getMaxUses() - recipe.getUses());
-                if (timesTraded <= 0) {
-                    e.setCancelled(true);
-                    return;
-                }
             }
             default -> {
                 e.setCancelled(true);
                 return;
             }
+        }
+        timesTraded = Math.min(timesTraded, merchantInterface.getMaxTimesTradeable(trade.getID()));
+        if (timesTraded <= 0) {
+            e.setCancelled(true);
+            return;
         }
 
         int finalTimesTraded = timesTraded;
@@ -219,10 +203,13 @@ public class MerchantListener implements Listener {
                     e.setCancelled(true);
                     return;
                 }
+                System.out.println("bought " + event.getTimesTraded() + " times");
                 MerchantData.TradeData tradeData = event.getMerchantData().getTrades().get(event.getCustomTrade().getID());
                 if (tradeData == null) return; // should never really happen, but here as a precaution
+                System.out.println("can be bought up to " + trade.getMaxUses() + " times, now " + tradeData.getRemainingUses());
                 MerchantType type = CustomMerchantManager.getMerchantType(event.getMerchantData().getType());
                 if (type == null) return; // should also never really happen unless a type is deleted during trading
+                merchantInterface.setMaxTimesTradeable(trade.getID(), merchantInterface.getMaxTimesTradeable(trade.getID()) - event.getTimesTraded());
                 tradeData.setLastTraded(System.currentTimeMillis());
                 tradeData.setDemand(tradeData.getDemand() + finalTimesTraded);
                 float perTradeWeight = trade.getPerTradeWeight((Player) e.getWhoClicked(), tradeData);
@@ -296,7 +283,6 @@ public class MerchantListener implements Listener {
                 if (merchantID != null){
                     int reputationQuantity = event.getTimesTraded();
                     CustomMerchantManager.modifyTradingReputation(data, (Player) e.getWhoClicked(), reputationQuantity * ((float) reputationTrade));
-                    System.out.println("modified reputation through trading by " + (reputationQuantity * reputationTrade));
                     int exp = Utils.randomAverage(event.getTimesTraded() * event.getCustomTrade().getVillagerExperience());
                     merchantInterface.setExpToGrant(merchantInterface.getExpToGrant() + exp);
                 }
@@ -666,10 +652,8 @@ public class MerchantListener implements Listener {
                 e.getTransformReason() != EntityTransformEvent.TransformReason.CURED ||
                 !(e.getTransformedEntity() instanceof AbstractVillager v) || !(e.getEntity() instanceof ZombieVillager z) ||
                 !(z.getConversionPlayer() instanceof Player p) || v.getPersistentDataContainer().has(CURED_BEFORE, PersistentDataType.BYTE)) {
-            System.out.println("not valid");
             return;
         }
-        System.out.println("valid");
 
         CustomMerchantManager.getMerchantData(v.getUniqueId(), data -> {
             ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {

@@ -397,9 +397,9 @@ public class Utils {
         List<T> selectedEntries = new ArrayList<>();
         if (entries.isEmpty()) return selectedEntries;
         List<Pair<T, Double>> totalEntries = new ArrayList<>();
-        for (T entry : entries.keySet()){
-            totalWeight += entries.get(entry);
-            totalEntries.add(new Pair<>(entry, totalWeight));
+        for (Map.Entry<T, Float> entry : entries.entrySet()){
+            totalWeight += entry.getValue();
+            totalEntries.add(new Pair<>(entry.getKey(), totalWeight));
         }
 
         for (int i = 0; i < rolls; i++){

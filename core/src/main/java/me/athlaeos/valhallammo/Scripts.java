@@ -33,13 +33,13 @@ import java.util.*;
 
 public class Scripts implements Listener {
     private static final QuickTrade[] args = new QuickTrade[]{
-            new QuickTrade("generic_sell_coal", ProfessionWrapper.ARMORER, MerchantLevel.JOURNEYMAN, "6x 100% 8-0%-16xCOAL for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("generic_sell_coal", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "6x 100% 8-0%-16xCOAL for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
             new QuickTrade("armorer_buy_leather_to_chainmail_helmet_t1", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "3x W25 3-25%-6xEMERALD for 1xLEATHER_HELMET G25 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_helmet_scaling/125:chainmail_helmet_scaling"),
             new QuickTrade("armorer_buy_leather_to_chainmail_chestplate_t1", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "3x W25 6-25%-12xEMERALD for 1xLEATHER_CHESTPLATE G25 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_chestplate_scaling/125:chainmail_chestplate_scaling"),
             new QuickTrade("armorer_buy_leather_to_chainmail_leggings_t1", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "3x W25 5-25%-10xEMERALD for 1xLEATHER_LEGGINGS G25 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_leggings_scaling/125:chainmail_leggings_scaling"),
             new QuickTrade("armorer_buy_leather_to_chainmail_boots_t1", ProfessionWrapper.ARMORER, MerchantLevel.NOVICE, "3x W25 2-25%-4xEMERALD for 1xLEATHER_BOOTS G25 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_boots_scaling/125:chainmail_boots_scaling"),
-            new QuickTrade("generic_sell_iron", ProfessionWrapper.ARMORER, MerchantLevel.JOURNEYMAN, "6x 100% 4-10%-8xIRON_INGOT for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
-            new QuickTrade("generic_buy_bell", ProfessionWrapper.ARMORER, MerchantLevel.JOURNEYMAN, "3x 100% 16-25%-32xEMERALD for 1xBELL G15 EXP=200 ENCH=2 VIL=2 ORD=6"),
+            new QuickTrade("generic_sell_iron", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "6x 100% 4-10%-8xIRON_INGOT for 1xEMERALD NOGIFT EXP=200 ENCH=2 VIL=2 ORD=0"),
+            new QuickTrade("generic_buy_bell", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "3x 100% 16-25%-32xEMERALD for 1xBELL G15 EXP=200 ENCH=2 VIL=2 ORD=6"),
             new QuickTrade("armorer_buy_leather_to_chainmail_helmet_t2", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "3x W25 5-25%-10xEMERALD for 1xCHAINMAIL_HELMET G15 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_helmet_scaling/125:chainmail_helmet_scaling"),
             new QuickTrade("armorer_buy_leather_to_chainmail_chestplate_t2", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "3x W25 8-25%-16xEMERALD for 1xCHAINMAIL_CHESTPLATE G15 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_chestplate_scaling/125:chainmail_chestplate_scaling"),
             new QuickTrade("armorer_buy_leather_to_chainmail_leggings_t2", ProfessionWrapper.ARMORER, MerchantLevel.APPRENTICE, "3x W25 7-25%-14xEMERALD for 1xCHAINMAIL_LEGGINGS G15 EXP=200 ENCH=2 VIL=2 ORD=4 DYNREF=0:leather_leggings_scaling/125:chainmail_leggings_scaling"),
@@ -398,10 +398,10 @@ public class Scripts implements Listener {
             new QuickTrade("shepherd_buy_mountain_banner", ProfessionWrapper.SHEPHERD, MerchantLevel.EXPERT, "6x W20 2-25%-4xEMERALD for 1xWHITE_BANNER G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=banner_mountain"),
             new QuickTrade("shepherd_buy_dragon_banner", ProfessionWrapper.SHEPHERD, MerchantLevel.EXPERT, "6x W20 2-25%-4xEMERALD for 1xWHITE_BANNER G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=banner_dragon"),
             new QuickTrade("shepherd_buy_mojang_pattern", ProfessionWrapper.SHEPHERD, MerchantLevel.MASTER, "2x 100% 8-25%-16xEMERALD for 1xMOJANG_BANNER_PATTERN G5 EXP=3200 ENCH=32 VIL=32 ORD=16"),
-            new QuickTrade("shepherd_buy_bird_banner", ProfessionWrapper.SHEPHERD, MerchantLevel.EXPERT, "E6x W25 2-25%-4xEMERALD for 1xWHITE_BANNER G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=banner_dragon"),
-            new QuickTrade("shepherd_buy_sauron_banner", ProfessionWrapper.SHEPHERD, MerchantLevel.EXPERT, "E6x W25 2-25%-4xEMERALD for 1xWHITE_BANNER G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=banner_dragon"),
-            new QuickTrade("shepherd_buy_arctic_fox_banner", ProfessionWrapper.SHEPHERD, MerchantLevel.EXPERT, "E6x W25 2-25%-4xEMERALD for 1xWHITE_BANNER G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=banner_dragon"),
-            new QuickTrade("shepherd_buy_warden_banner", ProfessionWrapper.SHEPHERD, MerchantLevel.EXPERT, "E6x W25 2-25%-4xEMERALD for 1xWHITE_BANNER G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=banner_dragon"),
+            new QuickTrade("shepherd_buy_bird_banner", ProfessionWrapper.SHEPHERD, MerchantLevel.MASTER, "E6x W25 2-25%-4xEMERALD for 1xWHITE_BANNER G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=banner_dragon"),
+            new QuickTrade("shepherd_buy_sauron_banner", ProfessionWrapper.SHEPHERD, MerchantLevel.MASTER, "E6x W25 2-25%-4xEMERALD for 1xWHITE_BANNER G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=banner_dragon"),
+            new QuickTrade("shepherd_buy_arctic_fox_banner", ProfessionWrapper.SHEPHERD, MerchantLevel.MASTER, "E6x W25 2-25%-4xEMERALD for 1xWHITE_BANNER G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=banner_dragon"),
+            new QuickTrade("shepherd_buy_warden_banner", ProfessionWrapper.SHEPHERD, MerchantLevel.MASTER, "E6x W25 2-25%-4xEMERALD for 1xWHITE_BANNER G10 EXP=800 ENCH=8 VIL=8 ORD=16 ITEMREF=banner_dragon"),
 
             new QuickTrade("generic_sell_coal", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, ""),
             new QuickTrade("toolsmith_buy_stone_to_iron_axe_t1", ProfessionWrapper.TOOLSMITH, MerchantLevel.NOVICE, "3x W25 3-25%-6xEMERALD for 1xSTONE_AXE G25 EXP=200 ENCH=2 VIL=2 ORD=16 DYNREF=0:stone_axe_scaling/125:iron_pickaxe_scaling"),
@@ -490,13 +490,9 @@ public class Scripts implements Listener {
 
         for (DynamicGridRecipe recipe : CustomRecipeRegistry.getGridRecipes().values()){
             if (!isGoodRecipe(recipe.getName())) continue;
-            System.out.println("converting recipe " + recipe.getName());
             if (!recipe.getName().contains("arrow")) {
                 DynamicItemModifier qualitySetModifier = recipe.getModifiers().stream().filter(m -> m instanceof SmithingQualityScale).map(DynamicItemModifier::copy).findFirst().orElse(null);
-                if (qualitySetModifier == null) {
-                    System.out.println(recipe.getName() + " did not have quality scaling");
-                    continue;
-                }
+                if (qualitySetModifier == null) continue;
                 qualitySetModifier.setPriority(ModifierPriority.SOONEST);
 
                 String scalingItemID = String.format("%s_scaling", recipe.getName().replace("craft_", ""));
