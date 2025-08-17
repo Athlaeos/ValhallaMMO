@@ -157,7 +157,7 @@ public class EntityDamagedListener implements Listener {
                 // would be ignored because the entity's health would not have changed yet at this point and their health would be set assuming they've only
                 // taken the last damage instance
 
-                if ((type != null && type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
+                if (l instanceof Player && (type != null && type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
                 if (l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0);
                 double healthBefore = l.getHealth();
                 damageProcesses.put(l.getUniqueId(), () -> {

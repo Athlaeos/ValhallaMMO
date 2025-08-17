@@ -528,39 +528,6 @@ public class LootListener implements Listener {
         }
     }
 
-    private final NamespacedKey VILLAGER_TRADES = new NamespacedKey(ValhallaMMO.getInstance(), "villager_trades");
-
-    private Map<Integer, ItemStack> getTrades(Entity villager){
-        Map<Integer, ItemStack> trades = new HashMap<>();
-        if (!villager.getPersistentDataContainer().has(VILLAGER_TRADES, PersistentDataType.STRING)) return trades;
-        String value = villager.getPersistentDataContainer().get(VILLAGER_TRADES, PersistentDataType.STRING);
-        if (value == null || value.isEmpty()) return trades;
-        String[] entries = value.split("<trade>");
-        for (String entry : entries){
-            String[] placement = entry.split("<index>");
-            if (placement.length < 2) continue;
-            int index = Catch.catchOrElse(() -> Integer.parseInt(placement[0]), -1);
-            if (index < 0) continue;
-            ItemStack item = Catch.catchOrElse(() -> ItemUtils.deserialize(placement[1]), null);
-            if (ItemUtils.isEmpty(item)) continue;
-            trades.put(index, item);
-        }
-        return trades;
-    }
-
-    private void setTrades(Entity villager, Map<Integer, ItemStack> trades){
-        villager.getPersistentDataContainer().set(VILLAGER_TRADES, PersistentDataType.STRING,
-                trades.entrySet().stream().map(e -> String.format("%d<index>%s", e.getKey(), ItemUtils.serialize(e.getValue()))).collect(Collectors.joining("<trade>"))
-        );
-    }
-
-    private void setTrade(Entity villager, int i, ItemStack trade){
-        Map<Integer, ItemStack> trades = getTrades(villager);
-        if (trade == null) trades.remove(i);
-        else trades.put(i, trade);
-        setTrades(villager, trades);
-    }
-
     private final Map<Location, Boolean> chestCache = new HashMap<>();
 
     @EventHandler

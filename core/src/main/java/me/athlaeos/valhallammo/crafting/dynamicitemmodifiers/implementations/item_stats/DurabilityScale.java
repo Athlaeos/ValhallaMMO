@@ -265,8 +265,8 @@ public class DurabilityScale extends DynamicItemModifier {
 
     @Override
     public String getActiveDescription() {
-        return String.format("&fScales the item's durability stat according to the formula /n%s, using the mode %s. %s%s",
-                buildScaling(), mode,
+        return String.format("&fScales the item's durability stat according to the formula /n&e%s&f, using the mode %s. %s%s",
+               buildScaling(), mode,
                 lowerBound == null ? "" : "&fResult cannot go below " + lowerBound + ". ",
                 upperBound == null ? "" : "&fResult cannot go above " + upperBound + ".");
     }

@@ -365,8 +365,10 @@ public class PotionEffectRegistry {
         if (effects == null || effects.isEmpty()){
             clean(item);
         } else {
+            List<PotionEffectWrapper> sorted = new ArrayList<>(effects.values());
+            sorted.sort(Comparator.comparing(PotionEffectWrapper::getEffect));
             item.stringTag(DEFAULT_STORED_EFFECTS,
-                    effects.values().stream().map(s -> s.getEffect() + ":" + s.getAmplifier() + ":" + s.getDuration() + (s.getCharges() >= 0 ? ":" + s.getCharges() : ""))
+                    sorted.stream().map(s -> s.getEffect() + ":" + s.getAmplifier() + ":" + s.getDuration() + (s.getCharges() >= 0 ? ":" + s.getCharges() : ""))
                             .collect(Collectors.joining(";")));
         }
     }
@@ -460,8 +462,10 @@ public class PotionEffectRegistry {
             }
 
             if (item.getMeta() instanceof PotionMeta p) ValhallaMMO.getNms().setPotionType(p, MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? null : PotionType.valueOf("UNCRAFTABLE"));
+            List<PotionEffectWrapper> sorted = new ArrayList<>(effects.values());
+            sorted.sort(Comparator.comparing(PotionEffectWrapper::getEffect));
             item.stringTag(ACTUAL_STORED_EFFECTS,
-                    effects.values().stream()
+                    sorted.stream()
                             .filter(e -> !exclude.contains(e.getEffect()))
                             .map(e -> e.getEffect() + ":" + e.getAmplifier() + ":" + e.getDuration() + (e.getCharges() >= 0 ? ":" + e.getCharges() : ""))
                             .collect(Collectors.joining(";"))

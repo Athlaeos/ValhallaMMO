@@ -466,6 +466,8 @@ public class ItemAttributesRegistry {
     }
 
     private static String serializeStats(Collection<AttributeWrapper> wrappers) {
+        List<AttributeWrapper> sorted = new ArrayList<>(wrappers);
+        sorted.sort(Comparator.comparing(AttributeWrapper::getAttribute));
         StringBuilder saved = new StringBuilder();
         for (AttributeWrapper wrapper : wrappers) {
             if (!saved.isEmpty()) saved.append(';');

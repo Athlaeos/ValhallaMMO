@@ -252,7 +252,7 @@ public class SmithingItemPropertyManager {
 
         if (tags == null || tags.isEmpty()) item.getMeta().getPersistentDataContainer().remove(NUMBER_TAGS);
         else item.stringTag(NUMBER_TAGS,
-                tags.entrySet().stream().map((e) -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(",")));
+                tags.entrySet().stream().sorted(Comparator.comparingInt(Map.Entry::getKey)).map((e) -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(",")));
 
         setTagLore(item);
     }
