@@ -101,7 +101,6 @@ public abstract class DynamicItemModifier {
                 return;
             }
             if (!modifier.meetsPlayerRequirement(context)){
-                ValhallaMMO.logSevere("&cWhatever was just created was improperly configured. Please check your recipes. Modifier " + modifier.getClass().getSimpleName() + " was used that requires a player, but no player exists in this context");
                 context.getItem().flag(CustomFlag.UNCRAFTABLE);
                 return;
             }
