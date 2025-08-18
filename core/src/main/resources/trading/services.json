@@ -1,1 +1,1081 @@
-[]
+[
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.PlainService",
+    "DATA": {
+      "id": "trading",
+      "type": "TRADING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.OrderService",
+    "DATA": {
+      "baseOrderTime": 12000,
+      "orderTimeBonusPerItem": 500,
+      "orderTimeBonusPerTrade": 12000,
+      "bulkMinimumOrdersForDiscount": 10,
+      "bulkDiscountPerItem": 0.01,
+      "bulkMaxDiscount": 0.2,
+      "id": "ordering_farmer",
+      "type": "ORDERING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.TrainService",
+    "DATA": {
+      "skillToLevel": "SMITHING",
+      "limitPerLevel": {
+        "JOURNEYMAN": 45,
+        "NOVICE": 15,
+        "EXPERT": 60,
+        "APPRENTICE": 30,
+        "MASTER": 75
+      },
+      "expStep": 750.0,
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "skillExpPerCost": 100.0,
+      "primaryButtonPosition": 0,
+      "rows": 3,
+      "secondaryButtonPositions": [
+        1,
+        10,
+        19,
+        20,
+        11,
+        2,
+        18,
+        9,
+        0
+      ],
+      "primaryButton": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAF\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAFdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdAC3eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbmFtZT4ifSwidGV4dCI6Imxhbmcu\r\nc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNv\r\nbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAA\r\nAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC3eyJl\r\neHRyYSI6W3sidGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2\r\nYWx1ZSI6Imh0dHA6Ly9sYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbG9yZT4i\r\nfSwidGV4dCI6Imxhbmcuc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9sb3JlPiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxfjA==\r\n",
+      "id": "train_smithing",
+      "type": "TRAINING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.UpgradeService",
+    "DATA": {
+      "input": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAxJUk9OX1BJQ0tBWEU=\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ToolChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAACA==\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "modifiers": [
+        {
+          "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRepairNumeric",
+          "DATA": {
+            "repair": 400,
+            "name": "repair_number",
+            "priority": "NEUTRAL"
+          }
+        }
+      ],
+      "upgradeIcon": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFQU5WSUxzcQB+AABzcQB+AAN1cQB+AAYAAAAEcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldXEAfgAGAAAABHQACEl0ZW1NZXRh\r\ndAAKVU5TUEVDSUZJQ3QAsXsiZXh0cmEiOlt7InRleHQiOiI8In0seyJjbGlja0V2ZW50Ijp7ImFj\r\ndGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFuZy5zZXJ2aWNlX3VwZ3JhZGVfcmVw\r\nYWlyX3Rvb2xzX25hbWU+In0sInRleHQiOiJsYW5nLnNlcnZpY2VfdXBncmFkZV9yZXBhaXJfdG9v\r\nbHNfbmFtZT4ifV0sInRleHQiOiIifXNyADZjb20uZ29vZ2xlLmNvbW1vbi5jb2xsZWN0LkltbXV0\r\nYWJsZUxpc3QkU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAVsACGVsZW1lbnRzdAATW0xqYXZhL2xh\r\nbmcvT2JqZWN0O3hwdXEAfgAGAAAAAXQAsXsiZXh0cmEiOlt7InRleHQiOiI8In0seyJjbGlja0V2\r\nZW50Ijp7ImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFuZy5zZXJ2aWNlX3Vw\r\nZ3JhZGVfcmVwYWlyX3Rvb2xzX2xvcmU+In0sInRleHQiOiJsYW5nLnNlcnZpY2VfdXBncmFkZV9y\r\nZXBhaXJfdG9vbHNfbG9yZT4ifV0sInRleHQiOiIifQ==\r\n",
+      "appearanceLevels": [
+        "EXPERT",
+        "APPRENTICE",
+        "NOVICE",
+        "JOURNEYMAN",
+        "MASTER"
+      ],
+      "skillExp": 800.0,
+      "id": "upgrade_repair_tools",
+      "type": "UPGRADING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.TrainService",
+    "DATA": {
+      "skillToLevel": "FARMING",
+      "limitPerLevel": {
+        "MASTER": 75,
+        "EXPERT": 60,
+        "APPRENTICE": 30,
+        "NOVICE": 15,
+        "JOURNEYMAN": 45
+      },
+      "expStep": 750.0,
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "skillExpPerCost": 100.0,
+      "primaryButtonPosition": 3,
+      "rows": 3,
+      "secondaryButtonPositions": [
+        3,
+        4,
+        5,
+        12,
+        13,
+        14,
+        21,
+        22,
+        23
+      ],
+      "primaryButton": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAF\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAFdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdAC3eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbmFtZT4ifSwidGV4dCI6Imxhbmcu\r\nc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNv\r\nbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAA\r\nAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC3eyJl\r\neHRyYSI6W3sidGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2\r\nYWx1ZSI6Imh0dHA6Ly9sYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbG9yZT4i\r\nfSwidGV4dCI6Imxhbmcuc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9sb3JlPiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxfoQ==\r\n",
+      "id": "train_farming",
+      "type": "TRAINING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.UpgradeService",
+    "DATA": {
+      "input": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAtGSVNISU5HX1JPRA==\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAACA==\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "modifiers": [
+        {
+          "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRepairNumeric",
+          "DATA": {
+            "repair": 200,
+            "name": "repair_number",
+            "priority": "NEUTRAL"
+          }
+        }
+      ],
+      "upgradeIcon": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFQU5WSUxzcQB+AABzcQB+AAN1cQB+AAYAAAAEcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldXEAfgAGAAAABHQACEl0ZW1NZXRh\r\ndAAKVU5TUEVDSUZJQ3QAv3siZXh0cmEiOlt7InRleHQiOiI8In0seyJjbGlja0V2ZW50Ijp7ImFj\r\ndGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFuZy5zZXJ2aWNlX3VwZ3JhZGVfcmVw\r\nYWlyX2Zpc2hpbmdfcm9kc19uYW1lPiJ9LCJ0ZXh0IjoibGFuZy5zZXJ2aWNlX3VwZ3JhZGVfcmVw\r\nYWlyX2Zpc2hpbmdfcm9kc19uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC/eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdXBncmFkZV9yZXBhaXJfZmlzaGluZ19yb2RzX2xvcmU+In0sInRleHQiOiJs\r\nYW5nLnNlcnZpY2VfdXBncmFkZV9yZXBhaXJfZmlzaGluZ19yb2RzX2xvcmU+In1dLCJ0ZXh0Ijoi\r\nIn0=\r\n",
+      "appearanceLevels": [
+        "JOURNEYMAN",
+        "NOVICE",
+        "MASTER",
+        "APPRENTICE",
+        "EXPERT"
+      ],
+      "skillExp": 800.0,
+      "id": "upgrade_repair_fishing_rods",
+      "type": "UPGRADING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.TrainService",
+    "DATA": {
+      "skillToLevel": "LIGHT_ARMOR",
+      "limitPerLevel": {
+        "MASTER": 75,
+        "EXPERT": 60,
+        "APPRENTICE": 30,
+        "NOVICE": 15,
+        "JOURNEYMAN": 45
+      },
+      "expStep": 750.0,
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "skillExpPerCost": 100.0,
+      "primaryButtonPosition": 3,
+      "rows": 3,
+      "secondaryButtonPositions": [
+        3,
+        4,
+        5,
+        12,
+        13,
+        14,
+        21,
+        22,
+        23
+      ],
+      "primaryButton": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAF\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAFdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdAC3eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbmFtZT4ifSwidGV4dCI6Imxhbmcu\r\nc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNv\r\nbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAA\r\nAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC3eyJl\r\neHRyYSI6W3sidGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2\r\nYWx1ZSI6Imh0dHA6Ly9sYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbG9yZT4i\r\nfSwidGV4dCI6Imxhbmcuc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9sb3JlPiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxfrQ==\r\n",
+      "id": "train_light_armor",
+      "type": "TRAINING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.OrderService",
+    "DATA": {
+      "baseOrderTime": 12000,
+      "orderTimeBonusPerItem": 500,
+      "orderTimeBonusPerTrade": 12000,
+      "bulkMinimumOrdersForDiscount": 10,
+      "bulkDiscountPerItem": 0.01,
+      "bulkMaxDiscount": 0.2,
+      "id": "ordering_mason",
+      "type": "ORDERING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.TrainService",
+    "DATA": {
+      "skillToLevel": "HEAVY_ARMOR",
+      "limitPerLevel": {
+        "JOURNEYMAN": 45,
+        "NOVICE": 15,
+        "EXPERT": 60,
+        "APPRENTICE": 30,
+        "MASTER": 75
+      },
+      "expStep": 750.0,
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "skillExpPerCost": 100.0,
+      "primaryButtonPosition": 6,
+      "rows": 3,
+      "secondaryButtonPositions": [
+        24,
+        15,
+        16,
+        25,
+        6,
+        7,
+        8,
+        17,
+        25,
+        26
+      ],
+      "primaryButton": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAF\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAFdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdAC3eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbmFtZT4ifSwidGV4dCI6Imxhbmcu\r\nc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNv\r\nbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAA\r\nAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC3eyJl\r\neHRyYSI6W3sidGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2\r\nYWx1ZSI6Imh0dHA6Ly9sYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbG9yZT4i\r\nfSwidGV4dCI6Imxhbmcuc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9sb3JlPiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxfpw==\r\n",
+      "id": "train_heavy_armor",
+      "type": "TRAINING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.OrderService",
+    "DATA": {
+      "baseOrderTime": 12000,
+      "orderTimeBonusPerItem": 500,
+      "orderTimeBonusPerTrade": 12000,
+      "bulkMinimumOrdersForDiscount": 10,
+      "bulkDiscountPerItem": 0.01,
+      "bulkMaxDiscount": 0.2,
+      "id": "ordering_weaponsmith",
+      "type": "ORDERING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.OrderService",
+    "DATA": {
+      "baseOrderTime": 12000,
+      "orderTimeBonusPerItem": 500,
+      "orderTimeBonusPerTrade": 12000,
+      "bulkMinimumOrdersForDiscount": 10,
+      "bulkDiscountPerItem": 0.01,
+      "bulkMaxDiscount": 0.2,
+      "id": "ordering_armorsmith",
+      "type": "ORDERING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.TrainService",
+    "DATA": {
+      "skillToLevel": "MINING",
+      "limitPerLevel": {
+        "JOURNEYMAN": 45,
+        "NOVICE": 15,
+        "EXPERT": 60,
+        "APPRENTICE": 30,
+        "MASTER": 75
+      },
+      "expStep": 750.0,
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "skillExpPerCost": 100.0,
+      "primaryButtonPosition": 3,
+      "rows": 3,
+      "secondaryButtonPositions": [
+        3,
+        4,
+        5,
+        12,
+        13,
+        14,
+        21,
+        22,
+        23
+      ],
+      "primaryButton": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAF\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAFdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdAC3eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbmFtZT4ifSwidGV4dCI6Imxhbmcu\r\nc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNv\r\nbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAA\r\nAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC3eyJl\r\neHRyYSI6W3sidGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2\r\nYWx1ZSI6Imh0dHA6Ly9sYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbG9yZT4i\r\nfSwidGV4dCI6Imxhbmcuc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9sb3JlPiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxftg==\r\n",
+      "id": "train_mining",
+      "type": "TRAINING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.TrainService",
+    "DATA": {
+      "skillToLevel": "ENCHANTING",
+      "limitPerLevel": {
+        "APPRENTICE": 30,
+        "NOVICE": 15,
+        "MASTER": 75,
+        "JOURNEYMAN": 45,
+        "EXPERT": 60
+      },
+      "expStep": 750.0,
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "skillExpPerCost": 100.0,
+      "primaryButtonPosition": 3,
+      "rows": 3,
+      "secondaryButtonPositions": [
+        3,
+        4,
+        5,
+        12,
+        13,
+        14,
+        21,
+        22,
+        23
+      ],
+      "primaryButton": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAF\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAFdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdAC3eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbmFtZT4ifSwidGV4dCI6Imxhbmcu\r\nc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNv\r\nbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAA\r\nAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC3eyJl\r\neHRyYSI6W3sidGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2\r\nYWx1ZSI6Imh0dHA6Ly9sYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbG9yZT4i\r\nfSwidGV4dCI6Imxhbmcuc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9sb3JlPiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxfng==\r\n",
+      "id": "train_enchanting",
+      "type": "TRAINING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.UpgradeService",
+    "DATA": {
+      "input": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AApJUk9OX1NXT1JE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ToolArmorChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAAIA==\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "modifiers": [
+        {
+          "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.MerchantEnchantingSkillSet",
+          "DATA": {
+            "qualityMap": {
+              "MASTER": 150,
+              "APPRENTICE": 60,
+              "NOVICE": 30,
+              "EXPERT": 120,
+              "JOURNEYMAN": 90
+            },
+            "shouldScaleWithStats": true,
+            "name": "merchant_enchanting_skill",
+            "priority": "SOON"
+          }
+        },
+        {
+          "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.EnchantmentRandomize",
+          "DATA": {
+            "level": 20,
+            "scaleWithSkill": true,
+            "includeTreasure": false,
+            "name": "enchant_randomly",
+            "priority": "LATER"
+          }
+        }
+      ],
+      "upgradeIcon": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAQRU5DSEFOVElOR19UQUJMRXNxAH4AAHNxAH4AA3Vx\r\nAH4ABgAAAAVxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV0AA1ibG9ja01h\r\ndGVyaWFsdXEAfgAGAAAABXQACEl0ZW1NZXRhdAALVElMRV9FTlRJVFl0ALF7ImV4dHJhIjpbeyJ0\r\nZXh0IjoiPCJ9LHsiY2xpY2tFdmVudCI6eyJhY3Rpb24iOiJvcGVuX3VybCIsInZhbHVlIjoiaHR0\r\ncDovL2xhbmcuc2VydmljZV91cGdyYWRlX2VuY2hhbnRfbHYyMF9uYW1lPiJ9LCJ0ZXh0IjoibGFu\r\nZy5zZXJ2aWNlX3VwZ3JhZGVfZW5jaGFudF9sdjIwX25hbWU+In1dLCJ0ZXh0IjoiIn1zcgA2Y29t\r\nLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAA\r\nAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0ALF7ImV4\r\ndHJhIjpbeyJ0ZXh0IjoiPCJ9LHsiY2xpY2tFdmVudCI6eyJhY3Rpb24iOiJvcGVuX3VybCIsInZh\r\nbHVlIjoiaHR0cDovL2xhbmcuc2VydmljZV91cGdyYWRlX2VuY2hhbnRfbHYyMF9sb3JlPiJ9LCJ0\r\nZXh0IjoibGFuZy5zZXJ2aWNlX3VwZ3JhZGVfZW5jaGFudF9sdjIwX2xvcmU+In1dLCJ0ZXh0Ijoi\r\nIn1xAH4AEQ==\r\n",
+      "appearanceLevels": [
+        "MASTER",
+        "EXPERT",
+        "JOURNEYMAN"
+      ],
+      "skillExp": 3200.0,
+      "id": "upgrade_enchant_lv20",
+      "type": "UPGRADING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.OrderService",
+    "DATA": {
+      "baseOrderTime": 12000,
+      "orderTimeBonusPerItem": 500,
+      "orderTimeBonusPerTrade": 12000,
+      "bulkMinimumOrdersForDiscount": 10,
+      "bulkDiscountPerItem": 0.01,
+      "bulkMaxDiscount": 0.2,
+      "id": "ordering_librarian",
+      "type": "ORDERING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.OrderService",
+    "DATA": {
+      "baseOrderTime": 12000,
+      "orderTimeBonusPerItem": 500,
+      "orderTimeBonusPerTrade": 12000,
+      "bulkMinimumOrdersForDiscount": 10,
+      "bulkDiscountPerItem": 0.01,
+      "bulkMaxDiscount": 0.2,
+      "id": "ordering_fletcher",
+      "type": "ORDERING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.TrainService",
+    "DATA": {
+      "skillToLevel": "DIGGING",
+      "limitPerLevel": {
+        "MASTER": 50,
+        "EXPERT": 40,
+        "APPRENTICE": 20,
+        "NOVICE": 10,
+        "JOURNEYMAN": 30
+      },
+      "expStep": 750.0,
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "skillExpPerCost": 100.0,
+      "primaryButtonPosition": 3,
+      "rows": 3,
+      "secondaryButtonPositions": [
+        3,
+        4,
+        5,
+        12,
+        13,
+        14,
+        21,
+        22,
+        23
+      ],
+      "primaryButton": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAF\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAFdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdAC3eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbmFtZT4ifSwidGV4dCI6Imxhbmcu\r\nc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNv\r\nbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAA\r\nAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC3eyJl\r\neHRyYSI6W3sidGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2\r\nYWx1ZSI6Imh0dHA6Ly9sYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbG9yZT4i\r\nfSwidGV4dCI6Imxhbmcuc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9sb3JlPiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxfmw==\r\n",
+      "id": "train_digging",
+      "type": "TRAINING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.OrderService",
+    "DATA": {
+      "baseOrderTime": 12000,
+      "orderTimeBonusPerItem": 500,
+      "orderTimeBonusPerTrade": 12000,
+      "bulkMinimumOrdersForDiscount": 10,
+      "bulkDiscountPerItem": 0.01,
+      "bulkMaxDiscount": 0.2,
+      "id": "ordering_toolsmith",
+      "type": "ORDERING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.OrderService",
+    "DATA": {
+      "baseOrderTime": 12000,
+      "orderTimeBonusPerItem": 500,
+      "orderTimeBonusPerTrade": 12000,
+      "bulkMinimumOrdersForDiscount": 10,
+      "bulkDiscountPerItem": 0.01,
+      "bulkMaxDiscount": 0.2,
+      "id": "ordering_shepherd",
+      "type": "ORDERING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.OrderService",
+    "DATA": {
+      "baseOrderTime": 12000,
+      "orderTimeBonusPerItem": 500,
+      "orderTimeBonusPerTrade": 12000,
+      "bulkMinimumOrdersForDiscount": 10,
+      "bulkDiscountPerItem": 0.01,
+      "bulkMaxDiscount": 0.2,
+      "id": "ordering_butcher",
+      "type": "ORDERING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.TrainService",
+    "DATA": {
+      "skillToLevel": "LIGHT_WEAPONS",
+      "limitPerLevel": {
+        "MASTER": 75,
+        "EXPERT": 60,
+        "APPRENTICE": 30,
+        "NOVICE": 15,
+        "JOURNEYMAN": 45
+      },
+      "expStep": 750.0,
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "skillExpPerCost": 100.0,
+      "primaryButtonPosition": 3,
+      "rows": 3,
+      "secondaryButtonPositions": [
+        3,
+        4,
+        5,
+        12,
+        13,
+        14,
+        21,
+        22,
+        23
+      ],
+      "primaryButton": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAF\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAFdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdAC3eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbmFtZT4ifSwidGV4dCI6Imxhbmcu\r\nc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNv\r\nbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAA\r\nAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC3eyJl\r\neHRyYSI6W3sidGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2\r\nYWx1ZSI6Imh0dHA6Ly9sYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbG9yZT4i\r\nfSwidGV4dCI6Imxhbmcuc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9sb3JlPiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxfsA==\r\n",
+      "id": "train_light_weapons",
+      "type": "TRAINING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.OrderService",
+    "DATA": {
+      "baseOrderTime": 12000,
+      "orderTimeBonusPerItem": 500,
+      "orderTimeBonusPerTrade": 12000,
+      "bulkMinimumOrdersForDiscount": 10,
+      "bulkDiscountPerItem": 0.01,
+      "bulkMaxDiscount": 0.2,
+      "id": "ordering_cleric",
+      "type": "ORDERING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.OrderService",
+    "DATA": {
+      "baseOrderTime": 12000,
+      "orderTimeBonusPerItem": 500,
+      "orderTimeBonusPerTrade": 12000,
+      "bulkMinimumOrdersForDiscount": 10,
+      "bulkDiscountPerItem": 0.01,
+      "bulkMaxDiscount": 0.2,
+      "id": "ordering_fisherman",
+      "type": "ORDERING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.TrainService",
+    "DATA": {
+      "skillToLevel": "ALCHEMY",
+      "limitPerLevel": {
+        "JOURNEYMAN": 45,
+        "NOVICE": 15,
+        "EXPERT": 60,
+        "APPRENTICE": 30,
+        "MASTER": 75
+      },
+      "expStep": 750.0,
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "skillExpPerCost": 100.0,
+      "primaryButtonPosition": 3,
+      "rows": 3,
+      "secondaryButtonPositions": [
+        3,
+        4,
+        5,
+        12,
+        13,
+        14,
+        21,
+        22,
+        23
+      ],
+      "primaryButton": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAF\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAFdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdAC3eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbmFtZT4ifSwidGV4dCI6Imxhbmcu\r\nc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNv\r\nbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAA\r\nAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC3eyJl\r\neHRyYSI6W3sidGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2\r\nYWx1ZSI6Imh0dHA6Ly9sYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbG9yZT4i\r\nfSwidGV4dCI6Imxhbmcuc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9sb3JlPiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxflQ==\r\n",
+      "id": "train_alchemy",
+      "type": "TRAINING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.UpgradeService",
+    "DATA": {
+      "input": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AANCT1c=\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice",
+          "DATA": {
+            "validChoices": [
+              "BOW",
+              "CROSSBOW"
+            ],
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAACA==\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "modifiers": [
+        {
+          "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRepairNumeric",
+          "DATA": {
+            "repair": 200,
+            "name": "repair_number",
+            "priority": "NEUTRAL"
+          }
+        }
+      ],
+      "upgradeIcon": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFQU5WSUxzcQB+AABzcQB+AAN1cQB+AAYAAAAEcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldXEAfgAGAAAABHQACEl0ZW1NZXRh\r\ndAAKVU5TUEVDSUZJQ3QAr3siZXh0cmEiOlt7InRleHQiOiI8In0seyJjbGlja0V2ZW50Ijp7ImFj\r\ndGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFuZy5zZXJ2aWNlX3VwZ3JhZGVfcmVw\r\nYWlyX2Jvd3NfbmFtZT4ifSwidGV4dCI6Imxhbmcuc2VydmljZV91cGdyYWRlX3JlcGFpcl9ib3dz\r\nX25hbWU+In1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFi\r\nbGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9sYW5n\r\nL09iamVjdDt4cHVxAH4ABgAAAAF0AK97ImV4dHJhIjpbeyJ0ZXh0IjoiPCJ9LHsiY2xpY2tFdmVu\r\ndCI6eyJhY3Rpb24iOiJvcGVuX3VybCIsInZhbHVlIjoiaHR0cDovL2xhbmcuc2VydmljZV91cGdy\r\nYWRlX3JlcGFpcl9ib3dzX2xvcmU+In0sInRleHQiOiJsYW5nLnNlcnZpY2VfdXBncmFkZV9yZXBh\r\naXJfYm93c19sb3JlPiJ9XSwidGV4dCI6IiJ9\r\n",
+      "appearanceLevels": [
+        "JOURNEYMAN",
+        "NOVICE",
+        "APPRENTICE",
+        "EXPERT",
+        "MASTER"
+      ],
+      "skillExp": 800.0,
+      "id": "upgrade_repair_bows",
+      "type": "UPGRADING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.UpgradeService",
+    "DATA": {
+      "input": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AApJUk9OX1NXT1JE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ToolArmorChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAAQA==\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "modifiers": [
+        {
+          "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.MerchantEnchantingSkillSet",
+          "DATA": {
+            "qualityMap": {
+              "MASTER": 150,
+              "APPRENTICE": 60,
+              "NOVICE": 30,
+              "EXPERT": 120,
+              "JOURNEYMAN": 90
+            },
+            "shouldScaleWithStats": true,
+            "name": "merchant_enchanting_skill",
+            "priority": "SOON"
+          }
+        },
+        {
+          "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.EnchantmentRandomize",
+          "DATA": {
+            "level": 30,
+            "scaleWithSkill": true,
+            "includeTreasure": false,
+            "name": "enchant_randomly",
+            "priority": "LATER"
+          }
+        }
+      ],
+      "upgradeIcon": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAQRU5DSEFOVElOR19UQUJMRXNxAH4AAHNxAH4AA3Vx\r\nAH4ABgAAAAVxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV0AA1ibG9ja01h\r\ndGVyaWFsdXEAfgAGAAAABXQACEl0ZW1NZXRhdAALVElMRV9FTlRJVFl0ALF7ImV4dHJhIjpbeyJ0\r\nZXh0IjoiPCJ9LHsiY2xpY2tFdmVudCI6eyJhY3Rpb24iOiJvcGVuX3VybCIsInZhbHVlIjoiaHR0\r\ncDovL2xhbmcuc2VydmljZV91cGdyYWRlX2VuY2hhbnRfbHYzMF9uYW1lPiJ9LCJ0ZXh0IjoibGFu\r\nZy5zZXJ2aWNlX3VwZ3JhZGVfZW5jaGFudF9sdjMwX25hbWU+In1dLCJ0ZXh0IjoiIn1zcgA2Y29t\r\nLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAA\r\nAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0ALF7ImV4\r\ndHJhIjpbeyJ0ZXh0IjoiPCJ9LHsiY2xpY2tFdmVudCI6eyJhY3Rpb24iOiJvcGVuX3VybCIsInZh\r\nbHVlIjoiaHR0cDovL2xhbmcuc2VydmljZV91cGdyYWRlX2VuY2hhbnRfbHYzMF9sb3JlPiJ9LCJ0\r\nZXh0IjoibGFuZy5zZXJ2aWNlX3VwZ3JhZGVfZW5jaGFudF9sdjMwX2xvcmU+In1dLCJ0ZXh0Ijoi\r\nIn1xAH4AEQ==\r\n",
+      "appearanceLevels": [
+        "MASTER"
+      ],
+      "skillExp": 6400.0,
+      "id": "upgrade_enchant_lv30",
+      "type": "UPGRADING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.UpgradeService",
+    "DATA": {
+      "input": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AApJUk9OX1NXT1JE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ToolArmorChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAAEA==\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "modifiers": [
+        {
+          "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.MerchantEnchantingSkillSet",
+          "DATA": {
+            "qualityMap": {
+              "APPRENTICE": 60,
+              "NOVICE": 30,
+              "MASTER": 150,
+              "JOURNEYMAN": 90,
+              "EXPERT": 120
+            },
+            "shouldScaleWithStats": true,
+            "name": "merchant_enchanting_skill",
+            "priority": "SOON"
+          }
+        },
+        {
+          "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.EnchantmentRandomize",
+          "DATA": {
+            "level": 10,
+            "scaleWithSkill": true,
+            "includeTreasure": false,
+            "name": "enchant_randomly",
+            "priority": "NEUTRAL"
+          }
+        }
+      ],
+      "upgradeIcon": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAQRU5DSEFOVElOR19UQUJMRXNxAH4AAHNxAH4AA3Vx\r\nAH4ABgAAAAVxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV0AA1ibG9ja01h\r\ndGVyaWFsdXEAfgAGAAAABXQACEl0ZW1NZXRhdAALVElMRV9FTlRJVFl0ALF7ImV4dHJhIjpbeyJ0\r\nZXh0IjoiPCJ9LHsiY2xpY2tFdmVudCI6eyJhY3Rpb24iOiJvcGVuX3VybCIsInZhbHVlIjoiaHR0\r\ncDovL2xhbmcuc2VydmljZV91cGdyYWRlX2VuY2hhbnRfbHYxMF9uYW1lPiJ9LCJ0ZXh0IjoibGFu\r\nZy5zZXJ2aWNlX3VwZ3JhZGVfZW5jaGFudF9sdjEwX25hbWU+In1dLCJ0ZXh0IjoiIn1zcgA2Y29t\r\nLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAA\r\nAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0ALF7ImV4\r\ndHJhIjpbeyJ0ZXh0IjoiPCJ9LHsiY2xpY2tFdmVudCI6eyJhY3Rpb24iOiJvcGVuX3VybCIsInZh\r\nbHVlIjoiaHR0cDovL2xhbmcuc2VydmljZV91cGdyYWRlX2VuY2hhbnRfbHYxMF9sb3JlPiJ9LCJ0\r\nZXh0IjoibGFuZy5zZXJ2aWNlX3VwZ3JhZGVfZW5jaGFudF9sdjEwX2xvcmU+In1dLCJ0ZXh0Ijoi\r\nIn1xAH4AEQ==\r\n",
+      "appearanceLevels": [
+        "APPRENTICE",
+        "MASTER",
+        "EXPERT",
+        "NOVICE",
+        "JOURNEYMAN"
+      ],
+      "skillExp": 1600.0,
+      "id": "upgrade_enchant_lv10",
+      "type": "UPGRADING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.UpgradeService",
+    "DATA": {
+      "input": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9JUk9OX0NIRVNUUExBVEU=\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ArmorChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAACA==\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "modifiers": [
+        {
+          "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DurabilityRepairNumeric",
+          "DATA": {
+            "repair": 200,
+            "name": "repair_number",
+            "priority": "NEUTRAL"
+          }
+        }
+      ],
+      "upgradeIcon": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFQU5WSUxzcQB+AABzcQB+AAN1cQB+AAYAAAAEcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldXEAfgAGAAAABHQACEl0ZW1NZXRh\r\ndAAKVU5TUEVDSUZJQ3QAsXsiZXh0cmEiOlt7InRleHQiOiI8In0seyJjbGlja0V2ZW50Ijp7ImFj\r\ndGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFuZy5zZXJ2aWNlX3VwZ3JhZGVfcmVw\r\nYWlyX2FybW9yX25hbWU+In0sInRleHQiOiJsYW5nLnNlcnZpY2VfdXBncmFkZV9yZXBhaXJfYXJt\r\nb3JfbmFtZT4ifV0sInRleHQiOiIifXNyADZjb20uZ29vZ2xlLmNvbW1vbi5jb2xsZWN0LkltbXV0\r\nYWJsZUxpc3QkU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAVsACGVsZW1lbnRzdAATW0xqYXZhL2xh\r\nbmcvT2JqZWN0O3hwdXEAfgAGAAAAAXQAsXsiZXh0cmEiOlt7InRleHQiOiI8In0seyJjbGlja0V2\r\nZW50Ijp7ImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFuZy5zZXJ2aWNlX3Vw\r\nZ3JhZGVfcmVwYWlyX2FybW9yX2xvcmU+In0sInRleHQiOiJsYW5nLnNlcnZpY2VfdXBncmFkZV9y\r\nZXBhaXJfYXJtb3JfbG9yZT4ifV0sInRleHQiOiIifQ==\r\n",
+      "appearanceLevels": [
+        "JOURNEYMAN",
+        "NOVICE",
+        "APPRENTICE",
+        "EXPERT",
+        "MASTER"
+      ],
+      "skillExp": 800.0,
+      "id": "upgrade_repair_armor",
+      "type": "UPGRADING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.OrderService",
+    "DATA": {
+      "baseOrderTime": 12000,
+      "orderTimeBonusPerItem": 500,
+      "orderTimeBonusPerTrade": 12000,
+      "bulkMinimumOrdersForDiscount": 10,
+      "bulkDiscountPerItem": 0.01,
+      "bulkMaxDiscount": 0.2,
+      "id": "ordering_leatherworker",
+      "type": "ORDERING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.TrainService",
+    "DATA": {
+      "skillToLevel": "ARCHERY",
+      "limitPerLevel": {
+        "JOURNEYMAN": 45,
+        "NOVICE": 15,
+        "EXPERT": 60,
+        "APPRENTICE": 30,
+        "MASTER": 75
+      },
+      "expStep": 750.0,
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "skillExpPerCost": 100.0,
+      "primaryButtonPosition": 3,
+      "rows": 3,
+      "secondaryButtonPositions": [
+        3,
+        4,
+        5,
+        12,
+        13,
+        14,
+        21,
+        22,
+        23
+      ],
+      "primaryButton": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAF\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAFdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdAC3eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbmFtZT4ifSwidGV4dCI6Imxhbmcu\r\nc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNv\r\nbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAA\r\nAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC3eyJl\r\neHRyYSI6W3sidGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2\r\nYWx1ZSI6Imh0dHA6Ly9sYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbG9yZT4i\r\nfSwidGV4dCI6Imxhbmcuc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9sb3JlPiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxfmA==\r\n",
+      "id": "train_archery",
+      "type": "TRAINING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.TrainService",
+    "DATA": {
+      "skillToLevel": "HEAVY_WEAPONS",
+      "limitPerLevel": {
+        "MASTER": 75,
+        "EXPERT": 60,
+        "APPRENTICE": 30,
+        "NOVICE": 15,
+        "JOURNEYMAN": 45
+      },
+      "expStep": 750.0,
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "skillExpPerCost": 100.0,
+      "primaryButtonPosition": 6,
+      "rows": 3,
+      "secondaryButtonPositions": [
+        6,
+        15,
+        24,
+        25,
+        16,
+        7,
+        8,
+        17,
+        26
+      ],
+      "primaryButton": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAF\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAFdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdAC3eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbmFtZT4ifSwidGV4dCI6Imxhbmcu\r\nc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNv\r\nbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAA\r\nAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC3eyJl\r\neHRyYSI6W3sidGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2\r\nYWx1ZSI6Imh0dHA6Ly9sYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbG9yZT4i\r\nfSwidGV4dCI6Imxhbmcuc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9sb3JlPiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxfqg==\r\n",
+      "id": "train_heavy_weapons",
+      "type": "TRAINING"
+    }
+  },
+  {
+    "SERVICE_IMPL": "me.athlaeos.valhallammo.trading.services.service_implementations.TrainService",
+    "DATA": {
+      "skillToLevel": "WOODCUTTING",
+      "limitPerLevel": {
+        "MASTER": 50,
+        "EXPERT": 40,
+        "APPRENTICE": 20,
+        "NOVICE": 10,
+        "JOURNEYMAN": 30
+      },
+      "expStep": 750.0,
+      "cost": {
+        "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxE\r\n",
+        "option": {
+          "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+          "DATA": {
+            "key": {
+              "namespace": "valhallammo",
+              "key": "recipe_option_id"
+            }
+          }
+        }
+      },
+      "skillExpPerCost": 100.0,
+      "primaryButtonPosition": 6,
+      "rows": 3,
+      "secondaryButtonPositions": [
+        15,
+        24,
+        25,
+        16,
+        7,
+        8,
+        17,
+        26,
+        6
+      ],
+      "primaryButton": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAF\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0AARsb3JldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAFdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdAC3eyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbmFtZT4ifSwidGV4dCI6Imxhbmcu\r\nc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9uYW1lPiJ9XSwidGV4dCI6IiJ9c3IANmNv\r\nbS5nb29nbGUuY29tbW9uLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAA\r\nAAAAAgABWwAIZWxlbWVudHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdAC3eyJl\r\neHRyYSI6W3sidGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2\r\nYWx1ZSI6Imh0dHA6Ly9sYW5nLnNlcnZpY2VfdHJhaW5pbmdfY29uZmlybV9idXR0b25fbG9yZT4i\r\nfSwidGV4dCI6Imxhbmcuc2VydmljZV90cmFpbmluZ19jb25maXJtX2J1dHRvbl9sb3JlPiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxfkg==\r\n",
+      "id": "train_woodcutting",
+      "type": "TRAINING"
+    }
+  }
+]

@@ -1,9 +1,18 @@
 starting_perks:
   trading_services_unlock:
     - trading
-    - ordering_quick
-    - ordering_normal
-    - ordering_slow
+    - ordering_farmer
+    - ordering_butcher
+    - ordering_fisherman
+    - ordering_shepherd
+    - ordering_librarian
+    - ordering_cleric
+    - ordering_mason
+    - ordering_toolsmith
+    - ordering_weaponsmith
+    - ordering_armorsmith
+    - ordering_leatherworker
+    - ordering_fletcher
 
 experience:
   exp_level_curve: '(%level% + 75 * 2^(%level%/7.6)) + 300'
@@ -21,7 +30,7 @@ experience:
   daily_limit: -1
   daily_limit_warning: '<lang.skill-trading-daily-limit-reached>'
 
-starting_coordinates: '3,5'
+starting_coordinates: '2,5'
 
 special_perks: []
 
@@ -143,33 +152,53 @@ perks:
     required_lv: 100
     perk_rewards:
       exclusive_trades_unlock:
-        - armorer_royal_diamond_helmet
-        - armorer_royal_diamond_chestplate
-        - armorer_royal_diamond_leggings
-        - armorer_royal_diamond_boots
-        - butcher_battle_burrito
-        - butcher_aegis_stroganoff
-        - butcher_wagyu_steak
-        - butcher_titanic_goulash
-        - cleric_bustling_fungus
-        - cleric_steelblossom
-        - cleric_shimmerleaf
-        - cleric_noxious_spores
-        - cleric_knightreed
-        - cleric_tutor_lotus
-        - farmer_apple_pie
-        - farmer_golden_apple_pie
-        - farmer_lembas_bread
-        - farmer_churro
-        - fisherman_caviar
-        - fisherman_salmon_en_croute
-        - fisherman_poached_lobster
-        - fisherman_uni_sushi
-        - fletcher_royal_bow
-        - fletcher_royal_crossbow
-        - fletcher_explosive_arrow
-        - fletcher_incendiary_arrow
-        - fletcher_unholy_arrow
+        - cleric_buy_steelblossom
+        - cleric_buy_noxious_spores
+        - cleric_buy_bustling_fungus
+        - cleric_buy_shimmerleaf
+        - cleric_buy_tutor_lotus
+        - cleric_buy_knightreed
+        - cleric_buy_steelblossom
+        - leatherworker_buy_assassin_helmet
+        - leatherworker_buy_assassin_chestplatae
+        - leatherworker_buy_assassin_leggings
+        - leatherworker_buy_assassin_boots
+        - fletcher_buy_unholy_arrows
+        - fletcher_buy_incendiary
+        - fletcher_buy_explosive
+        - fletcher_buy_royal_bow
+        - fletcher_buy_royal_crossbow
+        - armorer_buy_royal_diamond_helmet
+        - armorer_buy_royal_diamond_chestplate
+        - armorer_buy_royal_diamond_leggings
+        - armorer_buy_royal_diamond_boots
+        - butcher_buy_titanic_goulash
+        - butcher_buy_wagyu_steak
+        - butcher_buy_aegis_stroganoff
+        - butcher_buy_battle_burrito
+        - toolsmith_buy_royal_diamond_hoe
+        - toolsmith_buy_royal_diamond_pickaxe
+        - toolsmith_buy_royal_diamond_axe
+        - toolsmith_buy_royal_diamond_shovel
+        - weaponsmith_buy_random_royal_diamond_heavy_weapon
+        - weaponsmith_buy_random_royal_diamond_light_weapon
+        - shepherd_buy_sauron_banner
+        - shepherd_buy_dragon_egg_banner
+        - shepherd_buy_rainbow_banner
+        - shepherd_buy_bird_banner
+        - shepherd_buy_dungeon_banner
+        - shepherd_buy_warden_banner
+        - farmer_buy_churro
+        - farmer_buy_golden_apple_pie
+        - farmer_buy_lembas_bread
+        - mason_buy_reinforced_deepslate
+        - mason_buy_obsidian
+        - mason_buy_light
+        - mason_buy_purpur
+        - fisherman_buy_caviar
+        - fisherman_buy_poached_lobster
+        - fisherman_buy_salmon_en_croute
+        - fisherman_buy_uni_sushi
     messages:
       - "<lang.trading_perk_6_messages>"
     requireperk_all:
@@ -181,7 +210,7 @@ perks:
         unlockable: ORANGE_DYE:1172800
         unlocked: LIME_DYE:1172900
       '2':
-        position: '0,1'
+        position: '1,0'
         locked: GRAY_DYE:1172713
         unlockable: ORANGE_DYE:1172813
         unlocked: LIME_DYE:1172913
@@ -197,9 +226,9 @@ perks:
         unlocked: LIME_DYE:1172915
       '5':
         position: '3,1'
-        locked: GRAY_DYE:1172716
-        unlockable: ORANGE_DYE:1172816
-        unlocked: LIME_DYE:1172916
+        locked: GRAY_DYE:1172712
+        unlockable: ORANGE_DYE:1172812
+        unlocked: LIME_DYE:1172912
   trading_perk_2b:
     icon: WRITABLE_BOOK
     coords: "4,5"
@@ -207,35 +236,37 @@ perks:
     description: "<lang.trading_perk_2b_description>"
     cost: 1
     hidden: false
-    required_lv: 101
+    required_lv: 20
     perk_rewards:
       trading_services_unlock:
-        - training_smithing
-        - training_alchemy
-        - training_enchanting
-        - training_farming
-        - training_mining
-        - training_fishing
-        - training_woodcutting
-        - training_light_weapons
-        - training_heavy_weapons
-        - training_light_armor
-        - training_heavy_armor
-        - training_archery
+        - train_smithing
+        - train_alchemy
+        - train_enchanting
+        - train_farming
+        - train_mining
+        - train_digging
+        - train_fishing
+        - train_woodcutting
+        - train_light_weapons
+        - train_heavy_weapons
+        - train_light_armor
+        - train_heavy_armor
+        - train_archery
     messages:
       - "<lang.trading_perk_2b_messages>"
     requireperk_all:
       - trading_perk_1
-    '1':
-      position: '3,6'
-      locked: GRAY_DYE:1172714
-      unlockable: ORANGE_DYE:1172814
-      unlocked: LIME_DYE:1172914
-    '2':
-      position: '3,5'
-      locked: GRAY_DYE:1172713
-      unlockable: ORANGE_DYE:1172813
-      unlocked: LIME_DYE:1172913
+    connection_line:
+      '1':
+        position: '3,6'
+        locked: GRAY_DYE:1172714
+        unlockable: ORANGE_DYE:1172814
+        unlocked: LIME_DYE:1172914
+      '2':
+        position: '3,5'
+        locked: GRAY_DYE:1172713
+        unlockable: ORANGE_DYE:1172813
+        unlocked: LIME_DYE:1172913
   trading_perk_3b:
     icon: SMITHING_TABLE
     coords: "4,3"
@@ -243,23 +274,26 @@ perks:
     description: "<lang.trading_perk_3b_description>"
     cost: 1
     hidden: false
-    required_lv: 101
+    required_lv: 40
     perk_rewards:
       trading_services_unlock:
-        - upgrading_repair
-        - upgrading_enchant
-        - upgrading_weapons
-        - upgrading_armors
-        - upgrading_bows
+        - upgrade_repair_tools
+        - upgrade_repair_armor
+        - upgrade_repair_bows
+        - upgrade_repair_fishing_rods
+        - upgrade_enchant_lv10
+        - upgrade_enchant_lv20
+        - upgrade_enchant_lv30
     messages:
       - "<lang.trading_perk_3b_messages>"
     requireperk_all:
       - trading_perk_2b
-    '1':
-      position: '4,4'
-      locked: GRAY_DYE:1172700
-      unlockable: ORANGE_DYE:1172800
-      unlocked: LIME_DYE:1172900
+    connection_line:
+      '1':
+        position: '4,4'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
   trading_perk_4b:
     icon: EMERALD
     coords: "4,1"
@@ -269,16 +303,17 @@ perks:
     requireperk_all:
       - trading_perk_3b
     hidden: false
-    required_lv: 101
+    required_lv: 60
     perk_rewards:
       trading_servicediscount_add: 0.33
     messages:
       - "<lang.trading_perk_4b_messages>"
-    '1':
-      position: '4,2'
-      locked: GRAY_DYE:1172700
-      unlockable: ORANGE_DYE:1172800
-      unlocked: LIME_DYE:1172900
+    connection_line:
+      '1':
+        position: '4,2'
+        locked: GRAY_DYE:1172700
+        unlockable: ORANGE_DYE:1172800
+        unlocked: LIME_DYE:1172900
   trading_perk_5b:
     icon: KNOWLEDGE_BOOK
     coords: "2,4"
@@ -288,16 +323,11 @@ perks:
     requireperk_all:
       - trading_perk_4b
     hidden: false
-    required_lv: 101
+    required_lv: 80
     perk_rewards:
       trading_merchantskillmultiplier_add: 0.3
     messages:
       - "<lang.trading_perk_5b_messages>"
-    '1':
-      position: '2,5'
-      locked: GRAY_DYE:1172700
-      unlockable: ORANGE_DYE:1172800
-      unlocked: LIME_DYE:1172900
   trading_perk_ng1:
     icon: TOTEM_OF_UNDYING
     coords: "2,3"

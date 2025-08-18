@@ -1,1 +1,911 @@
-[]
+[
+  {
+    "type": "farmer_simple",
+    "version": 0,
+    "resetTradesDaily": true,
+    "canLoseProfession": true,
+    "perPlayerStock": false,
+    "weight": 10.0,
+    "trades": {
+      "JOURNEYMAN": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 40,
+        "trades": [
+          "farmer_sell_melons",
+          "farmer_buy_cookies",
+          "farmer_buy_regeneration_mushroom_stew",
+          "farmer_buy_night_vision_glow_berries",
+          "farmer_buy_health_boost_beetroot_soup"
+        ]
+      },
+      "EXPERT": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 160,
+        "trades": [
+          "farmer_buy_apple_pie",
+          "farmer_buy_random_suspicious_stew",
+          "farmer_buy_random_suspicious_stew",
+          "farmer_buy_random_suspicious_stew",
+          "farmer_buy_random_suspicious_stew"
+        ]
+      },
+      "APPRENTICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 10,
+        "trades": [
+          "farmer_sell_pumpkin",
+          "farmer_buy_pumpkin_pie",
+          "farmer_buy_apples",
+          "farmer_buy_cake",
+          "farmer_buy_mushroom_stew"
+        ]
+      },
+      "NOVICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 0,
+        "trades": [
+          "farmer_buy_bread",
+          "farmer_sell_wheat",
+          "farmer_sell_potatoes",
+          "farmer_sell_carrots",
+          "farmer_sell_beetroot"
+        ]
+      },
+      "MASTER": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 640,
+        "trades": [
+          "farmer_buy_golden_apple",
+          "farmer_buy_enchanted_golden_apple",
+          "farmer_buy_golden_apple_pie",
+          "farmer_buy_lembas_bread",
+          "farmer_buy_churro"
+        ]
+      }
+    },
+    "services": [
+      "trading"
+    ]
+  },
+  {
+    "type": "leatherworker_simple",
+    "version": 0,
+    "resetTradesDaily": true,
+    "canLoseProfession": true,
+    "perPlayerStock": false,
+    "weight": 10.0,
+    "trades": {
+      "JOURNEYMAN": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 40,
+        "trades": [
+          "leatherworker_sell_rabbit_hide",
+          "leatherworker_buy_saddle",
+          "leatherworker_buy_leather_horse_armor",
+          "leatherworker_buy_iron_horse_armor",
+          "leatherworker_buy_golden_horse_armor"
+        ]
+      },
+      "EXPERT": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 160,
+        "trades": [
+          "leatherworker_sell_turtle_scute",
+          "leatherworker_buy_bundle",
+          "leatherworker_buy_turtle_helmet",
+          "leatherworker_buy_turtle_chestplate",
+          "leatherworker_buy_turtle_leggings",
+          "leatherworker_buy_turtle_boots"
+        ]
+      },
+      "APPRENTICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 10,
+        "trades": [
+          "generic_sell_flint",
+          "leatherworker_buy_leather_helmet_t2",
+          "leatherworker_buy_leather_chestplate_t2",
+          "leatherworker_buy_leather_leggings_t2",
+          "leatherworker_buy_leather_boots_t2"
+        ]
+      },
+      "NOVICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 0,
+        "trades": [
+          "leatherworker_sell_leather",
+          "leatherworker_buy_leather_helmet_t1",
+          "leatherworker_buy_leather_chestplate_t1",
+          "leatherworker_buy_leather_leggings_t1",
+          "leatherworker_buy_leather_boots_t1"
+        ]
+      },
+      "MASTER": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 640,
+        "trades": [
+          "leatherworker_buy_diamond_horse_armor",
+          "leatherworker_buy_assassin_helmet",
+          "leatherworker_buy_assassin_chestplate",
+          "leatherworker_buy_assassin_leggings",
+          "leatherworker_buy_assassin_boots"
+        ]
+      }
+    },
+    "services": [
+      "trading"
+    ]
+  },
+  {
+    "type": "butcher_simple",
+    "version": 0,
+    "resetTradesDaily": true,
+    "canLoseProfession": true,
+    "perPlayerStock": false,
+    "weight": 10.0,
+    "trades": {
+      "JOURNEYMAN": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 40,
+        "trades": [
+          "butcher_buy_cleaver",
+          "butcher_sell_raw_mutton",
+          "butcher_sell_raw_beef"
+        ]
+      },
+      "EXPERT": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 160,
+        "trades": [
+          "butcher_sell_dried_kelp_block",
+          "butcher_buy_luxurious_stew",
+          "butcher_buy_tender_steak",
+          "butcher_buy_stuffed_hen",
+          "butcher_buy_glazed_ribs"
+        ]
+      },
+      "APPRENTICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 10,
+        "trades": [
+          "generic_sell_coal",
+          "butcher_buy_cooked_chicken",
+          "butcher_buy_cooked_pork",
+          "butcher_buy_cooked_beef"
+        ]
+      },
+      "NOVICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 0,
+        "trades": [
+          "butcher_buy_rabbit_stew",
+          "butcher_sell_raw_rabbit",
+          "butcher_sell_raw_chicken",
+          "butcher_sell_raw_pork"
+        ]
+      },
+      "MASTER": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 640,
+        "trades": [
+          "butcher_sell_sweet_berries",
+          "butcher_buy_battle_burrito",
+          "butcher_buy_aegis_stroganoff",
+          "butcher_buy_wagyu_steak",
+          "butcher_buy_titanic_goulash"
+        ]
+      }
+    },
+    "services": [
+      "trading"
+    ]
+  },
+  {
+    "type": "armorer_simple",
+    "version": 0,
+    "resetTradesDaily": true,
+    "canLoseProfession": true,
+    "perPlayerStock": false,
+    "weight": 10.0,
+    "trades": {
+      "JOURNEYMAN": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 40,
+        "trades": [
+          "armorer_sell_lava_bucket",
+          "armorer_buy_enchanted_iron_helmet",
+          "armorer_buy_enchanted_iron_chestplate",
+          "armorer_buy_enchanted_iron_leggings",
+          "armorer_buy_enchanted_iron_boots"
+        ]
+      },
+      "EXPERT": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 160,
+        "trades": [
+          "generic_sell_diamond",
+          "armorer_buy_enchanted_diamond_helmet",
+          "armorer_buy_enchanted_diamond_chestplate",
+          "armorer_buy_enchanted_diamond_leggings",
+          "armorer_buy_enchanted_diamond_boots"
+        ]
+      },
+      "APPRENTICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 10,
+        "trades": [
+          "generic_sell_iron",
+          "generic_buy_bell",
+          "armorer_buy_leather_to_chainmail_helmet_t2",
+          "armorer_buy_leather_to_chainmail_chestplate_t2",
+          "armorer_buy_leather_to_chainmail_leggings_t2",
+          "armorer_buy_leather_to_chainmail_boots_t2"
+        ]
+      },
+      "NOVICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 0,
+        "trades": [
+          "generic_sell_coal",
+          "armorer_buy_leather_to_chainmail_helmet_t1",
+          "armorer_buy_leather_to_chainmail_chestplate_t1",
+          "armorer_buy_leather_to_chainmail_leggings_t1",
+          "armorer_buy_leather_to_chainmail_boots_t1"
+        ]
+      },
+      "MASTER": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 640,
+        "trades": [
+          "generic_buy_netherite_scrap",
+          "armorer_buy_royal_diamond_helmet",
+          "armorer_buy_royal_diamond_chestplate",
+          "armorer_buy_royal_diamond_leggings",
+          "armorer_buy_royal_diamond_boots"
+        ]
+      }
+    },
+    "services": [
+      "trading"
+    ]
+  },
+  {
+    "type": "fletcher_simple",
+    "version": 0,
+    "resetTradesDaily": true,
+    "canLoseProfession": true,
+    "perPlayerStock": false,
+    "weight": 10.0,
+    "trades": {
+      "JOURNEYMAN": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 40,
+        "trades": [
+          "fletcher_sell_feathers",
+          "fletcher_buy_bow_t2",
+          "fletcher_buy_crossbow_t2",
+          "fletcher_buy_golden_arrows",
+          "fletcher_sell_tripwire_hooks"
+        ]
+      },
+      "EXPERT": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 160,
+        "trades": [
+          "fletcher_sell_targets",
+          "fletcher_buy_iron_arrows",
+          "fletcher_buy_bow_t3",
+          "fletcher_buy_crossbow_t3",
+          "fletcher_buy_random_tipped_arrows",
+          "fletcher_buy_random_tipped_arrows",
+          "fletcher_buy_random_tipped_arrows",
+          "fletcher_buy_random_tipped_arrows",
+          "fletcher_buy_random_tipped_arrows"
+        ]
+      },
+      "APPRENTICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 10,
+        "trades": [
+          "generic_sell_flint",
+          "fletcher_buy_bow_t1",
+          "fletcher_buy_copper_arrows",
+          "fletcher_buy_crossbow_t1",
+          "fletcher_sell_string"
+        ]
+      },
+      "NOVICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 0,
+        "trades": [
+          "fletcher_sell_sticks",
+          "fletcher_buy_flint_arrows",
+          "fletcher_buy_flint",
+          "fletcher_buy_feathers",
+          "fletcher_buy_string"
+        ]
+      },
+      "MASTER": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 640,
+        "trades": [
+          "fletcher_buy_ender_arrow",
+          "fletcher_buy_royal_bow",
+          "fletcher_buy_royal_crossbow",
+          "fletcher_buy_incendiary_arrows",
+          "fletcher_buy_explosive_arrows",
+          "fletcher_buy_unholy_arrows"
+        ]
+      }
+    },
+    "services": [
+      "trading"
+    ]
+  },
+  {
+    "type": "toolsmith_simple",
+    "version": 0,
+    "resetTradesDaily": true,
+    "canLoseProfession": true,
+    "perPlayerStock": false,
+    "weight": 10.0,
+    "trades": {
+      "JOURNEYMAN": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 40,
+        "trades": [
+          "generic_sell_flint",
+          "toolsmith_buy_enchanted_iron_axe",
+          "toolsmith_buy_enchanted_iron_shovel",
+          "toolsmith_buy_enchanted_iron_pickaxe",
+          "toolsmith_buy_enchanted_iron_hoe"
+        ]
+      },
+      "EXPERT": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 160,
+        "trades": [
+          "generic_sell_diamond",
+          "toolsmith_buy_enchanted_diamond_axe",
+          "toolsmith_buy_enchanted_diamond_shovel",
+          "toolsmith_buy_enchanted_diamond_pickaxe",
+          "toolsmith_buy_enchanted_diamond_hoe"
+        ]
+      },
+      "APPRENTICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 10,
+        "trades": [
+          "generic_sell_iron",
+          "generic_buy_bell",
+          "toolsmith_buy_stone_to_iron_axe_t2",
+          "toolsmith_buy_stone_to_iron_shovel_t2",
+          "toolsmith_buy_stone_to_iron_pickaxe_t2",
+          "toolsmith_buy_stone_to_iron_hoe_t2"
+        ]
+      },
+      "NOVICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 0,
+        "trades": [
+          "generic_sell_coal",
+          "toolsmith_buy_stone_to_iron_axe_t1",
+          "toolsmith_buy_stone_to_iron_shovel_t1",
+          "toolsmith_buy_stone_to_iron_pickaxe_t1",
+          "toolsmith_buy_stone_to_iron_hoe_t1"
+        ]
+      },
+      "MASTER": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 640,
+        "trades": [
+          "generic_buy_netherite_scrap",
+          "toolsmith_royal_diamond_axe",
+          "toolsmith_royal_diamond_pickaxe",
+          "toolsmith_royal_diamond_shovel",
+          "toolsmith_royal_diamond_hoe"
+        ]
+      }
+    },
+    "services": [
+      "trading"
+    ]
+  },
+  {
+    "type": "weaponsmith_simple",
+    "version": 0,
+    "resetTradesDaily": true,
+    "canLoseProfession": true,
+    "perPlayerStock": false,
+    "weight": 10.0,
+    "trades": {
+      "JOURNEYMAN": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 40,
+        "trades": [
+          "generic_sell_flint",
+          "weaponsmith_buy_random_enchanted_iron_heavy_weapon",
+          "weaponsmith_buy_random_enchanted_iron_heavy_weapon",
+          "weaponsmith_buy_random_enchanted_iron_light_weapon",
+          "weaponsmith_buy_random_enchanted_iron_light_weapon"
+        ]
+      },
+      "EXPERT": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 160,
+        "trades": [
+          "generic_sell_diamond",
+          "weaponsmith_buy_random_enchanted_diamond_heavy_weapon",
+          "weaponsmith_buy_random_enchanted_diamond_heavy_weapon",
+          "weaponsmith_buy_random_enchanted_diamond_light_weapon",
+          "weaponsmith_buy_random_enchanted_diamond_light_weapon"
+        ]
+      },
+      "APPRENTICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 10,
+        "trades": [
+          "generic_sell_iron",
+          "generic_buy_bell",
+          "weaponsmith_buy_random_stone_to_iron_heavy_weapon_t2",
+          "weaponsmith_buy_random_stone_to_iron_heavy_weapon_t2",
+          "weaponsmith_buy_random_stone_to_iron_light_weapon_t2",
+          "weaponsmith_buy_random_stone_to_iron_light_weapon_t2"
+        ]
+      },
+      "NOVICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 0,
+        "trades": [
+          "generic_sell_coal",
+          "weaponsmith_buy_random_stone_to_iron_heavy_weapon_t1",
+          "weaponsmith_buy_random_stone_to_iron_heavy_weapon_t1",
+          "weaponsmith_buy_random_stone_to_iron_light_weapon_t1",
+          "weaponsmith_buy_random_stone_to_iron_light_weapon_t1"
+        ]
+      },
+      "MASTER": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 640,
+        "trades": [
+          "generic_buy_netherite_scrap",
+          "weaponsmith_buy_random_royal_diamond_light_weapon",
+          "weaponsmith_buy_random_royal_diamond_heavy_weapon",
+          "weaponsmith_buy_random_royal_diamond_heavy_weapon",
+          "weaponsmith_buy_random_royal_diamond_light_weapon"
+        ]
+      }
+    },
+    "services": [
+      "trading"
+    ]
+  },
+  {
+    "type": "cleric_simple",
+    "version": 0,
+    "resetTradesDaily": true,
+    "canLoseProfession": true,
+    "perPlayerStock": false,
+    "weight": 10.0,
+    "trades": {
+      "JOURNEYMAN": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 40,
+        "trades": [
+          "cleric_sell_rabbit_feet",
+          "cleric_buy_glowstone_dust",
+          "cleric_buy_glistering_melon_slice",
+          "cleric_buy_golden_carrots"
+        ]
+      },
+      "EXPERT": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 160,
+        "trades": [
+          "cleric_sell_glass_bottles",
+          "cleric_buy_ender_pearl",
+          "cleric_sell_turtle_scute",
+          "cleric_buy_ghast_tear",
+          "cleric_buy_pollen_stalks"
+        ]
+      },
+      "APPRENTICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 10,
+        "trades": [
+          "cleric_sell_gold",
+          "cleric_buy_lapis_lazuli",
+          "cleric_sell_spider_eyes",
+          "cleric_buy_fermented_spider_eye"
+        ]
+      },
+      "NOVICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 0,
+        "trades": [
+          "cleric_sell_rotten_flesh",
+          "cleric_buy_redstone_dust",
+          "cleric_buy_brewing_stand",
+          "cleric_buy_nether_wart",
+          "cleric_buy_blaze_powder",
+          "cleric_buy_glass_bottles"
+        ]
+      },
+      "MASTER": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 640,
+        "trades": [
+          "cleric_sell_nether_wart",
+          "cleric_buy_experience_bottles",
+          "cleric_buy_bustling_fungus",
+          "cleric_buy_steelblossom",
+          "cleric_buy_shimmerleaf",
+          "cleric_buy_noxious_spores",
+          "cleric_buy_knightreed",
+          "cleric_buy_tutor_lotus"
+        ]
+      }
+    },
+    "services": [
+      "trading"
+    ]
+  },
+  {
+    "type": "mason_simple",
+    "version": 0,
+    "resetTradesDaily": true,
+    "canLoseProfession": true,
+    "perPlayerStock": false,
+    "weight": 10.0,
+    "trades": {
+      "JOURNEYMAN": {
+        "rolls": 2.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 40,
+        "trades": [
+          "mason_sell_granite",
+          "mason_sell_andesite",
+          "mason_sell_diorite",
+          "mason_buy_basalt",
+          "mason_buy_calcite",
+          "mason_buy_glass",
+          "mason_buy_dripstone",
+          "mason_buy_blackstone",
+          "mason_buy_red_sandstone",
+          "mason_buy_nether_bricks"
+        ]
+      },
+      "EXPERT": {
+        "rolls": 2.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 160,
+        "trades": [
+          "mason_sell_nether_quartz",
+          "mason_buy_quartz_block",
+          "mason_buy_tinted_glass",
+          "mason_buy_amethyst_block",
+          "mason_buy_prismarine",
+          "mason_buy_prismarine_bricks",
+          "mason_buy_dark_prismarine",
+          "mason_buy_prismarine_lanterns",
+          "mason_buy_glowstone"
+        ]
+      },
+      "APPRENTICE": {
+        "rolls": 2.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 10,
+        "trades": [
+          "mason_sell_stone",
+          "mason_buy_cobbled_deepslate",
+          "mason_buy_terracotta",
+          "mason_buy_terracotta_random_color",
+          "mason_buy_andesite",
+          "mason_buy_granite",
+          "mason_buy_diorite",
+          "mason_buy_sandstone",
+          "mason_buy_tuff"
+        ]
+      },
+      "NOVICE": {
+        "rolls": 2.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 0,
+        "trades": [
+          "mason_sell_clay_ball",
+          "mason_buy_stone",
+          "mason_buy_smooth_stone",
+          "mason_buy_cobblestone",
+          "mason_buy_mossy_cobblestone",
+          "mason_buy_mossy_stone_bricks",
+          "mason_buy_bricks",
+          "mason_buy_mud"
+        ]
+      },
+      "MASTER": {
+        "rolls": 2.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 640,
+        "trades": [
+          "mason_buy_end_stone",
+          "mason_buy_purpur",
+          "mason_buy_obsidian",
+          "mason_buy_light",
+          "mason_buy_reinforced_deepslate"
+        ]
+      }
+    },
+    "services": [
+      "trading"
+    ]
+  },
+  {
+    "type": "shepherd_simple",
+    "version": 0,
+    "resetTradesDaily": true,
+    "canLoseProfession": true,
+    "perPlayerStock": false,
+    "weight": 10.0,
+    "trades": {
+      "JOURNEYMAN": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 40,
+        "trades": [
+          "shepherd_sell_random_dye_uncommon",
+          "shepherd_buy_random_dye_common",
+          "shepherd_buy_random_dye_common",
+          "shepherd_buy_random_dye_uncommon",
+          "shepherd_buy_random_dye_uncommon"
+        ]
+      },
+      "EXPERT": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 160,
+        "trades": [
+          "shepherd_sell_random_dye_rare",
+          "shepherd_buy_phoenix_banner",
+          "shepherd_buy_hearts_banner",
+          "shepherd_buy_mountain_banner",
+          "shepherd_buy_warden_banner",
+          "shepherd_buy_random_dye_rare"
+        ]
+      },
+      "APPRENTICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 10,
+        "trades": [
+          "shepherd_sell_random_dye_common",
+          "shepherd_buy_random_dyed_wool",
+          "shepherd_buy_random_dyed_wool",
+          "shepherd_buy_random_dyed_wool",
+          "shepherd_buy_random_dyed_wool"
+        ]
+      },
+      "NOVICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 0,
+        "trades": [
+          "shepherd_buy_shears",
+          "shepherd_sell_white_wool",
+          "shepherd_sell_gray_wool",
+          "shepherd_sell_black_wool",
+          "shepherd_sell_brown_wool"
+        ]
+      },
+      "MASTER": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 640,
+        "trades": [
+          "shepherd_buy_mojang_pattern",
+          "shepherd_buy_dungeon_banner",
+          "shepherd_buy_dragon_egg_banner",
+          "shepherd_buy_rainbow_banner",
+          "shepherd_buy_dragon_banner",
+          "shepherd_buy_bird_banner",
+          "shepherd_buy_sauron_banner"
+        ]
+      }
+    },
+    "services": [
+      "trading"
+    ]
+  },
+  {
+    "type": "fisherman_simple",
+    "version": 0,
+    "resetTradesDaily": true,
+    "canLoseProfession": true,
+    "perPlayerStock": false,
+    "weight": 10.0,
+    "trades": {
+      "JOURNEYMAN": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 40,
+        "trades": [
+          "fisherman_sell_tropical_fish",
+          "fisherman_sell_pufferfish",
+          "fisherman_sell_boat",
+          "fisherman_sell_ink_sacs",
+          "fisherman_buy_fishing_rod_t1",
+          "fisherman_buy_turtle_scute"
+        ]
+      },
+      "EXPERT": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 160,
+        "trades": [
+          "fisherman_buy_prismarine_crystals",
+          "fisherman_buy_prismarine_shards",
+          "fisherman_buy_nautilus_shell",
+          "fisherman_buy_bait",
+          "fisherman_buy_fishing_rod_t2",
+          "fisherman_buy_cooked_lionfish"
+        ]
+      },
+      "APPRENTICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 10,
+        "trades": [
+          "fisherman_sell_cod",
+          "fisherman_sell_salmon",
+          "fisherman_buy_tropical_fish_bucket",
+          "fisherman_buy_salmon_bucket",
+          "fisherman_buy_cooked_salmon",
+          "fisherman_buy_pufferfish_bucket"
+        ]
+      },
+      "NOVICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 0,
+        "trades": [
+          "fisherman_sell_string",
+          "generic_sell_coal",
+          "fisherman_buy_cod_bucket",
+          "fisherman_buy_cooked_cod"
+        ]
+      },
+      "MASTER": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 640,
+        "trades": [
+          "fisherman_buy_heart_of_the_sea",
+          "fisherman_buy_caviar",
+          "fisherman_buy_salmon_en_croute",
+          "fisherman_buy_poached_lobster",
+          "fisherman_buy_uni_sushi"
+        ]
+      }
+    },
+    "services": [
+      "trading"
+    ]
+  },
+  {
+    "type": "librarian_simple",
+    "version": 0,
+    "resetTradesDaily": true,
+    "canLoseProfession": true,
+    "perPlayerStock": false,
+    "weight": 10.0,
+    "trades": {
+      "JOURNEYMAN": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 40,
+        "trades": [
+          "librarian_sell_ink_sacs",
+          "librarian_buy_glass",
+          "librarian_buy_random_enchanted_book_t3",
+          "librarian_buy_random_enchanted_book_t3",
+          "librarian_buy_random_enchanted_book_t3",
+          "librarian_buy_random_enchanted_book_t3"
+        ]
+      },
+      "EXPERT": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 160,
+        "trades": [
+          "librarian_sell_book_and_quill",
+          "librarian_buy_compass",
+          "librarian_buy_clock",
+          "librarian_buy_random_enchanted_book_t4",
+          "librarian_buy_random_enchanted_book_t4",
+          "librarian_buy_random_enchanted_book_t4",
+          "librarian_buy_random_enchanted_book_t4"
+        ]
+      },
+      "APPRENTICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 10,
+        "trades": [
+          "librarian_sell_books",
+          "librarian_buy_lantern",
+          "librarian_buy_random_enchanted_book_t2",
+          "librarian_buy_random_enchanted_book_t2",
+          "librarian_buy_random_enchanted_book_t2",
+          "librarian_buy_random_enchanted_book_t2"
+        ]
+      },
+      "NOVICE": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 0,
+        "trades": [
+          "librarian_sell_paper",
+          "librarian_buy_bookshelf",
+          "librarian_buy_random_enchanted_book_t1",
+          "librarian_buy_random_enchanted_book_t1",
+          "librarian_buy_random_enchanted_book_t1",
+          "librarian_buy_random_enchanted_book_t1"
+        ]
+      },
+      "MASTER": {
+        "rolls": 1.0,
+        "rollQuality": 0.30000000000000004,
+        "expRequirement": 640,
+        "trades": [
+          "librarian_buy_name_tag",
+          "librarian_buy_random_enchanted_book_t5",
+          "librarian_buy_random_enchanted_book_t5",
+          "librarian_buy_random_enchanted_book_t5",
+          "librarian_buy_random_enchanted_book_t5"
+        ]
+      }
+    },
+    "services": [
+      "trading"
+    ]
+  }
+]

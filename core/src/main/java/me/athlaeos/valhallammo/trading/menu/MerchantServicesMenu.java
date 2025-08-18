@@ -146,7 +146,8 @@ public class MerchantServicesMenu extends Menu {
                     ServiceType serviceType = ServiceRegistry.getServiceType(service.getType());
                     if (serviceType == null || ItemUtils.isEmpty(serviceType.getDefaultButton())) continue;
                     buttons.add(new ItemBuilder(serviceType.getDefaultButton())
-                            .stringTag(KEY_SERVICE, serviceType.getID())
+                            .name(service.getID())
+                            .stringTag(KEY_SERVICE, service.getID())
                             .appendLore("&6Click to add")
                             .appendLore(
                                     (service.getID().equals(confirmDeletion)) ?
