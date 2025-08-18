@@ -1377,6 +1377,7 @@
     "party-rank-trusted": "&7Trusted",
     "party-rank-officer": "&eOfficer",
     "party-rank-inner-circle": "&e&lInner Circle",
+    "modifier-warning-already-has-enchantments": "&cAlready has enchantments.",
     "party-level-0": "&fAlliance",
     "party-level-1": "&aSquad",
     "party-level-2": "&2Crew",
