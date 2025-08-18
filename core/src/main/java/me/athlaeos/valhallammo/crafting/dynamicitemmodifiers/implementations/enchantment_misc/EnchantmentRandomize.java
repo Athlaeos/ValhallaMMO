@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.EnchantingItemPropertyManager;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.Enchanter;
 import org.bukkit.Material;
@@ -30,6 +31,10 @@ public class EnchantmentRandomize extends DynamicItemModifier {
     @Override
     public void processItem(ModifierContext context) {
         if (level == 0) return;
+        if (!context.getItem().getItem().getEnchantments().isEmpty()) {
+            failedRecipe(context.getItem(), TranslationManager.getTranslation("modifier-warning-already-has-enchantments"));
+            return;
+        }
 
         Map<Enchantment, Integer> chosenEnchantments = Enchanter.getRandomEnchantments(context.getItem().getItem(), context.getItem().getMeta(), level, includeTreasure);
         if (chosenEnchantments.isEmpty()) return;
