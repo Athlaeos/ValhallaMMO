@@ -154,6 +154,10 @@ attribute_stat_priorities:
 inventory_repairing_vanilla: true # If false, players will no longer be able to repair vanilla items in their inventories
 inventory_repairing_valhalla: true # If false, players will no longer be able to repair valhalla items in their inventories
 
+# To be considered "standing still", the player needs to not have moved horizontally for this amount of time
+# Likewise, the player is considered in movement if they've been standing still for less than this duration, resetting every time they move
+duration_for_standing_stil: 1000
+
 # If true, a player cannot be oneshot if the damage comes from a player
 oneshot_protection_players: true
 # If true, a player cannot be oneshot if the damage comes from a non-player

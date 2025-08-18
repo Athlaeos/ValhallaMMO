@@ -22,6 +22,8 @@ public class EffectTriggerRegistry {
         register(new WhileMovementModifier(null)); // while_walking
         register(new WhileMovementModifier(true)); // while_sprinting
         register(new WhileMovementModifier(false)); // while_sneaking
+        register(new WhileStandingStill(true)); // while_standing_still
+        register(new WhileStandingStill(false)); // while_moving
         register(new WhileCombatStatus(true)); // while_in_combat
         register(new WhileCombatStatus(false)); // while_out_of_combat
         register(new DayTimeOrLightExposure(null, true)); // while_light
