@@ -125,6 +125,103 @@
     "unlockedForEveryone": true
   },
   {
+    "name": "empower_vulnerability_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5HTE9XU1RPTkVfRFVTVA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACgeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIFZ1bG5lcmFi\r\naWxpdHkifV0sInRleHQiOiIifXNyADZjb20uZ29vZ2xlLmNvbW1vbi5jb2xsZWN0LkltbXV0YWJs\r\nZUxpc3QkU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAVsACGVsZW1lbnRzdAATW0xqYXZhL2xhbmcv\r\nT2JqZWN0O3hwdXEAfgAGAAAAAXQAzXsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZh\r\nbHNlLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQi\r\nOmZhbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6Iu65hiJ9LHsiaXRhbGljIjpmYWxzZSwiY29s\r\nb3IiOiJyZWQiLCJ0ZXh0IjoiIERhbWFnZSBUYWtlbiArNSUgKDA6MDUpIn1dLCJ0ZXh0IjoiIn1z\r\ncgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxvYWRGYWN0b3JJAAl0aHJlc2hvbGR4\r\ncD9AAAAAAAAMdwgAAAAQAAAAAnQAGnZhbGhhbGxhbW1vOnN0b3JlZF9lZmZlY3RzdAAVREFNQUdF\r\nX1RBS0VOOjAuMDU6MTAwdAAidmFsaGFsbGFtbW86ZGVmYXVsdF9zdG9yZWRfZWZmZWN0c3QAFURB\r\nTUFHRV9UQUtFTjowLjA1OjEwMHg=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.3000000000000001,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.09999999999999991,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 1500.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
     "name": "empower_turtle_master_potion",
     "ingredient": {
       "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5HTE9XU1RPTkVfRFVTVA==\r\n",
@@ -207,6 +304,103 @@
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
           "amplifier": 100.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "empower_skill_exp_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5HTE9XU1RPTkVfRFVTVA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACbeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIExlYXJuaW5n\r\nIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0\r\nJFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVj\r\ndDt4cHVxAH4ABgAAAAF0AMx7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwi\r\ndW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxz\r\nZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiLuuYQifSx7Iml0YWxpYyI6ZmFsc2UsImNvbG9yIjoi\r\nZ3JlZW4iLCJ0ZXh0IjoiIFNraWxsIEVYUCArNSUgKDA6MDUpIn1dLCJ0ZXh0IjoiIn1zcgARamF2\r\nYS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxvYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAA\r\nAAAMdwgAAAAQAAAAAnQAGnZhbGhhbGxhbW1vOnN0b3JlZF9lZmZlY3RzdAAXU0tJTExfRVhQX0dB\r\nSU46MC4wNToxMDB0ACJ2YWxoYWxsYW1tbzpkZWZhdWx0X3N0b3JlZF9lZmZlY3RzdAAXU0tJTExf\r\nRVhQX0dBSU46MC4wNToxMDB4\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.3000000000000001,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.09999999999999991,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 1500.0,
           "skillRange": 300.0,
           "rangeOffset": 0.0,
           "minimum": 0.0,
@@ -403,6 +597,120 @@
     "unlockedForEveryone": true
   },
   {
+    "name": "brew_healing_increase_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAE\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0ABFjdXN0b20tbW9kZWwtZGF0YXVxAH4A\r\nBgAAAAR0AAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AJh7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwi\r\naXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJv\r\nYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiJCdXN0bGluZyBGdW5ndXMi\r\nfV0sInRleHQiOiIifXNxAH4ADgCMRVQ=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAAA3EA\r\nfgAIdAAJbWV0YS10eXBldAALcG90aW9uLXR5cGV1cQB+AAYAAAADdAAISXRlbU1ldGFxAH4AEXQA\r\nEW1pbmVjcmFmdDphd2t3YXJk\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_misc.AlchemyQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "effectClass": "BUFF",
+          "name": "alchemy_quality_scale",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ColorRGB",
+        "DATA": {
+          "red": 255,
+          "green": 105,
+          "blue": 155,
+          "name": "color_rgb",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsRemoveAll",
+        "DATA": {
+          "name": "alchemy_tags_clear",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd",
+        "DATA": {
+          "effect": "HEALING_BONUS",
+          "value": 0.2,
+          "duration": 900,
+          "charges": -1,
+          "smallIncrement": 0.01,
+          "bigIncrement": 0.1,
+          "icon": "GLISTERING_MELON_SLICE",
+          "name": "potion_effect_add_healing_bonus",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 3000.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 900.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 1600.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.20000000000000004,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
     "name": "extend_slowness_potion",
     "ingredient": {
       "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAhSRURTVE9ORQ==\r\n",
@@ -473,6 +781,88 @@
           "skillRange": 300.0,
           "rangeOffset": 0.0,
           "minimum": 3000.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "extend_immunity_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAhSRURTVE9ORQ==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACkeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIERpdmluZSBQ\r\ncm90ZWN0aW9uIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11\r\ndGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9s\r\nYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AMp7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGlj\r\nIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2Nh\r\ndGVkIjpmYWxzZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiLuuJYifSx7Iml0YWxpYyI6ZmFsc2Us\r\nImNvbG9yIjoiZ3JlZW4iLCJ0ZXh0IjoiIEltbXVuaXR5ICsxICgwOjA1KSJ9XSwidGV4dCI6IiJ9\r\nc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xk\r\neHA/QAAAAAAADHcIAAAAEAAAAAJ0ABp2YWxoYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAG0lNTVVO\r\nSVRZX0JPTlVTX0ZMQVQ6MS4wOjEwMHQAInZhbGhhbGxhbW1vOmRlZmF1bHRfc3RvcmVkX2VmZmVj\r\ndHN0ABtJTU1VTklUWV9CT05VU19GTEFUOjEuMDoxMDB4\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            2
+          ],
+          "tag": 2,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 10800.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 2700.0,
           "skillToScaleWith": "ALCHEMY",
           "skillEfficiency": 1.0,
           "minimumValue": 0.0,
@@ -577,6 +967,120 @@
           "skill": "ALCHEMY",
           "amount": 450.0,
           "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "brew_smithing_quality_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAE\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0ABFjdXN0b20tbW9kZWwtZGF0YXVxAH4A\r\nBgAAAAR0AAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AJN7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwi\r\naXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJv\r\nYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiJUaW5ibG9zc29tIn1dLCJ0\r\nZXh0IjoiIn1zcQB+AA4AjEVN\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAAA3EA\r\nfgAIdAAJbWV0YS10eXBldAALcG90aW9uLXR5cGV1cQB+AAYAAAADdAAISXRlbU1ldGFxAH4AEXQA\r\nEW1pbmVjcmFmdDphd2t3YXJk\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_misc.AlchemyQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "effectClass": "BUFF",
+          "name": "alchemy_quality_scale",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ColorRGB",
+        "DATA": {
+          "red": 150,
+          "green": 150,
+          "blue": 150,
+          "name": "color_rgb",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsRemoveAll",
+        "DATA": {
+          "name": "alchemy_tags_clear",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd",
+        "DATA": {
+          "effect": "SMITHING_QUALITY",
+          "value": 10.0,
+          "duration": 900,
+          "charges": -1,
+          "smallIncrement": 1.0,
+          "bigIncrement": 10.0,
+          "icon": "ANVIL",
+          "name": "potion_effect_add_smithing_quality",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 3000.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 900.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 1600.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 10.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
           "priority": "LATER"
         }
       }
@@ -772,6 +1276,88 @@
           "skillEfficiency": 1.0,
           "minimumValue": 0.0,
           "name": "potion_amplifier_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "extend_healing_increase_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAhSRURTVE9ORQ==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACeeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIFJlc3RvcmF0\r\naW9uIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVM\r\naXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09i\r\namVjdDt4cHVxAH4ABgAAAAF0AMp7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxz\r\nZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpm\r\nYWxzZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiLuuKoifSx7Iml0YWxpYyI6ZmFsc2UsImNvbG9y\r\nIjoiZ3JlZW4iLCJ0ZXh0IjoiIEhlYWxpbmcgKzUlICgwOjA1KSJ9XSwidGV4dCI6IiJ9c3IAEWph\r\ndmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAA\r\nAAAADHcIAAAAEAAAAAJ0ABp2YWxoYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAFkhFQUxJTkdfQk9O\r\nVVM6MC4wNToxMDB0ACJ2YWxoYWxsYW1tbzpkZWZhdWx0X3N0b3JlZF9lZmZlY3RzdAAWSEVBTElO\r\nR19CT05VUzowLjA1OjEwMHg=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            2
+          ],
+          "tag": 2,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 10800.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 2700.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
           "priority": "LATER"
         }
       }
@@ -1192,6 +1778,88 @@
     "unlockedForEveryone": true
   },
   {
+    "name": "extend_smithing_skill_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAhSRURTVE9ORQ==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACbeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIFNtaXRoaW5n\r\nIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0\r\nJFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVj\r\ndDt4cHVxAH4ABgAAAAF0ANB7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwi\r\ndW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxz\r\nZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiLuuLkifSx7Iml0YWxpYyI6ZmFsc2UsImNvbG9yIjoi\r\nZ3JlZW4iLCJ0ZXh0IjoiIFNtaXRoaW5nIFNraWxsICs1ICgwOjA1KSJ9XSwidGV4dCI6IiJ9c3IA\r\nEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/\r\nQAAAAAAADHcIAAAAEAAAAAJ0ABp2YWxoYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAGFNNSVRISU5H\r\nX1FVQUxJVFk6NS4wOjEwMHQAInZhbGhhbGxhbW1vOmRlZmF1bHRfc3RvcmVkX2VmZmVjdHN0ABhT\r\nTUlUSElOR19RVUFMSVRZOjUuMDoxMDB4\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            2
+          ],
+          "tag": 2,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 10800.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 2700.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
     "name": "empower_strength_potion",
     "ingredient": {
       "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5HTE9XU1RPTkVfRFVTVA==\r\n",
@@ -1492,6 +2160,103 @@
           "skillEfficiency": 1.0,
           "minimumValue": 0.0,
           "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "empower_enchanting_skill_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5HTE9XU1RPTkVfRFVTVA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACdeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIEVuY2hhbnRp\r\nbmcifV0sInRleHQiOiIifXNyADZjb20uZ29vZ2xlLmNvbW1vbi5jb2xsZWN0LkltbXV0YWJsZUxp\r\nc3QkU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAVsACGVsZW1lbnRzdAATW0xqYXZhL2xhbmcvT2Jq\r\nZWN0O3hwdXEAfgAGAAAAAnQA0nsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNl\r\nLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZh\r\nbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6Iu64sSJ9LHsiaXRhbGljIjpmYWxzZSwiY29sb3Ii\r\nOiJncmVlbiIsInRleHQiOiIgRW5jaGFudGluZyBTa2lsbCArNSAoMDowNSkifV0sInRleHQiOiIi\r\nfXQAzXsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVkIjpm\r\nYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6Indo\r\naXRlIiwidGV4dCI6Iu64syJ9LHsiaXRhbGljIjpmYWxzZSwiY29sb3IiOiJncmVlbiIsInRleHQi\r\nOiIgQW52aWwgU2tpbGwgKzUgKDA6MDUpIn1dLCJ0ZXh0IjoiIn1zcgARamF2YS51dGlsLkhhc2hN\r\nYXAFB9rBwxZg0QMAAkYACmxvYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAMdwgAAAAQAAAA\r\nAnQAGnZhbGhhbGxhbW1vOnN0b3JlZF9lZmZlY3RzdAA1QU5WSUxfUVVBTElUWV9GTEFUOjUuMDox\r\nMDA7RU5DSEFOVElOR19RVUFMSVRZOjUuMDoxMDB0ACJ2YWxoYWxsYW1tbzpkZWZhdWx0X3N0b3Jl\r\nZF9lZmZlY3RzdAA1QU5WSUxfUVVBTElUWV9GTEFUOjUuMDoxMDA7RU5DSEFOVElOR19RVUFMSVRZ\r\nOjUuMDoxMDB4\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 1500.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 20.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 10.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
           "priority": "LATER"
         }
       }
@@ -1932,6 +2697,345 @@
     "unlockedForEveryone": true
   },
   {
+    "name": "brew_skill_exp_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAE\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0ABFjdXN0b20tbW9kZWwtZGF0YXVxAH4A\r\nBgAAAAR0AAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AI57ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwi\r\naXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJv\r\nYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiJMb3R1cyJ9XSwidGV4dCI6\r\nIiJ9c3EAfgAOAIxFTA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAAA3EA\r\nfgAIdAAJbWV0YS10eXBldAALcG90aW9uLXR5cGV1cQB+AAYAAAADdAAISXRlbU1ldGFxAH4AEXQA\r\nEW1pbmVjcmFmdDphd2t3YXJk\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_misc.AlchemyQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "effectClass": "BUFF",
+          "name": "alchemy_quality_scale",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ColorRGB",
+        "DATA": {
+          "red": 180,
+          "green": 255,
+          "blue": 180,
+          "name": "color_rgb",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsRemoveAll",
+        "DATA": {
+          "name": "alchemy_tags_clear",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd",
+        "DATA": {
+          "effect": "SKILL_EXP_GAIN",
+          "value": 0.1,
+          "duration": 900,
+          "charges": -1,
+          "smallIncrement": 0.01,
+          "bigIncrement": 0.1,
+          "icon": "BOOK",
+          "name": "potion_effect_add_skill_exp_gain",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 3000.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 900.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 1600.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.09999999999999999,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "brew_enchanting_quality_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAE\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0ABFjdXN0b20tbW9kZWwtZGF0YXVxAH4A\r\nBgAAAAR0AAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AJR7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwi\r\naXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJv\r\nYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiJTaGltbWVybGVhZiJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxFTg==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAAA3EA\r\nfgAIdAAJbWV0YS10eXBldAALcG90aW9uLXR5cGV1cQB+AAYAAAADdAAISXRlbU1ldGFxAH4AEXQA\r\nEW1pbmVjcmFmdDphd2t3YXJk\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_misc.AlchemyQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "effectClass": "BUFF",
+          "name": "alchemy_quality_scale",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ColorRGB",
+        "DATA": {
+          "red": 250,
+          "green": 150,
+          "blue": 250,
+          "name": "color_rgb",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsRemoveAll",
+        "DATA": {
+          "name": "alchemy_tags_clear",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd",
+        "DATA": {
+          "effect": "ANVIL_QUALITY_FLAT",
+          "value": 10.0,
+          "duration": 900,
+          "charges": -1,
+          "smallIncrement": 1.0,
+          "bigIncrement": 10.0,
+          "icon": "ANVIL",
+          "name": "potion_effect_add_anvil_quality_flat",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd",
+        "DATA": {
+          "effect": "ENCHANTING_QUALITY",
+          "value": 10.0,
+          "duration": 900,
+          "charges": -1,
+          "smallIncrement": 1.0,
+          "bigIncrement": 10.0,
+          "icon": "ENCHANTING_TABLE",
+          "name": "potion_effect_add_enchanting_quality",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 3000.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 900.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 1600.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 10.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "empower_healing_increase_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5HTE9XU1RPTkVfRFVTVA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACeeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIFJlc3RvcmF0\r\naW9uIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVM\r\naXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09i\r\namVjdDt4cHVxAH4ABgAAAAF0AMp7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxz\r\nZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpm\r\nYWxzZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiLuuKoifSx7Iml0YWxpYyI6ZmFsc2UsImNvbG9y\r\nIjoiZ3JlZW4iLCJ0ZXh0IjoiIEhlYWxpbmcgKzUlICgwOjA1KSJ9XSwidGV4dCI6IiJ9c3IAEWph\r\ndmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAA\r\nAAAADHcIAAAAEAAAAAJ0ABp2YWxoYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAFkhFQUxJTkdfQk9O\r\nVVM6MC4wNToxMDB0ACJ2YWxoYWxsYW1tbzpkZWZhdWx0X3N0b3JlZF9lZmZlY3RzdAAWSEVBTElO\r\nR19CT05VUzowLjA1OjEwMHg=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 1500.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.40000000000000013,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.3999999999999999,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
     "name": "brew_water_breathing_potion",
     "ingredient": {
       "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AApQVUZGRVJGSVNI\r\n",
@@ -2131,6 +3235,445 @@
         "DATA": {
           "mode": "ADD_ON_DEFAULT",
           "amplifier": 1.5,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "brew_armor_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAE\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0ABFjdXN0b20tbW9kZWwtZGF0YXVxAH4A\r\nBgAAAAR0AAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AJR7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwi\r\naXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJv\r\nYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiJLbmlnaHRzcmVlZCJ9XSwi\r\ndGV4dCI6IiJ9c3EAfgAOAIxFUQ==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAAA3EA\r\nfgAIdAAJbWV0YS10eXBldAALcG90aW9uLXR5cGV1cQB+AAYAAAADdAAISXRlbU1ldGFxAH4AEXQA\r\nEW1pbmVjcmFmdDphd2t3YXJk\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_misc.AlchemyQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "effectClass": "BUFF",
+          "name": "alchemy_quality_scale",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ColorRGB",
+        "DATA": {
+          "red": 150,
+          "green": 150,
+          "blue": 150,
+          "name": "color_rgb",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsRemoveAll",
+        "DATA": {
+          "name": "alchemy_tags_clear",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd",
+        "DATA": {
+          "effect": "ARMOR_FLAT",
+          "value": 2.0,
+          "duration": 900,
+          "charges": -1,
+          "smallIncrement": 0.1,
+          "bigIncrement": 1.0,
+          "icon": "IRON_CHESTPLATE",
+          "name": "potion_effect_add_armor_flat",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 3000.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 900.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 1600.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 4.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "brew_vulnerability_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAE\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0ABFjdXN0b20tbW9kZWwtZGF0YXVxAH4A\r\nBgAAAAR0AAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AI97ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwi\r\naXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJv\r\nYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiJTcG9yZXMifV0sInRleHQi\r\nOiIifXNxAH4ADgCMRVc=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAAA3EA\r\nfgAIdAAJbWV0YS10eXBldAALcG90aW9uLXR5cGV1cQB+AAYAAAADdAAISXRlbU1ldGFxAH4AEXQA\r\nEW1pbmVjcmFmdDphd2t3YXJk\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_misc.AlchemyQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "effectClass": "BUFF",
+          "name": "alchemy_quality_scale",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ColorRGB",
+        "DATA": {
+          "red": 180,
+          "green": 255,
+          "blue": 180,
+          "name": "color_rgb",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsRemoveAll",
+        "DATA": {
+          "name": "alchemy_tags_clear",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd",
+        "DATA": {
+          "effect": "DAMAGE_TAKEN",
+          "value": 0.1,
+          "duration": 900,
+          "charges": -1,
+          "smallIncrement": 0.01,
+          "bigIncrement": 0.1,
+          "icon": "SKELETON_SKULL",
+          "name": "potion_effect_add_damage_taken",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 3000.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 900.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 1600.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 0.09999999999999999,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "empower_immunity_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5HTE9XU1RPTkVfRFVTVA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACkeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIERpdmluZSBQ\r\ncm90ZWN0aW9uIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11\r\ndGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9s\r\nYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AMp7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGlj\r\nIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2Nh\r\ndGVkIjpmYWxzZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiLuuJYifSx7Iml0YWxpYyI6ZmFsc2Us\r\nImNvbG9yIjoiZ3JlZW4iLCJ0ZXh0IjoiIEltbXVuaXR5ICsxICgwOjA1KSJ9XSwidGV4dCI6IiJ9\r\nc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xk\r\neHA/QAAAAAAADHcIAAAAEAAAAAJ0ABp2YWxoYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAG0lNTVVO\r\nSVRZX0JPTlVTX0ZMQVQ6MS4wOjEwMHQAInZhbGhhbGxhbW1vOmRlZmF1bHRfc3RvcmVkX2VmZmVj\r\ndHN0ABtJTU1VTklUWV9CT05VU19GTEFUOjEuMDoxMDB4\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 1500.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 7.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 2.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "brew_immunity_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAITElNRV9EWUVzcQB+AABzcQB+AAN1cQB+AAYAAAAE\r\ncQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0ABFjdXN0b20tbW9kZWwtZGF0YXVxAH4A\r\nBgAAAAR0AAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AJB7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwi\r\naXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJv\r\nYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiJTYWZmcm9uIn1dLCJ0ZXh0\r\nIjoiIn1zcQB+AA4AjEVQ\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAAA3EA\r\nfgAIdAAJbWV0YS10eXBldAALcG90aW9uLXR5cGV1cQB+AAYAAAADdAAISXRlbU1ldGFxAH4AEXQA\r\nEW1pbmVjcmFmdDphd2t3YXJk\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_misc.AlchemyQualityScale",
+        "DATA": {
+          "skillEfficiency": 1.0,
+          "effectClass": "BUFF",
+          "name": "alchemy_quality_scale",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ColorRGB",
+        "DATA": {
+          "red": 150,
+          "green": 150,
+          "blue": 150,
+          "name": "color_rgb",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsRemoveAll",
+        "DATA": {
+          "name": "alchemy_tags_clear",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.PotionEffectAdd",
+        "DATA": {
+          "effect": "IMMUNITY_BONUS_FLAT",
+          "value": 1.0,
+          "duration": 900,
+          "charges": -1,
+          "smallIncrement": 1.0,
+          "bigIncrement": 5.0,
+          "icon": "GOLDEN_APPLE",
+          "name": "potion_effect_add_immunity_bonus_flat",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 3000.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 900.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 1600.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 3.0,
           "skillRange": 300.0,
           "rangeOffset": 0.0,
           "minimum": 0.0,
@@ -2637,6 +4180,88 @@
     "unlockedForEveryone": true
   },
   {
+    "name": "extend_enchanting_skill_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAhSRURTVE9ORQ==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACdeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIEVuY2hhbnRp\r\nbmcifV0sInRleHQiOiIifXNyADZjb20uZ29vZ2xlLmNvbW1vbi5jb2xsZWN0LkltbXV0YWJsZUxp\r\nc3QkU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAVsACGVsZW1lbnRzdAATW0xqYXZhL2xhbmcvT2Jq\r\nZWN0O3hwdXEAfgAGAAAAAnQA0nsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNl\r\nLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZh\r\nbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6Iu64sSJ9LHsiaXRhbGljIjpmYWxzZSwiY29sb3Ii\r\nOiJncmVlbiIsInRleHQiOiIgRW5jaGFudGluZyBTa2lsbCArNSAoMDowNSkifV0sInRleHQiOiIi\r\nfXQAzXsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVkIjpm\r\nYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6Indo\r\naXRlIiwidGV4dCI6Iu64syJ9LHsiaXRhbGljIjpmYWxzZSwiY29sb3IiOiJncmVlbiIsInRleHQi\r\nOiIgQW52aWwgU2tpbGwgKzUgKDA6MDUpIn1dLCJ0ZXh0IjoiIn1zcgARamF2YS51dGlsLkhhc2hN\r\nYXAFB9rBwxZg0QMAAkYACmxvYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAMdwgAAAAQAAAA\r\nAnQAGnZhbGhhbGxhbW1vOnN0b3JlZF9lZmZlY3RzdAA1QU5WSUxfUVVBTElUWV9GTEFUOjUuMDox\r\nMDA7RU5DSEFOVElOR19RVUFMSVRZOjUuMDoxMDB0ACJ2YWxoYWxsYW1tbzpkZWZhdWx0X3N0b3Jl\r\nZF9lZmZlY3RzdAA1QU5WSUxfUVVBTElUWV9GTEFUOjUuMDoxMDA7RU5DSEFOVElOR19RVUFMSVRZ\r\nOjUuMDoxMDB4\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            2
+          ],
+          "tag": 2,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 10800.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 2700.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
     "name": "extend_weakness_potion",
     "ingredient": {
       "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAhSRURTVE9ORQ==\r\n",
@@ -2707,6 +4332,185 @@
           "skillRange": 300.0,
           "rangeOffset": 0.0,
           "minimum": 1200.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "empower_smithing_skill_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5HTE9XU1RPTkVfRFVTVA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACbeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIFNtaXRoaW5n\r\nIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0\r\nJFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVj\r\ndDt4cHVxAH4ABgAAAAF0ANB7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwi\r\ndW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxz\r\nZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiLuuLkifSx7Iml0YWxpYyI6ZmFsc2UsImNvbG9yIjoi\r\nZ3JlZW4iLCJ0ZXh0IjoiIFNtaXRoaW5nIFNraWxsICs1ICgwOjA1KSJ9XSwidGV4dCI6IiJ9c3IA\r\nEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/\r\nQAAAAAAADHcIAAAAEAAAAAJ0ABp2YWxoYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAGFNNSVRISU5H\r\nX1FVQUxJVFk6NS4wOjEwMHQAInZhbGhhbGxhbW1vOmRlZmF1bHRfc3RvcmVkX2VmZmVjdHN0ABhT\r\nTUlUSElOR19RVUFMSVRZOjUuMDoxMDB4\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 1500.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 20.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 10.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "extend_skill_exp_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAhSRURTVE9ORQ==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACbeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIExlYXJuaW5n\r\nIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0\r\nJFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVj\r\ndDt4cHVxAH4ABgAAAAF0AMx7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwi\r\ndW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxz\r\nZSwiY29sb3IiOiJ3aGl0ZSIsInRleHQiOiLuuYQifSx7Iml0YWxpYyI6ZmFsc2UsImNvbG9yIjoi\r\nZ3JlZW4iLCJ0ZXh0IjoiIFNraWxsIEVYUCArNSUgKDA6MDUpIn1dLCJ0ZXh0IjoiIn1zcgARamF2\r\nYS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxvYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAA\r\nAAAMdwgAAAAQAAAAAnQAGnZhbGhhbGxhbW1vOnN0b3JlZF9lZmZlY3RzdAAXU0tJTExfRVhQX0dB\r\nSU46MC4wNToxMDB0ACJ2YWxoYWxsYW1tbzpkZWZhdWx0X3N0b3JlZF9lZmZlY3RzdAAXU0tJTExf\r\nRVhQX0dBSU46MC4wNToxMDB4\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            2
+          ],
+          "tag": 2,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 10800.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 2700.0,
           "skillToScaleWith": "ALCHEMY",
           "skillEfficiency": 1.0,
           "minimumValue": 0.0,
@@ -2905,6 +4709,185 @@
           "skillEfficiency": 1.0,
           "minimumValue": 0.0,
           "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "extend_vulnerability_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAhSRURTVE9ORQ==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACgeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIFZ1bG5lcmFi\r\naWxpdHkifV0sInRleHQiOiIifXNyADZjb20uZ29vZ2xlLmNvbW1vbi5jb2xsZWN0LkltbXV0YWJs\r\nZUxpc3QkU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAVsACGVsZW1lbnRzdAATW0xqYXZhL2xhbmcv\r\nT2JqZWN0O3hwdXEAfgAGAAAAAXQAzXsiZXh0cmEiOlt7ImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZh\r\nbHNlLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhyb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQi\r\nOmZhbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6Iu65hiJ9LHsiaXRhbGljIjpmYWxzZSwiY29s\r\nb3IiOiJyZWQiLCJ0ZXh0IjoiIERhbWFnZSBUYWtlbiArNSUgKDA6MDUpIn1dLCJ0ZXh0IjoiIn1z\r\ncgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxvYWRGYWN0b3JJAAl0aHJlc2hvbGR4\r\ncD9AAAAAAAAMdwgAAAAQAAAAAnQAGnZhbGhhbGxhbW1vOnN0b3JlZF9lZmZlY3RzdAAVREFNQUdF\r\nX1RBS0VOOjAuMDU6MTAwdAAidmFsaGFsbGFtbW86ZGVmYXVsdF9zdG9yZWRfZWZmZWN0c3QAFURB\r\nTUFHRV9UQUtFTjowLjA1OjEwMHg=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            2
+          ],
+          "tag": 2,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 10800.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 2700.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "empower_armor_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA5HTE9XU1RPTkVfRFVTVA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACYeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIEFybW9yIn1d\r\nLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNl\r\ncmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4\r\ncHVxAH4ABgAAAAF0AMd7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5k\r\nZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwi\r\nY29sb3IiOiJ3aGl0ZSIsInRleHQiOiLuuZAifSx7Iml0YWxpYyI6ZmFsc2UsImNvbG9yIjoiZ3Jl\r\nZW4iLCJ0ZXh0IjoiIEFybW9yICsyICgwOjA1KSJ9XSwidGV4dCI6IiJ9c3IAEWphdmEudXRpbC5I\r\nYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAA\r\nEAAAAAJ0ABp2YWxoYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAEkFSTU9SX0ZMQVQ6Mi4wOjEwMHQA\r\nInZhbGhhbGxhbW1vOmRlZmF1bHRfc3RvcmVkX2VmZmVjdHN0ABJBUk1PUl9GTEFUOjIuMDoxMDB4\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 1500.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 0.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleAmplifier",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 10.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 3.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_amplifier_scale",
           "priority": "LATER"
         }
       }
@@ -3855,6 +5838,88 @@
           "skillRange": 300.0,
           "rangeOffset": 0.0,
           "minimum": 3900.0,
+          "skillToScaleWith": "ALCHEMY",
+          "skillEfficiency": 1.0,
+          "minimumValue": 0.0,
+          "name": "potion_duration_scale",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "brewTime": 400,
+    "unlockedForEveryone": true
+  },
+  {
+    "name": "extend_armor_potion",
+    "ingredient": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAhSRURTVE9ORQ==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAHRElBTU9ORHNxAH4AAHNxAH4AA3VxAH4ABgAAAARx\r\nAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQABGxvcmV1cQB+AAYAAAAEdAAISXRlbU1l\r\ndGF0AApVTlNQRUNJRklDdABLeyJleHRyYSI6W3siaXRhbGljIjpmYWxzZSwiY29sb3IiOiJ3aGl0\r\nZSIsInRleHQiOiJSZXBsYWNlIG1lISJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdACmeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoiZ3JheSIsInRleHQiOiJJJ20ganVzdCBh\r\nIHBsYWNlaG9sZGVyIHJlc3VsdCEifV0sInRleHQiOiIifQ==\r\n",
+    "applyOn": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAGUE9USU9Oc3EAfgAAc3EAfgADdXEAfgAGAAAABXEA\r\nfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXQAElB1YmxpY0J1a2tpdFZhbHVl\r\nc3VxAH4ABgAAAAV0AAhJdGVtTWV0YXEAfgARdACYeyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0\r\nYWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2Jm\r\ndXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0IjoiUG90aW9uIG9mIEFybW9yIn1d\r\nLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNl\r\ncmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFbAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4\r\ncHVxAH4ABgAAAAF0AMd7ImV4dHJhIjpbeyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5k\r\nZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRocm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwi\r\nY29sb3IiOiJ3aGl0ZSIsInRleHQiOiLuuZAifSx7Iml0YWxpYyI6ZmFsc2UsImNvbG9yIjoiZ3Jl\r\nZW4iLCJ0ZXh0IjoiIEFybW9yICsyICgwOjA1KSJ9XSwidGV4dCI6IiJ9c3IAEWphdmEudXRpbC5I\r\nYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAA\r\nEAAAAAJ0ABp2YWxoYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAEkFSTU9SX0ZMQVQ6Mi4wOjEwMHQA\r\nInZhbGhhbGxhbW1vOmRlZmF1bHRfc3RvcmVkX2VmZmVjdHN0ABJBUk1PUl9GTEFUOjIuMDoxMDB4\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.PotionMatchEffectsChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "tinker": true,
+    "requireValhallaTools": false,
+    "consumeIngredient": true,
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsCancelIfPresent",
+        "DATA": {
+          "tags": [
+            2,
+            4
+          ],
+          "tag": 4,
+          "name": "alchemy_tags_forbid",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_conditionals.AlchemyTagsAdd",
+        "DATA": {
+          "tags": [
+            2
+          ],
+          "tag": 2,
+          "name": "alchemy_tags_add",
+          "priority": "SOONISH"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.potion_effects.ScaleDuration",
+        "DATA": {
+          "mode": "ADD_ON_DEFAULT",
+          "amplifier": 10800.0,
+          "skillRange": 300.0,
+          "rangeOffset": 0.0,
+          "minimum": 2700.0,
           "skillToScaleWith": "ALCHEMY",
           "skillEfficiency": 1.0,
           "minimumValue": 0.0,

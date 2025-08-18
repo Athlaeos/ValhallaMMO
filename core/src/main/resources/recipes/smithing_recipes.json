@@ -57,14 +57,6 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
         "DATA": {
           "skillEfficiency": 1.0,
@@ -73,69 +65,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_scale_generic_attack_damage",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.19999999999999996,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
-          "priority": "LATER"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DIG_SPEED",
-          "icon": "DIAMOND_PICKAXE",
-          "name": "attribute_scale_dig_speed",
-          "priority": "SOONISH"
+          "item": "netherite_pickaxe_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -144,7 +79,7 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
+          "priority": "LATER"
         }
       }
     ],
@@ -210,14 +145,6 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
         "DATA": {
           "skillEfficiency": 1.0,
@@ -226,65 +153,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_scale_generic_attack_damage",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
-        "DATA": {
-          "attribute": "ATTACK_REACH",
-          "value": 0.5,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "ENDER_PEARL",
-          "name": "attribute_add_attack_reach",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.19999999999999996,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
-          "priority": "LATER"
+          "item": "netherite_sword_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -293,7 +167,7 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
+          "priority": "LATER"
         }
       }
     ],
@@ -350,27 +224,11 @@
     "hiddenFromBook": false,
     "resultModifiers": [
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
         "DATA": {
           "icon": "NETHERITE_CHESTPLATE",
           "materialPrefix": "NETHERITE",
           "name": "transform_netherite",
-          "priority": "SOONEST"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
-        "DATA": {
-          "displayName": "<lang.material-netherite-spear>",
-          "name": "rename",
           "priority": "SOONEST"
         }
       },
@@ -383,33 +241,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 1.2,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_add_generic_attack_speed",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.4,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "SOONISH"
+          "item": "netherite_spear_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -418,38 +255,6 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_scale_generic_attack_damage",
-          "priority": "LATERISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
           "priority": "LATER"
         }
       }
@@ -516,14 +321,6 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
         "DATA": {
           "skillEfficiency": 1.0,
@@ -532,69 +329,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
-          "priority": "LATER"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 0.5,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ARMOR",
-          "icon": "IRON_CHESTPLATE",
-          "name": "attribute_scale_generic_armor",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 1.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ARMOR_TOUGHNESS",
-          "icon": "DIAMOND_CHESTPLATE",
-          "name": "attribute_scale_generic_armor_toughness",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 1.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_KNOCKBACK_RESISTANCE",
-          "icon": "NETHERITE_CHESTPLATE",
-          "name": "attribute_scale_generic_knockback_resistance",
-          "priority": "SOONISH"
+          "item": "netherite_chestplate_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -603,7 +343,7 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
+          "priority": "LATER"
         }
       }
     ],
@@ -669,14 +409,6 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
         "DATA": {
           "skillEfficiency": 1.0,
@@ -685,69 +417,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
-          "priority": "LATER"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 0.5,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ARMOR",
-          "icon": "IRON_CHESTPLATE",
-          "name": "attribute_scale_generic_armor",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 1.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ARMOR_TOUGHNESS",
-          "icon": "DIAMOND_CHESTPLATE",
-          "name": "attribute_scale_generic_armor_toughness",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 1.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_KNOCKBACK_RESISTANCE",
-          "icon": "NETHERITE_CHESTPLATE",
-          "name": "attribute_scale_generic_knockback_resistance",
-          "priority": "SOONISH"
+          "item": "netherite_boots_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -756,7 +431,7 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
+          "priority": "LATER"
         }
       }
     ],
@@ -822,22 +497,6 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
-        "DATA": {
-          "displayName": "<lang.material-netherite-rapier>",
-          "name": "rename",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
         "DATA": {
           "skillEfficiency": 1.0,
@@ -846,46 +505,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 4.0,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_add_generic_attack_speed",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
-        "DATA": {
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "value": 4.0,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "IRON_SWORD",
-          "name": "attribute_add_generic_attack_damage",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_scale_generic_attack_damage",
-          "priority": "SOONISH"
+          "item": "netherite_rapier_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -894,21 +519,6 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
           "priority": "LATER"
         }
       }
@@ -975,14 +585,6 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
         "DATA": {
           "skillEfficiency": 1.0,
@@ -991,69 +593,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
-          "priority": "LATER"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 0.5,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ARMOR",
-          "icon": "IRON_CHESTPLATE",
-          "name": "attribute_scale_generic_armor",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 1.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ARMOR_TOUGHNESS",
-          "icon": "DIAMOND_CHESTPLATE",
-          "name": "attribute_scale_generic_armor_toughness",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 1.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_KNOCKBACK_RESISTANCE",
-          "icon": "NETHERITE_CHESTPLATE",
-          "name": "attribute_scale_generic_knockback_resistance",
-          "priority": "SOONISH"
+          "item": "netherite_helmet_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -1062,7 +607,7 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
+          "priority": "LATER"
         }
       }
     ],
@@ -1128,14 +673,6 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
         "DATA": {
           "skillEfficiency": 1.0,
@@ -1144,69 +681,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_scale_generic_attack_damage",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.19999999999999996,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
-          "priority": "LATER"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DIG_SPEED",
-          "icon": "DIAMOND_PICKAXE",
-          "name": "attribute_scale_dig_speed",
-          "priority": "SOONISH"
+          "item": "netherite_hoe_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -1215,7 +695,7 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
+          "priority": "LATER"
         }
       }
     ],
@@ -1272,27 +752,11 @@
     "hiddenFromBook": false,
     "resultModifiers": [
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
         "DATA": {
           "icon": "NETHERITE_CHESTPLATE",
           "materialPrefix": "NETHERITE",
           "name": "transform_netherite",
-          "priority": "SOONEST"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
-        "DATA": {
-          "displayName": "<lang.material-netherite-greataxe>",
-          "name": "rename",
           "priority": "SOONEST"
         }
       },
@@ -1305,46 +769,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "value": 15.0,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "IRON_SWORD",
-          "name": "attribute_add_generic_attack_damage",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
-        "DATA": {
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 0.9600000000000001,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_add_generic_attack_speed",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.19999999999999996,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "SOONISH"
+          "item": "netherite_greataxe_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -1353,39 +783,7 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 6.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_scale_generic_attack_damage",
-          "priority": "LATERISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
-          "priority": "LATER"
+          "priority": "LAST"
         }
       }
     ],
@@ -1453,42 +851,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "attribute": "GENERIC_ARMOR",
-          "value": 6.0,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "IRON_CHESTPLATE",
-          "name": "attribute_add_generic_armor",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
-        "DATA": {
-          "attribute": "GENERIC_ARMOR_TOUGHNESS",
-          "value": 2.0,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "DIAMOND_CHESTPLATE",
-          "name": "attribute_add_generic_armor_toughness",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
-        "DATA": {
-          "attribute": "GENERIC_MOVEMENT_SPEED",
-          "value": -0.1,
-          "operation": "ADD_SCALAR",
-          "smallIncrement": 0.01,
-          "bigIncrement": 0.1,
-          "icon": "SUGAR",
-          "name": "attribute_add_generic_movement_speed",
-          "priority": "SOON"
+          "item": "elytra_reinforced_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "SOONISH"
         }
       },
       {
@@ -1497,52 +865,7 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 0.5,
-          "skillRange": 170.0,
-          "rangeOffset": 130.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ARMOR",
-          "icon": "IRON_CHESTPLATE",
-          "name": "attribute_scale_generic_armor",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 1.0,
-          "skillRange": 170.0,
-          "rangeOffset": 130.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ARMOR_TOUGHNESS",
-          "icon": "DIAMOND_CHESTPLATE",
-          "name": "attribute_scale_generic_armor_toughness",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.crafting_conditionals.SmithingTagsAdd",
-        "DATA": {
-          "tags": [
-            0
-          ],
-          "tag": 0,
-          "name": "smithing_tags_add",
-          "priority": "LAST"
+          "priority": "LATER"
         }
       }
     ],
@@ -1608,14 +931,6 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
         "DATA": {
           "skillEfficiency": 1.0,
@@ -1624,69 +939,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_scale_generic_attack_damage",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.19999999999999996,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
-          "priority": "LATER"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DIG_SPEED",
-          "icon": "DIAMOND_PICKAXE",
-          "name": "attribute_scale_dig_speed",
-          "priority": "SOONISH"
+          "item": "netherite_shovel_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -1695,7 +953,7 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
+          "priority": "LATER"
         }
       }
     ],
@@ -1752,27 +1010,11 @@
     "hiddenFromBook": false,
     "resultModifiers": [
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
         "DATA": {
           "icon": "NETHERITE_CHESTPLATE",
           "materialPrefix": "NETHERITE",
           "name": "transform_netherite",
-          "priority": "SOONEST"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
-        "DATA": {
-          "displayName": "<lang.material-netherite-warhammer>",
-          "name": "rename",
           "priority": "SOONEST"
         }
       },
@@ -1785,72 +1027,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "attribute": "EXTRA_BLUDGEONING_DAMAGE",
-          "value": 8.999999999999996,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "COBBLESTONE",
-          "name": "attribute_add_extra_bludgeoning_damage",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
-        "DATA": {
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 1.0,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_add_generic_attack_speed",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.19999999999999996,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeRemove",
-        "DATA": {
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_remove_generic_attack_damage",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "EXTRA_BLUDGEONING_DAMAGE",
-          "icon": "COBBLESTONE",
-          "name": "attribute_scale_extra_bludgeoning_damage",
-          "priority": "SOONISH"
+          "item": "netherite_warhammer_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -1859,21 +1041,6 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
           "priority": "LATER"
         }
       }
@@ -1940,14 +1107,6 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
         "DATA": {
           "skillEfficiency": 1.0,
@@ -1956,69 +1115,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
-          "priority": "LATER"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 0.5,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ARMOR",
-          "icon": "IRON_CHESTPLATE",
-          "name": "attribute_scale_generic_armor",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 1.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ARMOR_TOUGHNESS",
-          "icon": "DIAMOND_CHESTPLATE",
-          "name": "attribute_scale_generic_armor_toughness",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 1.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_KNOCKBACK_RESISTANCE",
-          "icon": "NETHERITE_CHESTPLATE",
-          "name": "attribute_scale_generic_knockback_resistance",
-          "priority": "SOONISH"
+          "item": "netherite_leggings_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -2027,7 +1129,7 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
+          "priority": "LATER"
         }
       }
     ],
@@ -2093,35 +1195,6 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
-        "DATA": {
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "value": 11,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "IRON_SWORD",
-          "name": "attribute_add_generic_attack_damage",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
-        "DATA": {
-          "displayName": "<lang.material-netherite-dagger>",
-          "name": "rename",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
         "DATA": {
           "skillEfficiency": 1.0,
@@ -2130,37 +1203,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.4,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 6.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_scale_generic_attack_damage",
-          "priority": "SOONISH"
+          "item": "netherite_dagger_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -2169,22 +1217,7 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
-          "priority": "LATER"
+          "priority": "LAST"
         }
       }
     ],
@@ -2241,35 +1274,6 @@
     "hiddenFromBook": false,
     "resultModifiers": [
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
-        "DATA": {
-          "attribute": "EXTRA_RADIANT_DAMAGE",
-          "value": 5.5,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "GOLD_INGOT",
-          "name": "attribute_add_extra_radiant_damage",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
-        "DATA": {
-          "displayName": "<lang.material-netherite-mace>",
-          "name": "rename",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
         "DATA": {
           "icon": "NETHERITE_CHESTPLATE",
@@ -2287,59 +1291,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "attribute": "EXTRA_BLUDGEONING_DAMAGE",
-          "value": 6.499999999999998,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "COBBLESTONE",
-          "name": "attribute_add_extra_bludgeoning_damage",
-          "priority": "SOON"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeRemove",
-        "DATA": {
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_remove_generic_attack_damage",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.19999999999999996,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 3.5,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "EXTRA_BLUDGEONING_DAMAGE",
-          "icon": "COBBLESTONE",
-          "name": "attribute_scale_extra_bludgeoning_damage",
-          "priority": "SOONISH"
+          "item": "netherite_mace_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -2348,21 +1305,6 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
           "priority": "LATER"
         }
       }
@@ -2429,14 +1371,6 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingQualityScale",
         "DATA": {
           "skillEfficiency": 1.0,
@@ -2445,69 +1379,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 4.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_scale_generic_attack_damage",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.19999999999999996,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_scale_generic_attack_speed",
-          "priority": "SOONISH"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
-          "priority": "LATER"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 0.2,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DIG_SPEED",
-          "icon": "DIAMOND_PICKAXE",
-          "name": "attribute_scale_dig_speed",
-          "priority": "SOONISH"
+          "item": "netherite_axe_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -2516,7 +1393,7 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
+          "priority": "LATER"
         }
       }
     ],
@@ -2573,57 +1450,11 @@
     "hiddenFromBook": false,
     "resultModifiers": [
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
-        "DATA": {
-          "neutral": 170,
-          "name": "smithing_neutral_quality_set",
-          "priority": "SOONEST"
-        }
-      },
-      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
         "DATA": {
           "icon": "NETHERITE_CHESTPLATE",
           "materialPrefix": "NETHERITE",
           "name": "transform_netherite",
-          "priority": "SOONEST"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
-        "DATA": {
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "value": 4.0,
-          "hidden": false,
-          "add": false,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "IRON_SWORD",
-          "name": "attribute_add_generic_attack_damage",
-          "priority": "SOONEST"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
-        "DATA": {
-          "attribute": "GENERIC_ATTACK_SPEED",
-          "value": 4.0,
-          "hidden": false,
-          "add": false,
-          "operation": "ADD_NUMBER",
-          "smallIncrement": 0.1,
-          "bigIncrement": 1.0,
-          "icon": "GOLDEN_SWORD",
-          "name": "attribute_add_generic_attack_speed",
-          "priority": "SOONEST"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.DisplayNameSet",
-        "DATA": {
-          "displayName": "<lang.material-netherite-knuckles>",
-          "name": "rename",
           "priority": "SOONEST"
         }
       },
@@ -2636,28 +1467,12 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
-          "weightClass": "WEIGHTLESS",
-          "name": "weight_class",
-          "priority": "SOONEST"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
-        "DATA": {
-          "mode": "ADD_ON_DEFAULT",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 0.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "GENERIC_ATTACK_DAMAGE",
-          "icon": "IRON_SWORD",
-          "name": "attribute_scale_generic_attack_damage",
-          "priority": "SOONISH"
+          "item": "netherite_knuckles_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -2666,21 +1481,6 @@
           "skill": "SMITHING",
           "amount": 9600.0,
           "name": "reward_smithing_experience",
-          "priority": "NEUTRAL"
-        }
-      },
-      {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
-        "DATA": {
-          "mode": "MULTIPLIER",
-          "amplifier": 2.0,
-          "skillRange": 185.0,
-          "rangeOffset": 115.0,
-          "minimum": 1.0,
-          "skillToScaleWith": "SMITHING",
-          "skillEfficiency": 1.0,
-          "minimumValue": 0.2,
-          "name": "durability_scale",
           "priority": "LATER"
         }
       }
