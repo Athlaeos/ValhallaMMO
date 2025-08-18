@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class LayoutConfigurationMenu extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
-        e.setCancelled(true);
+        e.setCancelled(!(e.getClickedInventory() instanceof PlayerInventory));
         if (e.getRawSlot() == 45) rows = Math.max(1, Math.min(6, rows + (e.isLeftClick() ? 1 : -1)));
         else if (e.getRawSlot() == 46 && rows > 5) offsetRow = !offsetRow;
         else if (e.getRawSlot() == 53) {

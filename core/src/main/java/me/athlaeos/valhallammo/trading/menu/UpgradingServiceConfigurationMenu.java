@@ -56,7 +56,7 @@ public class UpgradingServiceConfigurationMenu extends SimpleConfigurationMenu<U
 
         addButton(new Button(14, () -> new ItemBuilder(thingyToConfigure.getCost().getItem())
                         .appendLore(SlotEntry.getOptionLore(thingyToConfigure.getCost())).get(), (service, event) -> {
-                    if (!ItemUtils.isEmpty(event.getCursor())) service.setInput(new SlotEntry(event.getCursor().clone(), service.getCost().getOption()));
+                    if (!ItemUtils.isEmpty(event.getCursor())) service.setCost(new SlotEntry(event.getCursor().clone(), service.getCost().getOption()));
                 })
         );
 
