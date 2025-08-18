@@ -39,7 +39,6 @@ service_button_type_investing: LIME_DYE/9199218/9199217/9199216
 
 customize_all_villagers: false # If true, if an interacted villager does not have a custom trading configuration, they will be given one
 # If false, the villager will need to explicitly be given one with a command
-# TODO test again
 delay_until_working: 24000 # When a villager gets a profession, it will take this duration (in game ticks, 1 ingame day by default) for them to start trading
 
 demand_decay_per_day: 0.5 # Every time a trade is made the trade's "demand" stat increases, and this decays per day. This determines by how much it is reduced.
@@ -96,6 +95,9 @@ renown_deny_trading: -75 # If a villager has less than this amount of renown, th
 happiness_renown_threshold: 8 # If a villager has more than this amount of happiness, the player's renown goes up to all nearby villagers
 happiness_prevent_golem_spawning: -5 # If a villager has less than this amount of happiness, iron golems will not spawn from them
 
+# If enabled, sends players interacting with merchants a message showing all sources of happiness
+happiness_feedback: true
+happiness_feedback_delay: 60000 # once per minute per merchant per player
 happiness_sources:
   imprisoned: -10 # If a villager has little space to move, they become very unhappy
   free: 1 # If a villager has plenty of space to move, they become happier

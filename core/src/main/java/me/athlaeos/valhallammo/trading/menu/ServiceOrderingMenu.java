@@ -70,7 +70,7 @@ public class ServiceOrderingMenu extends Menu {
         super(playerMenuUtility);
         this.data = data;
         this.service = service;
-        this.happiness = data.getVillager() == null ? 0F : HappinessSourceRegistry.getHappiness(playerMenuUtility.getOwner(), data.getVillager());
+        this.happiness = data.getVillager() == null ? 0F : HappinessSourceRegistry.getHappiness(playerMenuUtility.getOwner(), data.getVillager(), false);
         this.renown = data.getPlayerMemory(playerMenuUtility.getOwner().getUniqueId()).getRenownReputation();
 
         MerchantType type = CustomMerchantManager.getMerchantType(data.getType());
@@ -85,7 +85,7 @@ public class ServiceOrderingMenu extends Menu {
 
     @Override
     public String getMenuName() {
-        return Utils.chat(ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF322" : TranslationManager.getTranslation("service_menu_ordering")); // TODO data driven
+        return Utils.chat(ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF322" : TranslationManager.getTranslation("service_menu_ordering"));
     }
 
     @Override

@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.TradingProfile;
@@ -31,7 +32,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.*;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.raid.RaidFinishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantInventory;
@@ -203,10 +204,8 @@ public class MerchantListener implements Listener {
                     e.setCancelled(true);
                     return;
                 }
-                System.out.println("bought " + event.getTimesTraded() + " times");
                 MerchantData.TradeData tradeData = event.getMerchantData().getTrades().get(event.getCustomTrade().getID());
                 if (tradeData == null) return; // should never really happen, but here as a precaution
-                System.out.println("can be bought up to " + trade.getMaxUses() + " times, now " + tradeData.getRemainingUses());
                 MerchantType type = CustomMerchantManager.getMerchantType(event.getMerchantData().getType());
                 if (type == null) return; // should also never really happen unless a type is deleted during trading
                 merchantInterface.setMaxTimesTradeable(trade.getID(), merchantInterface.getMaxTimesTradeable(trade.getID()) - event.getTimesTraded());
@@ -320,25 +319,25 @@ public class MerchantListener implements Listener {
 
     private static final Collection<UUID> cancelMerchantInventory = new HashSet<>();
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onVillagerInteract(PlayerInteractAtEntityEvent e){
+    public void onVillagerInteract(PlayerInteractEntityEvent e){
         if (!(e.getRightClicked() instanceof AbstractVillager v) || (!convertAllVillagers && !CustomMerchantManager.isCustomMerchant(v)) ||
                 ValhallaMMO.isWorldBlacklisted(v.getWorld().getName())) return;
         if (tradingMerchants.contains(v.getUniqueId())) {
             e.setCancelled(true);
             return;
         }
-        float happiness = HappinessSourceRegistry.getHappiness(e.getPlayer(), v);
-        if (happiness <= happinessDenyTrading) {
+        float happiness = HappinessSourceRegistry.getHappiness(e.getPlayer(), v, e.getPlayer().isSneaking());
+        if ((double) happiness <= happinessDenyTrading) {
             e.setCancelled(true);
             if (v instanceof Villager villager) villager.shakeHead();
             e.getPlayer().spawnParticle(Particle.VILLAGER_ANGRY, v.getEyeLocation(), 5, 0.5, 0.5, 0.5);
-            Utils.sendMessage(e.getPlayer(), "&fYou expect me to work in conditions like these?"); // TODO data driven
+            Utils.sendMessage(e.getPlayer(), TranslationManager.getTranslation("merchant_unhappy"));
             return;
         }
         if (!e.getPlayer().hasPermission("valhalla.bypasstradedelay") && v.getPersistentDataContainer().getOrDefault(KEY_PROFESSION_DELAY, PersistentDataType.LONG, 0L) + CustomMerchantManager.getDelayUntilWorking() > CustomMerchantManager.time()){
             e.setCancelled(true);
             if (v instanceof Villager villager) villager.shakeHead();
-            Utils.sendMessage(e.getPlayer(), "&fAllow me a moment to prepare"); // TODO data driven
+            Utils.sendMessage(e.getPlayer(), TranslationManager.getTranslation("merchant_preparing"));
             return;
         }
         e.setCancelled(true);
@@ -379,8 +378,7 @@ public class MerchantListener implements Listener {
                     }
                     if (memory.getRenownReputation() <= renownDenyTrading) {
                         if (v instanceof Villager villager) villager.shakeHead();
-                        e.getPlayer().spawnParticle(Particle.VILLAGER_ANGRY, v.getEyeLocation(), 5, 0.5, 0.5, 0.5);
-                        Utils.sendMessage(e.getPlayer(), "&fI don't deal with the likes of you."); // TODO data driven
+                        e.getPlayer().spawnParticle(Particle.VILLAGER_ANGRY, v.getEyeLocation(), 10, 0.5, 0.5, 0.5);
                         return;
                     }
 
@@ -396,11 +394,11 @@ public class MerchantListener implements Listener {
     private MerchantData tryCreateData(MerchantData data, AbstractVillager v, Player p){
         MerchantData d = data;
         MerchantType type = d == null ? null : CustomMerchantManager.getMerchantType(d.getType());
-        if (d != null && type != null && d.getTypeVersion() != type.getVersion()) {
+        if (d != null && (type != null && d.getTypeVersion() != type.getVersion())) {
             Map<UUID, MerchantData.MerchantPlayerMemory> memory = new HashMap<>(d.getPlayerMemory());
             d = CustomMerchantManager.createMerchant(v.getUniqueId(), type, p);
             d.getPlayerMemory().putAll(memory);
-        } else if (d != null && type != null && d.getDay() != CustomMerchantManager.today()) {
+        } else if (d != null && type != null && type.resetsTradesDaily() && d.getDay() != CustomMerchantManager.today()) {
             Map<String, MerchantData.TradeData> newData = new HashMap<>();
             Map<String, MerchantData.TradeData> currentData = d.getTrades();
             if (type.resetsTradesDaily()){
@@ -443,6 +441,7 @@ public class MerchantListener implements Listener {
         }
         if ((d == null && convertAllVillagers) || type == null) {
             d = CustomMerchantManager.convertToRandomMerchant(v, p);
+            if (d == null) d = CustomMerchantManager.createMerchant(v.getUniqueId(), null, p);
         }
         return d;
     }
@@ -470,12 +469,19 @@ public class MerchantListener implements Listener {
                 e.getEntity().setProfession(newProfession);
                 return;
             }
-            MerchantType type = CustomMerchantManager.getMerchantType(data.getType());
-            if (!type.canLoseProfession() || data.getExp() > 0) {
+            MerchantType type = data.getType() == null ? null : CustomMerchantManager.getMerchantType(data.getType());
+            if (type != null && (!type.canLoseProfession() || data.getExp() > 0)) {
                 e.setCancelled(true);
                 return; // Can't lose profession, so the villager stays as they are
+            } else {
+                MerchantConfiguration configuration = CustomMerchantManager.getMerchantConfiguration(newProfession);
+                if (configuration != null) {
+                    type = CustomMerchantManager.selectRandomType(configuration);
+                }
             }
-            CustomMerchantManager.getMerchantDataPersistence().setData(e.getEntity().getUniqueId(), null);
+            // changing professions. change type and reset trades
+            data.setType(type == null ? null : type.getType());
+            data.setTrades(new ArrayList<>());
         });
     }
 
@@ -488,6 +494,7 @@ public class MerchantListener implements Listener {
                 ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
                     if (data == null) return;
                     MerchantType type = CustomMerchantManager.getMerchantType(data.getType());
+                    if (type == null) return;
                     long time = CustomMerchantManager.time();
                     for (MerchantData.TradeData tradeData : data.getTrades().values()){
                         MerchantTrade trade = CustomMerchantManager.getTrade(tradeData.getTrade());
@@ -616,7 +623,7 @@ public class MerchantListener implements Listener {
             ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
                 MerchantData d = tryCreateData(data, a, null);
                 MerchantType type = CustomMerchantManager.getMerchantType(d.getType());
-                if (type == null) return; // should also never really happen unless a type is deleted during data fetching
+                if (type == null) return;
                 Collection<MerchantTrade> possibleGifts = new HashSet<>();
                 MerchantLevel merchantLevel = CustomMerchantManager.getLevel(d);
                 if (merchantLevel != null){
@@ -657,8 +664,8 @@ public class MerchantListener implements Listener {
 
         CustomMerchantManager.getMerchantData(v.getUniqueId(), data -> {
             ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-                MerchantData d = tryCreateData(data, v, null);
-                System.out.println("added " + reputationCureVillager + " reputation to " + p.getName());
+                MerchantData d = tryCreateData(data, v, p);
+                if (d == null) return;
                 CustomMerchantManager.modifyTradingReputation(d, p, (float) reputationCureVillager);
             });
         });
@@ -668,7 +675,7 @@ public class MerchantListener implements Listener {
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> CustomMerchantManager.getMerchantData(villager, data ->
                     ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-                        MerchantData d = tryCreateData(data, v, null);
+                        MerchantData d = tryCreateData(data, v, p);
                         if (d != null) CustomMerchantManager.modifyRenownReputation(d, p, (float) renownCureVillager);
                     })
             ));

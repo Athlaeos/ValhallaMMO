@@ -22,7 +22,7 @@ public class MerchantData {
     private static final int demandMax = CustomMerchantManager.getTradingConfig().getInt("demand_max", 24);
 
     private final UUID villagerUUID;
-    private final String type;
+    private String type;
     private final int typeVersion;
     private int day; // keeps track of which day the merchant had last reset their demand tracker
     private final Map<String, TradeData> trades = new HashMap<>();
@@ -33,16 +33,16 @@ public class MerchantData {
 
     public MerchantData(AbstractVillager villager, MerchantType type, TradeData... data){
         this.villagerUUID = villager == null ? null : villager.getUniqueId();
-        this.type = type.getType();
-        this.typeVersion = type.getVersion();
+        this.type = type == null ? null : type.getType();
+        this.typeVersion = type == null ? 0 : type.getVersion();
         for (TradeData datum : data) trades.put(datum.getTrade(), datum);
         this.day = CustomMerchantManager.today();
     }
 
     public MerchantData(AbstractVillager villager, MerchantType type, Collection<TradeData> data){
         this.villagerUUID = villager == null ? null : villager.getUniqueId();
-        this.type = type.getType();
-        this.typeVersion = type.getVersion();
+        this.type = type == null ? null : type.getType();
+        this.typeVersion = type == null ? 0 : type.getVersion();
         for (TradeData datum : data) trades.put(datum.getTrade(), datum);
         this.day = CustomMerchantManager.today();
     }
@@ -53,6 +53,7 @@ public class MerchantData {
     }
 
     public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
     public int getTypeVersion() { return typeVersion; }
     public int getExp() { return exp; }
     public void setExp(int exp) { this.exp = exp; }
@@ -152,6 +153,7 @@ public class MerchantData {
         private final Map<String, Double> perPlayerTradesLeft = new HashMap<>();
         private final Collection<String> singleTimeGiftedTrades = new HashSet<>();
         private boolean hasReachedMaxHappiness = false;
+        private boolean wasCured = false;
 
         public int getTimesTraded() { return timesTraded; }
         public float getRenownReputation() { return renownReputation; }
@@ -166,6 +168,13 @@ public class MerchantData {
         public Collection<String> getSingleTimeGiftedTrades() { return singleTimeGiftedTrades; }
         public boolean hasReachedMaxHappiness() { return hasReachedMaxHappiness; }
         public void setHasReachedMaxHappiness(boolean hasReachedMaxHappiness) {this.hasReachedMaxHappiness = hasReachedMaxHappiness;}
+        public void setCured(boolean wasCured) {
+            this.wasCured = wasCured;
+        }
+
+        public boolean wasCured() {
+            return wasCured;
+        }
 
         public boolean isGiftable(String trade){
             MerchantTrade t = CustomMerchantManager.getTrade(trade);

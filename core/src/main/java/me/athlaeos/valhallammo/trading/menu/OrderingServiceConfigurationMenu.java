@@ -77,6 +77,6 @@ public class OrderingServiceConfigurationMenu extends SimpleConfigurationMenu<Or
 
     @Override
     public String getMenuName() {
-        return Utils.chat("&8Configure Ordering Service " + thingyToConfigure.getID()); // TODO data driven
+        return Utils.chat("&8Configure Ordering Service " + thingyToConfigure.getID());
     }
 }

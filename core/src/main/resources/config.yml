@@ -10,7 +10,7 @@ db_username: 'username'
 db_password: 'password'
 db_port: 3306
 db_ping_delay: 1200000 # delay (in milliseconds) where the database is pinged to keep the connection alive
-db_persist_delay: 300000 # delay (in milliseconds) where all profiles currently in memory are persisted.
+db_persist_delay: 600000 # delay (in milliseconds) where all profiles currently in memory are persisted.
 # Leaderboards are also reset after this happens. Should a crash happen, it will not roll back too much progress. Resets immediately persist someone's profile
 profile-thread-timeout: 180000 # The amount of time (in milliseconds) a profile thread can be idle before expiring
 profile-thread-count: 10 # The maximum number of threads that can be running to handle saving, loading, and managing profiles and the database

@@ -132,7 +132,7 @@ public class UpgradingServiceConfigurationMenu extends SimpleConfigurationMenu<U
 
     @Override
     public String getMenuName() {
-        return Utils.chat("&8Configure Upgrading Service " + thingyToConfigure.getID()); // TODO data driven
+        return Utils.chat("&8Configure Upgrading Service " + thingyToConfigure.getID());
     }
 
     @Override

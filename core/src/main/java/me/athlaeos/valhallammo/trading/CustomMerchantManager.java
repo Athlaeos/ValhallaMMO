@@ -86,6 +86,12 @@ public class CustomMerchantManager {
         villager.getPersistentDataContainer().set(KEY_CUSTOM_VILLAGER, PersistentDataType.BYTE, (byte) 0);
         MerchantConfiguration configuration = villager instanceof Villager v ? merchantConfigurations.get(v.getProfession()) : travelingMerchantConfiguration;
         if (configuration == null || configuration.getMerchantTypes().isEmpty()) return null; // No configuration available, do not do anything
+        MerchantType selectedType = selectRandomType(configuration);
+        if (selectedType == null) return null;
+        return createMerchant(villager.getUniqueId(), selectedType, interactingPlayer);
+    }
+
+    public static MerchantType selectRandomType(MerchantConfiguration configuration){
         Collection<MerchantType> types = new HashSet<>();
         for (String type : new HashSet<>(configuration.getMerchantTypes())) {
             if (registeredMerchantTypes.containsKey(type)) types.add(registeredMerchantTypes.get(type));
@@ -94,10 +100,7 @@ public class CustomMerchantManager {
                 ValhallaMMO.logWarning("Merchant Configuration for " + configuration.getType() + " had Merchant sub-type " + type + " added to it, but it doesn't exist! Removed.");
             }
         }
-        MerchantType selectedType = Utils.weightedSelection(types, 1, 0, 0).stream().findFirst().orElse(null);
-        if (selectedType == null) return null; // No merchant type selected
-
-        return createMerchant(villager.getUniqueId(), selectedType, interactingPlayer);
+        return Utils.weightedSelection(types, 1, 0, 0).stream().findFirst().orElse(null);
     }
 
     public static MerchantData createMerchant(UUID id, MerchantType type, Player interactingPlayer){
@@ -109,6 +112,7 @@ public class CustomMerchantManager {
     }
 
     public static List<MerchantData.TradeData> generateRandomTrades(MerchantData data, MerchantType type, Player player){
+        if (type == null) return new ArrayList<>();
         float luck = getTradingLuck(player);
         List<MerchantData.TradeData> trades = new ArrayList<>();
         for (MerchantLevel level : type.getTrades().keySet()){
@@ -180,6 +184,7 @@ public class CustomMerchantManager {
         MerchantType type = registeredMerchantTypes.get(data.getType());
         MerchantLevel level = getLevel(data);
         if (type == null || level == null) return null;
+        if (data.getTrades().isEmpty()) data.setTrades(generateRandomTrades(data, type, player));
         List<Pair<MerchantTrade, MerchantRecipe>> recipes = new ArrayList<>();
         List<MerchantTrade> trades = new ArrayList<>();
         Map<String, MerchantLevel> byLevel = new HashMap<>();
@@ -206,7 +211,7 @@ public class CustomMerchantManager {
         }
         trades = trades.stream().sorted(Comparator.comparingInt(m -> byLevel.getOrDefault(((MerchantTrade) m).getID(), MerchantLevel.NOVICE).getLevel()).thenComparingInt(m -> ((MerchantTrade) m).getPriority())).toList();
         AbstractVillager villager = data.getVillager();
-        float happiness = villager == null ? 0F : HappinessSourceRegistry.getHappiness(player, villager);
+        float happiness = villager == null ? 0F : HappinessSourceRegistry.getHappiness(player, villager, false);
         float renown = data.getPlayerMemory(player.getUniqueId()).getRenownReputation();
         double expVanillaToCustomModifier = (double) level.getDefaultExpRequirement() / type.getExpRequirement(level);
         for (MerchantTrade trade : trades){
@@ -475,9 +480,13 @@ public class CustomMerchantManager {
         }
 
         registeredMerchantTypes.remove(type.getType());
+        for (MerchantConfiguration configuration : merchantConfigurations.values()){
+            configuration.getMerchantTypes().remove(type.getType());
+        }
     }
 
     public static MerchantType getMerchantType(String id){
+        if (id == null) return null;
         return registeredMerchantTypes.get(id);
     }
 

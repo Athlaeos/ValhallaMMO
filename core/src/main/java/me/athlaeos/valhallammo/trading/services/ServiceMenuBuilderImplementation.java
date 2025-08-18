@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.trading.services;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.trading.menu.ServiceMenu;
 
 public class ServiceMenuBuilderImplementation implements ServiceMenuBuilder {
@@ -41,7 +42,7 @@ public class ServiceMenuBuilderImplementation implements ServiceMenuBuilder {
 
     @Override
     public String getTitle(ServiceMenu serviceMenu){
-        if (!ValhallaMMO.isResourcePackConfigForced()) return "&8Services"; // TODO data driven
+        if (!ValhallaMMO.isResourcePackConfigForced()) return TranslationManager.getTranslation("service_menu_title");
         return switch(serviceMenu.getServices().size()){
             case 1, 2, 3 -> "&f\uF808\uF31E";
             case 4, 5, 6 -> "&f\uF808\uF31F";

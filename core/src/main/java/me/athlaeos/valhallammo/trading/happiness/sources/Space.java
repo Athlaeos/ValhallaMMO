@@ -1,9 +1,12 @@
 package me.athlaeos.valhallammo.trading.happiness.sources;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.happiness.HappinessSource;
+import me.athlaeos.valhallammo.trading.happiness.HappinessSourceRegistry;
 import me.athlaeos.valhallammo.utility.BlockUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -21,6 +24,9 @@ public class Space implements HappinessSource, Listener {
     private final int imprisonedSpace = CustomMerchantManager.getTradingConfig().getInt("imprisonment_space_max", 5);
     private final float freeHappiness = (float) CustomMerchantManager.getTradingConfig().getDouble("happiness_sources.free", 1);
     private final float imprisonedHappiness = (float) CustomMerchantManager.getTradingConfig().getDouble("happiness_sources.imprisoned", -5);
+    private final String happy = TranslationManager.getTranslation("happiness_status_space_happy");
+    private final String neutral = TranslationManager.getTranslation("happiness_status_space_neutral");
+    private final String unhappy = TranslationManager.getTranslation("happiness_status_space_unhappy");
 
     private final Map<UUID, Float> happinessCache = new HashMap<>();
 
@@ -68,20 +74,29 @@ public class Space implements HappinessSource, Listener {
                 Block west2 = twoAbove.getRelative(BlockFace.WEST);
                 return (east2.getType().isAir() || !east2.getType().isOccluding()) && (west2.getType().isAir() || !west2.getType().isOccluding());
             }
-        } else if (oneAbove.getType().toString().contains("FENCE") || oneAbove.getType().toString().contains("WALL")) return false;
+        } else if (oneAbove.getType().toString().contains("_FENCE") || oneAbove.getType().toString().contains("_WALL")) return false;
         return false;
     }
 
     @Override
     public float get(Player contextPlayer, Entity entity) {
         if (happinessCache.containsKey(entity.getUniqueId())) return happinessCache.get(entity.getUniqueId());
-        Collection<Block> vein = BlockUtils.getBlockVein(entity.getLocation().getBlock().getRelative(BlockFace.DOWN), freeSpace + 1, this::isFreeBlock, freedomScanArea);
+        Block below = entity.getLocation().getBlock().getRelative(BlockFace.DOWN);
+        if (!isFreeBlock(below)) return imprisonedHappiness;
+        Collection<Block> vein = BlockUtils.getBlockVein(below, freeSpace + 1, this::isFreeBlock, freedomScanArea);
         float happiness = 0;
 
         if (vein.size() >= freeSpace) happiness = freeHappiness;
         else if (vein.size() <= imprisonedSpace) happiness = imprisonedHappiness;
         happinessCache.put(entity.getUniqueId(), happiness);
         return happiness;
+    }
+
+    @Override
+    public String getHappinessStatus(float happiness, Player contextPlayer, Entity entity) {
+        return (happiness > 0.001 ? happy : happiness < -0.001 ? unhappy : neutral)
+                .replace("%prefix%", happiness > 0.001 ? HappinessSourceRegistry.happyPrefix() : happiness < -0.001 ? HappinessSourceRegistry.unhappyPrefix() : HappinessSourceRegistry.neutralPrefix())
+                .replace("%happiness%", StringUtils.trimTrailingZeroes(String.format("%.1f", happiness)));
     }
 
     @Override

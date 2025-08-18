@@ -1,8 +1,11 @@
 package me.athlaeos.valhallammo.trading.happiness.sources;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.happiness.HappinessSource;
+import me.athlaeos.valhallammo.trading.happiness.HappinessSourceRegistry;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.block.Block;
 import org.bukkit.entity.AbstractVillager;
 import org.bukkit.entity.Entity;
@@ -21,6 +24,9 @@ public class Comfort implements HappinessSource, Listener {
     private final Collection<String> luxuryThings = new HashSet<>(CustomMerchantManager.getTradingConfig().getStringList("nice_things"));
 
     private final Map<UUID, Float> happinessCache = new HashMap<>();
+    private final String happy = TranslationManager.getTranslation("happiness_status_comfort_happy");
+    private final String neutral = TranslationManager.getTranslation("happiness_status_comfort_neutral");
+    private final String unhappy = TranslationManager.getTranslation("happiness_status_comfort_unhappy");
 
     public Comfort(){
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
@@ -62,6 +68,13 @@ public class Comfort implements HappinessSource, Listener {
 
         happinessCache.put(entity.getUniqueId(), happiness);
         return happiness;
+    }
+
+    @Override
+    public String getHappinessStatus(float happiness, Player contextPlayer, Entity entity) {
+        return (happiness > 0.001 ? happy : happiness < -0.001 ? unhappy : neutral)
+                .replace("%prefix%", happiness > 0.001 ? HappinessSourceRegistry.happyPrefix() : happiness < -0.001 ? HappinessSourceRegistry.unhappyPrefix() : HappinessSourceRegistry.neutralPrefix())
+                .replace("%happiness%", StringUtils.trimTrailingZeroes(String.format("%.1f", happiness)));
     }
 
     @Override

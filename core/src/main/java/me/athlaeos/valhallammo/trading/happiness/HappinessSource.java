@@ -14,5 +14,7 @@ public interface HappinessSource {
      */
     float get(Player contextPlayer, Entity entity);
 
+    String getHappinessStatus(float happiness, Player contextPlayer, Entity entity);
+
     boolean appliesTo(Entity entity);
 }

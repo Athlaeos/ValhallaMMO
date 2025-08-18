@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantType;
 import me.athlaeos.valhallammo.trading.services.Service;
 import me.athlaeos.valhallammo.trading.services.ServiceRegistry;
@@ -39,7 +40,7 @@ public class MerchantServicesMenu extends Menu {
 
     @Override
     public String getMenuName() {
-        return Utils.chat("&8Services"); // TODO data driven
+        return Utils.chat(TranslationManager.getTranslation("services_menu_title"));
     }
 
     @Override

@@ -51,7 +51,7 @@ public class ServiceUpgradingMenu extends Menu {
         super(playerMenuUtility);
         this.data = data;
         this.services = services;
-        this.happiness = data.getVillager() == null ? 0F : HappinessSourceRegistry.getHappiness(playerMenuUtility.getOwner(), data.getVillager());
+        this.happiness = data.getVillager() == null ? 0F : HappinessSourceRegistry.getHappiness(playerMenuUtility.getOwner(), data.getVillager(), false);
         this.reputation = data.getPlayerMemory(playerMenuUtility.getOwner().getUniqueId()).getTradingReputation();
         this.renown = data.getPlayerMemory(playerMenuUtility.getOwner().getUniqueId()).getRenownReputation();
         this.level = CustomMerchantManager.getLevel(data);

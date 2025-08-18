@@ -23,13 +23,13 @@ public class PotionEffectPlaceholder extends Placeholder {
         List<CustomPotionEffect> activeEffects = new ArrayList<>(PotionEffectRegistry.getActiveEffects(p).values());
         activeEffects.sort(Comparator.comparingLong(CustomPotionEffect::getRemainingDuration).thenComparing(e -> e.getWrapper().getEffect()));
 
-        if (activeEffects.size() >= index) return "";
+        if (index >= activeEffects.size()) return "";
         CustomPotionEffect effect = Catch.catchOrElse(() -> activeEffects.get(index), null);
         if (effect == null) return "";
         return effect.getWrapper().getFormattedEffectName(
                 !(effect.getWrapper() instanceof GenericWrapper g) || g.getIsPositive().test(effect.getAmplifier()),
                 effect.getAmplifier(),
-                effect.getRemainingDuration()
+                effect.getRemainingDuration() / 50
         );
     }
 }
