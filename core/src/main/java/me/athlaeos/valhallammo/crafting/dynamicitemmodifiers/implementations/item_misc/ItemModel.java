@@ -1,6 +1,5 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc;
 
-import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
@@ -32,7 +31,7 @@ public class ItemModel extends DynamicItemModifier {
 
     @Override
     public void processItem(ModifierContext context) {
-        ValhallaMMO.getNms().setItemModel(context.getItem().getMeta(), model);
+        context.getItem().model(model);
     }
 
     @Override

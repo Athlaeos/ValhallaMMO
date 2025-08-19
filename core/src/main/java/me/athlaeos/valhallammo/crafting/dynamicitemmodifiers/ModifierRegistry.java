@@ -118,6 +118,7 @@ public class ModifierRegistry {
         register(new MakeEdible("edible"));
         register(new ToolTip("tooltip"));
         register(new ItemModel("model"));
+        register(new CustomModelDataOrModelSet("custom_model_data_or_model"));
         register(new Equippable("equippable"));
 
         register(new AmountAdd("amount_add"));
