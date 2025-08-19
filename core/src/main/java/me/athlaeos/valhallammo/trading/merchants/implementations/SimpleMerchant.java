@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.trading.merchants.implementations;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
+import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.TradingProfile;
@@ -12,6 +13,8 @@ import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
 import me.athlaeos.valhallammo.trading.dom.MerchantType;
 import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
 import me.athlaeos.valhallammo.utility.Utils;
+import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.AbstractVillager;
@@ -20,10 +23,7 @@ import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.LootContext;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class SimpleMerchant extends VirtualMerchant {
     public SimpleMerchant(PlayerMenuUtility utility, UUID merchantID, MerchantData data, List<Pair<MerchantTrade, MerchantRecipe>> recipes) {
@@ -74,9 +74,18 @@ public class SimpleMerchant extends VirtualMerchant {
     @Override
     public String getMenuName() {
         AbstractVillager villager = getData().getVillager();
+        if (villager != null && villager.getCustomName() != null) return villager.getCustomName();
         MerchantType type = CustomMerchantManager.getMerchantType(getData().getType());
-        return Utils.chat(villager == null || villager.getCustomName() == null ?
-                type == null ? "" : type.getName() == null ? type.getType() : type.getName() :
-                villager.getCustomName());
+        if (type == null) return "";
+        if (type.getName() != null) return type.getName();
+        for (Villager.Profession profession : CustomMerchantManager.getMerchantConfigurations().keySet()){
+            if (CustomMerchantManager.getMerchantConfiguration(profession).getMerchantTypes().contains(getData().getType())){
+                return TranslationManager.getTranslation("profession_" + profession.toString().toLowerCase(Locale.US));
+            }
+        }
+        if (CustomMerchantManager.getTravelingMerchantConfiguration().getMerchantTypes().contains(type.getType())){
+            return TranslationManager.getTranslation("profession_traveling");
+        }
+        return type.getType();
     }
 }

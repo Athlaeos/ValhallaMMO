@@ -902,7 +902,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
-          "mode": "MULTIPLIER",
+          "mode": "ADD_ON_DEFAULT",
           "amplifier": 2.0,
           "skillRange": 185.0,
           "rangeOffset": 115.0,
@@ -917,7 +917,7 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
         "DATA": {
           "mode": "MULTIPLIER",
           "amplifier": 2.0,
@@ -926,10 +926,8 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DURABILITY_MULTIPLIER",
-          "icon": "DIAMOND",
-          "name": "attribute_scale_durability_multiplier",
+          "minimumValue": 0.2,
+          "name": "durability_scale",
           "priority": "LAST"
         }
       }
@@ -5375,7 +5373,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
-          "mode": "MULTIPLIER",
+          "mode": "ADD_ON_DEFAULT",
           "amplifier": 2.0,
           "skillRange": 275.0,
           "rangeOffset": 25.0,
@@ -5390,7 +5388,7 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
         "DATA": {
           "mode": "MULTIPLIER",
           "amplifier": 2.0,
@@ -5399,10 +5397,8 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DURABILITY_MULTIPLIER",
-          "icon": "DIAMOND",
-          "name": "attribute_scale_durability_multiplier",
+          "minimumValue": 0.2,
+          "name": "durability_scale",
           "priority": "LAST"
         }
       }
@@ -9144,7 +9140,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
-          "mode": "MULTIPLIER",
+          "mode": "ADD_ON_DEFAULT",
           "amplifier": 2.0,
           "skillRange": 185.0,
           "rangeOffset": 115.0,
@@ -9159,7 +9155,7 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
         "DATA": {
           "mode": "MULTIPLIER",
           "amplifier": 2.0,
@@ -9168,10 +9164,8 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DURABILITY_MULTIPLIER",
-          "icon": "DIAMOND",
-          "name": "attribute_scale_durability_multiplier",
+          "minimumValue": 0.2,
+          "name": "durability_scale",
           "priority": "LAST"
         }
       }
@@ -12699,7 +12693,7 @@
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
-          "mode": "MULTIPLIER",
+          "mode": "ADD_ON_DEFAULT",
           "amplifier": 2.0,
           "skillRange": 245.0,
           "rangeOffset": 55.0,
@@ -12714,7 +12708,7 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
         "DATA": {
           "mode": "MULTIPLIER",
           "amplifier": 2.0,
@@ -12723,10 +12717,8 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DURABILITY_MULTIPLIER",
-          "icon": "DIAMOND",
-          "name": "attribute_scale_durability_multiplier",
+          "minimumValue": 0.2,
+          "name": "durability_scale",
           "priority": "LAST"
         }
       }
@@ -22345,7 +22337,7 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
         "DATA": {
           "mode": "MULTIPLIER",
           "amplifier": 2.0,
@@ -22354,17 +22346,15 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DURABILITY_MULTIPLIER",
-          "icon": "DIAMOND",
-          "name": "attribute_scale_durability_multiplier",
+          "minimumValue": 0.2,
+          "name": "durability_scale",
           "priority": "LAST"
         }
       },
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
-          "mode": "MULTIPLIER",
+          "mode": "ADD_ON_DEFAULT",
           "amplifier": 2.0,
           "skillRange": 215.0,
           "rangeOffset": 85.0,
@@ -23933,7 +23923,7 @@
         }
       },
       {
-        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale",
         "DATA": {
           "mode": "MULTIPLIER",
           "amplifier": 2.0,
@@ -23942,17 +23932,15 @@
           "minimum": 1.0,
           "skillToScaleWith": "SMITHING",
           "skillEfficiency": 1.0,
-          "minimumValue": 0.0,
-          "attribute": "DURABILITY_MULTIPLIER",
-          "icon": "DIAMOND",
-          "name": "attribute_scale_durability_multiplier",
+          "minimumValue": 0.2,
+          "name": "durability_scale",
           "priority": "LAST"
         }
       },
       {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale",
         "DATA": {
-          "mode": "MULTIPLIER",
+          "mode": "ADD_ON_DEFAULT",
           "amplifier": 2.0,
           "skillRange": 215.0,
           "rangeOffset": 85.0,

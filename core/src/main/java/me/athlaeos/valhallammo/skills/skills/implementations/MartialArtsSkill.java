@@ -438,7 +438,7 @@ public class MartialArtsSkill extends Skill implements Listener {
     public void onDisruptMeditation(PlayerItemHeldEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
         Player player = e.getPlayer();
-        meditationTimeTracker.put(player.getUniqueId(), 0);
+        meditationTimeTracker.remove(player.getUniqueId());
         ValhallaMMO.getNms().removeUniqueAttribute(player, MEDITATION_FOV_KEY, AttributeMappings.MOVEMENT_SPEED.getAttribute());
     }
 

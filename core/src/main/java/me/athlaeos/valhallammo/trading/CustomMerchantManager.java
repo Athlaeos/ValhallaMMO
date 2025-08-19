@@ -37,6 +37,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.io.*;
@@ -508,5 +509,16 @@ public class CustomMerchantManager {
 
     public static String getDiscountFormula() {
         return discountFormula;
+    }
+
+    private static final NamespacedKey KEY_MERCHANT_SUMMON_ITEM = new NamespacedKey(ValhallaMMO.getInstance(), "merchant_summon_item");
+    public static void convertToMerchantSummonItem(ItemMeta meta, MerchantType type){
+        if (type == null) meta.getPersistentDataContainer().remove(KEY_MERCHANT_SUMMON_ITEM);
+        else meta.getPersistentDataContainer().set(KEY_MERCHANT_SUMMON_ITEM, PersistentDataType.STRING, type.getType());
+    }
+    public static MerchantType getSummonType(ItemMeta meta){
+        String stored = meta.getPersistentDataContainer().get(KEY_MERCHANT_SUMMON_ITEM, PersistentDataType.STRING);
+        if (stored == null) return null;
+        return getMerchantType(stored);
     }
 }
