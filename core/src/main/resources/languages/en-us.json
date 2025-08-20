@@ -249,7 +249,7 @@
     "profession_fisherman": "Fisherman",
     "profession_fletcher": "Fletcher",
     "profession_weaponsmith": "Weaponsmith",
-    "profession_armorsmith": "Armorsmith",
+    "profession_armorer": "Armorsmith",
     "profession_toolsmith": "Toolsmith",
     "profession_librarian": "Libarian",
     "profession_cleric": "Cleric",
@@ -1860,13 +1860,13 @@
     "trading_perk_4a_description": "&7Merchant's items have &a{trading_merchantskillmultiplier_add} &7increased quality, when applicable. You may also &etrade&7 &a{trading_tradingstockmultiplier_add} &7more items",
     "trading_perk_5a_name": "&aGratuity",
     "trading_perk_5a_description": "&7Trading with a merchant grants a chance to receive a random &agift &7from them. This chance increases with reputation and renown, from &a0-10%&7. Merchants also offer more trades ",
-    "trading_perk_2b_name": "&c(not implemented yet) &aApprenticeship",
+    "trading_perk_2b_name": "&aApprenticeship",
     "trading_perk_2b_description": "&7Most merchants may now train you in their profession, allowing you to level up skills at a cost (scaling with &amerchant level&7, up to &a75&7 at &6Master &7level)",
-    "trading_perk_3b_name": "&c(not implemented yet) &aService Workers",
+    "trading_perk_3b_name": "&aService Workers",
     "trading_perk_3b_description": "&7Most merchants may now offer &aupgrading services&7, allowing you to upgrade or otherwise modify your items at a cost",
-    "trading_perk_4b_name": "&c(not implemented yet) &aVIP Discount",
+    "trading_perk_4b_name": "&aVIP Discount",
     "trading_perk_4b_description": "&7Services are now &a{trading_servicediscount_add} &7cheaper",
-    "trading_perk_5b_name": "&c(not implemented yet) &aArtisans",
+    "trading_perk_5b_name": "&aArtisans",
     "trading_perk_5b_description": "&7Merchant's items have &a{trading_merchantskillmultiplier_add} &7increased quality",
     "trading_perk_6_name": "&aBlack Market",
     "trading_perk_6_description": "&7Most merchants now offer exclusive powerful trades at max rank (master)",
@@ -2213,7 +2213,14 @@
     "potion_belt_entry_format_selected": "&d&l> %potion%",
     "potion_belt_entry_format_deselected": "&f> %potion%",
     "potion_belt_name_format": "&dPotion Belt: &f%item_name%",
-    "service_training_confirm_button_name": "&aTrain %skill%"
+    "service_training_confirm_button_name": "&aTrain %skill%",
+    "service_upgrade_enchant_lv10_name": "&fEnchant at &aLevel 10",
+    "service_upgrade_enchant_lv20_name": "&fEnchant at &aLevel 20",
+    "service_upgrade_enchant_lv30_name": "&fEnchant at &aLevel 30",
+    "service_upgrade_repair_bows_name": "&fRepair &eBows and Crossbows",
+    "service_upgrade_repair_armor_name": "&fRepair &eArmor",
+    "service_upgrade_repair_tools_name": "&fRepair &eTools and Weapons",
+    "service_upgrade_repair_fishing_rods_name": "&fRepair &eFishing Rods"
   },
   "stringListTranslations": {
     "valhallammo_command_plain": [
@@ -3851,6 +3858,41 @@
     ],
     "lore_turtle_boots": [
       "&aGrants permanent &f\uED1E&aDolphin's Grace"
+    ],
+    "service_upgrade_enchant_lv10_lore": [
+      "&7Click to enchant the input item",
+      "&7Enchantment strength: &aLevel 10",
+      "&fCosts &e%quantity% Emeralds"
+    ],
+    "service_upgrade_enchant_lv20_lore": [
+      "&7Click to enchant the input item",
+      "&7Enchantment strength: &aLevel 20",
+      "&fCosts &e%quantity% Emeralds"
+    ],
+    "service_upgrade_enchant_lv30_lore": [
+      "&7Click to enchant the input item",
+      "&7Enchantment strength: &aLevel 30",
+      "&fCosts &e%quantity% Emeralds"
+    ],
+    "service_upgrade_repair_bows_lore": [
+      "&7Click to repair input (cross)bows",
+      "&7Repairs 200 durability",
+      "&fCosts &e%quantity% Emeralds"
+    ],
+    "service_upgrade_repair_armor_lore": [
+      "&7Click to repair input armor",
+      "&7Repairs 200 durability",
+      "&fCosts &e%quantity% Emeralds"
+    ],
+    "service_upgrade_repair_tools_lore": [
+      "&7Click to repair input tools and weapons",
+      "&7Repairs 400 durability",
+      "&fCosts &e%quantity% Emeralds"
+    ],
+    "service_upgrade_repair_fishing_rods_lore": [
+      "&7Click to repair input fishing rods",
+      "&7Repairs 200 durability",
+      "&fCosts &e%quantity% Emeralds"
     ]
   },
   "stringIndex": {},
