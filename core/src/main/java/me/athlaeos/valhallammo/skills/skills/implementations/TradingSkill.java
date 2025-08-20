@@ -78,7 +78,7 @@ public class TradingSkill extends Skill implements Listener {
             case MASTER -> masterExpMultiplier;
         };
         amount *= multiplier;
-        amount *= Math.max(0, expDiscountMultiplier * ratio);
+        amount *= 1 + Math.max(0, expDiscountMultiplier * ratio);
         addEXP(p, amount, silent, reason);
     }
 }

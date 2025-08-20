@@ -71,7 +71,7 @@ renown_hurt_baby_villager: -10 # Renown lost to all nearby villagers when a baby
 renown_hurt_iron_golem: 0 # Renown lost to all nearby villagers when an iron golem is hurt repeatedly
 renown_death_villager: -5 # Renown lost to all nearby villager if a villager merely dies under a player's watch
 renown_death_baby_villager: -10 # Renown lost to all nearby villagers if a baby villager merely dies under a player's watch
-renown_death_iron_golem: -2 # Renown lost to all nearby villagers if an iron golem merely dies under a player's watch
+renown_death_iron_golem: -0 # Renown lost to all nearby villagers if an iron golem merely dies under a player's watch
 renown_cure_villager: 5 # Renown gained when curing a villager (that hasn't already been cured before) of being a zombie
 reputation_trade: 0.5
 reputation_kill_villager: -50 # etc.
