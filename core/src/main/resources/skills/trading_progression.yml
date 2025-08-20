@@ -202,7 +202,8 @@ perks:
     messages:
       - "<lang.trading_perk_6_messages>"
     requireperk_all:
-      - trading_perk_5
+      - trading_perk_5a
+      - trading_perk_5b
     connection_line:
       '1':
         position: '2,1'
