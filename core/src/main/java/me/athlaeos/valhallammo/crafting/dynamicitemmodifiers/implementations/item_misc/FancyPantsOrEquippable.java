@@ -237,12 +237,12 @@ public class FancyPantsOrEquippable extends DynamicItemModifier {
 
     @Override
     public String getDescription() {
-        return "&fChanges the item type depending on version. If FancyPants is required for custom armors, color the leather armor. If not, use EquippableComponent";
+        return "&fChanges the item type depending on version. If FancyPants is required for custom armors, color the leather armor. If not, use EquippableComponent. This modifier should almost always be at a higher priority than the other modifiers";
     }
 
     @Override
     public String getActiveDescription() {
-        return "&fChanges the item type depending on version. If FancyPants is required for custom armors, color the leather armor. If not, use EquippableComponent";
+        return "&fChanges the item type depending on version. If FancyPants is required for custom armors, color the leather armor. If not, use EquippableComponent. This modifier should almost always be at a higher priority than the other modifiers";
     }
 
     @Override

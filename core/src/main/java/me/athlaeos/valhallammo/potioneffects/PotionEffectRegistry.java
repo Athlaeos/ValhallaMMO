@@ -866,8 +866,8 @@ public class PotionEffectRegistry {
         };
         String plainFormat = TranslationManager.getTranslation(key);
         String format = TranslationManager.getTranslation(c + key);
-        // if the meta has no display name, override is enabled, or the display name already contains the format it was previously, set the new display name
-        if (ChatColor.stripColor(item.getName()).contains(ChatColor.stripColor(Utils.chat(plainFormat.replace("%effect%", ""))))){
+        // if the meta has no display name or the display name already contains the format it was previously, set the new display name
+        if (item.getName() == null || ChatColor.stripColor(item.getName()).contains(ChatColor.stripColor(Utils.chat(plainFormat.replace("%effect%", ""))))){
             Map<String, PotionEffectWrapper> effects = getStoredEffects(item.getMeta(), true);
             if (effects.isEmpty()) {
                 PotionType type = item.getMeta() instanceof PotionMeta pm ? ValhallaMMO.getNms().getPotionType(pm) : null;

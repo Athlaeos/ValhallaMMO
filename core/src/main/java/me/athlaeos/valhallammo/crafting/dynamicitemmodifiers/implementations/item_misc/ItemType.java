@@ -71,12 +71,12 @@ public class ItemType extends DynamicItemModifier implements ResultChangingModif
 
     @Override
     public String getDescription() {
-        return "&fReplaces the item type with another one";
+        return "&fReplaces the item type with another one. This modifier should almost always be at a higher priority than the other modifiers";
     }
 
     @Override
     public String getActiveDescription() {
-        return "&fItem type will change to " + StringUtils.toPascalCase((material == null ? Material.BARRIER : material).toString());
+        return "&fItem type will change to " + StringUtils.toPascalCase((material == null ? Material.BARRIER : material).toString() + ". This modifier should almost always be at a higher priority than the other modifiers");
     }
 
     @Override
