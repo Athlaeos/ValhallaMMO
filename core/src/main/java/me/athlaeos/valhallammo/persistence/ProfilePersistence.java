@@ -11,13 +11,13 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.LeaderboardEntry;
 import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
-import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
+import me.athlaeos.valhallammo.skills.skills.Perk;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -152,7 +152,7 @@ public abstract class ProfilePersistence {
     private static String whereClause(Pair<String, Double> mainStat, Map<String, Pair<String, Double>> extraStats){
         Collection<String> whereClauses = new HashSet<>();
         if (mainStat.getTwo() != null)
-            whereClauses.add(String.format("main_stat >= %.2f", mainStat.getTwo()));
+            whereClauses.add(String.format("%s >= %.2f", mainStat.getOne(), mainStat.getTwo()));
         for (String stat : extraStats.keySet()){
             Pair<String, Double> statWithMinimum = extraStats.get(stat);
             if (statWithMinimum == null || statWithMinimum.getTwo() == null) continue;
