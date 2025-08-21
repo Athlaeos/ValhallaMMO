@@ -294,6 +294,7 @@ public class CustomRecipeRegistry {
 
             addRecipePermission(recipe.getName());
             Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
+            RecipeOverviewMenu.resetCache(RecipeOverviewMenu.SMITHING.getId());
             while (iterator.hasNext()){
                 Recipe r = iterator.next();
                 if (!(r instanceof SmithingRecipe s) || (!s.getBase().test(recipe.getBase().getItem()) || !s.getAddition().test(recipe.getAddition().getItem()))) continue;
@@ -302,7 +303,6 @@ public class CustomRecipeRegistry {
                 return;
             }
             recipe.registerRecipe();
-            RecipeOverviewMenu.resetCache(RecipeOverviewMenu.SMITHING.getId());
         }
     }
 
