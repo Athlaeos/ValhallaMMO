@@ -110,15 +110,11 @@ public class MaterialWithDataChoice extends RecipeOption {
             validChoices.clear();
             PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()).addOption(this);
         } else {
-            if (validChoices.isEmpty() && ItemUtils.isEmpty(e.getCursor())) {
-                Utils.sendMessage(e.getWhoClicked(), "&cThis option must be configured first!");
-            } else {
-                if (!ItemUtils.isEmpty(e.getCursor())) {
-                    validChoices.add(e.getCursor().getType());
-                    PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()).addOption(this);
-                }
-                else super.onClick(e);
+            if (!ItemUtils.isEmpty(e.getCursor())) {
+                validChoices.add(e.getCursor().getType());
+                PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()).addOption(this);
             }
+            else super.onClick(e);
         }
     }
 }
