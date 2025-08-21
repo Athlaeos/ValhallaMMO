@@ -114,35 +114,47 @@ public class CustomMerchantManager {
 
     public static List<MerchantData.TradeData> generateRandomTrades(MerchantData data, MerchantType type, Player player){
         if (type == null) return new ArrayList<>();
+        List<MerchantData.TradeData> trades = new ArrayList<>();
+        MerchantLevel level = getLevel(data);
+        if (level == null) return trades;
+        for (MerchantLevel l : type.getTrades().keySet()){
+            if (l.getLevel() > level.getLevel()) continue;
+            trades.addAll(generateRandomTradesForLevel(data, type, player, l));
+        }
+        return trades;
+    }
+
+    public static List<MerchantData.TradeData> generateRandomTradesForLevel(MerchantData data, MerchantType type, Player player, MerchantLevel level){
+        if (type == null) return new ArrayList<>();
         float luck = getTradingLuck(player);
         List<MerchantData.TradeData> trades = new ArrayList<>();
-        for (MerchantLevel level : type.getTrades().keySet()){
-            MerchantType.MerchantLevelTrades levelTrades = type.getTrades(level);
-            Collection<MerchantTrade> merchantTrades = new HashSet<>();
-            for (String trade : new HashSet<>(levelTrades.getTrades())) {
-                if (registeredMerchantTrades.containsKey(trade)) merchantTrades.add(registeredMerchantTrades.get(trade));
-                else {
-                    levelTrades.getTrades().remove(trade);
-                    ValhallaMMO.logWarning("Merchant Type " + type.getType() + " had trade " + trade + " added to it, but it doesn't exist! Removed.");
-                }
-            }
-            Collection<MerchantTrade> selectedTrades = new HashSet<>(merchantTrades.stream().filter(t -> t.isGuaranteedPresent() && t.isTradeable()).toList());
-            merchantTrades.removeIf(t -> t.isGuaranteedPresent() || !t.isTradeable());
-            selectedTrades.addAll(Utils.weightedSelection(merchantTrades, Utils.randomAverage(type.getRolls(level)), luck, 0));
-            selectedTrades.forEach(t -> {
-                ItemBuilder result = prepareTradeResult(data, t, player);
-                if (result == null) return;
 
-                ItemBuilder cost = !t.getPriceModifiers().isEmpty() ? prepareTradePrice(data, t, player) : new ItemBuilder(t.getScalingCostItem());
-                if (cost == null) return;
-                int boundMax = t.getPriceRandomPositiveOffset() - t.getPriceRandomNegativeOffset();
-                int randomOffset = boundMax <= 0 ? 0 : (Utils.getRandom().nextInt(boundMax) + t.getPriceRandomNegativeOffset());
-                int price = Math.max(1, Math.min(ValhallaMMO.getNms().getMaxStackSize(cost.getMeta(), cost.getItem().getType()), cost.getItem().getAmount() + randomOffset));
-                MerchantData.TradeData tradeData = new MerchantData.TradeData(t.getID(), price, level.getLevel(), result.get(), t.getMaxUses());
-                if (!t.getPriceModifiers().isEmpty()) tradeData.setPrice(cost.get());
-                trades.add(tradeData);
-            });
+        MerchantType.MerchantLevelTrades levelTrades = type.getTrades(level);
+        Collection<MerchantTrade> merchantTrades = new HashSet<>();
+        for (String trade : new HashSet<>(levelTrades.getTrades())) {
+            if (registeredMerchantTrades.containsKey(trade)) merchantTrades.add(registeredMerchantTrades.get(trade));
+            else {
+                levelTrades.getTrades().remove(trade);
+                ValhallaMMO.logWarning("Merchant Type " + type.getType() + " had trade " + trade + " added to it, but it doesn't exist! Removed.");
+            }
         }
+        Collection<MerchantTrade> selectedTrades = new HashSet<>(merchantTrades.stream().filter(t -> t.isGuaranteedPresent() && t.isTradeable()).toList());
+        merchantTrades.removeIf(t -> t.isGuaranteedPresent() || !t.isTradeable());
+        selectedTrades.addAll(Utils.weightedSelection(merchantTrades, Utils.randomAverage(type.getRolls(level)), luck, 0));
+        selectedTrades.forEach(t -> {
+            ItemBuilder result = prepareTradeResult(data, t, player);
+            if (result == null) return;
+
+            ItemBuilder cost = !t.getPriceModifiers().isEmpty() ? prepareTradePrice(data, t, player) : new ItemBuilder(t.getScalingCostItem());
+            if (cost == null) return;
+            int boundMax = t.getPriceRandomPositiveOffset() - t.getPriceRandomNegativeOffset();
+            int randomOffset = boundMax <= 0 ? 0 : (Utils.getRandom().nextInt(boundMax) + t.getPriceRandomNegativeOffset());
+            int price = Math.max(1, Math.min(ValhallaMMO.getNms().getMaxStackSize(cost.getMeta(), cost.getItem().getType()), cost.getItem().getAmount() + randomOffset));
+            MerchantData.TradeData tradeData = new MerchantData.TradeData(t.getID(), price, level.getLevel(), result.get(), t.getMaxUses());
+            if (!t.getPriceModifiers().isEmpty()) tradeData.setPrice(cost.get());
+            trades.add(tradeData);
+        });
+
         return trades;
     }
 
@@ -446,7 +458,7 @@ public class CustomMerchantManager {
         if (memory.getTradingReputation() < reputationUnforgivable && reputation > 0) return;
         if (reputation > 0) reputation *= (1 + (float) AccumulativeStatManager.getCachedStats("TRADING_POS_REPUTATION_MULTIPLIER", toPlayer, 10000, true));
         else reputation *= (1 + (float) AccumulativeStatManager.getCachedStats("TRADING_NEG_REPUTATION_MULTIPLIER", toPlayer, 10000, true));
-        memory.setRenownReputation(memory.getRenownReputation() + reputation);
+        memory.setTradingReputation(memory.getTradingReputation() + reputation);
 
         AbstractVillager villager = data.getVillager();
         if (villager == null) return;

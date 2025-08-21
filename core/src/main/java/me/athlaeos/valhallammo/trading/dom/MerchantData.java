@@ -64,6 +64,11 @@ public class MerchantData {
 
     public void setTrades(Collection<TradeData> trades) {
         this.trades.clear();
+        addTrades(trades);
+    }
+
+
+    public void addTrades(Collection<TradeData> trades) {
         for (TradeData datum : trades)
             this.trades.put(datum.getTrade(), datum);
     }

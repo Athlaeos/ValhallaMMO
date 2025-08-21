@@ -115,7 +115,15 @@ public class MerchantListener implements Listener {
                 vi.setVillagerExperience(level.getDefaultExpRequirement() + (int) Math.floor((nextLevel.getDefaultExpRequirement() - level.getDefaultExpRequirement()) * progressToNextLevel));
                 vi.setVillagerLevel(MerchantLevel.getLevel(vi.getVillagerExperience()).getLevel());
             }
-            if (vi.getVillagerLevel() != villagerLevel) vi.addPotionEffect(PotionEffectTypeWrapper.REGENERATION.createEffect(200, 0));
+            if (vi.getVillagerLevel() != villagerLevel) {
+                vi.addPotionEffect(PotionEffectTypeWrapper.REGENERATION.createEffect(200, 0));
+
+                // create new trades for newly acquired level
+                for (MerchantLevel l : MerchantLevel.values()){
+                    if (l.getLevel() <= villagerLevel || l.getLevel() > vi.getVillagerLevel()) continue;
+                    data.addTrades(CustomMerchantManager.generateRandomTradesForLevel(data, type, p, l));
+                }
+            }
         }
         // Ensures that at least one of the villager's trades is not fully restocked, prompting
         // the villager to want to restock
@@ -499,8 +507,8 @@ public class MerchantListener implements Listener {
                     for (MerchantData.TradeData tradeData : data.getTrades().values()){
                         MerchantTrade trade = CustomMerchantManager.getTrade(tradeData.getTrade());
                         if (trade == null || trade.getRestockDelay() < 0) continue;
-                        if (time >= tradeData.getLastRestocked() + trade.getRestockDelay()){
-                            tradeData.resetRemainingUses(type != null && type.isPerPlayerStock());
+                        if (trade.getRestockDelay() == 0 || time >= tradeData.getLastRestocked() + trade.getRestockDelay()){
+                            tradeData.resetRemainingUses(type.isPerPlayerStock());
                             tradeData.setLastRestocked(time);
                         }
                     }
