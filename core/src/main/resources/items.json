@@ -71,7 +71,7 @@
           "lore": [
             "&f<lang.lore_royal_diamond_equipment>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -408,7 +408,7 @@
           "lore": [
             "&f<lang.lore_royal_netherite_equipment>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -843,7 +843,7 @@
           "bigIncrement": 0.1,
           "icon": "WITHER_ROSE",
           "name": "attribute_add_immunity_reduction",
-          "priority": "SOONISH"
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -1061,7 +1061,7 @@
           "lore": [
             "&f<lang.lore_royal_rapier>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -1536,7 +1536,7 @@
         "DATA": {
           "effect": "CRIT_DAMAGE",
           "amplifier": 0.9999999999999999,
-          "duration": 20,
+          "duration": 40,
           "condition": "while_out_of_combat",
           "icon": "IRON_SWORD",
           "smallStep": 0.01,
@@ -1559,7 +1559,7 @@
           "lore": [
             "&f<lang.lore_royal_dagger>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -1645,7 +1645,7 @@
         "DATA": {
           "effect": "CRIT_CHANCE",
           "amplifier": 0.30000000000000004,
-          "duration": 20,
+          "duration": 40,
           "condition": "while_out_of_combat",
           "icon": "GOLDEN_SWORD",
           "smallStep": 0.01,
@@ -2997,7 +2997,7 @@
           "lore": [
             "&f<lang.lore_royal_sword>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -3472,9 +3472,9 @@
           "lore": [
             "&f<lang.lore_turtle_chestplate>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
-          "priority": "NEUTRAL"
+          "priority": "SOON"
         }
       },
       {
@@ -3584,7 +3584,7 @@
           "lore": [
             "&f<lang.lore_royal_pickaxes>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -3831,7 +3831,7 @@
           "lore": [
             "&f<lang.lore_royal_netherite_equipment>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -6101,7 +6101,7 @@
           "lore": [
             "&f<lang.lore_royal_spear>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -6271,7 +6271,7 @@
           "lore": [
             "&f<lang.lore_royal_greataxe>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -7012,7 +7012,7 @@
           "lore": [
             "&f<lang.lore_royal_shovels>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -7484,7 +7484,7 @@
           "lore": [
             "&f<lang.lore_royal_greataxe>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -7764,7 +7764,7 @@
           "lore": [
             "&f<lang.lore_royal_axes>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -8845,7 +8845,7 @@
           "lore": [
             "&f<lang.lore_royal_netherite_equipment>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -9097,7 +9097,7 @@
           "bigIncrement": 0.1,
           "icon": "WITHER_ROSE",
           "name": "attribute_add_immunity_reduction",
-          "priority": "SOONISH"
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -9655,7 +9655,7 @@
             "&f<lang.lore_assassin_equipment>",
             "&f<lang.lore_assassin_leggings>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -9852,9 +9852,9 @@
           "lore": [
             "&f<lang.lore_turtle_boots>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
-          "priority": "NEUTRAL"
+          "priority": "SOON"
         }
       },
       {
@@ -11334,7 +11334,7 @@
           "lore": [
             "&f<lang.lore_royal_hoes>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -11477,7 +11477,7 @@
           "lore": [
             "&f<lang.lore_royal_pickaxes>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -11707,9 +11707,9 @@
           "lore": [
             "&f<lang.lore_turtle_helmet>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
-          "priority": "NEUTRAL"
+          "priority": "SOON"
         }
       },
       {
@@ -11800,7 +11800,7 @@
           "lore": [
             "&f<lang.lore_royal_spear>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -12044,9 +12044,9 @@
           "lore": [
             "&f<lang.lore_turtle_leggings>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
-          "priority": "NEUTRAL"
+          "priority": "SOON"
         }
       },
       {
@@ -12407,7 +12407,7 @@
           "lore": [
             "&f<lang.lore_fishing_bait>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -13467,9 +13467,9 @@
           "lore": [
             "&f<lang.lore_royal_bows>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
-          "priority": "NEUTRAL"
+          "priority": "SOON"
         }
       },
       {
@@ -14261,7 +14261,7 @@
           "lore": [
             "&f<lang.lore_royal_diamond_equipment>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -14950,7 +14950,7 @@
           "lore": [
             "&f<lang.lore_royal_warhammer>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -15228,7 +15228,7 @@
           "lore": [
             "&f<lang.lore_royal_axes>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -16119,7 +16119,7 @@
             "&f<lang.lore_assassin_equipment>",
             "&f<lang.lore_assassin_chestplate>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -16315,7 +16315,7 @@
           "lore": [
             "&f<lang.lore_royal_shovels>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -16478,7 +16478,7 @@
             "&f<lang.lore_assassin_equipment>",
             "&f<lang.lore_assassin_helmet>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -16630,7 +16630,7 @@
           "lore": [
             "&f<lang.lore_royal_hoes>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -16794,7 +16794,7 @@
           "bigIncrement": 1.0,
           "icon": "GOLDEN_SWORD",
           "name": "attribute_add_generic_attack_speed",
-          "priority": "SOON"
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -16809,7 +16809,7 @@
           "bigIncrement": 1.0,
           "icon": "IRON_SWORD",
           "name": "attribute_add_generic_attack_damage",
-          "priority": "SOON"
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -16824,7 +16824,7 @@
           "bigIncrement": 0.1,
           "icon": "WITHER_ROSE",
           "name": "attribute_add_immunity_reduction",
-          "priority": "SOON"
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -16868,9 +16868,9 @@
           "lore": [
             "&f<lang.lore_royal_knuckles>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
-          "priority": "NEUTRAL"
+          "priority": "SOON"
         }
       },
       {
@@ -16955,7 +16955,7 @@
           "lore": [
             "&f<lang.lore_royal_diamond_equipment>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -18166,7 +18166,7 @@
           "lore": [
             "&f<lang.lore_royal_netherite_equipment>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -18671,7 +18671,7 @@
           "lore": [
             "&f<lang.lore_royal_mace>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -18985,7 +18985,7 @@
           "lore": [
             "&f<lang.lore_royal_warhammer>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -19170,7 +19170,7 @@
           "lore": [
             "&f<lang.lore_royal_sword>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -19333,7 +19333,7 @@
             "&f<lang.lore_assassin_equipment>",
             "&f<lang.lore_assassin_boots>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -19705,7 +19705,7 @@
           "lore": [
             "&f<lang.lore_royal_mace>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -19884,7 +19884,7 @@
           "lore": [
             "&f<lang.lore_royal_rapier>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -20324,7 +20324,7 @@
         "DATA": {
           "effect": "CRIT_DAMAGE",
           "amplifier": 0.9999999999999999,
-          "duration": 20,
+          "duration": 40,
           "condition": "while_out_of_combat",
           "icon": "IRON_SWORD",
           "smallStep": 0.01,
@@ -20347,7 +20347,7 @@
           "lore": [
             "&f<lang.lore_royal_dagger>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -20441,7 +20441,7 @@
         "DATA": {
           "effect": "CRIT_CHANCE",
           "amplifier": 0.30000000000000004,
-          "duration": 20,
+          "duration": 40,
           "condition": "while_out_of_combat",
           "icon": "GOLDEN_SWORD",
           "smallStep": 0.01,
@@ -22583,7 +22583,7 @@
           "bigIncrement": 1.0,
           "icon": "GOLDEN_SWORD",
           "name": "attribute_add_generic_attack_speed",
-          "priority": "SOON"
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -22598,7 +22598,7 @@
           "bigIncrement": 0.1,
           "icon": "WITHER_ROSE",
           "name": "attribute_add_immunity_reduction",
-          "priority": "SOON"
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -22613,7 +22613,7 @@
           "bigIncrement": 1.0,
           "icon": "IRON_SWORD",
           "name": "attribute_add_generic_attack_damage",
-          "priority": "SOON"
+          "priority": "NEUTRAL"
         }
       },
       {
@@ -22650,9 +22650,9 @@
           "lore": [
             "&f<lang.lore_royal_knuckles>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
-          "priority": "NEUTRAL"
+          "priority": "SOON"
         }
       },
       {
@@ -22810,7 +22810,7 @@
           "lore": [
             "&f<lang.lore_royal_diamond_equipment>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
           "priority": "SOON"
         }
@@ -23280,9 +23280,9 @@
           "lore": [
             "&f<lang.lore_royal_crossbows>"
           ],
-          "mode": 0,
+          "mode": 2,
           "name": "relore",
-          "priority": "NEUTRAL"
+          "priority": "SOON"
         }
       },
       {
