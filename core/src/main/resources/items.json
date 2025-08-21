@@ -12,6 +12,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
+        "DATA": {
+          "customModelData": 9918292,
+          "name": "custom_model_data",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -367,6 +375,14 @@
         "DATA": {
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
+        "DATA": {
+          "customModelData": 9918293,
+          "name": "custom_model_data",
           "priority": "SOON"
         }
       },
@@ -3782,6 +3798,14 @@
         "DATA": {
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
+        "DATA": {
+          "customModelData": 9918293,
+          "name": "custom_model_data",
           "priority": "SOON"
         }
       },
@@ -8788,6 +8812,14 @@
         "DATA": {
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
+        "DATA": {
+          "customModelData": 9918293,
+          "name": "custom_model_data",
           "priority": "SOON"
         }
       },
@@ -14170,6 +14202,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
+        "DATA": {
+          "customModelData": 9918292,
+          "name": "custom_model_data",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -16856,6 +16896,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
+        "DATA": {
+          "customModelData": 9918292,
+          "name": "custom_model_data",
+          "priority": "SOON"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -18085,6 +18133,14 @@
         "DATA": {
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
+        "DATA": {
+          "customModelData": 9918293,
+          "name": "custom_model_data",
           "priority": "SOON"
         }
       },
@@ -22691,6 +22747,14 @@
         "DATA": {
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.CustomModelDataSet",
+        "DATA": {
+          "customModelData": 9918292,
+          "name": "custom_model_data",
           "priority": "SOON"
         }
       },

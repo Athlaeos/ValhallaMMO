@@ -13,7 +13,7 @@
     <properties>
         <revision>premium_1.0</revision>
         <javaVersion>17</javaVersion>
-        <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\1.21.7\plugins</testServerPath>
+        <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\1.19\prem dev\plugins</testServerPath>
         <shadedPackage>me.athlaeos.valhallammo.shaded</shadedPackage>
         <finalName>ValhallaMMO</finalName>
 

@@ -57,7 +57,7 @@ public class InteractListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMerchantSummon(PlayerInteractEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.useItemInHand() == Event.Result.DENY ||
-                e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getClickedBlock() == null || e.getClickedPosition() == null || e.getHand() == null) return;
+                e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getClickedBlock() == null || e.getHand() == null) return;
         ItemStack hand = e.getItem();
         if (ItemUtils.isEmpty(hand) || hand.getType() != Material.VILLAGER_SPAWN_EGG) return;
         ItemMeta meta = hand.getItemMeta();
@@ -65,7 +65,7 @@ public class InteractListener implements Listener {
         if (merchantType == null) return;
         for (Villager.Profession profession : CustomMerchantManager.getMerchantConfigurations().keySet()){
             if (CustomMerchantManager.getMerchantConfiguration(profession).getMerchantTypes().contains(merchantType.getType())){
-                Villager villager = e.getPlayer().getWorld().spawn(e.getClickedPosition().toLocation(e.getPlayer().getWorld()), Villager.class);
+                Villager villager = e.getPlayer().getWorld().spawn(e.getClickedBlock().getLocation().add(0.5, 1, 0.5), Villager.class);
                 villager.setProfession(profession);
                 villager.setVillagerExperience(1); // to stop it from losing its profession
                 MerchantData data = CustomMerchantManager.createMerchant(villager.getUniqueId(), merchantType, e.getPlayer());
