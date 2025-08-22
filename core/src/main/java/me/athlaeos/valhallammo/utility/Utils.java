@@ -460,4 +460,20 @@ public class Utils {
             return thread;
         };
     }
+
+    public static Sound getSound(String of){
+        NamespacedKey ofKey = NamespacedKey.fromString(of);
+        Sound ofRegistry = ofKey == null ? null : Registry.SOUNDS.get(ofKey);
+        if (ofRegistry == null) return Catch.catchOrElse(() -> Sound.valueOf(of), null);
+        return ofRegistry;
+    }
+
+    public static Sound getSound(String of, Sound def, String warningIfNull){
+        Sound s = getSound(of);
+        if (s == null) {
+            if (!StringUtils.isEmpty(warningIfNull)) ValhallaMMO.logWarning(warningIfNull);
+            return def;
+        }
+        return s;
+    }
 }

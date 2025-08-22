@@ -28,9 +28,9 @@ public class Parryer {
     private static final boolean parrySparks = ValhallaMMO.getPluginConfig().getBoolean("parry_sparks");
     private static final boolean parryProjectiles = ValhallaMMO.getPluginConfig().getBoolean("parry_projectiles");
     private static final boolean parryProjectilesReflect = ValhallaMMO.getPluginConfig().getBoolean("parried_projectiles_reflect");
-    private static final Sound parryActivationSound = Catch.catchOrElse(() -> Sound.valueOf(ValhallaMMO.getPluginConfig().getString("parry_sound")), Sound.BLOCK_IRON_TRAPDOOR_OPEN, "Invalid parry activation sound given, used default");
-    private static final Sound parrySuccessSound = Catch.catchOrElse(() -> Sound.valueOf(ValhallaMMO.getPluginConfig().getString("parry_success_sound")), Sound.ENTITY_ITEM_BREAK, "Invalid parry success sound given, used default");
-    private static final Sound parryFailedSound = Catch.catchOrElse(() -> Sound.valueOf(ValhallaMMO.getPluginConfig().getString("parry_failed_sound")), Sound.ITEM_SHIELD_BREAK, "Invalid parry fail sound given, used default");
+    private static final Sound parryActivationSound = Utils.getSound(ValhallaMMO.getPluginConfig().getString("parry_sound"), Sound.BLOCK_IRON_TRAPDOOR_OPEN, "Invalid parry activation sound given, used default");
+    private static final Sound parrySuccessSound = Utils.getSound(ValhallaMMO.getPluginConfig().getString("parry_success_sound"), Sound.ENTITY_ITEM_BREAK, "Invalid parry success sound given, used default");
+    private static final Sound parryFailedSound = Utils.getSound(ValhallaMMO.getPluginConfig().getString("parry_failed_sound"), Sound.ITEM_SHIELD_BREAK, "Invalid parry fail sound given, used default");
     private static Animation parrySuccessAnimation = AnimationRegistry.getAnimation(AnimationRegistry.ENTITY_SPARK_FLASH.id());
     private static Animation parryFailAnimation = null;
 

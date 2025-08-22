@@ -8,6 +8,7 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.EntityEffect;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -48,7 +49,7 @@ public class BlockInteractConversions {
                 Material from = Catch.catchOrElse(() -> Material.valueOf(config.getString("conversions." + name + ".from")), null);
                 Material to = Catch.catchOrElse(() -> Material.valueOf(config.getString("conversions." + name + ".to")), null);
                 if (from == null || to == null) continue;
-                Sound sound = Catch.catchOrElse(() -> Sound.valueOf(config.getString("conversions." + name + ".sound")), null);
+                Sound sound = Utils.getSound(config.getString("conversions." + name + ".sound"), null, null);
                 Map<Material, Pair<Integer, Boolean>> usableItems = new HashMap<>();
                 ConfigurationSection itemSection = config.getConfigurationSection("conversions." + name + ".with");
                 if (itemSection != null){

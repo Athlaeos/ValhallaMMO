@@ -60,7 +60,7 @@ public class EntityDamagedListener implements Listener {
         pveOneShotProtection = c.getBoolean("oneshot_protection_mobs");
         environmentalOneShotProtection = c.getBoolean("oneshot_protection_environment");
         oneShotProtectionCap = c.getDouble("oneshot_protection_limit");
-        oneShotProtectionSound = Catch.catchOrElse(() -> Sound.valueOf(c.getString("oneshot_protection_sound")), Sound.ITEM_TOTEM_USE);
+        oneShotProtectionSound = Utils.getSound(c.getString("oneshot_protection_sound"), Sound.ITEM_TOTEM_USE, null);
     }
 
     public static Map<String, Double> getPhysicalDamageTypes() {

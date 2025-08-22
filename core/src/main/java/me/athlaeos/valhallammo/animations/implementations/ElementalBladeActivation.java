@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.animations.implementations;
 import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
@@ -15,7 +16,7 @@ public class ElementalBladeActivation extends Animation {
 
     public ElementalBladeActivation(String id) {
         super(id);
-        sound = Catch.catchOrElse(() -> Sound.valueOf(ConfigManager.getConfig("skills/enchanting.yml").get().getString("elemental_blade_activation_sound")), null);
+        sound = Utils.getSound(ConfigManager.getConfig("skills/enchanting.yml").get().getString("elemental_blade_activation_sound"), null, null);
     }
 
     @Override

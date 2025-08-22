@@ -73,7 +73,7 @@ public class AlchemySkill extends Skill implements Listener {
 
         quickEmptyPotions = skillConfig.getBoolean("quick_empty_potions");
         transmutationFlash = skillConfig.getBoolean("transmutation_liquid_flash");
-        transmutationSound = Catch.catchOrElse(() -> Sound.valueOf(skillConfig.getString("transmutation_sound")), null, "Invalid transmutation sound given in skills/alchemy.yml");
+        transmutationSound = Utils.getSound(skillConfig.getString("transmutation_sound"), null, "Invalid transmutation sound given in skills/alchemy.yml");
 
         validCombiningItems.addAll(ItemUtils.getMaterialSet(skillConfig.getStringList("valid_combining_items")));
         transmutationPotionLore = Utils.chat(TranslationManager.translateListPlaceholders(skillConfig.getStringList("transmutation_lore")));

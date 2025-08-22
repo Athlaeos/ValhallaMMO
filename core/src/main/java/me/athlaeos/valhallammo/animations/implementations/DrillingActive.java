@@ -34,7 +34,7 @@ public class DrillingActive extends Animation {
         particle = Catch.catchOrElse(() -> Particle.valueOf(config.getString("drilling_effect_particle")), null);
         options = new Particle.DustOptions(Utils.hexToRgb(config.getString("drilling_effect_color", "#ffffff")), 0.5f);
         drillingOff = TranslationManager.translatePlaceholders(config.getString("drilling_toggle_off"));
-        drillingActiveSound = Catch.catchOrElse(() -> Sound.valueOf(config.getString("drilling_active_sound")), null);
+        drillingActiveSound = Utils.getSound(config.getString("drilling_active_sound"), null, null);
     }
 
     public DrillingActive(String id) {

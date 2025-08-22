@@ -9,6 +9,8 @@ import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,7 +23,7 @@ public class LootTableSet extends DynamicItemModifier {
     private String lootTable = null;
     private boolean freeSelection = false;
     private boolean repeatSelection = false;
-    private Sound lootSound = null;
+    private String lootSound = null;
 
     public LootTableSet(String name) {
         super(name);
@@ -31,7 +33,11 @@ public class LootTableSet extends DynamicItemModifier {
     public void processItem(ModifierContext context) {
         LootTableRegistry.setLootTable(context.getItem().getMeta(), LootTableRegistry.getLootTables().get(lootTable));
         LootTableRegistry.setFreeSelectionTable(context.getItem().getMeta(), freeSelection, repeatSelection);
-        LootTableRegistry.setLootSound(context.getItem().getMeta(), lootSound);
+        NamespacedKey soundKey = NamespacedKey.fromString(lootSound);
+        if (soundKey == null) return;
+        Sound s = Registry.SOUNDS.get(soundKey);
+        if (s == null) return;
+        LootTableRegistry.setLootSound(context.getItem().getMeta(), s);
     }
 
     @Override
@@ -124,7 +130,7 @@ public class LootTableSet extends DynamicItemModifier {
         this.freeSelection = freeSelection;
     }
 
-    public void setLootSound(Sound lootSound) {
+    public void setLootSound(String lootSound) {
         this.lootSound = lootSound;
     }
 
@@ -154,11 +160,10 @@ public class LootTableSet extends DynamicItemModifier {
         freeSelection = args[1].equalsIgnoreCase("yes");
         repeatSelection = args[2].equalsIgnoreCase("no");
         if (args.length >= 4) {
-            try {
-                lootSound = Sound.valueOf(args[3]);
-            } catch (IllegalArgumentException ignored) {
-                executor.sendMessage(Utils.chat("&cInvalid sound!"));
-            }
+            NamespacedKey soundKey = NamespacedKey.fromString(args[3]);
+            if (soundKey == null) return "Invalid sound key given";
+            if (Registry.SOUNDS.get(soundKey) == null) Utils.sendMessage(executor, "&cValid key, but no sound associated was found. No sound may play!");
+            lootSound = args[3];
         }
         return null;
     }
@@ -168,7 +173,7 @@ public class LootTableSet extends DynamicItemModifier {
         if (currentArg == 0) return new ArrayList<>(LootTableRegistry.getLootTables().keySet());
         if (currentArg == 1) return List.of("<select_freely?>", "yes", "no");
         if (currentArg == 2) return List.of("<select_repeatedly?>", "yes", "no");
-        if (currentArg == 3) return Arrays.stream(Sound.values()).map(Sound::toString).collect(Collectors.toList());
+        if (currentArg == 3) return Registry.SOUNDS.stream().map(Sound::getKey).map(NamespacedKey::toString).collect(Collectors.toList());
         return null;
     }
 

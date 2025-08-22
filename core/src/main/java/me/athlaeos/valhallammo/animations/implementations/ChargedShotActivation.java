@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.animations.implementations;
 import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,7 +18,7 @@ public class ChargedShotActivation extends Animation {
     public ChargedShotActivation(String id) {
         super(id);
         YamlConfiguration config = ConfigManager.getConfig("skills/archery.yml").get();
-        prefireSound = Catch.catchOrElse(() -> Sound.valueOf(config.getString("charged_shot_prefire_sound")), null, "Invalid charged shot prefire sound given in skills/archery.yml charged_shot_prefire_sound");
+        prefireSound = Utils.getSound(config.getString("charged_shot_prefire_sound"), null, "Invalid charged shot prefire sound given in skills/archery.yml charged_shot_prefire_sound");
         prefireVolume = (float) config.getDouble("charged_shot_prefire_sound_volume");
         prefirePitch = (float) config.getDouble("charged_shot_prefire_sound_pitch");
     }
