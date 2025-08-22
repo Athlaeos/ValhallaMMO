@@ -113,11 +113,16 @@ public class MerchantListener implements Listener {
 
                 float progressToNextLevel = ((float) data.getExp() - expToCurrentLevel) / (expToNextLevel - expToCurrentLevel);
                 vi.setVillagerExperience(level.getDefaultExpRequirement() + (int) Math.floor((nextLevel.getDefaultExpRequirement() - level.getDefaultExpRequirement()) * progressToNextLevel));
-                vi.setVillagerLevel(MerchantLevel.getLevel(vi.getVillagerExperience()).getLevel());
+                int newLevel = MerchantLevel.getLevel(vi.getVillagerExperience()).getLevel();
+                if (villagerLevel > newLevel) {
+                    // merchant level higher than expected, reset level and trades
+                    villagerLevel = 0;
+                    data.setTrades(new HashSet<>());
+                }
+                vi.setVillagerLevel(newLevel);
             }
             if (vi.getVillagerLevel() != villagerLevel) {
                 vi.addPotionEffect(PotionEffectTypeWrapper.REGENERATION.createEffect(200, 0));
-
                 // create new trades for newly acquired level
                 for (MerchantLevel l : MerchantLevel.values()){
                     if (l.getLevel() <= villagerLevel || l.getLevel() > vi.getVillagerLevel()) continue;

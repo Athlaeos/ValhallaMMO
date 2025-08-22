@@ -59,7 +59,7 @@ public class ServiceOrderingMenu extends Menu {
     private static final int indexNextPage = 53;
 
     private final OrderService service;
-    private final Map<String, Integer> orders = new HashMap<>();
+    private Map<String, Integer> orders;
     private final MerchantData data;
     private final float happiness;
     private final float renown;
@@ -72,9 +72,14 @@ public class ServiceOrderingMenu extends Menu {
         this.service = service;
         this.happiness = data.getVillager() == null ? 0F : HappinessSourceRegistry.getHappiness(playerMenuUtility.getOwner(), data.getVillager(), false);
         this.renown = data.getPlayerMemory(playerMenuUtility.getOwner().getUniqueId()).getRenownReputation();
+        MerchantData.OrderData order = data.getPendingOrders().get(playerMenuUtility.getOwner().getUniqueId());
+        this.orders = order == null ? new HashMap<>() : order.getOrder();
 
         MerchantType type = CustomMerchantManager.getMerchantType(data.getType());
+        MerchantLevel merchantLevel = CustomMerchantManager.getLevel(data);
+        if (merchantLevel == null) return;
         for (MerchantLevel level : MerchantLevel.values()){
+            if (level.getLevel() > merchantLevel.getLevel()) continue;
             for (String t : type.getTrades().get(level).getTrades()){
                 MerchantTrade trade = CustomMerchantManager.getTrade(t);
                 if (trade == null || trade.getMaxOrderCount() <= 0) continue;

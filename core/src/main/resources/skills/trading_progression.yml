@@ -338,7 +338,7 @@ perks:
     hidden: true
     required_lv: 100
     perk_rewards:
-      reset_skill_smithing: 0
+      reset_skill_trading: 0
       p:trading_tradingstockmultiplier_add: 0.25
       p:trading_merchantskillmultiplier_add: 0.25
       p:trading_tradingluck_add: 2
@@ -361,7 +361,7 @@ perks:
     requireperk_all:
       - trading_perk_ng1
     perk_rewards:
-      reset_skill_smithing: 0
+      reset_skill_trading: 0
       p:trading_tradingstockmultiplier_add: 0.25
       p:trading_merchantskillmultiplier_add: 0.25
       p:trading_tradingluck_add: 2

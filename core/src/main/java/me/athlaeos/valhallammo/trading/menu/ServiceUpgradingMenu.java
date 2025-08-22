@@ -70,6 +70,7 @@ public class ServiceUpgradingMenu extends Menu {
     @Override
     public void handleMenu(InventoryClickEvent e) {
         e.setCancelled(true);
+        if (e.getRawSlot() == indexCost) return;
         if (e.getRawSlot() == indexPreviousPage) page--;
         else if (e.getRawSlot() == indexNextPage) page++;
         else if (e.getRawSlot() == indexInput) {
@@ -190,13 +191,14 @@ public class ServiceUpgradingMenu extends Menu {
             String targetString = TranslationManager.translatePlaceholders(SlotEntry.toString(service.getInput()));
 
             ItemStack button = new ItemBuilder(service.getUpgradeIcon())
-                    .translate()
+                    .translate().get();
+            ItemStack finalButton = new ItemBuilder(button)
                     .placeholderLore("%target%", targetString)
                     .placeholderLore("%item%", costString)
                     .placeholderLore("%quantity%", String.valueOf(getCostQuantity(service)))
                     .stringTag(KEY_METHOD, service.getID()).get();
 
-            buttons.add(button);
+            buttons.add(finalButton);
         }
 
         inventory.setItem(indexInput, input);

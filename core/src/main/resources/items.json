@@ -2463,7 +2463,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd",
         "DATA": {
           "enchantment": "efficiency",
-          "level": 1,
+          "level": 3,
           "icon": "GOLDEN_PICKAXE",
           "scaleWithSkill": true,
           "name": "enchant_add_efficiency",
@@ -5273,7 +5273,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd",
         "DATA": {
           "enchantment": "depth_strider",
-          "level": 1,
+          "level": 2,
           "icon": "COD",
           "scaleWithSkill": true,
           "name": "enchant_add_depth_strider",
@@ -6384,7 +6384,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd",
         "DATA": {
           "enchantment": "fire_protection",
-          "level": 1,
+          "level": 2,
           "icon": "MAGMA_CREAM",
           "scaleWithSkill": true,
           "name": "enchant_add_fire_protection",
@@ -7134,7 +7134,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd",
         "DATA": {
           "enchantment": "punch",
-          "level": 1,
+          "level": 2,
           "icon": "PISTON",
           "scaleWithSkill": true,
           "name": "enchant_add_punch",
@@ -8126,7 +8126,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd",
         "DATA": {
           "enchantment": "quick_charge",
-          "level": 2,
+          "level": 3,
           "icon": "CROSSBOW",
           "scaleWithSkill": true,
           "name": "enchant_add_quick_charge",
@@ -11418,7 +11418,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd",
         "DATA": {
           "enchantment": "piercing",
-          "level": 1,
+          "level": 3,
           "icon": "ARROW",
           "scaleWithSkill": true,
           "name": "enchant_add_piercing",
@@ -11596,7 +11596,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd",
         "DATA": {
           "enchantment": "blast_protection",
-          "level": 1,
+          "level": 2,
           "icon": "TNT",
           "scaleWithSkill": true,
           "name": "enchant_add_blast_protection",
@@ -15835,7 +15835,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd",
         "DATA": {
           "enchantment": "fire_aspect",
-          "level": 1,
+          "level": 2,
           "icon": "LAVA_BUCKET",
           "scaleWithSkill": true,
           "name": "enchant_add_fire_aspect",
@@ -22240,7 +22240,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd",
         "DATA": {
           "enchantment": "smite",
-          "level": 1,
+          "level": 3,
           "icon": "GOLDEN_SWORD",
           "scaleWithSkill": true,
           "name": "enchant_add_smite",
@@ -22257,7 +22257,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd",
         "DATA": {
           "enchantment": "bane_of_arthropods",
-          "level": 1,
+          "level": 3,
           "icon": "WOODEN_SWORD",
           "scaleWithSkill": true,
           "name": "enchant_add_bane_of_arthropods",
@@ -22701,7 +22701,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd",
         "DATA": {
           "enchantment": "luck_of_the_sea",
-          "level": 1,
+          "level": 3,
           "icon": "HEART_OF_THE_SEA",
           "scaleWithSkill": true,
           "name": "enchant_add_luck_of_the_sea",
@@ -24014,7 +24014,7 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantments.EnchantmentAdd",
         "DATA": {
           "enchantment": "looting",
-          "level": 1,
+          "level": 2,
           "icon": "DIAMOND_SWORD",
           "scaleWithSkill": true,
           "name": "enchant_add_looting",

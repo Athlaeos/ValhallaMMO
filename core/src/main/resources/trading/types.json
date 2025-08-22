@@ -444,10 +444,10 @@
         "expRequirement": 640,
         "trades": [
           "generic_buy_netherite_scrap",
-          "toolsmith_royal_diamond_axe",
-          "toolsmith_royal_diamond_pickaxe",
-          "toolsmith_royal_diamond_shovel",
-          "toolsmith_royal_diamond_hoe"
+          "toolsmith_buy_royal_diamond_axe",
+          "toolsmith_buy_royal_diamond_pickaxe",
+          "toolsmith_buy_royal_diamond_shovel",
+          "toolsmith_buy_royal_diamond_hoe"
         ]
       }
     },
