@@ -163,8 +163,10 @@ public class ServiceTrainingMenu extends Menu {
             if (profile.getLevel() >= service.getLimitPerLevel().getOrDefault(level, 0)) {
                 buttonBuilder.lore(TranslationManager.translateListPlaceholders(CustomMerchantManager.getTradingConfig().getStringList("service_button_unavailable_training_description")));
             }
+            ItemStack tempResult = buttonBuilder.translate().get();
+            buttonBuilder.setItem(tempResult);
+            buttonBuilder.setMeta(ItemUtils.getItemMeta(tempResult));
             buttonBuilder
-                    .translate()
                     .placeholderName("%skill%", skill.getDisplayName())
                     .placeholderName("%maxlevel%", String.valueOf(service.getLimitPerLevel().getOrDefault(level, 0)))
                     .placeholderName("%levelcurrent%", String.valueOf(profile.getLevel()))
@@ -177,9 +179,10 @@ public class ServiceTrainingMenu extends Menu {
                     .placeholderLore("%levelnext%", profile.getLevel() >= skill.getMaxLevel() ? TranslationManager.getTranslation("max_level") : String.valueOf(profile.getLevel() + 1))
                     .placeholderLore("%costamount%", String.valueOf(quantity))
                     .placeholderLore("%costdescription%", costString)
-                    .stringTag(KEY_METHOD, service.getID()).get();
+                    .stringTag(KEY_METHOD, service.getID());
 
-            ItemStack blankServiceButton = new ItemBuilder(buttonBuilder.get()).type(Material.LIME_DYE).data(9199200).get();
+            ItemStack mainButton = buttonBuilder.get();
+            ItemStack blankServiceButton = new ItemBuilder(mainButton.clone()).type(Material.LIME_DYE).data(9199200).get();
             for (int secondaryIndex : service.getSecondaryButtonPositions()) {
                 if (secondaryIndex < 0 || secondaryIndex >= getSlots()) continue;
                 inventory.setItem(secondaryIndex, blankServiceButton);

@@ -84,7 +84,7 @@ public class OrderingService extends ServiceType {
                 (pendingOrder.shouldReceive() ? CustomMerchantManager.getTradingConfig().getStringList("service_button_description_ordering_ready") :
                         CustomMerchantManager.getTradingConfig().getStringList("service_button_description_ordering_pending"));
 
-        return button.get(ButtonSize.defaultFromButtonCount(menu.getServices().size()))
+        return button.get(ButtonSize.defaultFromButtonCount(menu.getDetails().size()))
                 .name(TranslationManager.translatePlaceholders(CustomMerchantManager.getTradingConfig().getString("service_button_name_ordering")))
                 .lore(TranslationManager.translateListPlaceholders(
                         value

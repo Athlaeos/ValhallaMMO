@@ -55,7 +55,7 @@ public class TradingService extends ServiceType {
 
     @Override
     public ItemStack getButtonIcon(ServiceMenu menu, Service service, MerchantData data) {
-        return button.get(ButtonSize.defaultFromButtonCount(menu.getServices().size()))
+        return button.get(ButtonSize.defaultFromButtonCount(menu.getDetails().size()))
                 .name(TranslationManager.translatePlaceholders(CustomMerchantManager.getTradingConfig().getString("service_button_name_trading")))
                 .lore(TranslationManager.translateListPlaceholders(
                                         CustomMerchantManager.getTradingConfig().getStringList("service_button_description_trading"))

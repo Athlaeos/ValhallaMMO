@@ -4,10 +4,13 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.trading.menu.ServiceMenu;
 
+import java.util.*;
+
 public class ServiceMenuBuilderImplementation implements ServiceMenuBuilder {
     @Override
     public int[] getButtonOffsets(ServiceMenu serviceMenu){
-        return switch (serviceMenu.getServices().size()) {
+        Map<Integer, PlacementDetails> details = ofServices(serviceMenu.getServices());
+        return switch (details.size()) {
             case 1 -> new int[]{};
             case 2, 3 -> new int[]{0, 1, 2, 9, 10, 11, 18, 19, 20};
             case 4, 5, 6, 7, 8, 9 -> new int[]{0, 1, 2, 9, 10, 11};
@@ -17,7 +20,8 @@ public class ServiceMenuBuilderImplementation implements ServiceMenuBuilder {
 
     @Override
     public int[] getButtonPlacementLocations(ServiceMenu serviceMenu){
-        return switch (serviceMenu.getServices().size()){
+        Map<Integer, PlacementDetails> details = ofServices(serviceMenu.getServices());
+        return switch (details.size()){
             case 2 -> new int[]{1, 5};
             case 3 -> new int[]{0, 3, 6};
             case 4 -> new int[]{1, 5, 19, 23};
@@ -32,7 +36,11 @@ public class ServiceMenuBuilderImplementation implements ServiceMenuBuilder {
 
     @Override
     public int getRowCount(ServiceMenu serviceMenu){
-        return switch (serviceMenu.getServices().size()){
+        List<ServiceType> distinct = new ArrayList<>();
+        for (Service s : serviceMenu.getServices()) {
+            if (!s.getServiceType().singularButton() || !distinct.contains(s.getServiceType())) distinct.add(s.getServiceType());
+        }
+        return switch (distinct.size()){
             case 2, 3 -> 3;
             case 4, 5, 6 -> 4;
             case 7, 8, 9 -> 6;
@@ -43,7 +51,11 @@ public class ServiceMenuBuilderImplementation implements ServiceMenuBuilder {
     @Override
     public String getTitle(ServiceMenu serviceMenu){
         if (!ValhallaMMO.isResourcePackConfigForced()) return TranslationManager.getTranslation("service_menu_title");
-        return switch(serviceMenu.getServices().size()){
+        List<ServiceType> distinct = new ArrayList<>();
+        for (Service s : serviceMenu.getServices()) {
+            if (!s.getServiceType().singularButton() || !distinct.contains(s.getServiceType())) distinct.add(s.getServiceType());
+        }
+        return switch(distinct.size()){
             case 1, 2, 3 -> "&f\uF808\uF31E";
             case 4, 5, 6 -> "&f\uF808\uF31F";
             case 7, 8, 9 -> "&f\uF808\uF321";

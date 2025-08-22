@@ -98,6 +98,7 @@ public class ValhallaMMO extends JavaPlugin {
         save("trading/configurations.json");
         save("trading/trades.json");
         save("trading/types.json");
+        save("trading/services.json");
         save("recipes/grid_recipes.json");
         save("recipes/brewing_recipes.json");
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_6)) save("recipes/brewing_recipes_1_20_6+.json");

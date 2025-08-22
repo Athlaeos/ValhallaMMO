@@ -46,7 +46,7 @@ public class TrainingService extends ServiceType {
     @Override
     public ItemStack getButtonIcon(ServiceMenu menu, Service service, MerchantData data) {
         String name = TranslationManager.translatePlaceholders(CustomMerchantManager.getTradingConfig().getString("service_button_name_training"));
-        return button.get(ButtonSize.defaultFromButtonCount(menu.getServices().size()))
+        return button.get(ButtonSize.defaultFromButtonCount(menu.getDetails().size()))
                 .name(name == null ? "" : name)
                 .lore(TranslationManager.translateListPlaceholders(
                         CustomMerchantManager.getTradingConfig().getStringList("service_button_description_training"))

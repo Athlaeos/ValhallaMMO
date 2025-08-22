@@ -21,6 +21,7 @@ public class ServiceMenu extends Menu {
     private final List<Service> services = new ArrayList<>();
     private final Map<Integer, Service> buttonToServiceMap = new HashMap<>();
     private final MerchantData data;
+    Map<Integer, ServiceMenuBuilder.PlacementDetails> details = new HashMap<>();
 
     public ServiceMenu(PlayerMenuUtility playerMenuUtility, MerchantData data) {
         super(playerMenuUtility);
@@ -36,6 +37,7 @@ public class ServiceMenu extends Menu {
             putServices.add(s);
             services.add(service);
         }
+        details = menuBuilder.ofServices(services);
     }
 
     @Override
@@ -68,13 +70,14 @@ public class ServiceMenu extends Menu {
     public void setMenuItems() {
         inventory.clear();
         buttonToServiceMap.clear();
+        // buttonPlacements and details should be the same size
+        details = menuBuilder.ofServices(services);
         int[] buttonPlacements = menuBuilder.getButtonPlacementLocations(this);
-        Collection<String> placedTypes = new HashSet<>();
-        for (int i = 0; i < services.size(); i++){
-            Service service = services.get(i);
-            ServiceType type = service.getServiceType();
-            if (type == null || (type.singularButton()) && placedTypes.contains(type.getID())) continue;
-            placedTypes.add(type.getID());
+        for (int i = 0; i < details.size(); i++){
+            ServiceMenuBuilder.PlacementDetails d = details.get(i);
+            Service service = d.spotServices().stream().findFirst().orElse(null);
+            ServiceType type = d.spotType();
+            if (service == null) continue;
             ItemStack baseIcon = type.getButtonIcon(this, service, data);
             buttonToServiceMap.put(buttonPlacements[i], service);
 
@@ -102,5 +105,9 @@ public class ServiceMenu extends Menu {
 
     public static void setMenuBuilder(ServiceMenuBuilder menuBuilder) {
         ServiceMenu.menuBuilder = menuBuilder;
+    }
+
+    public Map<Integer, ServiceMenuBuilder.PlacementDetails> getDetails() {
+        return details;
     }
 }

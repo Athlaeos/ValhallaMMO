@@ -1488,5 +1488,1309 @@
     "additionModifiers": [],
     "unlockedForEveryone": true,
     "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_leggings"
+    },
+    "name": "upgrade_royal_diamond_leggings",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAQTEVBVEhFUl9MRUdHSU5HU3NxAH4AAHNxAH4AA3Vx\r\nAH4ABgAAAARxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQAEWN1c3RvbS1tb2RlbC1k\r\nYXRhdXEAfgAGAAAABHQACEl0ZW1NZXRhdAANTEVBVEhFUl9BUk1PUnQArXsiZXh0cmEiOlt7InRl\r\neHQiOiI8In0seyJjbGlja0V2ZW50Ijp7ImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRw\r\nOi8vbGFuZy5tYXRlcmlhbC1yb3lhbC1kaWFtb25kLWxlZ2dpbmdzPiJ9LCJ0ZXh0IjoibGFuZy5t\r\nYXRlcmlhbC1yb3lhbC1kaWFtb25kLWxlZ2dpbmdzPiJ9XSwidGV4dCI6IiJ9c3EAfgAOAJdXVA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [
+            "DIAMOND_HELMET"
+          ],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_leggings",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_shovel"
+    },
+    "name": "upgrade_royal_diamond_shovel",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAORElBTU9ORF9TSE9WRUxzcQB+AABzcQB+AAN1cQB+\r\nAAYAAAAEcQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0ABFjdXN0b20tbW9kZWwtZGF0\r\nYXVxAH4ABgAAAAR0AAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AKl7ImV4dHJhIjpbeyJ0ZXh0Ijoi\r\nPCJ9LHsiY2xpY2tFdmVudCI6eyJhY3Rpb24iOiJvcGVuX3VybCIsInZhbHVlIjoiaHR0cDovL2xh\r\nbmcubWF0ZXJpYWwtcm95YWwtZGlhbW9uZC1zaG92ZWw+In0sInRleHQiOiJsYW5nLm1hdGVyaWFs\r\nLXJveWFsLWRpYW1vbmQtc2hvdmVsPiJ9XSwidGV4dCI6IiJ9c3EAfgAOAB49zA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_shovel",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_hoe"
+    },
+    "name": "upgrade_royal_diamond_hoe",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAALRElBTU9ORF9IT0VzcQB+AABzcQB+AAN1cQB+AAYA\r\nAAAEcQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0ABFjdXN0b20tbW9kZWwtZGF0YXVx\r\nAH4ABgAAAAR0AAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AKN7ImV4dHJhIjpbeyJ0ZXh0IjoiPCJ9\r\nLHsiY2xpY2tFdmVudCI6eyJhY3Rpb24iOiJvcGVuX3VybCIsInZhbHVlIjoiaHR0cDovL2xhbmcu\r\nbWF0ZXJpYWwtcm95YWwtZGlhbW9uZC1ob2U+In0sInRleHQiOiJsYW5nLm1hdGVyaWFsLXJveWFs\r\nLWRpYW1vbmQtaG9lPiJ9XSwidGV4dCI6IiJ9c3EAfgAOAB49zA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_hoe",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_helmet"
+    },
+    "name": "upgrade_royal_diamond_helmet",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAOTEVBVEhFUl9IRUxNRVRzcQB+AABzcQB+AAN1cQB+\r\nAAYAAAAEcQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0ABFjdXN0b20tbW9kZWwtZGF0\r\nYXVxAH4ABgAAAAR0AAhJdGVtTWV0YXQADUxFQVRIRVJfQVJNT1J0AKl7ImV4dHJhIjpbeyJ0ZXh0\r\nIjoiPCJ9LHsiY2xpY2tFdmVudCI6eyJhY3Rpb24iOiJvcGVuX3VybCIsInZhbHVlIjoiaHR0cDov\r\nL2xhbmcubWF0ZXJpYWwtcm95YWwtZGlhbW9uZC1oZWxtZXQ+In0sInRleHQiOiJsYW5nLm1hdGVy\r\naWFsLXJveWFsLWRpYW1vbmQtaGVsbWV0PiJ9XSwidGV4dCI6IiJ9c3EAfgAOAJdXVA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [
+            "DIAMOND_HELMET"
+          ],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_helmet",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_mace"
+    },
+    "name": "upgrade_royal_diamond_mace",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAARxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQAEWN1c3RvbS1tb2RlbC1kYXRh\r\ndXEAfgAGAAAABHQACEl0ZW1NZXRhdAAKVU5TUEVDSUZJQ3QApXsiZXh0cmEiOlt7InRleHQiOiI8\r\nIn0seyJjbGlja0V2ZW50Ijp7ImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFu\r\nZy5tYXRlcmlhbC1yb3lhbC1kaWFtb25kLW1hY2U+In0sInRleHQiOiJsYW5nLm1hdGVyaWFsLXJv\r\neWFsLWRpYW1vbmQtbWFjZT4ifV0sInRleHQiOiIifXNxAH4ADgAePeE=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_mace",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_greataxe"
+    },
+    "name": "upgrade_royal_diamond_greataxe",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAARxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQAEWN1c3RvbS1tb2RlbC1kYXRh\r\ndXEAfgAGAAAABHQACEl0ZW1NZXRhdAAKVU5TUEVDSUZJQ3QArXsiZXh0cmEiOlt7InRleHQiOiI8\r\nIn0seyJjbGlja0V2ZW50Ijp7ImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFu\r\nZy5tYXRlcmlhbC1yb3lhbC1kaWFtb25kLWdyZWF0YXhlPiJ9LCJ0ZXh0IjoibGFuZy5tYXRlcmlh\r\nbC1yb3lhbC1kaWFtb25kLWdyZWF0YXhlPiJ9XSwidGV4dCI6IiJ9c3EAfgAOAB495w==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_greataxe",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_chestplate"
+    },
+    "name": "upgrade_royal_diamond_chestplate",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAASTEVBVEhFUl9DSEVTVFBMQVRFc3EAfgAAc3EAfgAD\r\ndXEAfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAARY3VzdG9tLW1vZGVs\r\nLWRhdGF1cQB+AAYAAAAEdAAISXRlbU1ldGF0AA1MRUFUSEVSX0FSTU9SdACxeyJleHRyYSI6W3si\r\ndGV4dCI6IjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0\r\ndHA6Ly9sYW5nLm1hdGVyaWFsLXJveWFsLWRpYW1vbmQtY2hlc3RwbGF0ZT4ifSwidGV4dCI6Imxh\r\nbmcubWF0ZXJpYWwtcm95YWwtZGlhbW9uZC1jaGVzdHBsYXRlPiJ9XSwidGV4dCI6IiJ9c3EAfgAO\r\nAJdXVA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [
+            "DIAMOND_HELMET"
+          ],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_chestplate",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_warhammer"
+    },
+    "name": "upgrade_royal_diamond_warhammer",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAARxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQAEWN1c3RvbS1tb2RlbC1kYXRh\r\ndXEAfgAGAAAABHQACEl0ZW1NZXRhdAAKVU5TUEVDSUZJQ3QAr3siZXh0cmEiOlt7InRleHQiOiI8\r\nIn0seyJjbGlja0V2ZW50Ijp7ImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFu\r\nZy5tYXRlcmlhbC1yb3lhbC1kaWFtb25kLXdhcmhhbW1lcj4ifSwidGV4dCI6ImxhbmcubWF0ZXJp\r\nYWwtcm95YWwtZGlhbW9uZC13YXJoYW1tZXI+In1dLCJ0ZXh0IjoiIn1zcQB+AA4AHj3l\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_warhammer",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_spear"
+    },
+    "name": "upgrade_royal_diamond_spear",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAARxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQAEWN1c3RvbS1tb2RlbC1kYXRh\r\ndXEAfgAGAAAABHQACEl0ZW1NZXRhdAAKVU5TUEVDSUZJQ3QAp3siZXh0cmEiOlt7InRleHQiOiI8\r\nIn0seyJjbGlja0V2ZW50Ijp7ImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFu\r\nZy5tYXRlcmlhbC1yb3lhbC1kaWFtb25kLXNwZWFyPiJ9LCJ0ZXh0IjoibGFuZy5tYXRlcmlhbC1y\r\nb3lhbC1kaWFtb25kLXNwZWFyPiJ9XSwidGV4dCI6IiJ9c3EAfgAOAB495g==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_spear",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_rapier"
+    },
+    "name": "upgrade_royal_diamond_rapier",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAARxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQAEWN1c3RvbS1tb2RlbC1kYXRh\r\ndXEAfgAGAAAABHQACEl0ZW1NZXRhdAAKVU5TUEVDSUZJQ3QArXsiZXh0cmEiOlt7InRleHQiOiI8\r\nIn0seyJjbGlja0V2ZW50Ijp7ImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFu\r\nZy5tYXRlcmlhbC1yb3lhbC1kaWFtb25kLWdyZWF0YXhlPiJ9LCJ0ZXh0IjoibGFuZy5tYXRlcmlh\r\nbC1yb3lhbC1kaWFtb25kLWdyZWF0YXhlPiJ9XSwidGV4dCI6IiJ9c3EAfgAOAB494g==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_rapier",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_sword"
+    },
+    "name": "upgrade_royal_diamond_sword",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAARxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQAEWN1c3RvbS1tb2RlbC1kYXRh\r\ndXEAfgAGAAAABHQACEl0ZW1NZXRhdAAKVU5TUEVDSUZJQ3QAp3siZXh0cmEiOlt7InRleHQiOiI8\r\nIn0seyJjbGlja0V2ZW50Ijp7ImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFu\r\nZy5tYXRlcmlhbC1yb3lhbC1kaWFtb25kLXN3b3JkPiJ9LCJ0ZXh0IjoibGFuZy5tYXRlcmlhbC1y\r\nb3lhbC1kaWFtb25kLXN3b3JkPiJ9XSwidGV4dCI6IiJ9c3EAfgAOAB499Q==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_sword",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_boots"
+    },
+    "name": "upgrade_royal_diamond_boots",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANTEVBVEhFUl9CT09UU3NxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAARxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQAEWN1c3RvbS1tb2RlbC1kYXRh\r\ndXEAfgAGAAAABHQACEl0ZW1NZXRhdAANTEVBVEhFUl9BUk1PUnQAp3siZXh0cmEiOlt7InRleHQi\r\nOiI8In0seyJjbGlja0V2ZW50Ijp7ImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8v\r\nbGFuZy5tYXRlcmlhbC1yb3lhbC1kaWFtb25kLWJvb3RzPiJ9LCJ0ZXh0IjoibGFuZy5tYXRlcmlh\r\nbC1yb3lhbC1kaWFtb25kLWJvb3RzPiJ9XSwidGV4dCI6IiJ9c3EAfgAOAJdXVA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [
+            "DIAMOND_HELMET"
+          ],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_boots",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_knuckles"
+    },
+    "name": "upgrade_royal_diamond_knuckles",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAARxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQAEWN1c3RvbS1tb2RlbC1kYXRh\r\ndXEAfgAGAAAABHQACEl0ZW1NZXRhdAAKVU5TUEVDSUZJQ3QArXsiZXh0cmEiOlt7InRleHQiOiI8\r\nIn0seyJjbGlja0V2ZW50Ijp7ImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFu\r\nZy5tYXRlcmlhbC1yb3lhbC1kaWFtb25kLWtudWNrbGVzPiJ9LCJ0ZXh0IjoibGFuZy5tYXRlcmlh\r\nbC1yb3lhbC1kaWFtb25kLWtudWNrbGVzPiJ9XSwidGV4dCI6IiJ9c3EAfgAOAB499A==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_knuckles",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_axe"
+    },
+    "name": "upgrade_royal_diamond_axe",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAALRElBTU9ORF9BWEVzcQB+AABzcQB+AAN1cQB+AAYA\r\nAAAEcQB+AAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV0ABFjdXN0b20tbW9kZWwtZGF0YXVx\r\nAH4ABgAAAAR0AAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AKN7ImV4dHJhIjpbeyJ0ZXh0IjoiPCJ9\r\nLHsiY2xpY2tFdmVudCI6eyJhY3Rpb24iOiJvcGVuX3VybCIsInZhbHVlIjoiaHR0cDovL2xhbmcu\r\nbWF0ZXJpYWwtcm95YWwtZGlhbW9uZC1heGU+In0sInRleHQiOiJsYW5nLm1hdGVyaWFsLXJveWFs\r\nLWRpYW1vbmQtYXhlPiJ9XSwidGV4dCI6IiJ9c3EAfgAOAB49zA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_axe",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_pickaxe"
+    },
+    "name": "upgrade_royal_diamond_pickaxe",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPRElBTU9ORF9QSUNLQVhFc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAARY3VzdG9tLW1vZGVsLWRh\r\ndGF1cQB+AAYAAAAEdAAISXRlbU1ldGF0AApVTlNQRUNJRklDdACreyJleHRyYSI6W3sidGV4dCI6\r\nIjwifSx7ImNsaWNrRXZlbnQiOnsiYWN0aW9uIjoib3Blbl91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9s\r\nYW5nLm1hdGVyaWFsLXJveWFsLWRpYW1vbmQtcGlja2F4ZT4ifSwidGV4dCI6ImxhbmcubWF0ZXJp\r\nYWwtcm95YWwtZGlhbW9uZC1waWNrYXhlPiJ9XSwidGV4dCI6IiJ9c3EAfgAOAB49zA==\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_pickaxe",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
+  },
+  {
+    "key": {
+      "namespace": "valhallammo",
+      "key": "smithingrecipe_upgrade_royal_diamond_dagger"
+    },
+    "name": "upgrade_royal_diamond_dagger",
+    "template": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAFUEFQRVJzcQB+AABzcQB+AAN1cQB+AAYAAAADcQB+\r\nAAh0AAltZXRhLXR5cGV0AAxkaXNwbGF5LW5hbWV1cQB+AAYAAAADdAAISXRlbU1ldGF0AApVTlNQ\r\nRUNJRklDdAC3eyJleHRyYSI6W3siYm9sZCI6ZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGlu\r\nZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpmYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9y\r\nIjoiYXF1YSIsInRleHQiOiJSRVBMQUNFV0lUSDpORVRIRVJJVEVfVVBHUkFERV9TTUlUSElOR19U\r\nRU1QTEFURSJ9XSwidGV4dCI6IiJ9\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "base": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAANRElBTU9ORF9TV09SRHNxAH4AAHNxAH4AA3VxAH4A\r\nBgAAAARxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQAEWN1c3RvbS1tb2RlbC1kYXRh\r\ndXEAfgAGAAAABHQACEl0ZW1NZXRhdAAKVU5TUEVDSUZJQ3QAqXsiZXh0cmEiOlt7InRleHQiOiI8\r\nIn0seyJjbGlja0V2ZW50Ijp7ImFjdGlvbiI6Im9wZW5fdXJsIiwidmFsdWUiOiJodHRwOi8vbGFu\r\nZy5tYXRlcmlhbC1yb3lhbC1kaWFtb25kLWRhZ2dlcj4ifSwidGV4dCI6ImxhbmcubWF0ZXJpYWwt\r\ncm95YWwtZGlhbW9uZC1kYWdnZXI+In1dLCJ0ZXh0IjoiIn1zcQB+AA4AHj3g\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
+        "DATA": {
+          "validChoices": [],
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "addition": {
+      "exactIngredient": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA9ORVRIRVJJVEVfSU5HT1Q=\r\n",
+      "option": {
+        "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice",
+        "DATA": {
+          "key": {
+            "namespace": "valhallammo",
+            "key": "recipe_option_id"
+          }
+        }
+      }
+    },
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AARtZXRhdXEAfgAGAAAABHQAHm9yZy5idWtraXQuaW52ZW50b3J5Lkl0ZW1T\r\ndGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5n\r\nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAPTkVUSEVSSVRFX1NXT1JEc3EAfgAAc3EAfgADdXEA\r\nfgAGAAAABHEAfgAIdAAJbWV0YS10eXBldAAMZGlzcGxheS1uYW1ldAAEbG9yZXVxAH4ABgAAAAR0\r\nAAhJdGVtTWV0YXQAClVOU1BFQ0lGSUN0AEt7ImV4dHJhIjpbeyJpdGFsaWMiOmZhbHNlLCJjb2xv\r\nciI6IndoaXRlIiwidGV4dCI6IlJlcGxhY2UgbWUhIn1dLCJ0ZXh0IjoiIn1zcgA2Y29tLmdvb2ds\r\nZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVMaXN0JFNlcmlhbGl6ZWRGb3JtAAAAAAAAAAACAAFb\r\nAAhlbGVtZW50c3QAE1tMamF2YS9sYW5nL09iamVjdDt4cHVxAH4ABgAAAAF0AKZ7ImV4dHJhIjpb\r\neyJib2xkIjpmYWxzZSwiaXRhbGljIjpmYWxzZSwidW5kZXJsaW5lZCI6ZmFsc2UsInN0cmlrZXRo\r\ncm91Z2giOmZhbHNlLCJvYmZ1c2NhdGVkIjpmYWxzZSwiY29sb3IiOiJncmF5IiwidGV4dCI6Ikkn\r\nbSBqdXN0IGEgcGxhY2Vob2xkZXIgcmVzdWx0ISJ9XSwidGV4dCI6IiJ9\r\n",
+    "requireValhallaTools": false,
+    "tinkerBase": true,
+    "consumeAddition": true,
+    "hiddenFromBook": false,
+    "resultModifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.TransformItemMaterial",
+        "DATA": {
+          "icon": "NETHERITE_CHESTPLATE",
+          "materialPrefix": "NETHERITE",
+          "name": "transform_netherite",
+          "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_netherite_dagger",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "SMITHING",
+          "amount": 9600.0,
+          "name": "reward_smithing_experience",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "additionModifiers": [],
+    "unlockedForEveryone": true,
+    "validations": []
   }
 ]

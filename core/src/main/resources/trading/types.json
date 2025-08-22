@@ -69,7 +69,9 @@
       }
     },
     "services": [
-      "trading"
+      "trading",
+      "train_farming",
+      "ordering_farmer"
     ]
   },
   {
@@ -143,7 +145,9 @@
       }
     },
     "services": [
-      "trading"
+      "trading",
+      "ordering_leatherworker",
+      "train_light_armor"
     ]
   },
   {
@@ -212,7 +216,9 @@
       }
     },
     "services": [
-      "trading"
+      "trading",
+      "ordering_butcher",
+      "train_farming"
     ]
   },
   {
@@ -286,7 +292,12 @@
       }
     },
     "services": [
-      "trading"
+      "trading",
+      "train_smithing",
+      "train_light_weapons",
+      "train_heavy_weapons",
+      "upgrade_repair_armor",
+      "ordering_armorsmith"
     ]
   },
   {
@@ -364,7 +375,10 @@
       }
     },
     "services": [
-      "trading"
+      "trading",
+      "train_archery",
+      "upgrade_repair_bows",
+      "ordering_fletcher"
     ]
   },
   {
@@ -438,7 +452,12 @@
       }
     },
     "services": [
-      "trading"
+      "trading",
+      "train_smithing",
+      "train_digging",
+      "train_woodcutting",
+      "upgrade_repair_tools",
+      "ordering_toolsmith"
     ]
   },
   {
@@ -512,7 +531,12 @@
       }
     },
     "services": [
-      "trading"
+      "trading",
+      "train_smithing",
+      "train_light_weapons",
+      "train_heavy_weapons",
+      "upgrade_repair_tools",
+      "ordering_weaponsmith"
     ]
   },
   {
@@ -587,7 +611,9 @@
       }
     },
     "services": [
-      "trading"
+      "trading",
+      "train_alchemy",
+      "ordering_cleric"
     ]
   },
   {
@@ -676,7 +702,9 @@
       }
     },
     "services": [
-      "trading"
+      "trading",
+      "train_mining",
+      "ordering_mason"
     ]
   },
   {
@@ -752,7 +780,9 @@
       }
     },
     "services": [
-      "trading"
+      "trading",
+      "train_farming",
+      "ordering_shepherd"
     ]
   },
   {
@@ -827,7 +857,10 @@
       }
     },
     "services": [
-      "trading"
+      "trading",
+      "train_fishing",
+      "upgrade_repair_fishing_rods",
+      "ordering_fisherman"
     ]
   },
   {
@@ -905,7 +938,12 @@
       }
     },
     "services": [
-      "trading"
+      "trading",
+      "train_enchanting",
+      "ordering_librarian",
+      "upgrade_enchant_lv10",
+      "upgrade_enchant_lv20",
+      "upgrade_enchant_lv30"
     ]
   }
 ]
