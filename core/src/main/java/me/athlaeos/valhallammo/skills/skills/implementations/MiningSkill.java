@@ -94,7 +94,7 @@ public class MiningSkill extends Skill implements Listener {
         forgivingDropMultipliers = skillConfig.getBoolean("forgiving_multipliers");
         tntPreventChaining = skillConfig.getBoolean("remove_tnt_chaining");
         drillingOn = TranslationManager.translatePlaceholders(skillConfig.getString("drilling_toggle_on"));
-        drillingActivationSound = Catch.catchOrElse(() -> Sound.valueOf(skillConfig.getString("drilling_enable_sound")), null, "Invalid drilling activation sound given in skills/mining.yml drilling_enable_sound");
+        drillingActivationSound = Utils.getSound(skillConfig.getString("drilling_enable_sound"), null, "Invalid drilling activation sound given in skills/mining.yml drilling_enable_sound");
 
         Collection<String> invalidMaterials = new HashSet<>();
         ConfigurationSection blockBreakSection = progressionConfig.getConfigurationSection("experience.mining_break");

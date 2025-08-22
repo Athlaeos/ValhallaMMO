@@ -58,7 +58,7 @@ public class EntityAttackListener implements Listener {
     private final Particle dodgeParticle = Catch.catchOrElse(() -> Particle.valueOf(ValhallaMMO.getPluginConfig().getString("dodge_effect")), Particle.SWEEP_ATTACK, "Invalid dodge particle effect given, used default");
     private final String dodgeMessage = TranslationManager.getTranslation(ValhallaMMO.getPluginConfig().getString("dodge_message", ""));
     private final EntityDamageEvent.DamageCause reflectDamageType = Catch.catchOrElse(() -> EntityDamageEvent.DamageCause.valueOf(ValhallaMMO.getPluginConfig().getString("reflect_damage_type")), EntityDamageEvent.DamageCause.THORNS, "Invalid reflect damage type given, used default");
-    private final Sound critSound = Catch.catchOrElse(() -> Sound.valueOf(ValhallaMMO.getPluginConfig().getString("crit_sound_effect")), Sound.ENCHANT_THORNS_HIT, "Invalid crit sound effect given, used default");
+    private final Sound critSound = Utils.getSound(ValhallaMMO.getPluginConfig().getString("crit_sound_effect"), Sound.ENCHANT_THORNS_HIT, "Invalid crit sound effect given, used default");
     private Animation critAnimation = ValhallaMMO.getPluginConfig().getBoolean("crit_particle_effect", true) ? AnimationRegistry.getAnimation(AnimationRegistry.ENTITY_FLASH.id()) : null;
     private final boolean skillGapPvPPrevention = ValhallaMMO.getPluginConfig().getBoolean("skill_gap_pvp_prevention");
     private final int skillGapPvPLevel = ValhallaMMO.getPluginConfig().getInt("skill_gap_pvp_level");

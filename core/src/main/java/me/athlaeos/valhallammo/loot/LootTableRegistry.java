@@ -582,7 +582,7 @@ public class LootTableRegistry {
 
     public static Sound getLootSound(ItemMeta meta){
         try {
-            return Sound.valueOf(meta.getPersistentDataContainer().getOrDefault(LOOT_ITEM_SOUND, PersistentDataType.STRING, ""));
+            return Utils.getSound(meta.getPersistentDataContainer().getOrDefault(LOOT_ITEM_SOUND, PersistentDataType.STRING, ""));
         } catch (IllegalArgumentException ignored) {
             return null;
         }
