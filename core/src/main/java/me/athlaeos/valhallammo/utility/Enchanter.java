@@ -107,6 +107,7 @@ public class Enchanter {
             if (limit <= 0) break;
             Enchantment additionalEnchantmentRoll = pickRandomEnchantment(availableEnchantments);
             if (additionalEnchantmentRoll == null) return new HashMap<>();
+            if (chosenEnchantments.keySet().stream().anyMatch(e -> e.conflictsWith(additionalEnchantmentRoll))) continue;
             availableEnchantments.remove(additionalEnchantmentRoll);
             int additionalEnchantmentRollLv = possibleEnchantments.get(additionalEnchantmentRoll);
             if (additionalEnchantmentRollLv > 0){
