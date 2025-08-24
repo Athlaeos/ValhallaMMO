@@ -474,10 +474,14 @@
         "expRequirement": 40,
         "trades": [
           "generic_sell_flint",
-          "weaponsmith_buy_random_enchanted_iron_heavy_weapon",
-          "weaponsmith_buy_random_enchanted_iron_heavy_weapon",
-          "weaponsmith_buy_random_enchanted_iron_light_weapon",
-          "weaponsmith_buy_random_enchanted_iron_light_weapon"
+          "weaponsmith_buy_iron_sword",
+          "weaponsmith_buy_iron_mace",
+          "weaponsmith_buy_iron_rapier",
+          "weaponsmith_buy_iron_dagger",
+          "weaponsmith_buy_iron_spear",
+          "weaponsmith_buy_iron_warhammer",
+          "weaponsmith_buy_iron_greataxe",
+          "weaponsmith_buy_iron_axe"
         ]
       },
       "EXPERT": {
@@ -486,10 +490,14 @@
         "expRequirement": 160,
         "trades": [
           "generic_sell_diamond",
-          "weaponsmith_buy_random_enchanted_diamond_heavy_weapon",
-          "weaponsmith_buy_random_enchanted_diamond_heavy_weapon",
-          "weaponsmith_buy_random_enchanted_diamond_light_weapon",
-          "weaponsmith_buy_random_enchanted_diamond_light_weapon"
+          "weaponsmith_buy_diamond_greataxe",
+          "weaponsmith_buy_diamond_axe",
+          "weaponsmith_buy_diamond_warhammer",
+          "weaponsmith_buy_diamond_dagger",
+          "weaponsmith_buy_diamond_sword",
+          "weaponsmith_buy_diamond_rapier",
+          "weaponsmith_buy_diamond_spear",
+          "weaponsmith_buy_diamond_mace"
         ]
       },
       "APPRENTICE": {
@@ -499,10 +507,14 @@
         "trades": [
           "generic_sell_iron",
           "generic_buy_bell",
-          "weaponsmith_buy_random_stone_to_iron_heavy_weapon_t2",
-          "weaponsmith_buy_random_stone_to_iron_heavy_weapon_t2",
-          "weaponsmith_buy_random_stone_to_iron_light_weapon_t2",
-          "weaponsmith_buy_random_stone_to_iron_light_weapon_t2"
+          "toolsmith_buy_stone_warhammer_to_iron_warhammer",
+          "toolsmith_buy_stone_spear_to_iron_spear",
+          "toolsmith_buy_stone_mace_to_iron_mace",
+          "toolsmith_buy_stone_sword_to_iron_sword",
+          "toolsmith_buy_stone_greataxe_to_iron_greataxe",
+          "toolsmith_buy_stone_knuckles_to_iron_knuckles",
+          "toolsmith_buy_stone_rapier_to_iron_rapier",
+          "toolsmith_buy_stone_dagger_to_iron_dagger"
         ]
       },
       "NOVICE": {
@@ -511,10 +523,14 @@
         "expRequirement": 0,
         "trades": [
           "generic_sell_coal",
-          "weaponsmith_buy_random_stone_to_iron_heavy_weapon_t1",
-          "weaponsmith_buy_random_stone_to_iron_heavy_weapon_t1",
-          "weaponsmith_buy_random_stone_to_iron_light_weapon_t1",
-          "weaponsmith_buy_random_stone_to_iron_light_weapon_t1"
+          "toolsmith_buy_stone_sword_to_iron_sword",
+          "toolsmith_buy_stone_mace_to_iron_mace",
+          "toolsmith_buy_stone_rapier_to_iron_rapier",
+          "toolsmith_buy_stone_warhammer_to_iron_warhammer",
+          "toolsmith_buy_stone_knuckles_to_iron_knuckles",
+          "toolsmith_buy_stone_greataxe_to_iron_greataxe",
+          "toolsmith_buy_stone_spear_to_iron_spear",
+          "toolsmith_buy_stone_dagger_to_iron_dagger"
         ]
       },
       "MASTER": {
@@ -523,10 +539,15 @@
         "expRequirement": 640,
         "trades": [
           "generic_buy_netherite_scrap",
-          "weaponsmith_buy_random_royal_diamond_light_weapon",
-          "weaponsmith_buy_random_royal_diamond_heavy_weapon",
-          "weaponsmith_buy_random_royal_diamond_heavy_weapon",
-          "weaponsmith_buy_random_royal_diamond_light_weapon"
+          "weaponsmith_buy_royal_diamond_dagger",
+          "weaponsmith_buy_royal_diamond_greataxe",
+          "weaponsmith_buy_royal_diamond_mace",
+          "weaponsmith_buy_royal_diamond_rapier",
+          "weaponsmith_buy_royal_diamond_sword",
+          "weaponsmith_buy_royal_diamond_spear",
+          "weaponsmith_buy_royal_diamond_warhammer",
+          "weaponsmith_buy_royal_diamond_greataxe",
+          "weaponsmith_buy_royal_diamond_axe"
         ]
       }
     },
@@ -721,10 +742,17 @@
         "expRequirement": 40,
         "trades": [
           "shepherd_sell_random_dye_uncommon",
-          "shepherd_buy_random_dye_common",
-          "shepherd_buy_random_dye_common",
-          "shepherd_buy_random_dye_uncommon",
-          "shepherd_buy_random_dye_uncommon"
+          "shepherd_buy_red_dye",
+          "shepherd_buy_brown_dye",
+          "shepherd_buy_white_dye",
+          "shepherd_buy_green_dye",
+          "shepherd_buy_yellow_dye",
+          "shepherd_buy_black_dye",
+          "shepherd_buy_pink_dye",
+          "shepherd_buy_gray_dye",
+          "shepherd_buy_light_gray_dye",
+          "shepherd_buy_orange_dye",
+          "shepherd_buy_lime_dye"
         ]
       },
       "EXPERT": {
@@ -737,7 +765,11 @@
           "shepherd_buy_hearts_banner",
           "shepherd_buy_mountain_banner",
           "shepherd_buy_warden_banner",
-          "shepherd_buy_random_dye_rare"
+          "shepherd_buy_magenta_dye",
+          "shepherd_buy_blue_dye",
+          "shepherd_buy_light_blue_dye",
+          "shepherd_buy_purple_dye",
+          "shepherd_buy_cyan_dye"
         ]
       },
       "APPRENTICE": {
@@ -746,10 +778,17 @@
         "expRequirement": 10,
         "trades": [
           "shepherd_sell_random_dye_common",
-          "shepherd_buy_random_dyed_wool",
-          "shepherd_buy_random_dyed_wool",
-          "shepherd_buy_random_dyed_wool",
-          "shepherd_buy_random_dyed_wool"
+          "shepherd_buy_pink_wool",
+          "shepherd_buy_red_wool",
+          "shepherd_buy_cyan_wool",
+          "shepherd_buy_orange_wool",
+          "shepherd_buy_magenta_wool",
+          "shepherd_buy_blue_wool",
+          "shepherd_buy_purple_wool",
+          "shepherd_buy_lime_wool",
+          "shepherd_buy_light_blue_wool",
+          "shepherd_buy_green_wool",
+          "shepherd_buy_yellow_wool"
         ]
       },
       "NOVICE": {
@@ -878,10 +917,12 @@
         "trades": [
           "librarian_sell_ink_sacs",
           "librarian_buy_glass",
-          "librarian_buy_random_enchanted_book_t3",
-          "librarian_buy_random_enchanted_book_t3",
-          "librarian_buy_random_enchanted_book_t3",
-          "librarian_buy_random_enchanted_book_t3"
+          "librarian_buy_enchantment_aqua_affinity",
+          "librarian_buy_enchantment_respiration",
+          "librarian_buy_enchantment_depth_strider",
+          "librarian_buy_enchantment_unbreaking",
+          "librarian_buy_enchantment_multishot",
+          "librarian_buy_enchantment_feather_falling"
         ]
       },
       "EXPERT": {
@@ -892,10 +933,13 @@
           "librarian_sell_book_and_quill",
           "librarian_buy_compass",
           "librarian_buy_clock",
-          "librarian_buy_random_enchanted_book_t4",
-          "librarian_buy_random_enchanted_book_t4",
-          "librarian_buy_random_enchanted_book_t4",
-          "librarian_buy_random_enchanted_book_t4"
+          "librarian_buy_enchantment_looting",
+          "librarian_buy_enchantment_lots",
+          "librarian_buy_enchantment_loyalty",
+          "librarian_buy_enchantment_riptide",
+          "librarian_buy_enchantment_fortune",
+          "librarian_buy_enchantment_frost_walker",
+          "librarian_buy_enchantment_channeling"
         ]
       },
       "APPRENTICE": {
@@ -905,10 +949,14 @@
         "trades": [
           "librarian_sell_books",
           "librarian_buy_lantern",
-          "librarian_buy_random_enchanted_book_t2",
-          "librarian_buy_random_enchanted_book_t2",
-          "librarian_buy_random_enchanted_book_t2",
-          "librarian_buy_random_enchanted_book_t2"
+          "librarian_buy_enchantment_protection",
+          "librarian_buy_enchantment_fire_aspect",
+          "librarian_buy_enchantment_knockback",
+          "librarian_buy_enchantment_lure",
+          "librarian_buy_enchantment_piercing",
+          "librarian_buy_enchantment_punch",
+          "librarian_buy_enchantment_quick_charge",
+          "librarian_buy_enchantment_impaling"
         ]
       },
       "NOVICE": {
@@ -918,10 +966,14 @@
         "trades": [
           "librarian_sell_paper",
           "librarian_buy_bookshelf",
-          "librarian_buy_random_enchanted_book_t1",
-          "librarian_buy_random_enchanted_book_t1",
-          "librarian_buy_random_enchanted_book_t1",
-          "librarian_buy_random_enchanted_book_t1"
+          "librarian_buy_enchantment_boa",
+          "librarian_buy_enchantment_smite",
+          "librarian_buy_enchantment_blast_protection",
+          "librarian_buy_enchantment_power",
+          "librarian_buy_enchantment_projectile_protection",
+          "librarian_buy_enchantment_efficiency",
+          "librarian_buy_enchantment_sharpness",
+          "librarian_buy_enchantment_fire_protection"
         ]
       },
       "MASTER": {
@@ -930,10 +982,10 @@
         "expRequirement": 640,
         "trades": [
           "librarian_buy_name_tag",
-          "librarian_buy_random_enchanted_book_t5",
-          "librarian_buy_random_enchanted_book_t5",
-          "librarian_buy_random_enchanted_book_t5",
-          "librarian_buy_random_enchanted_book_t5"
+          "librarian_buy_enchantment_infinity",
+          "librarian_buy_enchantment_mending",
+          "librarian_buy_enchantment_silk_touch",
+          "librarian_buy_enchantment_thorns"
         ]
       }
     },

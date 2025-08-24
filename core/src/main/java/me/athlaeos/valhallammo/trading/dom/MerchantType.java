@@ -104,7 +104,7 @@ public class MerchantType implements Weighted {
         public void setRolls(double rolls) { this.rolls = rolls; }
         public void setExpRequirement(int expRequirement) { this.expRequirement = expRequirement; }
         public void setRollQuality(double rollQuality) { this.rollQuality = rollQuality; }
-        public Collection<String> getTrades() { return trades; }
+        public List<String> getTrades() { return trades; }
         public double getRollQuality() { return rollQuality; }
         public int getExpRequirement() { return expRequirement; }
     }

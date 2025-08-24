@@ -1,27 +1,17 @@
 package me.athlaeos.valhallammo;
 
-import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierPriority;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.*;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeScale;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DurabilityScale;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ConfigurableMaterialsChoice;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
-import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexedBasedOnQuality;
 import me.athlaeos.valhallammo.item.CustomItem;
 import me.athlaeos.valhallammo.item.CustomItemRegistry;
-import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.loot.ReplacementEntry;
 import me.athlaeos.valhallammo.loot.ReplacementPool;
-import me.athlaeos.valhallammo.loot.ReplacementTable;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantLevel;
 import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
-import me.athlaeos.valhallammo.trading.dom.MerchantType;
 import me.athlaeos.valhallammo.trading.dom.ProfessionWrapper;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -29,7 +19,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Scripts implements Listener {
     private static final QuickTrade[] args = new QuickTrade[]{

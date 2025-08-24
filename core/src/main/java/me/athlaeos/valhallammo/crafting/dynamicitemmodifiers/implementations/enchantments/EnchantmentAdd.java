@@ -47,6 +47,7 @@ public class EnchantmentAdd extends DynamicItemModifier {
         }
         else {
             if (context.getItem().getItem().getType() == Material.BOOK) context.getItem().type(Material.ENCHANTED_BOOK);
+            int level = this.level;
             if (scaleWithSkill){
                 int skill = context.getOtherType(MerchantEnchantingSkillSet.MerchantEnchantingSkill.class) == null ?
                         (int) (AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, true) * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", context.getCrafter(), 10000, true))) :

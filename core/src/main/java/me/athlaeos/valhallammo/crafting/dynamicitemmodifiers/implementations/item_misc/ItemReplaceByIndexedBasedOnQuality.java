@@ -219,11 +219,21 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
         return items;
     }
 
+    public void setOnlyExecuteModifiers(boolean onlyExecuteModifiers) {
+        this.onlyExecuteModifiers = onlyExecuteModifiers;
+    }
+
+    public void setSkillToScaleWith(String skillToScaleWith) {
+        this.skillToScaleWith = skillToScaleWith;
+    }
+
     @Override
     public DynamicItemModifier copy() {
         ItemReplaceByIndexedBasedOnQuality m = new ItemReplaceByIndexedBasedOnQuality(getName());
         m.setItems(this.items);
         m.setPriority(this.getPriority());
+        m.setSkillToScaleWith(this.skillToScaleWith);
+        m.setOnlyExecuteModifiers(this.onlyExecuteModifiers);
         return m;
     }
 
