@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.trading.dom.MerchantType;
+import me.athlaeos.valhallammo.trading.dom.ProfessionWrapper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Parryer;
 import me.athlaeos.valhallammo.utility.Timer;
@@ -16,6 +17,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Villager;
+import org.bukkit.entity.WanderingTrader;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -59,17 +61,23 @@ public class InteractListener implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.useItemInHand() == Event.Result.DENY ||
                 e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getClickedBlock() == null || e.getHand() == null) return;
         ItemStack hand = e.getItem();
-        if (ItemUtils.isEmpty(hand) || hand.getType() != Material.VILLAGER_SPAWN_EGG) return;
+        if (ItemUtils.isEmpty(hand) || (hand.getType() != Material.VILLAGER_SPAWN_EGG && hand.getType() != Material.WANDERING_TRADER_SPAWN_EGG)) return;
         ItemMeta meta = hand.getItemMeta();
         MerchantType merchantType = meta == null ? null : CustomMerchantManager.getSummonType(meta);
         if (merchantType == null) return;
-        for (Villager.Profession profession : CustomMerchantManager.getMerchantConfigurations().keySet()){
+        for (ProfessionWrapper profession : CustomMerchantManager.getMerchantConfigurations().keySet()){
             if (CustomMerchantManager.getMerchantConfiguration(profession).getMerchantTypes().contains(merchantType.getType())){
-                Villager villager = e.getPlayer().getWorld().spawn(e.getClickedBlock().getLocation().add(0.5, 1, 0.5), Villager.class);
-                villager.setProfession(profession);
-                villager.setVillagerExperience(1); // to stop it from losing its profession
-                MerchantData data = CustomMerchantManager.createMerchant(villager.getUniqueId(), merchantType, e.getPlayer());
-                data.setExp(1);
+                if (hand.getType() == Material.VILLAGER_SPAWN_EGG) {
+                    Villager villager = e.getPlayer().getWorld().spawn(e.getClickedBlock().getLocation().add(0.5, 1, 0.5), Villager.class);
+                    villager.setProfession(profession.getProfession());
+                    villager.setVillagerExperience(1); // to stop it from losing its profession
+                    MerchantData data = CustomMerchantManager.createMerchant(villager.getUniqueId(), merchantType, e.getPlayer());
+                    data.setExp(1);
+                } else if (hand.getType() == Material.WANDERING_TRADER_SPAWN_EGG) {
+                    WanderingTrader wanderingTrader = e.getPlayer().getWorld().spawn(e.getClickedBlock().getLocation().add(0.5, 1, 0.5), WanderingTrader.class);
+                    MerchantData data = CustomMerchantManager.createMerchant(wanderingTrader.getUniqueId(), merchantType, e.getPlayer());
+                    data.setExp(1);
+                }
                 e.setCancelled(true);
 
                 e.getPlayer().playSound(e.getPlayer(), Sound.ENTITY_VILLAGER_YES, 1F, 1F);
@@ -83,19 +91,27 @@ public class InteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMerchantChangeType(PlayerInteractEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !(e.getRightClicked() instanceof Villager v)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
+        if (!(e.getRightClicked() instanceof Villager) && !(e.getRightClicked() instanceof WanderingTrader)) return;
 
         ItemStack hand = e.getPlayer().getInventory().getItem(e.getHand());
         if (ItemUtils.isEmpty(hand)) return;
         ItemMeta meta = hand.getItemMeta();
         MerchantType merchantType = meta == null ? null : CustomMerchantManager.getSummonType(meta);
         if (merchantType == null) return;
-        for (Villager.Profession profession : CustomMerchantManager.getMerchantConfigurations().keySet()){
+        for (ProfessionWrapper profession : CustomMerchantManager.getMerchantConfigurations().keySet()){
             if (CustomMerchantManager.getMerchantConfiguration(profession).getMerchantTypes().contains(merchantType.getType())){
-                v.setProfession(profession);
-                v.setVillagerExperience(1); // to stop it from losing its profession
-                MerchantData data = CustomMerchantManager.createMerchant(v.getUniqueId(), merchantType, e.getPlayer());
-                data.setExp(1);
+                if (e.getRightClicked() instanceof Villager v){
+                    if (profession == ProfessionWrapper.TRAVELING) return;
+                    v.setProfession(profession.getProfession());
+                    v.setVillagerExperience(1); // to stop it from losing its profession
+                    MerchantData data = CustomMerchantManager.createMerchant(v.getUniqueId(), merchantType, e.getPlayer());
+                    data.setExp(1);
+                } else if (e.getRightClicked() instanceof WanderingTrader w){
+                    if (profession == ProfessionWrapper.TRAVELING) return;
+                    MerchantData data = CustomMerchantManager.createMerchant(w.getUniqueId(), merchantType, e.getPlayer());
+                    data.setExp(1);
+                }
                 e.setCancelled(true);
 
                 e.getPlayer().playSound(e.getPlayer(), Sound.ENTITY_VILLAGER_YES, 1F, 1F);

@@ -64,14 +64,13 @@ public class CustomMerchantManager {
 
     private static MerchantDataPersistence merchantDataPersistence;
 
-    private static final Map<Villager.Profession, MerchantConfiguration> merchantConfigurations = new HashMap<>();
-    private static final MerchantConfiguration travelingMerchantConfiguration = new MerchantConfiguration(null);
+    private static final Map<ProfessionWrapper, MerchantConfiguration> merchantConfigurations = new HashMap<>();
     private static final Map<String, MerchantType> registeredMerchantTypes = new HashMap<>();
     private static final Map<String, MerchantTrade> registeredMerchantTrades = new HashMap<>();
 
     static {
         for (ProfessionWrapper profession : ProfessionWrapper.values()){
-            merchantConfigurations.put(profession.getProfession(), new MerchantConfiguration(profession.getProfession()));
+            merchantConfigurations.put(profession, new MerchantConfiguration(profession));
         }
     }
 
@@ -85,7 +84,7 @@ public class CustomMerchantManager {
      */
     public static MerchantData convertToRandomMerchant(AbstractVillager villager, Player interactingPlayer){
         villager.getPersistentDataContainer().set(KEY_CUSTOM_VILLAGER, PersistentDataType.BYTE, (byte) 0);
-        MerchantConfiguration configuration = villager instanceof Villager v ? merchantConfigurations.get(v.getProfession()) : travelingMerchantConfiguration;
+        MerchantConfiguration configuration = villager instanceof Villager v ? merchantConfigurations.get(ProfessionWrapper.ofProfession(v.getProfession())) : merchantConfigurations.get(ProfessionWrapper.TRAVELING);
         if (configuration == null || configuration.getMerchantTypes().isEmpty()) return null; // No configuration available, do not do anything
         MerchantType selectedType = selectRandomType(configuration);
         if (selectedType == null) return null;
@@ -283,7 +282,7 @@ public class CustomMerchantManager {
         return delayUntilWorking;
     }
 
-    public static Map<Villager.Profession, MerchantConfiguration> getMerchantConfigurations() {
+    public static Map<ProfessionWrapper, MerchantConfiguration> getMerchantConfigurations() {
         return new HashMap<>(merchantConfigurations);
     }
 
@@ -409,13 +408,9 @@ public class CustomMerchantManager {
         return villager.getPersistentDataContainer().has(KEY_CUSTOM_VILLAGER, PersistentDataType.BYTE);
     }
 
-    public static MerchantConfiguration getMerchantConfiguration(Villager.Profession ofProfession){
+    public static MerchantConfiguration getMerchantConfiguration(ProfessionWrapper ofProfession){
         if (merchantConfigurations.get(ofProfession) == null) merchantConfigurations.put(ofProfession, new MerchantConfiguration(ofProfession));
         return merchantConfigurations.get(ofProfession);
-    }
-
-    public static MerchantConfiguration getTravelingMerchantConfiguration(){
-        return travelingMerchantConfiguration;
     }
 
     public static void removeTrade(MerchantTrade trade){

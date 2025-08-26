@@ -2810,6 +2810,49 @@
     "maxOrderCount": 2
   },
   {
+    "id": "weaponsmith_buy_royal_diamond_knuckles",
+    "priority": 0,
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA1ESUFNT05EX1NXT1JE\r\n",
+    "scalingCostItem": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AA1FTUVSQUxEX0JMT0NLc3EAfgAOAAAADA==\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "royal_diamond_knuckles",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "priceModifiers": [],
+    "predicates": [],
+    "predicateSelection": "ANY",
+    "weight": 16.7,
+    "weightQuality": 0.0,
+    "demandWeightModifier": 0.0,
+    "demandWeightMaxQuantity": 0,
+    "maxUses": 2,
+    "priceRandomNegativeOffset": -2,
+    "priceRandomPositiveOffset": 2,
+    "demandMaxUsesModifier": 0.0,
+    "demandMaxUsesMaxQuantity": 0,
+    "villagerExperience": 120,
+    "rewardsExperience": 120.0,
+    "demandPriceMultiplier": 0.25,
+    "positiveReputationMultiplier": 1.0,
+    "negativeReputationMultiplier": 1.0,
+    "demandPriceMax": 12,
+    "fixedUseCount": false,
+    "exclusive": true,
+    "restockDelay": 0,
+    "giftWeight": 7.4505806E-8,
+    "refreshes": false,
+    "skillExp": 1200.0,
+    "isTradeable": true,
+    "maxOrderCount": 2
+  },
+  {
     "id": "leatherworker_buy_assassin_chestplate",
     "priority": 2,
     "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0ABJMRUFUSEVSX0NIRVNUUExBVEU=\r\n",
@@ -15424,6 +15467,69 @@
     "maxOrderCount": 6
   },
   {
+    "id": "toolsmith_buy_stone_knuckles_to_iron_knuckles",
+    "priority": 2,
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAlTVE9ORV9BWEU=\r\n",
+    "scalingCostItem": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAABQ==\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.MerchantSmithingQualitySet",
+        "DATA": {
+          "qualityMap": {
+            "JOURNEYMAN": 70,
+            "MASTER": 110,
+            "EXPERT": 90,
+            "NOVICE": 30,
+            "APPRENTICE": 50
+          },
+          "shouldScaleWithStats": true,
+          "name": "merchant_smithing_skill",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexedBasedOnQuality",
+        "DATA": {
+          "items": {
+            "0": "stone_knuckles_scaling",
+            "125": "iron_knuckles_scaling"
+          },
+          "currentQuality": 0,
+          "skillToScaleWith": "SMITHING",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom_quality_based",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "priceModifiers": [],
+    "predicates": [],
+    "predicateSelection": "ANY",
+    "weight": 12.5,
+    "weightQuality": 0.0,
+    "demandWeightModifier": 0.0,
+    "demandWeightMaxQuantity": 0,
+    "maxUses": 3,
+    "priceRandomNegativeOffset": -1,
+    "priceRandomPositiveOffset": 1,
+    "demandMaxUsesModifier": 0.0,
+    "demandMaxUsesMaxQuantity": 0,
+    "villagerExperience": 6,
+    "rewardsExperience": 6.0,
+    "demandPriceMultiplier": 0.25,
+    "positiveReputationMultiplier": 1.0,
+    "negativeReputationMultiplier": 1.0,
+    "demandPriceMax": 5,
+    "fixedUseCount": false,
+    "exclusive": false,
+    "restockDelay": 0,
+    "giftWeight": 25.0,
+    "refreshes": true,
+    "skillExp": 600.0,
+    "isTradeable": true,
+    "maxOrderCount": 6
+  },
+  {
     "id": "fletcher_buy_random_tipped_arrows",
     "priority": 8,
     "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAxUSVBQRURfQVJST1dzcQB+AA4AAAAE\r\n",
@@ -15921,6 +16027,89 @@
     "predicates": [],
     "predicateSelection": "ANY",
     "weight": 33.3,
+    "weightQuality": 0.0,
+    "demandWeightModifier": 0.0,
+    "demandWeightMaxQuantity": 0,
+    "maxUses": 3,
+    "priceRandomNegativeOffset": -2,
+    "priceRandomPositiveOffset": 2,
+    "demandMaxUsesModifier": 0.0,
+    "demandMaxUsesMaxQuantity": 0,
+    "villagerExperience": 13,
+    "rewardsExperience": 13.0,
+    "demandPriceMultiplier": 0.25,
+    "positiveReputationMultiplier": 1.0,
+    "negativeReputationMultiplier": 1.0,
+    "demandPriceMax": 12,
+    "fixedUseCount": false,
+    "exclusive": false,
+    "restockDelay": 0,
+    "giftWeight": 10.0,
+    "refreshes": true,
+    "skillExp": 1300.0,
+    "isTradeable": true,
+    "maxOrderCount": 6
+  },
+  {
+    "id": "weaponsmith_buy_iron_knuckles",
+    "priority": 2,
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AAhJUk9OX0FYRQ==\r\n",
+    "scalingCostItem": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAADA==\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.MerchantSmithingQualitySet",
+        "DATA": {
+          "qualityMap": {
+            "JOURNEYMAN": 90,
+            "MASTER": 150,
+            "EXPERT": 120,
+            "NOVICE": 30,
+            "APPRENTICE": 60
+          },
+          "shouldScaleWithStats": true,
+          "name": "merchant_smithing_skill",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.MerchantEnchantingSkillSet",
+        "DATA": {
+          "qualityMap": {
+            "JOURNEYMAN": 90,
+            "MASTER": 150,
+            "EXPERT": 120,
+            "NOVICE": 30,
+            "APPRENTICE": 60
+          },
+          "shouldScaleWithStats": true,
+          "name": "merchant_enchanting_skill",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "iron_knuckles_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.EnchantmentRandomize",
+        "DATA": {
+          "level": 20,
+          "scaleWithSkill": true,
+          "includeTreasure": false,
+          "name": "enchant_randomly",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "priceModifiers": [],
+    "predicates": [],
+    "predicateSelection": "ANY",
+    "weight": 20.0,
     "weightQuality": 0.0,
     "demandWeightModifier": 0.0,
     "demandWeightMaxQuantity": 0,
@@ -16614,6 +16803,89 @@
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
         "DATA": {
           "item": "diamond_mace_scaling",
+          "onlyExecuteModifiers": true,
+          "name": "replace_by_custom",
+          "priority": "NEUTRAL"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.EnchantmentRandomize",
+        "DATA": {
+          "level": 25,
+          "scaleWithSkill": true,
+          "includeTreasure": false,
+          "name": "enchant_randomly",
+          "priority": "LATER"
+        }
+      }
+    ],
+    "priceModifiers": [],
+    "predicates": [],
+    "predicateSelection": "ANY",
+    "weight": 20.0,
+    "weightQuality": 0.0,
+    "demandWeightModifier": 0.0,
+    "demandWeightMaxQuantity": 0,
+    "maxUses": 2,
+    "priceRandomNegativeOffset": -6,
+    "priceRandomPositiveOffset": 6,
+    "demandMaxUsesModifier": 0.0,
+    "demandMaxUsesMaxQuantity": 0,
+    "villagerExperience": 33,
+    "rewardsExperience": 33.0,
+    "demandPriceMultiplier": 0.25,
+    "positiveReputationMultiplier": 1.0,
+    "negativeReputationMultiplier": 1.0,
+    "demandPriceMax": 32,
+    "fixedUseCount": false,
+    "exclusive": false,
+    "restockDelay": 0,
+    "giftWeight": 5.0,
+    "refreshes": true,
+    "skillExp": 3300.0,
+    "isTradeable": true,
+    "maxOrderCount": 4
+  },
+  {
+    "id": "weaponsmith_buy_diamond_knuckles",
+    "priority": 4,
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAA3QAAj09\r\ndAABdnQABHR5cGV1cQB+AAYAAAADdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRlbVN0YWNrc3IA\r\nEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVy\r\nhqyVHQuU4IsCAAB4cAAADCF0AA1ESUFNT05EX1NXT1JE\r\n",
+    "scalingCostItem": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAAIA==\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.enchantment_misc.MerchantEnchantingSkillSet",
+        "DATA": {
+          "qualityMap": {
+            "JOURNEYMAN": 90,
+            "MASTER": 150,
+            "EXPERT": 120,
+            "NOVICE": 30,
+            "APPRENTICE": 60
+          },
+          "shouldScaleWithStats": true,
+          "name": "merchant_enchanting_skill",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.MerchantSmithingQualitySet",
+        "DATA": {
+          "qualityMap": {
+            "JOURNEYMAN": 90,
+            "MASTER": 150,
+            "EXPERT": 120,
+            "NOVICE": 30,
+            "APPRENTICE": 60
+          },
+          "shouldScaleWithStats": true,
+          "name": "merchant_smithing_skill",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "diamond_knuckles_scaling",
           "onlyExecuteModifiers": true,
           "name": "replace_by_custom",
           "priority": "NEUTRAL"

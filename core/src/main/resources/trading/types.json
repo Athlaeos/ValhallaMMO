@@ -481,7 +481,8 @@
           "weaponsmith_buy_iron_spear",
           "weaponsmith_buy_iron_warhammer",
           "weaponsmith_buy_iron_greataxe",
-          "weaponsmith_buy_iron_axe"
+          "weaponsmith_buy_iron_axe",
+          "weaponsmith_buy_iron_knuckles"
         ]
       },
       "EXPERT": {
@@ -497,7 +498,8 @@
           "weaponsmith_buy_diamond_sword",
           "weaponsmith_buy_diamond_rapier",
           "weaponsmith_buy_diamond_spear",
-          "weaponsmith_buy_diamond_mace"
+          "weaponsmith_buy_diamond_mace",
+          "weaponsmith_buy_diamond_knuckles"
         ]
       },
       "APPRENTICE": {
@@ -514,7 +516,8 @@
           "toolsmith_buy_stone_greataxe_to_iron_greataxe",
           "toolsmith_buy_stone_knuckles_to_iron_knuckles",
           "toolsmith_buy_stone_rapier_to_iron_rapier",
-          "toolsmith_buy_stone_dagger_to_iron_dagger"
+          "toolsmith_buy_stone_dagger_to_iron_dagger",
+          "toolsmith_buy_stone_knuckles_to_iron_knuckles"
         ]
       },
       "NOVICE": {
@@ -530,7 +533,8 @@
           "toolsmith_buy_stone_knuckles_to_iron_knuckles",
           "toolsmith_buy_stone_greataxe_to_iron_greataxe",
           "toolsmith_buy_stone_spear_to_iron_spear",
-          "toolsmith_buy_stone_dagger_to_iron_dagger"
+          "toolsmith_buy_stone_dagger_to_iron_dagger",
+          "toolsmith_buy_stone_knuckles_to_iron_knuckles"
         ]
       },
       "MASTER": {
@@ -547,7 +551,8 @@
           "weaponsmith_buy_royal_diamond_spear",
           "weaponsmith_buy_royal_diamond_warhammer",
           "weaponsmith_buy_royal_diamond_greataxe",
-          "weaponsmith_buy_royal_diamond_axe"
+          "weaponsmith_buy_royal_diamond_axe",
+          "weaponsmith_buy_royal_diamond_knuckles"
         ]
       }
     },

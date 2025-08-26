@@ -17,7 +17,8 @@ public enum ProfessionWrapper {
     NITWIT(Villager.Profession.NITWIT),
     SHEPHERD(Villager.Profession.SHEPHERD),
     TOOLSMITH(Villager.Profession.TOOLSMITH),
-    WEAPONSMITH(Villager.Profession.WEAPONSMITH);
+    WEAPONSMITH(Villager.Profession.WEAPONSMITH),
+    TRAVELING(null);
 
     private final Villager.Profession profession;
 
@@ -30,6 +31,7 @@ public enum ProfessionWrapper {
     }
 
     public static ProfessionWrapper ofProfession(Villager.Profession profession){
+        if (profession == null) return TRAVELING;
         return switch (profession){
             case NONE -> NONE;
             case ARMORER -> ARMORER;

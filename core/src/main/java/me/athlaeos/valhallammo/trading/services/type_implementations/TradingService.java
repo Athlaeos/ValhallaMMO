@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantConfiguration;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
+import me.athlaeos.valhallammo.trading.dom.ProfessionWrapper;
 import me.athlaeos.valhallammo.trading.menu.MerchantServicesMenu;
 import me.athlaeos.valhallammo.trading.menu.ServiceMenu;
 import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
@@ -36,7 +37,7 @@ public class TradingService extends ServiceType {
     @Override
     public void onServiceSelect(InventoryClickEvent e, ServiceMenu menu, Service service, MerchantData data) {
         AbstractVillager v = data.getVillager();
-        MerchantConfiguration configuration = v instanceof Villager villager ? CustomMerchantManager.getMerchantConfigurations().get(villager.getProfession()) : CustomMerchantManager.getTravelingMerchantConfiguration();
+        MerchantConfiguration configuration = CustomMerchantManager.getMerchantConfigurations().get(ProfessionWrapper.ofProfession(v instanceof Villager villager ? villager.getProfession() : null)) ;
         if (configuration == null || configuration.getMerchantTypes().isEmpty()) return;
         List<Pair<MerchantTrade, MerchantRecipe>> recipes = CustomMerchantManager.recipesFromData(data, menu.getPlayerMenuUtility().getOwner());
         if (recipes != null && !recipes.isEmpty()) {

@@ -487,7 +487,7 @@ public class MerchantListener implements Listener {
                 e.setCancelled(true);
                 return; // Can't lose profession, so the villager stays as they are
             } else {
-                MerchantConfiguration configuration = CustomMerchantManager.getMerchantConfiguration(newProfession);
+                MerchantConfiguration configuration = CustomMerchantManager.getMerchantConfiguration(ProfessionWrapper.ofProfession(newProfession));
                 if (configuration != null) {
                     type = CustomMerchantManager.selectRandomType(configuration);
                 }

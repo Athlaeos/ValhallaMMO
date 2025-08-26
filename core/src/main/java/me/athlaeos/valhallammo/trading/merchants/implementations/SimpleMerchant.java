@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
 import me.athlaeos.valhallammo.trading.dom.MerchantType;
+import me.athlaeos.valhallammo.trading.dom.ProfessionWrapper;
 import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.GameMode;
@@ -78,13 +79,10 @@ public class SimpleMerchant extends VirtualMerchant {
         MerchantType type = CustomMerchantManager.getMerchantType(getData().getType());
         if (type == null) return "";
         if (type.getName() != null) return type.getName();
-        for (Villager.Profession profession : CustomMerchantManager.getMerchantConfigurations().keySet()){
+        for (ProfessionWrapper profession : CustomMerchantManager.getMerchantConfigurations().keySet()){
             if (CustomMerchantManager.getMerchantConfiguration(profession).getMerchantTypes().contains(getData().getType())){
                 return TranslationManager.getTranslation("profession_" + profession.toString().toLowerCase(Locale.US));
             }
-        }
-        if (CustomMerchantManager.getTravelingMerchantConfiguration().getMerchantTypes().contains(type.getType())){
-            return TranslationManager.getTranslation("profession_traveling");
         }
         return type.getType();
     }
