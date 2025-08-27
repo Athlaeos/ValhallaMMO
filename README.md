@@ -11,7 +11,7 @@ Integrate ValhallaMMO into your project with Maven
     <dependency>
         <groupId>me.athlaeos</groupId>
         <artifactId>valhallammo-dist</artifactId>
-        <version>premium_1.0</version>
+        <version>LATEST VERSION</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
