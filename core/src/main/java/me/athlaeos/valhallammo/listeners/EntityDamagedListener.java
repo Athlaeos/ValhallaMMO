@@ -121,7 +121,7 @@ public class EntityDamagedListener implements Listener {
             }
             if (e instanceof EntityDamageByEntityEvent && e.getFinalDamage() <= 0.000001 && l instanceof Player p && p.isBlocking()) return; // blocking with shield damage reduction
 
-            if (((lastDamager == null || EntityClassification.matchesClassification(lastDamager, EntityClassification.UNALIVE)) && environmentalOneShotProtection) || ((pvpOneShotProtection && lastDamager instanceof Player) || (pveOneShotProtection && lastDamager != null && !EntityClassification.matchesClassification(lastDamager, EntityClassification.UNALIVE)))) {
+            if (((lastDamager == null || EntityClassification.matchesClassification(lastDamager, EntityClassification.UNALIVE)) && environmentalOneShotProtection) || ((pvpOneShotProtection && lastDamager instanceof Player) || (pveOneShotProtection && lastDamager != null && !EntityClassification.matchesClassification(lastDamager.getType(), EntityClassification.UNALIVE)))) {
                 double oneShotProtectionFraction = AccumulativeStatManager.getCachedRelationalStats("ONESHOT_PROTECTION_FRACTION", l, lastDamager, 10000, true);
                 if (oneShotProtectionFraction > 0){
                     AttributeInstance healthAttribute = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
