@@ -432,9 +432,4 @@ public class EntityUtils {
         // Has a damage attribute, but not a defined weight class. That means that it must be a damaging item not explicitly marked weightless
         return damageAttribute == null || WeightClass.hasDefinedWeightClass(properties.getMainHand().getMeta());
     }
-
-    public static String getCustomDamageType(Entity entity){
-        if (!entity.hasMetadata(DAMAGE_CAUSE_KEY)) return null;
-        return entity.getMetadata(DAMAGE_CAUSE_KEY).getFirst().asString();
-    }
 }
