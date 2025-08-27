@@ -1,11 +1,10 @@
 package me.athlaeos.valhallammo.potioneffects.effect_triggers.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.dom.CustomDamageType;
-import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTrigger;
+import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTriggerRegistry;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -13,11 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class OnAttack implements EffectTrigger, Listener {
     private static Listener singleListenerInstance = null;
@@ -45,9 +41,36 @@ public class OnAttack implements EffectTrigger, Listener {
     public void onEntityDamaged(EntityDamageByEntityEvent e){
         Entity trueDamager = EntityUtils.getTrueDamager(e);
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof LivingEntity le) ||
-                !shouldTrigger(le) || e.isCancelled() || !(trueDamager instanceof LivingEntity damager)) return;
-        EntityProperties targetProperties = onAttacked ? EntityCache.getAndCacheProperties(le) : EntityCache.getAndCacheProperties(damager);
-        if (targetProperties.getPermanentPotionEffects().isEmpty()) return;
-        trigger(inflictSelf ? le : damager, targetProperties.getPermanentPotionEffects().getOrDefault(id(), new ArrayList<>()));
+                e.isCancelled() || !(trueDamager instanceof LivingEntity damager)) return;
+        EntityProperties attackerProperties = EntityCache.getAndCacheProperties(le);
+        EntityProperties victimProperties = EntityCache.getAndCacheProperties(damager);
+
+        EffectTrigger onAttackedInflictEnemy = EffectTriggerRegistry.getTrigger("on_attacked_inflict_enemy");
+        if (onAttackedInflictEnemy != null && onAttackedInflictEnemy.shouldTrigger(le)) {
+            if (!victimProperties.getPermanentPotionEffects().getOrDefault("on_attacked_inflict_enemy", new ArrayList<>()).isEmpty()) {
+                onAttackedInflictEnemy.trigger(le, victimProperties.getPermanentPotionEffects().getOrDefault("on_attacked_inflict_enemy", new ArrayList<>()));
+            }
+        }
+
+        EffectTrigger onAttackInflictEnemy = EffectTriggerRegistry.getTrigger("on_attack_inflict_enemy");
+        if (onAttackInflictEnemy != null && onAttackInflictEnemy.shouldTrigger(le)) {
+            if (!victimProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()).isEmpty()) {
+                onAttackInflictEnemy.trigger(le, victimProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()));
+            }
+        }
+
+        EffectTrigger onAttackedInflictSelf = EffectTriggerRegistry.getTrigger("on_attacked_inflict_self");
+        if (onAttackedInflictSelf != null && onAttackedInflictSelf.shouldTrigger(le)) {
+            if (!victimProperties.getPermanentPotionEffects().getOrDefault("on_attacked_inflict_self", new ArrayList<>()).isEmpty()) {
+                onAttackedInflictSelf.trigger(le, victimProperties.getPermanentPotionEffects().getOrDefault("on_attacked_inflict_self", new ArrayList<>()));
+            }
+        }
+
+        EffectTrigger onAttackInflictSelf = EffectTriggerRegistry.getTrigger("on_attack_inflict_self");
+        if (onAttackInflictSelf != null && onAttackInflictSelf.shouldTrigger(le)) {
+            if (!victimProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_self", new ArrayList<>()).isEmpty()) {
+                onAttackInflictSelf.trigger(le, victimProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_self", new ArrayList<>()));
+            }
+        }
     }
 }

@@ -140,6 +140,11 @@ public class ImmersiveRecipeListener implements Listener {
                             } else {
                                 if (recipe.tinker()) result.amount(1);
                                 DynamicItemModifier.modify(ModifierContext.builder(result).items(removedItems).crafter(p).executeUsageMechanics().validate().get(), recipe.getModifiers());
+                                if (CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
+                                    Utils.sendMessage(p, ItemUtils.getPDCString(DynamicItemModifier.ERROR_MESSAGE, heldItem, ""));
+                                    selectedImmersiveRecipe.remove(p.getUniqueId());
+                                    return;
+                                }
                                 Animation animation = AnimationRegistry.getAnimation(AnimationRegistry.BLOCK_SPARKS_CRAFTSOUND.id());
                                 if (animation != null) animation.animate(p, clicked.getLocation(), p.getEyeLocation().getDirection(), 0);
                                 incrementPlayerCraftFrequency(e.getPlayer(), recipe);
