@@ -23,6 +23,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
@@ -30,6 +31,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 public class EntityUtils {
+    private static final String DAMAGE_CAUSE_KEY = "custom_damage_cause";
 
     public static int getTotalExperience(Player player) {
         return Math.round(player.getExp() * player.getExpToLevel()) + getTotalExperience(player.getLevel());
@@ -389,12 +391,14 @@ public class EntityUtils {
         int immunityBefore = entity.getNoDamageTicks();
         if (ignoreImmunity) entity.setNoDamageTicks(0);
         EntityDamagedListener.setCustomDamageCause(entity.getUniqueId(), type);
+        entity.setMetadata(DAMAGE_CAUSE_KEY, new FixedMetadataValue(ValhallaMMO.getInstance(), type));
         activeDamageProcesses.add(entity.getUniqueId());
         if (by != null) {
             EntityDamagedListener.setDamager(entity, by);
             entity.damage(amount, by);
         } else entity.damage(amount);
         activeDamageProcesses.remove(entity.getUniqueId());
+        entity.removeMetadata(DAMAGE_CAUSE_KEY, ValhallaMMO.getInstance());
         entity.setNoDamageTicks(immunityBefore);
     }
 
@@ -422,5 +426,10 @@ public class EntityUtils {
         AttributeWrapper damageAttribute = ItemAttributesRegistry.getAnyAttribute(properties.getMainHand().getMeta(), "GENERIC_ATTACK_DAMAGE");
         // Has a damage attribute, but not a defined weight class. That means that it must be a damaging item not explicitly marked weightless
         return damageAttribute == null || WeightClass.hasDefinedWeightClass(properties.getMainHand().getMeta());
+    }
+
+    public static String getCustomDamageType(Entity entity){
+        if (!entity.hasMetadata(DAMAGE_CAUSE_KEY)) return null;
+        return entity.getMetadata(DAMAGE_CAUSE_KEY).getFirst().asString();
     }
 }
