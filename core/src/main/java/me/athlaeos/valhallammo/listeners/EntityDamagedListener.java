@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.EffectResponsibility;
+import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -86,12 +87,11 @@ public class EntityDamagedListener implements Listener {
     public void onDamageTaken(EntityDamageEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !customDamageEnabled) return;
         if (e.getEntity() instanceof LivingEntity l){
-            String damageCause = customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString());
+            String damageCause = getLastDamageCause(l);// Utils.thisorDefault(EntityUtils.getCustomDamageType(e.getEntity()), customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString()));
             CustomDamageType type = CustomDamageType.getCustomType(damageCause);
             if (type != null) e.setDamage(e.getDamage() * (1 + EffectResponsibility.getResponsibleDamageBuff(e.getEntity(), type)));
             double originalDamage = e.getDamage();
             double customDamage = type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
-
             // custom damage did not kill entity
             Entity lastDamager = lastDamager(e);
             if (e.getEntity() instanceof Player dP && lastDamager instanceof Player aP){
@@ -310,7 +310,7 @@ public class EntityDamagedListener implements Listener {
     }
 
     public static String getLastDamageCause(LivingEntity e){
-        return customDamageCauses.getOrDefault(e.getUniqueId(), e.getLastDamageCause() == null ? null : e.getLastDamageCause().getCause().toString());
+        return Utils.thisorDefault(EntityUtils.getCustomDamageType(e), customDamageCauses.getOrDefault(e.getUniqueId(), e.getLastDamageCause() == null ? null : e.getLastDamageCause().getCause().toString()));
     }
 
     /**

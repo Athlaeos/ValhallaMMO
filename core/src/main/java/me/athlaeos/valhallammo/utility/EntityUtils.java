@@ -402,7 +402,7 @@ public class EntityUtils {
         entity.setNoDamageTicks(immunityBefore);
     }
 
-    public static String getCustomDamageType(LivingEntity entity){
+    public static String getCustomDamageType(Entity entity){
         if (!entity.hasMetadata(DAMAGE_CAUSE_KEY)) return null;
         return entity.getMetadata(DAMAGE_CAUSE_KEY).getFirst().asString();
     }

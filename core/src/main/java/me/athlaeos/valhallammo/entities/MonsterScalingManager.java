@@ -159,7 +159,8 @@ public class MonsterScalingManager {
      * @return the entity's stat, or 0 if the entity is a player, or is not a monster when only monsters are allowed.
      */
     public static double getStatValue(LivingEntity entity, String stat){
-        if (!enabled || EntityClassification.matchesClassification(entity, EntityClassification.UNALIVE)) return 0;
+        boolean isDummy = Dummy.isDummy(entity);
+        if (!enabled || isDummy || EntityClassification.matchesClassification(entity, EntityClassification.UNALIVE)) return 0;
         int level = Math.max(0, getLevel(entity));
         if (ValhallaMMO.isHookFunctional(MythicMobsHook.class) && MythicMobsHook.isMythicMob(entity))
             return MythicMobsHook.getMythicMobStat(stat, entity);
