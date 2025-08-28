@@ -26,14 +26,30 @@ public class EffectTriggerRegistry {
         register(new WhileStandingStill(false)); // while_moving
         register(new WhileCombatStatus(true)); // while_in_combat
         register(new WhileCombatStatus(false)); // while_out_of_combat
-        register(new DayTimeOrLightExposure(null, true)); // while_light
-        register(new DayTimeOrLightExposure(true, null)); // while_day
-        register(new DayTimeOrLightExposure(null, false)); // while_dark
-        register(new DayTimeOrLightExposure(false, null)); // while_night
-        register(new DayTimeOrLightExposure(false, false)); // while_night_or_dark
-        register(new DayTimeOrLightExposure(false, true)); // while_night_or_light
-        register(new DayTimeOrLightExposure(true, false)); // while_day_or_dark
-        register(new DayTimeOrLightExposure(true, true)); // while_day_or_light
+        register(new DayTimeOrLightExposure(null, true, null)); // while_light
+        register(new DayTimeOrLightExposure(true, null, null)); // while_day
+        register(new DayTimeOrLightExposure(null, false, null)); // while_dark
+        register(new DayTimeOrLightExposure(false, null, null)); // while_night
+        register(new DayTimeOrLightExposure(false, false, null)); // while_night_or_dark
+        register(new DayTimeOrLightExposure(false, true, null)); // while_night_or_light
+        register(new DayTimeOrLightExposure(true, false, null)); // while_day_or_dark
+        register(new DayTimeOrLightExposure(true, true, null)); // while_day_or_light
+        register(new DayTimeOrLightExposure(null, true, true)); // while_light_and_outside
+        register(new DayTimeOrLightExposure(null, true, false)); // while_light_and_sheltered
+        register(new DayTimeOrLightExposure(true, null, true)); // while_day_and_outside
+        register(new DayTimeOrLightExposure(true, null, false)); // while_day_and_sheltered
+        register(new DayTimeOrLightExposure(null, false, true)); // while_dark_and_outside
+        register(new DayTimeOrLightExposure(null, false, false)); // while_dark_and_sheltered
+        register(new DayTimeOrLightExposure(false, null, true)); // while_night_and_outside
+        register(new DayTimeOrLightExposure(false, null, false)); // while_night_and_sheltered
+        register(new DayTimeOrLightExposure(false, false, true)); // while_night_or_dark_and_outside
+        register(new DayTimeOrLightExposure(false, false, false)); // while_night_or_dark_and_sheltered
+        register(new DayTimeOrLightExposure(false, true, true)); // while_night_or_light_and_outside
+        register(new DayTimeOrLightExposure(false, true, false)); // while_night_or_light_and_sheltered
+        register(new DayTimeOrLightExposure(true, false, true)); // while_day_or_dark_and_outside
+        register(new DayTimeOrLightExposure(true, false, false)); // while_day_or_dark_and_sheltered
+        register(new DayTimeOrLightExposure(true, true, true)); // while_day_or_light_and_outside
+        register(new DayTimeOrLightExposure(true, true, false)); // while_day_or_light_and_sheltered
         register(new Submerged(true)); // while_in_water
         register(new Submerged(false)); // while_not_in_water
     }
