@@ -20,8 +20,8 @@ public class ManageMerchantsCommand implements Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (sender instanceof Player player){
-            if (args.length > 2 && args[2].equalsIgnoreCase("summonitem")) {
-                MerchantType type = CustomMerchantManager.getMerchantType(args[3]);
+            if (args.length > 2 && args[1].equalsIgnoreCase("summonitem")) {
+                MerchantType type = CustomMerchantManager.getMerchantType(args[2]);
                 if (type == null) Utils.sendMessage(sender, "&cInvalid merchant type");
                 else {
                     ItemStack hand = player.getInventory().getItemInMainHand();
@@ -34,6 +34,22 @@ public class ManageMerchantsCommand implements Command {
                         Utils.sendMessage(sender, "&aConverted to merchant type changing item! Set to &2" + type.getType());
                         Utils.sendMessage(sender, "&7If this is a villager spawn egg, spawned villagers will immediately have the given type and custom trades");
                         Utils.sendMessage(sender, "&7If it isn't, then it will need to be used on an existing villager to apply the type");
+                    }
+                }
+            } else if (args.length > 1 && args[1].equalsIgnoreCase("blockeritem")) {
+                ItemStack hand = player.getInventory().getItemInMainHand();
+                if (ItemUtils.isEmpty(hand)) Utils.sendMessage(sender, "&cYou should be holding an item");
+                else {
+                    ItemMeta meta = hand.getItemMeta();
+                    if (meta == null) return true;
+                    CustomMerchantManager.convertToBlockerItem(meta, !CustomMerchantManager.isBlockerItem(meta));
+                    hand.setItemMeta(meta);
+                    if (CustomMerchantManager.isBlockerItem(meta)) {
+                        Utils.sendMessage(sender, "&aConverted to merchant blocking item!");
+                        Utils.sendMessage(sender, "&7Right click on villager to prevent them from using the custom trading system, or to re-enable it. Rather, ValhallaMMO will stop interfering when you interact with them.");
+                        Utils.sendMessage(sender, "&7Useful if you have villagers that serve alternative functionality when right clicked, such as questgivers or shopkeepers from other plugins");
+                    } else {
+                        Utils.sendMessage(sender, "&aRemoved merchant blocking status from item!");
                     }
                 }
             } else {

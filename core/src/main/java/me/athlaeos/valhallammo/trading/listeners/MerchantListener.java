@@ -27,12 +27,15 @@ import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.*;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.raid.RaidFinishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantInventory;
@@ -335,6 +338,12 @@ public class MerchantListener implements Listener {
     public void onVillagerInteract(PlayerInteractEntityEvent e){
         if (!(e.getRightClicked() instanceof AbstractVillager v) || (!convertAllVillagers && !CustomMerchantManager.isCustomMerchant(v)) ||
                 ValhallaMMO.isWorldBlacklisted(v.getWorld().getName())) return;
+        if (v.getPersistentDataContainer().has(KEY_MERCHANT_BLOCKED, PersistentDataType.BYTE)) return;
+        ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
+        if (!ItemUtils.isEmpty(hand) && hand.getType() == Material.NAME_TAG) {
+            ItemMeta tagMeta = hand.getItemMeta();
+            if (tagMeta != null && tagMeta.hasDisplayName()) return;
+        }
         if (tradingMerchants.contains(v.getUniqueId())) {
             e.setCancelled(true);
             return;
@@ -705,5 +714,100 @@ public class MerchantListener implements Listener {
 
     public static Collection<UUID> getTradingMerchants() {
         return tradingMerchants;
+    }
+
+    private static final NamespacedKey KEY_MERCHANT_BLOCKED = new NamespacedKey(ValhallaMMO.getInstance(), "merchant_blocker");
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onMerchantSummon(PlayerInteractEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || e.useItemInHand() == Event.Result.DENY ||
+                e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getClickedBlock() == null || e.getHand() == null) return;
+        ItemStack hand = e.getItem();
+        if (ItemUtils.isEmpty(hand) || (hand.getType() != Material.VILLAGER_SPAWN_EGG && hand.getType() != Material.WANDERING_TRADER_SPAWN_EGG)) return;
+        ItemMeta meta = hand.getItemMeta();
+        MerchantType merchantType = meta == null ? null : CustomMerchantManager.getSummonType(meta);
+        if (merchantType == null) return;
+        for (ProfessionWrapper profession : CustomMerchantManager.getMerchantConfigurations().keySet()){
+            if (CustomMerchantManager.getMerchantConfiguration(profession).getMerchantTypes().contains(merchantType.getType())){
+                if (hand.getType() == Material.VILLAGER_SPAWN_EGG) {
+                    Villager villager = e.getPlayer().getWorld().spawn(e.getClickedBlock().getLocation().add(0.5, 1, 0.5), Villager.class);
+                    villager.setProfession(profession.getProfession());
+                    villager.setVillagerExperience(1); // to stop it from losing its profession
+                    MerchantData data = CustomMerchantManager.createMerchant(villager.getUniqueId(), merchantType, e.getPlayer());
+                    data.setExp(1);
+                } else if (hand.getType() == Material.WANDERING_TRADER_SPAWN_EGG) {
+                    WanderingTrader wanderingTrader = e.getPlayer().getWorld().spawn(e.getClickedBlock().getLocation().add(0.5, 1, 0.5), WanderingTrader.class);
+                    MerchantData data = CustomMerchantManager.createMerchant(wanderingTrader.getUniqueId(), merchantType, e.getPlayer());
+                    data.setExp(1);
+                }
+                e.setCancelled(true);
+
+                e.getPlayer().playSound(e.getPlayer(), Sound.ENTITY_VILLAGER_YES, 1F, 1F);
+                if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+                if (hand.getAmount() == 1) e.getPlayer().getInventory().setItem(e.getHand(), null);
+                else hand.setAmount(hand.getAmount() - 1);
+                return;
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onMerchantChangeType(PlayerInteractEntityEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
+        if (!(e.getRightClicked() instanceof Villager) && !(e.getRightClicked() instanceof WanderingTrader)) return;
+
+        ItemStack hand = e.getPlayer().getInventory().getItem(e.getHand());
+        if (ItemUtils.isEmpty(hand)) return;
+        ItemMeta meta = hand.getItemMeta();
+        boolean isBlocker = meta != null && CustomMerchantManager.isBlockerItem(meta);
+        if (isBlocker){
+            if (e.getRightClicked().getPersistentDataContainer().has(KEY_MERCHANT_BLOCKED, PersistentDataType.BYTE)) {
+                e.getRightClicked().getWorld().spawnParticle(
+                        Particle.BLOCK_MARKER,
+                        ((AbstractVillager) e.getRightClicked()).getEyeLocation().add(0, 1, 0),
+                        0,
+                        0,
+                        0,
+                        0,
+                        Bukkit.createBlockData(Material.BARRIER)
+                );
+                e.getRightClicked().getPersistentDataContainer().remove(KEY_MERCHANT_BLOCKED);
+            } else {
+                e.getRightClicked().getWorld().spawnParticle(
+                        Particle.BLOCK_MARKER,
+                        ((AbstractVillager) e.getRightClicked()).getEyeLocation().add(0, 1, 0),
+                        0,
+                        0,
+                        0,
+                        0,
+                        Bukkit.createBlockData(Material.STRUCTURE_VOID)
+                );
+                e.getRightClicked().getPersistentDataContainer().set(KEY_MERCHANT_BLOCKED, PersistentDataType.BYTE, (byte) 1);
+            }
+        }
+        MerchantType merchantType = meta == null ? null : CustomMerchantManager.getSummonType(meta);
+        if (merchantType == null) return;
+        for (ProfessionWrapper profession : CustomMerchantManager.getMerchantConfigurations().keySet()){
+            if (CustomMerchantManager.getMerchantConfiguration(profession).getMerchantTypes().contains(merchantType.getType())){
+                if (e.getRightClicked() instanceof Villager v){
+                    if (profession == ProfessionWrapper.TRAVELING) return;
+                    v.setProfession(profession.getProfession());
+                    v.setVillagerExperience(1); // to stop it from losing its profession
+                    MerchantData data = CustomMerchantManager.createMerchant(v.getUniqueId(), merchantType, e.getPlayer());
+                    data.setExp(1);
+                } else if (e.getRightClicked() instanceof WanderingTrader w){
+                    if (profession == ProfessionWrapper.TRAVELING) return;
+                    MerchantData data = CustomMerchantManager.createMerchant(w.getUniqueId(), merchantType, e.getPlayer());
+                    data.setExp(1);
+                }
+                e.setCancelled(true);
+
+                e.getPlayer().playSound(e.getPlayer(), Sound.ENTITY_VILLAGER_YES, 1F, 1F);
+                if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+                if (hand.getAmount() == 1) e.getPlayer().getInventory().setItem(e.getHand(), null);
+                else hand.setAmount(hand.getAmount() - 1);
+                return;
+            }
+        }
     }
 }

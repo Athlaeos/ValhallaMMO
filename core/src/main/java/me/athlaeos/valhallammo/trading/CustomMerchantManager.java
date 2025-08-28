@@ -528,4 +528,13 @@ public class CustomMerchantManager {
         if (stored == null) return null;
         return getMerchantType(stored);
     }
+
+    private static final NamespacedKey KEY_MERCHANT_BLOCK = new NamespacedKey(ValhallaMMO.getInstance(), "merchant_blocker");
+    public static void convertToBlockerItem(ItemMeta meta, boolean shouldBlock){
+        if (!shouldBlock) meta.getPersistentDataContainer().remove(KEY_MERCHANT_BLOCK);
+        else meta.getPersistentDataContainer().set(KEY_MERCHANT_BLOCK, PersistentDataType.BYTE, (byte) 1);
+    }
+    public static boolean isBlockerItem(ItemMeta meta){
+        return meta.getPersistentDataContainer().get(KEY_MERCHANT_BLOCK, PersistentDataType.BYTE) != null;
+    }
 }
