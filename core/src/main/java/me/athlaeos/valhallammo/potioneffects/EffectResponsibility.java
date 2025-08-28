@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.potioneffects;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.CustomDamageType;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.entity.Entity;
 
 import java.util.HashMap;
@@ -69,6 +70,12 @@ public class EffectResponsibility {
      */
     public static double getResponsibleDamageBuff(Entity victim, CustomDamageType damageType){
         Entity responsible = getResponsible(victim.getUniqueId(), damageType);
+        if (responsible == null || damageType.damageMultiplier() == null) return 0D;
+        else return AccumulativeStatManager.getCachedAttackerRelationalStats(damageType.damageMultiplier(), victim, responsible, 10000, true);
+    }
+
+    public static double getResponsibleDamageBuff(Entity victim, Entity damagerDefault, CustomDamageType damageType){
+        Entity responsible = Utils.thisorDefault(getResponsible(victim.getUniqueId(), damageType), damagerDefault);
         if (responsible == null || damageType.damageMultiplier() == null) return 0D;
         else return AccumulativeStatManager.getCachedAttackerRelationalStats(damageType.damageMultiplier(), victim, responsible, 10000, true);
     }
