@@ -89,12 +89,11 @@ public class EntityDamagedListener implements Listener {
         if (e.getEntity() instanceof LivingEntity l){
             String damageCause = getLastDamageCause(l);
             CustomDamageType type = CustomDamageType.getCustomType(damageCause);
-            if (type != null) e.setDamage(e.getDamage() * (1 + EffectResponsibility.getResponsibleDamageBuff(e.getEntity(), type)));
+            Entity lastDamager = lastDamager(e);
+            if (type != null) e.setDamage(e.getDamage() * (1 + EffectResponsibility.getResponsibleDamageBuff(e.getEntity(), lastDamager, type)));
             double originalDamage = e.getDamage();
             double customDamage = type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
-
             // custom damage did not kill entity
-            Entity lastDamager = lastDamager(e);
             if (e.getEntity() instanceof Player dP && lastDamager instanceof Player aP){
                 // pvp damage bonus and resistance mechanic
                 double bonus = AccumulativeStatManager.getCachedAttackerRelationalStats("PLAYER_DAMAGE_DEALT", dP, aP, 10000, true);

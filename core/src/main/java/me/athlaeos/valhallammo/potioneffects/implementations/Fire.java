@@ -53,7 +53,9 @@ public class Fire extends PotionEffectWrapper {
 
     @Override
     public void onInflict(LivingEntity p, LivingEntity causedBy, double amplifier, int duration, double intensity) {
-        p.setFireTicks(Math.max(p.getFireTicks(), (int) (intensity * duration)));
+        int newDuration = (int) (intensity * duration);
+        if (p.getFireTicks() > newDuration) return;
+        p.setFireTicks(newDuration);
         if (causedBy == null) return;
         EffectResponsibility.markResponsible(
                 p.getUniqueId(),
