@@ -751,7 +751,7 @@ public class MerchantListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onMerchantChangeType(PlayerInteractEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
         if (!(e.getRightClicked() instanceof Villager) && !(e.getRightClicked() instanceof WanderingTrader)) return;
@@ -761,6 +761,7 @@ public class MerchantListener implements Listener {
         ItemMeta meta = hand.getItemMeta();
         boolean isBlocker = meta != null && CustomMerchantManager.isBlockerItem(meta);
         if (isBlocker){
+            e.setCancelled(true);
             if (e.getRightClicked().getPersistentDataContainer().has(KEY_MERCHANT_BLOCKED, PersistentDataType.BYTE)) {
                 e.getRightClicked().getWorld().spawnParticle(
                         Particle.BLOCK_MARKER,
@@ -784,6 +785,7 @@ public class MerchantListener implements Listener {
                 );
                 e.getRightClicked().getPersistentDataContainer().set(KEY_MERCHANT_BLOCKED, PersistentDataType.BYTE, (byte) 1);
             }
+            return;
         }
         MerchantType merchantType = meta == null ? null : CustomMerchantManager.getSummonType(meta);
         if (merchantType == null) return;
