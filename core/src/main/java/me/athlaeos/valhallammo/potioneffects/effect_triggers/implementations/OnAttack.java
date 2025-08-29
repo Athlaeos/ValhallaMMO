@@ -54,8 +54,8 @@ public class OnAttack implements EffectTrigger, Listener {
 
         EffectTrigger onAttackInflictEnemy = EffectTriggerRegistry.getTrigger("on_attack_inflict_enemy");
         if (onAttackInflictEnemy != null && onAttackInflictEnemy.shouldTrigger(le)) {
-            if (!victimProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()).isEmpty()) {
-                onAttackInflictEnemy.trigger(le, victimProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()));
+            if (!attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()).isEmpty()) {
+                onAttackInflictEnemy.trigger(le, attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()));
             }
         }
 
@@ -68,8 +68,8 @@ public class OnAttack implements EffectTrigger, Listener {
 
         EffectTrigger onAttackInflictSelf = EffectTriggerRegistry.getTrigger("on_attack_inflict_self");
         if (onAttackInflictSelf != null && onAttackInflictSelf.shouldTrigger(le)) {
-            if (!victimProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_self", new ArrayList<>()).isEmpty()) {
-                onAttackInflictSelf.trigger(le, victimProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_self", new ArrayList<>()));
+            if (!attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_self", new ArrayList<>()).isEmpty()) {
+                onAttackInflictSelf.trigger(le, attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_self", new ArrayList<>()));
             }
         }
     }
