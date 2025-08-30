@@ -48,14 +48,14 @@ public class OnAttack implements EffectTrigger, Listener {
         EffectTrigger onAttackedInflictEnemy = EffectTriggerRegistry.getTrigger("on_attacked_inflict_enemy");
         if (onAttackedInflictEnemy != null && onAttackedInflictEnemy.shouldTrigger(le)) {
             if (!victimProperties.getPermanentPotionEffects().getOrDefault("on_attacked_inflict_enemy", new ArrayList<>()).isEmpty()) {
-                onAttackedInflictEnemy.trigger(le, victimProperties.getPermanentPotionEffects().getOrDefault("on_attacked_inflict_enemy", new ArrayList<>()));
+                onAttackedInflictEnemy.trigger(damager, victimProperties.getPermanentPotionEffects().getOrDefault("on_attacked_inflict_enemy", new ArrayList<>()));
             }
         }
 
         EffectTrigger onAttackInflictEnemy = EffectTriggerRegistry.getTrigger("on_attack_inflict_enemy");
         if (onAttackInflictEnemy != null && onAttackInflictEnemy.shouldTrigger(le)) {
             if (!attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()).isEmpty()) {
-                onAttackInflictEnemy.trigger(le, attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()));
+                onAttackInflictEnemy.trigger(damager, attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()));
             }
         }
 
