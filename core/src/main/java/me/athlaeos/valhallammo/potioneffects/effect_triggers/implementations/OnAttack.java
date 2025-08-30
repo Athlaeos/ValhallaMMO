@@ -69,7 +69,7 @@ public class OnAttack implements EffectTrigger, Listener {
         EffectTrigger onAttackInflictSelf = EffectTriggerRegistry.getTrigger("on_attack_inflict_self");
         if (onAttackInflictSelf != null && onAttackInflictSelf.shouldTrigger(le)) {
             if (!attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_self", new ArrayList<>()).isEmpty()) {
-                onAttackInflictSelf.trigger(le, attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_self", new ArrayList<>()));
+                onAttackInflictSelf.trigger(damager, attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_self", new ArrayList<>()));
             }
         }
     }

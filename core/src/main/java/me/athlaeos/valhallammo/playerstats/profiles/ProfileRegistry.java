@@ -17,6 +17,7 @@ import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerEvent;
 
@@ -70,6 +71,7 @@ public class ProfileRegistry {
         PlaceholderRegistry.registerPlaceholder(new ProfileNextLevelEXPPlaceholder("%" + p.getClass().getSimpleName().toLowerCase(Locale.US) + "_next_level_exp%", p.getClass(), StatFormat.INT));
     }
 
+    private static long lastSaved = 0;
     public static boolean setupDatabase() {
         if (persistence != null) return true;
 
@@ -98,6 +100,7 @@ public class ProfileRegistry {
         if (persistence.getConnection() == null) return false; // if SQLite fails, stop the plugin
 
         persistence.profileThreads.scheduleAtFixedRate(() -> {
+            if (lastSaved + delay_profile_saving > System.currentTimeMillis()) return;
             try {
                 long start = System.currentTimeMillis();
                 if (savingProfilesMessage) ValhallaMMO.logFine("Starting saving all profiles");
@@ -108,6 +111,7 @@ public class ProfileRegistry {
             } catch (Exception e) {
                 throw new RuntimeException("An error occurred while saving profiles", e);
             }
+            lastSaved = System.currentTimeMillis();
         }, delay_profile_saving, delay_profile_saving, TimeUnit.MILLISECONDS);
         return true;
     }
