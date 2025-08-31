@@ -15530,16 +15530,34 @@
     "maxOrderCount": 6
   },
   {
-    "id": "fletcher_buy_random_tipped_arrows",
-    "priority": 8,
-    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAxUSVBQRURfQVJST1dzcQB+AA4AAAAE\r\n",
-    "scalingCostItem": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAABg==\r\n",
-    "modifiers": [],
+    "id": "fletcher_buy_tipped_weakness_arrows",
+    "priority": 6,
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAMVElQUEVEX0FSUk9Xc3EAfgAPAAAA\r\nBHNxAH4AAHNxAH4AA3VxAH4ABgAAAAhxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQA\r\nBGxvcmV0AAlJdGVtRmxhZ3N0ABJQdWJsaWNCdWtraXRWYWx1ZXN0AAxjdXN0b20tY29sb3J0AA5j\r\ndXN0b20tZWZmZWN0c3VxAH4ABgAAAAh0AAhJdGVtTWV0YXQABlBPVElPTnQAoXsiZXh0cmEiOlt7\r\nImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhy\r\nb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6IlRp\r\ncHBlZCBBcnJvdyBvZiBXZWFrbmVzcyJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdADIeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0Ijoi7rSSIn0seyJp\r\ndGFsaWMiOmZhbHNlLCJjb2xvciI6InJlZCIsInRleHQiOiIgV2Vha25lc3MgSUkgKDA6MTEpIn1d\r\nLCJ0ZXh0IjoiIn1zcgATamF2YS51dGlsLkFycmF5TGlzdHiB0h2Zx2GdAwABSQAEc2l6ZXhwAAAA\r\nAXcEAAAAAXQAE0hJREVfUE9USU9OX0VGRkVDVFN4c3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMW\r\nYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAN0ABp2YWxo\r\nYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAEVdFQUtORVNTOjEuMDoxODAwdAAWdmFsaGFsbGFtbW86\r\naXRlbV9mbGFnc3QAEkRJU1BMQVlfQVRUUklCVVRFU3QAInZhbGhhbGxhbW1vOmRlZmF1bHRfc3Rv\r\ncmVkX2VmZmVjdHN0ABFXRUFLTkVTUzoxLjA6MTgwMHhzcQB+AABzcQB+AAN1cQB+AAYAAAAEcQB+\r\nAAh0AANSRUR0AARCTFVFdAAFR1JFRU51cQB+AAYAAAAEdAAFQ29sb3JzcQB+AA8AAABIcQB+ADpz\r\ncQB+AA8AAABNc3EAfgAidXEAfgAGAAAAAXNxAH4AAHNxAH4AA3VxAH4ABgAAAAdxAH4ACHQABmVm\r\nZmVjdHQACGR1cmF0aW9udAAJYW1wbGlmaWVydAAHYW1iaWVudHQADWhhcy1wYXJ0aWNsZXN0AAho\r\nYXMtaWNvbnVxAH4ABgAAAAd0AAxQb3Rpb25FZmZlY3RzcQB+AA8AAAASc3EAfgAPAAAHCHNxAH4A\r\nDwAAAAFzcgARamF2YS5sYW5nLkJvb2xlYW7NIHKA1Zz67gIAAVoABXZhbHVleHABcQB+AE1xAH4A\r\nTQ==\r\n",
+    "scalingCostItem": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAABA==\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "tipped_arrow_weakness",
+          "onlyExecuteModifiers": false,
+          "name": "replace_by_custom",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.AmountSet",
+        "DATA": {
+          "amount": 4,
+          "name": "amount_set",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
     "priceModifiers": [],
     "predicates": [],
     "predicateSelection": "ANY",
-    "weight": 5.0,
-    "weightQuality": 0.0,
+    "weight": 10.0,
+    "weightQuality": 5.0,
     "demandWeightModifier": 0.0,
     "demandWeightMaxQuantity": 0,
     "maxUses": 6,
@@ -15547,18 +15565,273 @@
     "priceRandomPositiveOffset": 1,
     "demandMaxUsesModifier": 0.0,
     "demandMaxUsesMaxQuantity": 0,
-    "villagerExperience": 7,
-    "rewardsExperience": 7.0,
-    "demandPriceMultiplier": 0.1,
+    "villagerExperience": 4,
+    "rewardsExperience": 4.0,
+    "demandPriceMultiplier": 0.09999999,
     "positiveReputationMultiplier": 1.0,
     "negativeReputationMultiplier": 1.0,
-    "demandPriceMax": 6,
+    "demandPriceMax": 0,
     "fixedUseCount": false,
     "exclusive": false,
     "restockDelay": 0,
-    "giftWeight": 3.0,
-    "refreshes": true,
-    "skillExp": 700.0,
+    "giftWeight": 4.999999,
+    "refreshes": false,
+    "skillExp": 400.0,
+    "isTradeable": true,
+    "maxOrderCount": 12
+  },
+  {
+    "id": "fletcher_buy_tipped_antiheal_arrows",
+    "priority": 7,
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAMVElQUEVEX0FSUk9Xc3EAfgAPAAAA\r\nBHNxAH4AAHNxAH4AA3VxAH4ABgAAAAhxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQA\r\nBGxvcmV0AAlJdGVtRmxhZ3N0ABJQdWJsaWNCdWtraXRWYWx1ZXN0AAxjdXN0b20tY29sb3J0AA5j\r\ndXN0b20tZWZmZWN0c3VxAH4ABgAAAAh0AAhJdGVtTWV0YXQABlBPVElPTnQAoXsiZXh0cmEiOlt7\r\nImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhy\r\nb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6IlRp\r\ncHBlZCBBcnJvdyBvZiBXZWFrbmVzcyJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdADIeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0Ijoi7rSSIn0seyJp\r\ndGFsaWMiOmZhbHNlLCJjb2xvciI6InJlZCIsInRleHQiOiIgV2Vha25lc3MgSUkgKDA6MTEpIn1d\r\nLCJ0ZXh0IjoiIn1zcgATamF2YS51dGlsLkFycmF5TGlzdHiB0h2Zx2GdAwABSQAEc2l6ZXhwAAAA\r\nAXcEAAAAAXQAE0hJREVfUE9USU9OX0VGRkVDVFN4c3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMW\r\nYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAN0ABp2YWxo\r\nYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAEVdFQUtORVNTOjEuMDoxODAwdAAWdmFsaGFsbGFtbW86\r\naXRlbV9mbGFnc3QAEkRJU1BMQVlfQVRUUklCVVRFU3QAInZhbGhhbGxhbW1vOmRlZmF1bHRfc3Rv\r\ncmVkX2VmZmVjdHN0ABFXRUFLTkVTUzoxLjA6MTgwMHhzcQB+AABzcQB+AAN1cQB+AAYAAAAEcQB+\r\nAAh0AANSRUR0AARCTFVFdAAFR1JFRU51cQB+AAYAAAAEdAAFQ29sb3JzcQB+AA8AAABIcQB+ADpz\r\ncQB+AA8AAABNc3EAfgAidXEAfgAGAAAAAXNxAH4AAHNxAH4AA3VxAH4ABgAAAAdxAH4ACHQABmVm\r\nZmVjdHQACGR1cmF0aW9udAAJYW1wbGlmaWVydAAHYW1iaWVudHQADWhhcy1wYXJ0aWNsZXN0AAho\r\nYXMtaWNvbnVxAH4ABgAAAAd0AAxQb3Rpb25FZmZlY3RzcQB+AA8AAAASc3EAfgAPAAAHCHNxAH4A\r\nDwAAAAFzcgARamF2YS5sYW5nLkJvb2xlYW7NIHKA1Zz67gIAAVoABXZhbHVleHABcQB+AE1xAH4A\r\nTQ==\r\n",
+    "scalingCostItem": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAABA==\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "tipped_arrow_antiheal",
+          "onlyExecuteModifiers": false,
+          "name": "replace_by_custom",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.AmountSet",
+        "DATA": {
+          "amount": 4,
+          "name": "amount_set",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "priceModifiers": [],
+    "predicates": [],
+    "predicateSelection": "ANY",
+    "weight": 10.0,
+    "weightQuality": 5.0,
+    "demandWeightModifier": 0.0,
+    "demandWeightMaxQuantity": 0,
+    "maxUses": 6,
+    "priceRandomNegativeOffset": -1,
+    "priceRandomPositiveOffset": 1,
+    "demandMaxUsesModifier": 0.0,
+    "demandMaxUsesMaxQuantity": 0,
+    "villagerExperience": 4,
+    "rewardsExperience": 4.0,
+    "demandPriceMultiplier": 0.09999999,
+    "positiveReputationMultiplier": 1.0,
+    "negativeReputationMultiplier": 1.0,
+    "demandPriceMax": 0,
+    "fixedUseCount": false,
+    "exclusive": false,
+    "restockDelay": 0,
+    "giftWeight": 4.999999,
+    "refreshes": false,
+    "skillExp": 400.0,
+    "isTradeable": true,
+    "maxOrderCount": 12
+  },
+  {
+    "id": "fletcher_buy_tipped_healing_arrows",
+    "priority": 8,
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAMVElQUEVEX0FSUk9Xc3EAfgAPAAAA\r\nBHNxAH4AAHNxAH4AA3VxAH4ABgAAAAhxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQA\r\nBGxvcmV0AAlJdGVtRmxhZ3N0ABJQdWJsaWNCdWtraXRWYWx1ZXN0AAxjdXN0b20tY29sb3J0AA5j\r\ndXN0b20tZWZmZWN0c3VxAH4ABgAAAAh0AAhJdGVtTWV0YXQABlBPVElPTnQAoXsiZXh0cmEiOlt7\r\nImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhy\r\nb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6IlRp\r\ncHBlZCBBcnJvdyBvZiBXZWFrbmVzcyJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdADIeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0Ijoi7rSSIn0seyJp\r\ndGFsaWMiOmZhbHNlLCJjb2xvciI6InJlZCIsInRleHQiOiIgV2Vha25lc3MgSUkgKDA6MTEpIn1d\r\nLCJ0ZXh0IjoiIn1zcgATamF2YS51dGlsLkFycmF5TGlzdHiB0h2Zx2GdAwABSQAEc2l6ZXhwAAAA\r\nAXcEAAAAAXQAE0hJREVfUE9USU9OX0VGRkVDVFN4c3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMW\r\nYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAN0ABp2YWxo\r\nYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAEVdFQUtORVNTOjEuMDoxODAwdAAWdmFsaGFsbGFtbW86\r\naXRlbV9mbGFnc3QAEkRJU1BMQVlfQVRUUklCVVRFU3QAInZhbGhhbGxhbW1vOmRlZmF1bHRfc3Rv\r\ncmVkX2VmZmVjdHN0ABFXRUFLTkVTUzoxLjA6MTgwMHhzcQB+AABzcQB+AAN1cQB+AAYAAAAEcQB+\r\nAAh0AANSRUR0AARCTFVFdAAFR1JFRU51cQB+AAYAAAAEdAAFQ29sb3JzcQB+AA8AAABIcQB+ADpz\r\ncQB+AA8AAABNc3EAfgAidXEAfgAGAAAAAXNxAH4AAHNxAH4AA3VxAH4ABgAAAAdxAH4ACHQABmVm\r\nZmVjdHQACGR1cmF0aW9udAAJYW1wbGlmaWVydAAHYW1iaWVudHQADWhhcy1wYXJ0aWNsZXN0AAho\r\nYXMtaWNvbnVxAH4ABgAAAAd0AAxQb3Rpb25FZmZlY3RzcQB+AA8AAAASc3EAfgAPAAAHCHNxAH4A\r\nDwAAAAFzcgARamF2YS5sYW5nLkJvb2xlYW7NIHKA1Zz67gIAAVoABXZhbHVleHABcQB+AE1xAH4A\r\nTQ==\r\n",
+    "scalingCostItem": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAABA==\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "tipped_arrow_healing",
+          "onlyExecuteModifiers": false,
+          "name": "replace_by_custom",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.AmountSet",
+        "DATA": {
+          "amount": 4,
+          "name": "amount_set",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "priceModifiers": [],
+    "predicates": [],
+    "predicateSelection": "ANY",
+    "weight": 10.0,
+    "weightQuality": 5.0,
+    "demandWeightModifier": 0.0,
+    "demandWeightMaxQuantity": 0,
+    "maxUses": 6,
+    "priceRandomNegativeOffset": -1,
+    "priceRandomPositiveOffset": 1,
+    "demandMaxUsesModifier": 0.0,
+    "demandMaxUsesMaxQuantity": 0,
+    "villagerExperience": 4,
+    "rewardsExperience": 4.0,
+    "demandPriceMultiplier": 0.09999999,
+    "positiveReputationMultiplier": 1.0,
+    "negativeReputationMultiplier": 1.0,
+    "demandPriceMax": 0,
+    "fixedUseCount": false,
+    "exclusive": false,
+    "restockDelay": 0,
+    "giftWeight": 4.999999,
+    "refreshes": false,
+    "skillExp": 400.0,
+    "isTradeable": true,
+    "maxOrderCount": 12
+  },
+  {
+    "id": "fletcher_buy_tipped_harming_arrows",
+    "priority": 9,
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAMVElQUEVEX0FSUk9Xc3EAfgAPAAAA\r\nBHNxAH4AAHNxAH4AA3VxAH4ABgAAAAhxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQA\r\nBGxvcmV0AAlJdGVtRmxhZ3N0ABJQdWJsaWNCdWtraXRWYWx1ZXN0AAxjdXN0b20tY29sb3J0AA5j\r\ndXN0b20tZWZmZWN0c3VxAH4ABgAAAAh0AAhJdGVtTWV0YXQABlBPVElPTnQAoXsiZXh0cmEiOlt7\r\nImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhy\r\nb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6IlRp\r\ncHBlZCBBcnJvdyBvZiBXZWFrbmVzcyJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdADIeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0Ijoi7rSSIn0seyJp\r\ndGFsaWMiOmZhbHNlLCJjb2xvciI6InJlZCIsInRleHQiOiIgV2Vha25lc3MgSUkgKDA6MTEpIn1d\r\nLCJ0ZXh0IjoiIn1zcgATamF2YS51dGlsLkFycmF5TGlzdHiB0h2Zx2GdAwABSQAEc2l6ZXhwAAAA\r\nAXcEAAAAAXQAE0hJREVfUE9USU9OX0VGRkVDVFN4c3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMW\r\nYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAN0ABp2YWxo\r\nYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAEVdFQUtORVNTOjEuMDoxODAwdAAWdmFsaGFsbGFtbW86\r\naXRlbV9mbGFnc3QAEkRJU1BMQVlfQVRUUklCVVRFU3QAInZhbGhhbGxhbW1vOmRlZmF1bHRfc3Rv\r\ncmVkX2VmZmVjdHN0ABFXRUFLTkVTUzoxLjA6MTgwMHhzcQB+AABzcQB+AAN1cQB+AAYAAAAEcQB+\r\nAAh0AANSRUR0AARCTFVFdAAFR1JFRU51cQB+AAYAAAAEdAAFQ29sb3JzcQB+AA8AAABIcQB+ADpz\r\ncQB+AA8AAABNc3EAfgAidXEAfgAGAAAAAXNxAH4AAHNxAH4AA3VxAH4ABgAAAAdxAH4ACHQABmVm\r\nZmVjdHQACGR1cmF0aW9udAAJYW1wbGlmaWVydAAHYW1iaWVudHQADWhhcy1wYXJ0aWNsZXN0AAho\r\nYXMtaWNvbnVxAH4ABgAAAAd0AAxQb3Rpb25FZmZlY3RzcQB+AA8AAAASc3EAfgAPAAAHCHNxAH4A\r\nDwAAAAFzcgARamF2YS5sYW5nLkJvb2xlYW7NIHKA1Zz67gIAAVoABXZhbHVleHABcQB+AE1xAH4A\r\nTQ==\r\n",
+    "scalingCostItem": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAABA==\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "tipped_arrow_harming",
+          "onlyExecuteModifiers": false,
+          "name": "replace_by_custom",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.AmountSet",
+        "DATA": {
+          "amount": 4,
+          "name": "amount_set",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "priceModifiers": [],
+    "predicates": [],
+    "predicateSelection": "ANY",
+    "weight": 10.0,
+    "weightQuality": 5.0,
+    "demandWeightModifier": 0.0,
+    "demandWeightMaxQuantity": 0,
+    "maxUses": 6,
+    "priceRandomNegativeOffset": -1,
+    "priceRandomPositiveOffset": 1,
+    "demandMaxUsesModifier": 0.0,
+    "demandMaxUsesMaxQuantity": 0,
+    "villagerExperience": 4,
+    "rewardsExperience": 4.0,
+    "demandPriceMultiplier": 0.09999999,
+    "positiveReputationMultiplier": 1.0,
+    "negativeReputationMultiplier": 1.0,
+    "demandPriceMax": 0,
+    "fixedUseCount": false,
+    "exclusive": false,
+    "restockDelay": 0,
+    "giftWeight": 4.999999,
+    "refreshes": false,
+    "skillExp": 400.0,
+    "isTradeable": true,
+    "maxOrderCount": 12
+  },
+  {
+    "id": "fletcher_buy_tipped_slowness_arrows",
+    "priority": 10,
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAMVElQUEVEX0FSUk9Xc3EAfgAPAAAA\r\nBHNxAH4AAHNxAH4AA3VxAH4ABgAAAAhxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQA\r\nBGxvcmV0AAlJdGVtRmxhZ3N0ABJQdWJsaWNCdWtraXRWYWx1ZXN0AAxjdXN0b20tY29sb3J0AA5j\r\ndXN0b20tZWZmZWN0c3VxAH4ABgAAAAh0AAhJdGVtTWV0YXQABlBPVElPTnQAoXsiZXh0cmEiOlt7\r\nImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhy\r\nb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6IlRp\r\ncHBlZCBBcnJvdyBvZiBXZWFrbmVzcyJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdADIeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0Ijoi7rSSIn0seyJp\r\ndGFsaWMiOmZhbHNlLCJjb2xvciI6InJlZCIsInRleHQiOiIgV2Vha25lc3MgSUkgKDA6MTEpIn1d\r\nLCJ0ZXh0IjoiIn1zcgATamF2YS51dGlsLkFycmF5TGlzdHiB0h2Zx2GdAwABSQAEc2l6ZXhwAAAA\r\nAXcEAAAAAXQAE0hJREVfUE9USU9OX0VGRkVDVFN4c3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMW\r\nYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAN0ABp2YWxo\r\nYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAEVdFQUtORVNTOjEuMDoxODAwdAAWdmFsaGFsbGFtbW86\r\naXRlbV9mbGFnc3QAEkRJU1BMQVlfQVRUUklCVVRFU3QAInZhbGhhbGxhbW1vOmRlZmF1bHRfc3Rv\r\ncmVkX2VmZmVjdHN0ABFXRUFLTkVTUzoxLjA6MTgwMHhzcQB+AABzcQB+AAN1cQB+AAYAAAAEcQB+\r\nAAh0AANSRUR0AARCTFVFdAAFR1JFRU51cQB+AAYAAAAEdAAFQ29sb3JzcQB+AA8AAABIcQB+ADpz\r\ncQB+AA8AAABNc3EAfgAidXEAfgAGAAAAAXNxAH4AAHNxAH4AA3VxAH4ABgAAAAdxAH4ACHQABmVm\r\nZmVjdHQACGR1cmF0aW9udAAJYW1wbGlmaWVydAAHYW1iaWVudHQADWhhcy1wYXJ0aWNsZXN0AAho\r\nYXMtaWNvbnVxAH4ABgAAAAd0AAxQb3Rpb25FZmZlY3RzcQB+AA8AAAASc3EAfgAPAAAHCHNxAH4A\r\nDwAAAAFzcgARamF2YS5sYW5nLkJvb2xlYW7NIHKA1Zz67gIAAVoABXZhbHVleHABcQB+AE1xAH4A\r\nTQ==\r\n",
+    "scalingCostItem": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAABA==\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "tipped_arrow_slowness",
+          "onlyExecuteModifiers": false,
+          "name": "replace_by_custom",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.AmountSet",
+        "DATA": {
+          "amount": 4,
+          "name": "amount_set",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "priceModifiers": [],
+    "predicates": [],
+    "predicateSelection": "ANY",
+    "weight": 10.0,
+    "weightQuality": 5.0,
+    "demandWeightModifier": 0.0,
+    "demandWeightMaxQuantity": 0,
+    "maxUses": 6,
+    "priceRandomNegativeOffset": -1,
+    "priceRandomPositiveOffset": 1,
+    "demandMaxUsesModifier": 0.0,
+    "demandMaxUsesMaxQuantity": 0,
+    "villagerExperience": 4,
+    "rewardsExperience": 4.0,
+    "demandPriceMultiplier": 0.09999999,
+    "positiveReputationMultiplier": 1.0,
+    "negativeReputationMultiplier": 1.0,
+    "demandPriceMax": 0,
+    "fixedUseCount": false,
+    "exclusive": false,
+    "restockDelay": 0,
+    "giftWeight": 4.999999,
+    "refreshes": false,
+    "skillExp": 400.0,
+    "isTradeable": true,
+    "maxOrderCount": 12
+  },
+  {
+    "id": "fletcher_buy_tipped_poison_arrows",
+    "priority": 11,
+    "result": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR0AARtZXRhdXEAfgAGAAAABXQAHm9yZy5idWtraXQuaW52ZW50\r\nb3J5Lkl0ZW1TdGFja3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQ\r\namF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAwhdAAMVElQUEVEX0FSUk9Xc3EAfgAPAAAA\r\nBHNxAH4AAHNxAH4AA3VxAH4ABgAAAAhxAH4ACHQACW1ldGEtdHlwZXQADGRpc3BsYXktbmFtZXQA\r\nBGxvcmV0AAlJdGVtRmxhZ3N0ABJQdWJsaWNCdWtraXRWYWx1ZXN0AAxjdXN0b20tY29sb3J0AA5j\r\ndXN0b20tZWZmZWN0c3VxAH4ABgAAAAh0AAhJdGVtTWV0YXQABlBPVElPTnQAoXsiZXh0cmEiOlt7\r\nImJvbGQiOmZhbHNlLCJpdGFsaWMiOmZhbHNlLCJ1bmRlcmxpbmVkIjpmYWxzZSwic3RyaWtldGhy\r\nb3VnaCI6ZmFsc2UsIm9iZnVzY2F0ZWQiOmZhbHNlLCJjb2xvciI6IndoaXRlIiwidGV4dCI6IlRp\r\ncHBlZCBBcnJvdyBvZiBXZWFrbmVzcyJ9XSwidGV4dCI6IiJ9c3IANmNvbS5nb29nbGUuY29tbW9u\r\nLmNvbGxlY3QuSW1tdXRhYmxlTGlzdCRTZXJpYWxpemVkRm9ybQAAAAAAAAAAAgABWwAIZWxlbWVu\r\ndHN0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHB1cQB+AAYAAAABdADIeyJleHRyYSI6W3siYm9sZCI6\r\nZmFsc2UsIml0YWxpYyI6ZmFsc2UsInVuZGVybGluZWQiOmZhbHNlLCJzdHJpa2V0aHJvdWdoIjpm\r\nYWxzZSwib2JmdXNjYXRlZCI6ZmFsc2UsImNvbG9yIjoid2hpdGUiLCJ0ZXh0Ijoi7rSSIn0seyJp\r\ndGFsaWMiOmZhbHNlLCJjb2xvciI6InJlZCIsInRleHQiOiIgV2Vha25lc3MgSUkgKDA6MTEpIn1d\r\nLCJ0ZXh0IjoiIn1zcgATamF2YS51dGlsLkFycmF5TGlzdHiB0h2Zx2GdAwABSQAEc2l6ZXhwAAAA\r\nAXcEAAAAAXQAE0hJREVfUE9USU9OX0VGRkVDVFN4c3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMW\r\nYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAN0ABp2YWxo\r\nYWxsYW1tbzpzdG9yZWRfZWZmZWN0c3QAEVdFQUtORVNTOjEuMDoxODAwdAAWdmFsaGFsbGFtbW86\r\naXRlbV9mbGFnc3QAEkRJU1BMQVlfQVRUUklCVVRFU3QAInZhbGhhbGxhbW1vOmRlZmF1bHRfc3Rv\r\ncmVkX2VmZmVjdHN0ABFXRUFLTkVTUzoxLjA6MTgwMHhzcQB+AABzcQB+AAN1cQB+AAYAAAAEcQB+\r\nAAh0AANSRUR0AARCTFVFdAAFR1JFRU51cQB+AAYAAAAEdAAFQ29sb3JzcQB+AA8AAABIcQB+ADpz\r\ncQB+AA8AAABNc3EAfgAidXEAfgAGAAAAAXNxAH4AAHNxAH4AA3VxAH4ABgAAAAdxAH4ACHQABmVm\r\nZmVjdHQACGR1cmF0aW9udAAJYW1wbGlmaWVydAAHYW1iaWVudHQADWhhcy1wYXJ0aWNsZXN0AAho\r\nYXMtaWNvbnVxAH4ABgAAAAd0AAxQb3Rpb25FZmZlY3RzcQB+AA8AAAASc3EAfgAPAAAHCHNxAH4A\r\nDwAAAAFzcgARamF2YS5sYW5nLkJvb2xlYW7NIHKA1Zz67gIAAVoABXZhbHVleHABcQB+AE1xAH4A\r\nTQ==\r\n",
+    "scalingCostItem": "rO0ABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGph\r\ndmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAk\r\nU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAkwABGtleXN0ABJMamF2YS9sYW5nL09iamVjdDtMAAZ2\r\nYWx1ZXNxAH4ABHhwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABHQAAj09\r\ndAABdnQABHR5cGV0AAZhbW91bnR1cQB+AAYAAAAEdAAeb3JnLmJ1a2tpdC5pbnZlbnRvcnkuSXRl\r\nbVN0YWNrc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxh\r\nbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAADCF0AAdFTUVSQUxEc3EAfgAOAAAABA==\r\n",
+    "modifiers": [
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed",
+        "DATA": {
+          "item": "tipped_arrow_poison",
+          "onlyExecuteModifiers": false,
+          "name": "replace_by_custom",
+          "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.AmountSet",
+        "DATA": {
+          "amount": 4,
+          "name": "amount_set",
+          "priority": "NEUTRAL"
+        }
+      }
+    ],
+    "priceModifiers": [],
+    "predicates": [],
+    "predicateSelection": "ANY",
+    "weight": 10.0,
+    "weightQuality": 5.0,
+    "demandWeightModifier": 0.0,
+    "demandWeightMaxQuantity": 0,
+    "maxUses": 6,
+    "priceRandomNegativeOffset": -1,
+    "priceRandomPositiveOffset": 1,
+    "demandMaxUsesModifier": 0.0,
+    "demandMaxUsesMaxQuantity": 0,
+    "villagerExperience": 4,
+    "rewardsExperience": 4.0,
+    "demandPriceMultiplier": 0.09999999,
+    "positiveReputationMultiplier": 1.0,
+    "negativeReputationMultiplier": 1.0,
+    "demandPriceMax": 0,
+    "fixedUseCount": false,
+    "exclusive": false,
+    "restockDelay": 0,
+    "giftWeight": 4.999999,
+    "refreshes": false,
+    "skillExp": 400.0,
     "isTradeable": true,
     "maxOrderCount": 12
   },

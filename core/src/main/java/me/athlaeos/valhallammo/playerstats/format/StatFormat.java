@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.playerstats.format.formats.*;
 @SuppressWarnings("all")
 public abstract class StatFormat {
     public static final StatFormat ROMAN = new RomanNumeralFormat();
+    public static final StatFormat ROMAN_PLUS_ONE = new RomanNumeralFormat(1);
     public static final StatFormat PERCENTILE_BASE_1_P1 = new PercentileBase1Format(1);
     public static final StatFormat PERCENTILE_BASE_1_P2 = new PercentileBase1Format(2);
     public static final StatFormat PERCENTILE_BASE_1_P3 = new PercentileBase1Format(3);

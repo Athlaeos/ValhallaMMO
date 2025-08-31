@@ -329,11 +329,12 @@
           "fletcher_buy_iron_arrows",
           "fletcher_buy_bow_t3",
           "fletcher_buy_crossbow_t3",
-          "fletcher_buy_random_tipped_arrows",
-          "fletcher_buy_random_tipped_arrows",
-          "fletcher_buy_random_tipped_arrows",
-          "fletcher_buy_random_tipped_arrows",
-          "fletcher_buy_random_tipped_arrows"
+          "fletcher_buy_tipped_poison_arrows",
+          "fletcher_buy_tipped_harming_arrows",
+          "fletcher_buy_tipped_healing_arrows",
+          "fletcher_buy_tipped_weakness_arrows",
+          "fletcher_buy_tipped_slowness_arrows",
+          "fletcher_buy_tipped_antiheal_arrows"
         ]
       },
       "APPRENTICE": {

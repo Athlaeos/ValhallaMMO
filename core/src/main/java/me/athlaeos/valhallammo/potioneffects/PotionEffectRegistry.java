@@ -340,7 +340,7 @@ public class PotionEffectRegistry {
         registerNewEffect(new GenericWrapper("BACK_PROTECTION", (i) -> i >= 0, "\uEEAA", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.TURTLE_HELMET));
         registerNewEffect(new GenericWrapper("FRONT_PROTECTION", (i) -> i >= 0, "\uEEAB", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.OBSERVER));
         registerNewEffect(new GenericWrapper("DAMAGE_ABSORPTION", (i) -> i >= 0, "\uEEAC", StatFormat.FLOAT_P2).addModifier(Material.OBSIDIAN));
-        registerNewEffect(new GenericWrapper("ARMOR_INVISIBILITY", (i) -> true, "\uEEAD", StatFormat.NONE).addModifier(Material.GLASS, 0, 0));
+        registerNewEffect(new GenericWrapper("ARMOR_INVISIBILITY", (i) -> true, "\uEEAD", StatFormat.ROMAN_PLUS_ONE).addModifier(Material.GLASS, 0, 0));
         registerNewEffect(new GenericWrapper("BLOCKING_SPEED", (i) -> i >= 0, "\uEEAE", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.SHIELD));
         registerNewEffect(new GenericWrapper("DAMAGE_ANIMAL", (i) -> i >= 0, "\uEEAF", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.COOKED_BEEF));
         registerNewEffect(new GenericWrapper("DAMAGE_UNDEAD", (i) -> i >= 0, "\uEEB0", StatFormat.PERCENTILE_BASE_1_P1).addModifier(Material.ROTTEN_FLESH));

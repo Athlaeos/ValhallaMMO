@@ -54,6 +54,7 @@ import org.bukkit.potion.PotionType;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.function.BiPredicate;
 
 import static me.athlaeos.valhallammo.utility.ItemUtils.itemOrAir;
 
@@ -108,6 +109,18 @@ public final class NMS_v1_20_R4 implements NMS {
               p.sendEquipmentChange(entity, EquipmentSlot.CHEST, itemOrAir(chestplate));
               p.sendEquipmentChange(entity, EquipmentSlot.LEGS, itemOrAir(leggings));
               p.sendEquipmentChange(entity, EquipmentSlot.FEET, itemOrAir(boots));
+        }
+    }
+
+    @Override
+    public void sendArmorChange(LivingEntity entity, org.bukkit.inventory.ItemStack helmet, org.bukkit.inventory.ItemStack chestplate, org.bukkit.inventory.ItemStack leggings, org.bukkit.inventory.ItemStack boots, BiPredicate<LivingEntity, LivingEntity> exclusionRule) {
+        if (entity.getEquipment() == null) return;
+        for (Player p : PacketListener.getPlayersInPacketRange(entity.getLocation())){
+            if (!exclusionRule.test(entity, p)) continue;
+            p.sendEquipmentChange(entity, EquipmentSlot.HEAD, itemOrAir(helmet));
+            p.sendEquipmentChange(entity, EquipmentSlot.CHEST, itemOrAir(chestplate));
+            p.sendEquipmentChange(entity, EquipmentSlot.LEGS, itemOrAir(leggings));
+            p.sendEquipmentChange(entity, EquipmentSlot.FEET, itemOrAir(boots));
         }
     }
 

@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 public interface NMS extends Listener {
     Channel channel(Player p);
@@ -72,6 +74,13 @@ public interface NMS extends Listener {
     void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type);
 
     void sendArmorChange(LivingEntity entity, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots);
+
+    /**
+     * The BiPredicate<LivingEntity, LivingEntity> represents the WEARER, then the OBSERVER
+     */
+    default void sendArmorChange(LivingEntity entity, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, BiPredicate<LivingEntity, LivingEntity> exclusionRule){
+        sendArmorChange(entity, helmet, chestplate, leggings, boots);
+    }
     default void resetArmorChange(LivingEntity entity){
         EntityEquipment equipment = entity.getEquipment();
         if (equipment == null) return;
