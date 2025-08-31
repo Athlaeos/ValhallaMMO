@@ -295,8 +295,6 @@ public abstract class ProfilePersistence {
     public abstract void addColumnIfNotExists(String tableName, String columnName, String columnType);
     public abstract String getType();
 
-
-
     public boolean isLoaded(UUID p) {
         CompletableFuture<ClassToInstanceMap<Profile>> future = persistentProfiles.getIfPresent(p);
         return future != null && future.isDone();
@@ -390,6 +388,7 @@ public abstract class ProfilePersistence {
                     runPersistentStartingPerks = true;
                     trySetPersistentProfile(uuid, resetProfile, profileType.getClass());
                 }
+                markProfilesReset(p.getUniqueId(), ProfileRegistry.getRegisteredProfiles().keySet());
             }
             case SKILLS_ONLY -> {
                 // Only resets skill progress, keeping persistent stats
@@ -412,6 +411,7 @@ public abstract class ProfilePersistence {
                     trySetSkillProfile(uuid, profileType.getBlankProfile(p), profileType.getClass());
                 }
                 setPersistentProfile(uuid, powerProfile, PowerProfile.class);
+                markProfilesReset(p.getUniqueId(), ProfileRegistry.getRegisteredProfiles().keySet());
             }
             case SKILLS_AND_STATS -> {
                 // set both persistent and skill stats to 0
@@ -420,6 +420,7 @@ public abstract class ProfilePersistence {
                     trySetSkillProfile(uuid, profileType.getBlankProfile(p), profileType.getClass());
                 }
                 runPersistentStartingPerks = true;
+                markProfilesReset(p.getUniqueId(), ProfileRegistry.getRegisteredProfiles().keySet());
             }
             case SKILLS_REFUND_EXP -> {
                 PowerProfile powerProfile = ProfileRegistry.getPersistentProfile(p, PowerProfile.class);
@@ -434,6 +435,7 @@ public abstract class ProfilePersistence {
                     if (profileType instanceof PowerProfile) continue;
                     trySetSkillProfile(uuid, profileType.getBlankProfile(p), profileType.getClass());
                 }
+                markProfilesReset(p.getUniqueId(), ProfileRegistry.getRegisteredProfiles().keySet());
             }
         }
         SkillRegistry.updateSkillProgression(p, runPersistentStartingPerks);
@@ -467,6 +469,9 @@ public abstract class ProfilePersistence {
 
         trySetSkillProfile(uuid, profile.getBlankProfile(uuid), associatedSkill.getProfileType());
         SkillRegistry.updateSkillProgression(p, false);
+        Collection<Class<? extends Profile>> profilesToReset = resetProfiles.getOrDefault(p.getUniqueId(), new HashSet<>());
+        profilesToReset.add(profile.getClass());
+        markProfilesReset(p.getUniqueId(), profilesToReset);
     }
 
     /**
@@ -480,8 +485,16 @@ public abstract class ProfilePersistence {
         PROFILES_TO_SAVE.put(p, types);
     }
 
+    private static Map<UUID, Collection<Class<? extends Profile>>> resetProfiles = new HashMap<>();
+
     @SuppressWarnings("all")
     public boolean shouldPersist(Profile profile){
+        Collection<Class<? extends Profile>> profilesToReset = resetProfiles.getOrDefault(profile.getOwner(), new HashSet<>());
+        if (profilesToReset.contains(profile.getClass())) {
+            profilesToReset.remove(profile.getClass());
+            resetProfiles.put(profile.getOwner(), profilesToReset);
+            return true;
+        }
         if (profile.getOwner() == null || (!(profile instanceof PowerProfile) && profile.getLevel() == 0 && profile.getNewGamePlus() == 0 && !profile.shouldForcePersist())) return false;
         if (profile instanceof PowerProfile p && p.getUnlockedPerks().isEmpty() && p.getTotalEXP() <= 0) return false;
         return PROFILES_TO_SAVE.getOrDefault(profile.getOwner(), Set.of()).contains(profile.getClass());
@@ -495,6 +508,10 @@ public abstract class ProfilePersistence {
         Set<String> set = new HashSet<>(Arrays.asList(serializedStringSet.split("<>")));
         set.removeIf(String::isEmpty);
         return set;
+    }
+
+    public static void markProfilesReset(UUID owner, Collection<Class<? extends Profile>> profileTypes){
+        resetProfiles.put(owner, profileTypes);
     }
 }
 

@@ -80,6 +80,6 @@ public class AttributeAttackerSource implements AccumulativeStatSource, EvEAccum
 
     @Override
     public double fetch(Entity statPossessor, boolean use) {
-        return 0;
+        return fetch(null, statPossessor, use);
     }
 }
