@@ -313,25 +313,36 @@ public class CustomRecipeRegistry {
     public static void unregister(String recipe){
         setChangesMade();
         allRecipes.remove(recipe);
-        if (brewingRecipes.containsKey(recipe)) brewingRecipes.remove(recipe);
-        else if (cauldronRecipes.containsKey(recipe)) cauldronRecipes.remove(recipe);
-        else if (immersiveRecipes.containsKey(recipe)) {
+        if (brewingRecipes.containsKey(recipe)) {
+            brewingRecipes.remove(recipe);
+            RecipeOverviewMenu.resetCache(RecipeOverviewMenu.BREWING.getId());
+        } else if (cauldronRecipes.containsKey(recipe)) {
+            cauldronRecipes.remove(recipe);
+            RecipeOverviewMenu.resetCache(RecipeOverviewMenu.CAULDRON.getId());
+        } else if (immersiveRecipes.containsKey(recipe)) {
             ImmersiveCraftingRecipe r = immersiveRecipes.get(recipe);
             Material base = ItemUtils.getBaseMaterial(r.getBlock());
             Collection<ImmersiveCraftingRecipe> recipesByBlock = immersiveRecipesByBlock.getOrDefault(base, new HashSet<>());
             recipesByBlock.remove(r);
             immersiveRecipesByBlock.put(base, recipesByBlock);
             immersiveRecipes.remove(recipe);
+            RecipeOverviewMenu.resetCache(RecipeOverviewMenu.IMMERSIVE.getId());
         } else {
             if (cookingRecipes.containsKey(recipe)) {
                 cookingRecipes.get(recipe).unregisterRecipe();
                 cookingRecipes.remove(recipe);
+                RecipeOverviewMenu.resetCache(RecipeOverviewMenu.FURNACE.getId());
+                RecipeOverviewMenu.resetCache(RecipeOverviewMenu.CAMPFIRE.getId());
+                RecipeOverviewMenu.resetCache(RecipeOverviewMenu.SMOKING.getId());
+                RecipeOverviewMenu.resetCache(RecipeOverviewMenu.BLASTING.getId());
             } else if (gridRecipes.containsKey(recipe)) {
                 gridRecipes.get(recipe).unregisterRecipe();
                 gridRecipes.remove(recipe);
+                RecipeOverviewMenu.resetCache(RecipeOverviewMenu.CRAFTING_TABLE.getId());
             } else if (smithingRecipes.containsKey(recipe)) {
                 smithingRecipes.get(recipe).unregisterRecipe();
                 smithingRecipes.remove(recipe);
+                RecipeOverviewMenu.resetCache(RecipeOverviewMenu.SMITHING.getId());
             }
         }
         removePermission(recipe);

@@ -212,7 +212,7 @@ public class EntityDamagedListener implements Listener {
     }
 
     private static Entity lastDamager(EntityDamageEvent e){
-        UUID lastDamagerUUID = e instanceof EntityDamageByEntityEvent eve ? eve.getDamager().getUniqueId() : lastDamagedByMap.get(e.getEntity().getUniqueId());
+        UUID lastDamagerUUID = e instanceof EntityDamageByEntityEvent eve ? EntityUtils.getTrueDamager(eve).getUniqueId() : lastDamagedByMap.get(e.getEntity().getUniqueId());
         return lastDamagerUUID == null ? null : ValhallaMMO.getInstance().getServer().getEntity(lastDamagerUUID);
     }
 
