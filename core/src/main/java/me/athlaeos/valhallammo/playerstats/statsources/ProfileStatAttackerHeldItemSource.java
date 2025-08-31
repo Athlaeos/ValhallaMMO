@@ -61,7 +61,7 @@ public class ProfileStatAttackerHeldItemSource implements AccumulativeStatSource
 
     @Override
     public double fetch(Entity p, boolean use) {
-        return 0;
+        return fetch(null, p, use);
     }
 
     public StatFormat getFormat(){

@@ -34,6 +34,6 @@ public class PotionEffectAttackerSource implements AccumulativeStatSource, EvEAc
 
     @Override
     public double fetch(Entity statPossessor, boolean use) {
-        return 0;
+        return fetch(null, statPossessor, use);
     }
 }

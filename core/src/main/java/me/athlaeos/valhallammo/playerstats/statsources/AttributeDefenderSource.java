@@ -49,15 +49,6 @@ public class AttributeDefenderSource implements AccumulativeStatSource, EvEAccum
 
     @Override
     public double fetch(Entity statPossessor, boolean use) {
-        if (statPossessor instanceof LivingEntity l){
-            double value = EntityUtils.combinedAttributeValue(l, attribute, weightClass, statPenalty, false);
-
-            Collection<ArmorSet> activeSets = ArmorSetRegistry.getActiveArmorSets(l);
-            for (ArmorSet set : activeSets){
-                value += set.getSetBonus().getOrDefault(attribute, 0D);
-            }
-            return (negative ? -1 : 1) * value;
-        }
-        return 0;
+        return fetch(statPossessor, null, use);
     }
 }
