@@ -482,7 +482,8 @@ public abstract class ProfilePersistence {
 
     @SuppressWarnings("all")
     public boolean shouldPersist(Profile profile){
-        if (profile.getOwner() == null || (profile.getLevel() == 0 && profile.getNewGamePlus() == 0 && !profile.shouldForcePersist())) return false;
+        if (profile.getOwner() == null || (!(profile instanceof PowerProfile) && profile.getLevel() == 0 && profile.getNewGamePlus() == 0 && !profile.shouldForcePersist())) return false;
+        if (profile instanceof PowerProfile p && p.getUnlockedPerks().isEmpty() && p.getTotalEXP() <= 0) return false;
         return PROFILES_TO_SAVE.getOrDefault(profile.getOwner(), Set.of()).contains(profile.getClass());
     }
 
