@@ -38,6 +38,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
 
     @Override
     public void processItem(ModifierContext context) {
+        if (condition == null) condition = "constant";
         PotionEffectWrapper baseWrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(this.effect), null);
         if (baseWrapper == null) return;
         baseWrapper.setAmplifier(this.amplifier);
@@ -54,6 +55,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
         if (button == 11) duration = Math.max(0, duration + ((e.isShiftClick() ? 30 : 1) * (e.isLeftClick() ? 20 : -20)));
         else if (button == 12) amplifier = amplifier + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? bigStep : smallStep));
         else if (button == 13) {
+            if (condition == null) condition = "constant";
             List<String> conditions = new ArrayList<>(EffectTriggerRegistry.getRegisteredTriggers().keySet());
             conditions.sort(Comparator.comparing(s -> s));
             int currentCondition = conditions.indexOf(condition);
@@ -70,6 +72,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
 
     @Override
     public Map<Integer, ItemStack> getButtons() {
+        if (condition == null) condition = "constant";
         PotionEffectWrapper wrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(effect), null);
         if (wrapper == null) return new HashMap<>();
         String effect = wrapper.isVanilla() ? (this.effect.toLowerCase(java.util.Locale.US).replace("_", " ") + " " +StringUtils.toRoman(Math.max(0, (int) amplifier) + 1) + " " + StringUtils.toTimeStamp(duration, 20)) :
@@ -121,6 +124,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
 
     @Override
     public String getActiveDescription() {
+        if (condition == null) condition = "constant";
         PotionEffectWrapper wrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(this.effect), null);
         if (wrapper == null) return "&8";
         String effect = wrapper.isVanilla() ? (this.effect.toLowerCase(java.util.Locale.US).replace("_", " ") + " " + StringUtils.toRoman(Math.max(0, (int) amplifier) + 1) + " " + StringUtils.toTimeStamp(duration, 20)) :
