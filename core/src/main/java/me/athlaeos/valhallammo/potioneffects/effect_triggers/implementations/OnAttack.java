@@ -42,32 +42,32 @@ public class OnAttack implements EffectTrigger, Listener {
         Entity trueDamager = EntityUtils.getTrueDamager(e);
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof LivingEntity le) ||
                 e.isCancelled() || !(trueDamager instanceof LivingEntity damager)) return;
-        EntityProperties attackerProperties = EntityCache.getAndCacheProperties(le);
-        EntityProperties victimProperties = EntityCache.getAndCacheProperties(damager);
+        EntityProperties attackerProperties = EntityCache.getAndCacheProperties(damager);
+        EntityProperties victimProperties = EntityCache.getAndCacheProperties(le);
 
         EffectTrigger onAttackedInflictEnemy = EffectTriggerRegistry.getTrigger("on_attacked_inflict_enemy");
-        if (onAttackedInflictEnemy != null && onAttackedInflictEnemy.shouldTrigger(le)) {
+        if (onAttackedInflictEnemy != null) {
             if (!victimProperties.getPermanentPotionEffects().getOrDefault("on_attacked_inflict_enemy", new ArrayList<>()).isEmpty()) {
                 onAttackedInflictEnemy.trigger(damager, victimProperties.getPermanentPotionEffects().getOrDefault("on_attacked_inflict_enemy", new ArrayList<>()));
             }
         }
 
         EffectTrigger onAttackInflictEnemy = EffectTriggerRegistry.getTrigger("on_attack_inflict_enemy");
-        if (onAttackInflictEnemy != null && onAttackInflictEnemy.shouldTrigger(le)) {
+        if (onAttackInflictEnemy != null) {
             if (!attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()).isEmpty()) {
                 onAttackInflictEnemy.trigger(le, attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()));
             }
         }
 
         EffectTrigger onAttackedInflictSelf = EffectTriggerRegistry.getTrigger("on_attacked_inflict_self");
-        if (onAttackedInflictSelf != null && onAttackedInflictSelf.shouldTrigger(le)) {
+        if (onAttackedInflictSelf != null) {
             if (!victimProperties.getPermanentPotionEffects().getOrDefault("on_attacked_inflict_self", new ArrayList<>()).isEmpty()) {
                 onAttackedInflictSelf.trigger(le, victimProperties.getPermanentPotionEffects().getOrDefault("on_attacked_inflict_self", new ArrayList<>()));
             }
         }
 
         EffectTrigger onAttackInflictSelf = EffectTriggerRegistry.getTrigger("on_attack_inflict_self");
-        if (onAttackInflictSelf != null && onAttackInflictSelf.shouldTrigger(le)) {
+        if (onAttackInflictSelf != null) {
             if (!attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_self", new ArrayList<>()).isEmpty()) {
                 onAttackInflictSelf.trigger(damager, attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_self", new ArrayList<>()));
             }
