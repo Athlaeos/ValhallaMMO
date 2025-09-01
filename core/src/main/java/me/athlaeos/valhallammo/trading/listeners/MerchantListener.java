@@ -344,6 +344,9 @@ public class MerchantListener implements Listener {
             ItemMeta tagMeta = hand.getItemMeta();
             if (tagMeta != null && tagMeta.hasDisplayName()) return;
         }
+        MerchantConfiguration configuration = CustomMerchantManager.getMerchantConfigurations().get(ProfessionWrapper.ofProfession(v instanceof Villager villager ? villager.getProfession() : null));
+        if (configuration == null || configuration.getMerchantTypes().isEmpty()) return;
+
         if (tradingMerchants.contains(v.getUniqueId())) {
             e.setCancelled(true);
             return;
