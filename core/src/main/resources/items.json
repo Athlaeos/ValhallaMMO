@@ -824,6 +824,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemType",
+        "DATA": {
+          "material": "DIAMOND_SWORD",
+          "name": "material",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SmithingNeutralQualitySet",
         "DATA": {
           "neutral": 140,
@@ -5292,6 +5300,14 @@
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
           "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemType",
+        "DATA": {
+          "material": "WOODEN_SWORD",
+          "name": "material",
+          "priority": "SOONEST"
         }
       },
       {
@@ -12639,6 +12655,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemType",
+        "DATA": {
+          "material": "STONE_SWORD",
+          "name": "material",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd",
         "DATA": {
           "attribute": "IMMUNITY_REDUCTION",
@@ -16724,6 +16748,14 @@
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
           "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "WEIGHTLESS",
+          "name": "weight_class",
+          "priority": "LATERISH"
         }
       },
       {
@@ -22279,6 +22311,14 @@
         }
       },
       {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemType",
+        "DATA": {
+          "material": "IRON_SWORD",
+          "name": "material",
+          "priority": "SOONEST"
+        }
+      },
+      {
         "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.FlagVanillaAdd",
         "DATA": {
           "flag": "HIDE_ATTRIBUTES",
@@ -22513,6 +22553,14 @@
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
           "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemWeightClass",
+        "DATA": {
+          "weightClass": "WEIGHTLESS",
+          "name": "weight_class",
+          "priority": "LATERISH"
         }
       },
       {
@@ -23870,6 +23918,14 @@
           "flag": "DISPLAY_ATTRIBUTES",
           "name": "flag_display_attributes",
           "priority": "SOON"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemType",
+        "DATA": {
+          "material": "GOLDEN_SWORD",
+          "name": "material",
+          "priority": "SOONEST"
         }
       },
       {

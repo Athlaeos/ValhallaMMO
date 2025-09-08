@@ -55,7 +55,7 @@ public class OnAttack implements EffectTrigger, Listener {
         EffectTrigger onAttackInflictEnemy = EffectTriggerRegistry.getTrigger("on_attack_inflict_enemy");
         if (onAttackInflictEnemy != null) {
             if (!attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()).isEmpty()) {
-                onAttackInflictEnemy.trigger(damager, attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()));
+                onAttackInflictEnemy.trigger(le, attackerProperties.getPermanentPotionEffects().getOrDefault("on_attack_inflict_enemy", new ArrayList<>()));
             }
         }
 
