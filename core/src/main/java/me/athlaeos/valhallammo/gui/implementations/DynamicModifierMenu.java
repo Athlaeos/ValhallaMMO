@@ -227,7 +227,8 @@ public class DynamicModifierMenu extends Menu {
         }
     }
 
-    private final List<ItemStack> recipeButtons = new ArrayList<>();
+    private static final List<ItemStack> recipeButtons = new ArrayList<>();
+    private static final List<ItemStack> itemButtons = new ArrayList<>();
     private final NamespacedKey RECIPES_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "key_recipes");
     private final NamespacedKey INDEX_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "key_index");
 
@@ -261,15 +262,17 @@ public class DynamicModifierMenu extends Menu {
 
     private void setItemIndexModifiersView(){
         List<ItemStack> buttons = new ArrayList<>();
-        List<String> itemIDs = new ArrayList<>(CustomItemRegistry.getItems().keySet());
-        itemIDs.sort(Comparator.comparing(s -> s));
+        if (itemButtons.isEmpty()){
+            List<String> itemIDs = new ArrayList<>(CustomItemRegistry.getItems().keySet());
+            itemIDs.sort(Comparator.comparing(s -> s));
 
-        for (String i : itemIDs){
-            CustomItem item = Catch.catchOrElse(() -> CustomItemRegistry.getItem(i), null);
-            if (item == null) continue;
-            buttons.add(icon(item.getId(), "&6Grid Recipes", item.getItem(), item.getModifiers(), false));
-        }
-        recipeButtons.addAll(buttons);
+            for (String i : itemIDs){
+                CustomItem item = Catch.catchOrElse(() -> CustomItemRegistry.getItem(i), null);
+                if (item == null) continue;
+                buttons.add(icon(item.getId(), "&6Grid Recipes", item.getItem(), item.getModifiers(), false));
+            }
+            itemButtons.addAll(buttons);
+        } else buttons.addAll(itemButtons);
 
         Map<Integer, List<ItemStack>> pages = Utils.paginate(45, buttons);
         currentPage = Math.max(1, Math.min(currentPage, pages.size()));
@@ -393,6 +396,11 @@ public class DynamicModifierMenu extends Menu {
             if (!ItemUtils.isEmpty(centerItem) && this.currentCategory.id().equalsIgnoreCase(centerValue)) break;
             Collections.rotate(scrollItems, 1);
         }
+    }
+
+    public static void resetCache(){
+        recipeButtons.clear();
+        itemButtons.clear();
     }
 
     private enum View{

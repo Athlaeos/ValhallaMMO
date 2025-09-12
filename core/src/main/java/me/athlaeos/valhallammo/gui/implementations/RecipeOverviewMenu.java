@@ -205,6 +205,7 @@ public class RecipeOverviewMenu extends Menu {
 
     public static void resetCache(String category){
         cachedButtons.remove(category);
+        DynamicModifierMenu.resetCache();
     }
 
     private interface ItemBuilderCallback{

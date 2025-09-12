@@ -112,6 +112,7 @@ public class DisabledRecipesCategory extends RecipeCategory{
             if (CustomRecipeRegistry.getDisabledRecipes().contains(keyToToggle)) CustomRecipeRegistry.removeDisabledRecipe(keyToToggle);
             else CustomRecipeRegistry.addDisabledRecipe(keyToToggle);
             CustomRecipeRegistry.setChangesMade();
+            RecipeOverviewMenu.resetCache(RecipeOverviewMenu.DISABLED.getId());
         } catch (IllegalArgumentException ignored) {}
     }
 

@@ -457,7 +457,7 @@ public class ItemAttributesRegistry {
         List<AttributeWrapper> sorted = new ArrayList<>(wrappers);
         sorted.sort(Comparator.comparing(AttributeWrapper::getAttribute));
         StringBuilder saved = new StringBuilder();
-        for (AttributeWrapper wrapper : wrappers) {
+        for (AttributeWrapper wrapper : sorted) {
             if (!saved.isEmpty()) saved.append(';');
             saved.append(wrapper.getAttribute()).append(':').append(wrapper.getValue()).append(':').append(wrapper.getOperation()).append(':').append(wrapper.isHidden());
         }
