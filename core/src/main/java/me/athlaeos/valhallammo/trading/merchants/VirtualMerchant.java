@@ -4,13 +4,14 @@ import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.trading.dom.MerchantTrade;
 import me.athlaeos.valhallammo.trading.listeners.MerchantListener;
+import me.athlaeos.valhallammo.trading.menu.MerchantMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 
 import java.util.*;
 
-public abstract class VirtualMerchant {
+public abstract class VirtualMerchant implements MerchantMenu {
     private final Merchant merchant;
     private final UUID merchantID;
     private final MerchantData data;
@@ -29,10 +30,12 @@ public abstract class VirtualMerchant {
         this.recipes = recipes;
     }
 
+    @Override
     public UUID getMerchantID() {
         return merchantID;
     }
 
+    @Override
     public MerchantData getData() {
         return data;
     }
@@ -67,16 +70,13 @@ public abstract class VirtualMerchant {
         this.recipes = recipes;
     }
 
-    public abstract void onClose();
-    public abstract void onOpen();
-
     public abstract String getMenuName();
 
     public void open(){
         changeRecipes = false;
         this.merchant.setRecipes(recipes.stream().map(Pair::getTwo).toList());
-        VirtualMerchant oldMenu = MerchantListener.getCurrentActiveVirtualMerchant(playerMenuUtility.getOwner());
-        if (oldMenu != null) MerchantListener.virtualMerchantClose(playerMenuUtility.getOwner(), oldMenu);
+        MerchantMenu oldMenu = MerchantListener.getCurrentActiveVirtualMerchant(playerMenuUtility.getOwner());
+        if (oldMenu instanceof VirtualMerchant virtualMerchant) MerchantListener.virtualMerchantClose(playerMenuUtility.getOwner(), virtualMerchant);
         MerchantListener.setActiveTradingMenu(playerMenuUtility.getOwner(), this);
         if (merchantID != null) MerchantListener.getTradingMerchants().add(merchantID);
         playerMenuUtility.getOwner().openMerchant(merchant, true);

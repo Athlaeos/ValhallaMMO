@@ -10,7 +10,7 @@
       "JOURNEYMAN": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 40,
+        "expRequirement": 160,
         "trades": [
           "farmer_sell_melons",
           "farmer_buy_cookies",
@@ -22,7 +22,7 @@
       "EXPERT": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 160,
+        "expRequirement": 320,
         "trades": [
           "farmer_buy_apple_pie",
           "farmer_buy_random_suspicious_stew",
@@ -34,7 +34,7 @@
       "APPRENTICE": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 10,
+        "expRequirement": 40,
         "trades": [
           "farmer_sell_pumpkin",
           "farmer_buy_pumpkin_pie",
@@ -85,7 +85,7 @@
       "JOURNEYMAN": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 40,
+        "expRequirement": 160,
         "trades": [
           "leatherworker_sell_rabbit_hide",
           "leatherworker_buy_saddle",
@@ -97,7 +97,7 @@
       "EXPERT": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 160,
+        "expRequirement": 320,
         "trades": [
           "leatherworker_sell_turtle_scute",
           "leatherworker_buy_bundle",
@@ -110,7 +110,7 @@
       "APPRENTICE": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 10,
+        "expRequirement": 40,
         "trades": [
           "generic_sell_flint",
           "leatherworker_buy_leather_helmet_t2",
@@ -161,7 +161,7 @@
       "JOURNEYMAN": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 40,
+        "expRequirement": 160,
         "trades": [
           "butcher_buy_cleaver",
           "butcher_sell_raw_mutton",
@@ -171,7 +171,7 @@
       "EXPERT": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 160,
+        "expRequirement": 320,
         "trades": [
           "butcher_sell_dried_kelp_block",
           "butcher_buy_luxurious_stew",
@@ -183,7 +183,7 @@
       "APPRENTICE": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 10,
+        "expRequirement": 40,
         "trades": [
           "generic_sell_coal",
           "butcher_buy_cooked_chicken",
@@ -232,7 +232,7 @@
       "JOURNEYMAN": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 40,
+        "expRequirement": 160,
         "trades": [
           "armorer_sell_lava_bucket",
           "armorer_buy_enchanted_iron_helmet",
@@ -244,7 +244,7 @@
       "EXPERT": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 160,
+        "expRequirement": 320,
         "trades": [
           "generic_sell_diamond",
           "armorer_buy_enchanted_diamond_helmet",
@@ -256,7 +256,7 @@
       "APPRENTICE": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 10,
+        "expRequirement": 40,
         "trades": [
           "generic_sell_iron",
           "generic_buy_bell",
@@ -311,7 +311,7 @@
       "JOURNEYMAN": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 40,
+        "expRequirement": 160,
         "trades": [
           "fletcher_sell_feathers",
           "fletcher_buy_bow_t2",
@@ -323,7 +323,7 @@
       "EXPERT": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 160,
+        "expRequirement": 320,
         "trades": [
           "fletcher_sell_targets",
           "fletcher_buy_iron_arrows",
@@ -340,7 +340,7 @@
       "APPRENTICE": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 10,
+        "expRequirement": 40,
         "trades": [
           "generic_sell_flint",
           "fletcher_buy_bow_t1",
@@ -393,7 +393,7 @@
       "JOURNEYMAN": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 40,
+        "expRequirement": 160,
         "trades": [
           "generic_sell_flint",
           "toolsmith_buy_enchanted_iron_axe",
@@ -405,7 +405,7 @@
       "EXPERT": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 160,
+        "expRequirement": 320,
         "trades": [
           "generic_sell_diamond",
           "toolsmith_buy_enchanted_diamond_axe",
@@ -417,7 +417,7 @@
       "APPRENTICE": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 10,
+        "expRequirement": 40,
         "trades": [
           "generic_sell_iron",
           "generic_buy_bell",
@@ -472,7 +472,7 @@
       "JOURNEYMAN": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 40,
+        "expRequirement": 160,
         "trades": [
           "generic_sell_flint",
           "weaponsmith_buy_iron_sword",
@@ -489,7 +489,7 @@
       "EXPERT": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 160,
+        "expRequirement": 320,
         "trades": [
           "generic_sell_diamond",
           "weaponsmith_buy_diamond_greataxe",
@@ -506,7 +506,7 @@
       "APPRENTICE": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 10,
+        "expRequirement": 40,
         "trades": [
           "generic_sell_iron",
           "generic_buy_bell",
@@ -577,7 +577,7 @@
       "JOURNEYMAN": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 40,
+        "expRequirement": 160,
         "trades": [
           "cleric_sell_rabbit_feet",
           "cleric_buy_glowstone_dust",
@@ -588,7 +588,7 @@
       "EXPERT": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 160,
+        "expRequirement": 320,
         "trades": [
           "cleric_sell_glass_bottles",
           "cleric_buy_ender_pearl",
@@ -600,7 +600,7 @@
       "APPRENTICE": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 10,
+        "expRequirement": 40,
         "trades": [
           "cleric_sell_gold",
           "cleric_buy_lapis_lazuli",
@@ -654,7 +654,7 @@
       "JOURNEYMAN": {
         "rolls": 2.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 40,
+        "expRequirement": 160,
         "trades": [
           "mason_sell_granite",
           "mason_sell_andesite",
@@ -671,7 +671,7 @@
       "EXPERT": {
         "rolls": 2.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 160,
+        "expRequirement": 320,
         "trades": [
           "mason_sell_nether_quartz",
           "mason_buy_quartz_block",
@@ -687,7 +687,7 @@
       "APPRENTICE": {
         "rolls": 2.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 10,
+        "expRequirement": 40,
         "trades": [
           "mason_sell_stone",
           "mason_buy_cobbled_deepslate",
@@ -745,7 +745,7 @@
       "JOURNEYMAN": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 40,
+        "expRequirement": 160,
         "trades": [
           "shepherd_sell_random_dye_uncommon",
           "shepherd_buy_red_dye",
@@ -764,7 +764,7 @@
       "EXPERT": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 160,
+        "expRequirement": 320,
         "trades": [
           "shepherd_sell_random_dye_rare",
           "shepherd_buy_phoenix_banner",
@@ -781,7 +781,7 @@
       "APPRENTICE": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 10,
+        "expRequirement": 40,
         "trades": [
           "shepherd_sell_random_dye_common",
           "shepherd_buy_pink_wool",
@@ -841,7 +841,7 @@
       "JOURNEYMAN": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 40,
+        "expRequirement": 160,
         "trades": [
           "fisherman_sell_tropical_fish",
           "fisherman_sell_pufferfish",
@@ -854,7 +854,7 @@
       "EXPERT": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 160,
+        "expRequirement": 320,
         "trades": [
           "fisherman_buy_prismarine_crystals",
           "fisherman_buy_prismarine_shards",
@@ -867,7 +867,7 @@
       "APPRENTICE": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 10,
+        "expRequirement": 40,
         "trades": [
           "fisherman_sell_cod",
           "fisherman_sell_salmon",
@@ -919,7 +919,7 @@
       "JOURNEYMAN": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 40,
+        "expRequirement": 160,
         "trades": [
           "librarian_sell_ink_sacs",
           "librarian_buy_glass",
@@ -934,7 +934,7 @@
       "EXPERT": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 160,
+        "expRequirement": 320,
         "trades": [
           "librarian_sell_book_and_quill",
           "librarian_buy_compass",
@@ -951,7 +951,7 @@
       "APPRENTICE": {
         "rolls": 1.0,
         "rollQuality": 0.30000000000000004,
-        "expRequirement": 10,
+        "expRequirement": 40,
         "trades": [
           "librarian_sell_books",
           "librarian_buy_lantern",

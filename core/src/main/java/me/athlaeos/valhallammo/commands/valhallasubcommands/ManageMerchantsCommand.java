@@ -86,8 +86,8 @@ public class ManageMerchantsCommand implements Command {
 
     @Override
     public List<String> getSubcommandArgs(CommandSender sender, String[] args) {
-        if (args.length == 2) return List.of("summonitem");
-        if (args.length == 3) return new ArrayList<>(CustomMerchantManager.getRegisteredMerchantTypes().keySet());
+        if (args.length == 2) return List.of("summonitem", "blockeritem");
+        if (args.length == 3 && !args[2].equalsIgnoreCase("blockeritem")) return new ArrayList<>(CustomMerchantManager.getRegisteredMerchantTypes().keySet());
         return Command.noSubcommandArgs();
     }
 }

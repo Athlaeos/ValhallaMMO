@@ -89,7 +89,7 @@ public class PotionBelt {
         if (!isPotionBelt(belt.getMeta())) return null; // item is not a belt, cant swap potion
         List<ItemStack> potions = getPotions(belt.getMeta());
         if (potions.isEmpty()) {
-            return belt.get(); // belt has no potions, return plain belt only
+            return getStoredBelt(belt); // belt has no potions, return plain belt only
         }
         int selected = getIndex(belt.getMeta());
         int newIndex = (selected + bySlots < 0) ?
@@ -107,7 +107,9 @@ public class PotionBelt {
     public static ItemStack deleteSelectedPotion(ItemBuilder belt){
         if (!isPotionBelt(belt.getMeta())) return null; // item is not a belt, do not select potion
         List<ItemStack> potions = getPotions(belt.getMeta());
-        if (potions.isEmpty()) return belt.translate().get(); // belt has no potions, return plain belt only
+        if (potions.isEmpty()) {
+            return getStoredBelt(belt); // belt has no potions, return plain belt only
+        }
         int selected = Math.max(0, Math.min(potions.size() - 1, getIndex(belt.getMeta())));
         potions.remove(selected);
         setPotions(belt.getMeta(), potions);
@@ -121,7 +123,7 @@ public class PotionBelt {
     public static PotionExtractionDetails removeSelectedPotion(ItemBuilder belt){
         if (!isPotionBelt(belt.getMeta())) return null; // item is not a belt, do not select potion
         List<ItemStack> potions = getPotions(belt.getMeta());
-        if (potions.isEmpty()) return new PotionExtractionDetails(null, belt.get()); // belt has no potions, return plain belt only
+        if (potions.isEmpty()) return new PotionExtractionDetails(null, getStoredBelt(belt)); // belt has no potions, return plain belt only
         int selected = Math.max(0, Math.min(potions.size() - 1, getIndex(belt.getMeta())));
         ItemStack potion = potions.remove(selected);
         setPotions(belt.getMeta(), potions);
@@ -185,9 +187,9 @@ public class PotionBelt {
 
     public static ItemStack getStoredBelt(ItemBuilder meta){
         String data = meta.getMeta().getPersistentDataContainer().get(KEY_BELT_ITEM, PersistentDataType.STRING);
-        if (data == null) return null;
+        if (data == null) return meta.get();
         ItemStack stored = ItemUtils.deserialize(data);
-        if (stored == null) return null;
+        if (stored == null) return meta.get();
         ItemBuilder storedItem = new ItemBuilder(stored);
         TranslationManager.translateItem(storedItem);
         return storedItem.get();

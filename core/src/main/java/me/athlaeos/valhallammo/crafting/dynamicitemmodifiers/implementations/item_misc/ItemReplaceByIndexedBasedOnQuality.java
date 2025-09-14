@@ -31,12 +31,17 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
 
     @Override
     public void processItem(ModifierContext context) {
-        int skill = switch (skillToScaleWith) {
-            case "SMITHING" -> SmithingItemPropertyManager.getQuality(context.getItem().getMeta());
-            case "ALCHEMY" -> AlchemyItemPropertyManager.getQuality(context.getItem().getMeta());
-            case "ENCHANTING" -> (int) (AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, true) * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", context.getCrafter(), 10000, true)));
-            default -> ProfileCache.getOrCache(context.getCrafter(), SkillRegistry.getSkill(skillToScaleWith).getProfileType()).getLevel();
-        };
+        int skill = 0;
+        if (SmithingItemPropertyManager.hasSmithingQuality(context.getItem().getMeta())){
+            skill = SmithingItemPropertyManager.getQuality(context.getItem().getMeta());
+        } else {
+            skill = switch (skillToScaleWith) {
+                case "SMITHING" -> SmithingItemPropertyManager.getQuality(context.getItem().getMeta());
+                case "ALCHEMY" -> AlchemyItemPropertyManager.getQuality(context.getItem().getMeta());
+                case "ENCHANTING" -> (int) (AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, true) * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", context.getCrafter(), 10000, true)));
+                default -> ProfileCache.getOrCache(context.getCrafter(), SkillRegistry.getSkill(skillToScaleWith).getProfileType()).getLevel();
+            };
+        }
         List<Integer> sortedQualities = new ArrayList<>(items.keySet());
         sortedQualities.sort(Comparator.comparingInt(i -> i));
         int highestItem = 0;

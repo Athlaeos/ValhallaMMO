@@ -348,7 +348,9 @@ public class MartialArtsSkill extends Skill implements Listener {
                 e.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK || !(e.getEntity() instanceof LivingEntity l) ||
                 EntityClassification.matchesClassification(l, EntityClassification.PASSIVE)) return;
         Entity damager = EntityDamagedListener.getLastDamager(l);
-        Player p = damager instanceof Player pl ? pl : damager instanceof Trident t && t.getShooter() instanceof Player pl ? pl : null;
+        EntityDamageByEntityEvent byEntityEvent = e.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent en ? en : null;
+        if (byEntityEvent != null && !(byEntityEvent.getDamager() instanceof Player)) return;
+        Player p = damager instanceof Player pl ? pl : null;
         if (p != null && EntityUtils.isUnarmed(p)){
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 if (!p.isOnline()) return;

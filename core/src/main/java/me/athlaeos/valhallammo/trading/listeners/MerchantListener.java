@@ -18,12 +18,14 @@ import me.athlaeos.valhallammo.skills.skills.implementations.TradingSkill;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.*;
 import me.athlaeos.valhallammo.trading.happiness.HappinessSourceRegistry;
+import me.athlaeos.valhallammo.trading.menu.MerchantMenu;
 import me.athlaeos.valhallammo.trading.menu.ServiceMenu;
 import me.athlaeos.valhallammo.trading.merchants.VirtualMerchant;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.PotionEffectMappings;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.*;
@@ -43,6 +45,7 @@ import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.LootContext;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectTypeWrapper;
 import org.bukkit.util.Vector;
 
@@ -50,7 +53,7 @@ import java.util.*;
 
 public class MerchantListener implements Listener {
     private static final NamespacedKey KEY_PROFESSION_DELAY = new NamespacedKey(ValhallaMMO.getInstance(), "time_career_change");
-    private static final Map<UUID, VirtualMerchant> activeTradingMenus = new HashMap<>();
+    private static final Map<UUID, MerchantMenu> activeTradingMenus = new HashMap<>();
     private static final Collection<UUID> tradingMerchants = new HashSet<>();
 
     private static final YamlConfiguration config = CustomMerchantManager.getTradingConfig();
@@ -85,10 +88,26 @@ public class MerchantListener implements Listener {
     private final double reputationCureVillager = config.getDouble("reputation_cure_villager", 70);
     private final double reputationTrade = config.getDouble("reputation_trade", 0.5);
 
+    public MerchantListener(){
+        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+            for (UUID player : activeTradingMenus.keySet()){
+                MerchantMenu merchant = activeTradingMenus.get(player);
+                if (merchant == null) continue;
+                AbstractVillager villager = merchant.getData().getVillager();
+                if (villager == null || villager.isDead() || !villager.isValid()) continue;
+                Player p = ValhallaMMO.getInstance().getServer().getPlayer(player);
+                if (p == null || !p.isOnline() || p.isDead() || !p.isValid()) continue;
+                villager.addPotionEffect(new PotionEffect(PotionEffectMappings.SLOWNESS.getPotionEffectType(), 10, 10, true, false, false));
+            }
+        }, 5L, 5L);
+    }
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onClose(InventoryCloseEvent e){
         if (e.getInventory().getType() != InventoryType.MERCHANT) return;
-        virtualMerchantClose((Player) e.getPlayer(), getCurrentActiveVirtualMerchant((Player) e.getPlayer()));
+        MerchantMenu menu = getCurrentActiveVirtualMerchant((Player) e.getPlayer());
+        if (!(menu instanceof VirtualMerchant virtualMerchant)) return;
+        virtualMerchantClose((Player) e.getPlayer(), virtualMerchant);
     }
 
     public static void virtualMerchantClose(Player p, VirtualMerchant virtualMerchant){
@@ -146,10 +165,10 @@ public class MerchantListener implements Listener {
     public void onTrade(InventoryClickEvent e){
         if (!(e.getClickedInventory() instanceof MerchantInventory m) || e.isCancelled() || m.getSelectedRecipe() == null ||
                 e.getRawSlot() != 2 || ItemUtils.isEmpty(m.getItem(2)) || ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())) return;
-        VirtualMerchant merchantInterface = activeTradingMenus.get(e.getWhoClicked().getUniqueId());
-        if (merchantInterface == null || merchantInterface.getMerchantID() == null) return;
+        MerchantMenu merchantInterface = activeTradingMenus.get(e.getWhoClicked().getUniqueId());
+        if (!(merchantInterface instanceof VirtualMerchant virtualMerchant) || merchantInterface.getMerchantID() == null) return;
         UUID merchantID = merchantInterface.getMerchantID();
-        Pair<MerchantTrade, MerchantRecipe> recipePair = merchantInterface.getRecipes().get(m.getSelectedRecipeIndex());
+        Pair<MerchantTrade, MerchantRecipe> recipePair = virtualMerchant.getRecipes().get(m.getSelectedRecipeIndex());
         MerchantRecipe recipe = recipePair.getTwo();
         ItemStack result = ItemUtils.isEmpty(recipe.getResult()) ? null : recipe.getResult();//.clone()
         ItemMeta meta = result == null ? null : result.getItemMeta();
@@ -205,7 +224,7 @@ public class MerchantListener implements Listener {
                 return;
             }
         }
-        timesTraded = Math.min(timesTraded, merchantInterface.getMaxTimesTradeable(trade.getID()));
+        timesTraded = Math.min(timesTraded, virtualMerchant.getMaxTimesTradeable(trade.getID()));
         if (timesTraded <= 0) {
             e.setCancelled(true);
             return;
@@ -224,7 +243,7 @@ public class MerchantListener implements Listener {
                 if (tradeData == null) return; // should never really happen, but here as a precaution
                 MerchantType type = CustomMerchantManager.getMerchantType(event.getMerchantData().getType());
                 if (type == null) return; // should also never really happen unless a type is deleted during trading
-                merchantInterface.setMaxTimesTradeable(trade.getID(), merchantInterface.getMaxTimesTradeable(trade.getID()) - event.getTimesTraded());
+                virtualMerchant.setMaxTimesTradeable(trade.getID(), virtualMerchant.getMaxTimesTradeable(trade.getID()) - event.getTimesTraded());
                 tradeData.setLastTraded(System.currentTimeMillis());
                 tradeData.setDemand(tradeData.getDemand() + finalTimesTraded);
                 float perTradeWeight = trade.getPerTradeWeight((Player) e.getWhoClicked(), tradeData);
@@ -299,7 +318,7 @@ public class MerchantListener implements Listener {
                     int reputationQuantity = event.getTimesTraded();
                     CustomMerchantManager.modifyTradingReputation(data, (Player) e.getWhoClicked(), reputationQuantity * ((float) reputationTrade));
                     int exp = Utils.randomAverage(event.getTimesTraded() * event.getCustomTrade().getVillagerExperience());
-                    merchantInterface.setExpToGrant(merchantInterface.getExpToGrant() + exp);
+                    virtualMerchant.setExpToGrant(virtualMerchant.getExpToGrant() + exp);
                 }
             });
         });
@@ -640,10 +659,21 @@ public class MerchantListener implements Listener {
         }
     }
 
+    private static final Collection<Material> villagerFoodItems = new HashSet<>(
+            Set.of(
+                    Material.WHEAT,
+                    Material.BEETROOT,
+                    Material.CARROT,
+                    Material.POTATO,
+                    Material.BREAD
+            )
+    );
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onItemThrow(ItemSpawnEvent e){
         if (e.isCancelled() || e.getEntity().getThrower() == null || !(ValhallaMMO.getInstance().getServer().getEntity(e.getEntity().getThrower()) instanceof AbstractVillager a) ||
                 ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
+        if (villagerFoodItems.contains(e.getEntity().getItemStack().getType())) return; // food items are excluded because villagers throw these to each other constantly
         CustomMerchantManager.getMerchantData(a.getUniqueId(), data -> {
             ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
                 MerchantData d = tryCreateData(data, a, null);
@@ -707,11 +737,11 @@ public class MerchantListener implements Listener {
         }
     }
 
-    public static VirtualMerchant getCurrentActiveVirtualMerchant(Player player){
+    public static MerchantMenu getCurrentActiveVirtualMerchant(Player player){
         return activeTradingMenus.get(player.getUniqueId());
     }
 
-    public static void setActiveTradingMenu(Player player, VirtualMerchant inventory){
+    public static void setActiveTradingMenu(Player player, MerchantMenu inventory){
         activeTradingMenus.put(player.getUniqueId(), inventory);
     }
 

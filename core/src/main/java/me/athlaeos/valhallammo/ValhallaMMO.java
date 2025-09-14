@@ -267,7 +267,7 @@ public class ValhallaMMO extends JavaPlugin {
         registerListener(new WorldSaveListener());
 //        registerListener(new ThrownWeaponListener()); // might end up not using
 
-        // registerListener(new Scripts());
+//        registerListener(new Scripts());
 
         if (tradingSystemEnabled) registerListener(new MerchantListener());
         registerListener(new BlockHardnessStick());

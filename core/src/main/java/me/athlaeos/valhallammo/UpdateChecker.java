@@ -49,7 +49,7 @@ public class UpdateChecker {
                                 Utils.chat("&dA new version of ValhallaMMO is available: " + v),
                                 Utils.chat("&dI recommend you take a look at the update notes"),
                                 Utils.chat("&dto see the importance of this update."),
-                                Utils.chat("&5https://www.spigotmc.org/resources/valhallammo-1-19-1-21-8.94921/"));
+                                Utils.chat("&5https://www.spigotmc.org/resources/valhallammo-premium-1-19-1-21-8.128164/"));
                     }
                 }, ValhallaMMO.getInstance());
             }

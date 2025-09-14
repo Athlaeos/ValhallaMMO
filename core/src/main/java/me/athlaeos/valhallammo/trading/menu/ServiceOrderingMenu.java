@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.trading.menu;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ExactChoice;
@@ -59,7 +60,8 @@ public class ServiceOrderingMenu extends Menu {
     private static final int indexNextPage = 53;
 
     private final OrderService service;
-    private Map<String, Integer> orders;
+    private final Map<String, Integer> orders;
+    private final Map<String, Integer> existingOrders;
     private final MerchantData data;
     private final float happiness;
     private final float renown;
@@ -72,8 +74,9 @@ public class ServiceOrderingMenu extends Menu {
         this.service = service;
         this.happiness = data.getVillager() == null ? 0F : HappinessSourceRegistry.getHappiness(playerMenuUtility.getOwner(), data.getVillager(), false);
         this.renown = data.getPlayerMemory(playerMenuUtility.getOwner().getUniqueId()).getRenownReputation();
+        this.orders = new HashMap<>();
         MerchantData.OrderData order = data.getPendingOrders().get(playerMenuUtility.getOwner().getUniqueId());
-        this.orders = order == null ? new HashMap<>() : order.getOrder();
+        this.existingOrders = order == null ? new HashMap<>() : order.getOrder();
 
         MerchantType type = CustomMerchantManager.getMerchantType(data.getType());
         MerchantLevel merchantLevel = CustomMerchantManager.getLevel(data);
@@ -110,8 +113,12 @@ public class ServiceOrderingMenu extends Menu {
             MerchantTrade trade = CustomMerchantManager.getTrade(t);
             if (trade == null) return;
             int count = orders.getOrDefault(t, 0);
+            int previousCount = existingOrders.getOrDefault(t, 0);
             double maxOrderCountMultiplier = 1 + AccumulativeStatManager.getCachedStats("TRADING_ORDER_MAX_COUNT_MULTIPLIER", playerMenuUtility.getOwner(), 10000, true);
-            count = Math.min((int) (maxOrderCountMultiplier * trade.getMaxOrderCount()), Math.max(0, count + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 8 : 1))));
+            int maxAllowedOrders = (int) (maxOrderCountMultiplier * trade.getMaxOrderCount());
+            count = Math.min(maxAllowedOrders, Math.max(0, count + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 8 : 1))));
+
+            if (count + previousCount > maxAllowedOrders) count = maxAllowedOrders - previousCount;
             if (count <= 0) orders.remove(t);
             else orders.put(t, count);
             setMenuItems();
@@ -132,17 +139,23 @@ public class ServiceOrderingMenu extends Menu {
                 ItemUtils.removeItems(playerMenuUtility.getOwner().getInventory(), totalItems, 1, new ExactChoice());
                 e.getWhoClicked().closeInventory();
                 TradingProfile profile = ProfileCache.getOrCache(playerMenuUtility.getOwner(), TradingProfile.class);
+                Map<String, Integer> totalOrders = new HashMap<>(orders);
                 long orderTime = service.getBaseOrderTime() + (service.getOrderTimeBonusPerTrade() * orders.size());
 
-                MerchantData.OrderData existingOrder = data.getPendingOrders().get(playerMenuUtility.getOwner().getUniqueId());
-                if (existingOrder != null) {
-                    for (String order : existingOrder.getOrder().keySet()){
-                        int orderCount = orders.getOrDefault(order, 0) + existingOrder.getOrder().get(order);
+                if (!existingOrders.isEmpty()) {
+                    for (String o : existingOrders.keySet()){
+                        int amount = totalOrders.getOrDefault(o, 0);
+                        totalOrders.put(o, amount + existingOrders.getOrDefault(o, 0));
+                    }
+                    orderTime = service.getBaseOrderTime() + (service.getOrderTimeBonusPerTrade() * totalOrders.size());
+                    for (String order : existingOrders.keySet()){
+                        int previousCount = existingOrders.getOrDefault(order, 0);
+                        int orderCount = previousCount + orders.getOrDefault(order, 0);
                         if (orderCount > 1) orderTime += ((orderCount - 1) * service.getOrderTimeBonusPerItem());
                         orders.put(order, orderCount);
                     }
                 }
-                orderTime = (long) (orderTime * (1 + profile.getOrderDeliverySpeedMultiplier()));
+                orderTime = (long) (orderTime * (1 / (1 + profile.getOrderDeliverySpeedMultiplier())));
                 data.getPendingOrders().put(playerMenuUtility.getOwner().getUniqueId(), new MerchantData.OrderData(orderTime, orders));
                 if (data.getVillager() != null) data.getVillager().getWorld().playSound(data.getVillager().getLocation(), Sound.ENTITY_VILLAGER_YES, 1F, 1F);
                 return;
@@ -170,23 +183,35 @@ public class ServiceOrderingMenu extends Menu {
         }
 
         TradingProfile profile = ProfileCache.getOrCache(playerMenuUtility.getOwner(), TradingProfile.class);
-        long orderTime = CustomMerchantManager.getTradingConfig().getLong("delivery_time");
-        orderTime = (long) (orderTime * (1 + profile.getOrderDeliverySpeedMultiplier()));
+        long orderTime = service.getBaseOrderTime() + (service.getOrderTimeBonusPerTrade() * orders.size());
+        orderTime = (long) (orderTime * (1 / (1 + profile.getOrderDeliverySpeedMultiplier())));
         inventory.setItem(indexTimeButton, new ItemBuilder(deliveryTimeLabel)
                 .placeholderLore("%time%", timeFormat(orderTime)).get()
         );
 
         Map<ItemStack, Integer> totalItems = getOrderCost();
         Map<ItemStack, Integer> totalResults = new HashMap<>();
-        for (String t : orders.keySet()){
-            int quantity = orders.get(t);
+        Map<String, Integer> totalOrders = new HashMap<>(orders);
+        for (String o : existingOrders.keySet()){
+            int amount = totalOrders.getOrDefault(o, 0);
+            totalOrders.put(o, amount + existingOrders.getOrDefault(o, 0));
+        }
+        for (String t : totalOrders.keySet()){
+            int quantity = totalOrders.get(t);
             MerchantTrade trade = CustomMerchantManager.getTrade(t);
             if (quantity <= 0 || trade == null) continue;
 
-            ItemStack result = trade.getResult().clone();
-            result.setAmount(1);
-            for (int i = 0; i < quantity; i++)
-                totalResults.put(result, trade.getResult().getAmount() + totalResults.getOrDefault(result, 0));
+            ItemBuilder result = new ItemBuilder(trade.getResult());
+            DynamicItemModifier.modify(ModifierContext.builder(result).executeUsageMechanics().setOtherType(data).entity(data.getVillager()).validate().get(), trade.getModifiers());
+
+            if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
+            result.flag(ItemFlag.HIDE_ENCHANTS);
+            result.flag(ItemFlag.HIDE_ATTRIBUTES);
+            result.stringTag(KEY_TRADE, trade.getID());
+            result.lore(new ArrayList<>());
+            for (int i = 0; i < quantity; i++) {
+                totalResults.put(result.get(), result.get().getAmount() + totalResults.getOrDefault(result.get(), 0));
+            }
         }
         List<ItemStack> tradeButtons = new ArrayList<>();
         List<String> costFormat = TranslationManager.getListTranslation("service_order_trade_prefix");
@@ -195,7 +220,7 @@ public class ServiceOrderingMenu extends Menu {
         for (MerchantTrade trade : orderableTrades){
             ItemBuilder item1 = new ItemBuilder(trade.getScalingCostItem());
             ItemBuilder item2 = ItemUtils.isEmpty(trade.getOptionalCostItem()) ? null : new ItemBuilder(trade.getOptionalCostItem());
-            int quantity = orders.getOrDefault(trade.getID(), 0);
+            int quantity = totalOrders.getOrDefault(trade.getID(), 0);
 
             float bulkCostMultiplier = Math.max(0, 1 - (quantity <= service.getBulkMinimumOrdersForDiscount() ? 0 : Math.min(service.getBulkMaxDiscount(), (quantity - service.getBulkMinimumOrdersForDiscount()) * service.getBulkDiscountPerItem())));
             float reputation = data.getPlayerMemory(playerMenuUtility.getOwner().getUniqueId()).getTradingReputation();
@@ -214,7 +239,7 @@ public class ServiceOrderingMenu extends Menu {
                 if (item2 == null && (line.contains("%item2%") || line.contains("%amount2%"))) continue;
                 prefix.add(line
                         .replace("%max_orders%", String.valueOf((int) (maxOrderCountMultiplier * trade.getMaxOrderCount())))
-                        .replace("%times_ordered%", String.valueOf(orders.getOrDefault(trade.getID(), 0)))
+                        .replace("%times_ordered%", String.valueOf(totalOrders.getOrDefault(trade.getID(), 0)))
                         .replace("%item%", ItemUtils.getItemName(item1))
                         .replace("%amount%", String.format("%.2f", price))
                         .replace("%item2%", item2 == null ? "": ItemUtils.getItemName(item2))
@@ -222,16 +247,13 @@ public class ServiceOrderingMenu extends Menu {
                 );
             }
             ItemBuilder result = new ItemBuilder(trade.getResult());
+            DynamicItemModifier.modify(ModifierContext.builder(result).executeUsageMechanics().setOtherType(data).entity(data.getVillager()).validate().get(), trade.getModifiers());
 
-            ResultChangingModifier changingModifier = (ResultChangingModifier) trade.getModifiers().stream().filter(m -> m instanceof ResultChangingModifier).findFirst().orElse(null);
-            if (changingModifier != null) {
-                ItemStack resultItem = changingModifier.getNewResult(ModifierContext.builder(result).crafter(playerMenuUtility.getOwner()).validate().get());
-                if (!ItemUtils.isEmpty(resultItem)) result = new ItemBuilder(resultItem);
-            }
             if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
-
+            result.flag(ItemFlag.HIDE_ENCHANTS);
+            result.flag(ItemFlag.HIDE_ATTRIBUTES);
             result.stringTag(KEY_TRADE, trade.getID());
-            result.prependLore(prefix);
+            result.lore(prefix);
 
             tradeButtons.add(result.get());
         }

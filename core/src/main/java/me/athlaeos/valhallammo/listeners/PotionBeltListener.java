@@ -53,6 +53,7 @@ public class PotionBeltListener implements Listener {
         int offset = getOffset(e.getPreviousSlot(), e.getNewSlot());
         e.setCancelled(true);
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            if (e.getPlayer().getInventory().getHeldItemSlot() != e.getPreviousSlot()) return;
             ItemStack belt = PotionBelt.swapSelectedPotion(hand, offset);
             if (ItemUtils.isEmpty(belt)) return;
             e.getPlayer().getInventory().setItemInMainHand(belt);

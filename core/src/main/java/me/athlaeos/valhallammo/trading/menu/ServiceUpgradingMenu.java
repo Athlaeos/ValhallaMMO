@@ -24,6 +24,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.*;
 
@@ -68,7 +69,7 @@ public class ServiceUpgradingMenu extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
-        e.setCancelled(true);
+        e.setCancelled(!(e.getClickedInventory() instanceof PlayerInventory));
         if (e.getRawSlot() == indexCost) return;
         if (e.getRawSlot() == indexPreviousPage) page--;
         else if (e.getRawSlot() == indexNextPage) page++;
@@ -147,14 +148,14 @@ public class ServiceUpgradingMenu extends Menu {
                 setMenuItems();
                 return;
             }
-        } else {
+        } else if (e.getClickedInventory() instanceof PlayerInventory){
             ItemUtils.calculateClickEvent(e, 1, indexInput);
             ItemStack input = inventory.getItem(indexInput);
             if (ItemUtils.isEmpty(input)) {
                 this.input = null;
                 inventory.setItem(indexOutput, null);
             } else this.input = input.clone();
-        }
+        } else return;
 
         setMenuItems();
     }

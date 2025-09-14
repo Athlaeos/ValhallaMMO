@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierPriority;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexed;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemReplaceByIndexedBasedOnQuality;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.ItemType;
 import me.athlaeos.valhallammo.item.CustomItem;
 import me.athlaeos.valhallammo.item.CustomItemRegistry;
 import me.athlaeos.valhallammo.loot.ReplacementEntry;
@@ -87,6 +88,25 @@ public class Scripts implements Listener {
     private static final Map<ProfessionWrapper, Map<MerchantLevel, Integer>> typeCounter = new HashMap<>();
 
     public static void run(){
+        for (CustomItem item : CustomItemRegistry.getItems().values()){
+            if (item.getModifiers().stream().anyMatch(m -> m instanceof ItemType)) continue;
+            ItemType type = (ItemType) ModifierRegistry.createModifier("material");
+            type.setMaterial(item.getItem().getType());
+            type.setPriority(ModifierPriority.SOONEST);
+            List<DynamicItemModifier> modifiers = new ArrayList<>(item.getModifiers());
+            if (item.getModifiers().stream().anyMatch(m -> m.getPriority() == ModifierPriority.SOONEST)) {
+                for (DynamicItemModifier modifier : modifiers){
+                    if (modifier.getPriority() == ModifierPriority.SOONEST) modifier.setPriority(ModifierPriority.SOON);
+                    else if (modifier.getPriority() == ModifierPriority.SOON) modifier.setPriority(ModifierPriority.SOONISH);
+                    else if (modifier.getPriority() == ModifierPriority.SOONISH) modifier.setPriority(ModifierPriority.NEUTRAL);
+                    else if (modifier.getPriority() == ModifierPriority.NEUTRAL) modifier.setPriority(ModifierPriority.LATERISH);
+                    else if (modifier.getPriority() == ModifierPriority.LATERISH) modifier.setPriority(ModifierPriority.LATER);
+                    else if (modifier.getPriority() == ModifierPriority.LATER) modifier.setPriority(ModifierPriority.LAST);
+                }
+            }
+            modifiers.add(type);
+            item.setModifiers(modifiers);
+        }
 //        for (ProfessionWrapper profession : ProfessionWrapper.values()){
 //            String id = String.format("%s_simple", profession.toString().toLowerCase());
 //            if (CustomMerchantManager.getMerchantType(id) == null) {

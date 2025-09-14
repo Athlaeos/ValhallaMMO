@@ -3,9 +3,12 @@ package me.athlaeos.valhallammo.trading.menu;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.TradingProfile;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
 import me.athlaeos.valhallammo.trading.dom.MerchantData;
 import me.athlaeos.valhallammo.trading.dom.MerchantType;
+import me.athlaeos.valhallammo.trading.listeners.MerchantListener;
 import me.athlaeos.valhallammo.trading.services.*;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.Material;
@@ -15,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class ServiceMenu extends Menu {
+public class ServiceMenu extends Menu implements MerchantMenu {
     private static ServiceMenuBuilder menuBuilder = new ServiceMenuBuilderImplementation();
 
     private final List<Service> services = new ArrayList<>();
@@ -26,12 +29,14 @@ public class ServiceMenu extends Menu {
     public ServiceMenu(PlayerMenuUtility playerMenuUtility, MerchantData data) {
         super(playerMenuUtility);
         this.data = data;
+        MerchantListener.setActiveTradingMenu(playerMenuUtility.getOwner(), this);
 
+        TradingProfile profile = ProfileCache.getOrCache(playerMenuUtility.getOwner(), TradingProfile.class);
         MerchantType type = CustomMerchantManager.getMerchantType(data.getType());
         if (type == null) return;
         Collection<String> putServices = new HashSet<>();
         for (String s : type.getServices()){
-            if (putServices.contains(s)) continue;
+            if (putServices.contains(s) || !profile.getUnlockedServices().contains(s)) continue;
             Service service = ServiceRegistry.getService(s);
             if (service == null) continue;
             putServices.add(s);
@@ -95,8 +100,18 @@ public class ServiceMenu extends Menu {
         return services;
     }
 
+    @Override
+    public UUID getMerchantID() {
+        return data.getVillagerUUID();
+    }
+
     public MerchantData getData() {
         return data;
+    }
+
+    @Override
+    public void onOpen() {
+
     }
 
     public static ServiceMenuBuilder getMenuBuilder() {
