@@ -12,31 +12,33 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public enum EquipmentClass {
-    SWORD("swords", Material.GOLDEN_SWORD, Material.STONE_SWORD, Material.WOODEN_SWORD, Material.NETHERITE_SWORD, Material.DIAMOND_SWORD, Material.IRON_SWORD),
-    BOW("bows", Material.BOW),
-    CROSSBOW("crossbows", Material.CROSSBOW),
-    TRIDENT("tridents", Material.TRIDENT),
-    HELMET("helmets", Material.PLAYER_HEAD, Material.SKELETON_SKULL, Material.ZOMBIE_HEAD, Material.WITHER_SKELETON_SKULL, Material.CARVED_PUMPKIN, Material.LEATHER_HELMET, Material.CHAINMAIL_HELMET, Material.GOLDEN_HELMET, Material.IRON_HELMET, Material.DIAMOND_HELMET, Material.NETHERITE_HELMET, Material.TURTLE_HELMET),
-    CHESTPLATE("chestplates", Material.LEATHER_CHESTPLATE, Material.CHAINMAIL_CHESTPLATE, Material.GOLDEN_CHESTPLATE, Material.IRON_CHESTPLATE, Material.DIAMOND_CHESTPLATE, Material.NETHERITE_CHESTPLATE),
-    LEGGINGS("leggings", Material.LEATHER_LEGGINGS, Material.CHAINMAIL_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.IRON_LEGGINGS, Material.DIAMOND_LEGGINGS, Material.NETHERITE_LEGGINGS),
-    BOOTS("boots", Material.LEATHER_BOOTS, Material.CHAINMAIL_BOOTS, Material.GOLDEN_BOOTS, Material.IRON_BOOTS, Material.DIAMOND_BOOTS, Material.NETHERITE_BOOTS),
-    SHEARS("shears", Material.SHEARS),
-    FLINT_AND_STEEL("flint_and_steels", Material.FLINT_AND_STEEL),
-    FISHING_ROD("fishing_rods", Material.FISHING_ROD),
-    ELYTRA("elytras", Material.ELYTRA),
-    PICKAXE("pickaxes", Material.WOODEN_PICKAXE, Material.STONE_PICKAXE, Material.GOLDEN_PICKAXE, Material.IRON_PICKAXE, Material.DIAMOND_PICKAXE, Material.NETHERITE_PICKAXE),
-    AXE("axes", Material.WOODEN_AXE, Material.STONE_AXE, Material.GOLDEN_AXE, Material.IRON_AXE, Material.DIAMOND_AXE, Material.NETHERITE_AXE),
-    SHOVEL("shovels", Material.WOODEN_SHOVEL, Material.STONE_SHOVEL, Material.GOLDEN_SHOVEL, Material.IRON_SHOVEL, Material.DIAMOND_SHOVEL, Material.NETHERITE_SHOVEL),
-    HOE("hoes", Material.WOODEN_HOE, Material.STONE_HOE, Material.GOLDEN_HOE, Material.IRON_HOE, Material.DIAMOND_HOE, Material.NETHERITE_HOE),
-    SHIELD("shields", Material.SHIELD),
+    SWORD("swords", "GOLDEN_SWORD", "STONE_SWORD", "WOODEN_SWORD", "NETHERITE_SWORD", "DIAMOND_SWORD", "IRON_SWORD"),
+    SPEAR("spears", "GOLDEN_SPEAR", "STONE_SPEAR", "WOODEN_SPEAR", "NETHERITE_SPEAR", "DIAMOND_SPEAR", "IRON_SPEAR"),
+    BOW("bows", "BOW"),
+    CROSSBOW("crossbows", "CROSSBOW"),
+    TRIDENT("tridents", "TRIDENT"),
+    MACE("maces", "MACE"),
+    HELMET("helmets", "PLAYER_HEAD", "SKELETON_SKULL", "ZOMBIE_HEAD", "WITHER_SKELETON_SKULL", "CARVED_PUMPKIN", "LEATHER_HELMET", "CHAINMAIL_HELMET", "GOLDEN_HELMET", "IRON_HELMET", "DIAMOND_HELMET", "NETHERITE_HELMET", "TURTLE_HELMET"),
+    CHESTPLATE("chestplates", "LEATHER_CHESTPLATE", "CHAINMAIL_CHESTPLATE", "GOLDEN_CHESTPLATE", "IRON_CHESTPLATE", "DIAMOND_CHESTPLATE", "NETHERITE_CHESTPLATE"),
+    LEGGINGS("leggings", "LEATHER_LEGGINGS", "CHAINMAIL_LEGGINGS", "GOLDEN_LEGGINGS", "IRON_LEGGINGS", "DIAMOND_LEGGINGS", "NETHERITE_LEGGINGS"),
+    BOOTS("boots", "LEATHER_BOOTS", "CHAINMAIL_BOOTS", "GOLDEN_BOOTS", "IRON_BOOTS", "DIAMOND_BOOTS", "NETHERITE_BOOTS"),
+    SHEARS("shears", "SHEARS"),
+    FLINT_AND_STEEL("flint_and_steels", "FLINT_AND_STEEL"),
+    FISHING_ROD("fishing_rods", "FISHING_ROD"),
+    ELYTRA("elytras", "ELYTRA"),
+    PICKAXE("pickaxes", "WOODEN_PICKAXE", "STONE_PICKAXE", "GOLDEN_PICKAXE", "IRON_PICKAXE", "DIAMOND_PICKAXE", "NETHERITE_PICKAXE"),
+    AXE("axes", "WOODEN_AXE", "STONE_AXE", "GOLDEN_AXE", "IRON_AXE", "DIAMOND_AXE", "NETHERITE_AXE"),
+    SHOVEL("shovels", "WOODEN_SHOVEL", "STONE_SHOVEL", "GOLDEN_SHOVEL", "IRON_SHOVEL", "DIAMOND_SHOVEL", "NETHERITE_SHOVEL"),
+    HOE("hoes", "WOODEN_HOE", "STONE_HOE", "GOLDEN_HOE", "IRON_HOE", "DIAMOND_HOE", "NETHERITE_HOE"),
+    SHIELD("shields", "SHIELD"),
     OTHER("other_equipment"),
     TRINKET("trinkets");
 
     private final Tag<Material> matchingMaterials;
     private final static NamespacedKey equipmentClassKey = new NamespacedKey(ValhallaMMO.getInstance(), "equipment_class");
 
-    EquipmentClass(String key, Material... matches) {
-        Set<Material> tagged = Set.of(matches);
+    EquipmentClass(String key, String... matches) {
+        Set<Material> tagged = new HashSet<>(ItemUtils.getMaterialSet(matches));
         this.matchingMaterials = new Tag<>() {
             private final NamespacedKey k = new NamespacedKey(ValhallaMMO.getInstance(), "tag_" + key);
             @Override public boolean isTagged(@NotNull Material material) { return tagged.contains(material); }
