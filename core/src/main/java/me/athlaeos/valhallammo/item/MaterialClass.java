@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.item;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import me.athlaeos.valhallammo.utility.ItemUtils;
@@ -15,36 +16,44 @@ import me.athlaeos.valhallammo.utility.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 public enum MaterialClass {
-    WOOD("wood_equipment", Material.WOODEN_PICKAXE, Material.WOODEN_AXE, Material.WOODEN_HOE, Material.WOODEN_SHOVEL,
-    Material.WOODEN_SWORD, Material.FISHING_ROD, Material.CARROT_ON_A_STICK, Material.WARPED_FUNGUS_ON_A_STICK),
-    BOW("material_bow", Material.BOW),
-    CROSSBOW("material_crossbow", Material.CROSSBOW),
-    LEATHER("leather_equipment", Material.LEATHER_BOOTS, Material.LEATHER_CHESTPLATE, Material.LEATHER_HELMET,
-    Material.LEATHER_LEGGINGS),
-    STONE("stone_equipment", Material.STONE_PICKAXE, Material.STONE_AXE, Material.STONE_HOE, Material.STONE_SHOVEL,
-    Material.STONE_SWORD),
-    CHAINMAIL("chainmail_equipment", Material.CHAINMAIL_BOOTS, Material.CHAINMAIL_CHESTPLATE, Material.CHAINMAIL_HELMET,
-    Material.CHAINMAIL_LEGGINGS),
-    GOLD("gold_equipment", Material.GOLDEN_PICKAXE, Material.GOLDEN_SHOVEL, Material.GOLDEN_HOE, Material.GOLDEN_AXE,
-    Material.GOLDEN_SWORD, Material.GOLDEN_BOOTS, Material.GOLDEN_HELMET, Material.GOLDEN_CHESTPLATE,
-    Material.GOLDEN_LEGGINGS),
-    IRON("iron_equipment", Material.IRON_PICKAXE, Material.IRON_SHOVEL, Material.IRON_HOE, Material.IRON_AXE,
-    Material.IRON_SWORD, Material.IRON_BOOTS, Material.IRON_HELMET, Material.IRON_CHESTPLATE,
-    Material.IRON_LEGGINGS, Material.SHIELD, Material.FLINT_AND_STEEL, Material.SHEARS),
-    DIAMOND("diamond_equipment", Material.DIAMOND_PICKAXE, Material.DIAMOND_SHOVEL, Material.DIAMOND_HOE,
-    Material.DIAMOND_AXE, Material.DIAMOND_SWORD, Material.DIAMOND_BOOTS, Material.DIAMOND_HELMET,
-    Material.DIAMOND_CHESTPLATE, Material.DIAMOND_LEGGINGS),
-    NETHERITE("netherite_equipment", Material.NETHERITE_PICKAXE, Material.NETHERITE_SHOVEL, Material.NETHERITE_HOE,
-    Material.NETHERITE_AXE, Material.NETHERITE_SWORD, Material.NETHERITE_BOOTS, Material.NETHERITE_HELMET,
-    Material.NETHERITE_CHESTPLATE, Material.NETHERITE_LEGGINGS),
-    PRISMARINE("prismarine_equipment", Material.TRIDENT),
-    ENDERIC("enderic_equipment", Material.ELYTRA),
-    OTHER("other_materials");
+    WOOD("wood_equipment", "WOODEN_PICKAXE", "WOODEN_AXE", "WOODEN_HOE", "WOODEN_SHOVEL",
+            "WOODEN_SWORD", "WOODEN_SPEAR", "FISHING_ROD", "CARROT_ON_A_STICK", "WARPED_FUNGUS_ON_A_STICK"),
+    BOW("material_bow", "BOW"),
+    CROSSBOW("material_crossbow", "CROSSBOW"),
+    LEATHER("leather_equipment", "LEATHER_BOOTS", "LEATHER_CHESTPLATE", "LEATHER_HELMET",
+            "LEATHER_LEGGINGS"),
+    STONE("stone_equipment", "STONE_PICKAXE", "STONE_AXE", "STONE_HOE", "STONE_SHOVEL",
+            "STONE_SWORD", "STONE_SPEAR"),
+    COPPER("copper_equipment", "COPPER_PICKAXE", "COPPER_AXE", "COPPER_HOE", "COPPER_SHOVEL",
+            "COPPER_SWORD", "COPPER_SPEAR", "COPPER_HELMET", "COPPER_CHESTPLATE", "COPPER_LEGGINGS", "COPPER_BOOTS"),
+    CHAINMAIL("chainmail_equipment", "CHAINMAIL_BOOTS", "CHAINMAIL_CHESTPLATE", "CHAINMAIL_HELMET",
+            "CHAINMAIL_LEGGINGS"),
+    GOLD("gold_equipment", "GOLDEN_PICKAXE", "GOLDEN_SHOVEL", "GOLDEN_HOE", "GOLDEN_AXE",
+            "GOLDEN_SWORD", "GOLDEN_SPEAR", "GOLDEN_BOOTS", "GOLDEN_HELMET", "GOLDEN_CHESTPLATE", "GOLDEN_LEGGINGS"),
+    IRON("iron_equipment", "IRON_PICKAXE", "IRON_SHOVEL", "IRON_HOE", "IRON_AXE",
+            "IRON_SWORD", "IRON_SPEAR", "IRON_BOOTS", "IRON_HELMET", "IRON_CHESTPLATE", "IRON_LEGGINGS", "SHIELD", "FLINT_AND_STEEL", "SHEARS"),
+    DIAMOND("diamond_equipment", "DIAMOND_PICKAXE", "DIAMOND_SHOVEL", "DIAMOND_HOE",
+            "DIAMOND_AXE", "DIAMOND_SWORD", "DIAMOND_SPEAR", "DIAMOND_BOOTS", "DIAMOND_HELMET", "DIAMOND_CHESTPLATE", "DIAMOND_LEGGINGS"),
+    NETHERITE("netherite_equipment", "NETHERITE_PICKAXE", "NETHERITE_SHOVEL", "NETHERITE_HOE",
+            "NETHERITE_AXE", "NETHERITE_SWORD", "NETHERITE_SPEAR", "NETHERITE_BOOTS", "NETHERITE_HELMET", "NETHERITE_CHESTPLATE", "NETHERITE_LEGGINGS"),
+    PRISMARINE("prismarine_equipment", "TRIDENT"),
+    ENDERIC("enderic_equipment"),
+    CUSTOM_1("custom_1_equipment"),
+    CUSTOM_2("custom_2_equipment"),
+    CUSTOM_3("custom_3_equipment"),
+    CUSTOM_4("custom_4_equipment"),
+    CUSTOM_5("custom_5_equipment"),
+    CUSTOM_6("custom_6_equipment"),
+    CUSTOM_7("custom_7_equipment"),
+    CUSTOM_8("custom_8_equipment"),
+    CUSTOM_9("custom_9_equipment"),
+    CUSTOM_10("custom_10_equipment"),
+    OTHER("other_materials", "MACE");
 
     private final Tag<Material> matchingMaterials;
 
-    MaterialClass(String key, Material... matchingMaterials){
-        Set<Material> tagged = Set.of(matchingMaterials);
+    MaterialClass(String key, String... matchingMaterials){
+        Set<Material> tagged = new HashSet<>(ItemUtils.getMaterialSet(matchingMaterials));
         this.matchingMaterials = new Tag<>() {
             private final NamespacedKey k = new NamespacedKey(ValhallaMMO.getInstance(), "tag_" + key);
             @Override public boolean isTagged(@NotNull Material material) { return tagged.contains(material); }

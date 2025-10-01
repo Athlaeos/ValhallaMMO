@@ -288,6 +288,21 @@ perks:
         - salvage_diamond_greataxe
         - salvage_diamond_warhammer
         - salvage_diamond_spear
+        - salvage_copper_helmet
+        - salvage_copper_chestplate
+        - salvage_copper_leggings
+        - salvage_copper_boots
+        - salvage_copper_sword
+        - salvage_copper_pickaxe
+        - salvage_copper_axe
+        - salvage_copper_shovel
+        - salvage_copper_hoe
+        - salvage_copper_dagger
+        - salvage_copper_mace
+        - salvage_copper_rapier
+        - salvage_copper_greataxe
+        - salvage_copper_warhammer
+        - salvage_copper_spear
     messages:
       - "<lang.fishing_perk_combo_messages>"
     requireperk_all:

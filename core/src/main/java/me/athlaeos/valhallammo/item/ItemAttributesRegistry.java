@@ -211,6 +211,12 @@ public class ItemAttributesRegistry {
         addVanillaStat(Material.STONE_AXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(9), getCopy("GENERIC_ATTACK_SPEED").setValue(0.8), getCopy("MINING_SPEED").setValue(4).setHidden(true));
         addVanillaStat(Material.STONE_HOE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(2), getCopy("MINING_SPEED").setValue(4).setHidden(true));
 
+        addVanillaStat("COPPER_SWORD", getCopy("GENERIC_ATTACK_DAMAGE").setValue(5), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
+        addVanillaStat("COPPER_PICKAXE", getCopy("GENERIC_ATTACK_DAMAGE").setValue(3), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2), getCopy("MINING_SPEED").setValue(5).setHidden(true));
+        addVanillaStat("COPPER_SHOVEL", getCopy("GENERIC_ATTACK_DAMAGE").setValue(3.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1), getCopy("MINING_SPEED").setValue(5).setHidden(true));
+        addVanillaStat("COPPER_AXE", getCopy("GENERIC_ATTACK_DAMAGE").setValue(9), getCopy("GENERIC_ATTACK_SPEED").setValue(0.8), getCopy("MINING_SPEED").setValue(5).setHidden(true));
+        addVanillaStat("COPPER_HOE", getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(2), getCopy("MINING_SPEED").setValue(5).setHidden(true));
+
         addVanillaStat(Material.GOLDEN_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
         addVanillaStat(Material.GOLDEN_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2), getCopy("MINING_SPEED").setValue(12).setHidden(true));
         addVanillaStat(Material.GOLDEN_SHOVEL, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2.5), getCopy("GENERIC_ATTACK_SPEED").setValue(1), getCopy("MINING_SPEED").setValue(12).setHidden(true));
@@ -254,6 +260,11 @@ public class ItemAttributesRegistry {
         addVanillaStat(Material.IRON_CHESTPLATE, getCopy("GENERIC_ARMOR").setValue(6));
         addVanillaStat(Material.IRON_LEGGINGS, getCopy("GENERIC_ARMOR").setValue(5));
         addVanillaStat(Material.IRON_BOOTS, getCopy("GENERIC_ARMOR").setValue(2));
+
+        addVanillaStat("COPPER_HELMET", getCopy("GENERIC_ARMOR").setValue(2));
+        addVanillaStat("COPPER_CHESTPLATE", getCopy("GENERIC_ARMOR").setValue(4));
+        addVanillaStat("COPPER_LEGGINGS", getCopy("GENERIC_ARMOR").setValue(3));
+        addVanillaStat("COPPER_BOOTS", getCopy("GENERIC_ARMOR").setValue(1));
 
         addVanillaStat(Material.DIAMOND_HELMET, getCopy("GENERIC_ARMOR").setValue(3), getCopy("GENERIC_ARMOR_TOUGHNESS").setValue(2));
         addVanillaStat(Material.DIAMOND_CHESTPLATE, getCopy("GENERIC_ARMOR").setValue(8), getCopy("GENERIC_ARMOR_TOUGHNESS").setValue(2));

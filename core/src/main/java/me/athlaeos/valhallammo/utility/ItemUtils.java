@@ -139,6 +139,7 @@ public class ItemUtils {
         materialClassTranslation.put(MaterialClass.ENDERIC, "ingredient_any_enderic_equipment");
         materialClassTranslation.put(MaterialClass.OTHER, "ingredient_any_other_equipment");
         equipmentClassTranslation.put(EquipmentClass.SWORD, "ingredient_any_sword");
+        equipmentClassTranslation.put(EquipmentClass.SPEAR, "ingredient_any_spear");
         equipmentClassTranslation.put(EquipmentClass.BOW, "ingredient_any_bow");
         equipmentClassTranslation.put(EquipmentClass.CROSSBOW, "ingredient_any_crossbow");
         equipmentClassTranslation.put(EquipmentClass.TRIDENT, "ingredient_any_trident");
