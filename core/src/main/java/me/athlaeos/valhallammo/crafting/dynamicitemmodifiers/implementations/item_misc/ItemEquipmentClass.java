@@ -3,9 +3,11 @@ package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.it
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -44,6 +46,7 @@ public class ItemEquipmentClass extends DynamicItemModifier {
     public Map<Integer, ItemStack> getButtons() {
         return new Pair<>(12,
                 new ItemBuilder(switch (equipmentClass){
+                    case SPEAR -> MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21_9) ? ItemUtils.stringToMaterial("IRON_SPEAR", Material.BARRIER) : Material.BARRIER;
                     case BOW -> Material.BOW;
                     case AXE -> Material.IRON_AXE;
                     case HOE -> Material.IRON_HOE;
@@ -51,6 +54,7 @@ public class ItemEquipmentClass extends DynamicItemModifier {
                     case OTHER -> Material.PAPER;
                     case SWORD -> Material.IRON_SWORD;
                     case ELYTRA -> Material.ELYTRA;
+                    case MACE -> MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_5) ? ItemUtils.stringToMaterial("MACE", Material.BARRIER) : Material.BARRIER;
                     case HELMET -> Material.IRON_HELMET;
                     case SHEARS -> Material.SHEARS;
                     case SHIELD -> Material.SHIELD;

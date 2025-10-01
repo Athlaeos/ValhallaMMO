@@ -1,6 +1,7 @@
 starting_perks:
   smithing_stoneexpmultiplier_add: -0.5 # stone and chain grant 50% reduced exp at first
   smithing_chainexpmultiplier_add: -0.5
+  smithing_copperexpmultiplier_add: -0.5
   smithing_goldexpmultiplier_add: -0.75 # gold and iron 75% less
   smithing_ironexpmultiplier_add: -0.75
   smithing_diamondexpmultiplier_add: -0.90 # diamond 90% less
@@ -33,6 +34,7 @@ special_perks:
       smithing_leatherexpmultiplier_add: -0.75
       smithing_stoneexpmultiplier_add: 0.5 # stone and chain have their exp restored back to 100%
       smithing_chainexpmultiplier_add: 0.5
+      smithing_copperexpmultiplier_add: 0.5
       smithing_goldexpmultiplier_add: 0.25 # gold and iron have their exp buffed to 50%
       smithing_ironexpmultiplier_add: 0.25
       smithing_diamondexpmultiplier_add: 0.15 # diamond has its exp buffed to 25%
@@ -43,6 +45,7 @@ special_perks:
       smithing_leatherexpmultiplier_add: -0.2
       smithing_stoneexpmultiplier_add: -0.75 # stone and chain have their exp reduced to 25%
       smithing_chainexpmultiplier_add: -0.75
+      smithing_copperexpmultiplier_add: -0.75
       smithing_goldexpmultiplier_add: 0.50 # gold and iron have their exp restored back to 100%
       smithing_ironexpmultiplier_add: 0.50
       smithing_diamondexpmultiplier_add: 0.25 # diamond has its exp buffed to 50%
@@ -53,6 +56,7 @@ special_perks:
       smithing_leatherexpmultiplier_add: -0.05
       smithing_stoneexpmultiplier_add: -0.2 # stone and chain have their exp reduced to 5%
       smithing_chainexpmultiplier_add: -0.2
+      smithing_copperexpmultiplier_add: -0.2
       smithing_goldexpmultiplier_add: -0.75 # gold and iron have their exp reduced to 25%
       smithing_ironexpmultiplier_add: -0.75
       smithing_diamondexpmultiplier_add: 0.5 # diamond has its exp restored back to 100%
@@ -61,6 +65,7 @@ special_perks:
     perk_rewards:
       smithing_stoneexpmultiplier_add: -0.05 # stone and chain have their exp reduced to 0%
       smithing_chainexpmultiplier_add: -0.05
+      smithing_copperexpmultiplier_add: -0.05
       smithing_goldexpmultiplier_add: -0.2 # gold and iron have their exp reduced to 20%
       smithing_ironexpmultiplier_add: -0.2
       smithing_netheriteexpmultiplier_add: 0.5 # netherite has its exp restored back to 100%, diamond stays at 100% as well
@@ -102,6 +107,7 @@ perks:
     perk_rewards:
       smithing_stonecraftingskill_add: 50
       smithing_chaincraftingskill_add: 50
+      smithing_coppercraftingskill_add: 50
     messages:
       - "<lang.smithing_perk_2_messages>"
     requireperk_all:

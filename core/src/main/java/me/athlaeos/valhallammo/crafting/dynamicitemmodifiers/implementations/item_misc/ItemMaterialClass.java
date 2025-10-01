@@ -56,9 +56,20 @@ public class ItemMaterialClass extends DynamicItemModifier {
                     case ENDERIC -> Material.ELYTRA;
                     case LEATHER -> Material.LEATHER;
                     case CROSSBOW -> Material.CROSSBOW;
+                    case COPPER -> Material.COPPER_INGOT;
                     case CHAINMAIL -> Material.CHAIN;
                     case NETHERITE -> Material.NETHERITE_SWORD;
                     case PRISMARINE -> Material.TRIDENT;
+                    case CUSTOM_1 -> Material.RED_CONCRETE;
+                    case CUSTOM_2 -> Material.ORANGE_CONCRETE;
+                    case CUSTOM_3 -> Material.YELLOW_CONCRETE;
+                    case CUSTOM_4 -> Material.LIME_CONCRETE;
+                    case CUSTOM_5 -> Material.GREEN_CONCRETE;
+                    case CUSTOM_6 -> Material.CYAN_CONCRETE;
+                    case CUSTOM_7 -> Material.LIGHT_BLUE_CONCRETE;
+                    case CUSTOM_8 -> Material.BLUE_CONCRETE;
+                    case CUSTOM_9 -> Material.PURPLE_CONCRETE;
+                    case CUSTOM_10 -> Material.MAGENTA_CONCRETE;
                 })
                         .name("&eWhich material class should it be?")
                         .lore("&fMaterial class set to &e" + materialClass,

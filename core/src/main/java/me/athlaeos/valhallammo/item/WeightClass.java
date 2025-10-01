@@ -24,7 +24,8 @@ public enum WeightClass {
             "IRON_HELMET", "IRON_CHESTPLATE", "IRON_LEGGINGS", "IRON_BOOTS",
             "NETHERITE_HELMET", "NETHERITE_CHESTPLATE", "NETHERITE_LEGGINGS", "NETHERITE_BOOTS",
             "WOODEN_AXE", "STONE_AXE", "IRON_AXE", "GOLDEN_AXE", "DIAMOND_AXE",
-            "NETHERITE_AXE", "TRIDENT", "MACE"),
+            "NETHERITE_AXE", "TRIDENT", "MACE", "WOODEN_SPEAR", "STONE_SPEAR", "COPPER_SPEAR", "IRON_SPEAR",
+            "GOLDEN_SPEAR", "DIAMOND_SPEAR", "NETHERITE_SPEAR"),
     WEIGHTLESS(),// the default weight class for items. when used to attack, considered "unarmed"
     NONE(); // only used to explicitly tell the plugin "this has no weight class and i don't want it to be used for unarmed either"
 

@@ -102,6 +102,7 @@ public class ValhallaMMO extends JavaPlugin {
         save("recipes/grid_recipes.json");
         save("recipes/brewing_recipes.json");
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20_6)) save("recipes/brewing_recipes_1_20_6+.json");
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21_9)) save("recipes/grid_recipes_1_21_9+.json");
         save("recipes/cooking_recipes.json");
         save("recipes/immersive_recipes.json");
         save("recipes/cauldron_recipes.json");

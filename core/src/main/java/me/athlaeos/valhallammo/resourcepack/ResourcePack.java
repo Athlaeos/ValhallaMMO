@@ -19,8 +19,8 @@ public class ResourcePack {
     private static final String PACK_1_21_2_OLDER_SHA = "22d0d3d72ac3c2266ff95b1aff2526b288841155";
     private static final String PACK_1_21_3_URL = "https://github.com/user-attachments/files/21862578/ValhallaMMO_1.21.3.zip";
     private static final String PACK_1_21_3_SHA = "246e5bfbeb7c45acfe3b3daec004431a2d6f3dd1";
-    private static final String PACK_1_21_4_NEWER_URL = "https://github.com/user-attachments/files/21885745/ValhallaMMO_1.21.4%2B.zip";
-    private static final String PACK_1_21_4_NEWER_SHA = "06f146dbce0e500e5e2f25f610e41193771d9510";
+    private static final String PACK_1_21_4_NEWER_URL = "https://github.com/user-attachments/files/22643432/ValhallaMMO_1.21.4%2B.zip";
+    private static final String PACK_1_21_4_NEWER_SHA = "9ad5df64c86f0d5f1636e8a2bb8922dba6055b27";
     
     /*
      * I copied most of this from thesheepdev's Simple Resourcepack, so code credit for resource pack hosting goes to them

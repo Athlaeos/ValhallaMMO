@@ -162,27 +162,27 @@ public class WoodcuttingSkill extends Skill implements Listener {
 
             Block leafOrigin = getTreeLeafOrigin(e.getBlock());
 
-            if (treeCapitatorInstant)
-                BlockUtils.processBlocks(e.getPlayer(), vein, p -> {
-                    EntityProperties properties = EntityCache.getAndCacheProperties(p);
-                    return properties.getMainHand() != null && EquipmentClass.getMatchingClass(properties.getMainHand().getMeta()) == EquipmentClass.AXE;
-                    }, b -> {
-                    if (profile.isTreeCapitatorInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
-                    CustomBreakSpeedListener.markInstantBreak(b);
-                    e.getPlayer().breakBlock(b);
-                }, (b) -> {
+            if (treeCapitatorInstant) {
+                if (!playerHasAxe(e.getPlayer())) {
+                    Debugger.send(e.getPlayer(), "tree_capitator", "&cCached player properties indicates player does not have an axe.");
                     treeCapitatingPlayers.remove(e.getPlayer().getUniqueId());
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                        List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, bl -> isLeaves(bl) && (!(bl.getBlockData() instanceof Leaves l) || l.getDistance() > 3), treeCapitatorLeavesScanArea));
-                        Collections.shuffle(leaves);
-                        BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, BlockUtils::decayBlock, null);
-                    }, 20L);
-                });
+                } else {
+                    BlockUtils.processBlocks(e.getPlayer(), vein, this::playerHasAxe, b -> {
+                        if (profile.isTreeCapitatorInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
+                        CustomBreakSpeedListener.markInstantBreak(b);
+                        e.getPlayer().breakBlock(b);
+                    }, (b) -> {
+                        treeCapitatingPlayers.remove(e.getPlayer().getUniqueId());
+                        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                            List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, bl -> isLeaves(bl) && (!(bl.getBlockData() instanceof Leaves l) || l.getDistance() > 3), treeCapitatorLeavesScanArea));
+                            Collections.shuffle(leaves);
+                            BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, BlockUtils::decayBlock, null);
+                        }, 20L);
+                    });
+                }
+            }
             else
-                BlockUtils.processBlocksPulse(e.getPlayer(), e.getBlock(), vein, p -> {
-                    EntityProperties properties = EntityCache.getAndCacheProperties(p);
-                    return properties.getMainHand() != null && EquipmentClass.getMatchingClass(properties.getMainHand().getMeta()) == EquipmentClass.AXE;
-                }, b -> {
+                BlockUtils.processBlocksPulse(e.getPlayer(), e.getBlock(), vein, this::playerHasAxe, b -> {
                     if (profile.isTreeCapitatorInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
                     CustomBreakSpeedListener.markInstantBreak(b);
                     e.getPlayer().breakBlock(b);
@@ -223,6 +223,15 @@ public class WoodcuttingSkill extends Skill implements Listener {
     }
 
     private final int[][] treeScanArea = MathUtils.getOffsetsBetweenPoints(new int[]{-1, 1, -1}, new int[]{1, 1, 1});
+
+    /**
+     * Determines if the player is holding an axe from cached entity properties.
+     * @param p Player
+     */
+    private boolean playerHasAxe(Player p) {
+        EntityProperties properties = EntityCache.getAndCacheProperties(p);
+        return properties.getMainHand() != null && EquipmentClass.getMatchingClass(properties.getMainHand().getMeta()) == EquipmentClass.AXE;
+    }
 
     /**
      * A tree is defined as any log with any leaves connected somewhere above it.
