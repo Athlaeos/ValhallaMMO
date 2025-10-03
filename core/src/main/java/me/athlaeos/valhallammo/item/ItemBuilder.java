@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.*;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class ItemBuilder {
     private ItemStack item;
@@ -253,6 +254,16 @@ public class ItemBuilder {
 
     public ItemBuilder wipeAttributes(){
         meta.setAttributeModifiers(null);
+        return this;
+    }
+
+    public ItemBuilder modifyMeta(Consumer<ItemMeta> function){
+        function.accept(meta);
+        return this;
+    }
+
+    public ItemBuilder modifyItem(Consumer<ItemStack> function){
+        function.accept(item);
         return this;
     }
 
