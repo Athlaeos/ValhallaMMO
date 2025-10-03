@@ -350,7 +350,7 @@ public class ValhallaMMO extends JavaPlugin {
 
     private void setupPaper() {
         try {
-            String paperVersion = MinecraftVersion.getServerVersion().getNmsVersion();
+            String paperVersion = MinecraftVersion.getServerVersion().getPaperVersion();
             if (paperVersion == null) return;
             Class<?> clazz = Class.forName("me.athlaeos.valhallammo.paper.Paper_" + paperVersion);
 

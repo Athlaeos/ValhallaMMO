@@ -11,8 +11,8 @@ public enum MinecraftVersion {
     MINECRAFT_1_22_2(15.2F, "1_22_2", "1.22.2", null),
     MINECRAFT_1_22_1(15.1F, "1_22_1", "1.22.1", null),
     MINECRAFT_1_22(15, "1_22", "1.22", null),
-    MINECRAFT_1_21_10(14.91F, "1_21_10", "1.21.10", "v1_21_R5"),
-    MINECRAFT_1_21_9(14.9F, "1_21_9", "1.21.9", "v1_21_R5"),
+    MINECRAFT_1_21_10(14.91F, "1_21_10", "1.21.10", "v1_21_R6", "v1_21_R5"),
+    MINECRAFT_1_21_9(14.9F, "1_21_9", "1.21.9", "v1_21_R6", "v1_21_R5"),
     MINECRAFT_1_21_8(14.8F, "1_21_8", "1.21.8", "v1_21_R5"),
     MINECRAFT_1_21_7(14.7F, "1_21_7", "1.21.7", "v1_21_R5"),
     MINECRAFT_1_21_6(14.6F, "1_21_6", "1.21.6", "v1_21_R5"),
@@ -50,6 +50,7 @@ public enum MinecraftVersion {
     private final String versionString1;
     private final String versionString2;
     private final String nmsVersion;
+    private final String paperVersion;
     private static final MinecraftVersion serverVersion = init();
 
     private static MinecraftVersion init(){
@@ -66,6 +67,15 @@ public enum MinecraftVersion {
         this.versionString1 = v1;
         this.versionString2 = v2;
         this.nmsVersion = nmsVersion;
+        this.paperVersion = nmsVersion;
+    }
+
+    MinecraftVersion(float v, String v1, String v2, String nmsVersion, String paperVersion){
+        this.v = v;
+        this.versionString1 = v1;
+        this.versionString2 = v2;
+        this.nmsVersion = nmsVersion;
+        this.paperVersion = paperVersion;
     }
 
     public String getVersionString() {
@@ -82,6 +92,10 @@ public enum MinecraftVersion {
 
     public String getNmsVersion() {
         return nmsVersion;
+    }
+
+    public String getPaperVersion() {
+        return paperVersion;
     }
 
     /**
