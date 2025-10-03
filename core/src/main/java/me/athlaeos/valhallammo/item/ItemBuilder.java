@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.*;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class ItemBuilder {
     private ItemStack item;
@@ -256,6 +257,16 @@ public class ItemBuilder {
         meta.setAttributeModifiers(null);
         meta.addAttributeModifier(AttributeMappings.ATTACK_DAMAGE.getAttribute(), new AttributeModifier("dummy", 0.01, AttributeModifier.Operation.ADD_NUMBER));
         return flag(ItemFlag.HIDE_ATTRIBUTES);
+    }
+
+    public ItemBuilder modifyMeta(Consumer<ItemMeta> function){
+        function.accept(meta);
+        return this;
+    }
+
+    public ItemBuilder modifyItem(Consumer<ItemStack> function){
+        function.accept(item);
+        return this;
     }
 
     public ItemStack getItem() { return item; }
