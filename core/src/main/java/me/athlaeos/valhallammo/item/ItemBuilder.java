@@ -269,6 +269,11 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder modifyBuilder(Consumer<ItemBuilder> function){
+        function.accept(this);
+        return this;
+    }
+
     public ItemStack getItem() { return item; }
     public ItemMeta getMeta() { return meta; }
     public ItemBuilder setItem(ItemStack item) { this.item = item; return this; }
