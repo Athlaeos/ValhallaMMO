@@ -1022,7 +1022,7 @@
     "effect_name_damage_player": "%icon% Player Damage %value% %duration%",
     "effect_name_damage_mounted": "%icon% Underwater Mining Speed %value% %duration%",
     "effect_name_water_movement_efficiency_bonus": "%icon% Swimming Speed %value% %duration%",
-    "effect_name_submerged_mining_speed_bonus": "%icon% Mounted Damage %value% %duration%",
+    "effect_name_submerged_mining_speed_bonus": "%icon% Underwater Mining Speed %value% %duration%",
     "effect_name_flight_speed_bonus": "%icon% Flight Speed %value% %duration%",
     "effect_name_oxygen_bonus": "%icon% Lung Capacity %value% %duration%",
     "effect_name_back_protection": "%icon% Back Damage Reduction %value% %duration%",

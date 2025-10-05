@@ -186,8 +186,11 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
         this.recipe = recipe;
 
         this.template = recipe.getTemplate();
+        this.template.setOption(this.template.getOption() instanceof RecipeOption o ? o.getNew() : this.template.getOption());
         this.base = recipe.getBase();
+        this.base.setOption(this.base.getOption() instanceof RecipeOption o ? o.getNew() : this.base.getOption());
         this.addition = recipe.getAddition();
+        this.addition.setOption(this.addition.getOption() instanceof RecipeOption o ? o.getNew() : this.addition.getOption());
         this.result = recipe.getResult();
         this.requireValhallaTools = recipe.requireValhallaTools();
         this.tinker = recipe.tinkerBase();
