@@ -244,6 +244,7 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
         this.destroyStation = recipe.destroysStation();
         this.modifiers = recipe.getModifiers();
         this.tinkerInput = recipe.getTinkerInput();
+        this.tinkerInput.setOption(this.tinkerInput.getOption() instanceof RecipeOption o ? o.getNew() : this.tinkerInput.getOption());
         this.result = recipe.getResult();
         this.tinker = recipe.tinker();
         this.requireValhallaTools = recipe.requiresValhallaTools();

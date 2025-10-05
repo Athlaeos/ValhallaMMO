@@ -2,7 +2,7 @@ name: ValhallaMMO
 version: ${project.version}
 main: me.athlaeos.valhallammo.ValhallaMMO
 author: Athlaeos
-api-version: "1.16"
+api-version: "1.19"
 load: POSTWORLD
 softdepend:
 - Vault

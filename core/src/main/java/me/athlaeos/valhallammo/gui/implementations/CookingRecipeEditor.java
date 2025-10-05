@@ -185,6 +185,7 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
         this.recipe = recipe;
 
         this.input = recipe.getInput();
+        this.input.setOption(this.input.getOption() instanceof RecipeOption o ? o.getNew() : this.input.getOption());
         this.result = recipe.getResult();
         this.requireValhallaTools = recipe.requireValhallaTools();
         this.tinker = recipe.tinker();

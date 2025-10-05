@@ -80,7 +80,7 @@ public class MaterialWithDataChoice extends RecipeOption {
         if (i1Meta == null || i2Meta == null) return false;
         if (!i1Meta.hasCustomModelData() && !i2Meta.hasCustomModelData()) return true;
         if (!i1Meta.hasCustomModelData() || !i2Meta.hasCustomModelData()) return false;
-        return i1.getType() == i2.getType() && i1Meta.getCustomModelData() == i2Meta.getCustomModelData();
+        return i1Meta.getCustomModelData() == i2Meta.getCustomModelData();
     }
 
     @Override
@@ -93,7 +93,7 @@ public class MaterialWithDataChoice extends RecipeOption {
     public RecipeOption getNew() {
         if (validChoices == null) validChoices = new HashSet<>();
         MaterialWithDataChoice choice = new MaterialWithDataChoice();
-        choice.validChoices = this.validChoices;
+        choice.validChoices = new HashSet<>(this.validChoices);
         return choice;
     }
 

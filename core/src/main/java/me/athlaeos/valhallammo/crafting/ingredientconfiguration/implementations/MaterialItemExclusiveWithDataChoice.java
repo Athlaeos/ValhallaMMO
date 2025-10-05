@@ -2,7 +2,6 @@ package me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations
 
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
-import me.athlaeos.valhallammo.item.CustomID;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
@@ -20,34 +19,34 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MaterialWithIDChoice extends RecipeOption {
+public class MaterialItemExclusiveWithDataChoice extends RecipeOption {
     private Collection<Material> validChoices = new HashSet<>();
 
     @Override
     public String getName() {
         if (validChoices == null) validChoices = new HashSet<>();
-        return "CHOICE_MATERIAL_ID";
+        return "CHOICE_MATERIAL_DATA_ITEM_EXCLUSIVE";
     }
 
     @Override
     public String getActiveDescription() {
         if (validChoices == null) validChoices = new HashSet<>();
-        return "This ingredient will need to match in item base type" + (validChoices.isEmpty() ? "" : ("(or any of " + String.join(", ", validChoices.stream().map(m -> StringUtils.toPascalCase(m.toString().replace("_", " "))).collect(Collectors.toSet())) + ")")) + " AND custom id";
+        return "This ingredient will need to match in any of " + (validChoices.isEmpty() ? "invalid" : String.join(", ", validChoices.stream().map(m -> StringUtils.toPascalCase(m.toString().replace("_", " "))).collect(Collectors.toSet())) + ")") + " AND base item custom model data";
     }
 
     @Override
     public ItemStack getIcon() {
         if (validChoices == null) validChoices = new HashSet<>();
-        ItemBuilder builder = new ItemBuilder(Material.NAME_TAG).name("&7Material-ID Requirement");
+        ItemBuilder builder = new ItemBuilder(Material.RED_DYE).name("&7Material-data Requirement (Item exclusive)");
         if (!validChoices.isEmpty()) builder.appendLore("&f" + StringUtils.separateStringIntoLines(String.join(", ", validChoices.stream().map(m -> StringUtils.toPascalCase(m.toString().replace("_", " "))).collect(Collectors.toSet())), 40));
         builder.appendLore(
-                "&aRequire this ingredient to match in",
-                "&abase type or any of the configured types",
-                "&aand in custom ID.",
-                "",
-                "&7The name of the ingredient will be",
-                "&7used to communicate item requirement",
-                "&7to the player.");
+            "&aRequire this ingredient to match only in",
+            "&aany of the configured types and the custom",
+            "&amodel data of the base item",
+            "",
+            "&7The name of the ingredient will be",
+            "&7used to communicate item requirement",
+            "&7to the player.");
         return builder.get();
     }
 
@@ -74,14 +73,14 @@ public class MaterialWithIDChoice extends RecipeOption {
     @Override
     public boolean matches(ItemStack i1, ItemStack i2) {
         if (validChoices == null) validChoices = new HashSet<>();
-        if (i1.getType() != i2.getType() && !validChoices.contains(i2.getType())) return false;
+        if (!validChoices.contains(i2.getType())) return false;
         ItemMeta i1Meta = i1.getItemMeta();
         ItemMeta i2Meta = i2.getItemMeta();
-        Integer id1 = CustomID.getID(i1Meta);
-        Integer id2 = CustomID.getID(i2Meta);
-        if ((i1Meta == null && i2Meta == null) || (id1 == null && id2 == null)) return true;
-        if ((i1Meta == null || i2Meta == null) || (id1 == null || id2 == null)) return false;
-        return i1.getType() == i2.getType() && id1.intValue() == id2.intValue();
+        if (i1Meta == null && i2Meta == null) return true;
+        if (i1Meta == null || i2Meta == null) return false;
+        if (!i1Meta.hasCustomModelData() && !i2Meta.hasCustomModelData()) return true;
+        if (!i1Meta.hasCustomModelData() || !i2Meta.hasCustomModelData()) return false;
+        return i1Meta.getCustomModelData() == i2Meta.getCustomModelData();
     }
 
     @Override
@@ -93,7 +92,7 @@ public class MaterialWithIDChoice extends RecipeOption {
     @Override
     public RecipeOption getNew() {
         if (validChoices == null) validChoices = new HashSet<>();
-        MaterialWithIDChoice choice = new MaterialWithIDChoice();
+        MaterialItemExclusiveWithDataChoice choice = new MaterialItemExclusiveWithDataChoice();
         choice.validChoices = new HashSet<>(this.validChoices);
         return choice;
     }
@@ -111,11 +110,15 @@ public class MaterialWithIDChoice extends RecipeOption {
             validChoices.clear();
             PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()).addOption(this);
         } else {
-            if (!ItemUtils.isEmpty(e.getCursor())) {
-                validChoices.add(e.getCursor().getType());
-                PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()).addOption(this);
+            if (validChoices.isEmpty() && ItemUtils.isEmpty(e.getCursor())) {
+                Utils.sendMessage(e.getWhoClicked(), "&cThis option must be configured first!");
+            } else {
+                if (!ItemUtils.isEmpty(e.getCursor())) {
+                    validChoices.add(e.getCursor().getType());
+                    PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()).addOption(this);
+                }
+                else super.onClick(e);
             }
-            else super.onClick(e);
         }
     }
 }

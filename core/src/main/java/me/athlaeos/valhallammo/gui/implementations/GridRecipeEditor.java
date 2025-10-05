@@ -241,6 +241,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
         this.recipe = new DynamicGridRecipe(newName);
 
         this.items = new HashMap<>(recipe.getItems());
+        for (SlotEntry entry : this.items.values()) entry.setOption(entry.getOption() instanceof RecipeOption o ? o.getNew() : entry.getOption());
         this.result = recipe.getResult().clone();
         this.requireValhallaTools = recipe.requireValhallaTools();
         this.tinker = recipe.tinker();

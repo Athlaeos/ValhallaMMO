@@ -172,7 +172,9 @@ public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
         this.recipe = recipe;
 
         this.ingredient = recipe.getIngredient();
+        this.ingredient.setOption(this.ingredient.getOption() instanceof RecipeOption o ? o.getNew() : this.ingredient.getOption());
         this.applyOn = recipe.getApplyOn();
+        this.applyOn.setOption(this.applyOn.getOption() instanceof RecipeOption o ? o.getNew() : this.applyOn.getOption());
         this.result = recipe.getResult();
         this.requireValhallaTools = recipe.requireValhallaTools();
         this.tinker = recipe.tinker();

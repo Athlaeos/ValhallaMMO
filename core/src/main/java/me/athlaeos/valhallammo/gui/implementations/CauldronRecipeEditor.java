@@ -198,6 +198,7 @@ public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetR
 
         this.ingredients = recipe.getIngredients();
         this.catalyst = recipe.getCatalyst();
+        this.catalyst.setOption(this.catalyst.getOption() instanceof RecipeOption o ? o.getNew() : this.catalyst.getOption());
         this.result = recipe.getResult();
         this.modifiers = recipe.getModifiers();
         this.requireValhallaTools = recipe.requiresValhallaTools();

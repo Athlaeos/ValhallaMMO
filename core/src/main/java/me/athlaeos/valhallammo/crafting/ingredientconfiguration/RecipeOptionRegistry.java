@@ -16,6 +16,7 @@ public class RecipeOptionRegistry {
         registerOption(new SimilarMaterialsChoice());
         registerOption(new SimilarTypeChoice());
         registerOption(new ConfigurableMaterialsChoice());
+        registerOption(new MaterialItemExclusiveWithDataChoice());
         registerOption(new PotionChoice());
         registerOption(new MaterialWithIDChoice());
         registerOption(new PotionMatchEffectsChoice());
