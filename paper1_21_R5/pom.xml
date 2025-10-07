@@ -27,6 +27,13 @@
         </repository>
     </repositories>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>bytecode.space</id>
+            <url>https://repo.bytecode.space/repository/maven-public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <dependencies>
         <dependency>
             <groupId>io.papermc.paper</groupId>
@@ -38,6 +45,12 @@
             <groupId>me.athlaeos</groupId>
             <artifactId>valhallammo-core</artifactId>
             <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>ca.bkaw</groupId>
+            <artifactId>paper-nms</artifactId>
+            <version>1.21.8-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -67,6 +80,19 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>ca.bkaw</groupId>-->
+            <!--                <artifactId>paper-nms-maven-plugin</artifactId>-->
+            <!--                <version>1.4.10</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>process-classes</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>remap</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 </project>

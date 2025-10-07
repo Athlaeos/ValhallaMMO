@@ -68,6 +68,10 @@ public final class NMS_v1_21_R6 implements NMS {
 
     @Override
     public void forceAttack(Player player, LivingEntity victim) {
+        if (ValhallaMMO.isUsingPaperMC()) {
+            ValhallaMMO.getPaper().forceAttack(player, victim);
+            return;
+        }
         ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
     }
 
@@ -176,6 +180,10 @@ public final class NMS_v1_21_R6 implements NMS {
 
     @Override
     public void blockBreakAnimation(Player p, org.bukkit.block.Block b, int id, int stage) {
+        if (ValhallaMMO.isUsingPaperMC()) {
+            ValhallaMMO.getPaper().blockBreakAnimation(p, b, id, stage);
+            return;
+        }
         ServerPlayer entityPlayer = ((CraftPlayer) p).getHandle();
         ServerGamePacketListenerImpl playerConnection = entityPlayer.connection;
         BlockPos blockPosition = new BlockPos(b.getX(), b.getY(), b.getZ());
@@ -191,6 +199,7 @@ public final class NMS_v1_21_R6 implements NMS {
 
     @Override
     public float toolPower(org.bukkit.inventory.ItemStack tool, org.bukkit.block.Block b) {
+        if (ValhallaMMO.isUsingPaperMC()) return ValhallaMMO.getPaper().toolPower(tool, b);
         if (!ItemUtils.isEmpty(tool)) {
             ItemStack craftItemStack = CraftItemStack.asNMSCopy(tool);
             Block nmsBlock = ((CraftWorld) b.getWorld()).getHandle().getBlockState(new BlockPos(b.getX(), b.getY(), b.getZ())).getBlock();
@@ -202,6 +211,7 @@ public final class NMS_v1_21_R6 implements NMS {
 
     @Override
     public float toolPower(org.bukkit.inventory.ItemStack tool, Material b) {
+        if (ValhallaMMO.isUsingPaperMC()) return ValhallaMMO.getPaper().toolPower(tool, b);
         if (!ItemUtils.isEmpty(tool)) {
             ItemStack craftItemStack = CraftItemStack.asNMSCopy(tool);
             CraftBlockData data = (CraftBlockData) b.createBlockData();
@@ -212,6 +222,10 @@ public final class NMS_v1_21_R6 implements NMS {
 
     @Override
     public void breakBlock(Player p, org.bukkit.block.Block b) {
+        if (ValhallaMMO.isUsingPaperMC()) {
+            ValhallaMMO.getPaper().breakBlock(p, b);
+            return;
+        }
         b.getWorld().spawnParticle(Particle.BLOCK, b.getLocation().add(0.5, 0.5, 0.5), 100, 0.1, 0.1, 0.1, 4, b.getBlockData());
         b.getWorld().playSound(b.getLocation(), b.getBlockData().getSoundGroup().getBreakSound(), 1.0f, 1.0f);
         ((CraftPlayer) p).getHandle().gameMode.destroyBlock(new BlockPos(b.getX(), b.getY(), b.getZ()));
@@ -220,6 +234,7 @@ public final class NMS_v1_21_R6 implements NMS {
     @SuppressWarnings("deprecation")
     @Override
     public Sound blockSound(org.bukkit.block.Block b) {
+        if (ValhallaMMO.isUsingPaperMC()) return ValhallaMMO.getPaper().blockSound(b);
         try {
             Block nmsBlock = ((CraftWorld) b.getWorld()).getHandle().getBlockState(new BlockPos(b.getX(), b.getY(), b.getZ())).getBlock();
             SoundType soundEffectType = nmsBlock.defaultBlockState().getSoundType();
@@ -246,6 +261,10 @@ public final class NMS_v1_21_R6 implements NMS {
 
     @Override
     public void resetAttackCooldown(Player p){
+        if (ValhallaMMO.isUsingPaperMC()) {
+            ValhallaMMO.getPaper().resetAttackCooldown(p);
+            return;
+        }
         ServerPlayer entityPlayer = ((CraftPlayer) p).getHandle();
         entityPlayer.resetAttackStrengthTicker();
     }
