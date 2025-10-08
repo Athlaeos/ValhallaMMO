@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import me.lauriichan.spigot.justlootit.api.event.player.JLIPlayerLootProvidedEvent;
+import me.lauriichan.spigot.justlootit.api.event.player.JLIPlayerVanillaLootProvidedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -24,8 +26,6 @@ import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.loot.ReplacementTable;
 import me.athlaeos.valhallammo.loot.LootTable.VanillaLootPreservationType;
 import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.lauriichan.spigot.justlootit.api.event.player.AsyncJLIPlayerLootProvidedEvent;
-import me.lauriichan.spigot.justlootit.api.event.player.AsyncJLIPlayerVanillaLootProvidedEvent;
 
 public class JustLootItHook extends PluginHook {
 
@@ -39,8 +39,8 @@ public class JustLootItHook extends PluginHook {
     public void whenPresent() {
         listener = new Listener() {
             @EventHandler(ignoreCancelled = true)
-            public void onLootProvided(AsyncJLIPlayerLootProvidedEvent event) {
-                if (ValhallaMMO.isWorldBlacklisted(event.entryLocation().getWorld().getName())) {
+            public void onLootProvided(JLIPlayerLootProvidedEvent event) {
+                if (event.entryLocation().getWorld() == null || ValhallaMMO.isWorldBlacklisted(event.entryLocation().getWorld().getName())) {
                     return;
                 }
                 LootTable lootTable = null;
@@ -51,7 +51,7 @@ public class JustLootItHook extends PluginHook {
                     block = null;
                 }
                 ReplacementTable replacementTable;
-                if (lootTable == null && event instanceof AsyncJLIPlayerVanillaLootProvidedEvent vanillaEvent) {
+                if (lootTable == null && event instanceof JLIPlayerVanillaLootProvidedEvent vanillaEvent) {
                     lootTable = LootTableRegistry.getLootTable(vanillaEvent.lootTable().getKey());
                     replacementTable = LootTableRegistry.getReplacementTable(vanillaEvent.lootTable().getKey());
                 } else {
