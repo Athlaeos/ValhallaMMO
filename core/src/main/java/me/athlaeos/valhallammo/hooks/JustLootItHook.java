@@ -30,7 +30,7 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 public class JustLootItHook extends PluginHook {
 
     private Listener listener;
-    
+
     public JustLootItHook() {
         super("JustLootIt");
     }
@@ -111,4 +111,7 @@ public class JustLootItHook extends PluginHook {
         Bukkit.getPluginManager().registerEvents(listener, ValhallaMMO.getInstance());
     }
 
+    public Listener getListener() {
+        return listener;
+    }
 }

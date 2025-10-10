@@ -7,7 +7,6 @@ import me.athlaeos.valhallammo.block.EntityExplodeBlockDestructionInfo;
 import me.athlaeos.valhallammo.block.GenericBlockDestructionInfo;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
-import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.entities.EntityClassification;
@@ -25,12 +24,15 @@ import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.loot.ReplacementTable;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
-import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.version.ArchaeologyListener;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PaperLootRefillHandler;
-import org.bukkit.*;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
@@ -48,17 +50,18 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerHarvestBlockEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTables;
 import org.bukkit.loot.Lootable;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LootListener implements Listener {
 
