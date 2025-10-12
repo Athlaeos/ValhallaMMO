@@ -1513,7 +1513,7 @@
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
           "validChoices": [
-            "DIAMOND_HELMET"
+            "DIAMOND_LEGGINGS"
           ],
           "key": {
             "namespace": "valhallammo",
@@ -1595,7 +1595,9 @@
       "option": {
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
-          "validChoices": [],
+          "validChoices": [
+            "DIAMOND_SHOVEL"
+          ],
           "key": {
             "namespace": "valhallammo",
             "key": "recipe_option_id"
@@ -1676,7 +1678,9 @@
       "option": {
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
-          "validChoices": [],
+          "validChoices": [
+            "DIAMOND_HOE"
+          ],
           "key": {
             "namespace": "valhallammo",
             "key": "recipe_option_id"
@@ -1840,7 +1844,9 @@
       "option": {
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
-          "validChoices": [],
+          "validChoices": [
+            "DIAMOND_SWORD"
+          ],
           "key": {
             "namespace": "valhallammo",
             "key": "recipe_option_id"
@@ -1921,7 +1927,9 @@
       "option": {
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
-          "validChoices": [],
+          "validChoices": [
+            "DIAMOND_SWORD"
+          ],
           "key": {
             "namespace": "valhallammo",
             "key": "recipe_option_id"
@@ -2003,7 +2011,7 @@
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
           "validChoices": [
-            "DIAMOND_HELMET"
+            "DIAMOND_CHESTPLATE"
           ],
           "key": {
             "namespace": "valhallammo",
@@ -2085,7 +2093,9 @@
       "option": {
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
-          "validChoices": [],
+          "validChoices": [
+            "DIAMOND_SWORD"
+          ],
           "key": {
             "namespace": "valhallammo",
             "key": "recipe_option_id"
@@ -2166,7 +2176,9 @@
       "option": {
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
-          "validChoices": [],
+          "validChoices": [
+            "DIAMOND_SWORD"
+          ],
           "key": {
             "namespace": "valhallammo",
             "key": "recipe_option_id"
@@ -2247,7 +2259,9 @@
       "option": {
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
-          "validChoices": [],
+          "validChoices": [
+            "DIAMOND_SWORD"
+          ],
           "key": {
             "namespace": "valhallammo",
             "key": "recipe_option_id"
@@ -2328,7 +2342,9 @@
       "option": {
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
-          "validChoices": [],
+          "validChoices": [
+            "DIAMOND_SWORD"
+          ],
           "key": {
             "namespace": "valhallammo",
             "key": "recipe_option_id"
@@ -2410,7 +2426,7 @@
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
           "validChoices": [
-            "DIAMOND_HELMET"
+            "DIAMOND_BOOTS"
           ],
           "key": {
             "namespace": "valhallammo",
@@ -2492,7 +2508,9 @@
       "option": {
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
-          "validChoices": [],
+          "validChoices": [
+            "DIAMOND_SWORD"
+          ],
           "key": {
             "namespace": "valhallammo",
             "key": "recipe_option_id"
@@ -2573,7 +2591,9 @@
       "option": {
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
-          "validChoices": [],
+          "validChoices": [
+            "DIAMOND_AXE"
+          ],
           "key": {
             "namespace": "valhallammo",
             "key": "recipe_option_id"
@@ -2654,7 +2674,9 @@
       "option": {
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
-          "validChoices": [],
+          "validChoices": [
+            "DIAMOND_PICKAXE"
+          ],
           "key": {
             "namespace": "valhallammo",
             "key": "recipe_option_id"
@@ -2735,7 +2757,9 @@
       "option": {
         "CHOICE": "me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialWithDataChoice",
         "DATA": {
-          "validChoices": [],
+          "validChoices": [
+            "DIAMOND_SWORD"
+          ],
           "key": {
             "namespace": "valhallammo",
             "key": "recipe_option_id"
