@@ -152,11 +152,11 @@ public abstract class ProfilePersistence {
     private static String whereClause(Pair<String, Double> mainStat, Map<String, Pair<String, Double>> extraStats){
         Collection<String> whereClauses = new HashSet<>();
         if (mainStat.getTwo() != null)
-            whereClauses.add(String.format("%s >= %.2f", mainStat.getOne(), mainStat.getTwo()));
+            whereClauses.add(String.format("%s >= FORMAT(%.2f, 'D', 'en-US')", mainStat.getOne(), mainStat.getTwo()));
         for (String stat : extraStats.keySet()){
             Pair<String, Double> statWithMinimum = extraStats.get(stat);
             if (statWithMinimum == null || statWithMinimum.getTwo() == null) continue;
-            whereClauses.add(String.format("%s >= %.2f", stat, statWithMinimum.getTwo()));
+            whereClauses.add(String.format("%s >= FORMAT(%.2f, 'D', 'en-US')", stat, statWithMinimum.getTwo()));
         }
         return whereClauses.isEmpty() ? "" : (" WHERE " + String.join(" AND ", whereClauses));
     }
@@ -266,11 +266,7 @@ public abstract class ProfilePersistence {
         if (!isLoaded(p)) {
             ValhallaMMO.logWarning("[TEMP DEBUG] Trying to save profile of player " + pl.getName() + " but it wasn't loaded!");
             return;
-        }
-        else if (!saving.add(p)) {
-            ValhallaMMO.logWarning("[TEMP DEBUG] Trying to save profile of player " + pl.getName() + " but it was marked as 'do not save'!");
-            return;
-        }
+        } else if (!saving.add(p)) return;
 
         ClassToInstanceMap<Profile> profiles = persistentProfiles.get(p).join();
         for (Profile profile : profiles.values()) {
@@ -287,14 +283,14 @@ public abstract class ProfilePersistence {
     }
 
     public void uncacheProfile(UUID p) {
-        persistentProfiles.synchronous().invalidate(p);
+//        persistentProfiles.synchronous().invalidate(p);
         skillProfiles.remove(p);
         JoinLeaveListener.getLoadedProfiles().remove(p);
         ProfileCache.resetCache(p);
     }
 
     public void uncacheAllProfiles() {
-        persistentProfiles.synchronous().invalidateAll();
+//        persistentProfiles.synchronous().invalidateAll();
         skillProfiles.clear();
         JoinLeaveListener.getLoadedProfiles().clear();
         ProfileCache.resetAllCaches();
@@ -354,8 +350,9 @@ public abstract class ProfilePersistence {
     public Map<Integer, LeaderboardEntry> queryLeaderboardEntries(LeaderboardManager.Leaderboard leaderboard) {
         Map<Integer, LeaderboardEntry> entries = new HashMap<>();
         Profile profile = ProfileRegistry.getRegisteredProfiles().get(leaderboard.profile());
+        String query = leaderboardQuery(profile, leaderboard.mainStat(), leaderboard.extraStats());
         try {
-            PreparedStatement stmt = getConnection().prepareStatement(leaderboardQuery(profile, leaderboard.mainStat(), leaderboard.extraStats()));
+            PreparedStatement stmt = getConnection().prepareStatement(query);
             ResultSet set = stmt.executeQuery();
             int rank = 1;
             while (set.next()){
@@ -373,6 +370,7 @@ public abstract class ProfilePersistence {
             }
         } catch (SQLException ex){
             ValhallaMMO.logWarning("Could not fetch leaderboard due to an exception: ");
+            ValhallaMMO.logWarning("Query used: \n" + query);
             ex.printStackTrace();
         }
         return entries;
