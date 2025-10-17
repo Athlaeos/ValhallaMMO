@@ -321,6 +321,7 @@ public class EntityUtils {
                     properties.setBootsAttributes(ItemAttributesRegistry.getStats(boots.getMeta(), false));
                     properties.setBootsPotionEffects(PermanentPotionEffects.getPermanentPotionEffects(boots.getMeta()));
                 }
+                properties.getMiscEquipment().clear();
                 for (BiFetcher<List<ItemStack>, LivingEntity> fetcher : otherEquipmentFetchers){
                     for (ItemStack otherEquipment : fetcher.get(e)) {
                         ItemBuilder builder = new ItemBuilder(otherEquipment);

@@ -232,6 +232,7 @@ public abstract class Skill {
                 String displayName = TranslationManager.translatePlaceholders(progressionConfig.getString("perks." + perkName + ".name"));
                 String description = TranslationManager.translatePlaceholders(progressionConfig.getString("perks." + perkName + ".description"));
                 ItemStack icon = ItemUtils.getIconFromConfig(progressionConfig, "perks." + perkName + ".icon", getClass().getSimpleName() + " progression config", new ItemStack(Material.PAPER));
+                String permission = progressionConfig.getString("perks." + perkName + ".permission");
 
                 int[] c = parseCoordinates(progressionConfig.getString("perks." + perkName + ".coords", "0,0"));
                 int perkX = c[0];
@@ -280,7 +281,7 @@ public abstract class Skill {
                 int customModelDataVisible = progressionConfig.getInt("perks." + perkName + ".custom_model_data_visible", -1);
 
                 Perk newPerk = new Perk(perkName, displayName, description, icon,
-                        this, perkX, perkY, hidden, expenses, conditions, required_level, requiredPermission, perkRewards,
+                        this, perkX, perkY, hidden, expenses, conditions, required_level, permission, perkRewards,
                         perkMessages, commands, undoCommands);
                 if (customModelDataUnlockable > 0) newPerk.setCustomModelDataUnlockable(customModelDataUnlockable);
                 if (customModelDataUnlocked > 0) newPerk.setCustomModelDataUnlocked(customModelDataUnlocked);
