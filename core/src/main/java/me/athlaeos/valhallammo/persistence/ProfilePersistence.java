@@ -264,22 +264,19 @@ public abstract class ProfilePersistence {
     public void saveProfile(UUID p) {
         OfflinePlayer pl = ValhallaMMO.getInstance().getServer().getOfflinePlayer(p);
         if (!isLoaded(p)) {
-            ValhallaMMO.logWarning("[TEMP DEBUG] Trying to save profile of player " + pl.getName() + " but it wasn't loaded!");
             return;
         } else if (!saving.add(p)) return;
 
         ClassToInstanceMap<Profile> profiles = persistentProfiles.get(p).join();
         for (Profile profile : profiles.values()) {
             if (shouldPersist(profile)) insertOrUpdateProfile(p, profile);
-            else ValhallaMMO.logWarning("[TEMP DEBUG] Trying to save profile type " + profile.getClass().getSimpleName() + " of player " + pl.getName() + " but it did not meet the saving requirements!");
         }
 
         saving.remove(p);
         Player player = Bukkit.getPlayer(p);
         if (player == null || !player.isOnline()) {
             uncacheProfile(p);
-            ValhallaMMO.logWarning("[TEMP DEBUG] Saved player data of player " + pl.getName() + ", but they were offline so the profile was uncached!");
-        } else ValhallaMMO.logWarning("[TEMP DEBUG] Profile of player " + pl.getName() + " should be saved properly");
+        }
     }
 
     public void uncacheProfile(UUID p) {
@@ -364,7 +361,6 @@ public abstract class ProfilePersistence {
                 for (Pair<String, Double> e : leaderboard.extraStats().values()) {
                     extraStat.put(e.getOne(), set.getDouble(e.getOne()));
                 }
-                ValhallaMMO.logWarning("[TEMP DEBUG] Fetched leaderboard entry of player " + player.getName());
                 entries.put(rank, new LeaderboardEntry(player.getName(), player.getUniqueId(), value, rank, extraStat));
                 rank++;
             }
