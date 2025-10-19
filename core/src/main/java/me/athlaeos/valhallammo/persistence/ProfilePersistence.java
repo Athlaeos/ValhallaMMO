@@ -262,7 +262,7 @@ public abstract class ProfilePersistence {
     }
 
     public void saveProfile(UUID p) {
-        OfflinePlayer pl = ValhallaMMO.getInstance().getServer().getOfflinePlayer(p);
+//        OfflinePlayer pl = ValhallaMMO.getInstance().getServer().getOfflinePlayer(p);
         if (!isLoaded(p)) {
             return;
         } else if (!saving.add(p)) return;
@@ -273,10 +273,10 @@ public abstract class ProfilePersistence {
         }
 
         saving.remove(p);
-        Player player = Bukkit.getPlayer(p);
-        if (player == null || !player.isOnline()) {
-            uncacheProfile(p);
-        }
+//        Player player = Bukkit.getPlayer(p);
+//        if (player == null || !player.isOnline()) {
+//            uncacheProfile(p);
+//        }
     }
 
     public void uncacheProfile(UUID p) {
