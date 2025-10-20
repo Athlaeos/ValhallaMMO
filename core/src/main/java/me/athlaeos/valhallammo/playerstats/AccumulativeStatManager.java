@@ -74,8 +74,8 @@ public class AccumulativeStatManager {
         register("GRAVITY", new SetBonusSource("GENERIC_GRAVITY"), new ProfileStatSource(PowerProfile.class, "gravity"), new PotionEffectSource("GENERIC_GRAVITY"), new GlobalBuffSource("gravity"));
         register("SAFE_FALLING_DISTANCE", new SetBonusSource("GENERIC_SAFE_FALL_DISTANCE"), new ProfileStatSource(PowerProfile.class, "safeFallingDistance"), new PotionEffectSource("GENERIC_SAFE_FALL_DISTANCE"), new GlobalBuffSource("safe_falling_distance"));
         register("FALL_DAMAGE_MULTIPLIER", new SetBonusSource("GENERIC_FALL_DAMAGE_MULTIPLIER"), new PotionEffectSource("GENERIC_FALL_DAMAGE_MULTIPLIER"), new GlobalBuffSource("fall_damage_multiplier"));
-        register("WATER_MOVEMENT_EFFICIENCY_BONUS", new ProfileStatSource(PowerProfile.class, "waterMovementEfficiencyBonus"), new PotionEffectSource("WATER_MOVEMENT_EFFICIENCY_BONUS"));
-        register("SUBMERGED_MINING_SPEED_BONUS", new ProfileStatSource(PowerProfile.class, "submergedMiningSpeedBonus"), new PotionEffectSource("SUBMERGED_MINING_SPEED_BONUS"));
+        register("WATER_MOVEMENT_EFFICIENCY_BONUS", new ProfileStatSource(PowerProfile.class, "waterMovementEfficiencyBonus"), new PotionEffectSource("WATER_MOVEMENT_EFFICIENCY"));
+        register("SUBMERGED_MINING_SPEED_BONUS", new ProfileStatSource(PowerProfile.class, "submergedMiningSpeedBonus"), new PotionEffectSource("SUBMERGED_MINING_SPEED"));
         register("FLIGHT_SPEED_BONUS", new PotionEffectSource("FLIGHT_SPEED_BONUS"));
         register("OXYGEN_BONUS", new ProfileStatSource(PowerProfile.class, "oxygenBonus"), new PotionEffectSource("OXYGEN_BONUS"));
 

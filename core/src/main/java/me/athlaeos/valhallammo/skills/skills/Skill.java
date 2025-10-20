@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillLevelUpEvent;
 import me.athlaeos.valhallammo.event.ValhallaUpdatedStatsEvent;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.parties.PartyEXPGainListener;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
@@ -513,6 +514,10 @@ public abstract class Skill {
         if (Bukkit.isPrimaryThread()) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             if (event.getAmount() == 0) return;
+            if (event.getReason() != PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE){
+                PartyEXPGainListener.SharingDetails details = PartyEXPGainListener.getSharingDetails(event);
+                if (details != null) return; // this event should really not proceed if the player is currently meeting exp sharing conditions
+            }
 
             Profile profile = ProfileRegistry.getPersistentProfile(p, event.getLeveledSkill().getProfileType());
             if (profile.getLevel() >= profile.getMaxAllowedLevel() &&

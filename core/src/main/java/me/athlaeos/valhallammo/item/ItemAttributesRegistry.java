@@ -190,8 +190,8 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("PVP_RESISTANCE", StatFormat.PERCENTILE_BASE_1_P1, "\uEEA3", (i) -> i >= 0).addModifier(Material.IRON_CHESTPLATE));
         register(new AttributeDisplayWrapper("DAMAGE_PLAYER", StatFormat.PERCENTILE_BASE_1_P1, "\uEEA4", (i) -> i >= 0).addModifier(Material.IRON_SWORD));
         register(new AttributeDisplayWrapper("DAMAGE_MOUNTED", StatFormat.PERCENTILE_BASE_1_P1, "\uEEA5", (i) -> i >= 0).addModifier(Material.SADDLE));
-        register(new AttributeDisplayWrapper("WATER_MOVEMENT_EFFICIENCY_BONUS", StatFormat.PERCENTILE_BASE_1_P1, "\uEEA6", (i) -> i >= 0).addModifier(Material.CONDUIT));
-        register(new AttributeDisplayWrapper("SUBMERGED_MINING_SPEED_BONUS", StatFormat.PERCENTILE_BASE_1_P1, "\uEEA7", (i) -> i >= 0).addModifier(Material.HEART_OF_THE_SEA));
+        register(new AttributeDisplayWrapper("WATER_MOVEMENT_EFFICIENCY", StatFormat.PERCENTILE_BASE_1_P1, "\uEEA6", (i) -> i >= 0).addModifier(Material.CONDUIT));
+        register(new AttributeDisplayWrapper("SUBMERGED_MINING_SPEED", StatFormat.PERCENTILE_BASE_1_P1, "\uEEA7", (i) -> i >= 0).addModifier(Material.HEART_OF_THE_SEA));
         register(new AttributeDisplayWrapper("FLIGHT_SPEED_BONUS", StatFormat.PERCENTILE_BASE_1_P1, "\uEEA8", (i) -> i >= 0).addModifier(Material.FEATHER));
         register(new AttributeDisplayWrapper("OXYGEN_BONUS", StatFormat.PERCENTILE_BASE_1_P1, "\uEEA9", (i) -> i >= 0).addModifier(Material.TURTLE_HELMET));
         register(new AttributeDisplayWrapper("BACK_PROTECTION", StatFormat.PERCENTILE_BASE_1_P1, "\uEEAA", (i) -> i >= 0).addModifier(Material.TURTLE_HELMET));
