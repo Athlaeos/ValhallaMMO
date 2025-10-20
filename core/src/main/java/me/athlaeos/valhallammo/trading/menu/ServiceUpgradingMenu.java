@@ -76,11 +76,13 @@ public class ServiceUpgradingMenu extends Menu {
         else if (e.getRawSlot() == indexInput) {
             // putting item in, or removing from input
             ItemUtils.calculateClickEvent(e, 1, indexInput);
-            ItemStack input = inventory.getItem(indexInput);
-            if (ItemUtils.isEmpty(input)) {
-                this.input = null;
-                inventory.setItem(indexOutput, null);
-            } else this.input = input.clone();
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                ItemStack input = inventory.getItem(indexInput);
+                if (ItemUtils.isEmpty(input)) {
+                    this.input = null;
+                    inventory.setItem(indexOutput, null);
+                } else this.input = input.clone();
+            }, 1L);
         } else if (e.getRawSlot() == indexOutput) {
             if (selectedService == null || ItemUtils.isEmpty(input)) {
                 setMenuItems();
@@ -120,14 +122,16 @@ public class ServiceUpgradingMenu extends Menu {
                     e.setCurrentItem(finalOutput.get());
                     ItemUtils.calculateClickEvent(e, 1);
                     // check if output is empty after clicking, which would determine if the player could take the item out properly
-                    if (ItemUtils.isEmpty(inventory.getItem(indexOutput))) {
-                        // item successfully removed, pay up!
-                        ItemUtils.removeItems(playerMenuUtility.getOwner().getInventory(), cost, 1, selectedService.getCost().getOption());
-                        input = null;
-                        inventory.setItem(indexInput, null);
-                    } else {
-                        input = null;
-                    }
+                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                        if (ItemUtils.isEmpty(inventory.getItem(indexOutput))) {
+                            // item successfully removed, pay up!
+                            ItemUtils.removeItems(playerMenuUtility.getOwner().getInventory(), cost, 1, selectedService.getCost().getOption());
+                            input = null;
+                            inventory.setItem(indexInput, null);
+                        } else {
+                            input = null;
+                        }
+                    }, 1L);
                 }
             }
         } else if (indexesUpgrades.contains(e.getRawSlot())) {
@@ -155,6 +159,8 @@ public class ServiceUpgradingMenu extends Menu {
                 this.input = null;
                 inventory.setItem(indexOutput, null);
             } else this.input = input.clone();
+//            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+//            }, 1L);
         } else return;
 
         setMenuItems();
@@ -236,6 +242,7 @@ public class ServiceUpgradingMenu extends Menu {
         if (!ItemUtils.isEmpty(input)) {
             ItemUtils.addItem(playerMenuUtility.getOwner(), input.clone(), false);
             inventory.setItem(indexInput, null);
+            input = null;
         }
     }
 
