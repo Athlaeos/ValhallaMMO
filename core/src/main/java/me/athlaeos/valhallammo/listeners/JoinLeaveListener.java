@@ -13,6 +13,7 @@ import me.athlaeos.valhallammo.utility.GlobalEffect;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -35,24 +36,25 @@ public class JoinLeaveListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e) {
-        EntityCache.getAndCacheProperties(e.getPlayer());
-        PotionEffectRegistry.updatePlayerAffectedStatus(e.getPlayer());
-        ProfileRegistry.getPersistence().requestProfile(e.getPlayer().getUniqueId());
-        GlobalEffect.temporarilyRevealBossBar(e.getPlayer());
-        PlayerMenuUtilManager.removePlayerMenuUtility(e.getPlayer().getUniqueId());
+        Player player = e.getPlayer();
+        EntityCache.getAndCacheProperties(player);
+        PotionEffectRegistry.updatePlayerAffectedStatus(player);
+        ProfileRegistry.getPersistence().requestProfile(player.getUniqueId());
+        GlobalEffect.temporarilyRevealBossBar(player);
+        PlayerMenuUtilManager.removePlayerMenuUtility(player.getUniqueId());
 
-        double health = e.getPlayer().getPersistentDataContainer().getOrDefault(HEALTH, PersistentDataType.DOUBLE, -1D);
+        double health = player.getPersistentDataContainer().getOrDefault(HEALTH, PersistentDataType.DOUBLE, -1D);
         if (health > 0){
-            AttributeInstance maxHealth = e.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            AttributeInstance maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
             if (maxHealth != null){
                 if (maxHealth.getValue() < health) health = maxHealth.getValue();
-                e.getPlayer().setHealth(health);
+                player.setHealth(health);
             }
         }
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-            EntityAttributeStats.updateStats(e.getPlayer());
-            FlightReward.setFlight(e.getPlayer(), true);
+            EntityAttributeStats.updateStats(player);
+            FlightReward.setFlight(player, true);
         }, 40L);
     }
 
@@ -61,16 +63,12 @@ public class JoinLeaveListener implements Listener {
         // the following code is to remove valhallammo's attribute modifiers off players when they log off
         // this is to prevent, in the case valhallammo is being uninstalled, no unintended attributes remain
         // stuck on the player.
-        e.getPlayer().getPersistentDataContainer().set(HEALTH, PersistentDataType.DOUBLE, e.getPlayer().getHealth());
-        EntityAttributeStats.removeStats(e.getPlayer());
-        PotionEffectRegistry.markAsUnaffected(e.getPlayer());
-
-//        if (loadedProfiles.contains(e.getPlayer().getUniqueId())) {
-//            ProfileRegistry.getPersistence().saveProfile(e.getPlayer());
-//            loadedProfiles.remove(e.getPlayer().getUniqueId());
-//        }
-
-        FlightReward.setFlight(e.getPlayer(), false);
+        Player player = e.getPlayer();
+        player.getPersistentDataContainer().set(HEALTH, PersistentDataType.DOUBLE, player.getHealth());
+        EntityAttributeStats.removeStats(player);
+        PotionEffectRegistry.markAsUnaffected(player);
+        ProfileRegistry.getPersistence().saveProfile(player.getUniqueId(), true);
+        FlightReward.setFlight(player, false);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
