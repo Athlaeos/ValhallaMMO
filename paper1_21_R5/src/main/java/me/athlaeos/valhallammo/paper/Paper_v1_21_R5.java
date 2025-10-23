@@ -35,14 +35,16 @@ public final class Paper_v1_21_R5 implements Paper {
     @Override
     public void setConsumable(ItemBuilder builder, boolean edible, boolean canAlwaysEat, float eatTimeSeconds) {
         ItemStack item = builder.get();
-        item.setData(DataComponentTypes.CONSUMABLE, Consumable.consumable()
-                .consumeSeconds(eatTimeSeconds)
-                .build()
-        );
-        item.setData(DataComponentTypes.FOOD, FoodProperties.food()
-                .canAlwaysEat(canAlwaysEat)
-                .build()
-        );
+        if (edible){
+            item.setData(DataComponentTypes.CONSUMABLE, Consumable.consumable()
+                    .consumeSeconds(eatTimeSeconds)
+                    .build()
+            );
+            item.setData(DataComponentTypes.FOOD, FoodProperties.food()
+                    .canAlwaysEat(canAlwaysEat)
+                    .build()
+            );
+        } else item.unsetData(DataComponentTypes.CONSUMABLE);
         builder.setItem(item);
         builder.setMeta(ItemUtils.getItemMeta(item));
     }
