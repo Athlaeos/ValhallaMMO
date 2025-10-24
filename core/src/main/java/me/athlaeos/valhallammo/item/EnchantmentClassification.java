@@ -11,12 +11,12 @@ import java.util.HashSet;
 public enum EnchantmentClassification {
     OFFENSIVE("thorns", "bane_of_arthropods", "smite", "sharpness", "knockback", "fire_aspect",
             "impaling", "sweeping_edge", "channeling", "flame", "infinity", "loyalty", "multishot",
-            "piercing", "power", "punch", "quick_charge"),
+            "piercing", "power", "punch", "quick_charge", "density", "breach"),
     DEFENSIVE("projectile_protection", "feather_falling", "fire_protection", "blast_protection",
             "protection"),
     UTILITY("mending", "unbreaking", "aqua_affinity", "depth_strider", "frost_walker", "respiration",
             "soul_speed", "swift_sneak", "efficiency", "looting", "fortune", "riptide", "luck_of_the_sea", "lure",
-            "silk_touch"),
+            "silk_touch", "wind_burst"),
     CURSE("curse_of_vanishing", "curse_of_binding"),
     UNDEFINED;
     private final Collection<Enchantment> matches = new HashSet<>();
