@@ -82,6 +82,7 @@ public class ProfileRegistry {
                 if (((RedisLockedSQL) persistence).getPool() == null) {
                     return false;
                 }
+                ((RedisLockedSQL) persistence).startSaveQueue();
             } else {
                 persistence = new SQL();
             }

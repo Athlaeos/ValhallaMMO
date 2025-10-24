@@ -86,10 +86,10 @@ public class RedisLockedSQL extends SQL {
     }
 
     @Override
-    public void saveProfile(UUID uuid) {
+    public void saveProfile(UUID uuid, boolean localLock) {
         CompletableFuture<ClassToInstanceMap<Profile>> future = persistentProfiles.getIfPresent(uuid);
         if (future == null || !future.isDone()) return;
-        else if (!saving.add(uuid)) return;
+        else if (localLock && !saving.add(uuid)) return;
 
         ClassToInstanceMap<Profile> profiles = future.join();
         String lockKey = uuid.toString();
@@ -110,7 +110,9 @@ public class RedisLockedSQL extends SQL {
                     insertOrUpdateProfile(uuid, profile);
                 }
             } finally {
-                saving.remove(uuid);
+                if (localLock) {
+                    saving.remove(uuid);
+                }
                 releaseLock(lockKey, lock);
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null || !player.isOnline()) uncacheProfile(uuid);
