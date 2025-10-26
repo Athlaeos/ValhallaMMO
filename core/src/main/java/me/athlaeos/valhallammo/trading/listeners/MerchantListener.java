@@ -163,8 +163,11 @@ public class MerchantListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onTrade(InventoryClickEvent e){
-        if (!(e.getClickedInventory() instanceof MerchantInventory m) || e.isCancelled() || m.getSelectedRecipe() == null ||
-                e.getRawSlot() != 2 || ItemUtils.isEmpty(m.getItem(2)) || ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())) return;
+        if (!(e.getClickedInventory() instanceof MerchantInventory m) || e.isCancelled() || e.getRawSlot() != 2) return;
+        if (ItemUtils.isEmpty(m.getItem(2)) || m.getSelectedRecipe() == null || ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName())){
+            e.setCancelled(true);
+            return;
+        }
         MerchantMenu merchantInterface = activeTradingMenus.get(e.getWhoClicked().getUniqueId());
         if (!(merchantInterface instanceof VirtualMerchant virtualMerchant) || merchantInterface.getMerchantID() == null) return;
         UUID merchantID = merchantInterface.getMerchantID();

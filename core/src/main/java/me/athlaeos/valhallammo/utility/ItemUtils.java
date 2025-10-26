@@ -401,6 +401,10 @@ public class ItemUtils {
             meta.getPersistentDataContainer().set(TYPE_KEY, PersistentDataType.STRING, newType.toString());
     }
 
+    public static void removeStoredType(ItemMeta meta){
+        meta.getPersistentDataContainer().remove(TYPE_KEY);
+    }
+
     /**
      * Attempts to fetch an ItemStack from the given config, given a path to it. If it doesn't find an ItemStack, it
      * will attempt to find a valid Material string and change the material of the default value to it.

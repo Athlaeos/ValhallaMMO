@@ -431,24 +431,25 @@ public class EntityAttackListener implements Listener {
             if (a instanceof Player p && WorldGuardHook.inDisabledRegion(a.getLocation(), p, WorldGuardHook.VMMO_COMBAT_WEAPONCOATING)) return;
             ItemStack hand = a.getEquipment().getItemInMainHand();
             if (ItemUtils.isEmpty(hand)) return;
-            ItemBuilder weapon = new ItemBuilder(hand);
+            ItemBuilder asBuilder = new ItemBuilder(hand);
 
-            if (hand.getType().isEdible() || weapon.getMeta() instanceof PotionMeta || !EquipmentClass.isHandHeld(weapon.getMeta())) return;
+            if (hand.getType().isEdible() || asBuilder.getMeta() instanceof PotionMeta || !EquipmentClass.isHandHeld(asBuilder.getMeta())) return;
 
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                if (!e.getEntity().isValid() || e.getEntity().isDead()) return;
+                if (!e.getEntity().isValid() || e.getEntity().isDead() || !a.getEquipment().getItemInMainHand().equals(hand)) return;
                 boolean updatedMeta = false;
                 // apply potion effects
-                for (PotionEffectWrapper wrapper : PotionEffectRegistry.getStoredEffects(weapon.getMeta(), false).values()){
-                    if (PotionEffectRegistry.spendCharge(weapon, wrapper.getEffect())){
+                for (PotionEffectWrapper wrapper : PotionEffectRegistry.getStoredEffects(asBuilder.getMeta(), false).values()){
+                    if (PotionEffectRegistry.spendCharge(asBuilder, wrapper.getEffect())){
                         if (wrapper.isVanilla()) v.addPotionEffect(new PotionEffect(wrapper.getVanillaEffect(), (int) wrapper.getDuration(), (int) wrapper.getAmplifier(), false));
                         else PotionEffectRegistry.addEffect(v, a, new CustomPotionEffect(wrapper, (int) wrapper.getDuration(), wrapper.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ARROW);
                         updatedMeta = true;
                     }
                 }
                 if (updatedMeta){
-                    hand.setItemMeta(weapon.getMeta());
-                    a.getEquipment().setItemInMainHand(weapon.get(), true);
+                    ItemUtils.removeStoredType(asBuilder.getMeta());
+                    hand.setItemMeta(asBuilder.getMeta());
+                    a.getEquipment().setItemInMainHand(asBuilder.get(), true);
                 }
             }, 1L);
         }

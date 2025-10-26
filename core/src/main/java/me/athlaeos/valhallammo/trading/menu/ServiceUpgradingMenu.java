@@ -81,8 +81,12 @@ public class ServiceUpgradingMenu extends Menu {
                 if (ItemUtils.isEmpty(input)) {
                     this.input = null;
                     inventory.setItem(indexOutput, null);
-                } else this.input = input.clone();
-            }, 1L);
+                } else {
+                    this.input = input.clone();
+                }
+                setMenuItems();
+            }, 2L);
+            return;
         } else if (e.getRawSlot() == indexOutput) {
             if (selectedService == null || ItemUtils.isEmpty(input)) {
                 setMenuItems();
@@ -131,7 +135,9 @@ public class ServiceUpgradingMenu extends Menu {
                         } else {
                             input = null;
                         }
+                        setMenuItems();
                     }, 1L);
+                    return;
                 }
             }
         } else if (indexesUpgrades.contains(e.getRawSlot())) {
