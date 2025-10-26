@@ -366,6 +366,10 @@ public class ItemUtils {
         meta.getPersistentDataContainer().set(TYPE_KEY, PersistentDataType.STRING, material.toString());
     }
 
+    public static void removeStoredType(ItemMeta meta){
+        meta.getPersistentDataContainer().remove(TYPE_KEY);
+    }
+
     public static void setMetaNoClone(ItemStack i, ItemMeta meta) {
         meta.getPersistentDataContainer().remove(TYPE_KEY);
         i.setItemMeta(meta);
