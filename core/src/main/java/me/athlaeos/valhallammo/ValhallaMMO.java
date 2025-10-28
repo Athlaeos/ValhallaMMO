@@ -225,7 +225,7 @@ public class ValhallaMMO extends JavaPlugin {
 
         if (ConfigManager.getConfig("config.yml").get().getBoolean("metrics", true)){
             Metrics metrics = new Metrics(this, 14942);
-            metrics.addCustomChart(new Metrics.SimplePie("using_database_for_player_data", () -> connection instanceof SQL db && db.getConnection() != null ? "Yes" : "No"));
+            metrics.addCustomChart(new Metrics.SimplePie("using_database_for_player_data", () -> connection.getClass().getSimpleName()));
             metrics.addCustomChart(new Metrics.SimplePie("premium_users", () -> premium ? "Yes" : "No"));
         }
 

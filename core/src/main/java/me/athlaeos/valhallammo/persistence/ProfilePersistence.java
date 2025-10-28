@@ -245,15 +245,15 @@ public abstract class ProfilePersistence {
             if (async) {
                 saveProfileAsync(uuid);
             } else {
-                saveProfile(uuid);
+                saveProfile(uuid, true);
             }
         }
     }
-    
+
     public void saveProfileAsync(UUID p) {
         if (!saving.add(p)) return;
 
-        CompletableFuture.runAsync(() -> saveProfile(p), profileThreads).whenComplete((ignored, ex) -> {
+        CompletableFuture.runAsync(() -> saveProfile(p, false), profileThreads).whenComplete((ignored, ex) -> {
             if (ex != null) {
                 ValhallaMMO.logWarning("Exception when trying to save profile for " + p + ": ");
                 ex.printStackTrace();
@@ -262,11 +262,10 @@ public abstract class ProfilePersistence {
         });
     }
 
-    public void saveProfile(UUID p) {
-//        OfflinePlayer pl = ValhallaMMO.getInstance().getServer().getOfflinePlayer(p);
+    public void saveProfile(UUID p, boolean localLock) {
         if (!isLoaded(p)) {
             return;
-        } else if (!saving.add(p)) {
+        } else if (localLock && !saving.add(p)) {
             return;
         }
 
@@ -275,22 +274,24 @@ public abstract class ProfilePersistence {
             if (shouldPersist(profile)) insertOrUpdateProfile(p, profile);
         }
 
-        saving.remove(p);
-//        Player player = Bukkit.getPlayer(p);
-//        if (player == null || !player.isOnline()) {
-//            uncacheProfile(p);
-//        }
+        if (localLock) {
+            saving.remove(p);
+        }
+        Player player = Bukkit.getPlayer(p);
+        if (player == null || !player.isOnline()) {
+            uncacheProfile(p);
+        }
     }
 
     public void uncacheProfile(UUID p) {
-//        persistentProfiles.synchronous().invalidate(p);
+        persistentProfiles.synchronous().invalidate(p);
         skillProfiles.remove(p);
         JoinLeaveListener.getLoadedProfiles().remove(p);
         ProfileCache.resetCache(p);
     }
 
     public void uncacheAllProfiles() {
-//        persistentProfiles.synchronous().invalidateAll();
+        persistentProfiles.synchronous().invalidateAll();
         skillProfiles.clear();
         JoinLeaveListener.getLoadedProfiles().clear();
         ProfileCache.resetAllCaches();
