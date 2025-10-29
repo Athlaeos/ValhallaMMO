@@ -28,7 +28,7 @@ public class CounterIncrement extends DynamicItemModifier {
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
         if (button == 12)
-            by = Math.max(1, by + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 10 : 1)));
+            by += ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 10 : 1));
         }
 
     @Override

@@ -343,6 +343,19 @@ public abstract class ProfilePersistence {
     }
     public <T extends Profile> T getSkillProfile(UUID p, Class<T> type) {
         ClassToInstanceMap<Profile> profiles = skillProfiles.get(p);
+        if (profiles == null) {
+            Player player = Bukkit.getPlayer(p);
+            if (player != null) {
+                profiles = MutableClassToInstanceMap.create();
+                for (Class<? extends Profile> pr : ProfileRegistry.getRegisteredProfiles().keySet()){
+                    Profile instance = ProfileRegistry.getBlankProfile(p, pr);
+                    profiles.put(pr, instance);
+                }
+                skillProfiles.put(p, profiles);
+                SkillRegistry.updateSkillProgression(player, false);
+                ValhallaMMO.logWarning("An experimental method of stat recalculation was used on " + player.getName() + " to ensure they still have the stats they are supposed to (as opposed to nothing). Please keep an eye out for issues and report them to me :)");
+            }
+        }
         return profiles == null ? null : profiles.getInstance(type);
     }
 
