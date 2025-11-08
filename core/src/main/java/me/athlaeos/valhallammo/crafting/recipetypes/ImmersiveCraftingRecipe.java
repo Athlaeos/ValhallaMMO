@@ -19,7 +19,7 @@ public class ImmersiveCraftingRecipe implements ValhallaRecipe {
 
     private Map<ItemStack, Integer> ingredients = new HashMap<>();
     private MetaRequirement metaRequirement = MetaRequirement.MATERIAL;
-    private Material block = Material.CRAFTING_TABLE;
+    private String block = "CRAFTING_TABLE";
     private int timeToCraft = 50;
     private boolean destroyStation = false;
     private List<DynamicItemModifier> modifiers = new ArrayList<>();
@@ -48,7 +48,7 @@ public class ImmersiveCraftingRecipe implements ValhallaRecipe {
     @Override public ItemStack getResult() {return result;}
     public List<DynamicItemModifier> getModifiers() {return modifiers;}
     public Map<ItemStack, Integer> getIngredients() {return ingredients;}
-    public Material getBlock() {return block;}
+    public String getBlock() {return block;}
     public String getDescription() {return description;}
     public String getDisplayName() {return displayName;}
     public Collection<String> getValidations() {return validations;}
@@ -59,7 +59,7 @@ public class ImmersiveCraftingRecipe implements ValhallaRecipe {
     public MetaRequirement getMetaRequirement() { return metaRequirement; }
 
     public void setRequireExactMeta(MetaRequirement metaRequirement) { this.metaRequirement = metaRequirement; }
-    public void setBlock(Material block) {this.block = block;}
+    public void setBlock(String block) {this.block = block;}
     public void setConsecutiveCrafts(int consecutiveCrafts) {this.consecutiveCrafts = consecutiveCrafts;}
     public void setResult(ItemStack result) {this.result = result;}
     public void setDescription(String description) {this.description = description;}

@@ -13,6 +13,7 @@ import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.recipetypes.ImmersiveCraftingRecipe;
 import me.athlaeos.valhallammo.dom.Action;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Question;
 import me.athlaeos.valhallammo.dom.Questionnaire;
 import me.athlaeos.valhallammo.gui.*;
@@ -42,7 +43,7 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
     private Map<ItemStack, Integer> ingredients;
     private SlotEntry tinkerInput;
     private ItemStack result;
-    private Material block;
+    private String block;
     private int timeToCraft;
     private boolean destroyStation;
     private MetaRequirement metaRequirement;
@@ -332,13 +333,18 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
                 }
                 case "setCraftingBlockButton" -> {
                     if (!ItemUtils.isEmpty(cursor) && cursor.getType().isBlock()){
-                        block = ItemUtils.getBaseMaterial(cursor.getType());
+                        String potentiallyCustomType = ItemUtils.getItemType(cursor);
+                        Material vanilla = Catch.catchOrElse(() -> Material.valueOf(potentiallyCustomType), null);
+                        if (vanilla == null) block = potentiallyCustomType;
+                        else block = ItemUtils.getBaseMaterial(vanilla).toString();
                         // remove incompatible validations
-                        validations.removeIf(v -> {
-                            Validation validation = ValidationRegistry.getValidation(v);
-                            if (validation != null) return !validation.isCompatible(block);
-                            return false;
-                        });
+                        if (vanilla != null){
+                            validations.removeIf(v -> {
+                                Validation validation = ValidationRegistry.getValidation(v);
+                                if (validation != null) return !validation.isCompatible(potentiallyCustomType);
+                                return false;
+                            });
+                        }
                     }
                 }
                 case "setDisplayNameButton" -> {
@@ -553,7 +559,15 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
         inventory.setItem(19, new ItemBuilder(metaRequirementButton).name("&fMeta Requirement: &e" + metaRequirement).appendLore(metaRequirement.getDescription()).get());
         inventory.setItem(20, new ItemBuilder(ingredientsButton).lore(ItemUtils.setListPlaceholder(ItemUtils.getLore(ingredientsButton), "%ingredients%", lore)).get());
         inventory.setItem(21, new ItemBuilder(toolRequirementButton).name("&eTool Required: " + (toolRequired ? "&aYes" : "&fNo")).get());
-        inventory.setItem(22, new ItemBuilder(setCraftingBlockButton).data(-1).type(block).get());
+        ItemBuilder baseBlock = ItemUtils.getItem(block);
+        inventory.setItem(22, baseBlock.name("&eCrafting Station")
+                .stringTag(BUTTON_ACTION_KEY, "setCraftingBlockButton")
+                .lore("&7The recipe may be crafted on",
+                        "&7whatever the block type of this button",
+                        "&7is.",
+                        "&eClick with the block type of your",
+                        "&echoosing to change the type.")
+                .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get());
         inventory.setItem(25, new ItemBuilder(modifierButton).lore(modifierLore).get());
         inventory.setItem(31, new ItemBuilder(craftTimeButton).name(String.format("&fTime to craft: &e%d, %ss", timeToCraft, StringUtils.toTimeStamp2(timeToCraft, 20))).get());
         inventory.setItem(35, new ItemBuilder(toggleTinkerButton).name("&eTinker: " + (tinker ? "&aYes" : "&fNo")).get());

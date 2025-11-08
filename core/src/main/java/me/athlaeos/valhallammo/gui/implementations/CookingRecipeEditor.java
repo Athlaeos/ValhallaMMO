@@ -268,10 +268,10 @@ public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRe
                 case "selectValidationButton" -> {
                     playerMenuUtility.setPreviousMenu(this);
                     new ValidationSelectionMenu(playerMenuUtility, this, switch(type) {
-                        case CAMPFIRE -> Material.CAMPFIRE;
-                        case BLAST_FURNACE -> Material.BLAST_FURNACE;
-                        case SMOKER -> Material.SMOKER;
-                        case FURNACE -> Material.FURNACE;
+                        case CAMPFIRE -> "CAMPFIRE";
+                        case BLAST_FURNACE -> "BLAST_FURNACE";
+                        case SMOKER -> "SMOKER";
+                        case FURNACE -> "FURNACE";
                     }).open();
                     return;
                 }

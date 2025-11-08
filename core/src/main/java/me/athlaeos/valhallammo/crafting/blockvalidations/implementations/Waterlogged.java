@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.crafting.blockvalidations.implementations;
 
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import org.bukkit.Material;
@@ -32,8 +33,10 @@ public class Waterlogged extends Validation {
     }
 
     @Override
-    public boolean isCompatible(Material block) {
-        return block.createBlockData() instanceof org.bukkit.block.data.Waterlogged;
+    public boolean isCompatible(String block) {
+        Material vanilla = Catch.catchOrElse(() -> Material.valueOf(block), null);
+        if (vanilla == null) return false;
+        return vanilla.createBlockData() instanceof org.bukkit.block.data.Waterlogged;
     }
 
     @Override

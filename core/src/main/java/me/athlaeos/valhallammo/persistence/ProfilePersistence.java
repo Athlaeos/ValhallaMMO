@@ -342,7 +342,7 @@ public abstract class ProfilePersistence {
     }
     public <T extends Profile> T getSkillProfile(UUID p, Class<T> type) {
         ClassToInstanceMap<Profile> profiles = skillProfiles.get(p);
-        if (profiles == null) {
+        if (profiles == null && isLoaded(p)) {
             Player player = Bukkit.getPlayer(p);
             if (player != null) {
                 profiles = MutableClassToInstanceMap.create();
@@ -387,8 +387,6 @@ public abstract class ProfilePersistence {
         }
         return entries;
     }
-
-
 
     public void resetProfile(Player p, ResetType resetType) {
         UUID uuid = p.getUniqueId();

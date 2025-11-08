@@ -31,3 +31,11 @@ tree_capitator_prevention_blocks:
   - DIAMOND_BLOCK
   - NETHERITE_BLOCK
   - OBSIDIAN
+
+# Block types added here will be considered part of the "logs" definition, allowing them to be detected as part of a tree
+additional_log_definition:
+  - palm_log
+
+# Block types added here will be considered part of the "leaves" definition, allowing them to be detected as part of a tree
+additional_leaves_definition:
+  - palm_leaves

@@ -12,9 +12,10 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.DiggingProfile;
 import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.utility.*;
+import me.athlaeos.valhallammo.utility.BlockUtils;
+import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.DiggingArchaeologyExtension;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,10 +29,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DiggingSkill extends Skill implements Listener {
-    private final Map<Material, Double> dropsExpValues = new HashMap<>();
+    private final Map<String, Double> dropsExpValues = new HashMap<>();
 
     private boolean forgivingDropMultipliers = true; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
 
@@ -51,22 +55,12 @@ public class DiggingSkill extends Skill implements Listener {
 
         forgivingDropMultipliers = skillConfig.getBoolean("forgiving_multipliers");
 
-        Collection<String> invalidMaterials = new HashSet<>();
         ConfigurationSection blockBreakSection = progressionConfig.getConfigurationSection("experience.digging_break");
         if (blockBreakSection != null){
             for (String key : blockBreakSection.getKeys(false)){
-                try {
-                    Material block = Material.valueOf(key);
-                    double reward = progressionConfig.getDouble("experience.digging_break." + key);
-                    dropsExpValues.put(block, reward);
-                } catch (IllegalArgumentException ignored){
-                    invalidMaterials.add(key);
-                }
+                double reward = progressionConfig.getDouble("experience.digging_break." + key);
+                dropsExpValues.put(key, reward);
             }
-        }
-        if (!invalidMaterials.isEmpty()) {
-            ValhallaMMO.logWarning("The following materials in skills/digging_progression.yml do not exist, no exp values set (ignore warning if your version does not have these materials)");
-            ValhallaMMO.logWarning(String.join(", ", invalidMaterials));
         }
 
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
@@ -76,8 +70,9 @@ public class DiggingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e){
+        String type = BlockUtils.getBlockType(e.getBlock());
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) ||
-                !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlock()) ||
+                !dropsExpValues.containsKey(type) || !BlockUtils.canReward(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING)) return;
 
         if (!hasPermissionAccess(e.getPlayer())) return;
@@ -88,8 +83,9 @@ public class DiggingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void lootTableDrops(BlockBreakEvent e){
+        String type = BlockUtils.getBlockType(e.getBlock());
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) ||
-                !dropsExpValues.containsKey(e.getBlock().getType()) || !BlockUtils.canReward(e.getBlock()) ||
+                !dropsExpValues.containsKey(type) || !BlockUtils.canReward(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING) ||
                 e.getBlock().getState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("DIGGING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
@@ -99,7 +95,7 @@ public class DiggingSkill extends Skill implements Listener {
         double expQuantity = 0;
         for (ItemStack i : LootListener.getPreparedExtraDrops(e.getBlock())){
             if (ItemUtils.isEmpty(i)) continue;
-            expQuantity += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+            expQuantity += dropsExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
         }
         addEXP(e.getPlayer(), expQuantity, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
@@ -108,7 +104,7 @@ public class DiggingSkill extends Skill implements Listener {
     public void onItemsDropped(BlockDropItemEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || !BlockUtils.canReward(e.getBlockState()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_DIGGING) ||
-                !dropsExpValues.containsKey(e.getBlockState().getType()) ||
+                !dropsExpValues.containsKey(e.getBlockState().getType().toString()) ||
                 e.getBlockState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("DIGGING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops
@@ -118,11 +114,11 @@ public class DiggingSkill extends Skill implements Listener {
         double expQuantity = 0;
         for (Item i : e.getItems()){
             if (ItemUtils.isEmpty(i.getItemStack())) continue;
-            expQuantity += dropsExpValues.getOrDefault(i.getItemStack().getType(), 0D) * i.getItemStack().getAmount();
+            expQuantity += dropsExpValues.getOrDefault(ItemUtils.getItemType(i.getItemStack()), 0D) * i.getItemStack().getAmount();
         }
         for (ItemStack i : extraDrops){
             if (ItemUtils.isEmpty(i)) continue;
-            expQuantity += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+            expQuantity += dropsExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
         }
         addEXP(e.getPlayer(), expQuantity, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
@@ -157,13 +153,13 @@ public class DiggingSkill extends Skill implements Listener {
         for (Block b : e.getBlocksAndItems().keySet()){
             for (ItemStack i : e.getBlocksAndItems().getOrDefault(b, new ArrayList<>())){
                 if (ItemUtils.isEmpty(i)) continue;
-                exp += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+                exp += dropsExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
             }
         }
         addEXP(e.getPlayer(), exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
-    public Map<Material, Double> getDropsExpValues() {
+    public Map<String, Double> getDropsExpValues() {
         return dropsExpValues;
     }
 }

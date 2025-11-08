@@ -360,7 +360,7 @@ public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetR
                 }
                 case "selectValidationButton" -> {
                     playerMenuUtility.setPreviousMenu(this);
-                    new ValidationSelectionMenu(playerMenuUtility, this, Material.CAULDRON).open();
+                    new ValidationSelectionMenu(playerMenuUtility, this, "CAULDRON").open();
                     return;
                 }
                 case "toggleValhallaToolRequirementButton" -> requireValhallaTools = !requireValhallaTools;

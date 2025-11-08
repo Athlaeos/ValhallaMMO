@@ -52,9 +52,9 @@ import java.util.List;
 import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class FarmingSkill extends Skill implements Listener {
-    private final Map<Material, Double> blockDropExpValues = new HashMap<>();
-    private final Map<Material, Double> blockInteractExpValues = new HashMap<>();
-    private final Map<Material, Double> entityDropExpValues = new HashMap<>();
+    private final Map<String, Double> blockDropExpValues = new HashMap<>();
+    private final Map<String, Double> blockInteractExpValues = new HashMap<>();
+    private final Map<String, Double> entityDropExpValues = new HashMap<>();
     private final Map<EntityType, Double> entityBreedExpValues = new HashMap<>();
     private final Map<EntityType, Double> entityShearExpValues = new HashMap<>();
 
@@ -88,31 +88,20 @@ public class FarmingSkill extends Skill implements Listener {
 
         forgivingDropMultipliers = skillConfig.getBoolean("forgiving_multipliers");
 
-        Collection<String> invalidMaterials = new HashSet<>();
         Collection<String> invalidEntities = new HashSet<>();
         ConfigurationSection blockBreakSection = progressionConfig.getConfigurationSection("experience.block_drops");
         if (blockBreakSection != null){
             for (String key : blockBreakSection.getKeys(false)){
-                try {
-                    Material drop = Material.valueOf(key);
-                    double reward = progressionConfig.getDouble("experience.block_drops." + key);
-                    blockDropExpValues.put(drop, reward);
-                } catch (IllegalArgumentException ignored){
-                    invalidMaterials.add(key);
-                }
+                double reward = progressionConfig.getDouble("experience.block_drops." + key);
+                blockDropExpValues.put(key, reward);
             }
         }
 
         ConfigurationSection blockInteractSection = progressionConfig.getConfigurationSection("experience.block_interact");
         if (blockInteractSection != null){
             for (String key : blockInteractSection.getKeys(false)){
-                try {
-                    Material block = Material.valueOf(key);
-                    double reward = progressionConfig.getDouble("experience.block_interact." + key);
-                    blockInteractExpValues.put(block, reward);
-                } catch (IllegalArgumentException ignored){
-                    invalidMaterials.add(key);
-                }
+                double reward = progressionConfig.getDouble("experience.block_interact." + key);
+                blockInteractExpValues.put(key, reward);
             }
         }
 
@@ -145,18 +134,9 @@ public class FarmingSkill extends Skill implements Listener {
         ConfigurationSection entityDropSection = progressionConfig.getConfigurationSection("experience.entity_drops");
         if (entityDropSection != null){
             for (String key : entityDropSection.getKeys(false)){
-                try {
-                    Material drop = Material.valueOf(key);
-                    double reward = progressionConfig.getDouble("experience.entity_drops." + key);
-                    entityDropExpValues.put(drop, reward);
-                } catch (IllegalArgumentException ignored){
-                    invalidMaterials.add(key);
-                }
+                double reward = progressionConfig.getDouble("experience.entity_drops." + key);
+                entityDropExpValues.put(key, reward);
             }
-        }
-        if (!invalidMaterials.isEmpty()) {
-            ValhallaMMO.logWarning("The following materials in skills/farming_progression.yml do not exist, no exp values set (ignore warning if your version does not have these materials)");
-            ValhallaMMO.logWarning(String.join(", ", invalidMaterials));
         }
         if (!invalidEntities.isEmpty()) {
             ValhallaMMO.logWarning("The following entities in skills/farming_progression.yml do not exist, no exp values set (ignore warning if your version does not have these entities)");
@@ -170,9 +150,10 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e){
+        String type = BlockUtils.getBlockType(e.getBlock());
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !BlockUtils.canReward(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING) ||
-                !blockDropExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+                !blockDropExpValues.containsKey(type) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         if (!hasPermissionAccess(e.getPlayer())) return;
 
         FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
@@ -184,9 +165,10 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void lootTableDrops(BlockBreakEvent e){
+        String type = BlockUtils.getBlockType(e.getBlock());
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !BlockUtils.canReward(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING) ||
-                !blockDropExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+                !blockDropExpValues.containsKey(type) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("FARMING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
         ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> blockDropExpValues.containsKey(i.getType()));
@@ -194,7 +176,7 @@ public class FarmingSkill extends Skill implements Listener {
         double expQuantity = 0;
         for (ItemStack i : LootListener.getPreparedExtraDrops(e.getBlock())){
             if (ItemUtils.isEmpty(i)) continue;
-            expQuantity += blockDropExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+            expQuantity += blockDropExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
         }
         addEXP(e.getPlayer(), expQuantity, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
@@ -242,13 +224,14 @@ public class FarmingSkill extends Skill implements Listener {
             }
         }
         if (clickedBlock.getBlockData() instanceof Beehive b && b.getHoneyLevel() >= b.getMaximumHoneyLevel()) {
+            String type = BlockUtils.getBlockType(clickedBlock);
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 Beehive newHive = clickedBlock.getBlockData() instanceof Beehive bee ? bee : null;
                 if (newHive == null) return;
                 if (newHive.getHoneyLevel() < newHive.getMaximumHoneyLevel()){
                     // hive is empty after 5 ticks, so it can be assumed it was harvested
-                    if (blockInteractExpValues.containsKey(clickedBlock.getType())) {
-                        double amount = blockInteractExpValues.get(clickedBlock.getType());
+                    if (blockInteractExpValues.containsKey(type)) {
+                        double amount = blockInteractExpValues.get(type);
                         addEXP(e.getPlayer(), amount, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
                         int vanillaExpReward = Utils.randomAverage(profile.getFarmingExperienceRate());
@@ -286,21 +269,22 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockHarvest(PlayerHarvestBlockEvent e) {
+        String type = BlockUtils.getBlockType(e.getHarvestedBlock());
         if (ValhallaMMO.isWorldBlacklisted(e.getHarvestedBlock().getWorld().getName()) ||
-                !blockInteractExpValues.containsKey(e.getHarvestedBlock().getType()) ||
+                !blockInteractExpValues.containsKey(type) ||
                 WorldGuardHook.inDisabledRegion(e.getHarvestedBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("FARMING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
-        ItemUtils.multiplyItems(e.getItemsHarvested(), dropMultiplier, forgivingDropMultipliers, (i) -> blockInteractExpValues.containsKey(i.getType()));
+        ItemUtils.multiplyItems(e.getItemsHarvested(), dropMultiplier, forgivingDropMultipliers, (i) -> blockInteractExpValues.containsKey(ItemUtils.getItemType(i)));
         ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getHarvestedBlock()), dropMultiplier, forgivingDropMultipliers, (i) -> blockInteractExpValues.containsKey(i.getType()));
 
         double amount = 0;
         for (ItemStack i : e.getItemsHarvested()){
             if (ItemUtils.isEmpty(i)) continue;
-            amount += blockInteractExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+            amount += blockInteractExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
         }
         for (ItemStack i : LootListener.getPreparedExtraDrops(e.getHarvestedBlock())){
             if (ItemUtils.isEmpty(i)) continue;
-            amount += blockInteractExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+            amount += blockInteractExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
         }
         addEXP(e.getPlayer(), amount, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
@@ -319,17 +303,17 @@ public class FarmingSkill extends Skill implements Listener {
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING) || e.getBlockState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("FARMING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops
-        List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> blockDropExpValues.containsKey(i.getItemStack().getType()));
+        List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> blockDropExpValues.containsKey(ItemUtils.getItemType(i.getItemStack())));
         LootListener.prepareBlockDrops(e.getBlock(), extraDrops);
 
         double expQuantity = 0;
         for (Item i : e.getItems()){
             if (ItemUtils.isEmpty(i.getItemStack())) continue;
-            expQuantity += blockDropExpValues.getOrDefault(i.getItemStack().getType(), 0D) * i.getItemStack().getAmount();
+            expQuantity += blockDropExpValues.getOrDefault(ItemUtils.getItemType(i.getItemStack()), 0D) * i.getItemStack().getAmount();
         }
         for (ItemStack i : extraDrops){
             if (ItemUtils.isEmpty(i)) continue;
-            expQuantity += blockDropExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+            expQuantity += blockDropExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
         }
         addEXP(e.getPlayer(), expQuantity, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
@@ -340,7 +324,7 @@ public class FarmingSkill extends Skill implements Listener {
         for (Block b : e.getBlocksAndItems().keySet()){
             for (ItemStack i : e.getBlocksAndItems().getOrDefault(b, new ArrayList<>())){
                 if (ItemUtils.isEmpty(i)) continue;
-                exp += blockDropExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+                exp += blockDropExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
             }
         }
         addEXP(e.getPlayer(), exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
@@ -391,7 +375,7 @@ public class FarmingSkill extends Skill implements Listener {
         double exp = 0;
         for (ItemStack i : e.getDrops()){
             if (ItemUtils.isEmpty(i)) continue;
-            exp += entityDropExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+            exp += entityDropExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
         }
         addEXP(killer, exp, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
@@ -449,7 +433,7 @@ public class FarmingSkill extends Skill implements Listener {
         super.addEXP(p, amount, silent, reason);
     }
 
-    public Map<Material, Double> getBlockDropExpValues() {
+    public Map<String, Double> getBlockDropExpValues() {
         return blockDropExpValues;
     }
 }

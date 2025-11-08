@@ -41,7 +41,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.*;
 
 public class FishingSkill extends Skill implements Listener {
-    private final Map<Material, Double> dropsExpValues = new HashMap<>();
+    private final Map<String, Double> dropsExpValues = new HashMap<>();
     private final Collection<String> baitMaterials = new HashSet<>();
 
     private boolean forgivingDropMultipliers = true; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
@@ -65,22 +65,12 @@ public class FishingSkill extends Skill implements Listener {
         baitMaterials.addAll(skillConfig.getStringList("fishing_bait_materials"));
         isChunkNerfed = progressionConfig.getBoolean("experience.is_chunk_nerfed", true);
 
-        Collection<String> invalidMaterials = new HashSet<>();
         ConfigurationSection blockBreakSection = progressionConfig.getConfigurationSection("experience.fishing_catch");
         if (blockBreakSection != null){
             for (String key : blockBreakSection.getKeys(false)){
-                try {
-                    Material block = Material.valueOf(key);
-                    double reward = progressionConfig.getDouble("experience.fishing_catch." + key);
-                    dropsExpValues.put(block, reward);
-                } catch (IllegalArgumentException ignored){
-                    invalidMaterials.add(key);
-                }
+                double reward = progressionConfig.getDouble("experience.fishing_catch." + key);
+                dropsExpValues.put(key, reward);
             }
-        }
-        if (!invalidMaterials.isEmpty()) {
-            ValhallaMMO.logWarning("The following materials in skills/fishing_progression.yml do not exist, no exp values set (ignore warning if your version does not have these materials)");
-            ValhallaMMO.logWarning(String.join(", ", invalidMaterials));
         }
 
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
@@ -142,10 +132,10 @@ public class FishingSkill extends Skill implements Listener {
             e.setExpToDrop(Utils.randomAverage(e.getExpToDrop() * (1 + extraCatches) * (1 + profile.getFishingEssenceMultiplier())));
 
             if (!(e.getCaught() instanceof Item item) || ItemUtils.isEmpty(item.getItemStack())) return;
-            double exp = dropsExpValues.getOrDefault(item.getItemStack().getType(), 0D) * item.getItemStack().getAmount();
+            double exp = dropsExpValues.getOrDefault(ItemUtils.getItemType(item.getItemStack()), 0D) * item.getItemStack().getAmount();
             for (ItemStack i : LootListener.getPreparedExtraDrops(e.getPlayer())){
                 if (ItemUtils.isEmpty(i)) return;
-                exp += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+                exp += dropsExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
             }
             double chunkNerf = isChunkNerfed ? ChunkEXPNerf.getChunkEXPNerf(e.getHook().getLocation().getChunk(), e.getPlayer(), "fishing") : 1;
             if (exp > 0) {
@@ -179,7 +169,7 @@ public class FishingSkill extends Skill implements Listener {
         super.addEXP(p, amount, silent, reason);
     }
 
-    public Map<Material, Double> getDropsExpValues() {
+    public Map<String, Double> getDropsExpValues() {
         return dropsExpValues;
     }
 

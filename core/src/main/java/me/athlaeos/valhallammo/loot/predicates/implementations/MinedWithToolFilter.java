@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MinedWithToolFilter extends LootPredicate {
-    private final List<Pair<Material, Integer>> tools = new ArrayList<>();
+    private final List<Pair<String, Integer>> tools = new ArrayList<>();
 
     @Override
     public String getKey() {
@@ -40,7 +40,7 @@ public class MinedWithToolFilter extends LootPredicate {
 
     @Override
     public String getActiveDescription() {
-        return "&fRequires the block to " + (isInverted() ? "&cNOT&f " : "") + "be mined with &e" + tools.stream().map(b -> b.getOne().toString() + (b.getTwo() == null ? "" : "(" + b.getTwo() + ")")).collect(Collectors.joining(", "));
+        return "&fRequires the block to " + (isInverted() ? "&cNOT&f " : "") + "be mined with &e" + tools.stream().map(b -> b.getOne() + (b.getTwo() == null ? "" : "(" + b.getTwo() + ")")).collect(Collectors.joining(", "));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class MinedWithToolFilter extends LootPredicate {
                                                         "&fdata, it is required also",
                                                         "&cShift-Click to clear list",
                                                         "&fCurrently: ")
-                                                .appendLore(tools.isEmpty() ? List.of("&cNone, condition always passes") : tools.stream().map(b -> "&f>" + b.getOne().toString() + (b.getTwo() == null ? "" : "(" + b.getTwo() + ")")).toList())
+                                                .appendLore(tools.isEmpty() ? List.of("&cNone, condition always passes") : tools.stream().map(b -> "&f>" + b.getOne() + (b.getTwo() == null ? "" : "(" + b.getTwo() + ")")).toList())
                                                 .get()))
         );
     }
@@ -81,7 +81,7 @@ public class MinedWithToolFilter extends LootPredicate {
                 ItemMeta meta = ItemUtils.getItemMeta(cursor);
                 if (meta == null) return;
                 Integer data = meta.hasCustomModelData() ? meta.getCustomModelData() : null;
-                tools.add(new Pair<>(e.getCursor().getType(), data));
+                tools.add(new Pair<>(ItemUtils.getItemType(e.getCursor()), data));
             }
             else if (e.isShiftClick()) tools.clear();
         }
@@ -95,7 +95,7 @@ public class MinedWithToolFilter extends LootPredicate {
         ItemMeta meta = ItemUtils.getItemMeta(tool);
         if (meta == null) return inverted;
         return tools.stream().anyMatch(pair ->
-                pair.getOne() == tool.getType() &&
+                pair.getOne().equals(ItemUtils.getItemType(tool)) &&
                 ((pair.getTwo() == null && !meta.hasCustomModelData()) || (meta.hasCustomModelData() && pair.getTwo() != null && meta.getCustomModelData() == pair.getTwo()))
         ) != this.inverted;
     }

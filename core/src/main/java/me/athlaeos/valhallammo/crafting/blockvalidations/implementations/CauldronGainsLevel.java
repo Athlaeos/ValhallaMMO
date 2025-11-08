@@ -35,8 +35,8 @@ public class CauldronGainsLevel extends Validation {
     }
 
     @Override
-    public boolean isCompatible(Material block) {
-        return block == Material.CAULDRON || block.toString().equalsIgnoreCase("WATER_CAULDRON");
+    public boolean isCompatible(String block) {
+        return block.equals("CAULDRON") || block.equals("WATER_CAULDRON");
     }
 
     @Override

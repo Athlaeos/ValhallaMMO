@@ -274,7 +274,7 @@ public class SmithingRecipeEditor extends Menu implements SetModifiersMenu, SetR
                 }
                 case "selectValidationButton" -> {
                     playerMenuUtility.setPreviousMenu(this);
-                    new ValidationSelectionMenu(playerMenuUtility, this, Material.SMITHING_TABLE).open();
+                    new ValidationSelectionMenu(playerMenuUtility, this, "SMITHING_TABLE").open();
                     return;
                 }
                 case "setDisplayNameButton" -> {

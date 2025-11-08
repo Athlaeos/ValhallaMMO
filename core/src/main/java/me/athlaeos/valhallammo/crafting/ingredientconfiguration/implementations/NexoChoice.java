@@ -1,5 +1,6 @@
 package me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations;
 
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.hooks.NexoHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -35,10 +36,10 @@ public class NexoChoice extends RecipeOption {
 
     @Override
     public boolean isCompatible(ItemStack i) {
-        if (!NexoHook.isHookFunctional()) return false;
+        if (!ValhallaMMO.isHookFunctional(NexoHook.class)) return false;
 
         // Check if the item is a Nexo item
-        return NexoHook.getNexoId(i) != null;
+        return NexoHook.getNexoItemID(i) != null;
     }
 
     @Override
@@ -51,14 +52,14 @@ public class NexoChoice extends RecipeOption {
         return new RecipeChoice.ExactChoice(i) {
             @Override
             public boolean test(@NotNull ItemStack itemStack) {
-                if (!NexoHook.isHookFunctional()) return false;
+                if (!ValhallaMMO.isHookFunctional(NexoHook.class)) return false;
 
                 // Get the reference Nexo ID
-                String referenceNexoId = NexoHook.getNexoId(i);
+                String referenceNexoId = NexoHook.getNexoItemID(i);
                 if (referenceNexoId == null) return false;
 
                 // Check if the tested item has the same Nexo ID
-                String testedNexoId = NexoHook.getNexoId(itemStack);
+                String testedNexoId = NexoHook.getNexoItemID(itemStack);
                 return referenceNexoId.equals(testedNexoId);
             }
         };
@@ -66,11 +67,11 @@ public class NexoChoice extends RecipeOption {
 
     @Override
     public boolean matches(ItemStack i1, ItemStack i2) {
-        if (!NexoHook.isHookFunctional()) return false;
+        if (!ValhallaMMO.isHookFunctional(NexoHook.class)) return false;
 
         // Get Nexo IDs from both items
-        String nexoId1 = NexoHook.getNexoId(i1);
-        String nexoId2 = NexoHook.getNexoId(i2);
+        String nexoId1 = NexoHook.getNexoItemID(i1);
+        String nexoId2 = NexoHook.getNexoItemID(i2);
 
         // If both items don't have Nexo IDs, they don't match the requirement
         if (nexoId1 == null && nexoId2 == null) return false;
@@ -84,7 +85,7 @@ public class NexoChoice extends RecipeOption {
 
     @Override
     public String ingredientDescription(ItemStack base) {
-        if (!NexoHook.isHookFunctional()) {
+        if (!ValhallaMMO.isHookFunctional(NexoHook.class)) {
             // If NexoHook is not functional, return item's material name
             return ItemUtils.getItemName(new ItemBuilder(base));
         }
@@ -96,7 +97,7 @@ public class NexoChoice extends RecipeOption {
         }
 
         // If no display name, try to get the Nexo ID as a fallback
-        String nexoId = NexoHook.getNexoId(base);
+        String nexoId = NexoHook.getNexoItemID(base);
         if (nexoId != null) {
             return "Nexo Item: " + nexoId;
         }

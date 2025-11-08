@@ -1,26 +1,28 @@
 package me.athlaeos.valhallammo.listeners;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.animations.Animation;
+import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.ToolRequirementType;
 import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
-import me.athlaeos.valhallammo.animations.AnimationRegistry;
-import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
 import me.athlaeos.valhallammo.crafting.recipetypes.ImmersiveCraftingRecipe;
-import me.athlaeos.valhallammo.item.ItemBuilder;
-import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.gui.implementations.ImmersiveRecipeSelectionMenu;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.CustomFlag;
+import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
-import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
+import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -98,7 +100,9 @@ public class ImmersiveRecipeListener implements Listener {
                     (held != null && recipe.getTinkerInput().getOption().matches(recipe.getTinkerInput().getItem(), heldItem) &&
                             (!recipe.requiresValhallaTools() || SmithingItemPropertyManager.hasSmithingQuality(held.getMeta()))) :
                     recipe.getToolRequirement().canCraft(held == null ? -1 : ToolRequirementType.getToolID(held.getMeta()));
-            if (!ItemUtils.isSimilarMaterial(recipe.getBlock(), clicked.getType()) || !canPlayerCraft(e, recipe) || !properItemHeld) {
+            String type = BlockUtils.getBlockType(clicked);
+            Material vanilla = Catch.catchOrElse(() -> Material.valueOf(type), null);
+            if (vanilla == null ? recipe.getBlock().equalsIgnoreCase(type) : !ItemUtils.isSimilarMaterial(vanilla, clicked.getType()) || !canPlayerCraft(e, recipe) || !properItemHeld) {
                 selectedImmersiveRecipe.remove(p.getUniqueId());
                 resetFrequency(e.getPlayer());
                 return;
