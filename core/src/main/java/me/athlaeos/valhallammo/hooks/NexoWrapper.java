@@ -14,6 +14,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class NexoWrapper implements Listener {
     public static String getNexoItemID(ItemStack item){
         return NexoItems.idFromItem(item);
@@ -30,8 +33,13 @@ public class NexoWrapper implements Listener {
     }
 
     public static boolean setNexoBlock(Block block, String type){
+//        if (!NexoBlocks.isCustomBlock(type)) return false;
         CustomBlockMechanic mechanic = NexoBlocks.customBlockMechanic(type);
-        if (mechanic == null) return false;
+        if (mechanic == null) {
+            System.out.println("no mechanic found under name \n" + type);
+            System.out.println("could be one of: " + String.join("\n", NexoBlocks.blockIDs()));
+            return false;
+        } else System.out.println("successfully found block under type " + type);
         NexoBlocks.place(type, block.getLocation());
         return true;
     }

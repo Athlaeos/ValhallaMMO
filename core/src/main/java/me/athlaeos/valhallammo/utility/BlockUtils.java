@@ -269,11 +269,13 @@ public class BlockUtils {
     }
 
     public static void setBlockType(Block b, String to){
+        Material vanilla = Catch.catchOrElse(() -> Material.valueOf(to), null);
+        if (vanilla != null) {
+            b.setType(vanilla);
+            return;
+        }
         if (ValhallaMMO.isHookFunctional(NexoHook.class) && NexoHook.setNexoBlock(b, to)) return;
         if (ValhallaMMO.isHookFunctional(CEHook.class) && CEHook.setCraftEngineBlock(b, to)) return;
         if (ValhallaMMO.isHookFunctional(IAHook.class) && IAHook.setItemsAdderBlock(b, to)) return;
-        Material vanilla = Catch.catchOrElse(() -> Material.valueOf(to), null);
-        if (vanilla == null) return;
-        b.setType(vanilla);
     }
 }
