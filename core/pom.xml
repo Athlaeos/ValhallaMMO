@@ -192,10 +192,10 @@
             <groupId>com.nexomc</groupId>
             <artifactId>nexo</artifactId>
             <version>1.14.0</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>dev.triumphteam</groupId>
+                    <groupId>*</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
