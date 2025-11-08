@@ -19,6 +19,7 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
@@ -88,12 +89,13 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
     public ImmersiveRecipeSelectionMenu(PlayerMenuUtility playerMenuUtility, Block clicked, boolean craft) {
         super(playerMenuUtility);
         this.clicked = clicked;
+        String type = BlockUtils.getBlockType(clicked);
         this.view = craft ? View.CRAFTING : View.TINKERING;
         Player p = playerMenuUtility.getOwner();
         PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
         if (profile == null) return;
         boolean allAllowed = p.hasPermission("valhalla.allrecipes");
-        CustomRecipeRegistry.getImmersiveRecipesByBlock().getOrDefault(clicked.getType(), new HashSet<>()).forEach(r -> {
+        CustomRecipeRegistry.getImmersiveRecipesByBlock().getOrDefault(type, new HashSet<>()).forEach(r -> {
             if (r.isUnlockedForEveryone() || allAllowed || profile.getUnlockedRecipes().contains(r.getName())
                     || p.hasPermission("valhalla.recipe." + r.getName())){
                 recipes.add(r);

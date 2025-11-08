@@ -33,8 +33,8 @@ public class CampfireUnlit extends Validation {
     }
 
     @Override
-    public boolean isCompatible(Material block) {
-        return block == Material.CAMPFIRE || block == Material.SOUL_CAMPFIRE;
+    public boolean isCompatible(String block) {
+        return block.equals("CAMPFIRE") || block.equals("SOUL_CAMPFIRE");
     }
 
     @Override

@@ -3,7 +3,11 @@ package me.athlaeos.valhallammo.utility;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.IngredientChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
+import me.athlaeos.valhallammo.hooks.CEHook;
+import me.athlaeos.valhallammo.hooks.IAHook;
+import me.athlaeos.valhallammo.hooks.NexoHook;
 import me.athlaeos.valhallammo.item.CustomDurabilityManager;
 import me.athlaeos.valhallammo.item.EquipmentClass;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -12,6 +16,7 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -1077,5 +1082,39 @@ public class ItemUtils {
 
     public static boolean breaksInstantly(Material m){
         return instantlyBreakingItems.contains(m);
+    }
+
+    public static String getItemType(ItemStack item){
+        if (ValhallaMMO.isHookFunctional(NexoHook.class)) {
+            String custom = NexoHook.getNexoItemID(item);
+            if (custom != null) return custom;
+        }
+        if (ValhallaMMO.isHookFunctional(CEHook.class)) {
+            String custom = CEHook.getCraftEngineItemID(item);
+            if (custom != null) return custom;
+        }
+        if (ValhallaMMO.isHookFunctional(IAHook.class)) {
+            String custom = IAHook.getItemsAdderItemID(item);
+            if (custom != null) return custom;
+        }
+        return item.getType().toString();
+    }
+
+    public static ItemBuilder getItem(String type){
+        if (ValhallaMMO.isHookFunctional(NexoHook.class)) {
+            ItemStack item = NexoHook.getNexoItem(type);
+            if (!ItemUtils.isEmpty(item)) return new ItemBuilder(item);
+        }
+        if (ValhallaMMO.isHookFunctional(CEHook.class)) {
+            ItemStack item = CEHook.getCraftEngineItem(type);
+            if (!ItemUtils.isEmpty(item)) return new ItemBuilder(item);
+        }
+        if (ValhallaMMO.isHookFunctional(IAHook.class)) {
+            ItemStack item = IAHook.getItemsAdderItem(type);
+            if (!ItemUtils.isEmpty(item)) return new ItemBuilder(item);
+        }
+        Material vanilla = Catch.catchOrElse(() -> Material.valueOf(type), null);
+        if (vanilla == null) return null;
+        return new ItemBuilder(vanilla);
     }
 }

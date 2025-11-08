@@ -2,7 +2,6 @@ package me.athlaeos.valhallammo.skills.skills.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
-import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -47,7 +46,7 @@ public class AlchemySkill extends Skill implements Listener {
     private final NamespacedKey COMBINATIONS_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "alchemy_combinations");
 
     private static final Map<String, Transmutation> transmutations = new HashMap<>();
-    private final Map<Material, Transmutation> transmutationsByMaterial = new HashMap<>();
+    private final Map<String, Transmutation> transmutationsByMaterial = new HashMap<>();
     private boolean transmutationFlash = true;
     private Sound transmutationSound = null;
     private static List<String> transmutationPotionLore = new ArrayList<>();
@@ -87,8 +86,8 @@ public class AlchemySkill extends Skill implements Listener {
         ConfigurationSection section = transmutationConfig.getConfigurationSection("transmutations");
         if (section != null){
             for (String name : section.getKeys(false)){
-                Material from = Catch.catchOrElse(() -> Material.valueOf(transmutationConfig.getString("transmutations." + name + ".from")), null);
-                Material to = Catch.catchOrElse(() -> Material.valueOf(transmutationConfig.getString("transmutations." + name + ".to")), null);
+                String from = transmutationConfig.getString("transmutations." + name + ".from");
+                String to = transmutationConfig.getString("transmutations." + name + ".to");
                 if (from == null || to == null) continue;
                 Transmutation transmutation = new Transmutation(name, from, to);
                 transmutations.put(name, transmutation);
@@ -218,9 +217,10 @@ public class AlchemySkill extends Skill implements Listener {
         if (profile.getUnlockedTransmutations().isEmpty() || profile.getTransmutationRadius() <= 0) return;
         Collection<Block> affectedBlocks = BlockUtils.getBlocksTouching(e.getHitBlock(), profile.getTransmutationRadius(), 1, profile.getTransmutationRadius(), Material::isAir);
         for (Block b : affectedBlocks){
-            if (transmutationsByMaterial.containsKey(b.getType())){
+            String type = BlockUtils.getBlockType(b);
+            if (transmutationsByMaterial.containsKey(type)){
                 if (ValhallaMMO.isHookFunctional(WorldGuardHook.class) && !WorldGuardHook.canPlaceBlocks(b.getLocation(), p)) continue;
-                b.setType(transmutationsByMaterial.get(b.getType()).to);
+                BlockUtils.setBlockType(b, transmutationsByMaterial.get(type).to);
             }
         }
         if (transmutationFlash) e.getHitBlock().getWorld().spawnParticle(Particle.FLASH, e.getEntity().getLocation(), 0);
@@ -246,7 +246,7 @@ public class AlchemySkill extends Skill implements Listener {
         return transmutations;
     }
 
-    private record Transmutation(String key, Material from, Material to){}
+    public record Transmutation(String key, String from, String to){}
 
     public double getQualityPotionExperienceMultiplier() {
         return qualityPotionExperienceMultiplier;

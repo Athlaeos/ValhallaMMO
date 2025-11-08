@@ -33,8 +33,8 @@ public class CauldronRequiresLevel extends Validation {
     }
 
     @Override
-    public boolean isCompatible(Material block) {
-        return block.toString().contains("CAULDRON");
+    public boolean isCompatible(String block) {
+        return block.contains("CAULDRON");
     }
 
     @Override

@@ -227,6 +227,20 @@ public class EntityUtils {
         return nearby;
     }
 
+    public static Player getClosestPlayer(Location from){
+        if (from.getWorld() == null) return null;
+        Player closestPlayer = null;
+        double closestDistance = -1;
+        for (Player p : from.getWorld().getPlayers()){
+            double distance = from.distanceSquared(p.getLocation());
+            if (closestPlayer == null || closestDistance < 0 || closestDistance > distance) {
+                closestPlayer = p;
+                closestDistance = from.distanceSquared(p.getLocation());
+            }
+        }
+        return closestPlayer;
+    }
+
     private static final Attribute attackReachAttribute = AttributeMappings.ENTITY_INTERACTION_RANGE.getAttribute();
     public static double getPlayerReach(Player p){
         if (attackReachAttribute == null) return 3.0;

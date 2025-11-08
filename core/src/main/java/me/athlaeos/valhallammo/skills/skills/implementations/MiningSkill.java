@@ -4,7 +4,6 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
-import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.PlayerBlocksDropItemsEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
@@ -20,10 +19,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfile;
 import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.utility.BlockUtils;
-import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
-import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -55,7 +52,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.*;
 
 public class MiningSkill extends Skill implements Listener {
-    private final Map<Material, Double> dropsExpValues = new HashMap<>();
+    private final Map<String, Double> dropsExpValues = new HashMap<>();
     private double miningExpMultiplier = 1;
     private double blastingExpMultiplier = 1;
 
@@ -96,22 +93,12 @@ public class MiningSkill extends Skill implements Listener {
         drillingOn = TranslationManager.translatePlaceholders(skillConfig.getString("drilling_toggle_on"));
         drillingActivationSound = Utils.getSound(skillConfig.getString("drilling_enable_sound"), null, "Invalid drilling activation sound given in skills/mining.yml drilling_enable_sound");
 
-        Collection<String> invalidMaterials = new HashSet<>();
         ConfigurationSection blockBreakSection = progressionConfig.getConfigurationSection("experience.mining_break");
         if (blockBreakSection != null){
             for (String key : blockBreakSection.getKeys(false)){
-                try {
-                    Material block = Material.valueOf(key);
-                    double reward = progressionConfig.getDouble("experience.mining_break." + key);
-                    dropsExpValues.put(block, reward);
-                } catch (IllegalArgumentException ignored){
-                    invalidMaterials.add(key);
-                }
+                double reward = progressionConfig.getDouble("experience.mining_break." + key);
+                dropsExpValues.put(key, reward);
             }
-        }
-        if (!invalidMaterials.isEmpty()) {
-            ValhallaMMO.logWarning("The following materials in skills/mining_progression.yml do not exist, no exp values set (ignore warning if your version does not have these materials)");
-            ValhallaMMO.logWarning(String.join(", ", invalidMaterials));
         }
 
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
@@ -133,11 +120,12 @@ public class MiningSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e){
+        String type = BlockUtils.getBlockType(e.getBlock());
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
-                !dropsExpValues.containsKey(e.getBlock().getType()) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+                !dropsExpValues.containsKey(type) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         MiningProfile profile = ProfileCache.getOrCache(e.getPlayer(), MiningProfile.class);
-        if (profile.getUnbreakableBlocks().contains(e.getBlock().getType().toString())) {
+        if (profile.getUnbreakableBlocks().contains(type)) {
             e.setCancelled(true);
             return;
         }
@@ -150,7 +138,7 @@ public class MiningSkill extends Skill implements Listener {
         LootListener.addPreparedLuck(e.getBlock(), AccumulativeStatManager.getCachedStats("MINING_LUCK", e.getPlayer(), 10000, true));
 
         if (e.getPlayer().isSneaking() && !veinMiningPlayers.contains(e.getPlayer().getUniqueId()) &&
-                profile.isVeinMiningUnlocked() && profile.getVeinMinerValidBlocks().contains(e.getBlock().getType().toString()) &&
+                profile.isVeinMiningUnlocked() && profile.getVeinMinerValidBlocks().contains(type) &&
                 Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_vein_miner") &&
                 !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_VEINMINER)){
             Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), veinMiningLimit, b -> b.getType() == e.getBlock().getType(), veinMiningScanArea);
@@ -183,18 +171,20 @@ public class MiningSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void lootTableDrops(BlockBreakEvent e){
+        String type = BlockUtils.getBlockType(e.getBlock());
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !BlockUtils.canReward(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
-                !dropsExpValues.containsKey(e.getBlock().getType()) ||
+                !dropsExpValues.containsKey(type) ||
                 e.getBlock().getState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("MINING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
-        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
+        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(ItemUtils.getItemType(i)));
 
         double expQuantity = 0;
         for (ItemStack i : LootListener.getPreparedExtraDrops(e.getBlock())){
             if (ItemUtils.isEmpty(i)) continue;
-            expQuantity += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+            String itemType = ItemUtils.getItemType(i);
+            expQuantity += dropsExpValues.getOrDefault(itemType, 0D) * i.getAmount();
         }
         addEXP(e.getPlayer(), expQuantity * miningExpMultiplier, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
@@ -203,21 +193,22 @@ public class MiningSkill extends Skill implements Listener {
     public void onItemsDropped(BlockDropItemEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getBlockState().getWorld().getName()) || !BlockUtils.canReward(e.getBlockState()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
-                !dropsExpValues.containsKey(e.getBlockState().getType()) ||
+                !dropsExpValues.containsKey(e.getBlockState().getType().toString()) || // this clause only ensures exp cant be rewarded or items multiplied if items are dropped from non-mining-related blocks (primarily the digging skill tree having a chance to drop ores and stuff)
+                // for custom block types it might be required to add note blocks or mushroom blocks to the list
                 e.getBlockState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("MINING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops
-        List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getItemStack().getType()));
+        List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(ItemUtils.getItemType(i.getItemStack())));
         if (!extraDrops.isEmpty()) LootListener.prepareBlockDrops(e.getBlock(), extraDrops);
 
         double expQuantity = 0;
         for (Item i : e.getItems()){
             if (ItemUtils.isEmpty(i.getItemStack())) continue;
-            expQuantity += dropsExpValues.getOrDefault(i.getItemStack().getType(), 0D) * i.getItemStack().getAmount();
+            expQuantity += dropsExpValues.getOrDefault(ItemUtils.getItemType(i.getItemStack()), 0D) * i.getItemStack().getAmount();
         }
         for (ItemStack i : extraDrops){
             if (ItemUtils.isEmpty(i)) continue;
-            expQuantity += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+            expQuantity += dropsExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
         }
         addEXP(e.getPlayer(), expQuantity * miningExpMultiplier, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
@@ -261,6 +252,7 @@ public class MiningSkill extends Skill implements Listener {
         Player responsible = null;
         if (tnt.getSource() instanceof Player p && p.isOnline()) responsible = p;
         else if (tnt.getSource() instanceof AbstractArrow a && a.getShooter() instanceof Player p && p.isOnline()) responsible = p;
+        else responsible = EntityUtils.getClosestPlayer(e.getEntity().getLocation());
         if (responsible == null) return;
         if (WorldGuardHook.inDisabledRegion(responsible.getLocation(), responsible, WorldGuardHook.VMMO_SKILL_MINING)) return;
 
@@ -311,7 +303,7 @@ public class MiningSkill extends Skill implements Listener {
             LootListener.prepareBlockDrops(b, drops);
             for (ItemStack i : drops){
                 if (ItemUtils.isEmpty(i)) continue;
-                exp += dropsExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+                exp += dropsExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
             }
         }
 
@@ -364,7 +356,7 @@ public class MiningSkill extends Skill implements Listener {
         super.addEXP(p, amount, silent, reason);
     }
 
-    public Map<Material, Double> getDropsExpValues() {
+    public Map<String, Double> getDropsExpValues() {
         return dropsExpValues;
     }
 }

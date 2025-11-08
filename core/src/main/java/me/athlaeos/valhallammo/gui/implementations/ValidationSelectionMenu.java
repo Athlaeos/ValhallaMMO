@@ -28,7 +28,7 @@ public class ValidationSelectionMenu extends Menu {
     public static final NamespacedKey KEY_VALIDATION = new NamespacedKey(ValhallaMMO.getInstance(), "key_validation");
 
     private final Menu menu;
-    private final Material targetBlock;
+    private final String targetBlock;
 
     private Collection<String> currentValidations = new HashSet<>();
 
@@ -51,7 +51,7 @@ public class ValidationSelectionMenu extends Menu {
 
     private int currentPage = 0;
 
-    public ValidationSelectionMenu(PlayerMenuUtility playerMenuUtility, Menu menu, Material block) {
+    public ValidationSelectionMenu(PlayerMenuUtility playerMenuUtility, Menu menu, String block) {
         super(playerMenuUtility);
         this.menu = menu;
         this.targetBlock = block;

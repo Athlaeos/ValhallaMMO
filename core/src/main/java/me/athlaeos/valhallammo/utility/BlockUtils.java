@@ -5,6 +5,12 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.dom.Fetcher;
+import me.athlaeos.valhallammo.dom.Pair;
+import me.athlaeos.valhallammo.hooks.CEHook;
+import me.athlaeos.valhallammo.hooks.IAHook;
+import me.athlaeos.valhallammo.hooks.NexoHook;
+import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -244,5 +250,30 @@ public class BlockUtils {
     private static final ItemStack stic = new ItemStack(Material.STICK);
     public static boolean hasDrops(Block b, Entity e, ItemStack item){
         return !b.getDrops(item == null ? stic : item, e).isEmpty();
+    }
+
+    public static String getBlockType(Block b){
+        if (ValhallaMMO.isHookFunctional(NexoHook.class)) {
+            String custom = NexoHook.getNexoBlock(b);
+            if (custom != null) return custom;
+        }
+        if (ValhallaMMO.isHookFunctional(CEHook.class)) {
+            String custom = CEHook.getCraftEngineBlock(b);
+            if (custom != null) return custom;
+        }
+        if (ValhallaMMO.isHookFunctional(IAHook.class)) {
+            String custom = IAHook.getItemsAdderBlock(b);
+            if (custom != null) return custom;
+        }
+        return b.getType().toString();
+    }
+
+    public static void setBlockType(Block b, String to){
+        if (ValhallaMMO.isHookFunctional(NexoHook.class) && NexoHook.setNexoBlock(b, to)) return;
+        if (ValhallaMMO.isHookFunctional(CEHook.class) && CEHook.setCraftEngineBlock(b, to)) return;
+        if (ValhallaMMO.isHookFunctional(IAHook.class) && IAHook.setItemsAdderBlock(b, to)) return;
+        Material vanilla = Catch.catchOrElse(() -> Material.valueOf(to), null);
+        if (vanilla == null) return;
+        b.setType(vanilla);
     }
 }

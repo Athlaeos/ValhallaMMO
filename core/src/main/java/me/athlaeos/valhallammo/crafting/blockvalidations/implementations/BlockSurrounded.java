@@ -45,7 +45,7 @@ public class BlockSurrounded extends Validation {
     }
 
     @Override
-    public boolean isCompatible(Material block) {
+    public boolean isCompatible(String block) {
         return true;
     }
 

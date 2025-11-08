@@ -403,7 +403,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
                 }
                 case "selectValidationButton" -> {
                     playerMenuUtility.setPreviousMenu(this);
-                    new ValidationSelectionMenu(playerMenuUtility, this, Material.CRAFTING_TABLE).open();
+                    new ValidationSelectionMenu(playerMenuUtility, this, "CRAFTING_TABLE").open();
                     return;
                 }
                 case "setToolRequirementButton" -> {

@@ -68,7 +68,7 @@ public class ValidationRegistry {
     public static List<Validation> getValidations() {
         return validations;
     }
-    public static List<Validation> getValidations(Material block) {
+    public static List<Validation> getValidations(String block) {
         return validations.stream().filter(v -> v.isCompatible(block)).toList();
     }
     public static Validation getValidation(String id){

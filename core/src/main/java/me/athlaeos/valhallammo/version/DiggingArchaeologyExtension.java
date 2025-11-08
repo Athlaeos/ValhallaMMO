@@ -39,7 +39,7 @@ public class DiggingArchaeologyExtension implements Listener {
     private final Map<Structures, LootTables> structureLootTableMap = new HashMap<>();
     private final Map<Material, Double> gravelConversionBlocks = new HashMap<>();
     private final Map<Material, Double> sandConversionBlocks = new HashMap<>();
-    private final Map<Material, Double> archaeologyExpValues = new HashMap<>();
+    private final Map<String, Double> archaeologyExpValues = new HashMap<>();
     private final List<LootTables> rareLootTables = new ArrayList<>();
     private final List<LootTables> commonLootTables = new ArrayList<>();
 
@@ -53,15 +53,8 @@ public class DiggingArchaeologyExtension implements Listener {
 
         ConfigurationSection expSection = progressionConfig.getConfigurationSection("experience.archaeology_brush");
         if (expSection != null){
-            Collection<String> invalidMaterials = new HashSet<>();
             for (String m : expSection.getKeys(false)){
-                Material material = Catch.catchOrElse(() -> Material.valueOf(m), null);
-                if (material == null) invalidMaterials.add(m);
-                else archaeologyExpValues.put(material, progressionConfig.getDouble("experience.archaeology_brush." + m));
-            }
-            if (!invalidMaterials.isEmpty()) {
-                ValhallaMMO.logWarning("The following materials in skills/digging_progression.yml do not exist, no exp values set (ignore warning if your version does not have these materials)");
-                ValhallaMMO.logWarning(String.join(", ", invalidMaterials));
+                archaeologyExpValues.put(m, progressionConfig.getDouble("experience.archaeology_brush." + m));
             }
         }
         Collection<String> invalidMaterials = new HashSet<>();
@@ -186,11 +179,11 @@ public class DiggingArchaeologyExtension implements Listener {
         double expQuantity = 0;
         for (Item i : e.getItems()){
             if (ItemUtils.isEmpty(i.getItemStack())) continue;
-            expQuantity += archaeologyExpValues.getOrDefault(i.getItemStack().getType(), 0D) * i.getItemStack().getAmount();
+            expQuantity += archaeologyExpValues.getOrDefault(ItemUtils.getItemType(i.getItemStack()), 0D) * i.getItemStack().getAmount();
         }
         for (ItemStack i : LootListener.getPreparedExtraDrops(e.getBlock())){
             if (ItemUtils.isEmpty(i)) continue;
-            expQuantity += archaeologyExpValues.getOrDefault(i.getType(), 0D) * i.getAmount();
+            expQuantity += archaeologyExpValues.getOrDefault(ItemUtils.getItemType(i), 0D) * i.getAmount();
         }
         skill.addEXP(e.getPlayer(), expQuantity, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 

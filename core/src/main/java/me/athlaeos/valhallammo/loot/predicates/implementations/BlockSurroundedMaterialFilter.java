@@ -1,9 +1,11 @@
 package me.athlaeos.valhallammo.loot.predicates.implementations;
 
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.loot.LootTable;
 import me.athlaeos.valhallammo.loot.predicates.LootPredicate;
+import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.MathUtils;
 import org.bukkit.Material;
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class BlockSurroundedMaterialFilter extends LootPredicate {
     private static final List<AreaType> areaTypes = List.of(AreaType.values());
-    private final Collection<Material> materials = new HashSet<>();
+    private final Collection<String> materials = new HashSet<>();
     private AreaType areaType = AreaType.TOUCHING;
     private int quantity = 5;
 
@@ -43,7 +45,7 @@ public class BlockSurroundedMaterialFilter extends LootPredicate {
 
     @Override
     public String getActiveDescription() {
-        return "&fRequires the block to " + (isInverted() ? "&cNOT&f " : "") + "be surrounded by at least " + quantity + " of &e" + materials.stream().map(b -> b.toString().toLowerCase(java.util.Locale.US)).collect(Collectors.joining(", "));
+        return "&fRequires the block to " + (isInverted() ? "&cNOT&f " : "") + "be surrounded by at least " + quantity + " of &e" + materials.stream().map(b -> b.toLowerCase(java.util.Locale.US)).collect(Collectors.joining(", "));
     }
 
     @Override
@@ -68,7 +70,7 @@ public class BlockSurroundedMaterialFilter extends LootPredicate {
                                                         "&6add required block type",
                                                         "&cShift-Click to clear list",
                                                         "&fCurrently: ")
-                                                .appendLore(materials.isEmpty() ? List.of("&cNone, condition always passes") : materials.stream().map(b -> "&f>" + b.toString().toLowerCase(java.util.Locale.US)).toList())
+                                                .appendLore(materials.isEmpty() ? List.of("&cNone, condition always passes") : materials.stream().map(b -> "&f>" + b.toLowerCase(java.util.Locale.US)).toList())
                                                 .get()),
                 new Pair<>(11,
                         new ItemBuilder(Material.STRUCTURE_VOID)
@@ -103,9 +105,12 @@ public class BlockSurroundedMaterialFilter extends LootPredicate {
             currentIndex = Math.max(0, Math.min(areaTypes.size() - 1, currentIndex + (e.isLeftClick() ? 1 : -1)));
             areaType = areaTypes.get(currentIndex);
         } else if (button == 12){
-            if (ItemUtils.isEmpty(e.getCursor()) && !e.isShiftClick()) materials.add(Material.AIR);
-            else if (!ItemUtils.isEmpty(e.getCursor()) && e.getCursor().getType().isBlock() && !e.isShiftClick()) materials.add(ItemUtils.getBaseMaterial(e.getCursor().getType()));
-            else if (e.isShiftClick()) materials.clear();
+            if (ItemUtils.isEmpty(e.getCursor()) && !e.isShiftClick()) materials.add("AIR");
+            else if (!ItemUtils.isEmpty(e.getCursor()) && !e.isShiftClick()) {
+                String potentialCustomType = ItemUtils.getItemType(e.getCursor());
+                if (potentialCustomType.equalsIgnoreCase(e.getCursor().getType().toString())) materials.add(ItemUtils.getBaseMaterial(e.getCursor().getType()).toString());
+                else if (e.getCursor().getType().isBlock()) materials.add(potentialCustomType);
+            } else if (e.isShiftClick()) materials.clear();
         } else if (button == 13) quantity = Math.max(0, quantity + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 10 : 1)));
     }
 
@@ -115,8 +120,12 @@ public class BlockSurroundedMaterialFilter extends LootPredicate {
         Block b = context.getLocation().getBlock();
         int found = 0;
         for (Block surrounding : areaType.getSurroundingBlocks(b)){
-            if (materials.contains(Material.AIR) && surrounding.getType().isAir()) found++;
-            else if (materials.stream().anyMatch(m -> ItemUtils.isSimilarMaterial(m, surrounding.getType()))) found++;
+            if (materials.contains("AIR") && surrounding.getType().isAir()) found++;
+            else if (materials.stream().anyMatch(m -> {
+                Material vanilla = Catch.catchOrElse(() -> Material.valueOf(m), null);
+                if (vanilla == null) return BlockUtils.getBlockType(surrounding).equalsIgnoreCase(m);
+                else return ItemUtils.isSimilarMaterial(vanilla, surrounding.getType());
+            })) found++;
         }
         return found >= quantity != this.inverted;
     }

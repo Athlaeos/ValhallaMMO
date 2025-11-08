@@ -3,10 +3,10 @@ package me.athlaeos.valhallammo.hooks;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOptionRegistry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.NexoChoice;
+import org.bukkit.block.Block;
+import org.bukkit.inventory.ItemStack;
 
 public class NexoHook extends PluginHook {
-    private static boolean hookInitialized = false;
-
     public NexoHook() {
         super("Nexo");
     }
@@ -15,49 +15,23 @@ public class NexoHook extends PluginHook {
     public void whenPresent() {
         // Register NexoChoice, but don't try to load any Nexo classes yet
         RecipeOptionRegistry.registerOption(new NexoChoice());
-        ValhallaMMO.logInfo("Registered Nexo compatibility - hook will initialize when needed");
+        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new NexoWrapper(), ValhallaMMO.getInstance());
+        ValhallaMMO.logInfo("Registered Nexo compatibility - It may now recognize custom items and blocks in its configurations");
     }
 
-    // Get the Nexo ID from reflection or return false if there is an error
-    public static String getNexoId(org.bukkit.inventory.ItemStack item) {
-        if (item == null) return null;
-
-        try {
-            // Attempt to access Nexo classes when this method is called
-            if (!hookInitialized) {
-                initializeHook();
-            }
-
-            // If initialization failed or item is null, return null
-            if (!hookInitialized) {
-                return null;
-            }
-
-            // Use reflection to call the method
-            Class<?> nexoItemsClass = Class.forName("com.nexomc.nexo.api.NexoItems");
-            Object result = nexoItemsClass.getMethod("idFromItem", org.bukkit.inventory.ItemStack.class)
-                    .invoke(null, item);
-            return (String) result;
-        } catch (Exception e) {
-            // If errors occur, return null
-            return null;
-        }
+    public static String getNexoItemID(ItemStack item) {
+        return NexoWrapper.getNexoItemID(item);
     }
 
-    private static void initializeHook() {
-        try {
-            // Try calling a method to make sure it works
-            Class.forName("com.nexomc.nexo.api.NexoItems");
-            hookInitialized = true;
-        } catch (Exception e) {
-            ValhallaMMO.logWarning("Failed to initialize Nexo hook: " + e.getMessage());
-            hookInitialized = false;
-        }
+    public static ItemStack getNexoItem(String type) {
+        return NexoWrapper.getNexoItem(type);
     }
 
-    // Checks that the hook is functioning
-    public static boolean isHookFunctional() {
-        // Simple presence check without trying to load any classes
-        return ValhallaMMO.getInstance().getServer().getPluginManager().getPlugin("Nexo") != null;
+    public static String getNexoBlock(Block b){
+        return NexoWrapper.getNexoBlock(b);
+    }
+
+    public static boolean setNexoBlock(Block b, String type){
+        return NexoWrapper.setNexoBlock(b, type);
     }
 }

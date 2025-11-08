@@ -12,6 +12,9 @@ softdepend:
 - DecentHolograms
 - JustLootIt
 - CoreProtect
+- Nexo
+- CraftEngine
+- ItemsAdder
 commands:
   valhalla:
     description: "Main command for all things ValhallaMMO-related"

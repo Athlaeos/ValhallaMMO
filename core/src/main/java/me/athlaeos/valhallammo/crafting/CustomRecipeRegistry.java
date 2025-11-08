@@ -57,7 +57,7 @@ public class CustomRecipeRegistry {
     private static final Map<NamespacedKey, DynamicGridRecipe> gridRecipesByKey = new HashMap<>();
     private static final Map<Integer, Collection<DynamicGridRecipe>> gridRecipesByIngredientQuantities = new HashMap<>();
     private static final Map<NamespacedKey, DynamicSmithingRecipe> smithingRecipesByKey = new HashMap<>();
-    private static final Map<Material, Collection<ImmersiveCraftingRecipe>> immersiveRecipesByBlock = new HashMap<>();
+    private static final Map<String, Collection<ImmersiveCraftingRecipe>> immersiveRecipesByBlock = new HashMap<>();
     private static final Collection<String> allRecipes = new HashSet<>();
     private static final Map<NamespacedKey, ValhallaKeyedRecipe> allKeyedRecipes = new HashMap<>();
     private static final Map<String, ValhallaKeyedRecipe> allKeyedRecipesByName = new HashMap<>();
@@ -224,10 +224,9 @@ public class CustomRecipeRegistry {
             immersiveRecipes.put(recipe.getName().toLowerCase(Locale.US), recipe);
             allRecipes.add(recipe.getName().toLowerCase(Locale.US));
 
-            Material base = ItemUtils.getBaseMaterial(recipe.getBlock());
-            Collection<ImmersiveCraftingRecipe> recipesByBlock = immersiveRecipesByBlock.getOrDefault(base, new HashSet<>());
+            Collection<ImmersiveCraftingRecipe> recipesByBlock = immersiveRecipesByBlock.getOrDefault(recipe.getBlock(), new HashSet<>());
             recipesByBlock.add(recipe);
-            immersiveRecipesByBlock.put(base, recipesByBlock);
+            immersiveRecipesByBlock.put(recipe.getBlock(), recipesByBlock);
 
             addRecipePermission(recipe.getName());
             RecipeOverviewMenu.resetCache(RecipeOverviewMenu.IMMERSIVE.getId());
@@ -321,10 +320,9 @@ public class CustomRecipeRegistry {
             RecipeOverviewMenu.resetCache(RecipeOverviewMenu.CAULDRON.getId());
         } else if (immersiveRecipes.containsKey(recipe)) {
             ImmersiveCraftingRecipe r = immersiveRecipes.get(recipe);
-            Material base = ItemUtils.getBaseMaterial(r.getBlock());
-            Collection<ImmersiveCraftingRecipe> recipesByBlock = immersiveRecipesByBlock.getOrDefault(base, new HashSet<>());
+            Collection<ImmersiveCraftingRecipe> recipesByBlock = immersiveRecipesByBlock.getOrDefault(r.getBlock(), new HashSet<>());
             recipesByBlock.remove(r);
-            immersiveRecipesByBlock.put(base, recipesByBlock);
+            immersiveRecipesByBlock.put(r.getBlock(), recipesByBlock);
             immersiveRecipes.remove(recipe);
             RecipeOverviewMenu.resetCache(RecipeOverviewMenu.IMMERSIVE.getId());
         } else {
@@ -392,7 +390,7 @@ public class CustomRecipeRegistry {
         return allRecipes;
     }
 
-    public static Map<Material, Collection<ImmersiveCraftingRecipe>> getImmersiveRecipesByBlock() {
+    public static Map<String, Collection<ImmersiveCraftingRecipe>> getImmersiveRecipesByBlock() {
         return immersiveRecipesByBlock;
     }
 
