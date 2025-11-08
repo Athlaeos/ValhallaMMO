@@ -332,11 +332,14 @@ public class ImmersiveRecipeEditor extends Menu implements SetModifiersMenu, Set
                     }
                 }
                 case "setCraftingBlockButton" -> {
-                    if (!ItemUtils.isEmpty(cursor) && cursor.getType().isBlock()){
+                    if (!ItemUtils.isEmpty(cursor)){
                         String potentiallyCustomType = ItemUtils.getItemType(cursor);
                         Material vanilla = Catch.catchOrElse(() -> Material.valueOf(potentiallyCustomType), null);
                         if (vanilla == null) block = potentiallyCustomType;
-                        else block = ItemUtils.getBaseMaterial(vanilla).toString();
+                        else if (!vanilla.isBlock()) {
+                            setMenuItems();
+                            return;
+                        } else block = ItemUtils.getBaseMaterial(vanilla).toString();
                         // remove incompatible validations
                         if (vanilla != null){
                             validations.removeIf(v -> {

@@ -106,10 +106,10 @@ public class BlockSurroundedMaterialFilter extends LootPredicate {
             areaType = areaTypes.get(currentIndex);
         } else if (button == 12){
             if (ItemUtils.isEmpty(e.getCursor()) && !e.isShiftClick()) materials.add("AIR");
-            else if (!ItemUtils.isEmpty(e.getCursor()) && e.getCursor().getType().isBlock() && !e.isShiftClick()) {
+            else if (!ItemUtils.isEmpty(e.getCursor()) && !e.isShiftClick()) {
                 String potentialCustomType = ItemUtils.getItemType(e.getCursor());
                 if (potentialCustomType.equalsIgnoreCase(e.getCursor().getType().toString())) materials.add(ItemUtils.getBaseMaterial(e.getCursor().getType()).toString());
-                else materials.add(potentialCustomType);
+                else if (e.getCursor().getType().isBlock()) materials.add(potentialCustomType);
             } else if (e.isShiftClick()) materials.clear();
         } else if (button == 13) quantity = Math.max(0, quantity + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 10 : 1)));
     }
