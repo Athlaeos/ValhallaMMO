@@ -210,13 +210,13 @@
             <groupId>net.momirealms</groupId>
             <artifactId>craft-engine-core</artifactId>
             <version>0.0.64</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.momirealms</groupId>
             <artifactId>craft-engine-bukkit</artifactId>
             <version>0.0.64</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
