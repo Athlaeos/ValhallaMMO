@@ -15,8 +15,10 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.FarmingProfile;
 import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.utility.*;
+import me.athlaeos.valhallammo.utility.BlockUtils;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -47,7 +49,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.List;
 
 import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
@@ -181,9 +182,9 @@ public class FarmingSkill extends Skill implements Listener {
         addEXP(e.getPlayer(), expQuantity, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
-    private final Collection<Material> harvestableCrops = ItemUtils.getMaterialSet(Arrays.asList(
+    private final Collection<String> harvestableCrops = Set.of(
             "WHEAT", "POTATOES", "CARROTS", "BEETROOTS", "COCOA", "NETHER_WART"
-    ));
+    );
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInteract(PlayerInteractEvent e){
@@ -193,8 +194,9 @@ public class FarmingSkill extends Skill implements Listener {
 
         if (!hasPermissionAccess(e.getPlayer())) return;
         Block clickedBlock = e.getClickedBlock();
+        String type = BlockUtils.getBlockType(clickedBlock);
         FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
-        if (clickedBlock.getBlockData() instanceof Ageable a && a.getAge() >= a.getMaximumAge() && harvestableCrops.contains(clickedBlock.getType())) {
+        if (clickedBlock.getBlockData() instanceof Ageable a && a.getAge() >= a.getMaximumAge() && harvestableCrops.contains(type)) {
             if (profile.isFieldHarvestUnlocked() && e.getPlayer().isSneaking() &&
                     Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "farming_field_harvest") &&
                     !fieldHarvestingPlayers.contains(e.getPlayer().getUniqueId()) &&
@@ -224,7 +226,6 @@ public class FarmingSkill extends Skill implements Listener {
             }
         }
         if (clickedBlock.getBlockData() instanceof Beehive b && b.getHoneyLevel() >= b.getMaximumHoneyLevel()) {
-            String type = BlockUtils.getBlockType(clickedBlock);
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 Beehive newHive = clickedBlock.getBlockData() instanceof Beehive bee ? bee : null;
                 if (newHive == null) return;
@@ -343,7 +344,8 @@ public class FarmingSkill extends Skill implements Listener {
     }
 
     private void instantHarvest(Player p, Block b, FarmingProfile profile) {
-        if (!(b.getBlockData() instanceof Ageable a) || a.getAge() < a.getMaximumAge() || !blockDropExpValues.containsKey(b.getType())) return;
+        String type = BlockUtils.getBlockType(b);
+        if (!(b.getBlockData() instanceof Ageable a) || a.getAge() < a.getMaximumAge() || !blockDropExpValues.containsKey(type)) return;
         a = (Ageable) a.clone();
         a.setAge(0);
         Material previousType = b.getType();
