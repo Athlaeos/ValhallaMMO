@@ -20,7 +20,7 @@ import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
-import org.bukkit.Material;
+import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -32,6 +32,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.LootContext;
@@ -105,13 +106,16 @@ public class FishingSkill extends Skill implements Listener {
         FishingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FishingProfile.class);
         if (e.getState() == PlayerFishEvent.State.FISHING) {
             double multiplier = (1 / (1 + Math.max(-0.999, profile.getFishingSpeedBonus())));
-//            ItemStack rod = e.getPlayer().getInventory().getItem(e.getHand() == null ? EquipmentSlot.HAND : e.getHand());
-//            if (ItemUtils.isEmpty(rod)) return;
-//            int lureLevel = rod.getEnchantmentLevel(Enchantment.LURE);
-//            int minWaitTime = Math.max(1, e.getHook().getMinWaitTime() - (lureLevel * 100));
-//            int maxWaitTime = Math.max(1, e.getHook().getMaxWaitTime() - (lureLevel * 100));
-            e.getHook().setMinWaitTime(Math.max(1, Utils.randomAverage(e.getHook().getMinWaitTime() * multiplier)));
-            e.getHook().setMaxWaitTime(Math.max(1, Utils.randomAverage(e.getHook().getMaxWaitTime() * multiplier)));
+            ItemStack rod = e.getPlayer().getInventory().getItem(e.getHand() == null ? EquipmentSlot.HAND : e.getHand());
+            if (ItemUtils.isEmpty(rod)) return;
+            int lureLevel = rod.getEnchantmentLevel(EnchantmentMappings.LURE.getEnchantment());
+            int lureReduction = 100 * lureLevel; // lure reduces wait time by 5 seconds per level
+            int expectedMinimum = Utils.randomAverage(e.getHook().getMinWaitTime() * multiplier);
+            if (expectedMinimum - lureReduction < 0) expectedMinimum = lureReduction + 2; // 0.1s of wiggle room if lure makes waiting time negative
+            int expectedMaximum = Utils.randomAverage(e.getHook().getMaxWaitTime() * multiplier);
+            if (expectedMaximum - lureReduction < 0) expectedMaximum = lureReduction + 2; // 0.1s of wiggle room if lure makes waiting time negative
+            e.getHook().setMinWaitTime(Math.max(1, expectedMinimum));
+            e.getHook().setMaxWaitTime(Math.max(1, expectedMaximum));
 
         } else if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             int extraCatches = Utils.randomAverage(profile.getFishingDrops());

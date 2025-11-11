@@ -90,7 +90,7 @@ public class DiggingSkill extends Skill implements Listener {
                 e.getBlock().getState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("DIGGING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
-        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
+        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(ItemUtils.getItemType(i)));
 
         double expQuantity = 0;
         for (ItemStack i : LootListener.getPreparedExtraDrops(e.getBlock())){
@@ -108,7 +108,7 @@ public class DiggingSkill extends Skill implements Listener {
                 e.getBlockState() instanceof Container) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("DIGGING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply the item drops from the event itself and grant exp for the initial items and extra drops
-        List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getItemStack().getType()));
+        List<ItemStack> extraDrops = ItemUtils.multiplyDrops(e.getItems(), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(ItemUtils.getItemType(i.getItemStack())));
         if (!extraDrops.isEmpty()) LootListener.prepareBlockDrops(e.getBlock(), extraDrops);
 
         double expQuantity = 0;

@@ -189,7 +189,7 @@ public class ArcherySkill extends Skill implements Listener {
     public void onArrowHit(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         if (!(e.getDamager() instanceof AbstractArrow a) || !(EntityUtils.getTrueDamager(e) instanceof Player p) || a instanceof Trident ||
-                !(e.getEntity() instanceof LivingEntity v) || EntityClassification.matchesClassification(v, EntityClassification.UNALIVE)) return;
+                !(e.getEntity() instanceof LivingEntity v) || EntityClassification.matchesClassification(v.getType(), EntityClassification.UNALIVE)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_ARCHERY)) return;
 
         ArcheryProfile profile = ProfileCache.getOrCache(p, ArcheryProfile.class);
@@ -218,7 +218,7 @@ public class ArcherySkill extends Skill implements Listener {
         }
         e.setDamage(damage);
 
-        if ((v instanceof IronGolem g && g.isPlayerCreated()) || EntityClassification.matchesClassification(v, EntityClassification.ANIMAL)) return;
+        if ((v instanceof IronGolem g && g.isPlayerCreated()) || EntityClassification.matchesClassification(v.getType(), EntityClassification.PASSIVE)) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (!p.isOnline()) return;
             double damageTaken = EntityDamagedListener.getLastDamageTaken(v.getUniqueId(), e.getFinalDamage());

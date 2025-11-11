@@ -172,7 +172,7 @@ public class FarmingSkill extends Skill implements Listener {
                 !blockDropExpValues.containsKey(type) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("FARMING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
-        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> blockDropExpValues.containsKey(i.getType()));
+        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> blockDropExpValues.containsKey(ItemUtils.getItemType(i)));
 
         double expQuantity = 0;
         for (ItemStack i : LootListener.getPreparedExtraDrops(e.getBlock())){
@@ -202,7 +202,7 @@ public class FarmingSkill extends Skill implements Listener {
                     !fieldHarvestingPlayers.contains(e.getPlayer().getUniqueId()) &&
                     !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_VEINFARMER)) {
                 Collection<Block> vein = BlockUtils.getBlockVein(clickedBlock, fieldHarvestLimit, b ->
-                        harvestableCrops.contains(b.getType()) && b.getBlockData() instanceof Ageable ag && ag.getAge() >= ag.getMaximumAge(),
+                                harvestableCrops.contains(BlockUtils.getBlockType(b)) && b.getBlockData() instanceof Ageable ag && ag.getAge() >= ag.getMaximumAge(),
                         fieldHarvestScanArea);
                 fieldHarvestingPlayers.add(e.getPlayer().getUniqueId());
                 e.setCancelled(true);
@@ -253,7 +253,7 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !harvestableCrops.contains(e.getBlock().getType()) ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !harvestableCrops.contains(BlockUtils.getBlockType(e.getBlock())) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
         Block b = e.getBlock();
         growBlock(b, ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class));
@@ -276,7 +276,7 @@ public class FarmingSkill extends Skill implements Listener {
                 WorldGuardHook.inDisabledRegion(e.getHarvestedBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("FARMING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         ItemUtils.multiplyItems(e.getItemsHarvested(), dropMultiplier, forgivingDropMultipliers, (i) -> blockInteractExpValues.containsKey(ItemUtils.getItemType(i)));
-        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getHarvestedBlock()), dropMultiplier, forgivingDropMultipliers, (i) -> blockInteractExpValues.containsKey(i.getType()));
+        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getHarvestedBlock()), dropMultiplier, forgivingDropMultipliers, (i) -> blockInteractExpValues.containsKey(ItemUtils.getItemType(i)));
 
         double amount = 0;
         for (ItemStack i : e.getItemsHarvested()){
@@ -371,7 +371,7 @@ public class FarmingSkill extends Skill implements Listener {
         if (killer == null) return;
         if (WorldGuardHook.inDisabledRegion(killer.getLocation(), killer, WorldGuardHook.VMMO_SKILL_FARMING)) return;
         double multiplier = AccumulativeStatManager.getCachedStats("BUTCHERY_DROP_MULTIPLIER", killer, 10000, true);
-        ItemUtils.multiplyItems(e.getDrops(), 1 + multiplier, forgivingDropMultipliers, (i) -> entityDropExpValues.containsKey(i.getType()));
+        ItemUtils.multiplyItems(e.getDrops(), 1 + multiplier, forgivingDropMultipliers, (i) -> entityDropExpValues.containsKey(ItemUtils.getItemType(i)));
 
         if (!hasPermissionAccess(killer)) return;
         double exp = 0;
