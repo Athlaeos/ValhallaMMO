@@ -286,7 +286,7 @@ public class MiningSkill extends Skill implements Listener {
         for (Block b : ourBlockList) {
             LootListener.addPreparedLuck(b, blastingLuck);
             List<ItemStack> predictedDrops = new ArrayList<>(b.getDrops(normalPickaxe));
-            ItemUtils.multiplyItems(predictedDrops, 1 + blastingDropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(i.getType()));
+            ItemUtils.multiplyItems(predictedDrops, 1 + blastingDropMultiplier, forgivingDropMultipliers, (i) -> dropsExpValues.containsKey(ItemUtils.getItemType(i)));
             LootListener.markExploded(b);
             LootListener.setFortuneLevel(e.getEntity(), profile.getBlastFortuneLevel());
             LootListener.setEntityOwner(e.getEntity(), responsible);

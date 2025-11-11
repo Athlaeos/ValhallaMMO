@@ -15,8 +15,10 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.FarmingProfile;
 import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.utility.*;
+import me.athlaeos.valhallammo.utility.BlockUtils;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
+import me.athlaeos.valhallammo.utility.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -47,7 +49,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.List;
 
 import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
@@ -171,7 +172,7 @@ public class FarmingSkill extends Skill implements Listener {
                 !blockDropExpValues.containsKey(type) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("FARMING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         // multiply any applicable prepared drops and grant exp for them. After the extra drops from a BlockBreakEvent the drops are cleared
-        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> blockDropExpValues.containsKey(i.getType()));
+        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getBlock()), 1 + dropMultiplier, forgivingDropMultipliers, (i) -> blockDropExpValues.containsKey(ItemUtils.getItemType(i)));
 
         double expQuantity = 0;
         for (ItemStack i : LootListener.getPreparedExtraDrops(e.getBlock())){
@@ -181,9 +182,9 @@ public class FarmingSkill extends Skill implements Listener {
         addEXP(e.getPlayer(), expQuantity, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
     }
 
-    private final Collection<Material> harvestableCrops = ItemUtils.getMaterialSet(Arrays.asList(
+    private final Collection<String> harvestableCrops = Set.of(
             "WHEAT", "POTATOES", "CARROTS", "BEETROOTS", "COCOA", "NETHER_WART"
-    ));
+    );
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInteract(PlayerInteractEvent e){
@@ -193,14 +194,15 @@ public class FarmingSkill extends Skill implements Listener {
 
         if (!hasPermissionAccess(e.getPlayer())) return;
         Block clickedBlock = e.getClickedBlock();
+        String type = BlockUtils.getBlockType(clickedBlock);
         FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
-        if (clickedBlock.getBlockData() instanceof Ageable a && a.getAge() >= a.getMaximumAge() && harvestableCrops.contains(clickedBlock.getType())) {
+        if (clickedBlock.getBlockData() instanceof Ageable a && a.getAge() >= a.getMaximumAge() && harvestableCrops.contains(type)) {
             if (profile.isFieldHarvestUnlocked() && e.getPlayer().isSneaking() &&
                     Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "farming_field_harvest") &&
                     !fieldHarvestingPlayers.contains(e.getPlayer().getUniqueId()) &&
                     !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_VEINFARMER)) {
                 Collection<Block> vein = BlockUtils.getBlockVein(clickedBlock, fieldHarvestLimit, b ->
-                        harvestableCrops.contains(b.getType()) && b.getBlockData() instanceof Ageable ag && ag.getAge() >= ag.getMaximumAge(),
+                                harvestableCrops.contains(BlockUtils.getBlockType(b)) && b.getBlockData() instanceof Ageable ag && ag.getAge() >= ag.getMaximumAge(),
                         fieldHarvestScanArea);
                 fieldHarvestingPlayers.add(e.getPlayer().getUniqueId());
                 e.setCancelled(true);
@@ -224,7 +226,6 @@ public class FarmingSkill extends Skill implements Listener {
             }
         }
         if (clickedBlock.getBlockData() instanceof Beehive b && b.getHoneyLevel() >= b.getMaximumHoneyLevel()) {
-            String type = BlockUtils.getBlockType(clickedBlock);
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 Beehive newHive = clickedBlock.getBlockData() instanceof Beehive bee ? bee : null;
                 if (newHive == null) return;
@@ -252,7 +253,7 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !harvestableCrops.contains(e.getBlock().getType()) ||
+        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !harvestableCrops.contains(BlockUtils.getBlockType(e.getBlock())) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
         Block b = e.getBlock();
         growBlock(b, ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class));
@@ -275,7 +276,7 @@ public class FarmingSkill extends Skill implements Listener {
                 WorldGuardHook.inDisabledRegion(e.getHarvestedBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
         double dropMultiplier = AccumulativeStatManager.getCachedStats("FARMING_DROP_MULTIPLIER", e.getPlayer(), 10000, true);
         ItemUtils.multiplyItems(e.getItemsHarvested(), dropMultiplier, forgivingDropMultipliers, (i) -> blockInteractExpValues.containsKey(ItemUtils.getItemType(i)));
-        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getHarvestedBlock()), dropMultiplier, forgivingDropMultipliers, (i) -> blockInteractExpValues.containsKey(i.getType()));
+        ItemUtils.multiplyItems(LootListener.getPreparedExtraDrops(e.getHarvestedBlock()), dropMultiplier, forgivingDropMultipliers, (i) -> blockInteractExpValues.containsKey(ItemUtils.getItemType(i)));
 
         double amount = 0;
         for (ItemStack i : e.getItemsHarvested()){
@@ -343,7 +344,8 @@ public class FarmingSkill extends Skill implements Listener {
     }
 
     private void instantHarvest(Player p, Block b, FarmingProfile profile) {
-        if (!(b.getBlockData() instanceof Ageable a) || a.getAge() < a.getMaximumAge() || !blockDropExpValues.containsKey(b.getType())) return;
+        String type = BlockUtils.getBlockType(b);
+        if (!(b.getBlockData() instanceof Ageable a) || a.getAge() < a.getMaximumAge() || !blockDropExpValues.containsKey(type)) return;
         a = (Ageable) a.clone();
         a.setAge(0);
         Material previousType = b.getType();
@@ -364,12 +366,12 @@ public class FarmingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onAnimalKill(EntityDeathEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.ANIMAL)) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !EntityClassification.matchesClassification(e.getEntity().getType(), EntityClassification.ANIMAL)) return;
         Player killer = e.getEntity().getKiller();
         if (killer == null) return;
         if (WorldGuardHook.inDisabledRegion(killer.getLocation(), killer, WorldGuardHook.VMMO_SKILL_FARMING)) return;
         double multiplier = AccumulativeStatManager.getCachedStats("BUTCHERY_DROP_MULTIPLIER", killer, 10000, true);
-        ItemUtils.multiplyItems(e.getDrops(), 1 + multiplier, forgivingDropMultipliers, (i) -> entityDropExpValues.containsKey(i.getType()));
+        ItemUtils.multiplyItems(e.getDrops(), 1 + multiplier, forgivingDropMultipliers, (i) -> entityDropExpValues.containsKey(ItemUtils.getItemType(i)));
 
         if (!hasPermissionAccess(killer)) return;
         double exp = 0;
@@ -383,7 +385,7 @@ public class FarmingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onAnimalBreed(EntityBreedEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) ||
-                !EntityClassification.matchesClassification(e.getEntityType(), EntityClassification.ANIMAL)) return;
+                !EntityClassification.matchesClassification(e.getEntity().getType(), EntityClassification.ANIMAL)) return;
         if (!(e.getBreeder() instanceof Player p) || !(e.getEntity() instanceof org.bukkit.entity.Ageable a)) return;
         if (WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_SKILL_FARMING)) return;
 

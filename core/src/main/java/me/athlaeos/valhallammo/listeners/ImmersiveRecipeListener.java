@@ -51,6 +51,8 @@ public class ImmersiveRecipeListener implements Listener {
     public void onBlockInteract(PlayerInteractEvent e){
         Block clicked = e.getClickedBlock();
         if (clicked == null) return;
+        String type = BlockUtils.getBlockType(clicked);
+        Material vanilla = Catch.catchOrElse(() -> Material.valueOf(type), null);
         boolean disableVanillaMenu = ItemUtils.getMaterialSet(ValhallaMMO.getPluginConfig().getStringList("disable_vanilla_menu")).contains(clicked.getType());
         // cancel block gui opening if disabled, or if the player still has an active cooldown on such interactions
         if (clicked.getType().isInteractable() && (disableVanillaMenu || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cancel_block_interactions"))) e.setCancelled(true);
@@ -58,7 +60,7 @@ public class ImmersiveRecipeListener implements Listener {
         if (!Timer.isCooldownPassed(p.getUniqueId(), "delay_crafting_attempts")) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) selectedImmersiveRecipe.remove(p.getUniqueId());
         if (e.useInteractedBlock() == Event.Result.DENY || e.getHand() != EquipmentSlot.HAND || e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if (!CustomRecipeRegistry.getImmersiveRecipesByBlock().containsKey(ItemUtils.getBaseMaterial(clicked.getType()))) return;
+        if (!CustomRecipeRegistry.getImmersiveRecipesByBlock().containsKey(vanilla == null ? type : ItemUtils.getBaseMaterial(vanilla).toString())) return;
         if (Timer.getTimerResult(p.getUniqueId(), "time_held_immersive_interact") == 0) Timer.startTimer(p.getUniqueId(), "time_held_immersive_interact"); // start timer if none was started yet
         if (Timer.getTimerResult(p.getUniqueId(), "time_since_immersive_interact") == 0) Timer.startTimer(p.getUniqueId(), "time_since_immersive_interact"); // start timer if none was started yet
 
@@ -67,7 +69,7 @@ public class ImmersiveRecipeListener implements Listener {
         ImmersiveCraftingRecipe recipe = selectedImmersiveRecipe.get(p.getUniqueId());
         if (!ItemUtils.isEmpty(heldItem) && recipe == null && !openImmersiveMenu && Timer.isCooldownPassed(p.getUniqueId(), "delay_tinkering_attempts")){
             // attempt a tinkering recipe
-            Collection<ImmersiveCraftingRecipe> tinkerRecipes = getTinkerRecipes(p, clicked.getType());
+            Collection<ImmersiveCraftingRecipe> tinkerRecipes = getTinkerRecipes(p, type);
             if (tinkerRecipes.size() == 1) recipe = tinkerRecipes.stream().findFirst().orElse(null);
             else Timer.setCooldown(p.getUniqueId(), 1000, "delay_tinkering_attempts");
             if (recipe != null){
@@ -100,9 +102,9 @@ public class ImmersiveRecipeListener implements Listener {
                     (held != null && recipe.getTinkerInput().getOption().matches(recipe.getTinkerInput().getItem(), heldItem) &&
                             (!recipe.requiresValhallaTools() || SmithingItemPropertyManager.hasSmithingQuality(held.getMeta()))) :
                     recipe.getToolRequirement().canCraft(held == null ? -1 : ToolRequirementType.getToolID(held.getMeta()));
-            String type = BlockUtils.getBlockType(clicked);
-            Material vanilla = Catch.catchOrElse(() -> Material.valueOf(type), null);
-            if (vanilla == null ? recipe.getBlock().equalsIgnoreCase(type) : !ItemUtils.isSimilarMaterial(vanilla, clicked.getType()) || !canPlayerCraft(e, recipe) || !properItemHeld) {
+            ImmersiveCraftingRecipe finalRecipe = recipe;
+            Material vanillaTargetBlock = Catch.catchOrElse(() -> Material.valueOf(finalRecipe.getBlock()), null);
+            if ((vanilla == null ? !recipe.getBlock().equalsIgnoreCase(type) : !ItemUtils.isSimilarMaterial(vanilla, vanillaTargetBlock)) || !canPlayerCraft(e, recipe) || !properItemHeld) {
                 selectedImmersiveRecipe.remove(p.getUniqueId());
                 resetFrequency(e.getPlayer());
                 return;
@@ -199,13 +201,13 @@ public class ImmersiveRecipeListener implements Listener {
 
     private final Map<Material, Collection<ImmersiveCraftingRecipe>> immersiveRecipeCache = new HashMap<>();
 
-    private Collection<ImmersiveCraftingRecipe> getTinkerRecipes(Player crafter, Material block){
+    private Collection<ImmersiveCraftingRecipe> getTinkerRecipes(Player crafter, String block){
         ItemStack mainHand = crafter.getInventory().getItemInMainHand();
         if (ItemUtils.isEmpty(mainHand)) return new ArrayList<>();
         Collection<ImmersiveCraftingRecipe> heldTypeRecipes = immersiveRecipeCache.getOrDefault(mainHand.getType(), new HashSet<>());
 
-        Material base = ItemUtils.getBaseMaterial(block);
-        for (ImmersiveCraftingRecipe r : CustomRecipeRegistry.getImmersiveRecipesByBlock().get(base)) {
+        Material vanilla = Catch.catchOrElse(() -> ItemUtils.getBaseMaterial(Material.valueOf(block)), null);
+        for (ImmersiveCraftingRecipe r : CustomRecipeRegistry.getImmersiveRecipesByBlock().get(vanilla == null ? block : vanilla.toString())) {
             if (!r.tinker() || heldTypeRecipes.contains(r)) continue;
             heldTypeRecipes.add(r);
         }

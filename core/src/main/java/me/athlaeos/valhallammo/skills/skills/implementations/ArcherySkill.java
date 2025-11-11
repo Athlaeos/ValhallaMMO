@@ -218,7 +218,7 @@ public class ArcherySkill extends Skill implements Listener {
         }
         e.setDamage(damage);
 
-        if ((v instanceof IronGolem g && g.isPlayerCreated()) || EntityClassification.matchesClassification(v.getType(), EntityClassification.ANIMAL)) return;
+        if ((v instanceof IronGolem g && g.isPlayerCreated()) || EntityClassification.matchesClassification(v.getType(), EntityClassification.PASSIVE)) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (!p.isOnline()) return;
             double damageTaken = EntityDamagedListener.getLastDamageTaken(v.getUniqueId(), e.getFinalDamage());
