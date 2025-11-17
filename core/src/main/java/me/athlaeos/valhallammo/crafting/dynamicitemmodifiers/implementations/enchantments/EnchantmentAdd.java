@@ -33,6 +33,11 @@ public class EnchantmentAdd extends DynamicItemModifier {
     }
 
     @Override
+    public boolean requiresPlayer() {
+        return scaleWithSkill;
+    }
+
+    @Override
     public void processItem(ModifierContext context) {
         Enchantment e = keyEnchantmentMap.get(this.enchantment);
         if (e == null) {

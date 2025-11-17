@@ -45,6 +45,17 @@ public class CommandsSet extends DynamicItemModifier {
     }
 
     @Override
+    public boolean requiresPlayer() {
+        return commands.stream().anyMatch(
+                s ->
+                        s.contains("%player%") ||
+                        s.contains("%x%") ||
+                        s.contains("%y%") ||
+                        s.contains("%z%")
+        );
+    }
+
+    @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
 
     }

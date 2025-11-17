@@ -46,6 +46,11 @@ public class DurabilityScale extends DynamicItemModifier {
         super(name);
     }
 
+    @Override
+    public boolean requiresPlayer() {
+        return true;
+    }
+
     private String buildScaling(){
         return String.format("(%.2f/%.2f) * (%%rating%% - %.2f) + %.2f", amplifier, skillRange, rangeOffset, minimum);
     }

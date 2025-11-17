@@ -33,6 +33,11 @@ public class AmountScale extends DynamicItemModifier {
     }
 
     @Override
+    public boolean requiresPlayer() {
+        return true;
+    }
+
+    @Override
     public void processItem(ModifierContext context) {
         if (scaling == null) {
             failedRecipe(context.getItem(), "");

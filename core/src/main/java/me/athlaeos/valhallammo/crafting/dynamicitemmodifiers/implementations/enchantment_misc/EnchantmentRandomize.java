@@ -53,6 +53,11 @@ public class EnchantmentRandomize extends DynamicItemModifier {
     }
 
     @Override
+    public boolean requiresPlayer() {
+        return scaleWithSkill;
+    }
+
+    @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
         if (button == 12) {
             level = Math.max(1, level + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 5 : 1)));
