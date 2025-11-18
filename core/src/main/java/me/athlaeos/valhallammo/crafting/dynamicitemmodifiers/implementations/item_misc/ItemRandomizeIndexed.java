@@ -48,6 +48,16 @@ public class ItemRandomizeIndexed extends DynamicItemModifier implements ResultC
     }
 
     @Override
+    public boolean requiresPlayer() {
+        for (String s : items.keySet()){
+            CustomItem customItem = CustomItemRegistry.getItem(s);
+            if (customItem == null) continue;
+            if (customItem.getModifiers().stream().anyMatch(DynamicItemModifier::requiresPlayer)) return true;
+        }
+        return false;
+    }
+
+    @Override
     public ItemStack getNewResult(ModifierContext context) {
         return previewItem;
     }

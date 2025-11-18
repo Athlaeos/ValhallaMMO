@@ -1,6 +1,9 @@
 package me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc;
 
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.*;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.gui.implementations.CustomItemSelectionMenu;
@@ -64,7 +67,14 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
 
     @Override
     public boolean requiresPlayer() {
-        return !skillToScaleWith.equals("SMITHING") && !skillToScaleWith.equals("ALCHEMY");
+        if (skillToScaleWith.equals("SMITHING") || skillToScaleWith.equals("ALCHEMY")) return false;
+
+        for (String s : items.values()){
+            CustomItem customItem = CustomItemRegistry.getItem(s);
+            if (customItem == null) continue;
+            if (customItem.getModifiers().stream().anyMatch(DynamicItemModifier::requiresPlayer)) return true;
+        }
+        return false;
     }
 
     @Override
