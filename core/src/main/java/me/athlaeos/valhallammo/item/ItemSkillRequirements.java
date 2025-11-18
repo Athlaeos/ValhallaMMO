@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 
 public class ItemSkillRequirements {
     private static final NamespacedKey SKILL_REQUIREMENT = new NamespacedKey(ValhallaMMO.getInstance(), "item_skill_requirement");
+    private static final NamespacedKey PERMISSION_REQUIREMENT = new NamespacedKey(ValhallaMMO.getInstance(), "item_permission_requirement");
     private static final NamespacedKey REQUIREMENT_TYPE = new NamespacedKey(ValhallaMMO.getInstance(), "item_skill_requirement_type");
 
     private static final String penaltyScaling;
@@ -60,8 +61,11 @@ public class ItemSkillRequirements {
      * @return the penalty value
      */
     public static double getPenalty(Player p, ItemBuilder item, String attribute){
-        if (!item.getMeta().getPersistentDataContainer().has(SKILL_REQUIREMENT, PersistentDataType.STRING) || !attributePenalties.containsKey(attribute)) return 0;
+        if ((!item.getMeta().getPersistentDataContainer().has(SKILL_REQUIREMENT, PersistentDataType.STRING) &&
+                !item.getMeta().getPersistentDataContainer().has(PERMISSION_REQUIREMENT, PersistentDataType.STRING)) || !attributePenalties.containsKey(attribute)) return 0;
         double maxPenalty = attributePenalties.get(attribute);
+        String permissionRequirement = getPermissionRequirement(item.getMeta());
+        if (permissionRequirement != null && !p.hasPermission(permissionRequirement)) return maxPenalty;
         Collection<SkillRequirement> requirements = getSkillRequirements(item.getMeta());
         boolean shouldFulfillAny = requireAnySkillMatch(item.getMeta());
         for (SkillRequirement r : requirements){
@@ -157,6 +161,14 @@ public class ItemSkillRequirements {
         }
     }
 
+    public static void setPermissionRequirement(ItemMeta meta, String permission){
+        if (permission == null) {
+            meta.getPersistentDataContainer().remove(PERMISSION_REQUIREMENT);
+        } else {
+            meta.getPersistentDataContainer().set(PERMISSION_REQUIREMENT, PersistentDataType.STRING, permission);
+        }
+    }
+
     /**
      * Returns all skill requirements of the meta
      */
@@ -179,6 +191,11 @@ public class ItemSkillRequirements {
             }
         }
         return requirements;
+    }
+
+    public static String getPermissionRequirement(ItemMeta meta){
+        if (meta == null) return null;
+        return ItemUtils.getPDCString(PERMISSION_REQUIREMENT, meta, null);
     }
 
     public record SkillRequirement(Skill skill, int levelRequirement) {}
