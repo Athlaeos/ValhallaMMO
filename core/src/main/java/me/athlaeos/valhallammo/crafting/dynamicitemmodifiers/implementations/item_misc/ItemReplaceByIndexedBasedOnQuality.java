@@ -63,6 +63,11 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
     }
 
     @Override
+    public boolean requiresPlayer() {
+        return !skillToScaleWith.equals("SMITHING") && !skillToScaleWith.equals("ALCHEMY");
+    }
+
+    @Override
     public ItemStack getNewResult(ModifierContext context) {
         int skill = switch (skillToScaleWith) {
             case "SMITHING" -> SmithingItemPropertyManager.getQuality(context.getItem().getMeta());
