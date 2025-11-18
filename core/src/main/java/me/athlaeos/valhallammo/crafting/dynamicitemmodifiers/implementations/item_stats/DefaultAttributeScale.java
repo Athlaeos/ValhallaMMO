@@ -51,6 +51,11 @@ public class DefaultAttributeScale extends DynamicItemModifier {
         this.attribute = attribute;
     }
 
+    @Override
+    public boolean requiresPlayer() {
+        return true;
+    }
+
     private String buildScaling(){
         return String.format("(%.2f/%.2f) * (%%rating%% - %.2f) + %.2f", amplifier, skillRange, rangeOffset, minimum);
     }

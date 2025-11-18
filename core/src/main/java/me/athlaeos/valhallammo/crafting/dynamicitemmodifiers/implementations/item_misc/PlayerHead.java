@@ -26,6 +26,11 @@ public class PlayerHead extends DynamicItemModifier {
     }
 
     @Override
+    public boolean requiresPlayer() {
+        return true;
+    }
+
+    @Override
     public void onButtonPress(InventoryClickEvent e, int button) { }
 
     @Override

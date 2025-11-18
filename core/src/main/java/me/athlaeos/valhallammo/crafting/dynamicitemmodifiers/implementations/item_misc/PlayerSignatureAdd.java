@@ -31,6 +31,11 @@ public class PlayerSignatureAdd extends DynamicItemModifier {
     }
 
     @Override
+    public boolean requiresPlayer() {
+        return true;
+    }
+
+    @Override
     public void processItem(ModifierContext context) {
         List<String> lore = context.getItem().getLore() != null ? context.getItem().getLore() : new ArrayList<>();
         String format = TranslationManager.getTranslation("format_signature");

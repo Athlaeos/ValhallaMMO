@@ -51,6 +51,11 @@ public class ScaleDuration extends DynamicItemModifier {
     }
 
     @Override
+    public boolean requiresPlayer() {
+        return true;
+    }
+
+    @Override
     public void processItem(ModifierContext context) {
         Scaling scaling;
         if (presetScaling != null) scaling = ModifierScalingPresets.getScalings().get(presetScaling);
