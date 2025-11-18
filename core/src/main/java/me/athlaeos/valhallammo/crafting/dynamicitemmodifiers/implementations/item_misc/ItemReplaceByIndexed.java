@@ -56,6 +56,13 @@ public class ItemReplaceByIndexed extends DynamicItemModifier implements ResultC
     }
 
     @Override
+    public boolean requiresPlayer() {
+        CustomItem customItem = CustomItemRegistry.getItem(item);
+        if (customItem == null) return false;
+        return customItem.getModifiers().stream().anyMatch(DynamicItemModifier::requiresPlayer);
+    }
+
+    @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
 
     }
