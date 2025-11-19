@@ -12,9 +12,7 @@ import me.athlaeos.valhallammo.skills.skills.implementations.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class SkillRegistry {
     private static Map<Class<?>, Skill> allSkills = Collections.unmodifiableMap(new HashMap<>());
@@ -88,7 +86,9 @@ public class SkillRegistry {
         registerSkills();
     }
 
+    private static final Collection<UUID> updatedPlayers = new HashSet<>();
     public static void updateSkillProgression(Player p, boolean runPersistentStartingPerks){
+        if (updatedPlayers.contains(p.getUniqueId())) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             allSkills.values().forEach(s -> {
                 ProfileRegistry.setSkillProfile(p, ProfileRegistry.getBlankProfile(p, s.getProfileType()), s.getProfileType());
@@ -99,6 +99,7 @@ public class SkillRegistry {
                 if (s instanceof PowerSkill) return;
                 s.updateSkillStats(p, runPersistentStartingPerks);
             });
+            updatedPlayers.add(p.getUniqueId());
         });
     }
 }
