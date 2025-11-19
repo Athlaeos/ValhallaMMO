@@ -286,6 +286,7 @@ public abstract class ProfilePersistence {
     public void uncacheProfile(UUID p) {
         persistentProfiles.synchronous().invalidate(p);
         skillProfiles.remove(p);
+        SkillRegistry.markPlayerForProgressionUpdate(p);
         JoinLeaveListener.getLoadedProfiles().remove(p);
         ProfileCache.resetCache(p);
     }
@@ -293,6 +294,7 @@ public abstract class ProfilePersistence {
     public void uncacheAllProfiles() {
         persistentProfiles.synchronous().invalidateAll();
         skillProfiles.clear();
+        SkillRegistry.markAllPlayersForProgressionUpdate();
         JoinLeaveListener.getLoadedProfiles().clear();
         ProfileCache.resetAllCaches();
     }
