@@ -15,3 +15,6 @@ forgiving_multipliers: true # Drop multipliers below 0 will, if false, sometimes
 # which items it should scan instead. It's recommended to have this be a not very common item, but that doesn't matter a terrible lot
 fishing_bait_materials:
   - FIREWORK_STAR
+
+lure_reduction_base: 100
+lure_reduction_lv: 50
