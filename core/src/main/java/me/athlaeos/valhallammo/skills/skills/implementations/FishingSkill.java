@@ -47,6 +47,8 @@ public class FishingSkill extends Skill implements Listener {
 
     private boolean forgivingDropMultipliers = true; // if false, depending on drop multiplier, drops may be reduced to 0. If true, this will be at least 1
     private boolean isChunkNerfed = true;
+    private int lureReductionBase = 100;
+    private int lureReductionLv = 50;
 
     public FishingSkill(String type) {
         super(type);
@@ -65,6 +67,8 @@ public class FishingSkill extends Skill implements Listener {
         forgivingDropMultipliers = skillConfig.getBoolean("forgiving_multipliers");
         baitMaterials.addAll(skillConfig.getStringList("fishing_bait_materials"));
         isChunkNerfed = progressionConfig.getBoolean("experience.is_chunk_nerfed", true);
+        lureReductionBase = skillConfig.getInt("lure_reduction_base");
+        lureReductionLv = skillConfig.getInt("lure_reduction_lv");
 
         ConfigurationSection blockBreakSection = progressionConfig.getConfigurationSection("experience.fishing_catch");
         if (blockBreakSection != null){
@@ -108,14 +112,13 @@ public class FishingSkill extends Skill implements Listener {
             double multiplier = (1 / (1 + Math.max(-0.999, profile.getFishingSpeedBonus())));
             ItemStack rod = e.getPlayer().getInventory().getItem(e.getHand() == null ? EquipmentSlot.HAND : e.getHand());
             if (ItemUtils.isEmpty(rod)) return;
+            e.getHook().setApplyLure(false);
             int lureLevel = rod.getEnchantmentLevel(EnchantmentMappings.LURE.getEnchantment());
-            int lureReduction = 100 * lureLevel; // lure reduces wait time by 5 seconds per level
-            int expectedMinimum = Utils.randomAverage(e.getHook().getMinWaitTime() * multiplier);
-            if (expectedMinimum - lureReduction < 0) expectedMinimum = lureReduction + 2; // 0.1s of wiggle room if lure makes waiting time negative
-            int expectedMaximum = Utils.randomAverage(e.getHook().getMaxWaitTime() * multiplier);
-            if (expectedMaximum - lureReduction < 0) expectedMaximum = lureReduction + 2; // 0.1s of wiggle room if lure makes waiting time negative
-            e.getHook().setMinWaitTime(Math.max(1, expectedMinimum));
-            e.getHook().setMaxWaitTime(Math.max(1, expectedMaximum));
+            int lureReduction = lureLevel == 0 ? 0 : (lureReductionBase + ((lureLevel - 1) * lureReductionLv));
+            int expectedMinimum = Utils.randomAverage((e.getHook().getMinWaitTime() - lureReduction) * multiplier);
+            int expectedMaximum = Utils.randomAverage((e.getHook().getMaxWaitTime() - lureReduction) * multiplier);
+            e.getHook().setMinWaitTime(Math.max(1, Math.min(600, expectedMinimum)));
+            e.getHook().setMaxWaitTime(Math.max(1, Math.min(600, expectedMaximum)));
 
         } else if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             int extraCatches = Utils.randomAverage(profile.getFishingDrops());
