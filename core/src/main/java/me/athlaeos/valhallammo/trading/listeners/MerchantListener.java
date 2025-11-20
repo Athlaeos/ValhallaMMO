@@ -381,7 +381,7 @@ public class MerchantListener implements Listener {
             Utils.sendMessage(e.getPlayer(), TranslationManager.getTranslation("merchant_unhappy"));
             return;
         }
-        if (!e.getPlayer().hasPermission("valhalla.bypasstradedelay") && v.getPersistentDataContainer().getOrDefault(KEY_PROFESSION_DELAY, PersistentDataType.LONG, 0L) + CustomMerchantManager.getDelayUntilWorking() > CustomMerchantManager.time()){
+        if (CustomMerchantManager.getDelayUntilWorking() > 0 && !e.getPlayer().hasPermission("valhalla.bypasstradedelay") && v.getPersistentDataContainer().getOrDefault(KEY_PROFESSION_DELAY, PersistentDataType.LONG, 0L) + CustomMerchantManager.getDelayUntilWorking() > CustomMerchantManager.time()){
             e.setCancelled(true);
             if (v instanceof Villager villager) villager.shakeHead();
             Utils.sendMessage(e.getPlayer(), TranslationManager.getTranslation("merchant_preparing"));
