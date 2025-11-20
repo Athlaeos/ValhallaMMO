@@ -86,6 +86,12 @@ public class SkillRegistry {
         registerSkills();
     }
 
+    public static void markPlayerForProgressionUpdate(UUID player){
+        updatedPlayers.remove(player);
+    }
+    public static void markAllPlayersForProgressionUpdate(){
+        updatedPlayers.clear();
+    }
     private static final Collection<UUID> updatedPlayers = new HashSet<>();
     public static void updateSkillProgression(Player p, boolean runPersistentStartingPerks){
         if (updatedPlayers.contains(p.getUniqueId())) return;
