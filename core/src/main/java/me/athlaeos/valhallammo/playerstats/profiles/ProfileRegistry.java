@@ -229,6 +229,7 @@ public class ProfileRegistry {
         persistence.resetSkillProgress(p, type);
     }
 
+    @SuppressWarnings("unchecked")
     public static <P extends Profile> P copyDefaultStats(P profile) {
         P defaultProfile = (P) registeredProfiles.get(profile.getClass());
         if (defaultProfile == null) return profile;
