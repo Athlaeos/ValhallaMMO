@@ -231,6 +231,7 @@ public abstract class ProfilePersistence {
         Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
             Player player = Bukkit.getPlayer(uuid);
             if (player != null) {
+                skillProfiles.remove(player.getUniqueId());
                 Utils.sendMessage(player, TranslationManager.getTranslation("status_profiles_loaded"));
                 SkillRegistry.updateSkillProgression(player, finalRunPersistentStartingPerks);
             } else {
@@ -286,7 +287,6 @@ public abstract class ProfilePersistence {
     public void uncacheProfile(UUID p) {
         persistentProfiles.synchronous().invalidate(p);
         skillProfiles.remove(p);
-        SkillRegistry.markPlayerForProgressionUpdate(p);
         JoinLeaveListener.getLoadedProfiles().remove(p);
         ProfileCache.resetCache(p);
     }
@@ -294,7 +294,6 @@ public abstract class ProfilePersistence {
     public void uncacheAllProfiles() {
         persistentProfiles.synchronous().invalidateAll();
         skillProfiles.clear();
-        SkillRegistry.markAllPlayersForProgressionUpdate();
         JoinLeaveListener.getLoadedProfiles().clear();
         ProfileCache.resetAllCaches();
     }
@@ -345,19 +344,19 @@ public abstract class ProfilePersistence {
     }
     public <T extends Profile> T getSkillProfile(UUID p, Class<T> type) {
         ClassToInstanceMap<Profile> profiles = skillProfiles.get(p);
-        if (profiles == null && isLoaded(p)) {
-            Player player = Bukkit.getPlayer(p);
-            if (player != null) {
-                profiles = MutableClassToInstanceMap.create();
-                for (Class<? extends Profile> pr : ProfileRegistry.getRegisteredProfiles().keySet()){
-                    Profile instance = ProfileRegistry.getBlankProfile(p, pr);
-                    profiles.put(pr, instance);
-                }
-                skillProfiles.put(p, profiles);
-                SkillRegistry.updateSkillProgression(player, false);
-                ValhallaMMO.logWarning("An experimental method of stat recalculation was used on " + player.getName() + " to ensure they still have the stats they are supposed to (as opposed to nothing). Please keep an eye out for issues and report them to me :)");
-            }
-        }
+//        if (profiles == null && isLoaded(p)) {
+//            Player player = Bukkit.getPlayer(p);
+//            if (player != null) {
+//                profiles = MutableClassToInstanceMap.create();
+//                for (Class<? extends Profile> pr : ProfileRegistry.getRegisteredProfiles().keySet()){
+//                    Profile instance = ProfileRegistry.getBlankProfile(p, pr);
+//                    profiles.put(pr, instance);
+//                }
+//                skillProfiles.put(p, profiles);
+//                SkillRegistry.updateSkillProgression(player, false);
+//                ValhallaMMO.logWarning("An experimental method of stat recalculation was used on " + player.getName() + " to ensure they still have the stats they are supposed to (as opposed to nothing). Please keep an eye out for issues and report them to me :)");
+//            }
+//        }
         return profiles == null ? null : profiles.getInstance(type);
     }
 
@@ -508,7 +507,7 @@ public abstract class ProfilePersistence {
         PROFILES_TO_SAVE.put(p, types);
     }
 
-    private static Map<UUID, Collection<Class<? extends Profile>>> resetProfiles = new HashMap<>();
+    private static final Map<UUID, Collection<Class<? extends Profile>>> resetProfiles = new HashMap<>();
 
     @SuppressWarnings("all")
     public boolean shouldPersist(Profile profile){

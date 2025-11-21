@@ -86,15 +86,7 @@ public class SkillRegistry {
         registerSkills();
     }
 
-    public static void markPlayerForProgressionUpdate(UUID player){
-        updatedPlayers.remove(player);
-    }
-    public static void markAllPlayersForProgressionUpdate(){
-        updatedPlayers.clear();
-    }
-    private static final Collection<UUID> updatedPlayers = new HashSet<>();
     public static void updateSkillProgression(Player p, boolean runPersistentStartingPerks){
-        if (updatedPlayers.contains(p.getUniqueId())) return;
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             allSkills.values().forEach(s -> {
                 ProfileRegistry.setSkillProfile(p, ProfileRegistry.getBlankProfile(p, s.getProfileType()), s.getProfileType());
@@ -105,7 +97,6 @@ public class SkillRegistry {
                 if (s instanceof PowerSkill) return;
                 s.updateSkillStats(p, runPersistentStartingPerks);
             });
-            updatedPlayers.add(p.getUniqueId());
         });
     }
 }
