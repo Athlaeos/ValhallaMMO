@@ -27,6 +27,7 @@ import me.athlaeos.valhallammo.utility.Callback;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.AttributeMappings;
+import org.bukkit.GameRule;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.attribute.AttributeInstance;
@@ -61,6 +62,7 @@ public class CustomMerchantManager {
     private static final String discountFormula = getTradingConfig().getString("discount", "(0.0025 * %happiness%) + (0.002 * %reputation%) + (0.0015 * %renown%)");
     private static final double renownUnforgivable = getTradingConfig().getDouble("renown_unforgivable", -90);
     private static final double reputationUnforgivable = getTradingConfig().getDouble("reputation_unforgivable", -90);
+    private static final boolean overwriteDayTimeMechanics = getTradingConfig().getBoolean("time_mechanics_override", false);
 
     private static MerchantDataPersistence merchantDataPersistence;
 
@@ -536,5 +538,10 @@ public class CustomMerchantManager {
     }
     public static boolean isBlockerItem(ItemMeta meta){
         return meta.getPersistentDataContainer().get(KEY_MERCHANT_BLOCK, PersistentDataType.BYTE) != null;
+    }
+
+    public static boolean overrideDayTimeMechanics() {
+        Boolean gameRuleValue = ValhallaMMO.getInstance().getServer().getWorlds().getFirst().getGameRuleValue(GameRule.DO_DAYLIGHT_CYCLE);
+        return overwriteDayTimeMechanics || (gameRuleValue != null && !gameRuleValue);
     }
 }

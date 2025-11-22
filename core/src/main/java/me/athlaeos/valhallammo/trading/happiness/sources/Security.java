@@ -30,10 +30,13 @@ public class Security implements HappinessSource {
         if (data == null || contextPlayer == null) return 0;
         long timeLastTradedWith = -1;
         for (MerchantData.TradeData d : data.getTrades().values()){
-            if (d.getLastTraded() > timeLastTradedWith) timeLastTradedWith = d.getLastTraded();
+            if (CustomMerchantManager.overrideDayTimeMechanics())
+                if (d.getLastTradedRealTime() > timeLastTradedWith) timeLastTradedWith = d.getLastTradedRealTime();
+            else
+                if (d.getLastTraded() > timeLastTradedWith) timeLastTradedWith = d.getLastTraded();
         }
         if (timeLastTradedWith < 0) return 0;
-        long difference = CustomMerchantManager.time() - timeLastTradedWith;
+        long difference = (CustomMerchantManager.overrideDayTimeMechanics() ? (System.currentTimeMillis() - timeLastTradedWith) / 50L : CustomMerchantManager.time() - timeLastTradedWith);
         if (difference <= securityMax) return securityHappiness;
         else if (difference >= insecurityRequirement) return insecurityHappiness;
         else return 0;

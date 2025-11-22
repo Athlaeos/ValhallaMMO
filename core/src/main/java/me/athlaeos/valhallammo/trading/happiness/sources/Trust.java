@@ -42,7 +42,7 @@ public class Trust implements HappinessSource, Listener {
         if (e.isCancelled()) return;
         if (e.getEntity() instanceof AbstractVillager a && e.getEntity() instanceof Player p){
             Map<UUID, Long> map = lastHarmed.getOrDefault(a.getUniqueId(), new HashMap<>());
-            map.put(p.getUniqueId(), CustomMerchantManager.time());
+            map.put(p.getUniqueId(), CustomMerchantManager.overrideDayTimeMechanics() ? System.currentTimeMillis() / 50L : CustomMerchantManager.time());
             lastHarmed.put(a.getUniqueId(), map);
         }
     }
@@ -56,7 +56,7 @@ public class Trust implements HappinessSource, Listener {
         if (contextPlayer == null || !(entity instanceof AbstractVillager villager)) return 0;
         long time = getHarmed(contextPlayer, villager);
         if (time < 0) return trustingHappiness;
-        long difference = CustomMerchantManager.time() - time;
+        long difference = (CustomMerchantManager.overrideDayTimeMechanics() ? System.currentTimeMillis() : CustomMerchantManager.time()) - time;
         if (difference <= distrustingTime) return distrustingHappiness;
         else if (difference >= trustingTime) return trustingHappiness;
         return 0;

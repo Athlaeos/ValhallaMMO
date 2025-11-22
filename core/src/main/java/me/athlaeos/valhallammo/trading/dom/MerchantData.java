@@ -108,7 +108,9 @@ public class MerchantData {
         private final Map<UUID, Double> perPlayerRemainingUses = new HashMap<>();
         private final int basePrice;
         private long lastRestocked = -1;
+        private long lastRestockedRealTime = -1;
         private long lastTraded = -1;
+        private long lastTradedRealTime = -1;
         public TradeData(String trade, int basePrice, int level, ItemStack item, int maxSales){
             this.trade = trade;
             this.basePrice = basePrice;
@@ -126,6 +128,8 @@ public class MerchantData {
         public String getTrade() { return trade; }
         public long getLastRestocked() { return lastRestocked; }
         public long getLastTraded() { return lastTraded; }
+        public long getLastRestockedRealTime() { return lastRestockedRealTime; }
+        public long getLastTradedRealTime() { return lastTradedRealTime; }
         public int getBasePrice() { return basePrice; }
         public double getRemainingUses(Player player, boolean perPlayerStock){
             if (perPlayerStock) return perPlayerRemainingUses.getOrDefault(player.getUniqueId(), (double) maxUses);
@@ -143,6 +147,8 @@ public class MerchantData {
             if (perPlayerStock) perPlayerRemainingUses.clear();
             else this.remainingUses = maxUses;
         }
+        public void setLastRestockedRealTime(long lastRestockedRealTime) { this.lastRestockedRealTime = lastRestockedRealTime; }
+        public void setLastTradedRealTime(long lastTradedRealTime) { this.lastTradedRealTime = lastTradedRealTime; }
         public void setLastRestocked(long lastRestocked) { this.lastRestocked = lastRestocked; }
         public void setLastTraded(long lastTraded) { this.lastTraded = lastTraded; }
         public void setItem(ItemStack item) { this.item = item; }
@@ -155,6 +161,7 @@ public class MerchantData {
         private float tradingReputation = 0;
         private float renownReputation = 0;
         private long timeGiftable = 0;
+        private long realTimeGiftable = 0; // nanosecond time if time is not running
         private final Map<String, Double> perPlayerTradesLeft = new HashMap<>();
         private final Collection<String> singleTimeGiftedTrades = new HashSet<>();
         private boolean hasReachedMaxHappiness = false;
@@ -165,6 +172,7 @@ public class MerchantData {
         public float getTradingReputation() { return tradingReputation; }
         public long getLastTimeTraded() { return lastTimeTraded; }
         public long getTimeGiftable() { return timeGiftable; }
+        public long getRealTimeGiftable() { return realTimeGiftable; }
         public Map<String, Double> getPerPlayerTradesLeft() { return perPlayerTradesLeft; }
         public void setLastTimeTraded(long lastTimeTraded) { this.lastTimeTraded = lastTimeTraded; }
         public void setTimesTraded(int timesTraded) { this.timesTraded = timesTraded; }
@@ -176,6 +184,7 @@ public class MerchantData {
         public void setCured(boolean wasCured) {
             this.wasCured = wasCured;
         }
+        public void setRealTimeGiftable(long realTimeGiftable) { this.realTimeGiftable = realTimeGiftable; }
 
         public boolean wasCured() {
             return wasCured;
@@ -185,33 +194,37 @@ public class MerchantData {
             MerchantTrade t = CustomMerchantManager.getTrade(trade);
             if (t == null) return false;
             if (t.getGiftWeight() < 0) return !singleTimeGiftedTrades.contains(trade);
-            else return t.getGiftWeight() > 0 && timeGiftable < CustomMerchantManager.time();
+            else return t.getGiftWeight() > 0 && (CustomMerchantManager.overrideDayTimeMechanics() ? realTimeGiftable < System.currentTimeMillis() : timeGiftable < CustomMerchantManager.time());
         }
 
         public void setCooldown(String trade, long cooldown){
             MerchantTrade t = CustomMerchantManager.getTrade(trade);
             if (t == null) return;
             if (t.getGiftWeight() < 0) singleTimeGiftedTrades.add(trade);
-            timeGiftable = CustomMerchantManager.time() + cooldown;
+            if (CustomMerchantManager.overrideDayTimeMechanics()) realTimeGiftable = System.currentTimeMillis() + (cooldown * 50);
+            else timeGiftable = CustomMerchantManager.time() + cooldown;
         }
     }
 
     public static class OrderData{
         private final Map<String, Integer> order;
         private final long deliveredAt;
+        private final long deliveredAtRealTime;
 
         public OrderData(long deliveryTime, Map<String, Integer> order){
             this.order = order;
             this.deliveredAt = CustomMerchantManager.time() + deliveryTime;
+            this.deliveredAtRealTime = System.currentTimeMillis() + (deliveryTime * 50);
         }
 
         public long getDeliveredAt() { return deliveredAt; }
+        public long getDeliveredAtRealTime() { return deliveredAtRealTime; }
         public Map<String, Integer> getOrder() { return order; }
         public boolean shouldReceive(){
-            return deliveredAt <= CustomMerchantManager.time();
+            return CustomMerchantManager.overrideDayTimeMechanics() ? deliveredAtRealTime <= System.currentTimeMillis() : deliveredAt <= CustomMerchantManager.time();
         }
         public long getRemainingTime(){
-            return deliveredAt - CustomMerchantManager.time();
+            return CustomMerchantManager.overrideDayTimeMechanics() ? (deliveredAtRealTime - System.currentTimeMillis()) / 50L : deliveredAt - CustomMerchantManager.time();
         }
     }
 }

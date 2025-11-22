@@ -53,6 +53,7 @@ import java.util.*;
 
 public class MerchantListener implements Listener {
     private static final NamespacedKey KEY_PROFESSION_DELAY = new NamespacedKey(ValhallaMMO.getInstance(), "time_career_change");
+    private static final NamespacedKey KEY_PROFESSION_DELAY_REAL_TIME = new NamespacedKey(ValhallaMMO.getInstance(), "real_time_career_change");
     private static final Map<UUID, MerchantMenu> activeTradingMenus = new HashMap<>();
     private static final Collection<UUID> tradingMerchants = new HashSet<>();
 
@@ -270,7 +271,7 @@ public class MerchantListener implements Listener {
                 AbstractVillager villager = event.getMerchantData().getVillager();
                 MerchantData.MerchantPlayerMemory memory = event.getMerchantData().getPlayerMemory(e.getWhoClicked().getUniqueId());
 
-                if (villager != null && memory.getTimeGiftable() < CustomMerchantManager.time()) {
+                if (villager != null && (CustomMerchantManager.overrideDayTimeMechanics() ? memory.getRealTimeGiftable() < System.currentTimeMillis() : memory.getTimeGiftable() < CustomMerchantManager.time())) {
                     double giftChance = AccumulativeStatManager.getCachedRelationalStats("TRADING_GIFT_CHANCE", e.getWhoClicked(), data.getVillager(), 10000, true);
                     if (giftChance > 0 && Utils.proc(giftChance, finalTimesTraded, false)) {
                         Collection<MerchantTrade> possibleGifts = new HashSet<>();
@@ -381,7 +382,9 @@ public class MerchantListener implements Listener {
             Utils.sendMessage(e.getPlayer(), TranslationManager.getTranslation("merchant_unhappy"));
             return;
         }
-        if (CustomMerchantManager.getDelayUntilWorking() > 0 && !e.getPlayer().hasPermission("valhalla.bypasstradedelay") && v.getPersistentDataContainer().getOrDefault(KEY_PROFESSION_DELAY, PersistentDataType.LONG, 0L) + CustomMerchantManager.getDelayUntilWorking() > CustomMerchantManager.time()){
+        if (CustomMerchantManager.getDelayUntilWorking() > 0 && !e.getPlayer().hasPermission("valhalla.bypasstradedelay") && (CustomMerchantManager.overrideDayTimeMechanics() ?
+                (v.getPersistentDataContainer().getOrDefault(KEY_PROFESSION_DELAY_REAL_TIME, PersistentDataType.LONG, 0L) + CustomMerchantManager.getDelayUntilWorking() > System.currentTimeMillis()) :
+                (v.getPersistentDataContainer().getOrDefault(KEY_PROFESSION_DELAY, PersistentDataType.LONG, 0L) + CustomMerchantManager.getDelayUntilWorking() > CustomMerchantManager.time()))){
             e.setCancelled(true);
             if (v instanceof Villager villager) villager.shakeHead();
             Utils.sendMessage(e.getPlayer(), TranslationManager.getTranslation("merchant_preparing"));
@@ -509,7 +512,10 @@ public class MerchantListener implements Listener {
     public void onMerchantProfessionChange(VillagerCareerChangeEvent e){
         if (e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
         Villager.Profession newProfession = e.getProfession();
-        e.getEntity().getPersistentDataContainer().set(KEY_PROFESSION_DELAY, PersistentDataType.LONG, CustomMerchantManager.time());
+        if (CustomMerchantManager.overrideDayTimeMechanics())
+            e.getEntity().getPersistentDataContainer().set(KEY_PROFESSION_DELAY_REAL_TIME, PersistentDataType.LONG, System.currentTimeMillis());
+        else
+            e.getEntity().getPersistentDataContainer().set(KEY_PROFESSION_DELAY, PersistentDataType.LONG, CustomMerchantManager.time());
 
         CustomMerchantManager.getMerchantData(e.getEntity(), data -> {
             if (data == null) {
@@ -543,12 +549,18 @@ public class MerchantListener implements Listener {
                     MerchantType type = CustomMerchantManager.getMerchantType(data.getType());
                     if (type == null) return;
                     long time = CustomMerchantManager.time();
+                    long realTime = System.currentTimeMillis();
                     for (MerchantData.TradeData tradeData : data.getTrades().values()){
                         MerchantTrade trade = CustomMerchantManager.getTrade(tradeData.getTrade());
                         if (trade == null || trade.getRestockDelay() < 0) continue;
-                        if (trade.getRestockDelay() == 0 || time >= tradeData.getLastRestocked() + trade.getRestockDelay()){
+                        if (trade.getRestockDelay() == 0 || (CustomMerchantManager.overrideDayTimeMechanics() ?
+                                realTime >= tradeData.getLastRestockedRealTime() + (trade.getRestockDelay() * 50) :
+                                time >= tradeData.getLastRestocked() + trade.getRestockDelay())){
                             tradeData.resetRemainingUses(type.isPerPlayerStock());
-                            tradeData.setLastRestocked(time);
+                            if (CustomMerchantManager.overrideDayTimeMechanics())
+                                tradeData.setLastRestockedRealTime(realTime);
+                            else
+                                tradeData.setLastRestocked(time);
                         }
                     }
                 });
@@ -723,21 +735,22 @@ public class MerchantListener implements Listener {
         CustomMerchantManager.getMerchantData(v.getUniqueId(), data -> {
             ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
                 MerchantData d = tryCreateData(data, v, p);
-                if (d == null) return;
+                if (d == null || d.getPlayerMemory(p.getUniqueId()).wasCured()) return;
                 CustomMerchantManager.modifyTradingReputation(d, p, (float) reputationCureVillager);
+                d.getPlayerMemory(p.getUniqueId()).setCured(true);
+                for (Entity villagerInRange : v.getWorld().getNearbyEntities(v.getLocation(), 128, 128, 128, en -> en instanceof AbstractVillager)){
+                    AbstractVillager villager = (AbstractVillager) villagerInRange;
+
+                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> CustomMerchantManager.getMerchantData(villager, data2 ->
+                            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+                                MerchantData d2 = tryCreateData(data2, v, p);
+                                if (d2 != null) CustomMerchantManager.modifyRenownReputation(d2, p, (float) renownCureVillager);
+                            })
+                    ));
+                }
             });
         });
         v.getPersistentDataContainer().set(CURED_BEFORE, PersistentDataType.BYTE, (byte) 1);
-        for (Entity villagerInRange : v.getWorld().getNearbyEntities(v.getLocation(), 128, 128, 128, en -> en instanceof AbstractVillager)){
-            AbstractVillager villager = (AbstractVillager) villagerInRange;
-
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> CustomMerchantManager.getMerchantData(villager, data ->
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
-                        MerchantData d = tryCreateData(data, v, p);
-                        if (d != null) CustomMerchantManager.modifyRenownReputation(d, p, (float) renownCureVillager);
-                    })
-            ));
-        }
     }
 
     public static MerchantMenu getCurrentActiveVirtualMerchant(Player player){

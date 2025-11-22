@@ -1,5 +1,7 @@
 enabled: true
 
+time_mechanics_override: false
+
 service_button_name_trading: "<lang.service_trading>"
 service_button_name_training: "<lang.service_training>"
 service_button_name_upgrading: "<lang.service_upgrading>"
