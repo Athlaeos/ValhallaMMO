@@ -36,6 +36,7 @@ import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -87,7 +88,7 @@ public class LootListener implements Listener {
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
         double luck = details.getOne();
-        if (onBlockDestruction(e.getBlock(),
+        if (onBlockDestruction(e.getBlock(), null,
                 new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
                 new GenericBlockDestructionInfo(e.getBlock(), e),
                 BlockDestructionEvent.BlockDestructionReason.PLAYER_BREAK
@@ -118,7 +119,7 @@ public class LootListener implements Listener {
         int fortune = details.getTwo();
         double luck = details.getOne();
 
-        if (onBlockDestruction(e.getHarvestedBlock(),
+        if (onBlockDestruction(e.getHarvestedBlock(), null,
                 new LootContext.Builder(e.getHarvestedBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
                 new GenericBlockDestructionInfo(e.getHarvestedBlock(), e),
                 BlockDestructionEvent.BlockDestructionReason.PLAYER_HARVEST
@@ -154,7 +155,7 @@ public class LootListener implements Listener {
         int fortune = details.getTwo();
         double luck = details.getOne();
 
-        onBlockDestruction(e.getBlock(),
+        onBlockDestruction(e.getBlock(), null,
                 new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
                 new GenericBlockDestructionInfo(e.getBlock(), e),
                 BlockDestructionEvent.BlockDestructionReason.BURN
@@ -185,7 +186,7 @@ public class LootListener implements Listener {
         int fortune = details.getTwo();
         double luck = details.getOne();
 
-        if (onBlockDestruction(e.getBlock(),
+        if (onBlockDestruction(e.getBlock(), null,
                 new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
                 new GenericBlockDestructionInfo(e.getBlock(), e),
                 BlockDestructionEvent.BlockDestructionReason.FADE
@@ -223,7 +224,7 @@ public class LootListener implements Listener {
         int fortune = details.getTwo();
         double luck = details.getOne();
 
-        if (onBlockDestruction(e.getBlock(),
+        if (onBlockDestruction(e.getBlock(), null,
                 new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
                 new GenericBlockDestructionInfo(e.getBlock(), e),
                 BlockDestructionEvent.BlockDestructionReason.DECAY
@@ -274,7 +275,7 @@ public class LootListener implements Listener {
         double luck = details.getOne();
 
         if (!e.getBlock().getType().isAir() && e.getBlock().getType() != e.getToBlock().getType())
-            onBlockDestruction(e.getBlock(),
+            onBlockDestruction(e.getBlock(), null,
                     new LootContext.Builder(e.getBlock().getLocation()).lootedEntity(p).killer(null).lootingModifier(fortune).luck((float) luck).build(),
                     new GenericBlockDestructionInfo(e.getBlock(), e),
                     BlockDestructionEvent.BlockDestructionReason.REPLACED
@@ -324,7 +325,7 @@ public class LootListener implements Listener {
         for (Block b : blocks){
             exploded.add(b);
             double extraLuck = preparedLuckBuffs.getOrDefault(b.getLocation(), 0D);
-            if (onBlockDestruction(b,
+            if (onBlockDestruction(b, null,
                     new LootContext.Builder(b.getLocation()).lootedEntity(null).killer(null).lootingModifier(0).luck((float) extraLuck).build(),
                     new BlockExplodeBlockDestructionInfo(b, e),
                     BlockDestructionEvent.BlockDestructionReason.BLOCK_EXPLOSION
@@ -376,7 +377,7 @@ public class LootListener implements Listener {
             if (ArchaeologyListener.isBrushable(b.getType())) continue;
             exploded.add(b);
             double extraLuck = preparedLuckBuffs.getOrDefault(b.getLocation(), 0D);
-            if (onBlockDestruction(b,
+            if (onBlockDestruction(b, null,
                     new LootContext.Builder(b.getLocation()).lootedEntity(owner != null ? owner : e.getEntity()).killer(null).lootingModifier(getFortuneLevel(e.getEntity())).luck((float) (luck + extraLuck)).build(),
                     new EntityExplodeBlockDestructionInfo(b, e),
                     BlockDestructionEvent.BlockDestructionReason.ENTITY_EXPLOSION
@@ -420,14 +421,15 @@ public class LootListener implements Listener {
      * @param reason the type of block destruction the block experienced
      * @return true if the loot table of the block (if any) resulted in the vanilla loot being cleared. False if vanilla loot was untouched
      */
-    private boolean onBlockDestruction(Block b, LootContext context, BlockDestructionInfo info, BlockDestructionEvent.BlockDestructionReason reason){
+    private boolean onBlockDestruction(Block b, BlockState optionalState, LootContext context, BlockDestructionInfo info, BlockDestructionEvent.BlockDestructionReason reason){
         BlockDestructionEvent destroyEvent = new BlockDestructionEvent(b, info, reason);
         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(destroyEvent);
-        Material originalMaterial = explodedBlocks.getOrDefault(b.getLocation(), b.getType());
+        Material blockType = optionalState == null ? b.getType() : optionalState.getType();
+        Material originalMaterial = explodedBlocks.getOrDefault(b.getLocation(), blockType);
         explodedBlocks.remove(b.getLocation());
         if (!destroyEvent.getInfo().isCancelled(info.getEvent())){
             LootTable table = LootTableRegistry.getLootTable(b, originalMaterial);
-            if (table == null || !BlockUtils.canReward(b) || ArchaeologyListener.isBrushable(b.getType())) return false;
+            if (table == null || ArchaeologyListener.isBrushable(b.getType())) return false;
             LootTableRegistry.setLootTable(b, null);
             List<ItemStack> generatedLoot = LootTableRegistry.getLoot(table, context, LootTable.LootType.BREAK);
 

@@ -85,6 +85,8 @@ public class PredicateRegistry {
         register(new MinedWithFortuneFilter());
         register(new MinedWithPreferredToolFilter());
         register(new MinedWithSilkTouchFilter());
+        register(new PlayerPlacedBlockFilter());
+        register(new BlockRewardableFilter());
         register(new MinedWithTaggedToolFilter());
         register(new MinedWithToolFilter());
         register(new MoonPhaseFilter());
