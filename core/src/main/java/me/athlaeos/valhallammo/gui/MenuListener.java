@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.gui;
 
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -42,6 +43,11 @@ public class MenuListener implements Listener {
     public void onMenuClick(InventoryClickEvent e){
         Menu activeMenu = activeMenus.get(e.getWhoClicked().getUniqueId());
         if (activeMenu != null && e.getInventory().equals(activeMenu.getInventory())){
+            if (!Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "cooldown_delay_inventory_click")) {
+                e.setCancelled(true);
+                return;
+            }
+            Timer.setCooldown(e.getWhoClicked().getUniqueId(), 30, "cooldown_delay_inventory_click");
             activeMenu.handleMenu(e);
         }
     }
@@ -51,6 +57,11 @@ public class MenuListener implements Listener {
         Menu activeMenu = activeMenus.get(e.getWhoClicked().getUniqueId());
         if (activeMenu != null && e.getInventory().equals(activeMenu.getInventory())){
             if (!ItemUtils.isEmpty(e.getCursor())){
+                if (!Timer.isCooldownPassed(e.getWhoClicked().getUniqueId(), "cooldown_delay_inventory_drag")) {
+                    e.setCancelled(true);
+                    return;
+                }
+                Timer.setCooldown(e.getWhoClicked().getUniqueId(), 30, "cooldown_delay_inventory_drag");
                 activeMenu.handleMenu(e);
             }
         }
