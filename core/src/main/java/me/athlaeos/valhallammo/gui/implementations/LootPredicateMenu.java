@@ -193,9 +193,9 @@ public class LootPredicateMenu extends Menu {
             }
         }
 
-        inventory.setItem(36, previousPageButton);
-        inventory.setItem(44, nextPageButton);
-        inventory.setItem(40, confirmButton);
+        inventory.setItem(45, previousPageButton);
+        inventory.setItem(53, nextPageButton);
+        inventory.setItem(49, confirmButton);
     }
 
     private void setViewPredicatesView(){

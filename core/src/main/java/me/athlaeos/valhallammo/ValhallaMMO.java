@@ -109,6 +109,7 @@ public class ValhallaMMO extends JavaPlugin {
         saveConfig("recipes/disabled_recipes.yml");
         saveConfig("leaderboards.yml");
         saveConfig("mob_stats.yml");
+        saveConfig("global_effects.yml");
         saveConfig("parties.yml");
         saveConfig("block_conversions.yml");
         saveConfig("scaling_presets.yml");
