@@ -147,7 +147,7 @@ public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
 
     @Override
     public String getMenuName() {
-        return Utils.chat(ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF313\uF80C\uF80A\uF808\uF802&8%pool%" : TranslationManager.getTranslation("editormenu_lootpool")).replace("%pool%", table.getKey());
+        return Utils.chat((ValhallaMMO.isResourcePackConfigForced() ? "&f\uF808\uF313\uF80C\uF80A\uF808\uF802&8%pool%" : TranslationManager.getTranslation("editormenu_lootpool")).replace("%pool%", table.getKey()));
     }
 
     @Override

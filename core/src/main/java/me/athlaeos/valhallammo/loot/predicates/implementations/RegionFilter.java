@@ -76,8 +76,7 @@ public class RegionFilter extends LootPredicate {
                                                         "&6Click to cycle",
                                                         "&6Shift-Click to add to selection",
                                                         "&cMiddle-Click to clear selection",
-                                                        "&fCurrently: ")
-                                                .appendLore(regions.isEmpty() ? List.of("&cNone, condition always passes") : regions.stream().map(b -> "&f>" + b).toList())
+                                                        "&fCurrently: " + region)
                                                 .get()))
         );
     }
