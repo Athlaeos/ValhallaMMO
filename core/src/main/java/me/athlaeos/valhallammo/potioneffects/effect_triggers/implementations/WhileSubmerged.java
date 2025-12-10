@@ -4,15 +4,15 @@ import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTrigger;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 
-public class Submerged implements EffectTrigger.ConstantTrigger{
+public class WhileSubmerged implements EffectTrigger.ConstantTrigger{
     private final boolean requireSubmerged; // true = need to be in water, false = need to be on land
-    public Submerged(boolean requireSubmerged){
+    public WhileSubmerged(boolean requireSubmerged){
         this.requireSubmerged = requireSubmerged;
     }
 
     @Override
     public boolean shouldTrigger(LivingEntity entity) {
-        boolean isInWater = entity.getLocation().getBlock().getType() == Material.WATER || entity.getEyeLocation().getBlock().getType() == Material.WATER;
+        boolean isInWater = entity.isSwimming() || entity.getLocation().getBlock().getType() == Material.WATER || entity.getEyeLocation().getBlock().getType() == Material.WATER;
         return requireSubmerged == isInWater;
     }
 

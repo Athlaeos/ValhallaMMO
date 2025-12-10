@@ -35,6 +35,8 @@ public class PlaceholderRegistry {
         registerPlaceholder(new PartyOnlineMembersPlaceholder("%party_members_online%"));
         registerPlaceholder(new PartyOpenPlaceholder("%party_open%"));
         registerPlaceholder(new PartyRankPlaceholder("%party_rank%"));
+        registerPlaceholder(new RecipeUnlockedPlaceholder("%recipe_unlocked_%"));
+        registerPlaceholder(new RecipeUnlockedPlaceholder("%perk_unlocked_%"));
     }
 
     public static void registerPlaceholder(Placeholder p) {
@@ -52,7 +54,7 @@ public class PlaceholderRegistry {
         boolean cache = !placeholderCache.containsKey(stringToParse);
         Collection<Placeholder> placeholdersToCache = new HashSet<>();
         for (Placeholder s : placeholderCache.getOrDefault(stringToParse, placeholders.values())) {
-            if (stringToParse.contains(s.getPlaceholder())) {
+            if (s.matchString(stringToParse)) {
                 result = s.parse(result, p);
                 if (cache) placeholdersToCache.add(s);
             }

@@ -137,3 +137,10 @@ disabled:
   - copper_leggings
   - copper_chestplate
   - copper_helmet
+  - copper_spear
+  - wooden_spear
+  - stone_spear
+  - iron_spear
+  - golden_spear
+  - diamond_spear
+  - netherite_spear

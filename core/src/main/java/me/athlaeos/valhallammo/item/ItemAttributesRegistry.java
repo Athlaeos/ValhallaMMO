@@ -266,6 +266,14 @@ public class ItemAttributesRegistry {
         addVanillaStat("COPPER_LEGGINGS", getCopy("GENERIC_ARMOR").setValue(3));
         addVanillaStat("COPPER_BOOTS", getCopy("GENERIC_ARMOR").setValue(1));
 
+        addVanillaStat("WOODEN_SPEAR", getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(1.54));
+        addVanillaStat("STONE_SPEAR", getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.33));
+        addVanillaStat("IRON_SPEAR", getCopy("GENERIC_ATTACK_DAMAGE").setValue(3), getCopy("GENERIC_ATTACK_SPEED").setValue(1.08));
+        addVanillaStat("COPPER_SPEAR", getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.05));
+        addVanillaStat("GOLDEN_SPEAR", getCopy("GENERIC_ATTACK_DAMAGE").setValue(1), getCopy("GENERIC_ATTACK_SPEED").setValue(1.05));
+        addVanillaStat("DIAMOND_SPEAR", getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(0.95));
+        addVanillaStat("NETHERITE_SPEAR", getCopy("GENERIC_ATTACK_DAMAGE").setValue(5), getCopy("GENERIC_ATTACK_SPEED").setValue(0.87));
+
         addVanillaStat(Material.DIAMOND_HELMET, getCopy("GENERIC_ARMOR").setValue(3), getCopy("GENERIC_ARMOR_TOUGHNESS").setValue(2));
         addVanillaStat(Material.DIAMOND_CHESTPLATE, getCopy("GENERIC_ARMOR").setValue(8), getCopy("GENERIC_ARMOR_TOUGHNESS").setValue(2));
         addVanillaStat(Material.DIAMOND_LEGGINGS, getCopy("GENERIC_ARMOR").setValue(6), getCopy("GENERIC_ARMOR_TOUGHNESS").setValue(2));

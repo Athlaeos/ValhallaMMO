@@ -316,24 +316,32 @@ public class EntityUtils {
                     properties.addCombinedEnchantments(helmet);
                     properties.setHelmetAttributes(ItemAttributesRegistry.getStats(helmet.getMeta(), false));
                     properties.setHelmetPotionEffects(PermanentPotionEffects.getPermanentPotionEffects(helmet.getMeta()));
+                    for (String effect : properties.getHelmetPotionEffects().keySet())
+                        properties.addPermanentEffectCooldown(effect, EffectTriggerRegistry.getCooldownProperties(helmet));
                 }
                 ItemBuilder chestPlate = properties.getChestplate();
                 if (chestPlate != null) {
                     properties.addCombinedEnchantments(chestPlate);
                     properties.setChestPlateAttributes(ItemAttributesRegistry.getStats(chestPlate.getMeta(), false));
                     properties.setChestplatePotionEffects(PermanentPotionEffects.getPermanentPotionEffects(chestPlate.getMeta()));
+                    for (String effect : properties.getChestplatePotionEffects().keySet())
+                        properties.addPermanentEffectCooldown(effect, EffectTriggerRegistry.getCooldownProperties(chestPlate));
                 }
                 ItemBuilder leggings = properties.getLeggings();
                 if (leggings != null) {
                     properties.addCombinedEnchantments(leggings);
                     properties.setLeggingsAttributes(ItemAttributesRegistry.getStats(leggings.getMeta(), false));
                     properties.setLeggingsPotionEffects(PermanentPotionEffects.getPermanentPotionEffects(leggings.getMeta()));
+                    for (String effect : properties.getLeggingsPotionEffects().keySet())
+                        properties.addPermanentEffectCooldown(effect, EffectTriggerRegistry.getCooldownProperties(leggings));
                 }
                 ItemBuilder boots = properties.getBoots();
                 if (boots != null) {
                     properties.addCombinedEnchantments(boots);
                     properties.setBootsAttributes(ItemAttributesRegistry.getStats(boots.getMeta(), false));
                     properties.setBootsPotionEffects(PermanentPotionEffects.getPermanentPotionEffects(boots.getMeta()));
+                    for (String effect : properties.getBootsPotionEffects().keySet())
+                        properties.addPermanentEffectCooldown(effect, EffectTriggerRegistry.getCooldownProperties(boots));
                 }
                 properties.getMiscEquipment().clear();
                 for (BiFetcher<List<ItemStack>, LivingEntity> fetcher : otherEquipmentFetchers){
@@ -342,6 +350,8 @@ public class EntityUtils {
                         properties.getMiscEquipment().add(builder);
                         properties.getMiscEquipmentAttributes().put(builder, ItemAttributesRegistry.getStats(builder.getMeta(), false));
                         properties.getMiscEquipmentPotionEffects().put(builder, PermanentPotionEffects.getPermanentPotionEffects(builder.getMeta()));
+                        for (String effect : properties.getMiscEquipmentPotionEffects().getOrDefault(builder, new HashMap<>()).keySet())
+                            properties.addPermanentEffectCooldown(effect, EffectTriggerRegistry.getCooldownProperties(builder));
                     }
                 }
             }
@@ -354,6 +364,8 @@ public class EntityUtils {
                 if (mainHand != null && EquipmentClass.isHandHeld(mainHand.getMeta()) && EquipmentClass.getMatchingClass(mainHand.getMeta()) != EquipmentClass.TRINKET) {
                     properties.setMainHandAttributes(ItemAttributesRegistry.getStats(mainHand.getMeta(), false));
                     properties.setMainHandPotionEffects(PermanentPotionEffects.getPermanentPotionEffects(mainHand.getMeta()));
+                    for (String effect : properties.getMainHandPotionEffects().keySet())
+                        properties.addPermanentEffectCooldown(effect, EffectTriggerRegistry.getCooldownProperties(mainHand));
                 }
 
                 ItemBuilder offHand = properties.getOffHand();
@@ -361,6 +373,8 @@ public class EntityUtils {
                 if (offHand != null && EquipmentClass.isHandHeld(offHand.getMeta()) && EquipmentClass.getMatchingClass(offHand.getMeta()) != EquipmentClass.TRINKET) {
                     properties.setOffHandAttributes(ItemAttributesRegistry.getStats(offHand.getMeta(), false));
                     properties.setOffHandPotionEffects(PermanentPotionEffects.getPermanentPotionEffects(offHand.getMeta()));
+                    for (String effect : properties.getOffHandPotionEffects().keySet())
+                        properties.addPermanentEffectCooldown(effect, EffectTriggerRegistry.getCooldownProperties(offHand));
                 }
             }
         }

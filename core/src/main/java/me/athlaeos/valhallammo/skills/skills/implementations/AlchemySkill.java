@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.skills.skills.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -18,10 +19,7 @@ import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -221,7 +219,13 @@ public class AlchemySkill extends Skill implements Listener {
                 BlockUtils.setBlockType(b, transmutationsByMaterial.get(type).to);
             }
         }
-        if (transmutationFlash) e.getHitBlock().getWorld().spawnParticle(Particle.FLASH, e.getEntity().getLocation(), 0);
+        if (transmutationFlash) {
+            if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21_9)) {
+                e.getHitBlock().getWorld().spawnParticle(Particle.FLASH, e.getEntity().getLocation(), 0, Color.WHITE);
+            } else {
+                e.getHitBlock().getWorld().spawnParticle(Particle.FLASH, e.getEntity().getLocation(), 0);
+            }
+        }
         if (transmutationSound != null) e.getHitBlock().getWorld().playSound(e.getHitBlock().getLocation(), transmutationSound, 1F, 1F);
     }
 

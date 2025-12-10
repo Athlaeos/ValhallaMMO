@@ -13,4 +13,8 @@ public abstract class Placeholder {
     public String getPlaceholder() {
         return placeholder;
     }
+
+    public boolean matchString(String string){
+        return string.contains(placeholder);
+    }
 }

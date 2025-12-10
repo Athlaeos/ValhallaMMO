@@ -150,6 +150,7 @@ perks:
         - craft_diamond_dagger
         - craft_diamond_rapier
         - craft_diamond_mace
+        - craft_diamond_realspear
     messages:
       - "<lang.smithing_perk_3_messages>"
     requireperk_all:

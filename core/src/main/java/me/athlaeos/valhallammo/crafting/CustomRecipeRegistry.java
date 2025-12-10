@@ -60,6 +60,7 @@ public class CustomRecipeRegistry {
     private static final Map<String, Collection<ImmersiveCraftingRecipe>> immersiveRecipesByBlock = new HashMap<>();
     private static final Collection<String> allRecipes = new HashSet<>();
     private static final Map<NamespacedKey, ValhallaKeyedRecipe> allKeyedRecipes = new HashMap<>();
+    private static final Map<String, ValhallaRecipe> allValhallaRecipes = new HashMap<>();
     private static final Map<String, ValhallaKeyedRecipe> allKeyedRecipesByName = new HashMap<>();
 
     private static boolean changesMade = false;
@@ -201,6 +202,7 @@ public class CustomRecipeRegistry {
         if (overwrite || !brewingRecipes.containsKey(recipe.getName().toLowerCase(Locale.US))) {
             brewingRecipes.put(recipe.getName().toLowerCase(Locale.US), recipe);
             allRecipes.add(recipe.getName().toLowerCase(Locale.US));
+            allValhallaRecipes.put(recipe.getName(), recipe);
 
             Collection<DynamicBrewingRecipe> existing = brewingRecipesByIngredient.getOrDefault(recipe.getIngredient().getItem().getType(), new HashSet<>());
             existing.add(recipe);
@@ -214,6 +216,7 @@ public class CustomRecipeRegistry {
         if (overwrite || !cauldronRecipes.containsKey(recipe.getName().toLowerCase(Locale.US))) {
             cauldronRecipes.put(recipe.getName().toLowerCase(Locale.US), recipe);
             allRecipes.add(recipe.getName().toLowerCase(Locale.US));
+            allValhallaRecipes.put(recipe.getName(), recipe);
 
             addRecipePermission(recipe.getName());
             RecipeOverviewMenu.resetCache(RecipeOverviewMenu.CAULDRON.getId());
@@ -223,6 +226,7 @@ public class CustomRecipeRegistry {
         if (overwrite || !immersiveRecipes.containsKey(recipe.getName().toLowerCase(Locale.US))) {
             immersiveRecipes.put(recipe.getName().toLowerCase(Locale.US), recipe);
             allRecipes.add(recipe.getName().toLowerCase(Locale.US));
+            allValhallaRecipes.put(recipe.getName(), recipe);
 
             Collection<ImmersiveCraftingRecipe> recipesByBlock = immersiveRecipesByBlock.getOrDefault(recipe.getBlock(), new HashSet<>());
             recipesByBlock.add(recipe);
@@ -238,6 +242,7 @@ public class CustomRecipeRegistry {
             cookingRecipesByKey.put(recipe.getKey(), recipe);
             allRecipes.add(recipe.getName().toLowerCase(Locale.US));
             allKeyedRecipes.put(recipe.getKey(), recipe);
+            allValhallaRecipes.put(recipe.getName(), recipe);
             allKeyedRecipesByName.put(recipe.getName(), recipe);
             try {
                 recipe.registerRecipe();
@@ -266,6 +271,7 @@ public class CustomRecipeRegistry {
             gridRecipesByIngredientQuantities.put(recipe.getItems().size(), existing);
             allRecipes.add(recipe.getName().toLowerCase(Locale.US));
             allKeyedRecipes.put(recipe.getKey(), recipe);
+            allValhallaRecipes.put(recipe.getName(), recipe);
             allKeyedRecipesByName.put(recipe.getName(), recipe);
             recipe.registerRecipe();
 
@@ -286,6 +292,7 @@ public class CustomRecipeRegistry {
             smithingRecipesByKey.put(recipe.getKey(), recipe);
             allRecipes.add(recipe.getName().toLowerCase(Locale.US));
             allKeyedRecipes.put(recipe.getKey(), recipe);
+            allValhallaRecipes.put(recipe.getName(), recipe);
             allKeyedRecipesByName.put(recipe.getName(), recipe);
             SmithingTableListener.smithingRecipeCache.clear();
             boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
@@ -312,6 +319,7 @@ public class CustomRecipeRegistry {
     public static void unregister(String recipe){
         setChangesMade();
         allRecipes.remove(recipe);
+        allValhallaRecipes.remove(recipe);
         if (brewingRecipes.containsKey(recipe)) {
             brewingRecipes.remove(recipe);
             RecipeOverviewMenu.resetCache(RecipeOverviewMenu.BREWING.getId());
@@ -400,6 +408,10 @@ public class CustomRecipeRegistry {
 
     public static Map<String, ValhallaKeyedRecipe> getAllKeyedRecipesByName() {
         return allKeyedRecipesByName;
+    }
+
+    public static Map<String, ValhallaRecipe> getAllValhallaRecipes() {
+        return allValhallaRecipes;
     }
 
     public static Map<Material, Collection<DynamicBrewingRecipe>> getBrewingRecipesByIngredient() {

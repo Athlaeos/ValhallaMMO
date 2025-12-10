@@ -5,11 +5,11 @@ import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTrigger;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 
-public class DayTimeOrLightExposure implements EffectTrigger.ConstantTrigger{
+public class WhileDayTimeOrLightExposure implements EffectTrigger.ConstantTrigger{
     private final Boolean day; // true = day, false = night, null = don't check daytime
     private final Boolean light; // true = light, false = darkness, null = don't check light level
     private final Boolean outside; // true = outside, false = inside, null = don't check
-    public DayTimeOrLightExposure(Boolean day, Boolean light, Boolean outside){
+    public WhileDayTimeOrLightExposure(Boolean day, Boolean light, Boolean outside){
         this.day = day;
         this.light = light;
         this.outside = outside;
