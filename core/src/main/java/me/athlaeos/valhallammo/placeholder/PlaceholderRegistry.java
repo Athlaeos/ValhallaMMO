@@ -36,6 +36,8 @@ public class PlaceholderRegistry {
         registerPlaceholder(new PartyOpenPlaceholder("%party_open%"));
         registerPlaceholder(new PartyRankPlaceholder("%party_rank%"));
         for (int i = 0; i < 10; i++) registerPlaceholder(new PotionEffectPlaceholder("%custom_effect_" + i + "%", i));
+        registerPlaceholder(new RecipeUnlockedPlaceholder("%recipe_unlocked_%"));
+        registerPlaceholder(new RecipeUnlockedPlaceholder("%perk_unlocked_%"));
     }
 
     public static void registerPlaceholder(Placeholder p) {
@@ -53,7 +55,7 @@ public class PlaceholderRegistry {
         boolean cache = !placeholderCache.containsKey(stringToParse);
         Collection<Placeholder> placeholdersToCache = new HashSet<>();
         for (Placeholder s : placeholderCache.getOrDefault(stringToParse, placeholders.values())) {
-            if (stringToParse.contains(s.getPlaceholder())) {
+            if (s.matchString(stringToParse)) {
                 result = s.parse(result, p);
                 if (cache) placeholdersToCache.add(s);
             }

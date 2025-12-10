@@ -73,6 +73,7 @@ public class ModifyCommand implements Command {
                                         .replace("%item%", ItemUtils.getItemName(builder))
                                         .replace("%player%", target.getName())
                         );
+                        Utils.sendMessage(sender, ItemUtils.getPDCString(DynamicItemModifier.ERROR_MESSAGE, builder.getMeta(), null));
                         return true;
                     }
                     target.getInventory().setItemInMainHand(builder.get());

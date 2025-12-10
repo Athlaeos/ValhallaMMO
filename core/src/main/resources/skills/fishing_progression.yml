@@ -303,6 +303,10 @@ perks:
         - salvage_copper_greataxe
         - salvage_copper_warhammer
         - salvage_copper_spear
+        - salvage_copper_realspear
+        - salvage_iron_realspear
+        - salvage_golden_realspear
+        - salvage_diamond_realspear
     messages:
       - "<lang.fishing_perk_combo_messages>"
     requireperk_all:

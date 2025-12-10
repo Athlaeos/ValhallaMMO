@@ -3,7 +3,7 @@ package me.athlaeos.valhallammo.utility;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.animations.Animation;
 import me.athlaeos.valhallammo.animations.AnimationRegistry;
-import me.athlaeos.valhallammo.dom.Catch;
+import me.athlaeos.valhallammo.event.EntityParryEntityEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -98,43 +98,57 @@ public class Parryer {
         boolean canParry = d instanceof LivingEntity || (d instanceof Projectile && parryProjectiles);
         if (canParry && e.getEntity() instanceof LivingEntity v){
             if (v instanceof Player p && WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_PARRY)) return 1;
+            double damageReduction = (int) AccumulativeStatManager.getCachedRelationalStats("PARRY_DAMAGE_REDUCTION", v, d, 10000, true);
+            double cooldownReduction = AccumulativeStatManager.getCachedRelationalStats("PARRY_SUCCESS_COOLDOWN_REDUCTION", v, d, 10000, true);
             if (!Timer.isCooldownPassed(v.getUniqueId(), "parry_effective")){
-                // parry successful
-                if (parrySparks && parrySuccessAnimation != null) parrySuccessAnimation.animate(v, v.getLocation(), v.getEyeLocation().getDirection(), 0);
-                v.getWorld().playSound(v.getLocation(), parrySuccessSound, 1F, 1F);
-                double damageReduction = (int) AccumulativeStatManager.getCachedRelationalStats("PARRY_DAMAGE_REDUCTION", v, d, 10000, true);
-                double cooldownReduction = AccumulativeStatManager.getCachedRelationalStats("PARRY_SUCCESS_COOLDOWN_REDUCTION", v, d, 10000, true);
-                long cooldown = Timer.getCooldown(v.getUniqueId(), "parry_cooldown");
-                if (cooldown > 0) Timer.setCooldown(v.getUniqueId(), (int) (cooldown * (1 - cooldownReduction)), "parry_cooldown");
-                Timer.setCooldown(v.getUniqueId(), 0, "parry_vulnerable");
-                Timer.setCooldown(v.getUniqueId(), 0, "parry_effective");
-                if (d instanceof LivingEntity a){
-                    int debuffDuration = (int) AccumulativeStatManager.getCachedRelationalStats("PARRY_ENEMY_DEBUFF_DURATION", v, a, 10000, true);
-                    for (PotionEffectWrapper wrapper : parryEnemyDebuffs){
-                        PotionEffectWrapper copy = PotionEffectRegistry.getEffect(wrapper.getEffect()).setAmplifier(wrapper.getAmplifier()).setDuration(debuffDuration);
-                        if (!wrapper.isVanilla()) PotionEffectRegistry.addEffect(a, v, new CustomPotionEffect(copy, debuffDuration, copy.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
-                        else a.addPotionEffect(new PotionEffect(copy.getVanillaEffect(), debuffDuration, (int) copy.getAmplifier()));
+                EntityParryEntityEvent event = new EntityParryEntityEvent(v, d, EntityParryEntityEvent.ParryType.SUCCESSFUL, damageReduction, cooldownReduction);
+                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+                if (!event.isCancelled()){
+                    damageReduction = event.getDamageReduction();
+                    cooldownReduction = event.getCooldownReduction();
+                    // parry successful
+                    if (parrySparks && parrySuccessAnimation != null) parrySuccessAnimation.animate(v, v.getLocation(), v.getEyeLocation().getDirection(), 0);
+                    v.getWorld().playSound(v.getLocation(), parrySuccessSound, 1F, 1F);
+                    long cooldown = Timer.getCooldown(v.getUniqueId(), "parry_cooldown");
+                    if (cooldown > 0) Timer.setCooldown(v.getUniqueId(), (int) (cooldown * (1 - cooldownReduction)), "parry_cooldown");
+                    Timer.setCooldown(v.getUniqueId(), 0, "parry_vulnerable");
+                    Timer.setCooldown(v.getUniqueId(), 0, "parry_effective");
+                    if (event.isApplyEnemyDebuffs()){
+                        if (d instanceof LivingEntity a){
+                            int debuffDuration = (int) AccumulativeStatManager.getCachedRelationalStats("PARRY_ENEMY_DEBUFF_DURATION", v, a, 10000, true);
+                            for (PotionEffectWrapper wrapper : parryEnemyDebuffs){
+                                PotionEffectWrapper copy = PotionEffectRegistry.getEffect(wrapper.getEffect()).setAmplifier(wrapper.getAmplifier()).setDuration(debuffDuration);
+                                if (!wrapper.isVanilla()) PotionEffectRegistry.addEffect(a, v, new CustomPotionEffect(copy, debuffDuration, copy.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
+                                else a.addPotionEffect(new PotionEffect(copy.getVanillaEffect(), debuffDuration, (int) copy.getAmplifier()));
+                            }
+                            e.setDamage(e.getDamage() * (1 - damageReduction));
+                        } else if (parryProjectilesReflect && !(d instanceof Trident)) {
+                            Projectile p = (Projectile) d;
+                            p.setVelocity(p.getVelocity().multiply(-1));
+                            p.setShooter(v);
+                            double inaccuracy = AccumulativeStatManager.getCachedStats("RANGED_INACCURACY", v, 10000, true);
+                            EntityUtils.applyInaccuracy(p, v.getEyeLocation().getDirection(), inaccuracy);
+                            return 0;
+                        }
                     }
-                    e.setDamage(e.getDamage() * (1 - damageReduction));
-                } else if (parryProjectilesReflect && !(d instanceof Trident)) {
-                    Projectile p = (Projectile) d;
-                    p.setVelocity(p.getVelocity().multiply(-1));
-                    p.setShooter(v);
-                    double inaccuracy = AccumulativeStatManager.getCachedStats("RANGED_INACCURACY", v, 10000, true);
-                    EntityUtils.applyInaccuracy(p, v.getEyeLocation().getDirection(), inaccuracy);
-                    return 0;
+                    return 1 - damageReduction;
                 }
-                return 1 - damageReduction;
             } else if (!Timer.isCooldownPassed(v.getUniqueId(), "parry_vulnerable")){
-                // parry failed
-                int debuffDuration = (int) AccumulativeStatManager.getCachedRelationalStats("PARRY_SELF_DEBUFF_DURATION", v, d, 10000, true);
-                for (PotionEffectWrapper wrapper : parrySelfDebuffs){
-                    PotionEffectWrapper copy = PotionEffectRegistry.getEffect(wrapper.getEffect()).setAmplifier(wrapper.getAmplifier()).setDuration(debuffDuration);
-                    if (!wrapper.isVanilla()) PotionEffectRegistry.addEffect(v, null, new CustomPotionEffect(copy, debuffDuration, copy.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
-                    else v.addPotionEffect(new PotionEffect(copy.getVanillaEffect(), debuffDuration, (int) copy.getAmplifier()));
+                EntityParryEntityEvent event = new EntityParryEntityEvent(v, d, EntityParryEntityEvent.ParryType.SUCCESSFUL, damageReduction, cooldownReduction);
+                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+                if (!event.isCancelled()){
+                    // parry failed
+                    if (event.isApplySelfDebuffs()){
+                        int debuffDuration = (int) AccumulativeStatManager.getCachedRelationalStats("PARRY_SELF_DEBUFF_DURATION", v, d, 10000, true);
+                        for (PotionEffectWrapper wrapper : parrySelfDebuffs){
+                            PotionEffectWrapper copy = PotionEffectRegistry.getEffect(wrapper.getEffect()).setAmplifier(wrapper.getAmplifier()).setDuration(debuffDuration);
+                            if (!wrapper.isVanilla()) PotionEffectRegistry.addEffect(v, null, new CustomPotionEffect(copy, debuffDuration, copy.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.ATTACK);
+                            else v.addPotionEffect(new PotionEffect(copy.getVanillaEffect(), debuffDuration, (int) copy.getAmplifier()));
+                        }
+                    }
+                    if (parryFailAnimation != null) parryFailAnimation.animate(v, v.getLocation(), v.getEyeLocation().getDirection(), 0);
+                    v.getWorld().playSound(v.getLocation(), parryFailedSound, 1F, 1F);
                 }
-                if (parryFailAnimation != null) parryFailAnimation.animate(v, v.getLocation(), v.getEyeLocation().getDirection(), 0);
-                v.getWorld().playSound(v.getLocation(), parryFailedSound, 1F, 1F);
             }
             Timer.setCooldown(v.getUniqueId(), 0, "parry_vulnerable");
             Timer.setCooldown(v.getUniqueId(), 0, "parry_effective");

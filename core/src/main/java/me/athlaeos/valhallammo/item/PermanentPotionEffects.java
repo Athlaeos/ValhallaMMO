@@ -50,8 +50,13 @@ public class PermanentPotionEffects {
                     if (trigger instanceof EffectTrigger.ConstantTrigger constantTrigger) {
                         triggersToDelay.put(triggerID, constantTrigger.tickDelay());
                         if (triggerDelay.getOrDefault(triggerID, 0) > 0) continue;
-                        if (!constantTrigger.shouldTrigger(l)) continue;
-                        trigger.trigger(l, permanentEffects.getOrDefault(triggerID, new ArrayList<>()));
+                        if (trigger instanceof EffectTrigger.ConstantConfigurableTrigger constantConfigurableTrigger){
+                            if (!constantConfigurableTrigger.shouldTrigger(l, constantConfigurableTrigger.getArg(triggerID))) continue;
+                            trigger.trigger(l, triggerID, properties.getPermanentEffectCooldowns().get(triggerID), permanentEffects.getOrDefault(triggerID, new ArrayList<>()));
+                        } else {
+                            if (!constantTrigger.shouldTrigger(l)) continue;
+                            trigger.trigger(l, triggerID, properties.getPermanentEffectCooldowns().get(triggerID), permanentEffects.getOrDefault(triggerID, new ArrayList<>()));
+                        }
                     }
                 }
             }

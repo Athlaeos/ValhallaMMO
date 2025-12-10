@@ -5,6 +5,7 @@ import me.athlaeos.valhallammo.item.PermanentPotionEffects;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
+import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTrigger;
 import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTriggerRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.enchantments.Enchantment;
@@ -35,6 +36,7 @@ public class EntityProperties {
     private ItemBuilder offHand = null;
     private Map<String, AttributeWrapper> offHandAttributes = new HashMap<>();
     private Map<String, List<PotionEffectWrapper>> offHandPotionEffects = new HashMap<>();
+    private Map<String, EffectTrigger.CooldownProperties> permanentEffectCooldowns = new HashMap<>();
     private final List<ItemBuilder> miscEquipment = new ArrayList<>();
     private final Map<ItemBuilder, Map<String, AttributeWrapper>> miscEquipmentAttributes = new HashMap<>();
     private final Map<ItemBuilder, Map<String, List<PotionEffectWrapper>>> miscEquipmentPotionEffects = new HashMap<>();
@@ -100,6 +102,7 @@ public class EntityProperties {
     public Map<ItemBuilder, Map<String, List<PotionEffectWrapper>>> getMiscEquipmentPotionEffects() { return miscEquipmentPotionEffects; }
     public Map<String, List<PotionEffectWrapper>> getMainHandPotionEffects() { return mainHandPotionEffects; }
     public Map<String, List<PotionEffectWrapper>> getOffHandPotionEffects() { return offHandPotionEffects; }
+    public Map<String, EffectTrigger.CooldownProperties> getPermanentEffectCooldowns() { return permanentEffectCooldowns; }
     public void setPowerPotionEffects(Map<String, List<PotionEffectWrapper>> powerPotionEffects) { this.powerPotionEffects = powerPotionEffects; }
     public void setBootsPotionEffects(Map<String, List<PotionEffectWrapper>> bootsPotionEffects) { this.bootsPotionEffects = bootsPotionEffects; }
     public void setChestplatePotionEffects(Map<String, List<PotionEffectWrapper>> chestplatePotionEffects) { this.chestplatePotionEffects = chestplatePotionEffects; }
@@ -107,6 +110,10 @@ public class EntityProperties {
     public void setLeggingsPotionEffects(Map<String, List<PotionEffectWrapper>> leggingsPotionEffects) { this.leggingsPotionEffects = leggingsPotionEffects; }
     public void setMainHandPotionEffects(Map<String, List<PotionEffectWrapper>> mainHandPotionEffects) { this.mainHandPotionEffects = mainHandPotionEffects; }
     public void setOffHandPotionEffects(Map<String, List<PotionEffectWrapper>> offHandPotionEffects) { this.offHandPotionEffects = offHandPotionEffects; }
+    public void setPermanentEffectCooldowns(Map<String, EffectTrigger.CooldownProperties> permanentEffectCooldowns) { this.permanentEffectCooldowns = permanentEffectCooldowns; }
+    public void addPermanentEffectCooldown(String trigger, EffectTrigger.CooldownProperties properties) {
+        if (properties != null) permanentEffectCooldowns.put(trigger, properties);
+    }
 
     /**
      * Returns a list containing all of the entity's equipment.

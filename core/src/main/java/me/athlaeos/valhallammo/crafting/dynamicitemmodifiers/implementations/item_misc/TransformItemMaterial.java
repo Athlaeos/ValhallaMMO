@@ -32,6 +32,7 @@ public class TransformItemMaterial extends DynamicItemModifier implements Result
         map(EquipmentClass.LEGGINGS, materialPrefix, "_LEGGINGS");
         map(EquipmentClass.BOOTS, materialPrefix, "_BOOTS");
         map(EquipmentClass.SWORD, materialPrefix, "_SWORD");
+        map(EquipmentClass.SPEAR, materialPrefix, "_SPEAR");
         map(EquipmentClass.PICKAXE, materialPrefix, "_PICKAXE");
         map(EquipmentClass.AXE, materialPrefix, "_AXE");
         map(EquipmentClass.SHOVEL, materialPrefix, "_SHOVEL");

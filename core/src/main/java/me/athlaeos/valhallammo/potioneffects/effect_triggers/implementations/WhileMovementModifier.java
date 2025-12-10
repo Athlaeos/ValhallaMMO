@@ -58,7 +58,7 @@ public class WhileMovementModifier implements EffectTrigger.ConstantTrigger, Lis
             // add sprint effects, remove walk effects
             if (!properties.getPermanentPotionEffects().isEmpty()) {
                 if (!properties.getPermanentPotionEffects().getOrDefault("while_sprinting", new ArrayList<>()).isEmpty())
-                    trigger(e.getPlayer(), properties.getPermanentPotionEffects().getOrDefault("while_sprinting", new ArrayList<>()));
+                    trigger(e.getPlayer(), properties.getPermanentEffectCooldowns().get("while_sprinting"), properties.getPermanentPotionEffects().getOrDefault("while_sprinting", new ArrayList<>()));
                 if (!properties.getPermanentPotionEffects().getOrDefault("while_walking", new ArrayList<>()).isEmpty())
                     unTrigger(e.getPlayer(), properties.getPermanentPotionEffects().getOrDefault("while_walking", new ArrayList<>()));
             }
@@ -68,7 +68,7 @@ public class WhileMovementModifier implements EffectTrigger.ConstantTrigger, Lis
             if (!properties.getPermanentPotionEffects().getOrDefault("while_sprinting", new ArrayList<>()).isEmpty())
                 unTrigger(e.getPlayer(), properties.getPermanentPotionEffects().getOrDefault("while_sprinting", new ArrayList<>()));
             if (!properties.getPermanentPotionEffects().getOrDefault("while_walking", new ArrayList<>()).isEmpty())
-                trigger(e.getPlayer(), properties.getPermanentPotionEffects().getOrDefault("while_walking", new ArrayList<>()));
+                trigger(e.getPlayer(), properties.getPermanentEffectCooldowns().get("while_walking"), properties.getPermanentPotionEffects().getOrDefault("while_walking", new ArrayList<>()));
         }
     }
 
@@ -81,7 +81,7 @@ public class WhileMovementModifier implements EffectTrigger.ConstantTrigger, Lis
             // add sneak effects, remove walk effects
             if (!properties.getPermanentPotionEffects().isEmpty()) {
                 if (!properties.getPermanentPotionEffects().getOrDefault("while_sneaking", new ArrayList<>()).isEmpty())
-                    trigger(e.getPlayer(), properties.getPermanentPotionEffects().getOrDefault("while_sneaking", new ArrayList<>()));
+                    trigger(e.getPlayer(), properties.getPermanentEffectCooldowns().get("while_sneaking"), properties.getPermanentPotionEffects().getOrDefault("while_sneaking", new ArrayList<>()));
                 if (!properties.getPermanentPotionEffects().getOrDefault("while_walking", new ArrayList<>()).isEmpty())
                     unTrigger(e.getPlayer(), properties.getPermanentPotionEffects().getOrDefault("while_walking", new ArrayList<>()));
             }
@@ -91,7 +91,7 @@ public class WhileMovementModifier implements EffectTrigger.ConstantTrigger, Lis
             if (!properties.getPermanentPotionEffects().getOrDefault("while_sneaking", new ArrayList<>()).isEmpty())
                 unTrigger(e.getPlayer(), properties.getPermanentPotionEffects().getOrDefault("while_sneaking", new ArrayList<>()));
             if (!properties.getPermanentPotionEffects().getOrDefault("while_walking", new ArrayList<>()).isEmpty())
-                trigger(e.getPlayer(), properties.getPermanentPotionEffects().getOrDefault("while_walking", new ArrayList<>()));
+                trigger(e.getPlayer(), properties.getPermanentEffectCooldowns().get("while_walking"), properties.getPermanentPotionEffects().getOrDefault("while_walking", new ArrayList<>()));
         }
     }
 

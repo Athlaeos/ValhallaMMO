@@ -51,7 +51,7 @@ public class OnDamageTick implements EffectTrigger, Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !(e.getEntity() instanceof LivingEntity le)) return;
         EntityProperties properties = EntityCache.getAndCacheProperties(le);
         if (!properties.getPermanentPotionEffects().isEmpty() && !properties.getPermanentPotionEffects().getOrDefault("on_damaged", new ArrayList<>()).isEmpty()) {
-            trigger(le, properties.getPermanentPotionEffects().getOrDefault("on_damaged", new ArrayList<>()));
+            trigger(le, properties.getPermanentEffectCooldowns().get("on_damaged"), properties.getPermanentPotionEffects().getOrDefault("on_damaged", new ArrayList<>()));
         }
 
         String damageCause = EntityDamagedListener.getLastDamageCause(le);
@@ -63,6 +63,6 @@ public class OnDamageTick implements EffectTrigger, Listener {
         EffectTrigger trigger = EffectTriggerRegistry.getTrigger(id);
         if (trigger == null || !trigger.shouldTrigger(le)) return;
         if (properties.getPermanentPotionEffects().getOrDefault(id, new ArrayList<>()).isEmpty()) return;
-        trigger(le, properties.getPermanentPotionEffects().getOrDefault(id, new ArrayList<>()));
+        trigger(le, properties.getPermanentEffectCooldowns().get(id), properties.getPermanentPotionEffects().getOrDefault(id, new ArrayList<>()));
     }
 }

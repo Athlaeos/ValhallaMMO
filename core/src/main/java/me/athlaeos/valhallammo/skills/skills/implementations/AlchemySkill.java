@@ -223,8 +223,11 @@ public class AlchemySkill extends Skill implements Listener {
             }
         }
         if (transmutationFlash) {
-            if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21_10)) e.getHitBlock().getWorld().spawnParticle(Particle.FLASH, e.getEntity().getLocation(), 0, Color.fromRGB(255, 230, 50));
-            else e.getHitBlock().getWorld().spawnParticle(Particle.FLASH, e.getEntity().getLocation(), 0);
+            if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_21_9)) {
+                e.getHitBlock().getWorld().spawnParticle(Particle.FLASH, e.getEntity().getLocation(), 0, Color.WHITE);
+            } else {
+                e.getHitBlock().getWorld().spawnParticle(Particle.FLASH, e.getEntity().getLocation(), 0);
+            }
         }
         if (transmutationSound != null) e.getHitBlock().getWorld().playSound(e.getHitBlock().getLocation(), transmutationSound, 1F, 1F);
     }
