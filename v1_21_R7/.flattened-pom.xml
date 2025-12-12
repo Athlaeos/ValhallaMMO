@@ -3,38 +3,38 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.athlaeos</groupId>
-  <artifactId>valhallammo-v1_21_R6</artifactId>
-  <version>premium_1.9.2</version>
+  <artifactId>valhallammo-v1_21_R7</artifactId>
+  <version>premium_1.10</version>
   <dependencies>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
-      <version>1.21.10-R0.1-SNAPSHOT</version>
+      <version>1.21.11-R0.1-SNAPSHOT</version>
       <classifier>remapped-mojang</classifier>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>me.athlaeos</groupId>
       <artifactId>valhallammo-core</artifactId>
-      <version>premium_1.9.2</version>
+      <version>premium_1.10</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>me.athlaeos</groupId>
       <artifactId>valhallammo-v1_20_R4</artifactId>
-      <version>premium_1.9.2</version>
+      <version>premium_1.10</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>me.athlaeos</groupId>
       <artifactId>valhallammo-v1_21_R1</artifactId>
-      <version>premium_1.9.2</version>
+      <version>premium_1.10</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>me.athlaeos</groupId>
       <artifactId>valhallammo-v1_21_R2</artifactId>
-      <version>premium_1.9.2</version>
+      <version>premium_1.10</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

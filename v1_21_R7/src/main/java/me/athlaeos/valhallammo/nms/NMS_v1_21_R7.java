@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+import me.athlaeos.valhallammo.version.ActivityMappings;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
@@ -21,6 +22,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -33,6 +35,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.craftbukkit.v1_21_R7.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R7.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_21_R7.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_21_R7.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_21_R7.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R7.generator.structure.CraftStructureType;
 import org.bukkit.craftbukkit.v1_21_R7.inventory.CraftItemStack;
@@ -57,6 +60,8 @@ import org.bukkit.tag.DamageTypeTags;
 
 import java.lang.reflect.Field;
 import java.util.*;
+
+import static me.athlaeos.valhallammo.utility.ItemUtils.itemOrAir;
 
 public final class NMS_v1_21_R7 implements NMS {
     @Override
@@ -158,6 +163,17 @@ public final class NMS_v1_21_R7 implements NMS {
     @Override
     public void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type) {
         NMS_v1_21_R1.removeAttribute(e, identifier, type);
+    }
+
+    @Override
+    public void sendArmorChange(LivingEntity entity, org.bukkit.inventory.ItemStack helmet, org.bukkit.inventory.ItemStack chestplate, org.bukkit.inventory.ItemStack leggings, org.bukkit.inventory.ItemStack boots) {
+        if (entity.getEquipment() == null) return;
+        for (Player p : PacketListener.getPlayersInPacketRange(entity.getLocation())){
+            p.sendEquipmentChange(entity, EquipmentSlot.HEAD, itemOrAir(helmet));
+            p.sendEquipmentChange(entity, EquipmentSlot.CHEST, itemOrAir(chestplate));
+            p.sendEquipmentChange(entity, EquipmentSlot.LEGS, itemOrAir(leggings));
+            p.sendEquipmentChange(entity, EquipmentSlot.FEET, itemOrAir(boots));
+        }
     }
 
     @Override
@@ -506,6 +522,14 @@ public final class NMS_v1_21_R7 implements NMS {
     @Override
     public EntityExplodeEvent getExplosionEvent(Entity tnt, Location at, List<org.bukkit.block.Block> blockList, float yield, int result) {
         return new EntityExplodeEvent(tnt, at, blockList, yield, ExplosionResult.values()[result]);
+    }
+
+    @Override
+    public ActivityMappings getActivity(LivingEntity entity) {
+        if (ValhallaMMO.isUsingPaperMC()) return ValhallaMMO.getPaper().getActivity(entity);
+        Activity activity = ((CraftLivingEntity) entity).getHandle().getBrain().getActiveNonCoreActivity().orElse(null);
+        if (activity != null) return ActivityMappings.fromName(activity.getName());
+        return null;
     }
 
     @Override

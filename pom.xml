@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <revision>premium_1.9.2</revision>
+        <revision>premium_1.10</revision>
         <javaVersion>17</javaVersion>
         <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\1.21.10\plugins</testServerPath>
         <shadedPackage>me.athlaeos.valhallammo.shaded</shadedPackage>
@@ -39,6 +39,7 @@
         <module>v1_21_R4</module>
         <module>v1_21_R5</module>
         <module>v1_21_R6</module>
+        <module>v1_21_R7</module>
         <module>paper1_21_R3</module>
         <module>paper1_21_R4</module>
         <module>paper1_21_R5</module>
