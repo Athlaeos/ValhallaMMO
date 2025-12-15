@@ -52,7 +52,7 @@ public class SmithingTableListener implements Listener {
             if (base == null || addition == null) return;
             if (!ItemUtils.isEmpty(template)) template = template.clone();
 
-            Pair<SmithingRecipe, DynamicSmithingRecipe> recipes = getSmithingRecipe(template, base, addition);
+            Pair<SmithingRecipe, DynamicSmithingRecipe> recipes = getSmithingRecipe(p, template, base, addition);
             if (recipes == null){
                 e.setCancelled(true);
                 s.setResult(null);
@@ -135,6 +135,7 @@ public class SmithingTableListener implements Listener {
     @SuppressWarnings("all")
     @EventHandler
     public void onPrepareSmithing(PrepareSmithingEvent e){
+        Player p = (Player) e.getView().getPlayer();
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
             int baseIndex = isTemplateCompatible ? 1 : 0;
@@ -147,7 +148,7 @@ public class SmithingTableListener implements Listener {
             ItemStack rawAddition = s.getItem(additionIndex);
             ItemBuilder addition = ItemUtils.isEmpty(rawAddition) ? null : new ItemBuilder(rawAddition);
             if (base == null || addition == null) return;
-            Pair<SmithingRecipe, DynamicSmithingRecipe> recipes = getSmithingRecipe(template, base, addition);
+            Pair<SmithingRecipe, DynamicSmithingRecipe> recipes = getSmithingRecipe(p, template, base, addition);
             if (recipes == null){
                 s.setResult(null);
                 return;
@@ -171,7 +172,6 @@ public class SmithingTableListener implements Listener {
             }
             DynamicSmithingRecipe recipe = recipes.getTwo();
             ItemStack originalAddition = rawAddition.clone();
-            Player p = (Player) e.getView().getPlayer();
             PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
             if (profile == null ||
                     (recipe.getValidations().stream().anyMatch(v -> {
@@ -220,8 +220,9 @@ public class SmithingTableListener implements Listener {
 
     public static final Map<String, Pair<SmithingRecipe, DynamicSmithingRecipe>> smithingRecipeCache = new HashMap<>();
 
-    private Pair<SmithingRecipe, DynamicSmithingRecipe> getSmithingRecipe(ItemStack template, ItemBuilder base, ItemBuilder addition){
+    private Pair<SmithingRecipe, DynamicSmithingRecipe> getSmithingRecipe(Player clicker, ItemStack template, ItemBuilder base, ItemBuilder addition){
         if (base == null || addition == null) return new Pair<>(null, null);
+        PowerProfile profile = ProfileCache.getOrCache(clicker, PowerProfile.class);
         String key = key(template, base.getItem(), addition.getItem());
         if (smithingRecipeCache.containsKey(key)) return smithingRecipeCache.get(key);
         boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
@@ -231,6 +232,8 @@ public class SmithingTableListener implements Listener {
             if (iterator.next() instanceof SmithingRecipe s && s.getBase().test(base.getItem()) && s.getAddition().test(addition.getItem())){
                 found = s;
                 for (DynamicSmithingRecipe dynamicRecipe : CustomRecipeRegistry.getSmithingRecipes().values()){
+                    if (!clicker.hasPermission("valhalla.allrecipes") && !dynamicRecipe.isUnlockedForEveryone() && !profile.getUnlockedRecipes().contains(dynamicRecipe.getName())
+                            && !clicker.hasPermission("valhalla.recipe." + dynamicRecipe.getName())) continue;
                     if (dynamicRecipe.getBase().getOption().matches(dynamicRecipe.getBase().getItem(), base.getItem()) &&
                             dynamicRecipe.getAddition().getOption().matches(dynamicRecipe.getAddition().getItem(), addition.getItem())) {
                         if (isTemplateCompatible && ItemUtils.isEmpty(template)) continue; // 1.20+ recipes need to be template compatible, and so templates cannot be null

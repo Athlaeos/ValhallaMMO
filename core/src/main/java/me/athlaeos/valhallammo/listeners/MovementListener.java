@@ -28,24 +28,22 @@ import java.util.UUID;
 
 public class MovementListener implements Listener {
     private static final Map<UUID, Vector> lastMovementVectors = new HashMap<>();
+    private static final boolean isCustomDamageSystemEnabled = ValhallaMMO.getPluginConfig().getBoolean("custom_damage_system");
 
     public MovementListener(){
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
             for (Player p : ValhallaMMO.getInstance().getServer().getOnlinePlayers()){
-                if (Timer.isCooldownPassed(p.getUniqueId(), "delay_combat_update")) { // combat status is checked every half second
-                    EntityAttackListener.updateCombatStatus(p);
-                    Timer.setCooldown(p.getUniqueId(), 500, "delay_combat_update");
-                }
+                EntityAttackListener.updateCombatStatus(p);
+
                 if (Timer.isCooldownPassed(p.getUniqueId(), "delay_movement_update")){
+                    EntityUtils.removeUniqueAttribute(p, "armor_nullifier", Attribute.GENERIC_ARMOR);
+                    EntityUtils.removeUniqueAttribute(p, "armor_display", Attribute.GENERIC_ARMOR);
                     if (ValhallaMMO.isWorldBlacklisted(p.getWorld().getName())){
                         EntityAttributeStats.removeStats(p);
                     } else {
                         EntityAttributeStats.updateStats(p);
-
                         AttributeInstance armorInstance = p.getAttribute(Attribute.GENERIC_ARMOR);
-                        EntityUtils.removeUniqueAttribute(p, "armor_nullifier", Attribute.GENERIC_ARMOR);
-                        EntityUtils.removeUniqueAttribute(p, "armor_display", Attribute.GENERIC_ARMOR);
-                        if (armorInstance != null){
+                        if (armorInstance != null && isCustomDamageSystemEnabled){
                             double totalArmor = AccumulativeStatManager.getCachedStats("ARMOR_TOTAL", p, 10000, true);
                             int scale = ValhallaMMO.getPluginConfig().getInt("armor_scale", 50);
                             double newArmor = Math.max(0, Math.min(20, (totalArmor / scale) * 20));
