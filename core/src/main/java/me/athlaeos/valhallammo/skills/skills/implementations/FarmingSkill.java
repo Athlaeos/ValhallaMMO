@@ -154,14 +154,18 @@ public class FarmingSkill extends Skill implements Listener {
         String type = BlockUtils.getBlockType(e.getBlock());
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !BlockUtils.canReward(e.getBlock()) ||
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING) ||
-                !blockDropExpValues.containsKey(type) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
-        if (!hasPermissionAccess(e.getPlayer())) return;
-
+                e.getPlayer().getGameMode() == GameMode.CREATIVE || !hasPermissionAccess(e.getPlayer())) return;
         FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
-        int experience = e.getExpToDrop() + Utils.randomAverage(profile.getFarmingExperienceRate());
-        e.setExpToDrop(experience);
+        if (blockDropExpValues.containsKey(type)){
+            int experience = e.getExpToDrop() + Utils.randomAverage(profile.getFarmingExperienceRate());
+            e.setExpToDrop(experience);
 
-        LootListener.addPreparedLuck(e.getBlock(), AccumulativeStatManager.getCachedStats("FARMING_LUCK", e.getPlayer(), 10000, true));
+            LootListener.addPreparedLuck(e.getBlock(), AccumulativeStatManager.getCachedStats("FARMING_LUCK", e.getPlayer(), 10000, true));
+        }
+
+        ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
+        if (ItemUtils.isEmpty(hand) || !profile.isInstantHarvesting() || hand.getType().toString().contains("_AXE") || (!e.getBlock().getType().toString().contains("MELON_STEM")) && !e.getBlock().getType().toString().contains("PUMPKIN_STEM")) return;
+        e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
