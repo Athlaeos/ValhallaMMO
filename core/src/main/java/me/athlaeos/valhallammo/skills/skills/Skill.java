@@ -426,6 +426,8 @@ public abstract class Skill {
      */
     public void updateLevelUpConditions(Player p, boolean silent) {
         Profile profile = ProfileRegistry.getPersistentProfile(p, getProfileType());
+        Profile merged = ProfileCache.getOrCache(p, getProfileType());
+        int maxAllowedLevel = merged == null ? Integer.MAX_VALUE : merged.getMaxAllowedLevel();
         if (profile == null) return;
         int currentLevel = profile.getLevel();
         double EXP = profile.getEXP();
@@ -446,7 +448,7 @@ public abstract class Skill {
                 }
             }
         } else {
-            if (profile.getLevel() >= maxLevel || profile.getLevel() >= profile.getMaxAllowedLevel()) {
+            if (profile.getLevel() >= maxLevel || profile.getLevel() >= maxAllowedLevel) {
                 if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()) {
                     showBossBar(p, profile, 0);
                 }
@@ -460,7 +462,7 @@ public abstract class Skill {
                     // player has enough experience to level up once
                     nextLevel++;
                     EXP -= expForLevel;
-                    if (nextLevel >= profile.getMaxAllowedLevel()) EXP = 0;
+                    if (nextLevel >= maxAllowedLevel) EXP = 0;
                 } else break; // player does not have enough experience to level up further
             }
         }
@@ -520,9 +522,9 @@ public abstract class Skill {
             }
 
             Profile profile = ProfileRegistry.getPersistentProfile(p, event.getLeveledSkill().getProfileType());
-            if (profile.getLevel() >= profile.getMaxAllowedLevel() &&
-                    (reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION ||
-                            reason == PlayerSkillExperienceGainEvent.ExperienceGainReason.EXP_SHARE)) return; // player has already reached max allowed level, do not proceed
+            Profile merged = ProfileCache.getOrCache(p, event.getLeveledSkill().getProfileType());
+            int maxAllowedLevel = merged == null ? Integer.MAX_VALUE : merged.getMaxAllowedLevel();
+            if (profile.getLevel() >= maxAllowedLevel) return; // player has already reached max allowed level, do not proceed
             profile.setEXP(profile.getEXP() + event.getAmount());
             profile.setTotalEXP(profile.getTotalEXP() + event.getAmount());
             incrementExperienceLimit(p, event.getAmount());
