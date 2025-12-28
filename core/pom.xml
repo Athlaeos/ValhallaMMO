@@ -65,6 +65,11 @@
             <id>craftengine</id>
             <url>https://repo.momirealms.net/releases/</url>
         </repository>
+        <repository>
+            <id>aestrus-releases</id>
+            <name>Aestrus's Repository</name>
+            <url>https://maven.aestrus.io/releases</url>
+        </repository>
     </repositories>
 
     <dependencies>

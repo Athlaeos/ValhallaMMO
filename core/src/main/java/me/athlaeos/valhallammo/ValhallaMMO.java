@@ -43,6 +43,7 @@ import me.athlaeos.valhallammo.utility.GlobalEffect;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.AlphaToBetaConversionHandler;
+import me.athlaeos.valhallammo.version.PaperLootRefillHandler;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -234,6 +235,7 @@ public class ValhallaMMO extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("premium_users", () -> premium ? "Yes" : "No"));
         }
 
+        if (usingPaperMC) registerListener(new PaperLootRefillHandler());
         registerListener(new Dummy());
         PlayerJumpEvent.register(this);
         registerListener(new AnvilListener());

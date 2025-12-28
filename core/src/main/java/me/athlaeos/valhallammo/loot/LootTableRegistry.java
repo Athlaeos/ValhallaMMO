@@ -188,7 +188,6 @@ public class LootTableRegistry {
 
     public static ItemStack getReplacement(ReplacementTable table, LootContext context, LootTable.LootType type, ItemStack toReplace){
         if (table == null) return null;
-
         Map<String, ReplacementPool> cachedTableMap = replacementTableCache.computeIfAbsent(table.getKey(), key -> new HashMap<>());
         ReplacementPool pool = cachedTableMap.compute(toReplace.toString(), (key, cached) -> {
             if (cached == null) {
@@ -202,15 +201,12 @@ public class LootTableRegistry {
             return cached;
         });
 
-        if (pool == ReplacementPool.NONE || table.failsPredicates(pool.getPredicateSelection(), type, context, pool.getPredicates())) {
-            return null;
-        }
+        if (pool == ReplacementPool.NONE || table.failsPredicates(pool.getPredicateSelection(), type, context, pool.getPredicates())) return null;
 
-        Collection<ReplacementEntry> entries = pool.getEntries().values();
+        Collection<ReplacementEntry> entries = new HashSet<>(pool.getEntries().values());
         entries.removeIf(entry -> (context.getKiller() == null && DynamicItemModifier.requiresPlayer(entry.getModifiers())) || table.failsPredicates(entry.getPredicateSelection(), type, context, entry.getPredicates()));
         List<ReplacementEntry> weighted = Utils.weightedSelection(entries, 1, context.getLuck(), context.getLootingModifier());
         if (weighted.isEmpty()) return null;
-
         ReplacementEntry selectedEntry = weighted.get(0);
         if (selectedEntry == null || ItemUtils.isEmpty(selectedEntry.getReplaceBy())) return null;
 

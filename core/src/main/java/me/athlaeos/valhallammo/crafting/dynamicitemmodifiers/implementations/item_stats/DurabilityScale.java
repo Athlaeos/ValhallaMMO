@@ -46,11 +46,6 @@ public class DurabilityScale extends DynamicItemModifier {
         super(name);
     }
 
-    @Override
-    public boolean requiresPlayer() {
-        return true;
-    }
-
     private String buildScaling(){
         return String.format("(%.2f/%.2f) * (%%rating%% - %.2f) + %.2f", amplifier, skillRange, rangeOffset, minimum);
     }
@@ -81,6 +76,11 @@ public class DurabilityScale extends DynamicItemModifier {
 
         int finalQuality = (int) Math.round(skillEfficiency * skill);
         CustomDurabilityManager.applyDurabilityScaling(context.getItem(), scaling, finalQuality, minimumValue);
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return !skillToScaleWith.equals("SMITHING") && !skillToScaleWith.equals("ALCHEMY");
     }
 
     @Override

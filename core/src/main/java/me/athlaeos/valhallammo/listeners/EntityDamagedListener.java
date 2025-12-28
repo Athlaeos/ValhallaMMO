@@ -217,7 +217,7 @@ public class EntityDamagedListener implements Listener {
     }
 
     public static double calculateCustomDamage(EntityDamageEvent e){
-        String damageCause = customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString());
+        String damageCause = Utils.thisorDefault(EntityUtils.getCustomDamageType(e.getEntity()), customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString()));
         Entity lastDamager = lastDamager(e);
 
         CustomDamageType customDamageType = CustomDamageType.getCustomType(damageCause);
