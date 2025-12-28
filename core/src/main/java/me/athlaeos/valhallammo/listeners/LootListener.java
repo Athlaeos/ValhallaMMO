@@ -464,14 +464,13 @@ public class LootListener implements Listener {
                 e.useInteractedBlock() == Event.Result.DENY || e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getHand() == EquipmentSlot.OFF_HAND) return;
         Block b = e.getClickedBlock();
         if (!(b.getState() instanceof Lootable l) || !(b.getState() instanceof Container c) || ArchaeologyListener.isBrushable(b.getState()) || l.getLootTable() == null) return;
-        if (ValhallaMMO.isUsingPaperMC() && !PaperLootRefillHandler.canGenerateLoot(b.getState(), e.getPlayer())) return;
+        if (ValhallaMMO.isUsingPaperMC() && PaperLootRefillHandler.isRefillPending(b.getState())) return;
         org.bukkit.loot.LootTable lootTable = l.getLootTable();
-
         LootTable table = LootTableRegistry.getLootTable(b, b.getType());
         if (table == null) table = LootTableRegistry.getLootTable(lootTable.getKey());
         AttributeInstance luckInstance = e.getPlayer().getAttribute(Attribute.GENERIC_LUCK);
         double luck = luckInstance == null ? 0 : luckInstance.getValue();
-        LootContext context = new LootContext.Builder(b.getLocation()).killer(null).lootedEntity(e.getPlayer()).lootingModifier(0).luck((float) luck).build();
+        LootContext context = new LootContext.Builder(b.getLocation()).killer(e.getPlayer()).lootedEntity(e.getPlayer()).lootingModifier(0).luck((float) luck).build();
 
         if (ValhallaMMO.isHookFunctional(LootinHook.class)){
             LootinHook.prepareChestOpeningForLootin(e.getPlayer(), l.getLootTable(), table, context);
@@ -557,14 +556,13 @@ public class LootListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onChestCartOpen(PlayerInteractAtEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getRightClicked().getWorld().getName()) || e.getHand() == EquipmentSlot.OFF_HAND) return;
+        if (ValhallaMMO.isUsingPaperMC() || ValhallaMMO.isWorldBlacklisted(e.getRightClicked().getWorld().getName()) || e.getHand() == EquipmentSlot.OFF_HAND) return;
         Entity entity = e.getRightClicked();
         if (entity.getType() != EntityType.MINECART_CHEST || !(entity instanceof Lootable l) || !(entity instanceof InventoryHolder c) || l.getLootTable() == null) return;
-        if (ValhallaMMO.isUsingPaperMC() && !PaperLootRefillHandler.canGenerateLoot(entity, e.getPlayer())) return;
         LootTable table = LootTableRegistry.getLootTable(l.getLootTable().getKey());
         AttributeInstance luckInstance = e.getPlayer().getAttribute(Attribute.GENERIC_LUCK);
         double luck = luckInstance == null ? 0 : luckInstance.getValue();
-        LootContext context = new LootContext.Builder(entity.getLocation()).killer(null).lootedEntity(e.getPlayer()).lootingModifier(0).luck((float) luck).build();
+        LootContext context = new LootContext.Builder(entity.getLocation()).killer(e.getPlayer()).lootedEntity(e.getPlayer()).lootingModifier(0).luck((float) luck).build();
         if (table != null) {
             List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.CONTAINER);
             ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);

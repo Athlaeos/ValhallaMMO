@@ -53,7 +53,7 @@ public class DefaultAttributeScale extends DynamicItemModifier {
 
     @Override
     public boolean requiresPlayer() {
-        return true;
+        return !skillToScaleWith.equals("SMITHING") && !skillToScaleWith.equals("ALCHEMY");
     }
 
     private String buildScaling(){
