@@ -808,14 +808,14 @@ public class ItemUtils {
 
             // Serialize that array
             dataOutput.close();
-            return Base64Coder.encodeLines(outputStream.toByteArray());
+            return Base64.getEncoder().encodeToString(outputStream.toByteArray());
         } catch (Exception ignored) {}
         return null;
     }
 
     public static ItemStack deserialize(String data) {
         try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(data));
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
 
             ItemStack i = (ItemStack) dataInput.readObject();
