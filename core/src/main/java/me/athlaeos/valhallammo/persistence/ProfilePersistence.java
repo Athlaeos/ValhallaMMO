@@ -72,30 +72,30 @@ public abstract class ProfilePersistence {
     @SuppressWarnings("unchecked")
     public <T extends Profile> boolean fillProfile(UUID player, T profile) {
         Class<T> clazz = (Class<T>) profile.getClass();
-        try {
-            PreparedStatement stmt = getConnection().prepareStatement("SELECT * FROM " + profile.getTableName() + " WHERE owner = ?;");
+        try(PreparedStatement stmt = getConnection().prepareStatement("SELECT * FROM " + profile.getTableName() + " WHERE owner = ?;")) {
             stmt.setString(1, player.toString());
-            ResultSet result = stmt.executeQuery();
-            if (result.next()){
-                for (String s : profile.getAllStatNames()){
-                    String lower = s.toLowerCase(java.util.Locale.US);
-                    if (profile.isInt(s)) {
-                        profile.setInt(s, result.getInt(lower));
-                        if (result.wasNull()) profile.setInt(s, profile.getDefaultInt(s));
-                    } else if (profile.isDouble(s)) {
-                        profile.setDouble(s, result.getDouble(lower));
-                        if (result.wasNull()) profile.setDouble(s, profile.getDefaultDouble(s));
-                    } else if (profile.isFloat(s)) {
-                        profile.setFloat(s, result.getFloat(lower));
-                        if (result.wasNull()) profile.setFloat(s, profile.getDefaultFloat(s));
-                    } else if (profile.isStringSet(s)) {
-                        profile.setStringSet(s, deserializeStringSet(Objects.requireNonNullElse(result.getString(lower), "")));
-                    } else if (profile.isBoolean(s)) {
-                        profile.setBoolean(s, result.getBoolean(lower));
-                        if (result.wasNull()) profile.setBoolean(s, profile.getDefaultBoolean(s));
-                    } else ValhallaMMO.logWarning("Stat " + s + " in " + clazz.getSimpleName() + " was not found in database");
+            try (ResultSet result = stmt.executeQuery()) {
+                if (result.next()){
+                    for (String s : profile.getAllStatNames()){
+                        String lower = s.toLowerCase(java.util.Locale.US);
+                        if (profile.isInt(s)) {
+                            profile.setInt(s, result.getInt(lower));
+                            if (result.wasNull()) profile.setInt(s, profile.getDefaultInt(s));
+                        } else if (profile.isDouble(s)) {
+                            profile.setDouble(s, result.getDouble(lower));
+                            if (result.wasNull()) profile.setDouble(s, profile.getDefaultDouble(s));
+                        } else if (profile.isFloat(s)) {
+                            profile.setFloat(s, result.getFloat(lower));
+                            if (result.wasNull()) profile.setFloat(s, profile.getDefaultFloat(s));
+                        } else if (profile.isStringSet(s)) {
+                            profile.setStringSet(s, deserializeStringSet(Objects.requireNonNullElse(result.getString(lower), "")));
+                        } else if (profile.isBoolean(s)) {
+                            profile.setBoolean(s, result.getBoolean(lower));
+                            if (result.wasNull()) profile.setBoolean(s, profile.getDefaultBoolean(s));
+                        } else ValhallaMMO.logWarning("Stat " + s + " in " + clazz.getSimpleName() + " was not found in database");
+                    }
+                    return true;
                 }
-                return true;
             }
         } catch (SQLException ex){
             ValhallaMMO.logSevere("SQLException when trying to fetch " + player + "'s profile of type " + clazz.getSimpleName() + ". ");
@@ -364,26 +364,24 @@ public abstract class ProfilePersistence {
     public Map<Integer, LeaderboardEntry> queryLeaderboardEntries(LeaderboardManager.Leaderboard leaderboard) {
         Map<Integer, LeaderboardEntry> entries = new HashMap<>();
         Profile profile = ProfileRegistry.getRegisteredProfiles().get(leaderboard.profile());
-        String query = leaderboardQuery(profile, leaderboard.mainStat(), leaderboard.extraStats());
-        try {
-            PreparedStatement stmt = getConnection().prepareStatement(query);
-            ResultSet set = stmt.executeQuery();
-            int rank = 1;
-            while (set.next()){
-                double value = set.getDouble("main_stat");
-                UUID uuid = UUID.fromString(set.getString("owner"));
-                OfflinePlayer player = ValhallaMMO.getInstance().getServer().getOfflinePlayer(uuid);
-                if (LeaderboardManager.getExcludedPlayers().contains(player.getName())) continue;
-                Map<String, Double> extraStat = new HashMap<>();
-                for (Pair<String, Double> e : leaderboard.extraStats().values()) {
-                    extraStat.put(e.getOne(), set.getDouble(e.getOne()));
+        try(PreparedStatement stmt = getConnection().prepareStatement(leaderboardQuery(profile, leaderboard.mainStat(), leaderboard.extraStats()))) {
+            try (ResultSet set = stmt.executeQuery()) {
+                int rank = 1;
+                while (set.next()) {
+                    double value = set.getDouble("main_stat");
+                    UUID uuid = UUID.fromString(set.getString("owner"));
+                    OfflinePlayer player = ValhallaMMO.getInstance().getServer().getOfflinePlayer(uuid);
+                    if (LeaderboardManager.getExcludedPlayers().contains(player.getName())) continue;
+                    Map<String, Double> extraStat = new HashMap<>();
+                    for (Pair<String, Double> e : leaderboard.extraStats().values()) {
+                        extraStat.put(e.getOne(), set.getDouble(e.getOne()));
+                    }
+                    entries.put(rank, new LeaderboardEntry(player.getName(), player.getUniqueId(), value, rank, extraStat));
+                    rank++;
                 }
-                entries.put(rank, new LeaderboardEntry(player.getName(), player.getUniqueId(), value, rank, extraStat));
-                rank++;
             }
         } catch (SQLException ex){
             ValhallaMMO.logWarning("Could not fetch leaderboard due to an exception: ");
-            ValhallaMMO.logWarning("Query used: \n" + query);
             ex.printStackTrace();
         }
         return entries;

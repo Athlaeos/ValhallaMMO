@@ -75,8 +75,10 @@ public class PermanentPotionEffects {
         for (String s : effectStrings){
             String[] args = s.split(":");
             if (args.length <= 1) continue;
-            double amplifier = Catch.catchOrElse(() -> Double.parseDouble(args[1]), -1D);
-            if (amplifier < 0) continue;
+            double amplifier = Catch.catchOrElse(() -> Double.parseDouble(args[1]), Double.MIN_VALUE);
+            if (amplifier < -999999999) {
+                continue;
+            }
             PotionEffectWrapper wrapper = Catch.catchOrElse(() -> PotionEffectRegistry.getEffect(args[0]), null);
             if (wrapper == null) continue;
             int duration = args.length > 2 ? Catch.catchOrElse(() -> Integer.parseInt(args[2]), 0) : (args[0].equals("NIGHT_VISION") ? 300 : 100);

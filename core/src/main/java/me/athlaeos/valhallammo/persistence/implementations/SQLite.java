@@ -52,14 +52,10 @@ public class SQLite extends ProfilePersistence {
 
     @Override
     public void addColumnIfNotExists(String tableName, String columnName, String columnType) {
-        try {
-            PreparedStatement procedureCreationStatement = conn.prepareStatement(
-                    "SELECT " + columnName + " FROM " + tableName + ";");
+        try(PreparedStatement procedureCreationStatement = conn.prepareStatement("SELECT " + columnName + " FROM " + tableName + ";")) {
             procedureCreationStatement.execute();
         } catch (SQLException e){
-            try {
-                PreparedStatement procedureCreationStatement = conn.prepareStatement(
-                        "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + columnType + ";");
+            try(PreparedStatement procedureCreationStatement = conn.prepareStatement("ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + columnType + ";")) {
                 procedureCreationStatement.execute();
             } catch (SQLException ex){
                 ValhallaMMO.logSevere("SQLException when trying to add column " + columnName + " " + columnType + " to " + tableName + ". ");

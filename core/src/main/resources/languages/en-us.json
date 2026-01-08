@@ -292,6 +292,7 @@
     "status_items_cost": "&7Costs Items: &e%items%",
     "status_items_cost_format": "/n  &f>&6%quantity%x &e%item%",
     "warning_insufficient_skillpoints": "&cInsufficient Skill Points",
+    "warning_vanilla_item_required": "&cItem must be without ValhallaMMO quality",
     "status_prestigepoints_cost": "&7Costs &d%cost% Prestige Points",
     "warning_insufficient_prestigepoints": "&cInsufficient Prestige Points",
     "status_levels_cost": "&7Costs &a%cost% Experience Levels",
