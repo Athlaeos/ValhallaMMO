@@ -93,16 +93,13 @@ public class DynamicCookingRecipe implements ValhallaRecipe, ValhallaKeyedRecipe
                 ItemUtils.isEmpty(result)) return null;
         if (input.getOption() == null) input.setOption(new MaterialChoice());
         ItemStack i = tinker ? input.getItem() : result.clone();
-        ResultChangingModifier changer = (ResultChangingModifier) modifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
-        if (changer != null) {
-            i = Utils.thisorDefault(changer.getNewResult(ModifierContext.builder(new ItemBuilder(i)).get()), i);
-        }
-        i = new ItemBuilder(i).translate().get();
+        ItemBuilder asBuilder = new ItemBuilder(i);
+        DynamicItemModifier.modifyAppearance(ModifierContext.builder(asBuilder).get(), modifiers);
         return switch (type){
-            case SMOKER -> new SmokingRecipe(key, i, input.getOption().getChoice(input.getItem()), experience, cookTime);
-            case BLAST_FURNACE -> new BlastingRecipe(key, i, input.getOption().getChoice(input.getItem()), experience, cookTime);
-            case CAMPFIRE -> new CampfireRecipe(key, i, input.getOption().getChoice(input.getItem()), experience, cookTime);
-            default -> new FurnaceRecipe(key, i, input.getOption().getChoice(input.getItem()), experience, cookTime);
+            case SMOKER -> new SmokingRecipe(key, asBuilder.get(), input.getOption().getChoice(input.getItem()), experience, cookTime);
+            case BLAST_FURNACE -> new BlastingRecipe(key, asBuilder.get(), input.getOption().getChoice(input.getItem()), experience, cookTime);
+            case CAMPFIRE -> new CampfireRecipe(key, asBuilder.get(), input.getOption().getChoice(input.getItem()), experience, cookTime);
+            default -> new FurnaceRecipe(key, asBuilder.get(), input.getOption().getChoice(input.getItem()), experience, cookTime);
         };
     }
 

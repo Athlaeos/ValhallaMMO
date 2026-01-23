@@ -71,6 +71,7 @@ public class EntityDamagedListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDamageRecord(EntityDamageEvent e){
         if (e instanceof EntityDamageByEntityEvent eve) EntityDamagedListener.setDamager(e.getEntity(), eve.getDamager());
+        else EntityDamagedListener.setDamager(e.getEntity(), null);
     }
 
     private final Map<UUID, Double> healthTracker = new HashMap<>();
@@ -107,10 +108,11 @@ public class EntityDamagedListener implements Listener {
             }
 
             double damageAfterImmunity = overrideImmunityFrames(customDamage, l);
-            if (damageAfterImmunity < 0 && e.getEntityType() != EntityType.ARMOR_STAND) {
+            if (damageAfterImmunity <= 0 && e.getEntityType() != EntityType.ARMOR_STAND) {
                 e.setCancelled(true);
                 return; // entity is immune, and so damage doesn't need to be calculated further
             }
+            System.out.println("parsing damage event");
             lastDamageTakenMap.put(l.getUniqueId(), customDamage);
             boolean applyImmunity = (l.getHealth() + l.getAbsorptionAmount()) - customDamage > 0;
 
@@ -302,7 +304,8 @@ public class EntityDamagedListener implements Listener {
     }
 
     public static void setDamager(Entity attacked, Entity attacker){
-        lastDamagedByMap.put(attacked.getUniqueId(), attacker.getUniqueId());
+        if (attacker == null) lastDamagedByMap.remove(attacked.getUniqueId());
+        else lastDamagedByMap.put(attacked.getUniqueId(), attacker.getUniqueId());
     }
 
     public static void setCustomDamageCause(UUID uuid, String customCause){

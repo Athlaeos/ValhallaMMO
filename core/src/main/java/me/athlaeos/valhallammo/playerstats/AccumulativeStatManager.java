@@ -431,7 +431,6 @@ public class AccumulativeStatManager {
         else if (!collector.isAttackerPossessive() && e1 instanceof LivingEntity l && !(l instanceof Player)) value += MonsterScalingManager.getStatValue(l, stat);
         if (collector.isAttackerPossessive() && e2 instanceof Player p) value += PartyManager.getCompanyStats(p, stat);
         else if (!collector.isAttackerPossessive() && e1 instanceof Player p) value += PartyManager.getCompanyStats(p, stat);
-
         return Utils.round6Decimals(value); // round to 6 decimals
     }
 

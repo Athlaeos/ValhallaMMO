@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.commands.Command;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Scaling;
 import me.athlaeos.valhallammo.item.ItemBuilder;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class AmountScale extends DynamicItemModifier {
+public class AmountScale extends DynamicItemModifier implements ResultChangingModifier {
     private double skillEfficiency = 1;
     private double minimumFraction = 0;
     private boolean damagePenalty = true;

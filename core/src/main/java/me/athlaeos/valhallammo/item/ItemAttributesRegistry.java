@@ -373,6 +373,8 @@ public class ItemAttributesRegistry {
                 else {
                     for (Attribute attribute : otherAttributes.keys()){
                         AttributeMappings mapping = AttributeMappings.getAttributeMapping(attribute.toString());
+                        if (mapping == null)
+                            mapping = AttributeMappings.getAttributeMapping(attribute.getKey().toString());
                         if (mapping == null) continue;
                         AttributeWrapper wrapper = registeredAttributes.get(mapping.getAttribute1_19());
                         if (wrapper == null) continue;

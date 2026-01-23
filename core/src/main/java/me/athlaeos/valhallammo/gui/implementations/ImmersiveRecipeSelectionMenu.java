@@ -6,7 +6,6 @@ import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.crafting.recipetypes.ImmersiveCraftingRecipe;
 import me.athlaeos.valhallammo.dom.Comparator;
 import me.athlaeos.valhallammo.gui.Menu;
@@ -271,8 +270,8 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                                 hand :
                                 recipe.getTinkerInput().getItem()) :
                         recipe.getResult()).clone();
-                ResultChangingModifier changingModifier = (ResultChangingModifier) recipe.getModifiers().stream().filter(m -> m instanceof ResultChangingModifier).findFirst().orElse(null);
-                if (changingModifier != null) button = changingModifier.getNewResult(ModifierContext.builder(new ItemBuilder(button)).crafter(playerMenuUtility.getOwner()).get());
+                ItemBuilder asBuilder = new ItemBuilder(button);
+                DynamicItemModifier.modifyAppearance(ModifierContext.builder(asBuilder).crafter(playerMenuUtility.getOwner()).get(), recipe.getModifiers());
                 List<String> lore = new ArrayList<>(recipe.getDescription() == null ?
                         defaultFormat :
                         Arrays.asList(recipe.getDescription().split("/n"))
@@ -291,7 +290,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                 String displayName = recipe.getDisplayName() == null ? ItemUtils.getItemName(new ItemBuilder(button)) : recipe.getDisplayName();
                 String favouritePrefix = TranslationManager.getTranslation("recipe_favourited_prefix");
                 String favouriteSuffix = TranslationManager.getTranslation("recipe_favourited_suffix");
-                icons.add(new ItemBuilder(button).name("&r" +
+                icons.add(asBuilder.name("&r" +
                         (isFavourited(playerMenuUtility.getOwner(), recipe.getName()) ?
                                 favouritePrefix + displayName + favouriteSuffix :
                                 displayName)).lore(lore).stringTag(BUTTON_RECIPE_KEY, recipe.getName()).translate().get());

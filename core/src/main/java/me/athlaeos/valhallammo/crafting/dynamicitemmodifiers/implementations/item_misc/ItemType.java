@@ -32,11 +32,6 @@ public class ItemType extends DynamicItemModifier implements ResultChangingModif
     }
 
     @Override
-    public ItemStack getNewResult(ModifierContext context) {
-        return context.getItem().copy().type(material).get();
-    }
-
-    @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
         if (button == 12) {
             ItemStack cursor = e.getCursor();

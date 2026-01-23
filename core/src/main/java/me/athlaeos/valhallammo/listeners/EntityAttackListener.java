@@ -253,7 +253,9 @@ public class EntityAttackListener implements Listener {
                 damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedAttackerRelationalStats("DAMAGE_DEALT", v, e.getDamager(), 10000, true));
                 if (e.getDamager() instanceof Projectile) {
                     // ranged damage buffs
+                    System.out.println("dam mult before " + damageMultiplier);
                     damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedAttackerRelationalStats("RANGED_DAMAGE_DEALT", v, e.getDamager(), 10000, true));
+                    System.out.println("ranged damage mult " + damageMultiplier);
                 } else {
                     // melee damage buffs
                     damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedAttackerRelationalStats(combatType == CombatType.MELEE_UNARMED ? "UNARMED_DAMAGE_DEALT" : "MELEE_DAMAGE_DEALT", v, e.getDamager(), 10000, true));

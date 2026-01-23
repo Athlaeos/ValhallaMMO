@@ -149,10 +149,8 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     }
 
     private ItemStack recipeBookIcon(ItemStack i){
-        ResultChangingModifier changer = (ResultChangingModifier) modifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
-        if (changer != null) {
-            i = Utils.thisorDefault(changer.getNewResult(ModifierContext.builder(new ItemBuilder(i)).get()), i);
-        }
+        ItemBuilder asBuilder = new ItemBuilder(i);
+        DynamicItemModifier.modifyAppearance(ModifierContext.builder(asBuilder).get(), modifiers);
         List<String> gridDetails = new ArrayList<>();
         if (shapeless){
             String shapelessFormat = TranslationManager.getTranslation("ingredient_format_shapeless");
@@ -185,14 +183,13 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
                     .replace("%tinker%", tinker ? SlotEntry.toString(getGridTinkerEquipment()) : ItemUtils.getItemName(result))));
         }
 
-        ItemBuilder icon = new ItemBuilder(i)
-                .lore(ItemUtils.setListPlaceholder(lore, "%ingredients%", gridDetails))
+        asBuilder.lore(ItemUtils.setListPlaceholder(lore, "%ingredients%", gridDetails))
                 .translate();
-        if (displayName != null) icon.name(TranslationManager.translatePlaceholders(displayName).replace("%item%", ItemUtils.getItemName(result)));
-        else if (tinker) icon.name(tinkerFormat.replace("%item%", SlotEntry.toString(tinkerItem)));
-        else if (result.getMeta().hasDisplayName()) icon.name(result.getMeta().getDisplayName());
+        if (displayName != null) asBuilder.name(TranslationManager.translatePlaceholders(displayName).replace("%item%", ItemUtils.getItemName(result)));
+        else if (tinker) asBuilder.name(tinkerFormat.replace("%item%", SlotEntry.toString(tinkerItem)));
+        else if (result.getMeta().hasDisplayName()) asBuilder.name(result.getMeta().getDisplayName());
 
-        return icon.translate().get();
+        return asBuilder.translate().get();
     }
 
     public SlotEntry getGridTinkerEquipment(){

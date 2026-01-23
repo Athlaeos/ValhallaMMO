@@ -183,12 +183,11 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
         }
         if (trigger instanceof EffectTrigger.ConfigurableTrigger configurableTrigger){
             String errorMessage = this.configuredCondition == null ? "&cNot configured, click to config" : configurableTrigger.isValid(this.configuredCondition);
-            new Pair<>(7,
-                    new ItemBuilder(Material.PAPER)
-                            .name("&dConfigure Trigger")
-                            .lore(StringUtils.separateStringIntoLines((errorMessage == null ? configurableTrigger.asLore(this.configuredCondition) : errorMessage), 40))
-                            .appendLore("&6Click to configure")
-                            .get());
+            buttons.put(7, new ItemBuilder(Material.PAPER)
+                    .name("&dConfigure Trigger")
+                    .lore(StringUtils.separateStringIntoLines((errorMessage == null ? configurableTrigger.asLore(this.configuredCondition) : errorMessage), 40))
+                    .appendLore("&6Click to configure")
+                    .get());
         }
         return buttons;
     }

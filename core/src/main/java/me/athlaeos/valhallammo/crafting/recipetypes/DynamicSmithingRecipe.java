@@ -3,19 +3,20 @@ package me.athlaeos.valhallammo.crafting.recipetypes;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
-import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
+import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.SmithingTransformRecipeWrapper;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.SmithingRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
@@ -64,11 +65,11 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
         if (ValhallaMMO.getInstance().getServer().getRecipe(key) != null) ValhallaMMO.getInstance().getServer().removeRecipe(key);
     }
 
-    private ItemStack translate(ItemStack i){
+    private ItemBuilder translate(ItemBuilder i){
         List<String> def = TranslationManager.getListTranslation("default_recipe_description_smithing");
         String tinkerFormat = TranslationManager.getTranslation("tinker_result_format");
         ItemBuilder result = new ItemBuilder(this.result);
-        return new ItemBuilder(i).lore(Arrays.asList(this.description == null ?
+        return i.lore(Arrays.asList(this.description == null ?
                         def.toArray(new String[0]) :
                         this.description
                                 .replace("%template%", SlotEntry.toString(template))
@@ -80,7 +81,7 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
                 )
         ).name(displayName == null ?
                 (tinkerBase ? tinkerFormat.replace("%item%", SlotEntry.toString(base)) : ItemUtils.getItemName(result)) :
-                displayName).translate().get();
+                displayName).translate();
     }
 
     public String getName() {return name;}
@@ -154,14 +155,11 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
                 new RecipeChoice.MaterialChoice(addition.getItem().getType()) :
                 addition.getOption().getChoice(addition.getItem());
 
-        ItemStack i = result.clone();
-        ResultChangingModifier changer = (ResultChangingModifier) resultModifiers.stream().filter(m -> m instanceof ResultChangingModifier).reduce((first, second) -> second).orElse(null);
-        if (changer != null) {
-            i = Utils.thisorDefault(changer.getNewResult(ModifierContext.builder(new ItemBuilder(i)).get()), i);
-        }
+        ItemBuilder asBuilder = new ItemBuilder(result);
+        DynamicItemModifier.modifyAppearance(ModifierContext.builder(asBuilder).get(), resultModifiers);
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20) && t != null){
-            return SmithingTransformRecipeWrapper.get(key, translate(i), t, b, a); // using a SmithingTransformRecipe directly results in a ClassNotFoundException on versions lower than 1.20
-        } else return new SmithingRecipe(key, translate(i), b, a);
+            return SmithingTransformRecipeWrapper.get(key, translate(asBuilder).get(), t, b, a); // using a SmithingTransformRecipe directly results in a ClassNotFoundException on versions lower than 1.20
+        } else return new SmithingRecipe(key, translate(asBuilder).get(), b, a);
     }
 
     private boolean hasEquivalentVanillaSmithingRecipe(ItemStack template, ItemStack base, ItemStack addition){

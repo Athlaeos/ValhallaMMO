@@ -4,6 +4,7 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierCategoryRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
+import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import org.bukkit.Material;
