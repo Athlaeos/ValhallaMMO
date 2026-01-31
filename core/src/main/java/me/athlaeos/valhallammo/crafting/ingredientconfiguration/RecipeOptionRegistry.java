@@ -22,6 +22,7 @@ public class RecipeOptionRegistry {
         registerOption(new PotionMatchEffectsChoice());
         registerOption(new ToolArmorChoice());
         registerOption(new ToolChoice());
+        registerOption(new ToolWeaponChoice());
         registerOption(new WeaponChoice());
         registerOption(new MeleeWeaponChoice());
     }
