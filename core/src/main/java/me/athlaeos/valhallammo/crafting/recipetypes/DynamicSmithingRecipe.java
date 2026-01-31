@@ -49,7 +49,7 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
 
     public DynamicSmithingRecipe(String name){
         this.name = name;
-        this.key = new NamespacedKey(ValhallaMMO.getInstance(), "smithingrecipe_" + name);
+        this.key = ValhallaMMO.key("smithingrecipe_" + name);
     }
 
     @Override

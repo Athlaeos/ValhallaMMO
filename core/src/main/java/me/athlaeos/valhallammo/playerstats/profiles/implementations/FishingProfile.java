@@ -46,7 +46,7 @@ public class FishingProfile extends Profile {
         return "profiles_fishing";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_fishing");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_fishing");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

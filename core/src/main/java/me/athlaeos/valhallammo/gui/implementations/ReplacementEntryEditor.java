@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class ReplacementEntryEditor extends Menu implements SetModifiersMenu, SetLootPredicatesMenu {
-    private static final NamespacedKey BUTTON_ACTION_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_action");
+    private static final NamespacedKey BUTTON_ACTION_KEY = ValhallaMMO.key("button_action");
 
     private static final int predicatesIndex = 1;
     private static final int predicateTypeIndex = 2;

@@ -12,7 +12,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
 public class FlightRemoveReward extends PerkReward {
-    private static final NamespacedKey KEY_GRANTED_FLIGHT = new NamespacedKey(ValhallaMMO.getInstance(), "granted_flight");
+    private static final NamespacedKey KEY_GRANTED_FLIGHT = ValhallaMMO.key("granted_flight");
     public FlightRemoveReward() {
         super("disable_flight");
     }

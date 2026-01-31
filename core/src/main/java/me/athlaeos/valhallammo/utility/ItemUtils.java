@@ -201,7 +201,7 @@ public class ItemUtils {
     public static Tag<Material> of(String key, Material... materials){
         Set<Material> tagged = Set.of(materials);
         return new Tag<>() {
-            private final NamespacedKey k = new NamespacedKey(ValhallaMMO.getInstance(), "tag_" + key);
+            private final NamespacedKey k = ValhallaMMO.key("tag_" + key);
             @Override public boolean isTagged(@NotNull Material material) { return tagged.contains(material); }
             @NotNull @Override public Set<Material> getValues() { return tagged; }
             @NotNull @Override public NamespacedKey getKey() { return k; }
@@ -349,7 +349,7 @@ public class ItemUtils {
         return i == null || i.getType().isAir() || i.getAmount() <= 0;
     }
 
-    private static final NamespacedKey TYPE_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "temporary_type_storage");
+    private static final NamespacedKey TYPE_KEY = ValhallaMMO.key("temporary_type_storage");
 
     /**
      * Wrapper to get the item meta of the item. The type of the item is immediately stored as temporary variable onto the meta.

@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class MiningProfile extends Profile implements Serializable {
-    private static final NamespacedKey miningProfileKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_mining");
+    private static final NamespacedKey miningProfileKey = ValhallaMMO.key("valhalla_profile_mining");
 
     private float miningraredropratemultiplier = 1F; // rare drop rate multiplier of mining
     private float blastminingraredropratemultiplier = 1F; // rare drop rate multiplier of blast mining

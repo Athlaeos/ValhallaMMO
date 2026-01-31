@@ -22,7 +22,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 
 public class FlightReward extends PerkReward implements Listener {
-    private static final NamespacedKey KEY_GRANTED_FLIGHT = new NamespacedKey(ValhallaMMO.getInstance(), "granted_flight");
+    private static final NamespacedKey KEY_GRANTED_FLIGHT = ValhallaMMO.key("granted_flight");
 
     private final boolean flightPvPPrevention = ValhallaMMO.getPluginConfig().getBoolean("flight_pvp_prevention", true);
     private final boolean flightPvEPrevention = ValhallaMMO.getPluginConfig().getBoolean("flight_pve_prevention", true);

@@ -25,9 +25,9 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.*;
 
 public class RecipeOverviewMenu extends Menu {
-    private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
-    public static final NamespacedKey KEY_RECIPE_CATEGORY = new NamespacedKey(ValhallaMMO.getInstance(), "key_recipe_category");
-    public static final NamespacedKey KEY_RECIPE = new NamespacedKey(ValhallaMMO.getInstance(), "key_recipe");
+    private static final NamespacedKey KEY_ACTION = ValhallaMMO.key("key_action");
+    public static final NamespacedKey KEY_RECIPE_CATEGORY = ValhallaMMO.key("key_recipe_category");
+    public static final NamespacedKey KEY_RECIPE = ValhallaMMO.key("key_recipe");
 
     public static final RecipeCategory DISABLED = new DisabledRecipesCategory(4);
     public static final RecipeCategory CRAFTING_TABLE = new GridRecipeCategory(10);

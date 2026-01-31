@@ -80,7 +80,7 @@ public class FarmingProfile extends Profile {
         return "profiles_farming";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_farming");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_farming");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

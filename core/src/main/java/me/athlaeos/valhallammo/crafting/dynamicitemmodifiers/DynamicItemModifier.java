@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public abstract class DynamicItemModifier {
-    public static final NamespacedKey ERROR_MESSAGE = new NamespacedKey(ValhallaMMO.getInstance(), "contained_error_message");
+    public static final NamespacedKey ERROR_MESSAGE = ValhallaMMO.key("contained_error_message");
 
     private final String name;
     private ModifierPriority priority = ModifierPriority.NEUTRAL;

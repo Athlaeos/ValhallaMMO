@@ -592,7 +592,7 @@ public class PowerProfile extends Profile {
         return "profiles_power";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_power");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_power");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

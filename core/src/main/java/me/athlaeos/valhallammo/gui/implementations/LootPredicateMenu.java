@@ -23,9 +23,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class LootPredicateMenu extends Menu {
-    private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
-    private static final NamespacedKey KEY_PREDICATE_ID = new NamespacedKey(ValhallaMMO.getInstance(), "key_predicate_id");
-    private static final NamespacedKey KEY_PREDICATE_BUTTON = new NamespacedKey(ValhallaMMO.getInstance(), "key_predicate_button");
+    private static final NamespacedKey KEY_ACTION = ValhallaMMO.key("key_action");
+    private static final NamespacedKey KEY_PREDICATE_ID = ValhallaMMO.key("key_predicate_id");
+    private static final NamespacedKey KEY_PREDICATE_BUTTON = ValhallaMMO.key("key_predicate_button");
 
     private static final List<Integer> predicateButtonIndexes = Arrays.asList(2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42);
     private static final ItemStack confirmButton = new ItemBuilder(Material.STRUCTURE_VOID).stringTag(KEY_ACTION, "confirmButton").name("&b&lSave").get();

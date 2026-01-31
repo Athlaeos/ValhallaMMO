@@ -26,7 +26,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DisabledRecipesCategory extends RecipeCategory{
-    private static final NamespacedKey SORT_PRIORITY = new NamespacedKey(ValhallaMMO.getInstance(), "recipe_category_priority");
+    private static final NamespacedKey SORT_PRIORITY = ValhallaMMO.key("recipe_category_priority");
     private static final MaterialChoice choice = new MaterialChoice();
 
     public DisabledRecipesCategory(int position) {

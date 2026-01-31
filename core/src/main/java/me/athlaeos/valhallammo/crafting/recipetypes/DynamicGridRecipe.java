@@ -55,8 +55,8 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
 
     public DynamicGridRecipe(String name){
         this.name = name;
-        this.shapedKey = new NamespacedKey(ValhallaMMO.getInstance(), "gridrecipe_" + name + "_shaped");
-        this.shapelessKey = new NamespacedKey(ValhallaMMO.getInstance(), "gridrecipe_" + name + "_shapeless");
+        this.shapedKey = ValhallaMMO.key("gridrecipe_" + name + "_shaped");
+        this.shapelessKey = ValhallaMMO.key("gridrecipe_" + name + "_shapeless");
     }
 
     public String getName() { return name; }

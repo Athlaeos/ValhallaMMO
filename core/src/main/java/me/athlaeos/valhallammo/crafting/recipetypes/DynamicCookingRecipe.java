@@ -39,7 +39,7 @@ public class DynamicCookingRecipe implements ValhallaRecipe, ValhallaKeyedRecipe
 
     public DynamicCookingRecipe(String name, CookingRecipeType type){
         this.name = name;
-        this.key = new NamespacedKey(ValhallaMMO.getInstance(), "cookingrecipe_" + name);
+        this.key = ValhallaMMO.key("cookingrecipe_" + name);
         this.type = type;
     }
 

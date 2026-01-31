@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class BlockHardnessStick implements Listener {
-    private static final NamespacedKey HARDNESS_STICK = new NamespacedKey(ValhallaMMO.getInstance(), "hardness_stick");
+    private static final NamespacedKey HARDNESS_STICK = ValhallaMMO.key("hardness_stick");
     private static final Map<Float, String> hardnessEquivalenceMap = new TreeMap<>();
     private static final ItemStack stick = new ItemBuilder(Material.STICK).name("&dHardness Stick: 1.5")
             .lore("&fShift while scrolling to",

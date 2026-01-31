@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ReplacementTableSelectionMenu extends Menu {
-    private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
-    private static final NamespacedKey BUTTON_DATA = new NamespacedKey(ValhallaMMO.getInstance(), "button_data");
+    private static final NamespacedKey KEY_ACTION = ValhallaMMO.key("key_action");
+    private static final NamespacedKey BUTTON_DATA = ValhallaMMO.key("button_data");
 
     private static final ItemStack backToMenuButton = new ItemBuilder(getButtonData("editor_backtomenu", Material.BOOK))
             .stringTag(KEY_ACTION, "backToMenuButton")

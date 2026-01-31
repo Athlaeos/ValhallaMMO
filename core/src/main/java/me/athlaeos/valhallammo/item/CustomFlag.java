@@ -25,7 +25,7 @@ public enum CustomFlag {
     UNENCHANTABLE,
     UNMENDABLE;
 
-    private static final NamespacedKey FLAG = new NamespacedKey(ValhallaMMO.getInstance(), "item_flags");
+    private static final NamespacedKey FLAG = ValhallaMMO.key("item_flags");
 
     public static Collection<CustomFlag> getItemFlags(ItemMeta meta){
         Collection<CustomFlag> flags = new HashSet<>();

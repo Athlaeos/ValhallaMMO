@@ -17,9 +17,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MiningSpeed {
-    private static final NamespacedKey SPEED_MULTIPLIER_BASE = new NamespacedKey(ValhallaMMO.getInstance(), "mining_speed_multiplier_base");
-    private static final NamespacedKey SPEED_MULTIPLIER_SPECIFIC = new NamespacedKey(ValhallaMMO.getInstance(), "mining_speed_multiplier_specific");
-    private static final NamespacedKey HARDNESS_TRANSLATIONS = new NamespacedKey(ValhallaMMO.getInstance(), "mining_hardness_translations");
+    private static final NamespacedKey SPEED_MULTIPLIER_BASE = ValhallaMMO.key("mining_speed_multiplier_base");
+    private static final NamespacedKey SPEED_MULTIPLIER_SPECIFIC = ValhallaMMO.key("mining_speed_multiplier_specific");
+    private static final NamespacedKey HARDNESS_TRANSLATIONS = ValhallaMMO.key("mining_hardness_translations");
 
     private static final Map<Material, Double> defaultMultipliers = new HashMap<>();
     private static final Map<Material, Map<Material, Double>> defaultExceptions = new HashMap<>();
@@ -183,7 +183,7 @@ public class MiningSpeed {
         else return BlockUtils.getHardness(block);
     }
 
-    private static final NamespacedKey EMBEDDED_TOOL_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "embedded_tools");
+    private static final NamespacedKey EMBEDDED_TOOL_KEY = ValhallaMMO.key("embedded_tools");
 
     /**
      * Adds an embedded tool to the given item meta

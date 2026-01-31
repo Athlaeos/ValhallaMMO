@@ -49,7 +49,7 @@ public class PotionEffectListener implements Listener {
         }
     }
 
-    private final NamespacedKey potionCloudKey = new NamespacedKey(ValhallaMMO.getInstance(), "lingering_custom_effects");
+    private final NamespacedKey potionCloudKey = ValhallaMMO.key("lingering_custom_effects");
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPotionLinger(LingeringPotionSplashEvent e){

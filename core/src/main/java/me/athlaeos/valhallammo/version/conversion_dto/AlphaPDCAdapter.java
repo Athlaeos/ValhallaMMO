@@ -15,17 +15,17 @@ public class AlphaPDCAdapter {
     private final Map<String, Class<? extends Profile>> alphaProfileMappings = new HashMap<>();
 
     {
-        alphaKeyMappings.put("ALCHEMY", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_alchemy"));
-        alphaKeyMappings.put("ARCHERY", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_archery"));
-        alphaKeyMappings.put("ENCHANTING", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_enchanting"));
-        alphaKeyMappings.put("FARMING", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_farming"));
-        alphaKeyMappings.put("HEAVYARMOR", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_heavy_armor"));
-        alphaKeyMappings.put("HEAVYWEAPONS", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_heavy_weapons"));
-        alphaKeyMappings.put("LANDSCAPING", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_landscaping"));
-        alphaKeyMappings.put("LIGHTARMOR", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_light_armor"));
-        alphaKeyMappings.put("LIGHTWEAPONS", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_light_weapons"));
-        alphaKeyMappings.put("MINING", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_mining"));
-        alphaKeyMappings.put("SMITHING", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_smithing"));
+        alphaKeyMappings.put("ALCHEMY", ValhallaMMO.key("valhalla_profile_alchemy"));
+        alphaKeyMappings.put("ARCHERY", ValhallaMMO.key("valhalla_profile_archery"));
+        alphaKeyMappings.put("ENCHANTING", ValhallaMMO.key("valhalla_profile_enchanting"));
+        alphaKeyMappings.put("FARMING", ValhallaMMO.key("valhalla_profile_farming"));
+        alphaKeyMappings.put("HEAVYARMOR", ValhallaMMO.key("valhalla_profile_heavy_armor"));
+        alphaKeyMappings.put("HEAVYWEAPONS", ValhallaMMO.key("valhalla_profile_heavy_weapons"));
+        alphaKeyMappings.put("LANDSCAPING", ValhallaMMO.key("valhalla_profile_landscaping"));
+        alphaKeyMappings.put("LIGHTARMOR", ValhallaMMO.key("valhalla_profile_light_armor"));
+        alphaKeyMappings.put("LIGHTWEAPONS", ValhallaMMO.key("valhalla_profile_light_weapons"));
+        alphaKeyMappings.put("MINING", ValhallaMMO.key("valhalla_profile_mining"));
+        alphaKeyMappings.put("SMITHING", ValhallaMMO.key("valhalla_profile_smithing"));
 
         alphaProfileMappings.put("ALCHEMY", AlchemyProfile.class);
         alphaProfileMappings.put("ARCHERY", ArcheryProfile.class);

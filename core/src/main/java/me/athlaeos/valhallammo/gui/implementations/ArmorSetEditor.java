@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ArmorSetEditor extends Menu implements SetStatsMenu {
-    private static final NamespacedKey BUTTON_ACTION_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_action");
-    private static final NamespacedKey BUTTON_DATA = new NamespacedKey(ValhallaMMO.getInstance(), "button_data");
+    private static final NamespacedKey BUTTON_ACTION_KEY = ValhallaMMO.key("button_action");
+    private static final NamespacedKey BUTTON_DATA = ValhallaMMO.key("button_data");
     private static final int backToMenuButtonIndex = 53;
     private static final int deleteButtonIndex = 45;
     private static final int nextPageButtonIndex = 53;

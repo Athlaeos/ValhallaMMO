@@ -283,7 +283,7 @@ public class SmithingProfile extends Profile {
         return "profiles_smithing";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_smithing");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_smithing");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

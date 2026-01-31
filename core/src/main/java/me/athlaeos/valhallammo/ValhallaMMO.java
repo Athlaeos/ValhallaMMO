@@ -25,7 +25,6 @@ import me.athlaeos.valhallammo.nms.Paper;
 import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.persistence.Database;
 import me.athlaeos.valhallammo.persistence.ProfilePersistence;
-import me.athlaeos.valhallammo.persistence.implementations.SQL;
 import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
@@ -41,6 +40,7 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.AlphaToBetaConversionHandler;
 import me.athlaeos.valhallammo.version.PaperLootRefillHandler;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -493,5 +493,9 @@ public class ValhallaMMO extends JavaPlugin {
 
     public static boolean disabling() {
         return disabling;
+    }
+
+    public static NamespacedKey key(String key){
+        return new NamespacedKey(instance, key);
     }
 }

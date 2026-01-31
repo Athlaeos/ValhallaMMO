@@ -19,8 +19,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class AlchemyItemPropertyManager {
-    private static final NamespacedKey NUMBER_TAGS = new NamespacedKey(ValhallaMMO.getInstance(), "alchemy_treatments");
-    private static final NamespacedKey QUALITY_ALCHEMY = new NamespacedKey(ValhallaMMO.getInstance(), "quality_alchemy");
+    private static final NamespacedKey NUMBER_TAGS = ValhallaMMO.key("alchemy_treatments");
+    private static final NamespacedKey QUALITY_ALCHEMY = ValhallaMMO.key("quality_alchemy");
 
     private static final Map<Integer, String> qualityLore = new TreeMap<>();
     private static final Map<Integer, String> tagLore = new HashMap<>();

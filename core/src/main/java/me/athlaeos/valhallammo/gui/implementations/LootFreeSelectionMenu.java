@@ -25,8 +25,8 @@ import org.bukkit.loot.LootContext;
 import java.util.*;
 
 public class LootFreeSelectionMenu extends Menu {
-    private static final NamespacedKey BUTTON_ACTION_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_action");
-    private static final NamespacedKey BUTTON_DATA = new NamespacedKey(ValhallaMMO.getInstance(), "button_data");
+    private static final NamespacedKey BUTTON_ACTION_KEY = ValhallaMMO.key("button_action");
+    private static final NamespacedKey BUTTON_DATA = ValhallaMMO.key("button_data");
     private static final boolean selectableLootModifiers = ValhallaMMO.getPluginConfig().getBoolean("selectable_loot_modifiers");
     private static final int nextGuaranteedDropPageIndex = 6;
     private static final int previousGuaranteedDropPageIndex = 2;

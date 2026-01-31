@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class LandscapingProfile extends Profile implements Serializable {
-    private static final NamespacedKey landscapingProfileKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_landscaping");
+    private static final NamespacedKey landscapingProfileKey = ValhallaMMO.key("valhalla_profile_landscaping");
 
     private float woodcuttingraredropratemultiplier = 1F; // rare drop rate multiplier for cut logs
     private float woodcuttingdropmultiplier = 1F; // drop multiplier for cut logs

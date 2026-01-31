@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ArcheryProfile extends Profile implements Serializable {
-    private static final NamespacedKey archeryProfileKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_archery");
+    private static final NamespacedKey archeryProfileKey = ValhallaMMO.key("valhalla_profile_archery");
 
     private float bowdamagemultiplier = 1f;
     private float crossbowdamagemultiplier = 1f;

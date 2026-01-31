@@ -25,9 +25,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ItemSkillRequirements {
-    private static final NamespacedKey SKILL_REQUIREMENT = new NamespacedKey(ValhallaMMO.getInstance(), "item_skill_requirement");
-    private static final NamespacedKey PERMISSION_REQUIREMENT = new NamespacedKey(ValhallaMMO.getInstance(), "item_permission_requirement");
-    private static final NamespacedKey REQUIREMENT_TYPE = new NamespacedKey(ValhallaMMO.getInstance(), "item_skill_requirement_type");
+    private static final NamespacedKey SKILL_REQUIREMENT = ValhallaMMO.key("item_skill_requirement");
+    private static final NamespacedKey PERMISSION_REQUIREMENT = ValhallaMMO.key("item_permission_requirement");
+    private static final NamespacedKey REQUIREMENT_TYPE = ValhallaMMO.key("item_skill_requirement_type");
 
     private static final String penaltyScaling;
     private static final Map<String, Double> attributePenalties = new HashMap<>();

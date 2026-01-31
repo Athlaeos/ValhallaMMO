@@ -34,17 +34,17 @@ public class AlphaToBetaConversionHandler implements Listener {
     private final Map<String, Class<? extends Skill>> alphaToBetaSkillMappings = new HashMap<>();
 
     {
-        alphaKeyMappings.put("ALCHEMY", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_alchemy"));
-        alphaKeyMappings.put("ARCHERY", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_archery"));
-        alphaKeyMappings.put("ENCHANTING", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_enchanting"));
-        alphaKeyMappings.put("FARMING", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_farming"));
-        alphaKeyMappings.put("HEAVYARMOR", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_heavy_armor"));
-        alphaKeyMappings.put("HEAVYWEAPONS", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_heavy_weapons"));
-        alphaKeyMappings.put("LANDSCAPING", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_landscaping"));
-        alphaKeyMappings.put("LIGHTARMOR", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_light_armor"));
-        alphaKeyMappings.put("LIGHTWEAPONS", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_light_weapons"));
-        alphaKeyMappings.put("MINING", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_mining"));
-        alphaKeyMappings.put("SMITHING", new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_smithing"));
+        alphaKeyMappings.put("ALCHEMY", ValhallaMMO.key("valhalla_profile_alchemy"));
+        alphaKeyMappings.put("ARCHERY", ValhallaMMO.key("valhalla_profile_archery"));
+        alphaKeyMappings.put("ENCHANTING", ValhallaMMO.key("valhalla_profile_enchanting"));
+        alphaKeyMappings.put("FARMING", ValhallaMMO.key("valhalla_profile_farming"));
+        alphaKeyMappings.put("HEAVYARMOR", ValhallaMMO.key("valhalla_profile_heavy_armor"));
+        alphaKeyMappings.put("HEAVYWEAPONS", ValhallaMMO.key("valhalla_profile_heavy_weapons"));
+        alphaKeyMappings.put("LANDSCAPING", ValhallaMMO.key("valhalla_profile_landscaping"));
+        alphaKeyMappings.put("LIGHTARMOR", ValhallaMMO.key("valhalla_profile_light_armor"));
+        alphaKeyMappings.put("LIGHTWEAPONS", ValhallaMMO.key("valhalla_profile_light_weapons"));
+        alphaKeyMappings.put("MINING", ValhallaMMO.key("valhalla_profile_mining"));
+        alphaKeyMappings.put("SMITHING", ValhallaMMO.key("valhalla_profile_smithing"));
 
         alphaToBetaSkillMappings.put("ALCHEMY", AlchemySkill.class);
         alphaToBetaSkillMappings.put("ARCHERY", ArcherySkill.class);
@@ -69,7 +69,7 @@ public class AlphaToBetaConversionHandler implements Listener {
         return enabled && config.getString("title") != null;
     }
 
-    private static final NamespacedKey CONVERTED_FROM_ALPHA_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "converted_from_alpha");
+    private static final NamespacedKey CONVERTED_FROM_ALPHA_KEY = ValhallaMMO.key("converted_from_alpha");
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void expConversion(PlayerJoinEvent e){

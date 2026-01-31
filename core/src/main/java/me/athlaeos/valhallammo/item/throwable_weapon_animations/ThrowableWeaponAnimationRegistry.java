@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class ThrowableWeaponAnimationRegistry {
     private static final Map<String, ThrowableWeaponAnimation> animations = new HashMap<>();
-    private static final NamespacedKey THROWING_ANIMATION = new NamespacedKey(ValhallaMMO.getInstance(), "throwable");
+    private static final NamespacedKey THROWING_ANIMATION = ValhallaMMO.key("throwable");
 
     static {
         register(new VerticalSpin("vertical_spin"));

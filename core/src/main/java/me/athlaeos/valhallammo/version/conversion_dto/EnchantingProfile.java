@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EnchantingProfile extends Profile implements Serializable {
-    private static final NamespacedKey enchantingProfileKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_enchanting");
+    private static final NamespacedKey enchantingProfileKey = ValhallaMMO.key("valhalla_profile_enchanting");
 
     private float vanillaenchantmentamplifychance = 0F; // chance for vanilla enchantments to be amplified (or weakened)
     private int maxcustomenchantmentsallowed = 0; // amount of custom enchantments one is allowed to add to an item

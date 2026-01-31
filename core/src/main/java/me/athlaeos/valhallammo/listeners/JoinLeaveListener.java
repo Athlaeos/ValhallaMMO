@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 public class JoinLeaveListener implements Listener {
-    private final NamespacedKey HEALTH = new NamespacedKey(ValhallaMMO.getInstance(), "cached_health");
+    private final NamespacedKey HEALTH = ValhallaMMO.key("cached_health");
     private static final Collection<UUID> loadedProfiles = new HashSet<>();
 
     public static Collection<UUID> getLoadedProfiles() {

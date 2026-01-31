@@ -67,7 +67,7 @@ public class WoodcuttingProfile extends Profile {
         return "profiles_woodcutting";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_woodcutting");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_woodcutting");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

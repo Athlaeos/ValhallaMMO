@@ -15,8 +15,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 public class CustomDurabilityManager {
-    private static final NamespacedKey DURABILITY = new NamespacedKey(ValhallaMMO.getInstance(), "durability");
-    private static final NamespacedKey MAX_DURABILITY = new NamespacedKey(ValhallaMMO.getInstance(), "max_durability");
+    private static final NamespacedKey DURABILITY = ValhallaMMO.key("durability");
+    private static final NamespacedKey MAX_DURABILITY = ValhallaMMO.key("max_durability");
 
     /**
      * Damages an item's custom durability by the given amount. This method does not let you know if the item should break

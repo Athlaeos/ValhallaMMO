@@ -40,7 +40,7 @@ import java.util.*;
 public class AlchemySkill extends Skill implements Listener {
     private boolean quickEmptyPotions = true;
     private final Collection<Material> validCombiningItems = new HashSet<>();
-    private final NamespacedKey COMBINATIONS_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "alchemy_combinations");
+    private final NamespacedKey COMBINATIONS_KEY = ValhallaMMO.key("alchemy_combinations");
 
     private static final Map<String, Transmutation> transmutations = new HashMap<>();
     private final Map<String, Transmutation> transmutationsByMaterial = new HashMap<>();
@@ -229,7 +229,7 @@ public class AlchemySkill extends Skill implements Listener {
         if (transmutationSound != null) e.getHitBlock().getWorld().playSound(e.getHitBlock().getLocation(), transmutationSound, 1F, 1F);
     }
 
-    private static final NamespacedKey TRANSMUTATION_POTION = new NamespacedKey(ValhallaMMO.getInstance(), "transmutation_potion");
+    private static final NamespacedKey TRANSMUTATION_POTION = ValhallaMMO.key("transmutation_potion");
 
     public static void setTransmutationPotion(ItemMeta meta, boolean set){
         if (set) {

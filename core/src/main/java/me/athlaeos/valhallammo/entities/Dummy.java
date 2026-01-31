@@ -21,7 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 public class Dummy implements Listener {
-    private static final NamespacedKey DUMMY_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "dummy_head");
+    private static final NamespacedKey DUMMY_KEY = ValhallaMMO.key("dummy_head");
 
     public static boolean isDummyItem(ItemMeta meta){
         return meta.getPersistentDataContainer().has(DUMMY_KEY, PersistentDataType.BYTE);

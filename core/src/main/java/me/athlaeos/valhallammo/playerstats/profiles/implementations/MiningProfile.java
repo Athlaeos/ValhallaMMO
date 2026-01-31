@@ -142,7 +142,7 @@ public class MiningProfile extends Profile {
         return "profiles_mining";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_mining");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_mining");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

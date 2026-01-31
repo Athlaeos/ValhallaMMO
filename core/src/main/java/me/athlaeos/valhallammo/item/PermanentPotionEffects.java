@@ -19,7 +19,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.*;
 
 public class PermanentPotionEffects {
-    private static final NamespacedKey PERMANENT_EFFECTS = new NamespacedKey(ValhallaMMO.getInstance(), "permanent_potion_effects");
+    private static final NamespacedKey PERMANENT_EFFECTS = ValhallaMMO.key("permanent_potion_effects");
     private static final AdditionType additionType = Catch.catchOrElse(
             () -> AdditionType.valueOf(ValhallaMMO.getPluginConfig().getString("permanent_effect_stacking", "HIGHEST")),
             AdditionType.HIGHEST,

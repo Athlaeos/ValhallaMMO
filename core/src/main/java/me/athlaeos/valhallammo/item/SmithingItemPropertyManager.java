@@ -20,11 +20,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class SmithingItemPropertyManager {
-    private static final NamespacedKey NUMBER_TAGS = new NamespacedKey(ValhallaMMO.getInstance(), "smithing_treatments");
-    private static final NamespacedKey QUALITY_SMITHING = new NamespacedKey(ValhallaMMO.getInstance(), "quality_smithing");
-    private static final NamespacedKey NEUTRAL_QUALITY = new NamespacedKey(ValhallaMMO.getInstance(), "neutral_quality");
-    private static final NamespacedKey COUNTER = new NamespacedKey(ValhallaMMO.getInstance(), "counter");
-    private static final NamespacedKey COUNTER_LIMIT = new NamespacedKey(ValhallaMMO.getInstance(), "counter_limit");
+    private static final NamespacedKey NUMBER_TAGS = ValhallaMMO.key("smithing_treatments");
+    private static final NamespacedKey QUALITY_SMITHING = ValhallaMMO.key("quality_smithing");
+    private static final NamespacedKey NEUTRAL_QUALITY = ValhallaMMO.key("neutral_quality");
+    private static final NamespacedKey COUNTER = ValhallaMMO.key("counter");
+    private static final NamespacedKey COUNTER_LIMIT = ValhallaMMO.key("counter_limit");
 
     private static final Map<Integer, String> qualityLore = new TreeMap<>();
     private static final Map<Integer, String> tagLore = new HashMap<>();

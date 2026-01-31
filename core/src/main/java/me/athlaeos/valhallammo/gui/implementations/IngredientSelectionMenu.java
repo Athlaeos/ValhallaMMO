@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class IngredientSelectionMenu extends Menu {
-    private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
+    private static final NamespacedKey KEY_ACTION = ValhallaMMO.key("key_action");
 
     private static final ItemStack confirmButton = new ItemBuilder(getButtonData("editor_ingredient_selection_save", Material.STRUCTURE_VOID))
             .name("&aConfirm")

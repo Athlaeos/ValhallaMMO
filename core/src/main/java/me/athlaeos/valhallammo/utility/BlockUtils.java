@@ -46,8 +46,8 @@ public class BlockUtils {
             }
         }
     }
-    private static final NamespacedKey BLOCK_OWNER = new NamespacedKey(ValhallaMMO.getInstance(), "block_owner");
-    private static final NamespacedKey CUSTOM_HARDNESS = new NamespacedKey(ValhallaMMO.getInstance(), "custom_hardness");
+    private static final NamespacedKey BLOCK_OWNER = ValhallaMMO.key("block_owner");
+    private static final NamespacedKey CUSTOM_HARDNESS = ValhallaMMO.key("custom_hardness");
 
     public static void setCustomHardness(Block b, float hardness){
         PersistentDataContainer customBlockData = new CustomBlockData(b, ValhallaMMO.getInstance());

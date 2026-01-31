@@ -15,7 +15,7 @@ public enum ToolRequirementType {
     EQUAL_OR_GREATER((i1, i2) -> i2 < 0 || i1 >= i2), // custom tool is required, and must be of same or greater ID as required tool
     NONE_MANDATORY((i1, i2) -> i1 < 0); // no custom tool is allowed to be used
     private final Comparator<Integer, Integer> comparator;
-    private static final NamespacedKey key_tool_id = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_tool_id");
+    private static final NamespacedKey key_tool_id = ValhallaMMO.key("valhalla_tool_id");
 
     ToolRequirementType(Comparator<Integer, Integer> comparator) {
         this.comparator = comparator;

@@ -41,8 +41,8 @@ import java.util.stream.Collectors;
 
 public class ImmersiveRecipeSelectionMenu extends Menu {
     private static final Collection<UUID> playersWhoReceivedFirstTimeMessage = new HashSet<>();
-    private static final NamespacedKey BUTTON_ACTION_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_action");
-    private static final NamespacedKey BUTTON_RECIPE_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_recipe");
+    private static final NamespacedKey BUTTON_ACTION_KEY = ValhallaMMO.key("button_action");
+    private static final NamespacedKey BUTTON_RECIPE_KEY = ValhallaMMO.key("button_recipe");
     private static final int filter = 53;
     private static final int predictedResult = 43;
     private static final List<Integer> recipeIndexes = List.of(
@@ -339,7 +339,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
         void onItemsBuilt(List<ItemStack> items);
     }
 
-    private static final NamespacedKey KEY_FAVOURITES = new NamespacedKey(ValhallaMMO.getInstance(), "favourited_recipes");
+    private static final NamespacedKey KEY_FAVOURITES = ValhallaMMO.key("favourited_recipes");
 
     public static boolean isFavourited(Player p, String recipe){
         return getFavourites(p).contains(recipe);

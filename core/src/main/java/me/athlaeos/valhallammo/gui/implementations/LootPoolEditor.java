@@ -25,8 +25,8 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.*;
 
 public class LootPoolEditor extends Menu implements SetLootPredicatesMenu {
-    private static final NamespacedKey BUTTON_ACTION_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_action");
-    private static final NamespacedKey BUTTON_DATA = new NamespacedKey(ValhallaMMO.getInstance(), "button_data");
+    private static final NamespacedKey BUTTON_ACTION_KEY = ValhallaMMO.key("button_action");
+    private static final NamespacedKey BUTTON_DATA = ValhallaMMO.key("button_data");
 
     private static final int predicatesIndex = 1;
     private static final int predicateTypeIndex = 2;

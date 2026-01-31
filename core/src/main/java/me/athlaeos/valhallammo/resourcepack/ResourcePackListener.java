@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.persistence.PersistentDataType;
 
 public class ResourcePackListener implements Listener {
-    private static final NamespacedKey RESOURCEPACK_VERSION = new NamespacedKey(ValhallaMMO.getInstance(), "resourcepack_version");
+    private static final NamespacedKey RESOURCEPACK_VERSION = ValhallaMMO.key("resourcepack_version");
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){

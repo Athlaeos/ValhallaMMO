@@ -36,7 +36,7 @@ public abstract class RecipeOption implements IngredientChoice {
 
     public abstract RecipeOption getNew();
 
-    private final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "recipe_option_id");
+    private final NamespacedKey key = ValhallaMMO.key("recipe_option_id");
     public void onClick(InventoryClickEvent e){
         e.setCancelled(false);
         PlayerMenuUtilManager.getPlayerMenuUtility((Player) e.getWhoClicked()).addOption(this);

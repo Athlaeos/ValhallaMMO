@@ -12,8 +12,8 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.*;
 
 public class BlockStore {
-    private static final NamespacedKey NEW_PLACED_FORMAT = new NamespacedKey(ValhallaMMO.getInstance(), "new_placed_format");
-    private static final NamespacedKey LEGACY_BLOCK_PLACED_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "block_placement_status");
+    private static final NamespacedKey NEW_PLACED_FORMAT = ValhallaMMO.key("new_placed_format");
+    private static final NamespacedKey LEGACY_BLOCK_PLACED_KEY = ValhallaMMO.key("block_placement_status");
 
     private static final Collection<Location> PLACED_BLOCK_CACHE = new HashSet<>();
 
@@ -64,7 +64,7 @@ public class BlockStore {
     }
 
     public static NamespacedKey blockPlacedKey(Block block) {
-        return new NamespacedKey(ValhallaMMO.getInstance(), "placed_" + (block.getX() & 0x000F) + "_" + block.getY() + "_" + (block.getZ() & 0x000F));
+        return ValhallaMMO.key("placed_" + (block.getX() & 0x000F) + "_" + block.getY() + "_" + (block.getZ() & 0x000F));
     }
 
     private static void migrateBlockData(Chunk chunk, PersistentDataContainer pdc) {

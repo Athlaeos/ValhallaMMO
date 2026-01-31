@@ -6,7 +6,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 public class CustomID {
-    private static final NamespacedKey ITEM_ID = new NamespacedKey(ValhallaMMO.getInstance(), "id");
+    private static final NamespacedKey ITEM_ID = ValhallaMMO.key("id");
 
     public static void setID(ItemMeta meta, Integer id){
         if (id == null) meta.getPersistentDataContainer().remove(ITEM_ID);
