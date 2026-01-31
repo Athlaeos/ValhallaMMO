@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class CauldronCraftingListener implements Listener {
-    private static final NamespacedKey CAULDRON_STORAGE = new NamespacedKey(ValhallaMMO.getInstance(), "cauldron_storage");
+    private static final NamespacedKey CAULDRON_STORAGE = ValhallaMMO.key("cauldron_storage");
     private static final Map<UUID, CauldronInputTick> entityThrowItemLimiter = new HashMap<>();
     private static final Map<Location, CauldronInputTick> blockThrowItemLimiter = new HashMap<>();
     private static final Map<Location, CauldronCookingTask> activeCauldrons = new HashMap<>();

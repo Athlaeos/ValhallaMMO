@@ -71,13 +71,13 @@ public class EffectResponsibility {
     public static double getResponsibleDamageBuff(Entity victim, CustomDamageType damageType){
         Entity responsible = getResponsible(victim.getUniqueId(), damageType);
         if (responsible == null || damageType.damageMultiplier() == null) return 0D;
-        else return AccumulativeStatManager.getCachedAttackerRelationalStats(damageType.damageMultiplier(), victim, responsible, 10000, true);
+        else return AccumulativeStatManager.getCachedRelationalStats(damageType.damageMultiplier(), victim, responsible, 10000, true);
     }
 
     public static double getResponsibleDamageBuff(Entity victim, Entity damagerDefault, CustomDamageType damageType){
         Entity responsible = Utils.thisorDefault(getResponsible(victim.getUniqueId(), damageType), damagerDefault);
         if (responsible == null || damageType.damageMultiplier() == null) return 0D;
-        else return AccumulativeStatManager.getCachedAttackerRelationalStats(damageType.damageMultiplier(), victim, responsible, 10000, true);
+        else return AccumulativeStatManager.getCachedRelationalStats(damageType.damageMultiplier(), victim, responsible, 10000, true);
     }
 
     private record Responsibility(UUID responsible, UUID victim, long responsibleUntil){}

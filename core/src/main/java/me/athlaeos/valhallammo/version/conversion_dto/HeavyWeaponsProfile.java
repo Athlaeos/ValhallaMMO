@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class HeavyWeaponsProfile extends Profile implements Serializable {
-    private static final NamespacedKey heavyWeaponsProfileKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_heavy_weapons");
+    private static final NamespacedKey heavyWeaponsProfileKey = ValhallaMMO.key("valhalla_profile_heavy_weapons");
 
     private float damagemultiplier = 1F;
     private float attackspeedbonus = 0F;

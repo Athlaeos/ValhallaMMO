@@ -53,6 +53,14 @@ public class Timer {
         }
     }
 
+    public static boolean sendIfNotPassed(Player player, String cooldownKey, String type){
+        if (!isCooldownPassed(player.getUniqueId(), cooldownKey)){
+            sendCooldownStatus(player, cooldownKey, type);
+            return true;
+        }
+        return false;
+    }
+
     private static final Map<UUID, BukkitRunnable> cooldownStatusRunnables = new HashMap<>();
 
     public static void sendCooldownStatus(Player player, String cooldownKey, String type){

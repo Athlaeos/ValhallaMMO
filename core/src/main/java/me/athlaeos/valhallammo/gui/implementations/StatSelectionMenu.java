@@ -22,8 +22,8 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.*;
 
 public class StatSelectionMenu extends Menu {
-    private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
-    private static final NamespacedKey KEY_ATTRIBUTE_ID = new NamespacedKey(ValhallaMMO.getInstance(), "key_attribute_id");
+    private static final NamespacedKey KEY_ACTION = ValhallaMMO.key("key_action");
+    private static final NamespacedKey KEY_ATTRIBUTE_ID = ValhallaMMO.key("key_attribute_id");
 
     private static final ItemStack confirmButton = new ItemBuilder(Material.STRUCTURE_VOID).stringTag(KEY_ACTION, "confirmButton").name("&b&lSave").get();
     private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_DYE))

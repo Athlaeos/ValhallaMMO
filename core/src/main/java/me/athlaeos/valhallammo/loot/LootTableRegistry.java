@@ -46,10 +46,10 @@ public class LootTableRegistry {
             .disableHtmlEscaping()
             .enableComplexMapKeySerialization()
             .create();
-    private static final NamespacedKey STORED_LOOT_TABLE = new NamespacedKey(ValhallaMMO.getInstance(), "loot_table");
-    private static final NamespacedKey FREE_SELECTION_TABLE = new NamespacedKey(ValhallaMMO.getInstance(), "free_selection_loot_table");
-    private static final NamespacedKey FREE_SELECTION_ALLOW_DUPLICATES = new NamespacedKey(ValhallaMMO.getInstance(), "free_selection_allow_duplicates");
-    private static final NamespacedKey LOOT_ITEM_SOUND = new NamespacedKey(ValhallaMMO.getInstance(), "loot_item_sound");
+    private static final NamespacedKey STORED_LOOT_TABLE = ValhallaMMO.key("loot_table");
+    private static final NamespacedKey FREE_SELECTION_TABLE = ValhallaMMO.key("free_selection_loot_table");
+    private static final NamespacedKey FREE_SELECTION_ALLOW_DUPLICATES = ValhallaMMO.key("free_selection_allow_duplicates");
+    private static final NamespacedKey LOOT_ITEM_SOUND = ValhallaMMO.key("loot_item_sound");
 
     private static final Map<String, ReplacementTable> replacementTables = new HashMap<>(); // registry for all replacement tables
     private static final Map<String, String> blockReplacementTables = new HashMap<>(); // all loot tables active on blocks

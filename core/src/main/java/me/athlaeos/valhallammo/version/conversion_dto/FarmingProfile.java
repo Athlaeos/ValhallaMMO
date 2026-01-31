@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class FarmingProfile extends Profile implements Serializable {
-    private static final NamespacedKey farmingProfileKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_farming");
+    private static final NamespacedKey farmingProfileKey = ValhallaMMO.key("valhalla_profile_farming");
 
     private float raredropratemultiplier = 1F; // rare drop rate multiplier for crops
     private float dropmultiplier = 1F; // drop multiplier for crops

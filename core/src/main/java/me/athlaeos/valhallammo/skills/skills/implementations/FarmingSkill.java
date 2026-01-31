@@ -197,59 +197,74 @@ public class FarmingSkill extends Skill implements Listener {
                 WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
 
         if (!hasPermissionAccess(e.getPlayer())) return;
+        Player player = e.getPlayer();
         Block clickedBlock = e.getClickedBlock();
-        String type = BlockUtils.getBlockType(clickedBlock);
         FarmingProfile profile = ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class);
-        if (clickedBlock.getBlockData() instanceof Ageable a && a.getAge() >= a.getMaximumAge() && harvestableCrops.contains(type)) {
-            if (profile.isFieldHarvestUnlocked() && e.getPlayer().isSneaking() &&
-                    Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "farming_field_harvest") &&
-                    !fieldHarvestingPlayers.contains(e.getPlayer().getUniqueId()) &&
-                    !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_VEINFARMER)) {
-                Collection<Block> vein = BlockUtils.getBlockVein(clickedBlock, fieldHarvestLimit, b ->
-                                harvestableCrops.contains(BlockUtils.getBlockType(b)) && b.getBlockData() instanceof Ageable ag && ag.getAge() >= ag.getMaximumAge(),
-                        fieldHarvestScanArea);
-                fieldHarvestingPlayers.add(e.getPlayer().getUniqueId());
-                e.setCancelled(true);
-                if (fieldHarvestAnimation != null) fieldHarvestAnimation.animate(e.getPlayer(), clickedBlock.getLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
-                if (fieldHarvestInstant)
-                    BlockUtils.processBlocks(e.getPlayer(), vein, p -> true, b -> {
-                        if (profile.isFieldHarvestInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
-                        instantHarvest(e.getPlayer(), b, profile);
-                    }, (b) -> fieldHarvestingPlayers.remove(b.getUniqueId()));
-                else
-                    BlockUtils.processBlocksPulse(e.getPlayer(), clickedBlock, vein, p -> true, b -> {
-                        if (profile.isFieldHarvestInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
-                        instantHarvest(e.getPlayer(), b, profile);
-                    }, (b) -> fieldHarvestingPlayers.remove(b.getUniqueId()));
-                Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getFieldHarvestCooldown() * 50, "farming_field_harvest");
-            } else if (profile.isInstantHarvesting()) {
-                if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "farming_field_harvest")) Timer.sendCooldownStatus(e.getPlayer(), "farming_field_harvest", TranslationManager.getTranslation("ability_field_harvest"));
+        if (isHarvestable(clickedBlock)) {
+            if (!fieldHarvestingPlayers.contains(player.getUniqueId()) && profile.isFieldHarvestUnlocked() && player.isSneaking()
+                    && Timer.isCooldownPassed(player.getUniqueId(), "farming_field_harvest")
+                    && !WorldGuardHook.inDisabledRegion(player.getLocation(), player, WorldGuardHook.VMMO_ABILITIES_VEINFARMER)) {
+                Collection<Block> vein = BlockUtils.getBlockVein(clickedBlock, fieldHarvestLimit, this::isHarvestable, fieldHarvestScanArea);
+                if (vein.size() <= 1) {
+                    instantHarvest(player, clickedBlock, profile);
+                    player.swingMainHand();
+                    return;
+                }
 
-                instantHarvest(e.getPlayer(), clickedBlock, profile);
-                e.getPlayer().swingMainHand();
+                fieldHarvestingPlayers.add(player.getUniqueId());
+                e.setCancelled(true);
+                if (fieldHarvestAnimation != null) {
+                    fieldHarvestAnimation.animate(player, clickedBlock.getLocation(), player.getEyeLocation().getDirection(), 0);
+                }
+
+                startEXPBatch(player, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, false);
+                if (fieldHarvestInstant) {
+                    BlockUtils.processBlocks(player, vein, $ -> true, b -> {
+                        if (profile.isFieldHarvestInstantPickup()) LootListener.setInstantPickup(b, player);
+                        instantHarvest(player, b, profile);
+                    }, $ -> {
+                        endEXPBatch(player);
+                        fieldHarvestingPlayers.remove(player.getUniqueId());
+                    });
+                } else {
+                    BlockUtils.processBlocksPulse(player, clickedBlock, vein, $ -> true, b -> {
+                        if (profile.isFieldHarvestInstantPickup()) LootListener.setInstantPickup(b, player);
+                        instantHarvest(player, b, profile);
+                    }, $ -> {
+                        startEXPBatch(player, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, false);
+                    }, $ -> {
+                        endEXPBatch(player);
+                        fieldHarvestingPlayers.remove(player.getUniqueId());
+                    });
+                }
+                Timer.setCooldownIgnoreIfPermission(player, profile.getFieldHarvestCooldown() * 50, "farming_field_harvest");
+            } else if (profile.isInstantHarvesting()) {
+                Timer.sendIfNotPassed(player, "farming_field_harvest", TranslationManager.getTranslation("ability_field_harvest"));
+                instantHarvest(player, clickedBlock, profile);
+                player.swingMainHand();
             }
-        }
-        if (clickedBlock.getBlockData() instanceof Beehive b && b.getHoneyLevel() >= b.getMaximumHoneyLevel()) {
+        } else if (clickedBlock.getBlockData() instanceof Beehive b && b.getHoneyLevel() >= b.getMaximumHoneyLevel()) {
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 Beehive newHive = clickedBlock.getBlockData() instanceof Beehive bee ? bee : null;
-                if (newHive == null) return;
-                if (newHive.getHoneyLevel() < newHive.getMaximumHoneyLevel()){
-                    // hive is empty after 5 ticks, so it can be assumed it was harvested
-                    if (blockInteractExpValues.containsKey(type)) {
-                        double amount = blockInteractExpValues.get(type);
-                        addEXP(e.getPlayer(), amount, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
+                if (newHive == null || newHive.getHoneyLevel() >= newHive.getMaximumHoneyLevel()) {
+                    return;
+                }
 
-                        int vanillaExpReward = Utils.randomAverage(profile.getFarmingExperienceRate());
-                        if (vanillaExpReward > 0) {
-                            ExperienceOrb orb = (ExperienceOrb) clickedBlock.getWorld().spawnEntity(clickedBlock.getLocation().add(0.5, 0.5, 0.5), EntityType.EXPERIENCE_ORB);
-                            orb.setExperience(vanillaExpReward);
-                        }
-                    }
+                // hive is empty after 5 ticks, so it can be assumed it was harvested
+                if (blockInteractExpValues.containsKey(clickedBlock.getType().toString())) {
+                    double amount = blockInteractExpValues.get(clickedBlock.getType().toString());
+                    addEXP(e.getPlayer(), amount, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
 
-                    if (Utils.proc(e.getPlayer(), profile.getHiveHoneySaveChance(), false)) {
-                        newHive.setHoneyLevel(newHive.getMaximumHoneyLevel());
-                        clickedBlock.setBlockData(newHive);
+                    int vanillaExpReward = Utils.randomAverage(profile.getFarmingExperienceRate());
+                    if (vanillaExpReward > 0) {
+                        ExperienceOrb orb = (ExperienceOrb) clickedBlock.getWorld().spawnEntity(clickedBlock.getLocation().add(0.5, 0.5, 0.5), EntityType.EXPERIENCE_ORB);
+                        orb.setExperience(vanillaExpReward);
                     }
+                }
+
+                if (Utils.proc(e.getPlayer(), profile.getHiveHoneySaveChance(), false)) {
+                    newHive.setHoneyLevel(newHive.getMaximumHoneyLevel());
+                    clickedBlock.setBlockData(newHive);
                 }
             }, 5L);
         }
@@ -261,6 +276,10 @@ public class FarmingSkill extends Skill implements Listener {
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_FARMING)) return;
         Block b = e.getBlock();
         growBlock(b, ProfileCache.getOrCache(e.getPlayer(), FarmingProfile.class));
+    }
+
+    public boolean isHarvestable(Block block) {
+        return harvestableCrops.contains(block.getType().toString()) && block.getBlockData() instanceof Ageable a && a.getAge() >= a.getMaximumAge();
     }
 
     private void growBlock(Block b, FarmingProfile p){

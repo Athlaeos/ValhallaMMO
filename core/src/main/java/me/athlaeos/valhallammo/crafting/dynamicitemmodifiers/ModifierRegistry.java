@@ -66,6 +66,7 @@ public class ModifierRegistry {
         register(new SmithingTagsCancelIfPresent("smithing_tags_forbid"));
         register(new SmithingTagsRemove("smithing_tags_remove"));
         register(new SmithingTagsRemoveAll("smithing_tags_clear"));
+        register(new VanillaItemRequirement("require_vanilla_item"));
 
         register(new EnchantmentRandomize("enchant_randomly"));
         register(new EnchantmentsClear("enchantments_clear"));

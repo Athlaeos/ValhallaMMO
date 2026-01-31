@@ -180,7 +180,7 @@ public class FishingSkill extends Skill implements Listener {
         return dropsExpValues;
     }
 
-    private static final NamespacedKey BAIT_POWER_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "bait_power");
+    private static final NamespacedKey BAIT_POWER_KEY = ValhallaMMO.key("bait_power");
     public static void setBaitPower(ItemMeta meta, Double baitPower){
         if (baitPower == null) meta.getPersistentDataContainer().remove(BAIT_POWER_KEY);
         else meta.getPersistentDataContainer().set(BAIT_POWER_KEY, PersistentDataType.DOUBLE, baitPower);

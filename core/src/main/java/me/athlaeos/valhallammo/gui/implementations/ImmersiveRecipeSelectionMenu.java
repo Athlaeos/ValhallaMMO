@@ -6,7 +6,6 @@ import me.athlaeos.valhallammo.crafting.blockvalidations.Validation;
 import me.athlaeos.valhallammo.crafting.blockvalidations.ValidationRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.crafting.recipetypes.ImmersiveCraftingRecipe;
 import me.athlaeos.valhallammo.dom.Comparator;
 import me.athlaeos.valhallammo.gui.Menu;
@@ -42,8 +41,8 @@ import java.util.stream.Collectors;
 
 public class ImmersiveRecipeSelectionMenu extends Menu {
     private static final Collection<UUID> playersWhoReceivedFirstTimeMessage = new HashSet<>();
-    private static final NamespacedKey BUTTON_ACTION_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_action");
-    private static final NamespacedKey BUTTON_RECIPE_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_recipe");
+    private static final NamespacedKey BUTTON_ACTION_KEY = ValhallaMMO.key("button_action");
+    private static final NamespacedKey BUTTON_RECIPE_KEY = ValhallaMMO.key("button_recipe");
     private static final int filter = 53;
     private static final int predictedResult = 43;
     private static final List<Integer> recipeIndexes = List.of(
@@ -271,8 +270,8 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                                 hand :
                                 recipe.getTinkerInput().getItem()) :
                         recipe.getResult()).clone();
-                ResultChangingModifier changingModifier = (ResultChangingModifier) recipe.getModifiers().stream().filter(m -> m instanceof ResultChangingModifier).findFirst().orElse(null);
-                if (changingModifier != null) button = changingModifier.getNewResult(ModifierContext.builder(new ItemBuilder(button)).crafter(playerMenuUtility.getOwner()).get());
+                ItemBuilder asBuilder = new ItemBuilder(button);
+                DynamicItemModifier.modifyAppearance(ModifierContext.builder(asBuilder).crafter(playerMenuUtility.getOwner()).get(), recipe.getModifiers());
                 List<String> lore = new ArrayList<>(recipe.getDescription() == null ?
                         defaultFormat :
                         Arrays.asList(recipe.getDescription().split("/n"))
@@ -285,13 +284,13 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                                     .replace("%item%", recipe.getMetaRequirement().getChoice().ingredientDescription(i));
                         }).collect(Collectors.toList())
                 );
-                String time = String.format("%.1f", (Math.max(0, recipe.getTimeToCraft() * (1 - craftingTimeReduction))/20D));
+                String time = String.format("%.1f", (Math.max(0, craftingTimeReduction >= 0 ? (recipe.getTimeToCraft() * (1 / (1 + Math.max(-0.999, craftingTimeReduction)))) : (recipe.getTimeToCraft() * (1 - craftingTimeReduction)))/20D));
                 lore = lore.stream().map(l -> l.replace("%crafting_time%", time)).collect(Collectors.toList());
 
                 String displayName = recipe.getDisplayName() == null ? ItemUtils.getItemName(new ItemBuilder(button)) : recipe.getDisplayName();
                 String favouritePrefix = TranslationManager.getTranslation("recipe_favourited_prefix");
                 String favouriteSuffix = TranslationManager.getTranslation("recipe_favourited_suffix");
-                icons.add(new ItemBuilder(button).name("&r" +
+                icons.add(asBuilder.name("&r" +
                         (isFavourited(playerMenuUtility.getOwner(), recipe.getName()) ?
                                 favouritePrefix + displayName + favouriteSuffix :
                                 displayName)).lore(lore).stringTag(BUTTON_RECIPE_KEY, recipe.getName()).translate().get());
@@ -340,7 +339,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
         void onItemsBuilt(List<ItemStack> items);
     }
 
-    private static final NamespacedKey KEY_FAVOURITES = new NamespacedKey(ValhallaMMO.getInstance(), "favourited_recipes");
+    private static final NamespacedKey KEY_FAVOURITES = ValhallaMMO.key("favourited_recipes");
 
     public static boolean isFavourited(Player p, String recipe){
         return getFavourites(p).contains(recipe);

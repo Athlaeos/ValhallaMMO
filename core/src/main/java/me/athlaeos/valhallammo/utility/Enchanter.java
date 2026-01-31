@@ -162,7 +162,7 @@ public class Enchanter {
         return Math.max(1, (int) Math.round(enchantment_level * random));
     }
 
-    private static final NamespacedKey ENCHANTABILITY = new NamespacedKey(ValhallaMMO.getInstance(), "enchantability");
+    private static final NamespacedKey ENCHANTABILITY = ValhallaMMO.key("enchantability");
     public static int getEnchantability(ItemStack i, ItemMeta meta){
         return ItemUtils.getPDCInt(ENCHANTABILITY, meta, enchantabilityMap.getOrDefault(i.getType(), 1));
     }

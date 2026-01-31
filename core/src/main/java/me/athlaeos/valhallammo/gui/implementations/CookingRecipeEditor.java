@@ -30,7 +30,7 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.*;
 
 public class CookingRecipeEditor extends Menu implements SetModifiersMenu, SetRecipeOptionMenu, SetValidationsMenu {
-    private static final NamespacedKey BUTTON_ACTION_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_action");
+    private static final NamespacedKey BUTTON_ACTION_KEY = ValhallaMMO.key("button_action");
     private static final int inputIndex = 21;
     private static final int resultIndex = 23;
     private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();

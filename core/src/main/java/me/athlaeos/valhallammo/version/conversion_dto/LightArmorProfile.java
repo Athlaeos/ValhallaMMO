@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class LightArmorProfile extends Profile implements Serializable {
-    private static final NamespacedKey lightArmorProfileKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_light_armor");
+    private static final NamespacedKey lightArmorProfileKey = ValhallaMMO.key("valhalla_profile_light_armor");
 
     private float movementspeedpenalty = 0F; // movement speed penalty per piece of light armor
     private float damageresistance = 0F; // damage resistance per piece of light armor

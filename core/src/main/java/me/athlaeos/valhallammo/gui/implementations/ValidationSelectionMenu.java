@@ -24,8 +24,8 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.*;
 
 public class ValidationSelectionMenu extends Menu {
-    private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
-    public static final NamespacedKey KEY_VALIDATION = new NamespacedKey(ValhallaMMO.getInstance(), "key_validation");
+    private static final NamespacedKey KEY_ACTION = ValhallaMMO.key("key_action");
+    public static final NamespacedKey KEY_VALIDATION = ValhallaMMO.key("key_validation");
 
     private final Menu menu;
     private final String targetBlock;

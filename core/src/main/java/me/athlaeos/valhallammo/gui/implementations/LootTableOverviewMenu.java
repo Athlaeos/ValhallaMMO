@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 public class LootTableOverviewMenu extends Menu {
-    private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
-    public static final NamespacedKey KEY_TABLE_CATEGORY = new NamespacedKey(ValhallaMMO.getInstance(), "key_table_category");
-    public static final NamespacedKey KEY_TABLE = new NamespacedKey(ValhallaMMO.getInstance(), "key_table");
+    private static final NamespacedKey KEY_ACTION = ValhallaMMO.key("key_action");
+    public static final NamespacedKey KEY_TABLE_CATEGORY = ValhallaMMO.key("key_table_category");
+    public static final NamespacedKey KEY_TABLE = ValhallaMMO.key("key_table");
 
     public static final TableCategory BLOCKS_LOOT = new BlockLootTables(12);
     public static final TableCategory ENTITIES_LOOT = new EntityLootTables(21);

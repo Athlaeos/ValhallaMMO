@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SmithingProfile extends Profile implements Serializable {
-    private static final NamespacedKey smithingProfileKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_smithing");
+    private static final NamespacedKey smithingProfileKey = ValhallaMMO.key("valhalla_profile_smithing");
 
     private int craftingquality_all = 0;
     private int craftingquality_bow = 0;

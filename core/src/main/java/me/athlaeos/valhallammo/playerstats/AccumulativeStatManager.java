@@ -463,7 +463,6 @@ public class AccumulativeStatManager {
         else if (!collector.isAttackerPossessive() && e1 instanceof LivingEntity l && !(l instanceof Player)) value += MonsterScalingManager.getStatValue(l, stat);
         if (collector.isAttackerPossessive() && e2 instanceof Player p) value += PartyManager.getCompanyStats(p, stat);
         else if (!collector.isAttackerPossessive() && e1 instanceof Player p) value += PartyManager.getCompanyStats(p, stat);
-
         return Utils.round6Decimals(value); // round to 6 decimals
     }
 
@@ -479,31 +478,21 @@ public class AccumulativeStatManager {
         }
     }
 
-    public static double getCachedRelationalStats(String stat, Entity victimPrimary, Entity attacker, long refreshAfter, boolean use){
-        if (victimPrimary == null) return 0;
-        Double cachedValue = getValidCachedStat(victimPrimary, stat);
+    public static double getCachedRelationalStats(String stat, Entity victim, Entity attacker, long refreshAfter, boolean use){
+        if (victim == null) return 0;
+        if (attacker == null) return getCachedStats(stat, victim, refreshAfter, use);
+        Double cachedValue = getValidCachedRelationalStat(victim, attacker, stat);
         if (cachedValue != null) {
             return cachedValue;
         } else {
-            double statValue = getRelationalStats(stat, victimPrimary, attacker, use);
-            cacheStat(victimPrimary, stat, statValue, refreshAfter);
-            return statValue;
-        }
-    }
-
-    public static double getCachedAttackerRelationalStats(String stat, Entity victim, Entity attackerPrimary, long refreshAfter, boolean use){
-        if (victim == null || attackerPrimary == null) return 0;
-        Double cachedValue = getValidCachedStat(attackerPrimary, stat);
-        if (cachedValue != null) {
-            return cachedValue;
-        } else {
-            double statValue = getRelationalStats(stat, victim, attackerPrimary, use);
-            cacheStat(attackerPrimary, stat, statValue, refreshAfter);
+            double statValue = getRelationalStats(stat, victim, attacker, use);
+            cacheRelationalStat(victim, attacker, stat, statValue, refreshAfter);
             return statValue;
         }
     }
 
     private static final Map<UUID, Map<String, Map.Entry<Long, Double>>> STAT_CACHE = new ConcurrentHashMap<>();
+    private static final Map<UUID, Map<UUID, Map<String, Map.Entry<Long, Double>>>> RELATIONAL_STAT_CACHE = new ConcurrentHashMap<>();
 
     private static long lastMapCleanup = System.currentTimeMillis();
 
@@ -517,7 +506,26 @@ public class AccumulativeStatManager {
      */
     private static double getCachedStatIgnoringExpiration(Entity e, String stat){
         Map<String, Map.Entry<Long, Double>> currentCachedStats = STAT_CACHE.getOrDefault(e.getUniqueId(), new HashMap<>());
-        if (currentCachedStats.get(stat) != null) return currentCachedStats.get(stat).getValue();
+        Map.Entry<Long, Double> entry = currentCachedStats.get(stat);
+        if (entry != null) return entry.getValue();
+        return 0;
+    }
+
+    /**
+     * Attempts to get a cached relational stat from an entity relative to another entity
+     * isStatCached() should be checked beforehand, if the stat is not cached this method will return 0, but will still return
+     * the value even if the stat is expired
+     * @param e1 the entity to check the cache for
+     * @param e2 the relational entity to check the cache for
+     * @param stat the stat to get from the cache
+     * @return the cached stat value, or 0 if the stat is not cached. This will still return the value even if the stat is expired
+     */
+    private static double getCachedRelationalStatIgnoringExpiration(Entity e1, Entity e2, String stat){
+        Map<UUID, Map<String, Map.Entry<Long, Double>>> currentCachedStats = RELATIONAL_STAT_CACHE.getOrDefault(e1.getUniqueId(), new HashMap<>());
+        Map<String, Map.Entry<Long, Double>> stats = currentCachedStats.getOrDefault(e2.getUniqueId(), new HashMap<>());
+        if (stats == null) return 0;
+        Map.Entry<Long, Double> entry = stats.get(stat);
+        if (entry != null) return entry.getValue();
         return 0;
     }
 
@@ -539,6 +547,26 @@ public class AccumulativeStatManager {
     }
 
     /**
+     * Caches a relational stat for an entity to another entity for a specified amount of time
+     * @param e1 the entity to cache for
+     * @param e2 the relational entity to cache for
+     * @param stat the stat to cache
+     * @param amount the value that will be cached
+     * @param cacheFor the amount of time the cached value will be valid for, in milliseconds
+     */
+    public static void cacheRelationalStat(Entity e1, Entity e2, String stat, double amount, long cacheFor){
+        RELATIONAL_STAT_CACHE.compute(e1.getUniqueId(), (uuid, cache) -> {
+            if (cache == null) {
+                cache = new HashMap<>();
+            }
+            Map<String, Map.Entry<Long, Double>> relationalStats = cache.getOrDefault(e2.getUniqueId(), new HashMap<>());
+            relationalStats.put(stat, new AbstractMap.SimpleEntry<>(System.currentTimeMillis() + cacheFor, amount));
+            cache.put(e2.getUniqueId(), relationalStats);
+            return cache;
+        });
+    }
+
+    /**
      * Checks if a certain stat is cached, and if so, if the stat hasn't expired.
      * This method also cleans up the cache every 2 minutes, removing any entity where isValid() returns false
      * @param e the entity to check their cached stat
@@ -547,6 +575,18 @@ public class AccumulativeStatManager {
      */
     private static boolean isStatCached(Entity e, String stat){
         return getValidCachedStat(e, stat) != null;
+    }
+
+    /**
+     * Checks if a certain stat is cached, and if so, if the stat hasn't expired.
+     * This method also cleans up the cache every 2 minutes, removing any entity where isValid() returns false
+     * @param e the entity to check their cached stat
+     * @param e2 the relational entity to check their cached stat
+     * @param stat the stat to see if it's cached
+     * @return true if the stat is cached and unexpired, false otherwise
+     */
+    private static boolean isRelationalStatCached(Entity e, Entity e2, String stat){
+        return getValidCachedRelationalStat(e, e2, stat) != null;
     }
 
     /**
@@ -564,6 +604,24 @@ public class AccumulativeStatManager {
         return cache != null && cache.getKey() > System.currentTimeMillis() ? cache.getValue() : null;
     }
 
+    /**
+     * @param e1 The entity whose stat you want
+     * @param e2 The relational entity whose stat you want
+     * @param stat The stat you want
+     * @return The cached stat if the cache is still valid, otherwise null
+     */
+    private static Double getValidCachedRelationalStat(Entity e1, Entity e2, String stat) {
+        attemptMapCleanup();
+        Map<UUID, Map<String, Map.Entry<Long, Double>>> stats = RELATIONAL_STAT_CACHE.get(e1.getUniqueId());
+        if (stats == null) {
+            return null;
+        }
+        Map<String, Map.Entry<Long, Double>> relationalStats = stats.getOrDefault(e2.getUniqueId(), new HashMap<>());
+        if (relationalStats == null) return null;
+        Map.Entry<Long, Double> cache = relationalStats.get(stat);
+        return cache != null && cache.getKey() > System.currentTimeMillis() ? cache.getValue() : null;
+    }
+
     private static void attemptMapCleanup(){
         Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
             if (lastMapCleanup + 120000 < System.currentTimeMillis()){
@@ -573,31 +631,78 @@ public class AccumulativeStatManager {
                         STAT_CACHE.remove(uuid);
                     }
                 }
+                for (UUID uuid : new HashSet<>(RELATIONAL_STAT_CACHE.keySet())) {
+                    Entity entity = Bukkit.getEntity(uuid);
+                    if (entity == null || !entity.isValid()) {
+                        STAT_CACHE.remove(uuid);
+                        continue;
+                    }
+                    for (UUID relationalUUID : RELATIONAL_STAT_CACHE.getOrDefault(uuid, new HashMap<>()).keySet()){
+                        Entity relationalEntity = Bukkit.getEntity(relationalUUID);
+                        if (relationalEntity == null || !relationalEntity.isValid()) {
+                            Map<UUID, Map<String, Map.Entry<Long, Double>>> relationalCache = RELATIONAL_STAT_CACHE.getOrDefault(uuid, new HashMap<>());
+                            relationalCache.remove(relationalUUID);
+                            if (relationalCache.isEmpty()) RELATIONAL_STAT_CACHE.remove(uuid);
+                            else RELATIONAL_STAT_CACHE.put(uuid, relationalCache);
+                        }
+                    }
+                }
                 lastMapCleanup = System.currentTimeMillis();
             }
         });
     }
 
     public static void uncacheStat(Entity e, String stat){
-        Map<String, Map.Entry<Long, Double>> stats = STAT_CACHE.get(e.getUniqueId());
-        if (stats != null) {
-            stats.remove(stat);
-        }
+        uncacheStat(e.getUniqueId(), stat);
+    }
+
+    public static void uncacheRelationalStat(Entity e, Entity e2, String stat){
+        uncacheRelationalStat(e.getUniqueId(), e2.getUniqueId(), stat);
     }
 
     public static void uncacheStat(UUID uuid, String stat){
         Map<String, Map.Entry<Long, Double>> stats = STAT_CACHE.get(uuid);
-        if (stats != null) {
-            stats.remove(stat);
-        }
+        if (stats == null) return;
+        stats.remove(stat);
+        if (stats.isEmpty()) STAT_CACHE.remove(uuid);
+    }
+
+    public static void uncacheRelationalStat(UUID uuid, UUID uuid2, String stat){
+        Map<UUID, Map<String, Map.Entry<Long, Double>>> relationalStats = RELATIONAL_STAT_CACHE.get(uuid);
+        if (relationalStats == null) return;
+        Map<String, Map.Entry<Long, Double>> stats = relationalStats.get(uuid2);
+        if (stats == null) return;
+        stats.remove(stat);
+        if (stats.isEmpty()) relationalStats.remove(uuid2);
+        if (relationalStats.isEmpty()) RELATIONAL_STAT_CACHE.remove(uuid);
+        else RELATIONAL_STAT_CACHE.put(uuid, relationalStats);
     }
 
     public static void uncache(UUID uuid){
         STAT_CACHE.remove(uuid);
+        RELATIONAL_STAT_CACHE.remove(uuid);
+        for (UUID id : RELATIONAL_STAT_CACHE.keySet()){
+            Map<UUID, Map<String, Map.Entry<Long, Double>>> attackerEntries = RELATIONAL_STAT_CACHE.getOrDefault(id, new HashMap<>());
+            attackerEntries.remove(uuid);
+            if (attackerEntries.isEmpty()) RELATIONAL_STAT_CACHE.remove(id);
+            else RELATIONAL_STAT_CACHE.put(id, attackerEntries);
+        }
+    }
+
+    public static void uncache(UUID uuid, UUID uuid2){
+        Map<UUID, Map<String, Map.Entry<Long, Double>>> relationalStats = RELATIONAL_STAT_CACHE.get(uuid);
+        if (relationalStats == null) return;
+        relationalStats.remove(uuid2);
+        if (relationalStats.isEmpty()) RELATIONAL_STAT_CACHE.remove(uuid);
+        else RELATIONAL_STAT_CACHE.put(uuid, relationalStats);
     }
 
     public static void uncache(Entity e){
-        STAT_CACHE.remove(e.getUniqueId());
+        uncache(e.getUniqueId());
+    }
+
+    public static void uncache(Entity e1, Entity e2){
+        uncache(e1.getUniqueId(), e2.getUniqueId());
     }
 
     public static void uncacheProfile(Player player, Class<? extends Profile> type) {

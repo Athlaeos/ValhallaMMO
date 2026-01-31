@@ -32,7 +32,7 @@ public class ArmorSetRegistry {
             .disableHtmlEscaping()
             .enableComplexMapKeySerialization()
             .create();
-    private static final NamespacedKey ARMOR_SET = new NamespacedKey(ValhallaMMO.getInstance(), "armor_set");
+    private static final NamespacedKey ARMOR_SET = ValhallaMMO.key("armor_set");
     private static final Map<String, ArmorSet> registeredSets = new HashMap<>();
 
     public static void register(ArmorSet set){

@@ -33,7 +33,7 @@ import java.util.*;
 import static me.athlaeos.valhallammo.gui.implementations.RecipeOptionMenu.KEY_OPTION_ID;
 
 public class BrewingRecipeEditor extends Menu implements SetModifiersMenu, SetRecipeOptionMenu {
-    private static final NamespacedKey BUTTON_ACTION_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_action");
+    private static final NamespacedKey BUTTON_ACTION_KEY = ValhallaMMO.key("button_action");
     private static final int ingredientIndex = 12;
     private static final Collection<Integer> applyOnIndexes = Set.of(28, 30, 32);
     private static final int resultIndex = 24;

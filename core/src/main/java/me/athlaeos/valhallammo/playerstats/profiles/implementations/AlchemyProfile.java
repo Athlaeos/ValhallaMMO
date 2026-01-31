@@ -130,7 +130,7 @@ public class AlchemyProfile extends Profile {
         return "profiles_alchemy";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_alchemy");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_alchemy");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

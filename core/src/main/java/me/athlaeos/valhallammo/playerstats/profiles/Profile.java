@@ -307,7 +307,7 @@ public abstract class Profile {
         tablesToUpdate.add(name);
     }
 
-    private final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "PDC_persistence_" + getClass().getSimpleName().toLowerCase(java.util.Locale.US));
+    private final NamespacedKey key = ValhallaMMO.key("PDC_persistence_" + getClass().getSimpleName().toLowerCase(java.util.Locale.US));
     public NamespacedKey getKey(){
         return key;
     }

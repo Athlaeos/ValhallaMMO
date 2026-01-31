@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class ArrowBehaviorRegistry {
-    private static final NamespacedKey BEHAVIOR = new NamespacedKey(ValhallaMMO.getInstance(), "arrow_behavior");
+    private static final NamespacedKey BEHAVIOR = ValhallaMMO.key("arrow_behavior");
     private static final Map<String, ArrowBehavior> registeredBehaviors = new HashMap<>();
     public static final ArrowBehavior EXPLODING = new ExplodingArrow("explosive_arrow");
     public static final ArrowBehavior EXPLODING_REPEATEDLY = new VeryExplosiveArrow("very_explosive_arrow");

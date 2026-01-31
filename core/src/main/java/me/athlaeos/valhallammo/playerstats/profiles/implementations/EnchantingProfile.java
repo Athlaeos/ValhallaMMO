@@ -179,7 +179,7 @@ public class EnchantingProfile extends Profile {
         return "profiles_enchanting";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_enchanting");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_enchanting");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

@@ -55,7 +55,7 @@ public enum MaterialClass {
     MaterialClass(String key, String... matchingMaterials){
         Set<Material> tagged = new HashSet<>(ItemUtils.getMaterialSet(matchingMaterials));
         this.matchingMaterials = new Tag<>() {
-            private final NamespacedKey k = new NamespacedKey(ValhallaMMO.getInstance(), "tag_" + key);
+            private final NamespacedKey k = ValhallaMMO.key("tag_" + key);
             @Override public boolean isTagged(@NotNull Material material) { return tagged.contains(material); }
             @NotNull @Override public Set<Material> getValues() { return tagged; }
             @NotNull @Override public NamespacedKey getKey() { return k; }
@@ -69,7 +69,7 @@ public enum MaterialClass {
         return matchingMaterials.getValues();
     }
 
-    private final static NamespacedKey materialTypeKey = new NamespacedKey(ValhallaMMO.getInstance(), "material_type");
+    private final static NamespacedKey materialTypeKey = ValhallaMMO.key("material_type");
 
     public static MaterialClass getMatchingClass(ItemMeta meta){
         if (meta == null) return null;

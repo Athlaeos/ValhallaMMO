@@ -41,6 +41,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("unused")
 public abstract class Skill {
@@ -70,6 +71,9 @@ public abstract class Skill {
     protected boolean isNavigable;
     protected double experienceLimit = -1;
     protected String experienceLimitMessage = null;
+
+    // Used for batching experience gains in certain scenarios
+    protected final Map<UUID, ExpBatch> experienceBatches = new ConcurrentHashMap<>();
 
     public abstract void loadConfiguration();
 
@@ -496,6 +500,14 @@ public abstract class Skill {
         return level;
     }
 
+    public void startEXPBatch(Player p, PlayerSkillExperienceGainEvent.ExperienceGainReason reason, boolean silent) {
+        ExpBatch existing = experienceBatches.get(p.getUniqueId());
+        if (existing != null) {
+            endEXPBatch(p);
+        }
+        experienceBatches.put(p.getUniqueId(), new ExpBatch(reason, silent));
+    }
+
     /**
      * Adds an amount of EXP to the player's profile, and checks if the player should level up
      * If this method is being called on an inactive skill, no exp is added
@@ -504,6 +516,12 @@ public abstract class Skill {
      * @param amount the amount of EXP to add
      */
     public void addEXP(Player p, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
+        ExpBatch batch = experienceBatches.get(p.getUniqueId());
+        if (batch != null) {
+            batch.addEXP(this, p, amount, silent, reason);
+            return;
+        }
+
         // non-levelable skills should not gain exp
         if (!isLevelableSkill() || (requiredPermission != null && !p.hasPermission(requiredPermission)) || hasReachedLimit(p)) return;
         // creative mode players should not gain skill-acquired exp
@@ -532,9 +550,11 @@ public abstract class Skill {
             if (!silent) {
                 double statusAmount = accumulateEXP(p, event.getAmount(), event.getLeveledSkill());
                 if (!(this instanceof PowerSkill) && !StringUtils.isEmpty(getExpStatus())) {
-                    p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Utils.chat(getExpStatus()
-                            .replace("%skill%", event.getLeveledSkill().displayName)
-                            .replace("%exp%", ((statusAmount >= 0) ? "+" : "") + String.format("%,.2f", statusAmount)))));
+                    Bukkit.getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), $ -> {
+                        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Utils.chat(getExpStatus()
+                                .replace("%skill%", event.getLeveledSkill().displayName)
+                                .replace("%exp%", ((statusAmount >= 0) ? "+" : "") + String.format("%,.2f", statusAmount)))));
+                    });
                 }
                 if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()) {
                     showBossBar(p, profile, statusAmount);
@@ -548,6 +568,13 @@ public abstract class Skill {
                 updateLevelUpConditions(p, silent);
                 AccumulativeStatManager.uncacheProfile(p.getUniqueId(), profile.getClass());
             }
+        }
+    }
+
+    public void endEXPBatch(Player p) {
+        ExpBatch batch = experienceBatches.remove(p.getUniqueId());
+        if (batch != null && batch.amount != 0) {
+            addEXP(p, batch.amount, batch.silent, batch.reason);
         }
     }
 
@@ -974,5 +1001,27 @@ public abstract class Skill {
 
     public boolean hasPermissionAccess(Player p){
         return requiredPermission == null || p.hasPermission(requiredPermission);
+    }
+
+    protected static class ExpBatch {
+        public final PlayerSkillExperienceGainEvent.ExperienceGainReason reason;
+        public final boolean silent;
+
+        public double amount;
+
+        public ExpBatch(PlayerSkillExperienceGainEvent.ExperienceGainReason reason, boolean silent) {
+            this.reason = reason;
+            this.silent = silent;
+        }
+
+        public void addEXP(Skill skill, Player player, double amount, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
+            if (this.reason != reason || this.silent != silent) {
+                skill.endEXPBatch(player);
+                skill.startEXPBatch(player, reason, silent);
+                skill.addEXP(player, amount, silent, reason);
+            } else {
+                this.amount += amount;
+            }
+        }
     }
 }

@@ -32,11 +32,6 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier implements Res
     }
 
     @Override
-    public ItemStack getNewResult(ModifierContext context) {
-        return replaceBy;
-    }
-
-    @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
         if (button == 12) {
             ItemStack cursor = e.getCursor();

@@ -153,7 +153,7 @@ public class ArcheryProfile extends Profile {
         return "profiles_archery";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_archery");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_archery");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

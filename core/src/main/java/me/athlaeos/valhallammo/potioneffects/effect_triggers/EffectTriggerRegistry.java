@@ -13,7 +13,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.*;
 
 public class EffectTriggerRegistry {
-    private static final NamespacedKey KEY_COOLDOWN_PROPERTIES = new NamespacedKey(ValhallaMMO.getInstance(), "permanent_effects_cooldown_properties");
+    private static final NamespacedKey KEY_COOLDOWN_PROPERTIES = ValhallaMMO.key("permanent_effects_cooldown_properties");
     private static final Map<UUID, Collection<String>> entitiesAffectedCache = new HashMap<>();
     private static final Map<String, EffectTrigger> registeredTriggers = new HashMap<>();
     private static final Map<String, EffectTrigger> configurableTriggers = new HashMap<>();

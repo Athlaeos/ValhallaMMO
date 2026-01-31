@@ -23,8 +23,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 
 public class ItemAttributesRegistry {
-    private static final NamespacedKey DEFAULT_STATS = new NamespacedKey(ValhallaMMO.getInstance(), "default_stats");
-    private static final NamespacedKey ACTUAL_STATS = new NamespacedKey(ValhallaMMO.getInstance(), "actual_stats");
+    private static final NamespacedKey DEFAULT_STATS = ValhallaMMO.key("default_stats");
+    private static final NamespacedKey ACTUAL_STATS = ValhallaMMO.key("actual_stats");
 
     private static final Map<Material, Map<String, AttributeWrapper>> vanillaAttributes = new HashMap<>();
     private static final Map<String, AttributeWrapper> registeredAttributes = new HashMap<>();
@@ -385,6 +385,8 @@ public class ItemAttributesRegistry {
                 else {
                     for (Attribute attribute : otherAttributes.keys()){
                         AttributeMappings mapping = AttributeMappings.getAttributeMapping(attribute.toString());
+                        if (mapping == null)
+                            mapping = AttributeMappings.getAttributeMapping(attribute.getKey().toString());
                         if (mapping == null) continue;
                         AttributeWrapper wrapper = registeredAttributes.get(mapping.getAttribute1_19());
                         if (wrapper == null) continue;

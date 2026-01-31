@@ -119,6 +119,15 @@
           "name": "material",
           "priority": "SOONEST"
         }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 150.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
+        }
       }
     ],
     "brewTime": 400,
@@ -5116,6 +5125,15 @@
           "material": "LINGERING_POTION",
           "name": "material",
           "priority": "SOONEST"
+        }
+      },
+      {
+        "MOD_TYPE": "me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience",
+        "DATA": {
+          "skill": "ALCHEMY",
+          "amount": 450.0,
+          "name": "reward_alchemy_experience",
+          "priority": "LATER"
         }
       }
     ],

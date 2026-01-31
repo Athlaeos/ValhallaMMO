@@ -6,7 +6,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
 public record ModifierCategory(String id, int order, ItemStack icon) {
-    private static final NamespacedKey CATEGORY_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "modifier_category");
+    private static final NamespacedKey CATEGORY_KEY = ValhallaMMO.key("modifier_category");
 
     public ModifierCategory(String id, int order, ItemStack icon) {
         this.id = id;

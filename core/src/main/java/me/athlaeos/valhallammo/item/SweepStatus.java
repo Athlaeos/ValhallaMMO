@@ -6,7 +6,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 public class SweepStatus {
-    private static final NamespacedKey PREVENT_SWEEPING = new NamespacedKey(ValhallaMMO.getInstance(), "cannot_sweep");
+    private static final NamespacedKey PREVENT_SWEEPING = ValhallaMMO.key("cannot_sweep");
 
     public static void setSweepable(ItemMeta meta, boolean canSweep){
         if (canSweep) meta.getPersistentDataContainer().remove(PREVENT_SWEEPING);

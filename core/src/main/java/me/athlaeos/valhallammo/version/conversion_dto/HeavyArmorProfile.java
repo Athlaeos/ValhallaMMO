@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class HeavyArmorProfile extends Profile implements Serializable {
-    private static final NamespacedKey heavyArmorProfileKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_heavy_armor");
+    private static final NamespacedKey heavyArmorProfileKey = ValhallaMMO.key("valhalla_profile_heavy_armor");
 
     private float movementspeedpenalty = 0F; // movement speed penalty per piece of heavy armor
     private float damageresistance = 0F; // damage resistance per piece of heavy armor

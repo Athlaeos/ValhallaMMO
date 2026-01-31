@@ -85,6 +85,9 @@ public class PerkRewardRegistry {
         register(new ProfileStringListAdd("permanent_effects_add", "permanentPotionEffects", PowerProfile.class));
         register(new ProfileStringListRemove("permanent_effects_remove", "permanentPotionEffects", PowerProfile.class));
         register(new ProfileStringListClear("permanent_effects_clear", "permanentPotionEffects", PowerProfile.class));
+        register(new ProfileStringListAdd("effect_cooldowns_add", "permanentPotionEffectCooldowns", PowerProfile.class));
+        register(new ProfileStringListRemove("effect_cooldowns_remove", "permanentPotionEffectCooldowns", PowerProfile.class));
+        register(new ProfileStringListClear("effect_cooldowns_clear", "permanentPotionEffectCooldowns", PowerProfile.class));
         register(new ProfileStringListAdd("martialarts_grappling_debuffs_add", "grapplingEnemyEffects", MartialArtsProfile.class));
         register(new ProfileStringListRemove("martialarts_grappling_debuffs_remove", "grapplingEnemyEffects", MartialArtsProfile.class));
         register(new ProfileStringListAdd("martialarts_grappling_buffs_add", "grapplingSelfEffects", MartialArtsProfile.class));

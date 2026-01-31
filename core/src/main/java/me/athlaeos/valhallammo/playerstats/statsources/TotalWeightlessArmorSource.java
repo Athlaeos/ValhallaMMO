@@ -23,8 +23,8 @@ public class TotalWeightlessArmorSource implements AccumulativeStatSource, EvEAc
     public double fetch(Entity victim, Entity a, boolean use) {
         if (victim instanceof LivingEntity v){
             double baseNonEquipmentArmor = fetch(victim, use);
-            double armorFlatPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("ARMOR_FLAT_IGNORED", v, a, 10000, true);
-            double armorFractionPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("ARMOR_FRACTION_IGNORED", v, a, 10000, true);
+            double armorFlatPenetration = AccumulativeStatManager.getCachedRelationalStats("ARMOR_FLAT_IGNORED", v, a, 10000, true);
+            double armorFractionPenetration = AccumulativeStatManager.getCachedRelationalStats("ARMOR_FRACTION_IGNORED", v, a, 10000, true);
             return (baseNonEquipmentArmor * (1 - armorFractionPenetration)) - armorFlatPenetration;
         }
         return 0;

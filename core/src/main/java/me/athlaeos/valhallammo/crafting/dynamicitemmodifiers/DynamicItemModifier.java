@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public abstract class DynamicItemModifier {
-    public static final NamespacedKey ERROR_MESSAGE = new NamespacedKey(ValhallaMMO.getInstance(), "contained_error_message");
+    public static final NamespacedKey ERROR_MESSAGE = ValhallaMMO.key("contained_error_message");
 
     private final String name;
     private ModifierPriority priority = ModifierPriority.NEUTRAL;
@@ -95,6 +95,30 @@ public abstract class DynamicItemModifier {
         if (event.getContext().shouldSort()) sortModifiers(event.getModifiers());
         modifiers:
         for (DynamicItemModifier modifier : event.getModifiers()){
+            if (!modifier.meetsRequirement(context)) {
+                if (context.getCrafter() != null) Utils.sendMessage(context.getCrafter(), "&cWhatever you just created was improperly configured. Please notify admin. Modifier " + modifier.getClass().getSimpleName() + " was used which doesn't function in this context");
+                context.getItem().flag(CustomFlag.UNCRAFTABLE);
+                return;
+            }
+            if (!modifier.meetsPlayerRequirement(context)){
+                context.getItem().flag(CustomFlag.UNCRAFTABLE);
+                return;
+            }
+            modifier.processItem(context);
+            if (ItemUtils.isEmpty(context.getItem().getItem()) || CustomFlag.hasFlag(context.getItem().getMeta(), CustomFlag.UNCRAFTABLE)) break;
+            for (ItemBuilder otherItem : context.getOtherInvolvedItems())
+                if (ItemUtils.isEmpty(otherItem.getItem()) || CustomFlag.hasFlag(otherItem.getMeta(), CustomFlag.UNCRAFTABLE)) break modifiers;
+        }
+        context.getItem().translate();
+        for (ItemBuilder otherItem : context.getOtherInvolvedItems()) otherItem.translate();
+    }
+
+    public static void modifyAppearance(ModifierContext context, List<DynamicItemModifier> modifiers){
+        modifiers:
+        for (DynamicItemModifier modifier : modifiers){
+            // skip non-appearance changing modifiers or modifiers that need a player if there is none
+            if (!(modifier instanceof ResultChangingModifier)) continue;
+            else if (modifier.requiresPlayer() && context.getCrafter() == null) continue;
             if (!modifier.meetsRequirement(context)) {
                 if (context.getCrafter() != null) Utils.sendMessage(context.getCrafter(), "&cWhatever you just created was improperly configured. Please notify admin. Modifier " + modifier.getClass().getSimpleName() + " was used which doesn't function in this context");
                 context.getItem().flag(CustomFlag.UNCRAFTABLE);

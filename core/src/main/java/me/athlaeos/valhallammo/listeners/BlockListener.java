@@ -34,7 +34,6 @@ public class BlockListener implements Listener {
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
             for (Location b : blocksToConsiderBroken) {
                 BlockStore.setPlaced(b.getBlock(), false);
-                BlockStore.setBreakReason(b.getBlock(), BlockStore.BreakReason.MINED);
             }
             blocksToConsiderBroken.clear();
         }, 0L, 5L);

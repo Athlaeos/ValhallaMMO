@@ -76,7 +76,7 @@ public class ProfileStatAttackerHeldItemSource implements AccumulativeStatSource
         if (trueAttacker instanceof Player pl){
             EntityProperties properties = EntityCache.getAndCacheProperties(pl);
             boolean mainHand = properties.getMainHand() != null && heldItems.contains(properties.getMainHand().getItem().getType());
-            if (!mainHand && (properties.getOffHand() == null || heldItems.contains(properties.getOffHand().getItem().getType()))) return def;
+            if (!mainHand && (properties.getOffHand() == null || !heldItems.contains(properties.getOffHand().getItem().getType()))) return def;
             Profile profile = ProfileCache.getOrCache(pl, type);
             String requiredPermission = SkillRegistry.isRegistered(profile.getSkillType()) ? SkillRegistry.getSkill(profile.getSkillType()).getRequiredPermission() : null;
             if (requiredPermission != null && !pl.hasPermission(requiredPermission)) return def;

@@ -22,7 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class PlayerSignatureAdd extends DynamicItemModifier {
-    private static final NamespacedKey SIGNATURE = new NamespacedKey(ValhallaMMO.getInstance(), "player_signature");
+    private static final NamespacedKey SIGNATURE = ValhallaMMO.key("player_signature");
 
     private boolean end = false;
 

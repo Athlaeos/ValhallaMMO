@@ -20,8 +20,8 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.*;
 
 public class RecipeOptionMenu extends Menu {
-    private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
-    public static final NamespacedKey KEY_OPTION_ID = new NamespacedKey(ValhallaMMO.getInstance(), "key_option_id");
+    private static final NamespacedKey KEY_ACTION = ValhallaMMO.key("key_action");
+    public static final NamespacedKey KEY_OPTION_ID = ValhallaMMO.key("key_option_id");
 
     private static final ItemStack cancelButton = new ItemBuilder(Material.BARRIER).stringTag(KEY_ACTION, "cancelButton").name("&fCancel").get();
     private static final ItemStack nextPageButton = new ItemBuilder(Material.ARROW).stringTag(KEY_ACTION, "nextPageButton").name("&7&lNext page").get();

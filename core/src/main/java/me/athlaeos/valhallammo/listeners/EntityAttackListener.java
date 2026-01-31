@@ -140,7 +140,7 @@ public class EntityAttackListener implements Listener {
         double victimLuck = vL != null ? vL.getValue() : 0;
 
         if (v instanceof Player p){
-            int shieldDisabling = (int) Math.round(AccumulativeStatManager.getCachedAttackerRelationalStats("SHIELD_DISARMING", p, trueDamager, 10000, true));
+            int shieldDisabling = (int) Math.round(AccumulativeStatManager.getCachedRelationalStats("SHIELD_DISARMING", p, trueDamager, 10000, true));
             if (shieldDisabling != 0 && p.getCooldown(Material.SHIELD) <= 0 && p.isBlocking() && e.getFinalDamage() == 0 &&
                     (!(e.getDamager() instanceof Player a) || a.getAttackCooldown() >= 0.9)){ // Shield disabling may only occur if the shield is being held up
                 ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
@@ -221,16 +221,16 @@ public class EntityAttackListener implements Listener {
 
                 // mounted damage mechanic
                 if (trueDamager.getVehicle() instanceof LivingEntity)
-                    damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedAttackerRelationalStats("MOUNTED_DAMAGE_DEALT", e.getEntity(), e.getDamager(), 10000, true));
+                    damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedRelationalStats("MOUNTED_DAMAGE_DEALT", e.getEntity(), e.getDamager(), 10000, true));
             }
 
             // custom stun mechanics
             // stuns fetch the victim's stun resistance and so sweeping hits should not be able to stun
-            double stunChance = AccumulativeStatManager.getCachedAttackerRelationalStats("STUN_CHANCE", v, e.getDamager(), 10000, true);
+            double stunChance = AccumulativeStatManager.getCachedRelationalStats("STUN_CHANCE", v, e.getDamager(), 10000, true);
             if (Utils.proc(stunChance, damagerLuck - victimLuck, false)) Stun.attemptStun(v, trueDamager instanceof LivingEntity l ? l : null);
 
             // custom knockback mechanics
-            double knockbackBonus = AccumulativeStatManager.getCachedAttackerRelationalStats("KNOCKBACK_BONUS", v, e.getDamager(), 10000, true);
+            double knockbackBonus = AccumulativeStatManager.getCachedRelationalStats("KNOCKBACK_BONUS", v, e.getDamager(), 10000, true);
             AttributeInstance knockbackInstance = v.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
             double knockbackResistance = (knockbackInstance == null ? 0 : knockbackInstance.getValue()) - Math.min(0, knockbackBonus);
             if (knockbackBonus > 0) knockbackBonus *= (1 - knockbackResistance);
@@ -262,7 +262,7 @@ public class EntityAttackListener implements Listener {
 
             // custom dismount mechanics
             if (v.getVehicle() != null){
-                double dismountChance = AccumulativeStatManager.getCachedAttackerRelationalStats("DISMOUNT_CHANCE", v, e.getDamager(), 10000, true);
+                double dismountChance = AccumulativeStatManager.getCachedRelationalStats("DISMOUNT_CHANCE", v, e.getDamager(), 10000, true);
                 if (Utils.proc(dismountChance, damagerLuck - victimLuck, false)) v.getVehicle().eject();
             }
 
@@ -272,13 +272,13 @@ public class EntityAttackListener implements Listener {
                 // damage buffs
                 // as mentioned previously mechanics where the victim's stats have to be fetched on an attack, these mechanics do not activate on sweeping hits.
                 // unlike them, attacker mechanics don't need to worry about that since their stats are cached and fetched without going through all their stat sources.
-                damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedAttackerRelationalStats("DAMAGE_DEALT", v, e.getDamager(), 10000, true));
+                damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedRelationalStats("DAMAGE_DEALT", v, e.getDamager(), 10000, true));
                 if (e.getDamager() instanceof Projectile) {
                     // ranged damage buffs
-                    damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedAttackerRelationalStats("RANGED_DAMAGE_DEALT", v, e.getDamager(), 10000, true));
+                    damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedRelationalStats("RANGED_DAMAGE_DEALT", v, e.getDamager(), 10000, true));
                 } else {
                     // melee damage buffs
-                    damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedAttackerRelationalStats(combatType == CombatType.MELEE_UNARMED ? "UNARMED_DAMAGE_DEALT" : "MELEE_DAMAGE_DEALT", v, e.getDamager(), 10000, true));
+                    damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + AccumulativeStatManager.getCachedRelationalStats(combatType == CombatType.MELEE_UNARMED ? "UNARMED_DAMAGE_DEALT" : "MELEE_DAMAGE_DEALT", v, e.getDamager(), 10000, true));
                     if (cause == null || EntityDamagedListener.getPhysicalDamageTypes().containsKey(cause)) {
                         double velocityBonus = AccumulativeStatManager.getRelationalStats("VELOCITY_DAMAGE_BONUS", v, e.getDamager(), true);
                         if (velocityBonus > 0 && e.getDamager() instanceof LivingEntity l){
@@ -292,18 +292,18 @@ public class EntityAttackListener implements Listener {
                     }
                 }
                 EntityProperties victimProperties = EntityCache.getAndCacheProperties(v);
-                damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + (victimProperties.getLightArmorCount() * AccumulativeStatManager.getCachedAttackerRelationalStats("LIGHT_ARMOR_DAMAGE_BONUS", v, e.getDamager(), 10000, true)));
-                damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + (victimProperties.getHeavyArmorCount() * AccumulativeStatManager.getCachedAttackerRelationalStats("HEAVY_ARMOR_DAMAGE_BONUS", v, e.getDamager(), 10000, true)));
+                damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + (victimProperties.getLightArmorCount() * AccumulativeStatManager.getCachedRelationalStats("LIGHT_ARMOR_DAMAGE_BONUS", v, e.getDamager(), 10000, true)));
+                damageMultiplier = getDamageMultiplier(damageMultiplier, 1 + (victimProperties.getHeavyArmorCount() * AccumulativeStatManager.getCachedRelationalStats("HEAVY_ARMOR_DAMAGE_BONUS", v, e.getDamager(), 10000, true)));
 
                 // custom crit mechanics
                 // the crit mechanic fetches the victim's crit chance and damage resistance stats and so sweeping hits should not be able to crit
                 if (attackCooldown >= 0.9 && (!(trueDamager instanceof Player p) || !WorldGuardHook.inDisabledRegion(v.getLocation(), p, WorldGuardHook.VMMO_COMBAT_CRIT))){
                     double critChanceResistance = AccumulativeStatManager.getCachedRelationalStats("CRIT_CHANCE_RESISTANCE", v, e.getDamager(), 10000, true);
-                    double critChance = AccumulativeStatManager.getCachedAttackerRelationalStats("CRIT_CHANCE", v, e.getDamager(), 10000, true) * (1 - critChanceResistance);
+                    double critChance = AccumulativeStatManager.getCachedRelationalStats("CRIT_CHANCE", v, e.getDamager(), 10000, true) * (1 - critChanceResistance);
                     if (critNextAttack.contains(trueDamager.getUniqueId()) || Utils.proc(critChance, damagerLuck - victimLuck, false)) {
                         critNextAttack.remove(trueDamager.getUniqueId());
                         double critDamageResistance = AccumulativeStatManager.getCachedRelationalStats("CRIT_DAMAGE_RESISTANCE", v, e.getDamager(), 10000, true);
-                        double critDamage = 1 + (AccumulativeStatManager.getCachedAttackerRelationalStats("CRIT_DAMAGE", v, e.getDamager(), 10000, true) * (1 - critDamageResistance));
+                        double critDamage = 1 + (AccumulativeStatManager.getCachedRelationalStats("CRIT_DAMAGE", v, e.getDamager(), 10000, true) * (1 - critDamageResistance));
                         EntityCriticallyHitEvent event = new EntityCriticallyHitEvent(v, e.getDamager(), combatType, e.getDamage(), critDamage);
                         ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
                         if (!event.isCancelled()){
@@ -334,7 +334,7 @@ public class EntityAttackListener implements Listener {
                     double cooldownDamageMultiplier = EntityUtils.cooldownDamageMultiplier(attackCooldown);
                     List<Pair<CustomDamageType, Double>> damageInstances = new ArrayList<>();
                     for (CustomDamageType damageType : CustomDamageType.getRegisteredTypes().values()){
-                        double baseDamage = damageType.damageAdder() == null ? 0 : AccumulativeStatManager.getCachedAttackerRelationalStats(damageType.damageAdder(), v, e.getDamager(), 10000, true);
+                        double baseDamage = damageType.damageAdder() == null ? 0 : AccumulativeStatManager.getCachedRelationalStats(damageType.damageAdder(), v, e.getDamager(), 10000, true);
                         double elementalDamage = baseDamage * cooldownDamageMultiplier;
                         if (elementalDamage > 0) {
                             damageInstances.add(new Pair<>(damageType, elementalDamage));
@@ -345,14 +345,14 @@ public class EntityAttackListener implements Listener {
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                         // custom bleed mechanics
                         if (attackCooldown >= 0.9F){
-                            double bleedChance = AccumulativeStatManager.getCachedAttackerRelationalStats("BLEED_CHANCE", v, e.getDamager(), 10000, true);
+                            double bleedChance = AccumulativeStatManager.getCachedRelationalStats("BLEED_CHANCE", v, e.getDamager(), 10000, true);
                             if (bleedNextAttack.contains(trueDamager.getUniqueId()) || Utils.proc(bleedChance, damagerLuck - victimLuck, false)){
                                 bleedNextAttack.remove(trueDamager.getUniqueId());
                                 Bleeder.inflictBleed(v, e.getDamager(), combatType);
                             }
                         }
 
-                        double lifeSteal = AccumulativeStatManager.getCachedAttackerRelationalStats("LIFE_STEAL", v, trueDamager, 10000, true);
+                        double lifeSteal = AccumulativeStatManager.getCachedRelationalStats("LIFE_STEAL", v, trueDamager, 10000, true);
                         double lifeStealValue = e.getDamage() * lifeSteal;
 
                         // custom power attack mechanics
@@ -360,13 +360,13 @@ public class EntityAttackListener implements Listener {
                         // sweep attacks should not trigger custom power attack damage multipliers
                         if (e.getDamager() instanceof LivingEntity a && a.getFallDistance() > 0 &&
                                 a instanceof Player p && !WorldGuardHook.inDisabledRegion(a.getLocation(), p, WorldGuardHook.VMMO_COMBAT_POWERATTACK)){
-                            powerAttackMultiplier = 1.5 + AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_DAMAGE_MULTIPLIER", v, a, 10000, true);
+                            powerAttackMultiplier = 1.5 + AccumulativeStatManager.getCachedRelationalStats("POWER_ATTACK_DAMAGE_MULTIPLIER", v, a, 10000, true);
 
                             double baseDamage = e.getDamage() / 1.5; // remove vanilla crit damage
                             e.setDamage(baseDamage * powerAttackMultiplier); // set custom power attack damage
 
-                            double radius = AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_RADIUS", v, a, 10000, true);
-                            double fraction = AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_DAMAGE_FRACTION", v, a, 10000, true);
+                            double radius = AccumulativeStatManager.getCachedRelationalStats("POWER_ATTACK_RADIUS", v, a, 10000, true);
+                            double fraction = AccumulativeStatManager.getCachedRelationalStats("POWER_ATTACK_DAMAGE_FRACTION", v, a, 10000, true);
                             double damage = e.getDamage() * fraction;
                             if (damage > 0 && radius > 0){
                                 for (Entity entity : e.getEntity().getWorld().getNearbyEntities(e.getEntity().getLocation(), radius, radius, radius, (en) -> en instanceof LivingEntity)){

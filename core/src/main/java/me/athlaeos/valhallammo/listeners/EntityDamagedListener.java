@@ -71,6 +71,7 @@ public class EntityDamagedListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDamageRecord(EntityDamageEvent e){
         if (e instanceof EntityDamageByEntityEvent eve) EntityDamagedListener.setDamager(e.getEntity(), eve.getDamager());
+        else EntityDamagedListener.setDamager(e.getEntity(), null);
     }
 
     private final Map<UUID, Double> healthTracker = new HashMap<>();
@@ -96,7 +97,7 @@ public class EntityDamagedListener implements Listener {
             // custom damage did not kill entity
             if (e.getEntity() instanceof Player dP && lastDamager instanceof Player aP){
                 // pvp damage bonus and resistance mechanic
-                double bonus = AccumulativeStatManager.getCachedAttackerRelationalStats("PLAYER_DAMAGE_DEALT", dP, aP, 10000, true);
+                double bonus = AccumulativeStatManager.getCachedRelationalStats("PLAYER_DAMAGE_DEALT", dP, aP, 10000, true);
                 customDamage *= 1 + bonus;
 
                 double resistance = AccumulativeStatManager.getCachedRelationalStats("PVP_RESISTANCE", dP, aP, 10000, true);
@@ -107,7 +108,7 @@ public class EntityDamagedListener implements Listener {
             }
 
             double damageAfterImmunity = overrideImmunityFrames(customDamage, l);
-            if (damageAfterImmunity < 0 && e.getEntityType() != EntityType.ARMOR_STAND) {
+            if (damageAfterImmunity <= 0 && e.getEntityType() != EntityType.ARMOR_STAND) {
                 e.setCancelled(true);
                 return; // entity is immune, and so damage doesn't need to be calculated further
             }
@@ -223,7 +224,7 @@ public class EntityDamagedListener implements Listener {
         CustomDamageType customDamageType = CustomDamageType.getCustomType(damageCause);
 
         if (customDamageType != null) {
-            double elementalMultiplier = customDamageType.damageMultiplier() == null ? 0 : AccumulativeStatManager.getCachedAttackerRelationalStats(customDamageType.damageMultiplier(), e.getEntity(), lastDamager, 10000, true);
+            double elementalMultiplier = customDamageType.damageMultiplier() == null ? 0 : AccumulativeStatManager.getCachedRelationalStats(customDamageType.damageMultiplier(), e.getEntity(), lastDamager, 10000, true);
             e.setDamage(e.getDamage() * (1 + elementalMultiplier));
 
             if (e.getEntity() instanceof LivingEntity l){
@@ -302,7 +303,8 @@ public class EntityDamagedListener implements Listener {
     }
 
     public static void setDamager(Entity attacked, Entity attacker){
-        lastDamagedByMap.put(attacked.getUniqueId(), attacker.getUniqueId());
+        if (attacker == null) lastDamagedByMap.remove(attacked.getUniqueId());
+        else lastDamagedByMap.put(attacked.getUniqueId(), attacker.getUniqueId());
     }
 
     public static void setCustomDamageCause(UUID uuid, String customCause){

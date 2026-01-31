@@ -182,7 +182,7 @@ public class HeavyArmorProfile extends Profile {
         return "profiles_heavy_armor";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_heavy_armor");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_heavy_armor");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

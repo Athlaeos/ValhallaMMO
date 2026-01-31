@@ -30,7 +30,7 @@ public enum WeightClass {
     WEIGHTLESS(),// the default weight class for items. when used to attack, considered "unarmed"
     NONE(); // only used to explicitly tell the plugin "this has no weight class and i don't want it to be used for unarmed either"
 
-    private static final NamespacedKey WEIGHT_CLASS = new NamespacedKey(ValhallaMMO.getInstance(), "weight_class");
+    private static final NamespacedKey WEIGHT_CLASS = ValhallaMMO.key("weight_class");
     private final Collection<Material> matchingMaterials = new HashSet<>();
 
     WeightClass(String... matches){

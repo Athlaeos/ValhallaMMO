@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 public class ThrownItem {
-    private static final NamespacedKey THROWN_WEAPON = new NamespacedKey(ValhallaMMO.getInstance(), "thrown_weapon");
+    private static final NamespacedKey THROWN_WEAPON = ValhallaMMO.key("thrown_weapon");
     public static UUID getThrownBy(ArmorStand a){
         String value = a.getPersistentDataContainer().get(THROWN_WEAPON, PersistentDataType.STRING);
         if (value == null) return null;

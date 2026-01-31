@@ -161,6 +161,7 @@ public class PowerProfile extends Profile {
         stringSetStat("unlockedBlockConversions");
         stringSetStat("permanentPotionEffects");
         stringSetStat("entityClassifications");
+        stringSetStat("permanentPotionEffectCooldowns");
 
         booleanStat("hidePotionEffectBar");
         booleanStat("hideCraftingEffects");
@@ -587,6 +588,9 @@ public class PowerProfile extends Profile {
     public Collection<String> getEntityClassifications(){ return getStringSet("entityClassifications");}
     public void setEntityClassifications(Collection<String> value){ setStringSet("entityClassifications", value);}
 
+    public Collection<String> getPermanentPotionEffectCooldowns(){ return getStringSet("permanentPotionEffectCooldowns");}
+    public void setPermanentPotionEffectCooldowns(Collection<String> value){ setStringSet("permanentPotionEffectCooldowns", value);}
+
     public PowerProfile(UUID owner) {
         super(owner);
     }
@@ -596,7 +600,7 @@ public class PowerProfile extends Profile {
         return "profiles_power";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_power");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_power");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

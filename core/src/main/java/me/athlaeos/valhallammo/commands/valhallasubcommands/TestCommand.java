@@ -15,7 +15,7 @@ public class TestCommand implements Command {
     public boolean execute(CommandSender sender, String[] args) {
         if (sender instanceof Player p){
             if (args[1].equalsIgnoreCase("a"))
-                sender.sendMessage(Utils.chat("stat " + args[2] + " : " + AccumulativeStatManager.getCachedAttackerRelationalStats(args[2], p, p, 10000, true)));
+                sender.sendMessage(Utils.chat("stat " + args[2] + " : " + AccumulativeStatManager.getCachedRelationalStats(args[2], p, p, 10000, true)));
             if (args[1].equalsIgnoreCase("v"))
                 sender.sendMessage(Utils.chat("stat " + args[2] + " : " + AccumulativeStatManager.getCachedRelationalStats(args[2], p, p, 10000, true)));
         }

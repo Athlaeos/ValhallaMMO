@@ -17,8 +17,6 @@ import org.bukkit.util.Vector;
 
 import java.util.Collection;
 
-import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
-
 public class ChargedShotAmmo extends Animation {
     private static final Particle ammo;
     private static final Particle.DustOptions ammoOptions;
@@ -65,6 +63,7 @@ public class ChargedShotAmmo extends Animation {
                 cancel();
                 return;
             }
+            if (p.isInvisible()) return;
             for (Location l : circle) {
                 if (l.getWorld() == null || !l.getWorld().equals(p.getWorld())) l.setWorld(p.getWorld());
                 if (ammo == Utils.DUST)

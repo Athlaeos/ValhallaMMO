@@ -2,7 +2,7 @@ package me.athlaeos.valhallammo.playerstats;
 
 import org.bukkit.entity.Entity;
 
-public interface EvEAccumulativeStatSource {
+public interface EvEAccumulativeStatSource extends AccumulativeStatSource {
     /**
      * Fetches stats similarly to fetch(Entity, boolean), except it's used primarily when the stat is influenced by
      * properties of two entities (mainly when one is attacked by another).

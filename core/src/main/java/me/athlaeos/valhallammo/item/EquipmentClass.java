@@ -35,12 +35,12 @@ public enum EquipmentClass {
     TRINKET("trinkets");
 
     private final Tag<Material> matchingMaterials;
-    private final static NamespacedKey equipmentClassKey = new NamespacedKey(ValhallaMMO.getInstance(), "equipment_class");
+    private final static NamespacedKey equipmentClassKey = ValhallaMMO.key("equipment_class");
 
     EquipmentClass(String key, String... matches) {
         Set<Material> tagged = new HashSet<>(ItemUtils.getMaterialSet(matches));
         this.matchingMaterials = new Tag<>() {
-            private final NamespacedKey k = new NamespacedKey(ValhallaMMO.getInstance(), "tag_" + key);
+            private final NamespacedKey k = ValhallaMMO.key("tag_" + key);
             @Override public boolean isTagged(@NotNull Material material) { return tagged.contains(material); }
             @NotNull @Override public Set<Material> getValues() { return tagged; }
             @NotNull @Override public NamespacedKey getKey() { return k; }

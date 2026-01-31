@@ -30,18 +30,18 @@ public class TotalArmorSource implements AccumulativeStatSource, EvEAccumulative
     public double fetch(Entity victim, Entity attackedBy, boolean use) {
         if (victim instanceof LivingEntity v && attackedBy instanceof LivingEntity a){
             double lightArmor = Math.max(0, AccumulativeStatManager.getCachedRelationalStats("LIGHT_ARMOR", v, a, 10000, true));
-            double lightArmorFlatPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("LIGHT_ARMOR_FLAT_IGNORED", v, a, 10000, true);
+            double lightArmorFlatPenetration = AccumulativeStatManager.getCachedRelationalStats("LIGHT_ARMOR_FLAT_IGNORED", v, a, 10000, true);
             double heavyArmor = Math.max(0, AccumulativeStatManager.getCachedRelationalStats("HEAVY_ARMOR", v, a, 10000, true));
-            double heavyArmorFlatPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("HEAVY_ARMOR_FLAT_IGNORED", v, a, 10000, true);
+            double heavyArmorFlatPenetration = AccumulativeStatManager.getCachedRelationalStats("HEAVY_ARMOR_FLAT_IGNORED", v, a, 10000, true);
             double nonEquipmentArmor = Math.max(0, AccumulativeStatManager.getCachedRelationalStats("WEIGHTLESS_ARMOR", v, a, 10000, true));
-            double armorFlatPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("ARMOR_FLAT_IGNORED", v, a, 10000, true);
+            double armorFlatPenetration = AccumulativeStatManager.getCachedRelationalStats("ARMOR_FLAT_IGNORED", v, a, 10000, true);
 
             double lightArmorMultiplier = Math.max(0, AccumulativeStatManager.getCachedRelationalStats("LIGHT_ARMOR_MULTIPLIER", v, a, 10000, true));
-            double lightArmorFractionPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("LIGHT_ARMOR_FRACTION_IGNORED", v, a, 10000, true);
+            double lightArmorFractionPenetration = AccumulativeStatManager.getCachedRelationalStats("LIGHT_ARMOR_FRACTION_IGNORED", v, a, 10000, true);
             double heavyArmorMultiplier = Math.max(0, AccumulativeStatManager.getCachedRelationalStats("HEAVY_ARMOR_MULTIPLIER", v, a, 10000, true));
-            double heavyArmorFractionPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("HEAVY_ARMOR_FRACTION_IGNORED", v, a, 10000, true);
+            double heavyArmorFractionPenetration = AccumulativeStatManager.getCachedRelationalStats("HEAVY_ARMOR_FRACTION_IGNORED", v, a, 10000, true);
             double armorMultiplierBonus = Math.max(0, AccumulativeStatManager.getCachedRelationalStats("ARMOR_MULTIPLIER_BONUS", v, a, 10000, true));
-            double armorFractionPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("ARMOR_FRACTION_IGNORED", v, a, 10000, true);
+            double armorFractionPenetration = AccumulativeStatManager.getCachedRelationalStats("ARMOR_FRACTION_IGNORED", v, a, 10000, true);
 
             double totalLightArmor = Math.max(0, (lightArmor * lightArmorMultiplier) * (1 - lightArmorFractionPenetration) - lightArmorFlatPenetration);
             double totalHeavyArmor = Math.max(0, (heavyArmor * heavyArmorMultiplier) * (1 - heavyArmorFractionPenetration) - heavyArmorFlatPenetration);

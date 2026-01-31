@@ -30,10 +30,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DynamicModifierMenu extends Menu {
-    private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
-    private static final NamespacedKey KEY_MODIFIER_ID = new NamespacedKey(ValhallaMMO.getInstance(), "key_modifier_id");
-    private static final NamespacedKey KEY_MODIFIER_CATEGORY_ID = new NamespacedKey(ValhallaMMO.getInstance(), "key_modifier_category_id");
-    private static final NamespacedKey KEY_MODIFIER_BUTTON = new NamespacedKey(ValhallaMMO.getInstance(), "key_modifier_button");
+    private static final NamespacedKey KEY_ACTION = ValhallaMMO.key("key_action");
+    private static final NamespacedKey KEY_MODIFIER_ID = ValhallaMMO.key("key_modifier_id");
+    private static final NamespacedKey KEY_MODIFIER_CATEGORY_ID = ValhallaMMO.key("key_modifier_category_id");
+    private static final NamespacedKey KEY_MODIFIER_BUTTON = ValhallaMMO.key("key_modifier_button");
 
     private final List<ItemStack> scrollItems = new ArrayList<>(ModifierCategoryRegistry.getCategories().values().stream().sorted(Comparator.comparingInt(ModifierCategory::order)).map(c ->
             new ItemBuilder(c.icon()).stringTag(KEY_MODIFIER_CATEGORY_ID, c.id()).get()
@@ -229,8 +229,8 @@ public class DynamicModifierMenu extends Menu {
 
     private static final List<ItemStack> recipeButtons = new ArrayList<>();
     private static final List<ItemStack> itemButtons = new ArrayList<>();
-    private final NamespacedKey RECIPES_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "key_recipes");
-    private final NamespacedKey INDEX_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "key_index");
+    private final NamespacedKey RECIPES_KEY = ValhallaMMO.key("key_recipes");
+    private final NamespacedKey INDEX_KEY = ValhallaMMO.key("key_index");
 
     private void setRecipeModifiersView(){
         List<ItemStack> buttons = new ArrayList<>();

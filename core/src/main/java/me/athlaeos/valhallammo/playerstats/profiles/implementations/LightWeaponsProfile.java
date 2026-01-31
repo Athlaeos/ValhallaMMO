@@ -205,7 +205,7 @@ public class LightWeaponsProfile extends Profile {
         return "profiles_light_weapons";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_light_weapons");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_light_weapons");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

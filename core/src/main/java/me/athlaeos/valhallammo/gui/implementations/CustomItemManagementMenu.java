@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 public class CustomItemManagementMenu extends Menu implements SetModifiersMenu {
-    private static final NamespacedKey KEY_ACTION = new NamespacedKey(ValhallaMMO.getInstance(), "key_action");
-    private static final NamespacedKey BUTTON_DATA = new NamespacedKey(ValhallaMMO.getInstance(), "button_data");
+    private static final NamespacedKey KEY_ACTION = ValhallaMMO.key("key_action");
+    private static final NamespacedKey BUTTON_DATA = ValhallaMMO.key("button_data");
 
     private static final ItemStack createNewButton = new ItemBuilder(getButtonData("editor_newrecipe", Material.LIME_DYE))
             .name("&b&lNew")

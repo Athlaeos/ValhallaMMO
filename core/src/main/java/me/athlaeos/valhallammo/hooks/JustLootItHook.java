@@ -68,6 +68,7 @@ public class JustLootItHook extends PluginHook {
                     }
                     LootTable fLootTable = lootTable;
                     List<ItemStack> loot = event.scheduler().sync(() -> LootTableRegistry.getLoot(fLootTable, context, LootTable.LootType.CONTAINER)).join();
+                    if (loot == null) loot = new ArrayList<>();
                     ValhallaLootPopulateEvent lootTableEvent = new ValhallaLootPopulateEvent(lootTable, context, loot);
                     event.scheduler().sync(() -> Bukkit.getPluginManager().callEvent(lootTableEvent)).join();
                     if (!lootTableEvent.isCancelled()) {

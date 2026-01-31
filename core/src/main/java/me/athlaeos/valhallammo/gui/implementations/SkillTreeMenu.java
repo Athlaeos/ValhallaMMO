@@ -36,7 +36,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.*;
 
 public class SkillTreeMenu extends Menu {
-    private static final NamespacedKey buttonKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_button_id");
+    private static final NamespacedKey buttonKey = ValhallaMMO.key("valhalla_button_id");
     private static final Map<Skill, List<List<List<Perk>>>> skillTrees = new HashMap<>(); // first list represents rows, second columns, third perks on the location
     private static final Map<Skill, Pair<Integer, Integer>> coordinateOffsets = new HashMap<>();
 

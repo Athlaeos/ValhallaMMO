@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LightWeaponsProfile extends Profile implements Serializable {
-    private static final NamespacedKey lightWeaponsProfileKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_light_weapons");
+    private static final NamespacedKey lightWeaponsProfileKey = ValhallaMMO.key("valhalla_profile_light_weapons");
 
     private float damagemultiplier = 1F;
     private float attackspeedbonus = 0F;

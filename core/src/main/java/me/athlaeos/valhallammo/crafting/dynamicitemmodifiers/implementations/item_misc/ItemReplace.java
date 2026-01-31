@@ -30,11 +30,6 @@ public class ItemReplace extends DynamicItemModifier implements ResultChangingMo
     }
 
     @Override
-    public ItemStack getNewResult(ModifierContext context) {
-        return replaceBy;
-    }
-
-    @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
         if (button == 12) {
             ItemStack cursor = e.getCursor();

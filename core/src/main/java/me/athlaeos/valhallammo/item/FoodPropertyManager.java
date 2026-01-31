@@ -73,11 +73,11 @@ public class FoodPropertyManager {
         defaultProperties.put(m, new FoodProperties(type, foodValue, saturationValue));
     }
 
-    private static final NamespacedKey FOOD_CLASS = new NamespacedKey(ValhallaMMO.getInstance(), "food_class");
-    private static final NamespacedKey FOOD_VALUE = new NamespacedKey(ValhallaMMO.getInstance(), "food_value");
-    private static final NamespacedKey SATURATION_VALUE = new NamespacedKey(ValhallaMMO.getInstance(), "saturation_value");
-    private static final NamespacedKey CANCEL_POTION_EFFECTS = new NamespacedKey(ValhallaMMO.getInstance(), "cancel_potion_effects");
-    private static final NamespacedKey CANCEL_DIMINISHING_RETURNS = new NamespacedKey(ValhallaMMO.getInstance(), "cancel_diminishing_returns");
+    private static final NamespacedKey FOOD_CLASS = ValhallaMMO.key("food_class");
+    private static final NamespacedKey FOOD_VALUE = ValhallaMMO.key("food_value");
+    private static final NamespacedKey SATURATION_VALUE = ValhallaMMO.key("saturation_value");
+    private static final NamespacedKey CANCEL_POTION_EFFECTS = ValhallaMMO.key("cancel_potion_effects");
+    private static final NamespacedKey CANCEL_DIMINISHING_RETURNS = ValhallaMMO.key("cancel_diminishing_returns");
 
     public static boolean isCustomFood(ItemMeta meta){
         PersistentDataContainer c = meta.getPersistentDataContainer();

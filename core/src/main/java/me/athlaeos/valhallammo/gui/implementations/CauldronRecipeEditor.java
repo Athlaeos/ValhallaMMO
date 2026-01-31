@@ -32,7 +32,7 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.*;
 
 public class CauldronRecipeEditor extends Menu implements SetModifiersMenu, SetRecipeOptionMenu, SetIngredientsMenu, SetValidationsMenu {
-    private static final NamespacedKey BUTTON_ACTION_KEY = new NamespacedKey(ValhallaMMO.getInstance(), "button_action");
+    private static final NamespacedKey BUTTON_ACTION_KEY = ValhallaMMO.key("button_action");
     private static final int catalystIndex = 20;
     private static final int resultIndex = 24;
     private static final ItemStack filler = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&r").get();

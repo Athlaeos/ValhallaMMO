@@ -34,7 +34,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.*;
 
 public class ArchaeologyListener implements Listener {
-    private static final NamespacedKey PREVENT_CUSTOM_GENERATION = new NamespacedKey(ValhallaMMO.getInstance(), "generated_custom_archaeology");
+    private static final NamespacedKey PREVENT_CUSTOM_GENERATION = ValhallaMMO.key("generated_custom_archaeology");
     private static final Collection<String> brushable = Set.of("SUSPICIOUS_GRAVEL", "SUSPICIOUS_SAND");
     private static final Map<Block, org.bukkit.loot.LootTable> suspiciousLootTables = new HashMap<>();
 

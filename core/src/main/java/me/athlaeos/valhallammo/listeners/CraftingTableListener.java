@@ -228,6 +228,7 @@ public class CraftingTableListener implements Listener {
         if (isRepair){
             boolean anyCustom = false;
             boolean anyNotCustom = true;
+            boolean firstCustomDurability = false;
             for (int i = 0; i < inventory.getMatrix().length; i++){
                 ItemStack slot = inventory.getMatrix()[i];
                 if (ItemUtils.isEmpty(slot)) continue;
@@ -241,7 +242,6 @@ public class CraftingTableListener implements Listener {
                 return;
             }
             boolean incompatible = anyCustom && anyNotCustom; // if any of them aren't custom yet also some ARE custom, tools arent combinable
-
             // very ugly implementation, I know, but either ALL tools or NONE of the tools are allowed to be custom. anything in-between is invalid
             if (!incompatible){
                 // is a repair recipe where either all of the items are custom or none of them are
@@ -261,6 +261,7 @@ public class CraftingTableListener implements Listener {
                         ItemBuilder first = matrixMeta.get(i);
                         if (first == null) continue;
                         if (firstItemMaxDurability < 0) {
+                            firstCustomDurability = CustomDurabilityManager.hasCustomDurability(first.getMeta());
                             firstItemMaxDurability = CustomDurabilityManager.getDurability(first, true);
                             firstItem = item.clone();
                             firstBuilder = first;
@@ -271,7 +272,12 @@ public class CraftingTableListener implements Listener {
                 // first non-empty item will be used as result
                 if (!ItemUtils.isEmpty(firstItem)){
                     int newDurability = Math.min(combinedDurability + (int) Math.floor(0.05 * firstItemMaxDurability), firstItemMaxDurability);
-                    CustomDurabilityManager.setDurability(firstBuilder, newDurability, firstItemMaxDurability);
+                    if (firstCustomDurability) {
+                        CustomDurabilityManager.setDurability(firstBuilder, newDurability, firstItemMaxDurability);
+                    } else {
+                        CustomDurabilityManager.setDurability(firstBuilder, newDurability);
+                    }
+
                     firstItem = firstBuilder.get();
 
                     PowerProfile profile = crafter == null ? null : ProfileCache.getOrCache(crafter, PowerProfile.class);

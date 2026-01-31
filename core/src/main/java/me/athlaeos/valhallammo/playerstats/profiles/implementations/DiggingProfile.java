@@ -66,7 +66,7 @@ public class DiggingProfile extends Profile {
         return "profiles_digging";
     }
 
-    private static final NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), "profile_digging");
+    private static final NamespacedKey key = ValhallaMMO.key("profile_digging");
 
     @Override
     public Profile getBlankProfile(UUID owner) {

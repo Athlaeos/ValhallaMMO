@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class AlchemyProfile extends Profile implements Serializable {
-    private static final NamespacedKey alchemyProfileKey = new NamespacedKey(ValhallaMMO.getInstance(), "valhalla_profile_alchemy");
+    private static final NamespacedKey alchemyProfileKey = ValhallaMMO.key("valhalla_profile_alchemy");
 
     private float brewingtimereduction = 1F; // reduction in brewing time to brew anything
     private float brewingingredientsavechance = 0F; // chance for ingredient to not be consumed

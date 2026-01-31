@@ -1,7 +1,6 @@
 package me.athlaeos.valhallammo.skills.skills.implementations;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.commands.valhallasubcommands.Debugger;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.event.PlayerBlocksDropItemsEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
@@ -17,8 +16,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.WoodcuttingProfile;
 import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.*;
+import me.athlaeos.valhallammo.utility.Timer;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -40,6 +39,7 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class WoodcuttingSkill extends Skill implements Listener {
     private final Map<String, Double> dropsExpValues = new HashMap<>();
@@ -108,92 +108,87 @@ public class WoodcuttingSkill extends Skill implements Listener {
     };
 
     private final Collection<UUID> treeCapitatingPlayers = new HashSet<>();
+    private final Map<Block, UUID> decayCausedBy = new HashMap<>();
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent e){
-        String type = BlockUtils.getBlockType(e.getBlock());
-        if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !isLog(e.getBlock(), type) ||
-                WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING) ||
-                !dropsExpValues.containsKey(type) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
-        WoodcuttingProfile profile = ProfileCache.getOrCache(e.getPlayer(), WoodcuttingProfile.class);
+    public void onBlockBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        if (ValhallaMMO.isWorldBlacklisted(player.getWorld().getName()) || player.getGameMode() == GameMode.CREATIVE) return;
 
-        if (!hasPermissionAccess(e.getPlayer())) {
-            Debugger.send(e.getPlayer(), "tree_capitator", "&cDoes not have permission access to Woodcutting");
+        Block block = event.getBlock();
+        String type = BlockUtils.getBlockType(block);
+        if (!isLog(block, BlockUtils.getBlockType(block)) || !dropsExpValues.containsKey(type) || !hasPermissionAccess(player) || WorldGuardHook.inDisabledRegion(block.getLocation(), player, WorldGuardHook.VMMO_SKILL_WOODCUTTING)) {
             return;
         }
-        double woodCuttingLuck = AccumulativeStatManager.getCachedStats("WOODCUTTING_LUCK", e.getPlayer(), 10000, true);
-        if (BlockUtils.canReward(e.getBlock())){
-            e.setExpToDrop(e.getExpToDrop() + Utils.randomAverage(profile.getBlockExperienceRate()));
-            LootListener.addPreparedLuck(e.getBlock(), woodCuttingLuck);
+
+        WoodcuttingProfile profile = ProfileCache.getOrCache(player, WoodcuttingProfile.class);
+        double woodCuttingLuck = AccumulativeStatManager.getCachedStats("WOODCUTTING_LUCK", player, 10000, true);
+        if (BlockUtils.canReward(block)) {
+            event.setExpToDrop(event.getExpToDrop() + Utils.randomAverage(profile.getBlockExperienceRate()));
+            LootListener.addPreparedLuck(block, woodCuttingLuck);
         }
 
-        if (ItemUtils.isEmpty(e.getPlayer().getInventory().getItemInMainHand()) || !e.getPlayer().getInventory().getItemInMainHand().getType().toString().contains("_AXE")) return;
-        if (e.getPlayer().isSneaking() && !treeCapitatingPlayers.contains(e.getPlayer().getUniqueId()) &&
-                profile.isTreeCapitatorUnlocked() &&
-                profile.getTreeCapitatorValidBlocks().contains(type) &&
-                Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "woodcutting_tree_capitator") &&
-                isTree(e.getBlock()) &&
-                !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_TREECAPITATOR)){
-            Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), treeCapitatorLimit, b -> isLog(b, BlockUtils.getBlockType(b)) || treeCapitatorPreventionBlocks.contains(type), treeCapitatorScanArea);
-            if (vein.size() > profile.getTreeCapitatorLimit()) {
-                Debugger.send(e.getPlayer(), "tree_capitator", "&cTree size " + vein.size() + " is above limit " + profile.getTreeCapitatorLimit());
+        if (treeCapitatingPlayers.contains(player.getUniqueId()) || !player.isSneaking() || !hasAxe(player)
+                || !profile.isTreeCapitatorUnlocked() || !profile.getTreeCapitatorValidBlocks().contains(type)
+                || WorldGuardHook.inDisabledRegion(player.getLocation(), player, WorldGuardHook.VMMO_ABILITIES_TREECAPITATOR)) {
+            return;
+        } else if (!Timer.isCooldownPassed(player.getUniqueId(), "woodcutting_tree_capitator")) {
+            Timer.sendIfNotPassed(player, "woodcutting_tree_capitator", TranslationManager.getTranslation("ability_tree_capitator"));
+            return;
+        } else if (!isTree(block)) {
+            return;
+        }
+
+        Collection<Block> vein = BlockUtils.getBlockVein(block, Math.min(treeCapitatorLimit, profile.getTreeCapitatorLimit() + 1), b -> treeCapitatorPreventionBlocks.contains(b.getType().toString()) || isLog(b, BlockUtils.getBlockType(b)), treeCapitatorScanArea);
+        if (vein.size() > profile.getTreeCapitatorLimit()) {
+            return;
+        }
+        if (vein.stream().anyMatch(b -> treeCapitatorPreventionBlocks.contains(BlockUtils.getBlockType(b)))) return;
+        treeCapitatingPlayers.add(player.getUniqueId());
+        event.setCancelled(true);
+
+        Block leafOrigin = getTreeLeafOrigin(block);
+        Consumer<Player> onFinish = (p) -> {
+            endEXPBatch(player);
+            treeCapitatingPlayers.remove(player.getUniqueId());
+            if (leafOrigin == null) {
                 return;
             }
-            if (vein.stream().anyMatch(b -> treeCapitatorPreventionBlocks.contains(type))) {
-                Debugger.send(e.getPlayer(), "tree_capitator", "&cTree contains one of the following blocks: " + String.join(String.join(", ", treeCapitatorPreventionBlocks) + ", which are tree capitator protection blocks"));
-                return;
-            }
-            treeCapitatingPlayers.add(e.getPlayer().getUniqueId());
-            e.setCancelled(true);
 
-            Block leafOrigin = getTreeLeafOrigin(e.getBlock());
+            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                List<Block> leaves = new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit,
+                        bl -> isLeaves(bl, BlockUtils.getBlockType(bl)) && (!(bl.getBlockData() instanceof Leaves l) || l.getDistance() > 3), treeCapitatorLeavesScanArea));
+                Collections.shuffle(leaves);
+                BlockUtils.processBlocksDelayed(player, leaves, $ -> true, leaf -> {
+                    decayCausedBy.put(leaf, player.getUniqueId());
+                    BlockUtils.decayBlock(leaf);
+                    decayCausedBy.remove(leaf);
+                }, null);
+            }, 20L);
+        };
 
-            if (treeCapitatorInstant) {
-                if (!playerHasAxe(e.getPlayer())) {
-                    Debugger.send(e.getPlayer(), "tree_capitator", "&cCached player properties indicates player does not have an axe.");
-                    treeCapitatingPlayers.remove(e.getPlayer().getUniqueId());
-                } else {
-                    BlockUtils.processBlocks(e.getPlayer(), vein, this::playerHasAxe, b -> {
-                        if (profile.isTreeCapitatorInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
-                        CustomBreakSpeedListener.markInstantBreak(b);
-                        e.getPlayer().breakBlock(b);
-                    }, (b) -> {
-                        treeCapitatingPlayers.remove(e.getPlayer().getUniqueId());
-                        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                            List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, bl -> isLeaves(bl, BlockUtils.getBlockType(bl)) && (!(bl.getBlockData() instanceof Leaves l) || l.getDistance() > 3), treeCapitatorLeavesScanArea));
-                            Collections.shuffle(leaves);
-                            BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, BlockUtils::decayBlock, null);
-                        }, 20L);
-                    });
-                }
-            }
-            else
-                BlockUtils.processBlocksPulse(e.getPlayer(), e.getBlock(), vein, this::playerHasAxe, b -> {
-                    if (profile.isTreeCapitatorInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
-                    CustomBreakSpeedListener.markInstantBreak(b);
-                    e.getPlayer().breakBlock(b);
-                }, (b) -> {
-                    treeCapitatingPlayers.remove(e.getPlayer().getUniqueId());
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-                        List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, bl -> isLeaves(bl, BlockUtils.getBlockType(bl)) && (!(bl.getBlockData() instanceof Leaves l) || l.getDistance() > 3), treeCapitatorLeavesScanArea));
-                        Collections.shuffle(leaves);
-                        BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, BlockUtils::decayBlock, null);
-                    }, 20L);
-                });
-            Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getTreeCapitatorCooldown() * 50, "woodcutting_tree_capitator");
+        startEXPBatch(player, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, false);
+        if (treeCapitatorInstant) {
+            BlockUtils.processBlocks(player, vein, WoodcuttingSkill::hasAxe, b -> {
+                if (profile.isTreeCapitatorInstantPickup()) LootListener.setInstantPickup(b, player);
+                CustomBreakSpeedListener.markInstantBreak(b);
+                player.breakBlock(b);
+            }, onFinish);
         } else {
-            if (Debugger.isDebuggerEnabled(e.getPlayer(), "tree_capitator")) {
-                if (!e.getPlayer().isSneaking()) Debugger.send(e.getPlayer(), "tree_capitator", "&cPlayer is not sneaking");
-                if (treeCapitatingPlayers.contains(e.getPlayer().getUniqueId())) Debugger.send(e.getPlayer(), "tree_capitator", "&cPlayer is already processing a tree (This is only of concern if this message is sent once. If it is spammed, it is expected tree capitator worked here)");
-                if (!profile.isTreeCapitatorUnlocked()) Debugger.send(e.getPlayer(), "tree_capitator", "&cPlayer doesn't have tree capitator unlocked");
-                if (!profile.getTreeCapitatorValidBlocks().contains(e.getBlock().getType().toString())) Debugger.send(e.getPlayer(), "tree_capitator", "&cPlayer cannot tree capitate " + e.getBlock().getType());
-                if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "woodcutting_tree_capitator")) Debugger.send(e.getPlayer(), "tree_capitator", "&cTree capitator is on cooldown");
-                if (!isTree(e.getBlock())) Debugger.send(e.getPlayer(), "tree_capitator", "&cThis block (" + e.getBlock().getType() + ") is not considered part of a tree");
-                if (WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_TREECAPITATOR)) Debugger.send(e.getPlayer(), "tree_capitator", "&cAttempted tree capitation in worldguard blocked area");
-            }
-
-            if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "woodcutting_tree_capitator")) Timer.sendCooldownStatus(e.getPlayer(), "woodcutting_tree_capitator", TranslationManager.getTranslation("ability_tree_capitator"));
+            BlockUtils.processBlocksPulse(player, block, vein, WoodcuttingSkill::hasAxe, b -> {
+                if (profile.isTreeCapitatorInstantPickup()) LootListener.setInstantPickup(b, player);
+                CustomBreakSpeedListener.markInstantBreak(b);
+                player.breakBlock(b);
+            }, $ -> {
+                startEXPBatch(player, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, false);
+            }, onFinish);
         }
+        Timer.setCooldownIgnoreIfPermission(player, profile.getTreeCapitatorCooldown() * 50, "woodcutting_tree_capitator");
+    }
+
+    public static boolean hasAxe(Player p) {
+        EntityProperties properties = EntityCache.getAndCacheProperties(p);
+        return properties.getMainHand() != null && EquipmentClass.getMatchingClass(properties.getMainHand().getMeta()) == EquipmentClass.AXE;
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -254,7 +249,6 @@ public class WoodcuttingSkill extends Skill implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void lootTableDrops(BlockBreakEvent e){
-        String type = BlockUtils.getBlockType(e.getBlock());
         if (ValhallaMMO.isWorldBlacklisted(e.getBlock().getWorld().getName()) || !isLog(e.getBlock(), type) ||
                 !BlockUtils.canReward(e.getBlock()) || WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_WOODCUTTING) ||
                 e.getBlock().getState() instanceof Container) return;
@@ -265,6 +259,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
         double expQuantity = 0;
         for (ItemStack i : LootListener.getPreparedExtraDrops(e.getBlock())){
             if (ItemUtils.isEmpty(i)) continue;
+            String type = ItemUtils.getItemType(i);
             expQuantity += dropsExpValues.getOrDefault(type, 0D) * i.getAmount();
         }
         addEXP(e.getPlayer(), expQuantity, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION);
@@ -283,7 +278,8 @@ public class WoodcuttingSkill extends Skill implements Listener {
         double expQuantity = 0;
         for (Item i : e.getItems()){
             if (ItemUtils.isEmpty(i.getItemStack())) continue;
-            expQuantity += dropsExpValues.getOrDefault(ItemUtils.getItemType(i.getItemStack()), 0D) * i.getItemStack().getAmount();
+            String type = ItemUtils.getItemType(i.getItemStack());
+            expQuantity += dropsExpValues.getOrDefault(type, 0D) * i.getItemStack().getAmount();
         }
         for (ItemStack i : extraDrops){
             if (ItemUtils.isEmpty(i)) continue;

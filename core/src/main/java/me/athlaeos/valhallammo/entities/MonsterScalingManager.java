@@ -24,7 +24,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class MonsterScalingManager {
-    private static final NamespacedKey ENTITY_LEVEL = new NamespacedKey(ValhallaMMO.getInstance(), "entity_level");
+    private static final NamespacedKey ENTITY_LEVEL = ValhallaMMO.key("entity_level");
 
     private static boolean enabled = false;
     private static boolean monstersOnly = true;

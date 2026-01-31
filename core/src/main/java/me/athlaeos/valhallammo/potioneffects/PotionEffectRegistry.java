@@ -32,9 +32,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class PotionEffectRegistry {
-    private static final NamespacedKey POTION_EFFECTS = new NamespacedKey(ValhallaMMO.getInstance(), "potion_effects");
-    private static final NamespacedKey ACTUAL_STORED_EFFECTS = new NamespacedKey(ValhallaMMO.getInstance(), "stored_effects");
-    private static final NamespacedKey DEFAULT_STORED_EFFECTS = new NamespacedKey(ValhallaMMO.getInstance(), "default_stored_effects");
+    private static final NamespacedKey POTION_EFFECTS = ValhallaMMO.key("potion_effects");
+    private static final NamespacedKey ACTUAL_STORED_EFFECTS = ValhallaMMO.key("stored_effects");
+    private static final NamespacedKey DEFAULT_STORED_EFFECTS = ValhallaMMO.key("default_stored_effects");
     private static final Map<String, PotionEffectWrapper> registeredEffects = new HashMap<>();
     private static final Collection<UUID> entitiesWithEffects = new HashSet<>();
     private static CustomEffectDisplay customEffectDisplay = ValhallaMMO.getPluginConfig().getBoolean("custom_effect_display", true) ? new CustomEffectSidebarDisplay() : null;

@@ -15,8 +15,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 public class CustomDurabilityManager {
-    private static final NamespacedKey DURABILITY = new NamespacedKey(ValhallaMMO.getInstance(), "durability");
-    private static final NamespacedKey MAX_DURABILITY = new NamespacedKey(ValhallaMMO.getInstance(), "max_durability");
+    private static final NamespacedKey DURABILITY = ValhallaMMO.key("durability");
+    private static final NamespacedKey MAX_DURABILITY = ValhallaMMO.key("max_durability");
 
     /**
      * Damages an item's custom durability by the given amount. This method does not let you know if the item should break
@@ -78,6 +78,25 @@ public class CustomDurabilityManager {
             }
         }
     }
+
+    /**
+     * Sets an item's durability to an amount. Works for both vanilla and custom durability.
+     * @param item the item to set its new current durability
+     * @param amount the durability the item should be set to
+     */
+    public static void setDurability(ItemBuilder item, int amount){
+        Material baseType = item.getItem().getType();
+        boolean hasCustom = item.getMeta().getPersistentDataContainer().has(DURABILITY, PersistentDataType.INTEGER);
+        int maxDurability = hasCustom ? getDurability(item, true) : baseType.getMaxDurability();
+        if (baseType.getMaxDurability() > 0 && item.getMeta() instanceof Damageable d){
+            if (hasCustom){
+                setDurability(item, amount, maxDurability);
+            } else {
+                d.setDamage(Math.max(0, maxDurability - amount));
+            }
+        }
+    }
+
     public static double getDurabilityFraction(ItemBuilder item){
         Material baseType = item.getItem().getType();
         boolean hasCustom = item.getMeta().getPersistentDataContainer().has(DURABILITY, PersistentDataType.INTEGER);
