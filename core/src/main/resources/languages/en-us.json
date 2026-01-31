@@ -3625,8 +3625,8 @@
       "TITLE(&7You leveled up to &e%level%&7;&7Check &e/skills &7for available perks;40;5)"
     ],
     "skill-level-up-martial-arts": [
-      "TITLE(&r;&aUnarmed&7 leveled up to &a%level%)",
-      "&aUnarmed&7 leveled up to &a%level%"
+      "TITLE(&r;&aMartial Arts&7 leveled up to &a%level%)",
+      "&aMartial Arts&7 leveled up to &a%level%"
     ],
     "skill-level-up-trading": [
       "TITLE(&r;&aTrading&7 leveled up to &a%level%)",
