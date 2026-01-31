@@ -120,7 +120,7 @@ public class EntityAttackListener implements Listener {
         for (EntityClassification entityClassification : entityClassificationDamageStatSources.keySet()){
             if (EntityClassification.matchesClassification(v, entityClassification)) {
                 String statSource = entityClassificationDamageStatSources.get(entityClassification);
-                damageMultiplier += AccumulativeStatManager.getCachedAttackerRelationalStats(statSource, v, e.getDamager(), 10000, true);
+                damageMultiplier += AccumulativeStatManager.getCachedRelationalStats(statSource, v, e.getDamager(), 10000, true);
             }
         }
 

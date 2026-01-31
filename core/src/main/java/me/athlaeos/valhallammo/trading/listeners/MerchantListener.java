@@ -7,6 +7,7 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
@@ -360,7 +361,7 @@ public class MerchantListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onVillagerInteract(PlayerInteractEntityEvent e){
         if (!(e.getRightClicked() instanceof AbstractVillager v) || (!convertAllVillagers && !CustomMerchantManager.isCustomMerchant(v)) ||
-                ValhallaMMO.isWorldBlacklisted(v.getWorld().getName())) return;
+                ValhallaMMO.isWorldBlacklisted(v.getWorld().getName()) || WorldGuardHook.inDisabledRegion(v.getLocation(), WorldGuardHook.VMMO_CUSTOM_VILLAGERS)) return;
         if (v.getPersistentDataContainer().has(KEY_MERCHANT_BLOCKED, PersistentDataType.BYTE)) return;
         ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
         if (!ItemUtils.isEmpty(hand) && hand.getType() == Material.NAME_TAG) {

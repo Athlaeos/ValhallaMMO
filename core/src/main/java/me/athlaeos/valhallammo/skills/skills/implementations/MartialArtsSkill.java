@@ -261,7 +261,7 @@ public class MartialArtsSkill extends Skill implements Listener {
             int ticks = (int) Math.floor(timeSinceLastPunch / 50D);
             bonusDamage += ticks >= profile.getDelayedPunchTimeMinimum() ? Math.min(profile.getDelayedPunchDamageCap(), ticks * profile.getDelayedPunchDamagePerTick()) : 0;
             e.setDamage(e.getDamage() + (bonusDamage * (p.getFallDistance() > 0 ?
-                    1.5 + AccumulativeStatManager.getCachedAttackerRelationalStats("POWER_ATTACK_DAMAGE_MULTIPLIER", p, l, 10000, true) :
+                    1.5 + AccumulativeStatManager.getCachedRelationalStats("POWER_ATTACK_DAMAGE_MULTIPLIER", p, l, 10000, true) :
                     1)));
 
             if (p.isSneaking() && l.isOnGround() && profile.isUppercutUnlocked() && (l instanceof Player ? Timer.isCooldownPassed(p.getUniqueId(), "unarmed_uppercut_pvp_cooldown") : Timer.isCooldownPassed(p.getUniqueId(), "unarmed_uppercut_pve_cooldown"))){

@@ -36,7 +36,7 @@ public class UpdateChecker {
                 Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
                     ValhallaMMO.logWarning("There is a new version of ValhallaMMO available: " + v);
                     ValhallaMMO.logWarning("Please don't forget to look at the change notes, this update might be important and additional steps may be required to have the update go smoothly");
-                    ValhallaMMO.logWarning("https://www.spigotmc.org/resources/valhallammo-1-19-1-21-8.94921/");
+                    ValhallaMMO.logWarning("https://www.spigotmc.org/resources/valhallammo-premium-1-19-1-21-11.128164/");
                 });
                 Bukkit.getPluginManager().registerEvents(new Listener() {
                     private final Collection<UUID> messagedOperators = new HashSet<>();

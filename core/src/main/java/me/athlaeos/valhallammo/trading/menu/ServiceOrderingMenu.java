@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.trading.menu;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierContext;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ResultChangingModifier;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.ExactChoice;
 import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
@@ -81,11 +80,12 @@ public class ServiceOrderingMenu extends Menu {
         MerchantType type = CustomMerchantManager.getMerchantType(data.getType());
         MerchantLevel merchantLevel = CustomMerchantManager.getLevel(data);
         if (merchantLevel == null) return;
+        TradingProfile profile = ProfileCache.getOrCache(playerMenuUtility.getOwner(), TradingProfile.class);
         for (MerchantLevel level : MerchantLevel.values()){
             if (level.getLevel() > merchantLevel.getLevel()) continue;
             for (String t : type.getTrades().get(level).getTrades()){
                 MerchantTrade trade = CustomMerchantManager.getTrade(t);
-                if (trade == null || trade.getMaxOrderCount() <= 0) continue;
+                if (trade == null || trade.getMaxOrderCount() <= 0 || (trade.isExclusive() && !profile.getExclusiveTrades().contains(trade.getID()))) continue;
                 orderableTrades.add(trade);
             }
         }
@@ -202,7 +202,7 @@ public class ServiceOrderingMenu extends Menu {
             if (quantity <= 0 || trade == null) continue;
 
             ItemBuilder result = new ItemBuilder(trade.getResult());
-            DynamicItemModifier.modify(ModifierContext.builder(result).executeUsageMechanics().setOtherType(data).entity(data.getVillager()).validate().get(), trade.getModifiers());
+            DynamicItemModifier.modifyAppearance(ModifierContext.builder(result).setOtherType(data).entity(data.getVillager()).validate().get(), trade.getModifiers());
 
             if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
             result.flag(ItemFlag.HIDE_ENCHANTS);
@@ -247,7 +247,7 @@ public class ServiceOrderingMenu extends Menu {
                 );
             }
             ItemBuilder result = new ItemBuilder(trade.getResult());
-            DynamicItemModifier.modify(ModifierContext.builder(result).executeUsageMechanics().setOtherType(data).entity(data.getVillager()).validate().get(), trade.getModifiers());
+            DynamicItemModifier.modifyAppearance(ModifierContext.builder(result).setOtherType(data).entity(data.getVillager()).validate().get(), trade.getModifiers());
 
             if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
             result.flag(ItemFlag.HIDE_ENCHANTS);

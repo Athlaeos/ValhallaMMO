@@ -47,6 +47,7 @@ public class WorldGuardHook extends PluginHook{
     public static final String VMMO_PARTY_ITEMSHARING = "vmmo-party-itemsharing";
     public static final String VMMO_PARTY_EXPSHARING = "vmmo-party-expsharing";
     public static final String VMMO_DOUBLE_JUMPING = "vmmo-double-jumping";
+    public static final String VMMO_CUSTOM_VILLAGERS = "vmmo-custom-villagers";
 
     public WorldGuardHook() {
         super("WorldGuard");
@@ -91,6 +92,7 @@ public class WorldGuardHook extends PluginHook{
         WorldGuardWrapper.registerFlag(VMMO_PARTY_ITEMSHARING);
         WorldGuardWrapper.registerFlag(VMMO_PARTY_EXPSHARING);
         WorldGuardWrapper.registerFlag(VMMO_DOUBLE_JUMPING);
+        WorldGuardWrapper.registerFlag(VMMO_CUSTOM_VILLAGERS);
     }
 
     public static boolean inDisabledRegion(Location l, Player p, String flag){

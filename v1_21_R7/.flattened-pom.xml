@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.athlaeos</groupId>
   <artifactId>valhallammo-v1_21_R7</artifactId>
-  <version>premium_1.10.1</version>
+  <version>premium_1.11</version>
   <dependencies>
     <dependency>
       <groupId>org.spigotmc</groupId>
@@ -16,25 +16,25 @@
     <dependency>
       <groupId>me.athlaeos</groupId>
       <artifactId>valhallammo-core</artifactId>
-      <version>premium_1.10.1</version>
+      <version>premium_1.11</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>me.athlaeos</groupId>
       <artifactId>valhallammo-v1_20_R4</artifactId>
-      <version>premium_1.10.1</version>
+      <version>premium_1.11</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>me.athlaeos</groupId>
       <artifactId>valhallammo-v1_21_R1</artifactId>
-      <version>premium_1.10.1</version>
+      <version>premium_1.11</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>me.athlaeos</groupId>
       <artifactId>valhallammo-v1_21_R2</artifactId>
-      <version>premium_1.10.1</version>
+      <version>premium_1.11</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class ItemRandomize extends DynamicItemModifier implements ResultChangingModifier {
-    private final ItemStack previewItem = new ItemBuilder(Material.PAPER).name("&fdivine tome of randomization :3").lore("&cshould not generally be visible", "&cbut someone used a randomizer", "&cwithout knowing what it does").get();
     private final Map<ItemStack, Float> items = new HashMap<>();
     private ItemStack currentItem = null;
     private float currentWeight = 0F;
@@ -34,11 +33,6 @@ public class ItemRandomize extends DynamicItemModifier implements ResultChanging
         }
         context.getItem().setItem(selected);
         context.getItem().setMeta(ItemUtils.getItemMeta(selected));
-    }
-
-    @Override
-    public ItemStack getNewResult(ModifierContext context) {
-        return previewItem;
     }
 
     @Override

@@ -34,7 +34,7 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
 
     @Override
     public void processItem(ModifierContext context) {
-        int skill = 0;
+        int skill;
         if (SmithingItemPropertyManager.hasSmithingQuality(context.getItem().getMeta())){
             skill = SmithingItemPropertyManager.getQuality(context.getItem().getMeta());
         } else {
@@ -75,25 +75,6 @@ public class ItemReplaceByIndexedBasedOnQuality extends DynamicItemModifier impl
             if (customItem.getModifiers().stream().anyMatch(DynamicItemModifier::requiresPlayer)) return true;
         }
         return false;
-    }
-
-    @Override
-    public ItemStack getNewResult(ModifierContext context) {
-        int skill = switch (skillToScaleWith) {
-            case "SMITHING" -> SmithingItemPropertyManager.getQuality(context.getItem().getMeta());
-            case "ALCHEMY" -> AlchemyItemPropertyManager.getQuality(context.getItem().getMeta());
-            case "ENCHANTING" -> (int) (AccumulativeStatManager.getCachedStats("ENCHANTING_QUALITY", context.getCrafter(), 10000, true) * (1 + AccumulativeStatManager.getCachedStats("ENCHANTING_FRACTION_QUALITY", context.getCrafter(), 10000, true)));
-            default -> ProfileCache.getOrCache(context.getCrafter(), SkillRegistry.getSkill(skillToScaleWith).getProfileType()).getLevel();
-        };
-        List<Integer> sortedQualities = new ArrayList<>(items.keySet());
-        sortedQualities.sort(Comparator.comparingInt(i -> i));
-        int highestItem = 0;
-        for (Integer i : sortedQualities) {
-            if (i > skill) break;
-            highestItem = i;
-        }
-        String customItem = items.get(highestItem);
-        return customItem == null ? context.getItem().get() : CustomItemRegistry.getProcessedItem(customItem, context);
     }
 
     @Override

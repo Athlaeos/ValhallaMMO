@@ -116,15 +116,4 @@ public class TransformItemMaterial extends DynamicItemModifier implements Result
     public int commandArgsRequired() {
         return 0;
     }
-
-    @Override
-    public ItemStack getNewResult(ModifierContext context) {
-        EquipmentClass equipmentClass = EquipmentClass.getMatchingClass(context.getItem().getMeta());
-        if (equipmentClass == null) return context.getItem().get();
-        Material transformTo = classToMaterialMapping.getOrDefault(materialPrefix, new HashMap<>()).get(equipmentClass);
-        if (transformTo == null) return context.getItem().get();
-
-        context.getItem().type(transformTo);
-        return context.getItem().get();
-    }
 }
