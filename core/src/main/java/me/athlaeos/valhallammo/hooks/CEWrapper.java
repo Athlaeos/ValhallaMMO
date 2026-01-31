@@ -22,7 +22,6 @@ import java.util.Optional;
 public class CEWrapper implements Listener {
     public static String getCraftEngineItemID(ItemStack item){
         CustomItem<?> customItem = CraftEngineItems.byItemStack(item);
-        System.out.println("item detected " + (customItem == null ? null : customItem.id().asString()));
         return customItem == null ? null : customItem.id().asString();
     }
 
@@ -34,7 +33,6 @@ public class CEWrapper implements Listener {
     public static String getCraftEngineBlock(Block block){
         BukkitExistingBlock existingBlock = new BukkitExistingBlock(block);
         CustomBlock customBlock = existingBlock.customBlock();
-        System.out.println("block detected: " + (customBlock == null ? null : customBlock.id().asString()));
         return customBlock == null ? null : customBlock.id().asString();
     }
 

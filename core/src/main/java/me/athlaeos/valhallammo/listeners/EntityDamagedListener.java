@@ -97,7 +97,7 @@ public class EntityDamagedListener implements Listener {
             // custom damage did not kill entity
             if (e.getEntity() instanceof Player dP && lastDamager instanceof Player aP){
                 // pvp damage bonus and resistance mechanic
-                double bonus = AccumulativeStatManager.getCachedAttackerRelationalStats("PLAYER_DAMAGE_DEALT", dP, aP, 10000, true);
+                double bonus = AccumulativeStatManager.getCachedRelationalStats("PLAYER_DAMAGE_DEALT", dP, aP, 10000, true);
                 customDamage *= 1 + bonus;
 
                 double resistance = AccumulativeStatManager.getCachedRelationalStats("PVP_RESISTANCE", dP, aP, 10000, true);
@@ -112,7 +112,6 @@ public class EntityDamagedListener implements Listener {
                 e.setCancelled(true);
                 return; // entity is immune, and so damage doesn't need to be calculated further
             }
-            System.out.println("parsing damage event");
             lastDamageTakenMap.put(l.getUniqueId(), customDamage);
             boolean applyImmunity = (l.getHealth() + l.getAbsorptionAmount()) - customDamage > 0;
 
@@ -225,7 +224,7 @@ public class EntityDamagedListener implements Listener {
         CustomDamageType customDamageType = CustomDamageType.getCustomType(damageCause);
 
         if (customDamageType != null) {
-            double elementalMultiplier = customDamageType.damageMultiplier() == null ? 0 : AccumulativeStatManager.getCachedAttackerRelationalStats(customDamageType.damageMultiplier(), e.getEntity(), lastDamager, 10000, true);
+            double elementalMultiplier = customDamageType.damageMultiplier() == null ? 0 : AccumulativeStatManager.getCachedRelationalStats(customDamageType.damageMultiplier(), e.getEntity(), lastDamager, 10000, true);
             e.setDamage(e.getDamage() * (1 + elementalMultiplier));
 
             if (e.getEntity() instanceof LivingEntity l){

@@ -40,9 +40,9 @@ public class Bleeder {
      * @param causedBy the entity causing the bleed
      */
     public static void inflictBleed(LivingEntity bleeder, Entity causedBy, CombatType combatType){
-        double bleedDamage = AccumulativeStatManager.getCachedAttackerRelationalStats("BLEED_DAMAGE", bleeder, causedBy, 10000, true);
+        double bleedDamage = AccumulativeStatManager.getCachedRelationalStats("BLEED_DAMAGE", bleeder, causedBy, 10000, true);
         if (bleedDamage <= 0) return;
-        int bleedDuration = (int) AccumulativeStatManager.getCachedAttackerRelationalStats("BLEED_DURATION", bleeder, causedBy, 10000, true);
+        int bleedDuration = (int) AccumulativeStatManager.getCachedRelationalStats("BLEED_DURATION", bleeder, causedBy, 10000, true);
         BleedingInstance instance = bleedingEntities.get(bleeder.getUniqueId());
         if (instance != null) inflictBleed(bleeder, causedBy, bleedDuration, bleedDamage, Math.min(maxStacks, instance.stacks + 1), combatType);
         else inflictBleed(bleeder, causedBy, bleedDuration, bleedDamage, 1, combatType);
@@ -107,12 +107,12 @@ public class Bleeder {
      * @param causedBy the entity causing the bleed
      */
     public static void attemptBleed(LivingEntity bleeder, Entity causedBy, CombatType combatType){
-        double chance = AccumulativeStatManager.getCachedAttackerRelationalStats("BLEED_CHANCE", causedBy, bleeder, 10000, true);
+        double chance = AccumulativeStatManager.getCachedRelationalStats("BLEED_CHANCE", causedBy, bleeder, 10000, true);
         AttributeInstance bleederLuck = bleeder.getAttribute(Attribute.GENERIC_LUCK);
         AttributeInstance causedByLuck = causedBy instanceof LivingEntity l ? l.getAttribute(Attribute.GENERIC_LUCK) : null;
         if (Utils.proc(chance, (causedByLuck == null ? 0 : causedByLuck.getValue()) - (bleederLuck == null ? 0 : bleederLuck.getValue()), false)){
-            double damage = AccumulativeStatManager.getCachedAttackerRelationalStats("BLEED_DAMAGE", causedBy, bleeder, 10000, true);
-            int duration = (int) AccumulativeStatManager.getCachedAttackerRelationalStats("BLEED_DURATION", causedBy, bleeder, 10000, true);
+            double damage = AccumulativeStatManager.getCachedRelationalStats("BLEED_DAMAGE", causedBy, bleeder, 10000, true);
+            int duration = (int) AccumulativeStatManager.getCachedRelationalStats("BLEED_DURATION", causedBy, bleeder, 10000, true);
             inflictBleed(bleeder, causedBy, duration, damage, combatType);
         }
     }

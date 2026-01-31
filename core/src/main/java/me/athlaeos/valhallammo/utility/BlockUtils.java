@@ -5,12 +5,10 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Catch;
-import me.athlaeos.valhallammo.dom.Fetcher;
-import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.hooks.CEHook;
 import me.athlaeos.valhallammo.hooks.IAHook;
 import me.athlaeos.valhallammo.hooks.NexoHook;
-import me.athlaeos.valhallammo.item.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -31,6 +29,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -162,19 +161,20 @@ public class BlockUtils {
         return blockAlteringPlayers;
     }
 
-    public static void processBlocks(Player responsible, Collection<Block> blocks, Predicate<Player> validation, Action<Block> process, Action<Player> onFinish){
-        if (process == null || blocks.isEmpty()) return;
-        Block lastBlock = null;
+    public static void processBlocks(Player responsible, Collection<Block> blocks, Predicate<Player> validation, Consumer<Block> process, Consumer<Player> onFinish){
+        if (process == null || blocks.isEmpty()) {
+            if (onFinish != null) onFinish.accept(responsible);
+            return;
+        }
         for (Block b : blocks){
             if (validation != null && !validation.test(responsible)) continue;
-            process.act(b);
-            lastBlock = b;
+            process.accept(b);
         }
-        if (onFinish != null && lastBlock != null) onFinish.act(responsible);
+        if (onFinish != null) onFinish.accept(responsible);
     }
 
     private static final long PULSE_DELAY = 2L;
-    public static void processBlocksPulse(Player responsible, Block origin, Collection<Block> blocks, Predicate<Player> validation, Action<Block> process, Action<Player> onFinish){
+    public static void processBlocksPulse(Player responsible, Block origin, Collection<Block> blocks, Predicate<Player> validation, Consumer<Block> process, Consumer<Player> onBatchFinish, Consumer<Player> onFinish){
         Map<Double, List<Block>> sortedByDistance = new HashMap<>();
         for (Block b : blocks) {
             double distance = b.getLocation().distanceSquared(origin.getLocation());
@@ -186,10 +186,9 @@ public class BlockUtils {
         for (Double distance : sortedByDistance.keySet()){
             int time = (int) MathUtils.sqrt(distance);
             if (time > highest) highest = time;
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> processBlocks(responsible, sortedByDistance.get(distance), validation, process, null), time * PULSE_DELAY);
-        }
+            Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> processBlocks(responsible, sortedByDistance.get(distance), validation, process, onBatchFinish), time * PULSE_DELAY);        }
         if (onFinish != null) {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> onFinish.act(responsible), (highest * PULSE_DELAY) + 1);
+            Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> onFinish.accept(responsible), (highest * PULSE_DELAY) + 1);
         }
     }
 

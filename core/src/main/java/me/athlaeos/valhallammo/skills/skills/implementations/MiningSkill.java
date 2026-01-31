@@ -19,8 +19,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfile;
 import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.*;
+import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -125,48 +125,59 @@ public class MiningSkill extends Skill implements Listener {
                 WorldGuardHook.inDisabledRegion(e.getBlock().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_SKILL_MINING) ||
                 !dropsExpValues.containsKey(type) || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         MiningProfile profile = ProfileCache.getOrCache(e.getPlayer(), MiningProfile.class);
+        Block block = e.getBlock();
+        Player player = e.getPlayer();
         if (profile.getUnbreakableBlocks().contains(type)) {
             e.setCancelled(true);
             return;
         }
-        if (!hasPermissionAccess(e.getPlayer())) return;
-        if (BlockUtils.canReward(e.getBlock())) {
+        if (!hasPermissionAccess(player)) return;
+        if (BlockUtils.canReward(block)) {
             int experience = e.getExpToDrop() + Utils.randomAverage(profile.getBlockExperienceRate());
             experience = Utils.randomAverage(experience * (1D + profile.getBlockExperienceMultiplier()));
             e.setExpToDrop(experience);
         }
-        LootListener.addPreparedLuck(e.getBlock(), AccumulativeStatManager.getCachedStats("MINING_LUCK", e.getPlayer(), 10000, true));
+        LootListener.addPreparedLuck(block, AccumulativeStatManager.getCachedStats("MINING_LUCK", player, 10000, true));
 
-        if (e.getPlayer().isSneaking() && !veinMiningPlayers.contains(e.getPlayer().getUniqueId()) &&
-                profile.isVeinMiningUnlocked() && profile.getVeinMinerValidBlocks().contains(type) &&
-                Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_vein_miner") &&
-                !WorldGuardHook.inDisabledRegion(e.getPlayer().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_ABILITIES_VEINMINER)){
-            Collection<Block> vein = BlockUtils.getBlockVein(e.getBlock(), veinMiningLimit, b -> b.getType() == e.getBlock().getType(), veinMiningScanArea);
-            veinMiningPlayers.add(e.getPlayer().getUniqueId());
-            e.setCancelled(true);
-
-            if (veinMiningInstant)
-                BlockUtils.processBlocks(e.getPlayer(), vein, p -> {
-                    EntityProperties properties = EntityCache.getAndCacheProperties(p);
-                    return properties.getMainHand() != null && EquipmentClass.getMatchingClass(properties.getMainHand().getMeta()) == EquipmentClass.PICKAXE;
-                    }, b -> {
-                    if (profile.isVeinMiningInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
-                    CustomBreakSpeedListener.markInstantBreak(b);
-                    e.getPlayer().breakBlock(b);
-                }, (b) -> veinMiningPlayers.remove(b.getUniqueId()));
-            else
-                BlockUtils.processBlocksPulse(e.getPlayer(), e.getBlock(), vein, p -> {
-                    EntityProperties properties = EntityCache.getAndCacheProperties(p);
-                    return properties.getMainHand() != null && EquipmentClass.getMatchingClass(properties.getMainHand().getMeta()) == EquipmentClass.PICKAXE;
-                }, b -> {
-                    if (profile.isVeinMiningInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
-                    CustomBreakSpeedListener.markInstantBreak(b);
-                    e.getPlayer().breakBlock(b);
-                }, (b) -> veinMiningPlayers.remove(b.getUniqueId()));
-            Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getVeinMiningCooldown() * 50, "mining_vein_miner");
-        } else {
-            if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "mining_vein_miner")) Timer.sendCooldownStatus(e.getPlayer(), "mining_vein_miner", TranslationManager.getTranslation("ability_vein_miner"));
+        if (veinMiningPlayers.contains(player.getUniqueId()) || !player.isSneaking() || !profile.isVeinMiningUnlocked()
+                || !profile.getVeinMinerValidBlocks().contains(type)
+                || WorldGuardHook.inDisabledRegion(block.getLocation(), player, WorldGuardHook.VMMO_ABILITIES_VEINMINER)) {
+            return;
+        } else if (!Timer.isCooldownPassed(player.getUniqueId(), "mining_vein_miner")) {
+            Timer.sendIfNotPassed(player, "mining_vein_miner", TranslationManager.getTranslation("ability_vein_miner"));
+            return;
         }
+        Collection<Block> vein = BlockUtils.getBlockVein(block, veinMiningLimit, b -> BlockUtils.getBlockType(b).equals(type), veinMiningScanArea);
+        if (vein.size() <= 1) {
+            return;
+        }
+
+        veinMiningPlayers.add(player.getUniqueId());
+        e.setCancelled(true);
+
+        startEXPBatch(player, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, false);
+        if (veinMiningInstant) {
+            BlockUtils.processBlocks(player, vein, MiningSkill::hasPickaxe, b -> {
+                if (profile.isVeinMiningInstantPickup()) LootListener.setInstantPickup(b, player);
+                CustomBreakSpeedListener.markInstantBreak(b);
+                player.breakBlock(b);
+            }, $ -> {
+                endEXPBatch(player);
+                veinMiningPlayers.remove(player.getUniqueId());
+            });
+        } else {
+            BlockUtils.processBlocksPulse(player, block, vein, MiningSkill::hasPickaxe, b -> {
+                if (profile.isVeinMiningInstantPickup()) LootListener.setInstantPickup(b, e.getPlayer());
+                CustomBreakSpeedListener.markInstantBreak(b);
+                e.getPlayer().breakBlock(b);
+            }, $ -> {
+                startEXPBatch(player, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, false);
+            }, $ -> {
+                endEXPBatch(player);
+                veinMiningPlayers.remove(player.getUniqueId());
+            });
+        }
+        Timer.setCooldownIgnoreIfPermission(e.getPlayer(), profile.getVeinMiningCooldown() * 50, "mining_vein_miner");
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -354,6 +365,11 @@ public class MiningSkill extends Skill implements Listener {
             amount *= (1 + AccumulativeStatManager.getCachedStats("MINING_EXP_GAIN", p, 10000, true));
         }
         super.addEXP(p, amount, silent, reason);
+    }
+
+    public static boolean hasPickaxe(Player player) {
+        EntityProperties properties = EntityCache.getAndCacheProperties(player);
+        return properties.getMainHand() != null && EquipmentClass.getMatchingClass(properties.getMainHand().getMeta()) == EquipmentClass.PICKAXE;
     }
 
     public Map<String, Double> getDropsExpValues() {

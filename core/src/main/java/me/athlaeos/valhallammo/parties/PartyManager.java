@@ -246,7 +246,7 @@ public class PartyManager {
         allParties.put(newId, party);
 
         if (getBoolStat("party_colors", party)) party.setDisplayName(Utils.chat(name));
-        else party.setDescription(name);
+        else party.setDisplayName(name);
         Timer.setCooldownIgnoreIfPermission(p, partyRenameCooldown, "cooldown_party_rename");
         return null;
     }

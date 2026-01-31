@@ -346,12 +346,12 @@ public final class NMS_v1_21_R1 implements NMS {
         };
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     public static void addAttribute(LivingEntity e, String identifier, Attribute type, double amount, AttributeModifier.Operation operation){
         AttributeInstance instance = e.getAttribute(type);
         if (instance != null) {
-            NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), identifier);
-            instance.getModifiers().stream().filter(m -> m != null && (m.getKey().equals(key) || m.getName().equals(identifier))).forEach(instance::removeModifier);
-            if (amount != 0) instance.addModifier(new AttributeModifier(key, amount, operation, EquipmentSlotGroup.ANY));
+            removeAttribute(e, identifier, type);
+            if (amount != 0) instance.addModifier(new AttributeModifier(new NamespacedKey(ValhallaMMO.getInstance(), identifier), amount, operation, EquipmentSlotGroup.ANY));
         }
     }
 
@@ -364,14 +364,25 @@ public final class NMS_v1_21_R1 implements NMS {
     public static double getAttributeValue(LivingEntity e, String identifier, Attribute type){
         AttributeInstance instance = e.getAttribute(type);
         NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), identifier);
-        if (instance != null) return instance.getModifiers().stream().filter(m -> m != null  && (m.getKey().equals(key) || m.getName().equals(identifier))).map(AttributeModifier::getAmount).findFirst().orElse(0D);
+        if (instance == null) return 0;
+        for (AttributeModifier m : instance.getModifiers()) {
+            if (m.getKey().equals(key) || m.getName().equals(identifier)) {
+                return m.getAmount();
+            }
+        }
         return 0;
     }
 
     public static void removeAttribute(LivingEntity e, String identifier, Attribute type){
         AttributeInstance instance = e.getAttribute(type);
         NamespacedKey key = new NamespacedKey(ValhallaMMO.getInstance(), identifier);
-        if (instance != null) instance.getModifiers().stream().filter(m -> m != null && (m.getKey().equals(key) || m.getName().equals(identifier))).forEach(instance::removeModifier);
+        if (instance != null) {
+            for (AttributeModifier m : new ArrayList<>(instance.getModifiers())) {
+                if (m.getKey().equals(key) || m.getName().equals(identifier)) {
+                    instance.removeModifier(m);
+                }
+            }
+        }
     }
 
     @Override

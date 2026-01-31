@@ -2,6 +2,7 @@ package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.BiFetcher;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
@@ -10,6 +11,7 @@ import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
+import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTrigger;
 import me.athlaeos.valhallammo.potioneffects.effect_triggers.EffectTriggerRegistry;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import org.bukkit.FluidCollisionMode;
@@ -298,6 +300,21 @@ public class EntityUtils {
             if (e instanceof Player p) {
                 PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
                 properties.setPowerPotionEffects(PermanentPotionEffects.fromString(String.join(";", profile.getPermanentPotionEffects())));
+                for (String cooldownString : new HashSet<>(profile.getPermanentPotionEffectCooldowns())) {
+                    String[] args = cooldownString.split(":");
+                    if (args.length <= 1) {
+                        ValhallaMMO.logWarning("Invalid cooldown string '" + cooldownString + "' found on " + p.getName() + ", had a trigger configured but no cooldown. Should be formatted trigger:cdraffected(true/false);cooldown(milliseconds). Removed from player");
+                        profile.getPermanentPotionEffectCooldowns().remove(cooldownString);
+                        continue;
+                    }
+                    String trigger = args[0];
+                    EffectTrigger.CooldownProperties cooldown = Catch.catchOrElse(() -> EffectTrigger.CooldownProperties.deserialize(args[1]), null, "Invalid cooldown string '" + cooldownString + "' found on " + p.getName() + ", should be formatted trigger:cdraffected(true/false);cooldown(milliseconds). Removed from player");
+                    if (cooldown == null) {
+                        profile.getPermanentPotionEffectCooldowns().remove(cooldownString);
+                        continue;
+                    }
+                    properties.addPermanentEffectCooldown(trigger, cooldown);
+                }
             }
             if (equipment){
                 properties.getCombinedEnchantments().clear();

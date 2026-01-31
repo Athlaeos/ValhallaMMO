@@ -115,7 +115,7 @@ public class Stun extends PotionEffectWrapper {
     }
 
     public static void attemptStun(LivingEntity entity, LivingEntity causedBy){
-        int stunDuration = ValhallaMMO.getPluginConfig().getInt("default_stun_duration", 0) + (int) AccumulativeStatManager.getCachedAttackerRelationalStats("STUN_DURATION_BONUS", entity, causedBy, 10000, true);
+        int stunDuration = ValhallaMMO.getPluginConfig().getInt("default_stun_duration", 0) + (int) AccumulativeStatManager.getCachedRelationalStats("STUN_DURATION_BONUS", entity, causedBy, 10000, true);
         stunTarget(entity, causedBy, stunDuration, false);
     }
 

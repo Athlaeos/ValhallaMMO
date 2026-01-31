@@ -26,8 +26,8 @@ public class TotalHeavyArmorSource implements AccumulativeStatSource, EvEAccumul
     public double fetch(Entity victim, Entity a, boolean use) {
         if (victim instanceof LivingEntity v){
             double baseHeavyArmor = fetch(victim, use);
-            double heavyArmorFlatPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("HEAVY_ARMOR_FLAT_IGNORED", v, a, 10000, true);
-            double heavyArmorFractionPenetration = AccumulativeStatManager.getCachedAttackerRelationalStats("HEAVY_ARMOR_FRACTION_IGNORED", v, a, 10000, true);
+            double heavyArmorFlatPenetration = AccumulativeStatManager.getCachedRelationalStats("HEAVY_ARMOR_FLAT_IGNORED", v, a, 10000, true);
+            double heavyArmorFractionPenetration = AccumulativeStatManager.getCachedRelationalStats("HEAVY_ARMOR_FRACTION_IGNORED", v, a, 10000, true);
             return (baseHeavyArmor * (1 - heavyArmorFractionPenetration)) - heavyArmorFlatPenetration;
         }
         return 0;

@@ -125,6 +125,7 @@ public class AttributeAttackerSource implements CacheableRelationalStatSource {
         }
         // removing the uuid mapping itself from the cache
         RELATIONAL_CACHE.remove(uuid);
+        NON_RELATIONAL_CACHE.remove(uuid);
     }
 
     @Override

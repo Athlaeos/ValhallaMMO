@@ -47,7 +47,6 @@ public class PaperLootRefillHandler implements Listener {
         AttributeInstance luckInstance = e.getPlayer().getAttribute(Attribute.GENERIC_LUCK);
         double luck = luckInstance == null ? 0 : luckInstance.getValue();
         LootContext context = new LootContext.Builder(inventory.getLocation()).killer(e.getPlayer()).lootedEntity(e.getPlayer()).lootingModifier(0).luck((float) luck).build();
-        System.out.println("refilling paper chest");
         LootTable table = LootTableRegistry.getLootTable(inventory.getLocation().getBlock(), inventory.getLocation().getBlock().getType());
         if (table == null) table = LootTableRegistry.getLootTable(lootTable.getKey());
         if (table != null) {

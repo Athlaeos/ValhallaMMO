@@ -18,6 +18,7 @@ import me.athlaeos.valhallammo.item.CustomFlag;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.localization.TranslationManager;
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.utility.BlockUtils;
@@ -49,6 +50,7 @@ public class ImmersiveRecipeListener implements Listener {
 
     @EventHandler
     public void onBlockInteract(PlayerInteractEvent e){
+        if (CustomRecipeRegistry.getImmersiveRecipes().isEmpty()) return;
         Block clicked = e.getClickedBlock();
         if (clicked == null) return;
         String type = BlockUtils.getBlockType(clicked);
@@ -110,7 +112,9 @@ public class ImmersiveRecipeListener implements Listener {
                 return;
             }
             long interactedFor = Timer.getTimerResult(p.getUniqueId(), "time_held_immersive_interact");
-            if (interactedFor < 100 || interactedFor >= recipe.getTimeToCraft() * 50L){
+            double craftingTimeReduction = AccumulativeStatManager.getCachedStats("CRAFTING_TIME_REDUCTION", p, 10000, true);
+            double intendedCraftingTime = craftingTimeReduction >= 0 ? (recipe.getTimeToCraft() * (1 / (1 + craftingTimeReduction))) : (recipe.getTimeToCraft() * (1 - craftingTimeReduction));
+            if (interactedFor < 100 || interactedFor >= intendedCraftingTime * 50L){
                 // only check crafting conditions on start and finish of crafting process
                 PowerProfile profile = ProfileCache.getOrCache(p, PowerProfile.class);
                 if (profile == null ||
@@ -134,7 +138,7 @@ public class ImmersiveRecipeListener implements Listener {
                     return;
                 }
 
-                if (interactedFor >= recipe.getTimeToCraft() * 50L){
+                if (interactedFor >= intendedCraftingTime * 50L){
                     // finished crafting, output recipe
                     if (p.getGameMode() == GameMode.CREATIVE || ItemUtils.timesContained(Arrays.asList(p.getInventory().getStorageContents()), recipe.getIngredients(), recipe.getMetaRequirement().getChoice()) > 0){
                         List<ItemStack> removedItems = p.getGameMode() == GameMode.CREATIVE ? new ArrayList<>() : ItemUtils.removeItems(p.getInventory(), recipe.getIngredients(), 1, recipe.getMetaRequirement().getChoice());

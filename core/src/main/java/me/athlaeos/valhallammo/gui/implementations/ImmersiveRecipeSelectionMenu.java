@@ -284,7 +284,7 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
                                     .replace("%item%", recipe.getMetaRequirement().getChoice().ingredientDescription(i));
                         }).collect(Collectors.toList())
                 );
-                String time = String.format("%.1f", (Math.max(0, recipe.getTimeToCraft() * (1 - craftingTimeReduction))/20D));
+                String time = String.format("%.1f", (Math.max(0, craftingTimeReduction >= 0 ? (recipe.getTimeToCraft() * (1 / (1 + Math.max(-0.999, craftingTimeReduction)))) : (recipe.getTimeToCraft() * (1 - craftingTimeReduction)))/20D));
                 lore = lore.stream().map(l -> l.replace("%crafting_time%", time)).collect(Collectors.toList());
 
                 String displayName = recipe.getDisplayName() == null ? ItemUtils.getItemName(new ItemBuilder(button)) : recipe.getDisplayName();
