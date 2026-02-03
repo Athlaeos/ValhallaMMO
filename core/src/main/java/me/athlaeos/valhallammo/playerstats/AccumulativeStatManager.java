@@ -295,7 +295,7 @@ public class AccumulativeStatManager {
 
         register("ENCHANTING_QUALITY", new AttributeSource("ENCHANTING_QUALITY"), new PotionEffectSource("ENCHANTING_QUALITY"), new ProfileStatSource(EnchantingProfile.class, "enchantingSkill"), new GlobalBuffSource("enchanting_quality"), new PotionEffectSingleUseSource("ENCHANTING_MASTERPIECE_FLAT"));
         register("ENCHANTING_FRACTION_QUALITY", new AttributeSource("ENCHANTING_QUALITY_FRACTION"), new PotionEffectSource("ENCHANTING_QUALITY_FRACTION"), new ProfileStatSource(EnchantingProfile.class, "enchantingSkillFractionBonus"), new GlobalBuffSource("enchanting_quality"), new PotionEffectSingleUseSource("ENCHANTING_MASTERPIECE_FRACTION"));
-        register("ENCHANTING_QUALITY_ANVIL", new AttributeSource("ANVIL_QUALITY"), new PotionEffectSource("ANVIL_QUALITY"), new ProfileStatSource(EnchantingProfile.class, "anvilSkill"));
+        register("ENCHANTING_QUALITY_ANVIL", new AttributeSource("ANVIL_QUALITY_FLAT"), new PotionEffectSource("ANVIL_QUALITY_FLAT"), new ProfileStatSource(EnchantingProfile.class, "anvilSkill"));
         register("ENCHANTING_FRACTION_QUALITY_ANVIL", new AttributeSource("ANVIL_QUALITY_FRACTION"), new PotionEffectSource("ANVIL_QUALITY_FRACTION"), new ProfileStatSource(EnchantingProfile.class, "anvilSkillFractionBonus"));
         register("ENCHANTING_AMPLIFY_CHANCE", new ProfileStatSource(EnchantingProfile.class, "enchantmentAmplificationChance"), new GlobalBuffSource("enchanting_amplify_chance"));
         register("ENCHANTING_LAPIS_SAVE_CHANCE", new AttributeSource("LAPIS_SAVE_CHANCE", true), new PotionEffectSource("LAPIS_SAVE_CHANCE", true), new ProfileStatSource(EnchantingProfile.class, "lapisSaveChance"), new GlobalBuffSource("enchanting_lapis_save_chance"));
