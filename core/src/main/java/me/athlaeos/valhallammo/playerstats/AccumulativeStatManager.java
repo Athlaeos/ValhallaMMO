@@ -649,8 +649,8 @@ public class AccumulativeStatManager {
     public static void uncache(UUID uuid){
         STAT_CACHE.remove(uuid);
         RELATIONAL_STAT_CACHE.remove(uuid);
-        for (UUID id : RELATIONAL_STAT_CACHE.keySet()){
-            Map<UUID, Map<String, Map.Entry<Long, Double>>> attackerEntries = RELATIONAL_STAT_CACHE.getOrDefault(id, new HashMap<>());
+        for (UUID id : new HashSet<>(RELATIONAL_STAT_CACHE.keySet())){
+            Map<UUID, Map<String, Map.Entry<Long, Double>>> attackerEntries = RELATIONAL_STAT_CACHE.getOrDefault(id, new ConcurrentHashMap<>());
             attackerEntries.remove(uuid);
             if (attackerEntries.isEmpty()) RELATIONAL_STAT_CACHE.remove(id);
             else RELATIONAL_STAT_CACHE.put(id, attackerEntries);

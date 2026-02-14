@@ -108,7 +108,7 @@ public class EntityDamagedListener implements Listener {
             }
 
             double damageAfterImmunity = overrideImmunityFrames(customDamage, l);
-            if (damageAfterImmunity <= 0 && e.getEntityType() != EntityType.ARMOR_STAND) {
+            if (damageAfterImmunity < 0 && e.getEntityType() != EntityType.ARMOR_STAND) {
                 e.setCancelled(true);
                 return; // entity is immune, and so damage doesn't need to be calculated further
             }
