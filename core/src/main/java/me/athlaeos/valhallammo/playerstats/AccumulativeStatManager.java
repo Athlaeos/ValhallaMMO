@@ -307,7 +307,7 @@ public class AccumulativeStatManager {
 
         register("ENCHANTING_QUALITY", new AttributeSource("ENCHANTING_QUALITY"), new PotionEffectSource("ENCHANTING_QUALITY"), new ProfileStatSource(EnchantingProfile.class, "enchantingSkill"), new GlobalBuffSource("enchanting_quality"), new PotionEffectSingleUseSource("ENCHANTING_MASTERPIECE_FLAT"));
         register("ENCHANTING_FRACTION_QUALITY", new AttributeSource("ENCHANTING_QUALITY_FRACTION"), new PotionEffectSource("ENCHANTING_QUALITY_FRACTION"), new ProfileStatSource(EnchantingProfile.class, "enchantingSkillFractionBonus"), new GlobalBuffSource("enchanting_quality"), new PotionEffectSingleUseSource("ENCHANTING_MASTERPIECE_FRACTION"));
-        register("ENCHANTING_QUALITY_ANVIL", new AttributeSource("ANVIL_QUALITY"), new PotionEffectSource("ANVIL_QUALITY"), new ProfileStatSource(EnchantingProfile.class, "anvilSkill"));
+        register("ENCHANTING_QUALITY_ANVIL", new AttributeSource("ANVIL_QUALITY_FLAT"), new PotionEffectSource("ANVIL_QUALITY_FLAT"), new ProfileStatSource(EnchantingProfile.class, "anvilSkill"));
         register("ENCHANTING_FRACTION_QUALITY_ANVIL", new AttributeSource("ANVIL_QUALITY_FRACTION"), new PotionEffectSource("ANVIL_QUALITY_FRACTION"), new ProfileStatSource(EnchantingProfile.class, "anvilSkillFractionBonus"));
         register("ENCHANTING_AMPLIFY_CHANCE", new ProfileStatSource(EnchantingProfile.class, "enchantmentAmplificationChance"), new GlobalBuffSource("enchanting_amplify_chance"));
         register("ENCHANTING_LAPIS_SAVE_CHANCE", new AttributeSource("LAPIS_SAVE_CHANCE", true), new PotionEffectSource("LAPIS_SAVE_CHANCE", true), new ProfileStatSource(EnchantingProfile.class, "lapisSaveChance"), new GlobalBuffSource("enchanting_lapis_save_chance"));
@@ -681,8 +681,8 @@ public class AccumulativeStatManager {
     public static void uncache(UUID uuid){
         STAT_CACHE.remove(uuid);
         RELATIONAL_STAT_CACHE.remove(uuid);
-        for (UUID id : RELATIONAL_STAT_CACHE.keySet()){
-            Map<UUID, Map<String, Map.Entry<Long, Double>>> attackerEntries = RELATIONAL_STAT_CACHE.getOrDefault(id, new HashMap<>());
+        for (UUID id : new HashSet<>(RELATIONAL_STAT_CACHE.keySet())){
+            Map<UUID, Map<String, Map.Entry<Long, Double>>> attackerEntries = RELATIONAL_STAT_CACHE.getOrDefault(id, new ConcurrentHashMap<>());
             attackerEntries.remove(uuid);
             if (attackerEntries.isEmpty()) RELATIONAL_STAT_CACHE.remove(id);
             else RELATIONAL_STAT_CACHE.put(id, attackerEntries);

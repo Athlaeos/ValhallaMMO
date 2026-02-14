@@ -128,7 +128,7 @@ public class LootListener implements Listener {
         clear(e.getHarvestedBlock());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockHarvestFinal(PlayerHarvestBlockEvent e){
         if (ArchaeologyListener.isBrushable(e.getHarvestedBlock().getType())){
             preparedBlockDrops.remove(e.getHarvestedBlock().getLocation());
