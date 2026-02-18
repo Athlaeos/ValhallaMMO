@@ -61,7 +61,7 @@ public class PlaceholderRegistry {
             }
         }
         if (cache) placeholderCache.put(stringToParse, placeholdersToCache);
-        return result;
+        return parsePapi(result, p);
     }
 
     public static String parsePapi(String stringToParse, Player p){

@@ -22,9 +22,7 @@ import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class MovementListener implements Listener {
     private static final Map<UUID, Vector> lastMovementVectors = new HashMap<>();

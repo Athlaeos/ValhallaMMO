@@ -87,7 +87,9 @@ public class ImmersiveRecipeListener implements Listener {
             }
         }
         if (recipe == null && openImmersiveMenu){
-            new ImmersiveRecipeSelectionMenu(PlayerMenuUtilManager.getPlayerMenuUtility(p), clicked, ItemUtils.isEmpty(heldItem)).open();
+            ImmersiveRecipeSelectionMenu menu = new ImmersiveRecipeSelectionMenu(PlayerMenuUtilManager.getPlayerMenuUtility(p), clicked, ItemUtils.isEmpty(heldItem));
+            if (menu.getRecipes().isEmpty()) return;
+            menu.open();
             e.setCancelled(true);
             return;
         } else if (recipe != null){

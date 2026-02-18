@@ -375,4 +375,8 @@ public class ImmersiveRecipeSelectionMenu extends Menu {
         String recipe = ItemUtils.getPDCString(BUTTON_RECIPE_KEY, i, "");
         return isFavourited(playerMenuUtility.getOwner(), recipe);
     }
+
+    public Collection<ImmersiveCraftingRecipe> getRecipes() {
+        return recipes;
+    }
 }

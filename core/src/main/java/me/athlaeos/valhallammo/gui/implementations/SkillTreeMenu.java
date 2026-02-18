@@ -242,23 +242,24 @@ public class SkillTreeMenu extends Menu {
                 Skill s = SkillRegistry.getSkill(storedType);
                 if (s == null) continue;
                 PowerProfile acc = ProfileCache.getOrCache(target, PowerProfile.class);
-                meta.setDisplayName(Utils.chat(s.getDisplayName() + (acc.getNewGamePlus() > 0 ?
+                meta.setDisplayName(Utils.chat(PlaceholderRegistry.parse(s.getDisplayName() + (acc.getNewGamePlus() > 0 ?
                         TranslationManager.getTranslation("prestige_level_format")
                                 .replace("%prestige_roman%", StringUtils.toRoman(acc.getNewGamePlus())
                                         .replace("%prestige_numeric%", String.valueOf(acc.getNewGamePlus()))) :
-                        "")));
+                        ""), playerMenuUtility.getOwner())));
 
                 Profile p = ProfileRegistry.getPersistentProfile(target, s.getProfileType());
                 double expRequired = s.expForLevel(p.getLevel() + 1);
                 List<String> lore = new ArrayList<>();
                 for (String line : TranslationManager.getListTranslation("skilltree_icon_format")){
-                    lore.add(Utils.chat(line
+                    lore.add(Utils.chat(PlaceholderRegistry.parse(line
                             .replace("%level_current%", "" + p.getLevel())
                             .replace("%exp_current%", String.format("%.2f", p.getEXP()))
                             .replace("%exp_next%", (expRequired < 0) ? TranslationManager.getTranslation("max_level") : String.format("%.2f", expRequired))
                             .replace("%exp_total%", String.format("%.2f", p.getTotalEXP()))
                             .replace("%prestigepoints%", String.valueOf((acc.getSpendablePrestigePoints() - acc.getSpentPrestigePoints())))
-                            .replace("%skillpoints%", String.valueOf((acc.getSpendableSkillPoints() - acc.getSpentSkillPoints())))));
+                            .replace("%skillpoints%", String.valueOf((acc.getSpendableSkillPoints() - acc.getSpentSkillPoints()))),
+                            playerMenuUtility.getOwner())));
                 }
                 meta.setLore(lore);
                 meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS);
@@ -312,7 +313,7 @@ public class SkillTreeMenu extends Menu {
                     Pair<Integer, Integer> offsets = coordinateOffsets.get(skill);
                     if (p == null || !p.shouldBeVisible(target) || offsets == null || (p.getPermissionRequirement() != null && !playerMenuUtility.getOwner().hasPermission(p.getPermissionRequirement()))) continue;
                     ItemBuilder icon = new ItemBuilder(p.getIcon())
-                            .name(perkConfirmation != null && perkConfirmation.equals(p.getName()) ? TranslationManager.getTranslation("skilltree_perk_confirmation").replace("%perk%", p.getDisplayName()) : p.getDisplayName())
+                            .name(perkConfirmation != null && perkConfirmation.equals(p.getName()) ? TranslationManager.getTranslation("skilltree_perk_confirmation").replace("%perk%", p.getDisplayName()) : PlaceholderRegistry.parse(p.getDisplayName(), playerMenuUtility.getOwner()))
                             .flag(ItemFlag.HIDE_ATTRIBUTES, ConventionUtils.getHidePotionEffectsFlag(), ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS).wipeAttributes()
                             .stringTag(buttonKey, p.getName());
                     int unlockedStatus = p.hasPermanentlyLocked(target) ? 2 : // permanently locked
@@ -322,8 +323,9 @@ public class SkillTreeMenu extends Menu {
 
                     List<String> lore = new ArrayList<>();
                     upper: for (String l : TranslationManager.getListTranslation("skilltree_perk_format")) {
+                        l = PlaceholderRegistry.parse(l, playerMenuUtility.getOwner());
                         if (l.contains("%description%")) {
-                            String description = p.getDescription();
+                            String description = PlaceholderRegistry.parse(p.getDescription(), playerMenuUtility.getOwner());
                             for (PerkReward reward : p.getRewards())
                                 description = description.replace("{" + reward.getName() + "}", reward.rewardPlaceholder());
                             lore.addAll(Utils.chat(StringUtils.separateStringIntoLines(description, 40)));
