@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.skills.skills;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perkresourcecost.ResourceExpense;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
@@ -238,10 +239,10 @@ public class Perk {
     public void execute(Player p){
         for (String message : messages){
             for (PerkReward reward : rewards) if (message != null) message = message.replace("{" + reward.getName() + "}", reward.rewardPlaceholder());
-            p.sendMessage(Utils.chat(message));
+            p.sendMessage(Utils.chat(PlaceholderRegistry.parse(message, p)));
         }
         for (String command : commands){
-            ValhallaMMO.getInstance().getServer().dispatchCommand(ValhallaMMO.getInstance().getServer().getConsoleSender(), command.replace("%player%", p.getName()));
+            ValhallaMMO.getInstance().getServer().dispatchCommand(ValhallaMMO.getInstance().getServer().getConsoleSender(), PlaceholderRegistry.parse(command, p).replace("%player%", p.getName()));
         }
         for (PerkReward reward : rewards){
             reward.apply(p);

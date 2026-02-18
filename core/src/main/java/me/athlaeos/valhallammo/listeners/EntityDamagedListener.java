@@ -32,6 +32,7 @@ import java.util.*;
 
 public class EntityDamagedListener implements Listener {
     private static final boolean customDamageEnabled = ValhallaMMO.getPluginConfig().getBoolean("custom_damage_system", true);
+    private static final Collection<String> customDamageMobBlacklist = new HashSet<>(ValhallaMMO.getPluginConfig().getStringList("mob_blacklist"));
     private static final Collection<String> entityDamageCauses = new HashSet<>(Set.of("CUSTOM", "THORNS", "ENTITY_ATTACK", "ENTITY_SWEEP_ATTACK", "PROJECTILE", "ENTITY_EXPLOSION", "SONIC_BOOM"));
     private static final Collection<String> trueDamage = new HashSet<>(Set.of("VOID", "SONIC_BOOM", "STARVATION", "DROWNING", "SUICIDE", "WORLD_BORDER", "KILL", "GENERIC_KILL"));
 
@@ -86,7 +87,7 @@ public class EntityDamagedListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDamageTaken(EntityDamageEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !customDamageEnabled) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || !customDamageEnabled || customDamageMobBlacklist.contains(e.getEntity().getType().toString())) return;
         if (e.getEntity() instanceof LivingEntity l){
             String damageCause = getLastDamageCause(l);
             CustomDamageType type = CustomDamageType.getCustomType(damageCause);
@@ -179,36 +180,6 @@ public class EntityDamagedListener implements Listener {
                     if (r != null) r.run();
                 }, 1L);
             }
-//            else if (customDamageEnabled) {
-//                // custom damage killed entity
-//                if (damageCause.equals("POISON")) {
-//                    e.setDamage(0);
-//                    l.setHealth(Math.min(l.getHealth(), 1));
-//                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> customDamageCauses.remove(l.getUniqueId()), 1L);
-//                    return;
-//                }
-//                double previousHealth = l.getHealth();
-//                double previousAbsorption = l.getAbsorptionAmount();
-//                if (customDamage > 0) DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage);
-//                if (l.getHealth() + l.getAbsorptionAmount() > 0) {
-//                    l.setAbsorptionAmount(0);
-//                    l.setHealth(0.0001); // attempt to ensure that this attack will kill
-//                }
-//                if (e.getFinalDamage() == 0) { // if player wouldn't have died even with this little health, force a death (e.g. with resistance V)
-//                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-//                        // l.setLastDamageCause(e);
-//                        if (l.getHealth() > 0) l.setHealth(0);
-//                    }, 1L);
-//                } else {
-//                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
-//                        if (e.isCancelled()) {
-//                            l.setAbsorptionAmount(previousAbsorption);
-//                            l.setHealth(previousHealth); // if the event was cancelled at this point, restore health to what it was previously
-//                        }
-//                        customDamageCauses.remove(l.getUniqueId());
-//                    }, 1L);
-//                }
-//            }
         }
     }
 

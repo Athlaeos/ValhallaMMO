@@ -389,6 +389,10 @@ armor_effective_types:
 negative_armor_damage_buff: 0.025 # If armor penetration (or negative armor) results in a negative armor value on the damaged target,
 # their damage taken increases by this value for each point of armor they are in the negative. (-10 armor would result in a 25% damage taken increase)
 
+# Mobs in this list aren't affected by the custom damage system
+mob_blacklist:
+  - ARMADILLO
+
 # ValhallaMMO features a dodge mechanic, these are its balance options
 prevent_dodge_not_facing_attacker: true # If enabled, no matter what, the defender will never be able to dodge if
 # they are not facing the attacker
