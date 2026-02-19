@@ -180,8 +180,15 @@ perks:
         - toolsmith_buy_royal_diamond_pickaxe
         - toolsmith_buy_royal_diamond_axe
         - toolsmith_buy_royal_diamond_shovel
-        - weaponsmith_buy_random_royal_diamond_heavy_weapon
-        - weaponsmith_buy_random_royal_diamond_light_weapon
+        - weaponsmith_buy_royal_diamond_sword
+        - weaponsmith_buy_royal_diamond_dagger
+        - weaponsmith_buy_royal_diamond_rapier
+        - weaponsmith_buy_royal_diamond_mace
+        - weaponsmith_buy_royal_diamond_knuckles
+        - weaponsmith_buy_royal_diamond_greataxe
+        - weaponsmith_buy_royal_diamond_spear
+        - weaponsmith_buy_royal_diamond_warhammer
+        - weaponsmith_buy_royal_diamond_axe
         - shepherd_buy_sauron_banner
         - shepherd_buy_dragon_egg_banner
         - shepherd_buy_rainbow_banner

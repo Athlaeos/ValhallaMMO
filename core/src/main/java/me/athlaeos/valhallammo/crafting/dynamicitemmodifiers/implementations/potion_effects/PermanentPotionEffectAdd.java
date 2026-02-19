@@ -47,7 +47,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
     public void processItem(ModifierContext context) {
         if (condition == null) condition = "constant";
         EffectTrigger.ConfigurableTrigger configurableTrigger = EffectTriggerRegistry.getTrigger(this.condition) instanceof EffectTrigger.ConfigurableTrigger ct ? ct : null;
-        String errorMessage = configurableTrigger == null ? null : (this.configuredCondition == null ? "&cUnconfigured configurable effect" : configurableTrigger.isValid(this.configuredCondition));
+        String errorMessage = configurableTrigger == null ? null : (this.configuredCondition == null && configurableTrigger.isValid("") != null ? "&cUnconfigured configurable effect" : configurableTrigger.isValid(this.configuredCondition == null ? "" : this.configuredCondition));
         if (errorMessage != null) {
             failedRecipe(context.getItem(), errorMessage);
             return;
@@ -84,6 +84,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
             Utils.sendMessage(e.getWhoClicked(), "&a" + configurableTrigger.getUsage());
             Questionnaire questionnaire = new Questionnaire((Player) e.getWhoClicked(), null, null,
                     new Question("&fHow should this effect be configured? (type in chat, or 'cancel' to cancel)", s -> {
+                        if (s.equals("cancel")) return true;
                         String error = configurableTrigger.isValid(s);
                         Utils.sendMessage(e.getWhoClicked(), error);
                         return error == null;

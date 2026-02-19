@@ -85,14 +85,14 @@ public class OnAttack implements EffectTrigger.ConfigurableTrigger, Listener {
     @Override
     public String isValid(String arg) {
         String cleanedArg = getArg(arg);
-        if (cleanedArg.isEmpty()) return null;
+        if (cleanedArg.isEmpty() || cleanedArg.equals("any")) return null;
         CustomDamageType type = CustomDamageType.getCustomType(cleanedArg);
         return type == null ? "&cInvalid damage type, valid types are " + String.join(", ", CustomDamageType.getRegisteredTypes().keySet()) : null;
     }
 
     @Override
     public String getUsage() {
-        return "\"<custom_damage_type>\", which can be any of " + String.join(", ", CustomDamageType.getRegisteredTypes().keySet()) + ", or leave empty for any damage type";
+        return "\"<custom_damage_type>\", which can be any of " + String.join(", ", CustomDamageType.getRegisteredTypes().keySet()) + ", or 'any' for any damage type";
     }
 
     @Override

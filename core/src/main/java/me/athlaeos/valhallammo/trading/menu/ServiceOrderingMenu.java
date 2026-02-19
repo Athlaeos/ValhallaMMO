@@ -170,6 +170,8 @@ public class ServiceOrderingMenu extends Menu {
         e.setCancelled(true);
     }
 
+    private final Map<String, ItemBuilder> tradeButtonCache = new HashMap<>();
+
     @Override
     public void setMenuItems() {
         inventory.clear();
@@ -246,13 +248,17 @@ public class ServiceOrderingMenu extends Menu {
                         .replace("%amount2%", item2 == null ? "": String.valueOf(item2.getItem().getAmount()))
                 );
             }
-            ItemBuilder result = new ItemBuilder(trade.getResult());
-            DynamicItemModifier.modifyAppearance(ModifierContext.builder(result).setOtherType(data).entity(data.getVillager()).validate().get(), trade.getModifiers());
 
-            if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
-            result.flag(ItemFlag.HIDE_ENCHANTS);
-            result.flag(ItemFlag.HIDE_ATTRIBUTES);
-            result.stringTag(KEY_TRADE, trade.getID());
+            ItemBuilder result = tradeButtonCache.get(trade.getID());
+            if (result == null) {
+                result = new ItemBuilder(trade.getResult());
+                DynamicItemModifier.modify(ModifierContext.builder(result).crafter(playerMenuUtility.getOwner()).setOtherType(data).entity(data.getVillager()).validate().get(), trade.getModifiers());
+                if (ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)) continue;
+                result.flag(ItemFlag.HIDE_ENCHANTS);
+                result.flag(ItemFlag.HIDE_ATTRIBUTES);
+                result.stringTag(KEY_TRADE, trade.getID());
+                tradeButtonCache.put(trade.getID(), result);
+            }
             result.lore(prefix);
 
             tradeButtons.add(result.get());

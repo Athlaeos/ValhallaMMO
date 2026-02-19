@@ -36,7 +36,7 @@ public class PotionBelt {
 
     @SuppressWarnings("all")
     public static void loadFromFile(){
-        File f = new File(ValhallaMMO.getInstance().getDataFolder(), "/potion_belts.json");
+        File f = new File(ValhallaMMO.getInstance().getDataFolder(), "/potion_belt_data.json");
         try {
             f.createNewFile();
         } catch (IOException ignored){}
