@@ -2189,9 +2189,9 @@
     "digging_perk_ng2_name": "&a&lNew Game II",
     "digging_perk_ng2_description": "&7Resets your digging level back to 0, and reduces experience gained by &c{digging_diggingexpmultiplier_add}&7. In exchange, you again gain a permanent &a{digging_diggingdrops_add} &7digging drops, &a{digging_diggingluck_add}&7 digging luck, and &a{digging_diggingspeedbonus_add} &7digging speed",
     "woodcutting_perk_ng1_name": "&a&lNew Game I",
-    "woodcutting_perk_ng1_description": "&7Resets your woodcutting level back to 0, and reduces experience gained by &c{woodcutting_woodcuttingexpmultiplier_add}&7. In exchange, you gain a permanent &a{woodcutting_woodcuttingdrops_add} &7woodcutting drops and &a{woodcutting_woodcuttingspeedbonus_add} &7woodcutting speed",
+    "woodcutting_perk_ng1_description": "&7Resets your woodcutting level back to 0, and reduces experience gained by &c{woodcutting_woodcuttingexpmultiplier_add}&7. In exchange, you gain a permanent &a{woodcutting_woodcuttingdrops_add} &7woodcutting drops, &a{woodcutting_woodcuttingspeedbonus_add} &7woodcutting speed, and Golden/Crystal apples drop more a little more frequently when you unlock them",
     "woodcutting_perk_ng2_name": "&a&lNew Game II",
-    "woodcutting_perk_ng2_description": "&7Resets your woodcutting level back to 0, and reduces experience gained by &c{woodcutting_woodcuttingexpmultiplier_add}&7. In exchange, you again gain a permanent &a{woodcutting_woodcuttingdrops_add} &7woodcutting drops and &a{woodcutting_woodcuttingspeedbonus_add} &7woodcutting speed",
+    "woodcutting_perk_ng2_description": "&7Resets your woodcutting level back to 0, and reduces experience gained by &c{woodcutting_woodcuttingexpmultiplier_add}&7. In exchange, you again gain a permanent &a{woodcutting_woodcuttingdrops_add} &7woodcutting drops, &a{woodcutting_woodcuttingspeedbonus_add} &7woodcutting speed, and Golden/Crystal apples drop more a little more frequently when you unlock them",
     "mining_perk_ng1_name": "&c&lNew Game I",
     "mining_perk_ng1_description": "&7Resets your mining level back to 0, and reduces experience gained by &4{mining_miningexpmultiplier_add}&7. In exchange, you gain a permanent &c{mining_miningdrops_add} &7mining and blasting drops and &c{mining_miningspeedbonus_add} &7mining speed",
     "mining_perk_ng2_name": "&c&lNew Game II",
@@ -2362,13 +2362,15 @@
       "&a✰ &2New Game I &a✰",
       "&c{woodcutting_woodcuttingexpmultiplier_add} &7Woodcutting EXP",
       "&a{woodcutting_woodcuttingdrops_add} &7&lPermanent &7Woodcutting Drops",
-      "&a{woodcutting_woodcuttingspeedbonus_add} &7&lPermanent &7Woodcutting Speed"
+      "&a{woodcutting_woodcuttingspeedbonus_add} &7&lPermanent &7Woodcutting Speed",
+      "&aMore frequent Golden/Crystal apple drops"
     ],
     "woodcutting_perk_ng2_messages": [
       "&a✰ &2New Game II &a✰",
       "&c{woodcutting_woodcuttingexpmultiplier_add} &7Woodcutting EXP",
       "&a{woodcutting_woodcuttingdrops_add} &7&lPermanent &7Woodcutting Drops",
-      "&a{woodcutting_woodcuttingspeedbonus_add} &7&lPermanent &7Woodcutting Speed"
+      "&a{woodcutting_woodcuttingspeedbonus_add} &7&lPermanent &7Woodcutting Speed",
+      "&aMore frequent Golden/Crystal apple drops"
     ],
     "mining_perk_ng1_messages": [
       "&c✰ &4New Game I &c✰",
