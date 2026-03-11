@@ -117,7 +117,11 @@ public class WoodcuttingSkill extends Skill implements Listener {
 
         Block block = event.getBlock();
         String type = BlockUtils.getBlockType(block);
-        if (!isLog(block, BlockUtils.getBlockType(block)) || !dropsExpValues.containsKey(type) || !hasPermissionAccess(player) || WorldGuardHook.inDisabledRegion(block.getLocation(), player, WorldGuardHook.VMMO_SKILL_WOODCUTTING)) {
+        if (!isLog(block, type) || !dropsExpValues.containsKey(type) || !hasPermissionAccess(player) || WorldGuardHook.inDisabledRegion(block.getLocation(), player, WorldGuardHook.VMMO_SKILL_WOODCUTTING)) {
+            if (isLeaves(block, type)) {
+                double woodCuttingLuck = AccumulativeStatManager.getCachedStats("WOODCUTTING_LUCK", player, 10000, true);
+                LootListener.addPreparedLuck(block, woodCuttingLuck);
+            }
             return;
         }
 
