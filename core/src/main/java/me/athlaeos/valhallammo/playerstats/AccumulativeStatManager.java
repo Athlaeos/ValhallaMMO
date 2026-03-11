@@ -605,7 +605,7 @@ public class AccumulativeStatManager {
                         STAT_CACHE.remove(uuid);
                         continue;
                     }
-                    for (UUID relationalUUID : RELATIONAL_STAT_CACHE.getOrDefault(uuid, new HashMap<>()).keySet()){
+                    for (UUID relationalUUID : new HashSet<>(RELATIONAL_STAT_CACHE.getOrDefault(uuid, new HashMap<>()).keySet())){
                         Entity relationalEntity = Bukkit.getEntity(relationalUUID);
                         if (relationalEntity == null || !relationalEntity.isValid()) {
                             Map<UUID, Map<String, Map.Entry<Long, Double>>> relationalCache = RELATIONAL_STAT_CACHE.getOrDefault(uuid, new HashMap<>());
