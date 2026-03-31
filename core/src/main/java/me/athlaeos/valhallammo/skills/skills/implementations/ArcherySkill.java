@@ -166,8 +166,10 @@ public class ArcherySkill extends Skill implements Listener {
         Timer.setCooldown(e.getPlayer().getUniqueId(), 500, "delay_charged_shot_attempts");
         if (!e.getPlayer().isSneaking() && e.getAction() != Action.LEFT_CLICK_AIR && e.getAction() != Action.LEFT_CLICK_BLOCK) return;
         ItemStack mainHand = e.getPlayer().getInventory().getItemInMainHand();
-        if (ItemUtils.isEmpty(mainHand) || !e.getPlayer().isSneaking()) return;
-        if (mainHand.getType() != Material.BOW && mainHand.getType() != Material.CROSSBOW) return;
+        ItemStack offHand = e.getPlayer().getInventory().getItemInOffHand();
+        if (!e.getPlayer().isSneaking() || (ItemUtils.isEmpty(mainHand) && ItemUtils.isEmpty(offHand))) return;
+        if ((mainHand == null || (mainHand.getType() != Material.BOW && mainHand.getType() != Material.CROSSBOW)) &&
+                (offHand == null || (offHand.getType() != Material.BOW && offHand.getType() != Material.CROSSBOW))) return;
         ArcheryProfile profile = ProfileCache.getOrCache(e.getPlayer(), ArcheryProfile.class);
         if (!profile.isChargedShotUnlocked() || profile.getChargedShotCharges() <= 0 || !Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_charged_shot")) {
             if (!Timer.isCooldownPassed(e.getPlayer().getUniqueId(), "cooldown_charged_shot")) Timer.sendCooldownStatus(e.getPlayer(), "cooldown_charged_shot", TranslationManager.getTranslation("ability_charged_shot"));

@@ -26,7 +26,7 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier implements Res
     @Override
     public void processItem(ModifierContext context) {
         int amount = context.getItem().getItem().getAmount();
-        context.getItem().setItem(replaceBy);
+        context.getItem().setItem(replaceBy.clone());
         context.getItem().setMeta(ItemUtils.getItemMeta(replaceBy));
         context.getItem().amount(amount);
     }
@@ -84,7 +84,7 @@ public class ItemReplaceKeepingAmount extends DynamicItemModifier implements Res
     @Override
     public DynamicItemModifier copy() {
         ItemReplaceKeepingAmount m = new ItemReplaceKeepingAmount(getName());
-        m.setReplaceBy(this.replaceBy);
+        m.setReplaceBy(this.replaceBy.clone());
         m.setPriority(this.getPriority());
         return m;
     }

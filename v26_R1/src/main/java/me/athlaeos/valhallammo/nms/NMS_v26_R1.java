@@ -3,16 +3,12 @@ package me.athlaeos.valhallammo.nms;
 import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
-import me.athlaeos.valhallammo.dom.EquippableWrapper;
-import me.athlaeos.valhallammo.dom.ItemRarityWrapper;
-import me.athlaeos.valhallammo.dom.Pair;
-import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.dom.*;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
-import me.athlaeos.valhallammo.version.ActivityMappings;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
@@ -20,13 +16,11 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
-import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -36,13 +30,12 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.craftbukkit.v1_21_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_21_R2.block.data.CraftBlockData;
-import org.bukkit.craftbukkit.v1_21_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_21_R2.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_21_R2.generator.structure.CraftStructureType;
-import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.generator.structure.CraftStructureType;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -54,20 +47,19 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.bukkit.inventory.meta.components.FoodComponent;
 import org.bukkit.inventory.meta.components.ToolComponent;
+import org.bukkit.inventory.meta.components.consumable.ConsumableComponent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.bukkit.tag.DamageTypeTags;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.function.BiPredicate;
 
-import static me.athlaeos.valhallammo.utility.ItemUtils.itemOrAir;
-
-public final class NMS_v1_21_R2 implements NMS {
+public final class NMS_v26_R1 implements NMS {
     @Override
     public void onEnable() {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
@@ -77,6 +69,10 @@ public final class NMS_v1_21_R2 implements NMS {
 
     @Override
     public void forceAttack(Player player, LivingEntity victim) {
+        if (ValhallaMMO.isUsingPaperMC()) {
+            ValhallaMMO.getPaper().forceAttack(player, victim);
+            return;
+        }
         ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
     }
 
@@ -185,6 +181,10 @@ public final class NMS_v1_21_R2 implements NMS {
 
     @Override
     public void blockBreakAnimation(Player p, org.bukkit.block.Block b, int id, int stage) {
+        if (ValhallaMMO.isUsingPaperMC()) {
+            ValhallaMMO.getPaper().blockBreakAnimation(p, b, id, stage);
+            return;
+        }
         ServerPlayer entityPlayer = ((CraftPlayer) p).getHandle();
         ServerGamePacketListenerImpl playerConnection = entityPlayer.connection;
         BlockPos blockPosition = new BlockPos(b.getX(), b.getY(), b.getZ());
@@ -200,6 +200,7 @@ public final class NMS_v1_21_R2 implements NMS {
 
     @Override
     public float toolPower(org.bukkit.inventory.ItemStack tool, org.bukkit.block.Block b) {
+        if (ValhallaMMO.isUsingPaperMC()) return ValhallaMMO.getPaper().toolPower(tool, b);
         if (!ItemUtils.isEmpty(tool)) {
             ItemStack craftItemStack = CraftItemStack.asNMSCopy(tool);
             Block nmsBlock = ((CraftWorld) b.getWorld()).getHandle().getBlockState(new BlockPos(b.getX(), b.getY(), b.getZ())).getBlock();
@@ -211,6 +212,7 @@ public final class NMS_v1_21_R2 implements NMS {
 
     @Override
     public float toolPower(org.bukkit.inventory.ItemStack tool, Material b) {
+        if (ValhallaMMO.isUsingPaperMC()) return ValhallaMMO.getPaper().toolPower(tool, b);
         if (!ItemUtils.isEmpty(tool)) {
             ItemStack craftItemStack = CraftItemStack.asNMSCopy(tool);
             CraftBlockData data = (CraftBlockData) b.createBlockData();
@@ -221,6 +223,10 @@ public final class NMS_v1_21_R2 implements NMS {
 
     @Override
     public void breakBlock(Player p, org.bukkit.block.Block b) {
+        if (ValhallaMMO.isUsingPaperMC()) {
+            ValhallaMMO.getPaper().breakBlock(p, b);
+            return;
+        }
         b.getWorld().spawnParticle(Particle.BLOCK, b.getLocation().add(0.5, 0.5, 0.5), 100, 0.1, 0.1, 0.1, 4, b.getBlockData());
         b.getWorld().playSound(b.getLocation(), b.getBlockData().getSoundGroup().getBreakSound(), 1.0f, 1.0f);
         ((CraftPlayer) p).getHandle().gameMode.destroyBlock(new BlockPos(b.getX(), b.getY(), b.getZ()));
@@ -229,6 +235,7 @@ public final class NMS_v1_21_R2 implements NMS {
     @SuppressWarnings("deprecation")
     @Override
     public Sound blockSound(org.bukkit.block.Block b) {
+        if (ValhallaMMO.isUsingPaperMC()) return ValhallaMMO.getPaper().blockSound(b);
         try {
             Block nmsBlock = ((CraftWorld) b.getWorld()).getHandle().getBlockState(new BlockPos(b.getX(), b.getY(), b.getZ())).getBlock();
             SoundType soundEffectType = nmsBlock.defaultBlockState().getSoundType();
@@ -242,7 +249,7 @@ public final class NMS_v1_21_R2 implements NMS {
 
             keyField.setAccessible(true);
 
-            ResourceLocation minecraftKey = (ResourceLocation) keyField.get(soundEffect);
+            Identifier minecraftKey = (Identifier) keyField.get(soundEffect);
 
             return Sound.valueOf(minecraftKey.getPath().toUpperCase(Locale.US)
                     .replace(".", "_")
@@ -255,6 +262,10 @@ public final class NMS_v1_21_R2 implements NMS {
 
     @Override
     public void resetAttackCooldown(Player p){
+        if (ValhallaMMO.isUsingPaperMC()) {
+            ValhallaMMO.getPaper().resetAttackCooldown(p);
+            return;
+        }
         ServerPlayer entityPlayer = ((CraftPlayer) p).getHandle();
         entityPlayer.resetAttackStrengthTicker();
     }
@@ -270,6 +281,13 @@ public final class NMS_v1_21_R2 implements NMS {
             FoodComponent food = meta.getMeta().getFood();
             food.setCanAlwaysEat(canAlwaysEat);
             meta.getMeta().setFood(food);
+            if (!ValhallaMMO.isUsingPaperMC()){
+                ConsumableComponent consumable = meta.getMeta().getConsumable();
+                consumable.setConsumeSeconds(eatTimeSeconds);
+                consumable.setAnimation(ConsumableComponent.Animation.EAT);
+                consumable.setSound(Sound.ENTITY_GENERIC_EAT);
+                meta.getMeta().setConsumable(consumable);
+            }
         } else meta.getMeta().setFood(null);
     }
 
@@ -316,17 +334,117 @@ public final class NMS_v1_21_R2 implements NMS {
 
     @Override
     public Attribute getAttribute(AttributeMappings mappedTo) {
-        return NMS_v1_21_R1.getMappedAttribute(mappedTo);
-    }
-
-    @Override
-    public void setItemModel(ItemMeta meta, String model){
-        meta.setItemModel(StringUtils.isEmpty(model) ? null : NamespacedKey.fromString(model));
+        return switch (mappedTo){
+            case LUCK -> Attribute.LUCK;
+            case ARMOR -> Attribute.ARMOR;
+            case SCALE -> Attribute.SCALE;
+            case GRAVITY -> Attribute.GRAVITY;
+            case MAX_HEALTH -> Attribute.MAX_HEALTH;
+            case STEP_HEIGHT -> Attribute.STEP_HEIGHT;
+            case TEMPT_RANGE -> Attribute.TEMPT_RANGE;
+            case ATTACK_SPEED -> Attribute.ATTACK_SPEED;
+            case BURNING_TIME -> Attribute.BURNING_TIME;
+            case FLYING_SPEED -> Attribute.FLYING_SPEED;
+            case FOLLOW_RANGE -> Attribute.FOLLOW_RANGE;
+            case OXYGEN_BONUS -> Attribute.OXYGEN_BONUS;
+            case ATTACK_DAMAGE -> Attribute.ATTACK_DAMAGE;
+            case JUMP_STRENGTH, HORSE_JUMP_STRENGTH -> Attribute.JUMP_STRENGTH;
+            case MAX_ABSORPTION -> Attribute.MAX_ABSORPTION;
+            case MOVEMENT_SPEED -> Attribute.MOVEMENT_SPEED;
+            case SNEAKING_SPEED -> Attribute.SNEAKING_SPEED;
+            case ARMOR_TOUGHNESS -> Attribute.ARMOR_TOUGHNESS;
+            case ATTACK_KNOCKBACK -> Attribute.ATTACK_KNOCKBACK;
+            case BLOCK_BREAK_SPEED -> Attribute.BLOCK_BREAK_SPEED;
+            case MINING_EFFICIENCY -> Attribute.MINING_EFFICIENCY;
+            case SAFE_FALL_DISTANCE -> Attribute.SAFE_FALL_DISTANCE;
+            case MOVEMENT_EFFICIENCY -> Attribute.MOVEMENT_EFFICIENCY;
+            case KNOCKBACK_RESISTANCE -> Attribute.KNOCKBACK_RESISTANCE;
+            case SPAWN_REINFORCEMENTS -> Attribute.SPAWN_REINFORCEMENTS;
+            case SWEEPING_DAMAGE_RATIO -> Attribute.SWEEPING_DAMAGE_RATIO;
+            case FALL_DAMAGE_MULTIPLIER -> Attribute.FALL_DAMAGE_MULTIPLIER;
+            case SUBMERGED_MINING_SPEED -> Attribute.SUBMERGED_MINING_SPEED;
+            case BLOCK_INTERACTION_RANGE -> Attribute.BLOCK_INTERACTION_RANGE;
+            case ENTITY_INTERACTION_RANGE -> Attribute.ENTITY_INTERACTION_RANGE;
+            case WATER_MOVEMENT_EFFICIENCY -> Attribute.WATER_MOVEMENT_EFFICIENCY;
+            case EXPLOSION_KNOCKBACK_RESISTANCE -> Attribute.EXPLOSION_KNOCKBACK_RESISTANCE;
+        };
     }
 
     @SuppressWarnings("UnstableApiUsage")
     @Override
-    public void setEquippable(ItemMeta meta, String modelKey, org.bukkit.inventory.EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
+    public void setItemModel(ItemMeta meta, String model){
+        Number asNumber = Catch.catchOrElse(() -> model.contains(".") || model.contains(",") ? Float.parseFloat(model) : Integer.parseInt(model), -1);
+        if (asNumber.floatValue() < 0 || asNumber.intValue() < 0) {
+            meta.setItemModel(StringUtils.isEmpty(model) ? null : NamespacedKey.fromString(model));
+        } else {
+            CustomModelDataComponent component = meta.getCustomModelDataComponent();
+            if (asNumber instanceof Float f) {
+                List<Float> floats = new ArrayList<>(List.of(f));
+                component.setFloats(floats);
+                meta.setCustomModelDataComponent(component);
+            } else if (asNumber instanceof Integer i) meta.setCustomModelData(i);
+        }
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setCMDBooleanList(ItemMeta meta, List<Boolean> booleans) {
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setFlags(booleans);
+        meta.setCustomModelDataComponent(component);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setCMDColorList(ItemMeta meta, List<Color> colors) {
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setColors(colors);
+        meta.setCustomModelDataComponent(component);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setCMDFloatList(ItemMeta meta, List<Float> floats) {
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setFloats(floats);
+        meta.setCustomModelDataComponent(component);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setCMDStringList(ItemMeta meta, List<String> strings) {
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setStrings(strings);
+        meta.setCustomModelDataComponent(component);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public List<Boolean> getCMDBooleanList(ItemMeta meta) {
+        return meta.getCustomModelDataComponent().getFlags();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public List<Color> getCMDColorList(ItemMeta meta) {
+        return meta.getCustomModelDataComponent().getColors();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public List<Float> getCMDFloatList(ItemMeta meta) {
+        return meta.getCustomModelDataComponent().getFloats();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public List<String> getCMDStringList(ItemMeta meta) {
+        return meta.getCustomModelDataComponent().getStrings();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
         if (slot == null || StringUtils.isEmpty(modelKey)) meta.setEquippable(null);
         else {
             EquippableComponent equippableComponent = meta.getEquippable();
@@ -365,29 +483,6 @@ public final class NMS_v1_21_R2 implements NMS {
     }
 
     @Override
-    public void sendArmorChange(LivingEntity entity, org.bukkit.inventory.ItemStack helmet, org.bukkit.inventory.ItemStack chestplate, org.bukkit.inventory.ItemStack leggings, org.bukkit.inventory.ItemStack boots) {
-        if (entity.getEquipment() == null) return;
-        for (Player p : PacketListener.getPlayersInPacketRange(entity.getLocation())){
-              p.sendEquipmentChange(entity, EquipmentSlot.HEAD, itemOrAir(helmet));
-              p.sendEquipmentChange(entity, EquipmentSlot.CHEST, itemOrAir(chestplate));
-              p.sendEquipmentChange(entity, EquipmentSlot.LEGS, itemOrAir(leggings));
-              p.sendEquipmentChange(entity, EquipmentSlot.FEET, itemOrAir(boots));
-        }
-    }
-
-    @Override
-    public void sendArmorChange(LivingEntity entity, org.bukkit.inventory.ItemStack helmet, org.bukkit.inventory.ItemStack chestplate, org.bukkit.inventory.ItemStack leggings, org.bukkit.inventory.ItemStack boots, BiPredicate<LivingEntity, LivingEntity> exclusionRule) {
-        if (entity.getEquipment() == null) return;
-        for (Player p : PacketListener.getPlayersInPacketRange(entity.getLocation())){
-            if (!exclusionRule.test(entity, p)) continue;
-            p.sendEquipmentChange(entity, EquipmentSlot.HEAD, itemOrAir(helmet));
-            p.sendEquipmentChange(entity, EquipmentSlot.CHEST, itemOrAir(chestplate));
-            p.sendEquipmentChange(entity, EquipmentSlot.LEGS, itemOrAir(leggings));
-            p.sendEquipmentChange(entity, EquipmentSlot.FEET, itemOrAir(boots));
-        }
-    }
-
-    @Override
     @SuppressWarnings("UnstableApiUsage")
     public void addToolBlockRule(ItemMeta meta, Material blockType, float efficiency){
         ToolComponent tool = meta.getTool();
@@ -404,6 +499,7 @@ public final class NMS_v1_21_R2 implements NMS {
         }
         ToolComponent tool = meta.getMeta().getTool();
         tool.setDefaultMiningSpeed(miningSpeed);
+        tool.setCanDestroyBlocksInCreative(canDestroyInCreative);
         meta.getMeta().setTool(tool);
     }
 
@@ -411,13 +507,6 @@ public final class NMS_v1_21_R2 implements NMS {
     @Override
     public EntityExplodeEvent getExplosionEvent(Entity tnt, Location at, List<org.bukkit.block.Block> blockList, float yield, int result) {
         return new EntityExplodeEvent(tnt, at, blockList, yield, ExplosionResult.values()[result]);
-    }
-
-    @Override
-    public ActivityMappings getActivity(LivingEntity entity){
-        Activity activity = ((CraftLivingEntity) entity).getHandle().getBrain().getActiveNonCoreActivity().orElse(null);
-        if (activity != null) return ActivityMappings.fromName(activity.getName());
-        return null;
     }
 
     @Override
@@ -440,11 +529,12 @@ public final class NMS_v1_21_R2 implements NMS {
         }
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     @Override
     public String getDamageTypeFromEvent(EntityDamageEvent e) {
         if (e.getCause() == EntityDamageEvent.DamageCause.CUSTOM) {
-            return e.getDamageSource().getDamageType().getKey().toString();
+            NamespacedKey key = e.getDamageSource().getDamageType().getKeyOrNull();
+            if (key == null) return e.getDamageSource().getDamageType().getTranslationKey();
+            return key.toString();
         }
         return NMS.super.getDamageTypeFromEvent(e);
     }

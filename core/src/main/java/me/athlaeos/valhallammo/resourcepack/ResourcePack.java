@@ -28,18 +28,14 @@ public class ResourcePack {
     private static File pack;
     private static final Map<MinecraftVersion, ResourcePackDetails> resourcePacks = new HashMap<>();
     static {
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_26, null, null);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_25, null, null);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_24, null, null);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_23, null, null);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_3, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_2, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22_1, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_22, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_15, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_14, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_13, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_12, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_8, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_7, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_6, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_5, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_4, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_3, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_2, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_1, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_11, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_10, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_1_21_9, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);

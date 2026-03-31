@@ -360,6 +360,8 @@ parry_sparks: true # If true, sparks will fly off parried attacks
 dodge_effect: SWEEP_ATTACK
 dodge_message: '<lang.status-attack-dodged>'
 
+power_attack_shockwave_particle: CRIT
+
 custom_damage_system: true # If false, there is no custom damage system
 # Damage calculation for armor and armor toughness. Armor is effective only against the given damage sources,
 # everything else is not mitigated by how many armor points you have.
@@ -379,15 +381,11 @@ damage_reduction_cap: 0.1 # The final damage cannot go below this fraction of th
 # is against this damage type. 1 being 100% effective, no debuff. 0.5 being half as effective. Can be considered armor penetration native to damage types
 armor_effective_types:
   - PROJECTILE:1
-  - FALLING_BLOCK:1
+  - FALLING:1
   - BLUDGEONING:0.7 # Custom damage type added by the plugin, is more effective against armor because it benefits from 30% reduced armor by default
-  - ENTITY_ATTACK:1
-  - ENTITY_SWEEP_ATTACK:1
-  - ENTITY_EXPLOSION:0.7
-  - BLOCK_EXPLOSION:0.7
-  - CONTACT:1
-  - FALL:1
-  - LAVA:0.5 # Lava still reduces physical damage, but only as if the player was wearing half as much armor
+  - MELEE:1
+  - EXPLOSION:0.7
+  - FIRE:0.5 # Fire is still reduced as physical damage, but only as if the player was wearing half as much armor
 negative_armor_damage_buff: 0.025 # If armor penetration (or negative armor) results in a negative armor value on the damaged target,
 # their damage taken increases by this value for each point of armor they are in the negative. (-10 armor would result in a 25% damage taken increase)
 
