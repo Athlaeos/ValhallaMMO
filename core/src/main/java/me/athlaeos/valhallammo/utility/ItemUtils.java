@@ -16,7 +16,6 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -37,11 +36,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.jetbrains.annotations.NotNull;
-import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -815,7 +812,10 @@ public class ItemUtils {
             ItemStack i = (ItemStack) dataInput.readObject();
             dataInput.close();
             return i;
-        } catch (ClassNotFoundException | IOException ignored) {}
+        } catch (Exception | Error e) {
+            ValhallaMMO.logSevere("Could not deserialize ItemStack: " + e.getMessage() + " \nFrom base64 data \n" + data);
+            e.printStackTrace();
+        }
         return null;
     }
 

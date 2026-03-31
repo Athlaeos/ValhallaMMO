@@ -17,20 +17,20 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
         return damageToCustomTypeMapping.getOrDefault(damageCause, registeredTypes.get(damageCause));
     }
 
-    public static final CustomDamageType FIRE = new CustomDamageType("FIRE", "FIRE", "LAVA", "MELTING", "FIRE_TICK", "HOT_FLOOR", "DRYOUT", "CAMPFIRE")
+    public static final CustomDamageType FIRE = new CustomDamageType("FIRE", "FIRE", "LAVA", "MELTING", "FIRE_TICK", "HOT_FLOOR", "DRYOUT", "CAMPFIRE", "minecraft:campfire", "minecraft:hot_floor", "minecraft:fireball", "minecraft:unattributed_fireball")
             .additiveDamage("FIRE_DAMAGE_BONUS").multiplicativeDamage("FIRE_DAMAGE_DEALT")
             .resistance("FIRE_RESISTANCE")
             .immuneable()
             .translation(TranslationManager.getTranslation("damage_type_fire"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_fire")).i("&f\uEE6B&c").register();
-    public static final CustomDamageType MAGIC = new CustomDamageType("MAGIC", "MAGIC", "THORNS", "DRAGON_BREATH")
+    public static final CustomDamageType MAGIC = new CustomDamageType("MAGIC", "MAGIC", "THORNS", "DRAGON_BREATH", "minecraft:thorns", "minecraft:dragon_breath", "minecraft:indirect_magic")
             .additiveDamage("MAGIC_DAMAGE_BONUS").multiplicativeDamage("MAGIC_DAMAGE_DEALT")
             .resistance("MAGIC_RESISTANCE")
             .immuneable()
             .lifeStealable()
             .translation(TranslationManager.getTranslation("damage_type_magic"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_magic")).i("&f\uEE6C&d").register();
-    public static final CustomDamageType PROJECTILE = new CustomDamageType("PROJECTILE", "PROJECTILE")
+    public static final CustomDamageType PROJECTILE = new CustomDamageType("PROJECTILE", "PROJECTILE", "minecraft:thrown", "minecraft:wind_charge", "minecraft:trident", "minecraft:arrow", "minecraft:mob_projectile", "minecraft:spit")
             .multiplicativeDamage("RANGED_DAMAGE_DEALT")
             .resistance("PROJECTILE_RESISTANCE")
             .lifeStealable()
@@ -47,11 +47,11 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
             .immuneable()
             .translation(TranslationManager.getTranslation("damage_type_poison"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_poison")).i("&f\uEE6D&2").register();
-    public static final CustomDamageType FALLING = new CustomDamageType("FALLING", "FALL", "FLY_INTO_WALL")
+    public static final CustomDamageType FALLING = new CustomDamageType("FALLING", "FALL", "FLY_INTO_WALL", "minecraft:ender_pearl", "minecraft:stalagmite")
             .resistance("FALLING_RESISTANCE")
             .translation(TranslationManager.getTranslation("damage_type_falling"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_falling")).i("&f\uEE98&c").register();
-    public static final CustomDamageType MELEE = new CustomDamageType("MELEE", "CONTACT", "ENTITY_ATTACK", "ENTITY_SWEEP_ATTACK")
+    public static final CustomDamageType MELEE = new CustomDamageType("MELEE", "CONTACT", "ENTITY_ATTACK", "ENTITY_SWEEP_ATTACK", "minecraft:cactus", "minecraft:sting", "minecraft:sweet_berry_bush", "minecraft:mob_attack", "minecraft:mob_attack_no_aggro", "minecraft:player_attack", "minecraft:spear")
             .multiplicativeDamage("MELEE_DAMAGE_DEALT")
             .resistance("MELEE_RESISTANCE")
             .lifeStealable()
@@ -69,13 +69,13 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
             .immuneable()
             .translation(TranslationManager.getTranslation("damage_type_freezing"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_freezing")).i("&f\uEE70&b").register();
-    public static final CustomDamageType LIGHTNING = new CustomDamageType("LIGHTNING", "LIGHTNING")
+    public static final CustomDamageType LIGHTNING = new CustomDamageType("LIGHTNING", "LIGHTNING", "minecraft:lightning_bolt")
             .additiveDamage("LIGHTNING_DAMAGE_BONUS").multiplicativeDamage("LIGHTNING_DAMAGE_DEALT")
             .resistance("LIGHTNING_RESISTANCE")
             .immuneable()
             .translation(TranslationManager.getTranslation("damage_type_lightning"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_lightning")).i("&f\uEE6F&e").register();
-    public static final CustomDamageType BLUDGEONING = new CustomDamageType("BLUDGEONING", "FALLING_BLOCK", "BLUDGEONING")
+    public static final CustomDamageType BLUDGEONING = new CustomDamageType("BLUDGEONING", "FALLING_BLOCK", "BLUDGEONING", "minecraft:falling_anvil", "minecraft:falling_block", "minecraft:falling_stalactite", "minecraft:mace_smash")
             .additiveDamage("BLUDGEONING_DAMAGE_BONUS").multiplicativeDamage("BLUDGEONING_DAMAGE_DEALT").powerAttacks(true)
             .resistance("BLUDGEONING_RESISTANCE")
             .lifeStealable()
@@ -88,14 +88,14 @@ public class CustomDamageType implements Comparable<CustomDamageType>{
             .lifeStealable()
             .translation(TranslationManager.getTranslation("damage_type_radiant"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_radiant")).i("&f\uEE71&f").register();
-    public static final CustomDamageType NECROTIC = new CustomDamageType("NECROTIC", "NECROTIC", "WITHER")
+    public static final CustomDamageType NECROTIC = new CustomDamageType("NECROTIC", "NECROTIC", "WITHER", "minecraft:wither_skull")
             .additiveDamage("NECROTIC_DAMAGE_BONUS").multiplicativeDamage("NECROTIC_DAMAGE_DEALT")
             .resistance("NECROTIC_RESISTANCE")
             .immuneable()
             .lifeStealable()
             .translation(TranslationManager.getTranslation("damage_type_necrotic"))
             .indicator(ValhallaMMO.getPluginConfig().getString("damage_indicator_necrotic")).i("&f\uEE72&7").register();
-    public static final CustomDamageType OTHER = new CustomDamageType("OTHER", "SUFFOCATION", "CRAMMING", "CUSTOM")
+    public static final CustomDamageType OTHER = new CustomDamageType("OTHER", "SUFFOCATION", "CRAMMING", "CUSTOM", "DROWNING", "VOID", "STARVATION", "WORLD_BORDER", "minecraft:sonic_boom", "minecraft:generic")
             .i("\uED18")
             .immuneable().register();
 

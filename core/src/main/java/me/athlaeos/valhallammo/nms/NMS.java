@@ -21,6 +21,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -118,5 +119,8 @@ public interface NMS extends Listener {
     }
     default ItemRarityWrapper getItemRarity(ItemMeta meta){
         return null;
+    }
+    default String getDamageTypeFromEvent(EntityDamageEvent e){
+        return e.getCause().toString();
     }
 }

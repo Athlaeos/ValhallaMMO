@@ -11,7 +11,10 @@ import me.athlaeos.valhallammo.entities.damageindicators.DamageIndicatorRegistry
 import me.athlaeos.valhallammo.event.EntityCriticallyHitEvent;
 import me.athlaeos.valhallammo.event.EntityDodgeAttackEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
-import me.athlaeos.valhallammo.item.*;
+import me.athlaeos.valhallammo.item.EquipmentClass;
+import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
+import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.item.SweepStatus;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
@@ -23,14 +26,9 @@ import me.athlaeos.valhallammo.potioneffects.CustomPotionEffect;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.potioneffects.implementations.Stun;
-import me.athlaeos.valhallammo.utility.Bleeder;
-import me.athlaeos.valhallammo.utility.Parryer;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
-import org.bukkit.EntityEffect;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -69,6 +67,7 @@ public class EntityAttackListener implements Listener {
     private final double meleeDamage = ValhallaMMO.getPluginConfig().getDouble("trident_impaling_damage_melee");
     private final boolean tridentImpalingDamageOnlyInWater = ValhallaMMO.getPluginConfig().getBoolean("trident_impaling_damage_water");
     private final double velocityDamageConstant = ValhallaMMO.getPluginConfig().getDouble("velocity_damage_constant");
+    private final Particle shockwaveParticle = Catch.catchOrElse(() -> Particle.valueOf(ValhallaMMO.getPluginConfig().getString("power_attack_shockwave_particle")), null, "Invalid power attack shockwave particle given in config.yml power_attack_shockwave_particle");
 
     private static final boolean multiplyDamageNumbers = ValhallaMMO.getPluginConfig().getBoolean("damage_multipliers_multiplicative");
 
@@ -208,7 +207,8 @@ public class EntityAttackListener implements Listener {
             if (Utils.proc(stunChance, damagerLuck - victimLuck, false)) Stun.attemptStun(v, trueDamager instanceof LivingEntity l ? l : null);
 
             // custom knockback mechanics
-            double knockbackBonus = AccumulativeStatManager.getCachedRelationalStats("KNOCKBACK_BONUS", v, e.getDamager(), 10000, true);
+            boolean isBleed = cause != null && cause.equals(CustomDamageType.BLEED.getType());
+            double knockbackBonus = isBleed ? -999 : AccumulativeStatManager.getCachedRelationalStats("KNOCKBACK_BONUS", v, e.getDamager(), 10000, true);
             AttributeInstance knockbackInstance = v.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
             double knockbackResistance = (knockbackInstance == null ? 0 : knockbackInstance.getValue()) - Math.min(0, knockbackBonus);
             if (knockbackBonus > 0) knockbackBonus *= (1 - knockbackResistance);
@@ -308,7 +308,7 @@ public class EntityAttackListener implements Listener {
                 }
 
                 if (!EntityUtils.hasActiveDamageProcess(v)) {
-                    EntityDamageEvent.DamageCause originalCause = e.getCause();
+                    String originalCause = ValhallaMMO.getNms().getDamageTypeFromEvent(e);
                     double cooldownDamageMultiplier = EntityUtils.cooldownDamageMultiplier(attackCooldown);
                     List<Pair<CustomDamageType, Double>> damageInstances = new ArrayList<>();
                     for (CustomDamageType damageType : CustomDamageType.getRegisteredTypes().values()){
@@ -318,7 +318,7 @@ public class EntityAttackListener implements Listener {
                             damageInstances.add(new Pair<>(damageType, elementalDamage));
                         }
                     }
-                    if (!damageInstances.isEmpty()) EntityDamagedListener.markNextDamageInstanceNoImmunity(v, e.getCause().toString());
+                    if (!damageInstances.isEmpty()) EntityDamagedListener.markNextDamageInstanceNoImmunity(v, ValhallaMMO.getNms().getDamageTypeFromEvent(e));
 
                     ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                         // custom bleed mechanics
@@ -350,6 +350,11 @@ public class EntityAttackListener implements Listener {
                                 for (Entity entity : e.getEntity().getWorld().getNearbyEntities(e.getEntity().getLocation(), radius, radius, radius, (en) -> en instanceof LivingEntity)){
                                     if (EntityClassification.matchesClassification(entity.getType(), EntityClassification.UNALIVE) || entity.equals(a)) continue;
                                     EntityUtils.damage((LivingEntity) entity, a, damage, "ENTITY_SWEEP_ATTACK", false);
+                                }
+                                if (shockwaveParticle != null){
+                                    for (Location l : MathUtils.getRandomPointsInCircle(v.getLocation(), radius, (int) Math.ceil(radius * 18.45), false)){
+                                        v.getWorld().spawnParticle(shockwaveParticle, l, 0);
+                                    }
                                 }
                             }
                         }

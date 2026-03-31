@@ -268,7 +268,7 @@ public class EnchantingSkill extends Skill implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent e){
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) ||
-                !EntityDamagedListener.getEntityDamageCauses().contains(e.getCause().toString())) return;
+                !EntityDamagedListener.getEntityDamageCauses().contains(ValhallaMMO.getNms().getDamageTypeFromEvent(e))) return;
         Entity trueDamager = EntityUtils.getTrueDamager(e);
         if (!(trueDamager instanceof Player p) || !(e.getEntity() instanceof LivingEntity v) ||
                 !hasPermissionAccess(p) || EntityUtils.hasActiveDamageProcess(v)) return;

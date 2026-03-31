@@ -26,8 +26,7 @@ public class ItemStackGSONAdapter implements JsonSerializer<ItemStack>, JsonDese
     public ItemStack deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
         try {
             return ItemUtils.deserialize(jsonElement.getAsString());
-        } catch (Exception | Error e){
-            ValhallaMMO.logSevere("Could not load ItemStack: " + e.getMessage());
+        } catch (Exception | Error ignored){
             return null;
         }
     }

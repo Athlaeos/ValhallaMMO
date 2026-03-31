@@ -214,7 +214,6 @@ public class CraftingTableListener implements Listener {
             return;
         }
         Player crafter = e.getViewers().isEmpty() ? null : (Player) e.getViewers().get(0);
-
         Map<Integer, ItemBuilder> matrixMeta = new HashMap<>();
         // mapping meta to matrix items, so they dont need to be fetched several times per event
         for (int i = 0; i < inventory.getMatrix().length; i++){
@@ -291,7 +290,9 @@ public class CraftingTableListener implements Listener {
             return;
         }
 
-        if (crafted instanceof Keyed k && !(crafted instanceof ComplexRecipe) && !CustomRecipeRegistry.getGridRecipesByKey().containsKey(k.getKey())) return;
+        if (crafted instanceof Keyed k && !(crafted instanceof ComplexRecipe) && !CustomRecipeRegistry.getGridRecipesByKey().containsKey(k.getKey())) {
+            return;
+        }
 
         if ((crafted instanceof ShapedRecipe || crafted instanceof ShapelessRecipe) && !e.getViewers().isEmpty()){
             DynamicGridRecipe recipe = CustomRecipeRegistry.getGridRecipesByKey().get(((Keyed) crafted).getKey());
@@ -313,6 +314,7 @@ public class CraftingTableListener implements Listener {
                 recipe = corrected.getOne();
                 result = corrected.getTwo();
             }
+
             if (recipe.getValidations().stream().anyMatch(v -> {
                         Validation validation = ValidationRegistry.getValidation(v);
                         if (inventory.getLocation() == null) return false;
@@ -335,9 +337,9 @@ public class CraftingTableListener implements Listener {
                 inventory.setResult(null);
                 return;
             }
-
             ItemBuilder resultBuilder = new ItemBuilder(result);
             DynamicItemModifier.modify(ModifierContext.builder(resultBuilder).crafter(crafter).items(inventory.getMatrix()).validate().get(), recipe.getModifiers());
+
             inventory.setResult(resultBuilder.get());
         } else if (crafted instanceof ComplexRecipe r){
             if (r.getKey().getKey().equals("tipped_arrow") && !ItemUtils.isEmpty(inventory.getResult()) && Arrays.stream(inventory.getMatrix()).noneMatch(ItemUtils::isEmpty)){

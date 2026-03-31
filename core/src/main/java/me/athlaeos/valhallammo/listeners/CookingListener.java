@@ -51,8 +51,7 @@ public class CookingListener implements Listener {
     private static final Collection<InventoryType> furnaces = Set.of(InventoryType.FURNACE, InventoryType.BLAST_FURNACE, InventoryType.SMOKER);
 
     public CookingListener(){
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_18))
-            ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new FurnaceStartSmeltListener(), ValhallaMMO.getInstance());
+        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new FurnaceStartSmeltListener(), ValhallaMMO.getInstance());
     }
 
     // owner is set to furnace on inventory click

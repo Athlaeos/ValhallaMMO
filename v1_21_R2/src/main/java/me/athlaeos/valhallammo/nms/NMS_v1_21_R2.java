@@ -44,6 +44,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemRarity;
@@ -400,5 +401,14 @@ public final class NMS_v1_21_R2 implements NMS {
             case RARE -> meta.setRarity(ItemRarity.RARE);
             case EPIC -> meta.setRarity(ItemRarity.EPIC);
         }
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public String getDamageTypeFromEvent(EntityDamageEvent e) {
+        if (e.getCause() == EntityDamageEvent.DamageCause.CUSTOM) {
+            return e.getDamageSource().getDamageType().getKey().toString();
+        }
+        return NMS.super.getDamageTypeFromEvent(e);
     }
 }

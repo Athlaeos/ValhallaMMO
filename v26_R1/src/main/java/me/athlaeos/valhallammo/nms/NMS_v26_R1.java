@@ -3,12 +3,11 @@ package me.athlaeos.valhallammo.nms;
 import io.netty.channel.Channel;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
-import me.athlaeos.valhallammo.dom.EquippableWrapper;
-import me.athlaeos.valhallammo.dom.ItemRarityWrapper;
-import me.athlaeos.valhallammo.dom.Pair;
-import me.athlaeos.valhallammo.dom.Structures;
+import me.athlaeos.valhallammo.dom.*;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
@@ -18,7 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.sounds.SoundEvent;
@@ -30,14 +29,13 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.craftbukkit.v1_21_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_21_R1.block.data.CraftBlockData;
-import org.bukkit.craftbukkit.v1_21_R1.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_21_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_21_R1.generator.structure.CraftStructureType;
-import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.generator.structure.CraftStructureType;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -46,28 +44,35 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
+import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.bukkit.inventory.meta.components.FoodComponent;
 import org.bukkit.inventory.meta.components.ToolComponent;
+import org.bukkit.inventory.meta.components.consumable.ConsumableComponent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.bukkit.tag.DamageTypeTags;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
-public final class NMS_v1_21_R1 implements NMS {
-
+public final class NMS_v26_R1 implements NMS {
     @Override
     public void onEnable() {
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new CrafterCraftListener(), ValhallaMMO.getInstance());
         ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new VaultLootListener(), ValhallaMMO.getInstance());
+        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new JumpInputListener(), ValhallaMMO.getInstance());
     }
 
     @Override
     public void forceAttack(Player player, LivingEntity victim) {
+        if (ValhallaMMO.isUsingPaperMC()) {
+            ValhallaMMO.getPaper().forceAttack(player, victim);
+            return;
+        }
         ((CraftPlayer) player).getHandle().attack(((CraftEntity) victim).getHandle());
     }
 
@@ -114,7 +119,7 @@ public final class NMS_v1_21_R1 implements NMS {
     }
 
     /**
-     * Since 1.20.5 PotionTypes are added for extended and amplified potions as well, which are accounted for in {@link me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry}.
+     * Since 1.20.5 PotionTypes are added for extended and amplified potions as well, which are accounted for in {@link PotionEffectRegistry}.
      * Because of this, these methods can always return false because the difference is no longer needed
      */
     @Override
@@ -123,7 +128,7 @@ public final class NMS_v1_21_R1 implements NMS {
     }
 
     /**
-     * Since 1.20.5 PotionTypes are added for extended and amplified potions as well, which are accounted for in {@link me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry}.
+     * Since 1.20.5 PotionTypes are added for extended and amplified potions as well, which are accounted for in {@link PotionEffectRegistry}.
      * Because of this, these methods can always return false because the difference is no longer needed
      */
     @Override
@@ -138,22 +143,22 @@ public final class NMS_v1_21_R1 implements NMS {
 
     @Override
     public void addUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type, double amount, AttributeModifier.Operation operation) {
-        addAttribute(e, identifier, type, amount, operation);
+        NMS_v1_21_R1.addAttribute(e, identifier, type, amount, operation);
     }
 
     @Override
     public boolean hasUniqueAttribute(LivingEntity e, UUID uuid, String identifier, Attribute type) {
-        return hasAttribute(e, identifier, type);
+        return NMS_v1_21_R1.hasAttribute(e, identifier, type);
     }
 
     @Override
     public double getUniqueAttributeValue(LivingEntity e, UUID uuid, String identifier, Attribute type) {
-        return getAttributeValue(e, identifier, type);
+        return NMS_v1_21_R1.getAttributeValue(e, identifier, type);
     }
 
     @Override
     public void removeUniqueAttribute(LivingEntity e, String identifier, Attribute type) {
-        removeAttribute(e, identifier, type);
+        NMS_v1_21_R1.removeAttribute(e, identifier, type);
     }
 
     @Override
@@ -176,6 +181,10 @@ public final class NMS_v1_21_R1 implements NMS {
 
     @Override
     public void blockBreakAnimation(Player p, org.bukkit.block.Block b, int id, int stage) {
+        if (ValhallaMMO.isUsingPaperMC()) {
+            ValhallaMMO.getPaper().blockBreakAnimation(p, b, id, stage);
+            return;
+        }
         ServerPlayer entityPlayer = ((CraftPlayer) p).getHandle();
         ServerGamePacketListenerImpl playerConnection = entityPlayer.connection;
         BlockPos blockPosition = new BlockPos(b.getX(), b.getY(), b.getZ());
@@ -191,6 +200,7 @@ public final class NMS_v1_21_R1 implements NMS {
 
     @Override
     public float toolPower(org.bukkit.inventory.ItemStack tool, org.bukkit.block.Block b) {
+        if (ValhallaMMO.isUsingPaperMC()) return ValhallaMMO.getPaper().toolPower(tool, b);
         if (!ItemUtils.isEmpty(tool)) {
             ItemStack craftItemStack = CraftItemStack.asNMSCopy(tool);
             Block nmsBlock = ((CraftWorld) b.getWorld()).getHandle().getBlockState(new BlockPos(b.getX(), b.getY(), b.getZ())).getBlock();
@@ -202,24 +212,30 @@ public final class NMS_v1_21_R1 implements NMS {
 
     @Override
     public float toolPower(org.bukkit.inventory.ItemStack tool, Material b) {
+        if (ValhallaMMO.isUsingPaperMC()) return ValhallaMMO.getPaper().toolPower(tool, b);
         if (!ItemUtils.isEmpty(tool)) {
             ItemStack craftItemStack = CraftItemStack.asNMSCopy(tool);
             CraftBlockData data = (CraftBlockData) b.createBlockData();
             return craftItemStack.getDestroySpeed(data.getState());
         }
-
         return 1;
     }
 
     @Override
     public void breakBlock(Player p, org.bukkit.block.Block b) {
+        if (ValhallaMMO.isUsingPaperMC()) {
+            ValhallaMMO.getPaper().breakBlock(p, b);
+            return;
+        }
         b.getWorld().spawnParticle(Particle.BLOCK, b.getLocation().add(0.5, 0.5, 0.5), 100, 0.1, 0.1, 0.1, 4, b.getBlockData());
         b.getWorld().playSound(b.getLocation(), b.getBlockData().getSoundGroup().getBreakSound(), 1.0f, 1.0f);
         ((CraftPlayer) p).getHandle().gameMode.destroyBlock(new BlockPos(b.getX(), b.getY(), b.getZ()));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Sound blockSound(org.bukkit.block.Block b) {
+        if (ValhallaMMO.isUsingPaperMC()) return ValhallaMMO.getPaper().blockSound(b);
         try {
             Block nmsBlock = ((CraftWorld) b.getWorld()).getHandle().getBlockState(new BlockPos(b.getX(), b.getY(), b.getZ())).getBlock();
             SoundType soundEffectType = nmsBlock.defaultBlockState().getSoundType();
@@ -233,9 +249,9 @@ public final class NMS_v1_21_R1 implements NMS {
 
             keyField.setAccessible(true);
 
-            ResourceLocation minecraftKey = (ResourceLocation) keyField.get(soundEffect);
+            Identifier minecraftKey = (Identifier) keyField.get(soundEffect);
 
-            return Sound.valueOf(minecraftKey.getPath().toUpperCase(java.util.Locale.US)
+            return Sound.valueOf(minecraftKey.getPath().toUpperCase(Locale.US)
                     .replace(".", "_")
                     .replace("_FALL", "_HIT"));
         } catch (NoSuchFieldException | IllegalAccessException ignored) {
@@ -246,6 +262,10 @@ public final class NMS_v1_21_R1 implements NMS {
 
     @Override
     public void resetAttackCooldown(Player p){
+        if (ValhallaMMO.isUsingPaperMC()) {
+            ValhallaMMO.getPaper().resetAttackCooldown(p);
+            return;
+        }
         ServerPlayer entityPlayer = ((CraftPlayer) p).getHandle();
         entityPlayer.resetAttackStrengthTicker();
     }
@@ -260,8 +280,14 @@ public final class NMS_v1_21_R1 implements NMS {
         if (edible){
             FoodComponent food = meta.getMeta().getFood();
             food.setCanAlwaysEat(canAlwaysEat);
-            food.setEatSeconds(eatTimeSeconds);
             meta.getMeta().setFood(food);
+            if (!ValhallaMMO.isUsingPaperMC()){
+                ConsumableComponent consumable = meta.getMeta().getConsumable();
+                consumable.setConsumeSeconds(eatTimeSeconds);
+                consumable.setAnimation(ConsumableComponent.Animation.EAT);
+                consumable.setSound(Sound.ENTITY_GENERIC_EAT);
+                meta.getMeta().setConsumable(consumable);
+            }
         } else meta.getMeta().setFood(null);
     }
 
@@ -276,13 +302,14 @@ public final class NMS_v1_21_R1 implements NMS {
     }
 
     @Override
-    public int getMaxStackSize(ItemMeta meta, Material baseMaterial) {
-        return meta.hasMaxStackSize() ? meta.getMaxStackSize() : baseMaterial.getMaxStackSize();
+    public int getMaxStackSize(ItemMeta meta, Material defaultType) {
+        return meta.hasMaxStackSize() ? meta.getMaxStackSize() : defaultType.getMaxStackSize();
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void setFireResistant(ItemMeta meta, boolean fireResistant) {
-        meta.setFireResistant(fireResistant);
+        meta.setDamageResistant(DamageTypeTags.IS_FIRE);
     }
 
     @Override
@@ -307,116 +334,152 @@ public final class NMS_v1_21_R1 implements NMS {
 
     @Override
     public Attribute getAttribute(AttributeMappings mappedTo) {
-        return getMappedAttribute(mappedTo);
-    }
-
-    public static Attribute getMappedAttribute(AttributeMappings mappedTo){
         return switch (mappedTo){
-            case LUCK -> Attribute.GENERIC_LUCK;
-            case ARMOR -> Attribute.GENERIC_ARMOR;
-            case SCALE -> Attribute.GENERIC_SCALE;
-            case GRAVITY -> Attribute.GENERIC_GRAVITY;
-            case MAX_HEALTH -> Attribute.GENERIC_MAX_HEALTH;
-            case STEP_HEIGHT -> Attribute.GENERIC_STEP_HEIGHT;
-            case ATTACK_SPEED -> Attribute.GENERIC_ATTACK_SPEED;
-            case BURNING_TIME -> Attribute.GENERIC_BURNING_TIME;
-            case FLYING_SPEED -> Attribute.GENERIC_FLYING_SPEED;
-            case FOLLOW_RANGE -> Attribute.GENERIC_FOLLOW_RANGE;
-            case OXYGEN_BONUS -> Attribute.GENERIC_OXYGEN_BONUS;
-            case ATTACK_DAMAGE -> Attribute.GENERIC_ATTACK_DAMAGE;
-            case JUMP_STRENGTH, HORSE_JUMP_STRENGTH -> Attribute.GENERIC_JUMP_STRENGTH;
-            case MAX_ABSORPTION -> Attribute.GENERIC_MAX_ABSORPTION;
-            case MOVEMENT_SPEED -> Attribute.GENERIC_MOVEMENT_SPEED;
-            case SNEAKING_SPEED -> Attribute.PLAYER_SNEAKING_SPEED;
-            case ARMOR_TOUGHNESS -> Attribute.GENERIC_ARMOR_TOUGHNESS;
-            case ATTACK_KNOCKBACK -> Attribute.GENERIC_ATTACK_KNOCKBACK;
-            case BLOCK_BREAK_SPEED -> Attribute.PLAYER_BLOCK_BREAK_SPEED;
-            case MINING_EFFICIENCY -> Attribute.PLAYER_MINING_EFFICIENCY;
-            case SAFE_FALL_DISTANCE -> Attribute.GENERIC_SAFE_FALL_DISTANCE;
-            case MOVEMENT_EFFICIENCY -> Attribute.GENERIC_MOVEMENT_EFFICIENCY;
-            case KNOCKBACK_RESISTANCE -> Attribute.GENERIC_KNOCKBACK_RESISTANCE;
-            case SPAWN_REINFORCEMENTS -> Attribute.ZOMBIE_SPAWN_REINFORCEMENTS;
-            case SWEEPING_DAMAGE_RATIO -> Attribute.PLAYER_SWEEPING_DAMAGE_RATIO;
-            case FALL_DAMAGE_MULTIPLIER -> Attribute.GENERIC_FALL_DAMAGE_MULTIPLIER;
-            case SUBMERGED_MINING_SPEED -> Attribute.PLAYER_SUBMERGED_MINING_SPEED;
-            case BLOCK_INTERACTION_RANGE -> Attribute.PLAYER_BLOCK_INTERACTION_RANGE;
-            case ENTITY_INTERACTION_RANGE -> Attribute.PLAYER_ENTITY_INTERACTION_RANGE;
-            case WATER_MOVEMENT_EFFICIENCY -> Attribute.GENERIC_WATER_MOVEMENT_EFFICIENCY;
-            case EXPLOSION_KNOCKBACK_RESISTANCE -> Attribute.GENERIC_EXPLOSION_KNOCKBACK_RESISTANCE;
-            default -> null;
+            case LUCK -> Attribute.LUCK;
+            case ARMOR -> Attribute.ARMOR;
+            case SCALE -> Attribute.SCALE;
+            case GRAVITY -> Attribute.GRAVITY;
+            case MAX_HEALTH -> Attribute.MAX_HEALTH;
+            case STEP_HEIGHT -> Attribute.STEP_HEIGHT;
+            case TEMPT_RANGE -> Attribute.TEMPT_RANGE;
+            case ATTACK_SPEED -> Attribute.ATTACK_SPEED;
+            case BURNING_TIME -> Attribute.BURNING_TIME;
+            case FLYING_SPEED -> Attribute.FLYING_SPEED;
+            case FOLLOW_RANGE -> Attribute.FOLLOW_RANGE;
+            case OXYGEN_BONUS -> Attribute.OXYGEN_BONUS;
+            case ATTACK_DAMAGE -> Attribute.ATTACK_DAMAGE;
+            case JUMP_STRENGTH, HORSE_JUMP_STRENGTH -> Attribute.JUMP_STRENGTH;
+            case MAX_ABSORPTION -> Attribute.MAX_ABSORPTION;
+            case MOVEMENT_SPEED -> Attribute.MOVEMENT_SPEED;
+            case SNEAKING_SPEED -> Attribute.SNEAKING_SPEED;
+            case ARMOR_TOUGHNESS -> Attribute.ARMOR_TOUGHNESS;
+            case ATTACK_KNOCKBACK -> Attribute.ATTACK_KNOCKBACK;
+            case BLOCK_BREAK_SPEED -> Attribute.BLOCK_BREAK_SPEED;
+            case MINING_EFFICIENCY -> Attribute.MINING_EFFICIENCY;
+            case SAFE_FALL_DISTANCE -> Attribute.SAFE_FALL_DISTANCE;
+            case MOVEMENT_EFFICIENCY -> Attribute.MOVEMENT_EFFICIENCY;
+            case KNOCKBACK_RESISTANCE -> Attribute.KNOCKBACK_RESISTANCE;
+            case SPAWN_REINFORCEMENTS -> Attribute.SPAWN_REINFORCEMENTS;
+            case SWEEPING_DAMAGE_RATIO -> Attribute.SWEEPING_DAMAGE_RATIO;
+            case FALL_DAMAGE_MULTIPLIER -> Attribute.FALL_DAMAGE_MULTIPLIER;
+            case SUBMERGED_MINING_SPEED -> Attribute.SUBMERGED_MINING_SPEED;
+            case BLOCK_INTERACTION_RANGE -> Attribute.BLOCK_INTERACTION_RANGE;
+            case ENTITY_INTERACTION_RANGE -> Attribute.ENTITY_INTERACTION_RANGE;
+            case WATER_MOVEMENT_EFFICIENCY -> Attribute.WATER_MOVEMENT_EFFICIENCY;
+            case EXPLOSION_KNOCKBACK_RESISTANCE -> Attribute.EXPLOSION_KNOCKBACK_RESISTANCE;
         };
     }
 
     @SuppressWarnings("UnstableApiUsage")
-    public static void addAttribute(LivingEntity e, String identifier, Attribute type, double amount, AttributeModifier.Operation operation){
-        AttributeInstance instance = e.getAttribute(type);
-        if (instance != null) {
-            removeAttribute(e, identifier, type);
-            if (amount != 0) instance.addModifier(new AttributeModifier(ValhallaMMO.key(identifier), amount, operation, EquipmentSlotGroup.ANY));
-        }
-    }
-
-    public static boolean hasAttribute(LivingEntity e, String identifier, Attribute type){
-        AttributeInstance instance = e.getAttribute(type);
-        NamespacedKey key = ValhallaMMO.key(identifier);
-        return instance != null && instance.getModifiers().stream().anyMatch(m -> m != null && (m.getKey().equals(key) || m.getName().equals(identifier)));
-    }
-
-    public static double getAttributeValue(LivingEntity e, String identifier, Attribute type){
-        AttributeInstance instance = e.getAttribute(type);
-        NamespacedKey key = ValhallaMMO.key(identifier);
-        if (instance == null) return 0;
-        for (AttributeModifier m : instance.getModifiers()) {
-            if (m.getKey().equals(key) || m.getName().equals(identifier)) {
-                return m.getAmount();
-            }
-        }
-        return 0;
-    }
-
-    public static void removeAttribute(LivingEntity e, String identifier, Attribute type){
-        AttributeInstance instance = e.getAttribute(type);
-        NamespacedKey key = ValhallaMMO.key(identifier);
-        if (instance != null) {
-            for (AttributeModifier m : new ArrayList<>(instance.getModifiers())) {
-                if (m.getKey().equals(key) || m.getName().equals(identifier)) {
-                    instance.removeModifier(m);
-                }
-            }
-        }
-    }
-
     @Override
     public void setItemModel(ItemMeta meta, String model){
-        // not compatible
+        Number asNumber = Catch.catchOrElse(() -> model.contains(".") || model.contains(",") ? Float.parseFloat(model) : Integer.parseInt(model), -1);
+        if (asNumber.floatValue() < 0 || asNumber.intValue() < 0) {
+            meta.setItemModel(StringUtils.isEmpty(model) ? null : NamespacedKey.fromString(model));
+        } else {
+            CustomModelDataComponent component = meta.getCustomModelDataComponent();
+            if (asNumber instanceof Float f) {
+                List<Float> floats = new ArrayList<>(List.of(f));
+                component.setFloats(floats);
+                meta.setCustomModelDataComponent(component);
+            } else if (asNumber instanceof Integer i) meta.setCustomModelData(i);
+        }
     }
 
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setCMDBooleanList(ItemMeta meta, List<Boolean> booleans) {
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setFlags(booleans);
+        meta.setCustomModelDataComponent(component);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setCMDColorList(ItemMeta meta, List<Color> colors) {
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setColors(colors);
+        meta.setCustomModelDataComponent(component);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setCMDFloatList(ItemMeta meta, List<Float> floats) {
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setFloats(floats);
+        meta.setCustomModelDataComponent(component);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public void setCMDStringList(ItemMeta meta, List<String> strings) {
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setStrings(strings);
+        meta.setCustomModelDataComponent(component);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public List<Boolean> getCMDBooleanList(ItemMeta meta) {
+        return meta.getCustomModelDataComponent().getFlags();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public List<Color> getCMDColorList(ItemMeta meta) {
+        return meta.getCustomModelDataComponent().getColors();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public List<Float> getCMDFloatList(ItemMeta meta) {
+        return meta.getCustomModelDataComponent().getFloats();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public List<String> getCMDStringList(ItemMeta meta) {
+        return meta.getCustomModelDataComponent().getStrings();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void setEquippable(ItemMeta meta, String modelKey, EquipmentSlot slot, String cameraOverlayKey, Sound equipSound, List<EntityType> allowedTypes){
-        // not compatible
+        if (slot == null || StringUtils.isEmpty(modelKey)) meta.setEquippable(null);
+        else {
+            EquippableComponent equippableComponent = meta.getEquippable();
+            equippableComponent.setModel(NamespacedKey.fromString(modelKey));
+            equippableComponent.setSlot(slot);
+            equippableComponent.setAllowedEntities(allowedTypes == null || allowedTypes.isEmpty() ? null : allowedTypes);
+            equippableComponent.setCameraOverlay(StringUtils.isEmpty(cameraOverlayKey) ? null : NamespacedKey.fromString(cameraOverlayKey));
+            equippableComponent.setSwappable(true);
+            equippableComponent.setEquipSound(equipSound == null ? Sound.ITEM_ARMOR_EQUIP_GENERIC : equipSound);
+            equippableComponent.setDamageOnHurt(true);
+            meta.setEquippable(equippableComponent);
+        }
     }
 
     @Override
     public void setToolTipStyle(ItemMeta meta, String namespacedKey){
-        // not compatible
+        meta.setTooltipStyle(StringUtils.isEmpty(namespacedKey) ? null : NamespacedKey.fromString(namespacedKey));
     }
 
     @Override
     public String getItemModel(ItemMeta meta) {
-        // not compatible
-        return null;
+        return !meta.hasItemModel() || meta.getItemModel() == null ? null : meta.getItemModel().toString();
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public EquippableWrapper getEquippable(ItemMeta meta) {
-        // not compatible
-        return null;
+        if (!meta.hasEquippable() || meta.getEquippable().getModel() == null) return null;
+        EquippableComponent e = meta.getEquippable();
+        return new EquippableWrapper(e.getModel().toString(), e.getSlot(), e.getCameraOverlay() == null ? null : e.getCameraOverlay().toString(), e.getEquipSound(), e.getAllowedEntities());
     }
 
     @Override
     public String getToolTipStyle(ItemMeta meta) {
-        // not compatible
-        return null;
+        return !meta.hasTooltipStyle() || meta.getTooltipStyle() == null ? null : meta.getTooltipStyle().toString();
     }
 
     @Override
@@ -436,6 +499,7 @@ public final class NMS_v1_21_R1 implements NMS {
         }
         ToolComponent tool = meta.getMeta().getTool();
         tool.setDefaultMiningSpeed(miningSpeed);
+        tool.setCanDestroyBlocksInCreative(canDestroyInCreative);
         meta.getMeta().setTool(tool);
     }
 
@@ -465,11 +529,12 @@ public final class NMS_v1_21_R1 implements NMS {
         }
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     @Override
     public String getDamageTypeFromEvent(EntityDamageEvent e) {
         if (e.getCause() == EntityDamageEvent.DamageCause.CUSTOM) {
-            return e.getDamageSource().getDamageType().getKey().toString();
+            NamespacedKey key = e.getDamageSource().getDamageType().getKeyOrNull();
+            if (key == null) return e.getDamageSource().getDamageType().getTranslationKey();
+            return key.toString();
         }
         return NMS.super.getDamageTypeFromEvent(e);
     }

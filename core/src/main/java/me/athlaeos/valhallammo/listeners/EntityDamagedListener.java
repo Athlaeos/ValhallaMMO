@@ -82,7 +82,7 @@ public class EntityDamagedListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDamageFirst(EntityDamageEvent e){
-        setCustomDamageCause(e.getEntity().getUniqueId(), e.getCause().toString());
+        setCustomDamageCause(e.getEntity().getUniqueId(), ValhallaMMO.getNms().getDamageTypeFromEvent(e));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -92,7 +92,9 @@ public class EntityDamagedListener implements Listener {
             String damageCause = getLastDamageCause(l);
             CustomDamageType type = CustomDamageType.getCustomType(damageCause);
             Entity lastDamager = lastDamager(e);
-            if (type != null) e.setDamage(e.getDamage() * (1 + EffectResponsibility.getResponsibleDamageBuff(e.getEntity(), lastDamager, type)));
+            if (type != null) {
+                e.setDamage(e.getDamage() * (1 + EffectResponsibility.getResponsibleDamageBuff(e.getEntity(), lastDamager, type)));
+            }
             double originalDamage = e.getDamage();
             double customDamage = type == null || type.isFatal() ? calculateCustomDamage(e) : Math.min(l.getHealth() - 1, calculateCustomDamage(e)); // poison damage may never kill the victim
             // custom damage did not kill entity
@@ -123,7 +125,7 @@ public class EntityDamagedListener implements Listener {
             }
             if (e instanceof EntityDamageByEntityEvent && e.getFinalDamage() <= 0.000001 && l instanceof Player p && p.isBlocking()) return; // blocking with shield damage reduction
 
-            if (((lastDamager == null || EntityClassification.matchesClassification(lastDamager.getType(), EntityClassification.UNALIVE)) && environmentalOneShotProtection) || ((pvpOneShotProtection && lastDamager instanceof Player) || (pveOneShotProtection && lastDamager != null && !EntityClassification.matchesClassification(lastDamager.getType(), EntityClassification.UNALIVE)))) {
+            if (Timer.isCooldownPassed(e.getEntity().getUniqueId(), "cooldown_oneshot_protection") && ((lastDamager == null || EntityClassification.matchesClassification(lastDamager.getType(), EntityClassification.UNALIVE)) && environmentalOneShotProtection) || ((pvpOneShotProtection && lastDamager instanceof Player) || (pveOneShotProtection && lastDamager != null && !EntityClassification.matchesClassification(lastDamager.getType(), EntityClassification.UNALIVE)))) {
                 double oneShotProtectionFraction = AccumulativeStatManager.getCachedRelationalStats("ONESHOT_PROTECTION_FRACTION", l, lastDamager, 10000, true);
                 if (oneShotProtectionFraction > 0){
                     AttributeInstance healthAttribute = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
@@ -160,7 +162,7 @@ public class EntityDamagedListener implements Listener {
                 // taken the last damage instance
 
                 if (l instanceof Player && (type != null && type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
-                if (l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0);
+                if (l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0.01);
                 double healthBefore = l.getHealth();
                 damageProcesses.put(l.getUniqueId(), () -> {
                     l.setNoDamageTicks(iFrames);
@@ -189,15 +191,12 @@ public class EntityDamagedListener implements Listener {
     }
 
     public static double calculateCustomDamage(EntityDamageEvent e){
-        String damageCause = Utils.thisorDefault(EntityUtils.getCustomDamageType(e.getEntity()), customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), e.getCause().toString()));
+        String damageCause = Utils.thisorDefault(EntityUtils.getCustomDamageType(e.getEntity()), customDamageCauses.getOrDefault(e.getEntity().getUniqueId(), ValhallaMMO.getNms().getDamageTypeFromEvent(e)));
         Entity lastDamager = lastDamager(e);
 
         CustomDamageType customDamageType = CustomDamageType.getCustomType(damageCause);
 
         if (customDamageType != null) {
-            double elementalMultiplier = customDamageType.damageMultiplier() == null ? 0 : AccumulativeStatManager.getCachedRelationalStats(customDamageType.damageMultiplier(), e.getEntity(), lastDamager, 10000, true);
-            e.setDamage(e.getDamage() * (1 + elementalMultiplier));
-
             if (e.getEntity() instanceof LivingEntity l){
                 double resistance = customDamageType.resistance() == null ? 0 : AccumulativeStatManager.getCachedRelationalStats(customDamageType.resistance(), l, lastDamager, 10000, true);
                 e.setDamage(Math.max(0, e.getDamage() * (1 - resistance)));
@@ -214,8 +213,8 @@ public class EntityDamagedListener implements Listener {
 
         double resistedDamage = e.getDamage();
         YamlConfiguration c = ValhallaMMO.getPluginConfig();
-        if (physicalDamageTypes.containsKey(damageCause)){
-            double armorEffectiveness = physicalDamageTypes.get(damageCause);
+        if (physicalDamageTypes.containsKey(damageCause) || (customDamageType != null && physicalDamageTypes.containsKey(customDamageType.getType()))){
+            double armorEffectiveness = physicalDamageTypes.getOrDefault(damageCause, customDamageType == null ? 1D : physicalDamageTypes.getOrDefault(customDamageType.getType(), 1D));
             double totalArmor = AccumulativeStatManager.getCachedRelationalStats("ARMOR_TOTAL", e.getEntity(), lastDamager, 10000, true);
             double toughness = Math.max(0, AccumulativeStatManager.getCachedRelationalStats("TOUGHNESS", e.getEntity(), lastDamager, 2000, true));
             if (totalArmor < 0){
@@ -239,7 +238,9 @@ public class EntityDamagedListener implements Listener {
 
             if (mode) return Math.max(damageResult - damageAbsorption, minimumFraction * resistedDamage);
             else return resistedDamage * Math.max(minimumFraction, damageResult);
-        } else return resistedDamage;
+        } else {
+            return resistedDamage;
+        }
     }
 
     /**
@@ -283,7 +284,7 @@ public class EntityDamagedListener implements Listener {
     }
 
     public static String getLastDamageCause(LivingEntity e){
-        return Utils.thisorDefault(EntityUtils.getCustomDamageType(e), customDamageCauses.getOrDefault(e.getUniqueId(), e.getLastDamageCause() == null ? null : e.getLastDamageCause().getCause().toString()));
+        return Utils.thisorDefault(EntityUtils.getCustomDamageType(e), customDamageCauses.getOrDefault(e.getUniqueId(), e.getLastDamageCause() == null ? null : ValhallaMMO.getNms().getDamageTypeFromEvent(e.getLastDamageCause())));
     }
 
     /**

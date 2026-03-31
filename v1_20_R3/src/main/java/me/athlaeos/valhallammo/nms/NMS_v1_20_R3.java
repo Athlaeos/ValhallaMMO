@@ -40,6 +40,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -314,5 +315,14 @@ public final class NMS_v1_20_R3 implements NMS {
     public String getToolTipStyle(ItemMeta meta) {
         // not compatible
         return null;
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Override
+    public String getDamageTypeFromEvent(EntityDamageEvent e) {
+        if (e.getCause() == EntityDamageEvent.DamageCause.CUSTOM) {
+            return e.getDamageSource().getDamageType().getKey().toString();
+        }
+        return NMS.super.getDamageTypeFromEvent(e);
     }
 }
