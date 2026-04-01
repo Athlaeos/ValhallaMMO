@@ -4,7 +4,7 @@
     <artifactId>valhallammo-core</artifactId>
 
     <properties>
-        <javaVersion>25</javaVersion>
+        <javaVersion>17</javaVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
