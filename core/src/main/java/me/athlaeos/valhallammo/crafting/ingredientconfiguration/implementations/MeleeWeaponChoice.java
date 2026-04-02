@@ -23,6 +23,7 @@ public class MeleeWeaponChoice extends RecipeOption {
         weapons.addAll(EquipmentClass.SHOVEL.getMatchingMaterials());
         weapons.addAll(EquipmentClass.HOE.getMatchingMaterials());
         weapons.addAll(EquipmentClass.TRIDENT.getMatchingMaterials());
+        weapons.addAll(EquipmentClass.SPEAR.getMatchingMaterials());
         MeleeWeaponChoice.weapons = weapons;
     }
 
