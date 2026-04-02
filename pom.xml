@@ -12,7 +12,7 @@
 
     <properties>
         <revision>1.9</revision>
-        <javaVersion>25</javaVersion>
+        <javaVersion>17</javaVersion>
         <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\26.1\plugins</testServerPath>
         <shadedPackage>me.athlaeos.valhallammo.shaded</shadedPackage>
 

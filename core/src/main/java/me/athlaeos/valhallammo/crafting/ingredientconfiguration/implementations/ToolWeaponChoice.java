@@ -26,6 +26,7 @@ public class ToolWeaponChoice extends RecipeOption {
         tools.addAll(EquipmentClass.TRIDENT.getMatchingMaterials());
         tools.addAll(EquipmentClass.BOW.getMatchingMaterials());
         tools.addAll(EquipmentClass.CROSSBOW.getMatchingMaterials());
+        tools.addAll(EquipmentClass.SPEAR.getMatchingMaterials());
         ToolWeaponChoice.tools = tools;
     }
 
