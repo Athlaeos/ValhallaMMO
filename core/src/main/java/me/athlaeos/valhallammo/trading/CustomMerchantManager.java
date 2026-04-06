@@ -27,19 +27,20 @@ import me.athlaeos.valhallammo.utility.Callback;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.AttributeMappings;
-import org.bukkit.GameRule;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.AbstractVillager;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffectTypeWrapper;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -185,11 +186,15 @@ public class CustomMerchantManager {
     public static MerchantLevel getLevel(MerchantData data){
         MerchantType merchantType = registeredMerchantTypes.get(data.getType());
         if (merchantType == null) return null;
+        return getLevel(merchantType, data.getExp());
+    }
+
+    public static MerchantLevel getLevel(MerchantType type, int exp){
         MerchantLevel currentLevel = null;
         for (MerchantLevel level : MerchantLevel.values()){
-            MerchantType.MerchantLevelTrades trades = merchantType.getTrades(level);
+            MerchantType.MerchantLevelTrades trades = type.getTrades(level);
             if (trades == null) continue;
-            if (data.getExp() >= trades.getExpRequirement() || currentLevel == null) currentLevel = level;
+            if (exp >= trades.getExpRequirement() || currentLevel == null) currentLevel = level;
         }
         return currentLevel;
     }
@@ -532,6 +537,8 @@ public class CustomMerchantManager {
     }
 
     private static final NamespacedKey KEY_MERCHANT_BLOCK = new NamespacedKey(ValhallaMMO.getInstance(), "merchant_blocker");
+    private static final NamespacedKey KEY_MERCHANT_LEVEL = new NamespacedKey(ValhallaMMO.getInstance(), "merchant_leveler");
+    private static final NamespacedKey KEY_MERCHANT_FORGET = new NamespacedKey(ValhallaMMO.getInstance(), "merchant_forgetter");
     public static void convertToBlockerItem(ItemMeta meta, boolean shouldBlock){
         if (!shouldBlock) meta.getPersistentDataContainer().remove(KEY_MERCHANT_BLOCK);
         else meta.getPersistentDataContainer().set(KEY_MERCHANT_BLOCK, PersistentDataType.BYTE, (byte) 1);
@@ -539,9 +546,66 @@ public class CustomMerchantManager {
     public static boolean isBlockerItem(ItemMeta meta){
         return meta.getPersistentDataContainer().get(KEY_MERCHANT_BLOCK, PersistentDataType.BYTE) != null;
     }
+    public static void convertToForgettingItem(ItemMeta meta, boolean shouldForget){
+        if (!shouldForget) meta.getPersistentDataContainer().remove(KEY_MERCHANT_FORGET);
+        else meta.getPersistentDataContainer().set(KEY_MERCHANT_FORGET, PersistentDataType.BYTE, (byte) 1);
+    }
+    public static boolean isForgettingItem(ItemMeta meta){
+        return meta.getPersistentDataContainer().get(KEY_MERCHANT_FORGET, PersistentDataType.BYTE) != null;
+    }
+    public static void convertToLevelingItem(ItemMeta meta, int expCount){
+        if (expCount == 0) meta.getPersistentDataContainer().remove(KEY_MERCHANT_LEVEL);
+        else meta.getPersistentDataContainer().set(KEY_MERCHANT_LEVEL, PersistentDataType.INTEGER, expCount);
+    }
+    public static Integer getExpGrantingItem(ItemMeta meta){
+        return meta.getPersistentDataContainer().get(KEY_MERCHANT_LEVEL, PersistentDataType.INTEGER);
+    }
 
     public static boolean overrideDayTimeMechanics() {
-        Boolean gameRuleValue = ValhallaMMO.getInstance().getServer().getWorlds().getFirst().getGameRuleValue(GameRule.DO_DAYLIGHT_CYCLE);
-        return overwriteDayTimeMechanics || (gameRuleValue != null && !gameRuleValue);
+        return overwriteDayTimeMechanics || ValhallaMMO.getNms().isDaytimeCycleEnabled();
+    }
+
+    public static ProfessionWrapper getProfessionFromType(MerchantType type){
+        for (ProfessionWrapper professionWrapper : merchantConfigurations.keySet()){
+            MerchantConfiguration configuration = getMerchantConfiguration(professionWrapper);
+            if (configuration == null) continue;
+            if (configuration.getMerchantTypes().contains(type.getType())) return professionWrapper;
+        }
+        return null;
+    }
+
+    public static void addExp(LivingEntity v, MerchantData data, int amount, Player responsiblePlayer){
+        MerchantType type = getMerchantType(data.getType());
+        data.setExp(Math.min(type.getExpRequirement(MerchantLevel.MASTER), data.getExp() + amount));
+        MerchantLevel level = CustomMerchantManager.getLevel(data);
+        MerchantLevel nextLevel = level == null ? null : MerchantLevel.getNextLevel(level);
+        if (v instanceof Villager vi){
+            int villagerLevel = vi.getVillagerLevel();
+            if (nextLevel == null) {
+                vi.setVillagerLevel(MerchantLevel.MASTER.getLevel());
+                vi.setVillagerExperience(MerchantLevel.MASTER.getDefaultExpRequirement()); // already max level
+            } else {
+                int expToCurrentLevel = type.getExpRequirement(level);
+                int expToNextLevel = type.getExpRequirement(nextLevel);
+
+                float progressToNextLevel = ((float) data.getExp() - expToCurrentLevel) / (expToNextLevel - expToCurrentLevel);
+                vi.setVillagerExperience(level.getDefaultExpRequirement() + (int) Math.floor((nextLevel.getDefaultExpRequirement() - level.getDefaultExpRequirement()) * progressToNextLevel));
+                int newLevel = MerchantLevel.getLevel(vi.getVillagerExperience()).getLevel();
+                if (villagerLevel > newLevel) {
+                    // merchant level higher than expected, reset level and trades
+                    villagerLevel = 0;
+                    data.setTrades(new HashSet<>());
+                }
+                vi.setVillagerLevel(newLevel);
+            }
+            if (vi.getVillagerLevel() != villagerLevel) {
+                vi.addPotionEffect(PotionEffectTypeWrapper.REGENERATION.createEffect(200, 0));
+                // create new trades for newly acquired level
+                for (MerchantLevel l : MerchantLevel.values()){
+                    if (l.getLevel() <= villagerLevel || l.getLevel() > vi.getVillagerLevel()) continue;
+                    data.addTrades(CustomMerchantManager.generateRandomTradesForLevel(data, type, responsiblePlayer, l));
+                }
+            }
+        }
     }
 }

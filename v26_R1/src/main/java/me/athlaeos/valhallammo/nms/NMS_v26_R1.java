@@ -561,4 +561,13 @@ public final class NMS_v26_R1 implements NMS {
         }
         return NMS.super.getDamageTypeFromEvent(e);
     }
+
+    @Override
+    public boolean isDaytimeCycleEnabled() {
+        GameRule<?> o = Registry.GAME_RULE.get(NamespacedKey.minecraft("advance_time"));
+        if (o == null) return true;
+        Object value = ValhallaMMO.getInstance().getServer().getWorlds().getFirst().getGameRuleValue(o);
+        if (value instanceof Boolean b) return b;
+        return true;
+    }
 }

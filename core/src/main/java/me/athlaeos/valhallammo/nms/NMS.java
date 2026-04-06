@@ -1,12 +1,14 @@
 package me.athlaeos.valhallammo.nms;
 
 import io.netty.channel.Channel;
+import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.block.DigPacketInfo;
 import me.athlaeos.valhallammo.dom.EquippableWrapper;
 import me.athlaeos.valhallammo.dom.ItemRarityWrapper;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.dom.Structures;
 import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.ActivityMappings;
 import me.athlaeos.valhallammo.version.AttributeMappings;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
@@ -141,5 +143,8 @@ public interface NMS extends Listener {
     }
     default String getDamageTypeFromEvent(EntityDamageEvent e){
         return e.getCause().toString();
+    }
+    default boolean isDaytimeCycleEnabled(){
+        return Utils.thisorDefault(ValhallaMMO.getInstance().getServer().getWorlds().getFirst().getGameRuleValue(GameRule.DO_DAYLIGHT_CYCLE), true);
     }
 }

@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.commands.valhallasubcommands;
 
 import me.athlaeos.valhallammo.commands.Command;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.trading.CustomMerchantManager;
@@ -20,8 +21,8 @@ public class ManageMerchantsCommand implements Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (sender instanceof Player player){
-            if (args.length > 2 && args[1].equalsIgnoreCase("summonitem")) {
-                MerchantType type = CustomMerchantManager.getMerchantType(args[2]);
+            if (args.length > 1 && args[1].equalsIgnoreCase("summonitem")) {
+                MerchantType type = args.length > 2 ? CustomMerchantManager.getMerchantType(args[2]) : null;
                 if (type == null) Utils.sendMessage(sender, "&cInvalid merchant type");
                 else {
                     ItemStack hand = player.getInventory().getItemInMainHand();
@@ -50,6 +51,43 @@ public class ManageMerchantsCommand implements Command {
                         Utils.sendMessage(sender, "&7Useful if you have villagers that serve alternative functionality when right clicked, such as questgivers or shopkeepers from other plugins");
                     } else {
                         Utils.sendMessage(sender, "&aRemoved merchant blocking status from item!");
+                    }
+                }
+            } else if (args.length > 1 && args[1].equalsIgnoreCase("forgetteritem")) {
+                ItemStack hand = player.getInventory().getItemInMainHand();
+                if (ItemUtils.isEmpty(hand)) Utils.sendMessage(sender, "&cYou should be holding an item");
+                else {
+                    ItemMeta meta = hand.getItemMeta();
+                    if (meta == null) return true;
+                    CustomMerchantManager.convertToForgettingItem(meta, !CustomMerchantManager.isForgettingItem(meta));
+                    hand.setItemMeta(meta);
+                    if (CustomMerchantManager.isForgettingItem(meta)) {
+                        Utils.sendMessage(sender, "&aConverted to forgetting item!");
+                        Utils.sendMessage(sender, "&7Right click on villager to wipe their player memories.");
+                        Utils.sendMessage(sender, "&7This resets reputation, renown, and per-player trades if their merchant type has it enabled!");
+                    } else {
+                        Utils.sendMessage(sender, "&aRemoved forgetting status from item!");
+                    }
+                }
+            } else if (args.length > 1 && args[1].equalsIgnoreCase("expitem")) {
+                Integer amount = args.length > 2 ? Catch.catchOrElse(() -> Integer.parseInt(args[2]), null) : null;
+                if (amount == null) {
+                    Utils.sendMessage(sender, "&cYou need to enter a valid amount of exp! (whole number, 0 to remove property)");
+                    return true;
+                }
+
+                ItemStack hand = player.getInventory().getItemInMainHand();
+                if (ItemUtils.isEmpty(hand)) Utils.sendMessage(sender, "&cYou should be holding an item");
+                else {
+                    ItemMeta meta = hand.getItemMeta();
+                    if (meta == null) return true;
+                    CustomMerchantManager.convertToLevelingItem(meta, amount);
+                    hand.setItemMeta(meta);
+                    if (amount != 0) {
+                        Utils.sendMessage(sender, "&aConverted to exp granting item!");
+                        Utils.sendMessage(sender, "&7Right click on villager to grant them exp.");
+                    } else {
+                        Utils.sendMessage(sender, "&aRemoved exp granting status from item!");
                     }
                 }
             } else {
@@ -86,8 +124,9 @@ public class ManageMerchantsCommand implements Command {
 
     @Override
     public List<String> getSubcommandArgs(CommandSender sender, String[] args) {
-        if (args.length == 2) return List.of("summonitem", "blockeritem");
-        if (args.length == 3 && !args[2].equalsIgnoreCase("blockeritem")) return new ArrayList<>(CustomMerchantManager.getRegisteredMerchantTypes().keySet());
+        if (args.length == 2) return List.of("summonitem", "blockeritem", "forgetteritem", "expitem");
+        if (args.length == 3 && args[2].equalsIgnoreCase("summonitem")) return new ArrayList<>(CustomMerchantManager.getRegisteredMerchantTypes().keySet());
+        if (args.length == 3 && args[2].equalsIgnoreCase("expitem")) return List.of("<exp_amount>");
         return Command.noSubcommandArgs();
     }
 }

@@ -47,7 +47,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.LootContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectTypeWrapper;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -123,37 +122,7 @@ public class MerchantListener implements Listener {
         MerchantData data = virtualMerchant.getData();
         if (type == null) return;
         int expToGrant = (int) ((1 + AccumulativeStatManager.getCachedStats("TRADING_MERCHANT_EXPERIENCE_MULTIPLIER", p, 10000, true)) * virtualMerchant.getExpToGrant());
-        data.setExp(Math.min(type.getExpRequirement(MerchantLevel.MASTER), data.getExp() + expToGrant));
-        MerchantLevel level = CustomMerchantManager.getLevel(data);
-        MerchantLevel nextLevel = level == null ? null : MerchantLevel.getNextLevel(level);
-        if (v instanceof Villager vi){
-            int villagerLevel = vi.getVillagerLevel();
-            if (nextLevel == null) {
-                vi.setVillagerLevel(MerchantLevel.MASTER.getLevel());
-                vi.setVillagerExperience(MerchantLevel.MASTER.getDefaultExpRequirement()); // already max level
-            } else {
-                int expToCurrentLevel = type.getExpRequirement(level);
-                int expToNextLevel = type.getExpRequirement(nextLevel);
-
-                float progressToNextLevel = ((float) data.getExp() - expToCurrentLevel) / (expToNextLevel - expToCurrentLevel);
-                vi.setVillagerExperience(level.getDefaultExpRequirement() + (int) Math.floor((nextLevel.getDefaultExpRequirement() - level.getDefaultExpRequirement()) * progressToNextLevel));
-                int newLevel = MerchantLevel.getLevel(vi.getVillagerExperience()).getLevel();
-                if (villagerLevel > newLevel) {
-                    // merchant level higher than expected, reset level and trades
-                    villagerLevel = 0;
-                    data.setTrades(new HashSet<>());
-                }
-                vi.setVillagerLevel(newLevel);
-            }
-            if (vi.getVillagerLevel() != villagerLevel) {
-                vi.addPotionEffect(PotionEffectTypeWrapper.REGENERATION.createEffect(200, 0));
-                // create new trades for newly acquired level
-                for (MerchantLevel l : MerchantLevel.values()){
-                    if (l.getLevel() <= villagerLevel || l.getLevel() > vi.getVillagerLevel()) continue;
-                    data.addTrades(CustomMerchantManager.generateRandomTradesForLevel(data, type, p, l));
-                }
-            }
-        }
+        CustomMerchantManager.addExp(v, data, expToGrant, p);
         // Ensures that at least one of the villager's trades is not fully restocked, prompting
         // the villager to want to restock
         MerchantRecipe recipe = Catch.catchOrElse(() -> v.getRecipe(0), null);
@@ -803,13 +772,15 @@ public class MerchantListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onMerchantChangeType(PlayerInteractEntityEvent e){
-        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName())) return;
+        if (ValhallaMMO.isWorldBlacklisted(e.getPlayer().getWorld().getName()) || !(e.getRightClicked() instanceof LivingEntity le)) return;
         if (!(e.getRightClicked() instanceof Villager) && !(e.getRightClicked() instanceof WanderingTrader)) return;
 
         ItemStack hand = e.getPlayer().getInventory().getItem(e.getHand());
         if (ItemUtils.isEmpty(hand)) return;
         ItemMeta meta = hand.getItemMeta();
         boolean isBlocker = meta != null && CustomMerchantManager.isBlockerItem(meta);
+        Integer expGiver = meta == null ? null : CustomMerchantManager.getExpGrantingItem(meta);
+        boolean isForgetter = meta != null && CustomMerchantManager.isForgettingItem(meta);
         if (isBlocker){
             e.setCancelled(true);
             if (e.getRightClicked().getPersistentDataContainer().has(KEY_MERCHANT_BLOCKED, PersistentDataType.BYTE)) {
@@ -836,30 +807,65 @@ public class MerchantListener implements Listener {
                 e.getRightClicked().getPersistentDataContainer().set(KEY_MERCHANT_BLOCKED, PersistentDataType.BYTE, (byte) 1);
             }
             return;
+        } else if (isForgetter){
+            e.setCancelled(true);
+            CustomMerchantManager.getMerchantData(e.getRightClicked().getUniqueId(), (data) -> {
+                if (data == null){
+                    Utils.sendMessage(e.getPlayer(), "&cNot a custom villager");
+                    return;
+                }
+                MerchantType type = CustomMerchantManager.getMerchantType(data.getType());
+                if (type == null) {
+                    Utils.sendMessage(e.getPlayer(), "&cNot a custom villager");
+                    return;
+                }
+                data.getPlayerMemory().clear();
+                Utils.sendMessage(e.getPlayer(), "&aVillager was bashed over the head with a heavy metal pipe, forgot everyone!");
+            });
+
+            return;
+        } else if (expGiver != null && expGiver != 0){
+            e.setCancelled(true);
+            CustomMerchantManager.getMerchantData(e.getRightClicked().getUniqueId(), (data) -> {
+                if (data == null){
+                    Utils.sendMessage(e.getPlayer(), "&cNot a custom villager");
+                    return;
+                }
+                MerchantType type = CustomMerchantManager.getMerchantType(data.getType());
+                if (type == null) {
+                    Utils.sendMessage(e.getPlayer(), "&cNot a custom villager");
+                    return;
+                }
+                CustomMerchantManager.addExp(le, data, expGiver, e.getPlayer());
+                data.setExp(Math.min(type.getExpRequirement(MerchantLevel.MASTER), data.getExp() + expGiver));
+                Utils.sendMessage(e.getPlayer(), "&aExp granted, now level " + CustomMerchantManager.getLevel(type, data.getExp()) + " with " + data.getExp() + " exp.");
+            });
+
+            return;
         }
         MerchantType merchantType = meta == null ? null : CustomMerchantManager.getSummonType(meta);
         if (merchantType == null) return;
-        for (ProfessionWrapper profession : CustomMerchantManager.getMerchantConfigurations().keySet()){
-            if (CustomMerchantManager.getMerchantConfiguration(profession).getMerchantTypes().contains(merchantType.getType())){
-                if (e.getRightClicked() instanceof Villager v){
-                    if (profession == ProfessionWrapper.TRAVELING) return;
-                    v.setProfession(profession.getProfession());
-                    v.setVillagerExperience(1); // to stop it from losing its profession
-                    MerchantData data = CustomMerchantManager.createMerchant(v.getUniqueId(), merchantType, e.getPlayer());
-                    data.setExp(1);
-                } else if (e.getRightClicked() instanceof WanderingTrader w){
-                    if (profession == ProfessionWrapper.TRAVELING) return;
-                    MerchantData data = CustomMerchantManager.createMerchant(w.getUniqueId(), merchantType, e.getPlayer());
-                    data.setExp(1);
-                }
-                e.setCancelled(true);
-
-                e.getPlayer().playSound(e.getPlayer(), Sound.ENTITY_VILLAGER_YES, 1F, 1F);
-                if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
-                if (hand.getAmount() == 1) e.getPlayer().getInventory().setItem(e.getHand(), null);
-                else hand.setAmount(hand.getAmount() - 1);
-                return;
-            }
+        ProfessionWrapper wrapper = CustomMerchantManager.getProfessionFromType(merchantType);
+        if (wrapper == null || wrapper.getProfession() == null) return;
+        if (e.getRightClicked() instanceof Villager v){
+            if (wrapper == ProfessionWrapper.TRAVELING) return;
+            v.setProfession(wrapper.getProfession());
+            v.setVillagerExperience(1); // to stop it from losing its profession
+            MerchantData data = CustomMerchantManager.createMerchant(v.getUniqueId(), merchantType, e.getPlayer());
+            data.setExp(1);
+            Utils.sendMessage(e.getPlayer(), "&aVillager set to job " + merchantType.getType());
+            v.setProfession(wrapper.getProfession());
+        } else if (e.getRightClicked() instanceof WanderingTrader w){
+            if (wrapper == ProfessionWrapper.TRAVELING) return;
+            MerchantData data = CustomMerchantManager.createMerchant(w.getUniqueId(), merchantType, e.getPlayer());
+            data.setExp(1);
         }
+        e.setCancelled(true);
+
+        e.getPlayer().playSound(e.getPlayer(), Sound.ENTITY_VILLAGER_YES, 1F, 1F);
+        if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+        if (hand.getAmount() == 1) e.getPlayer().getInventory().setItem(e.getHand(), null);
+        else hand.setAmount(hand.getAmount() - 1);
+        return;
     }
 }
