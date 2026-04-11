@@ -239,6 +239,15 @@ public abstract class Skill {
                 ItemStack icon = ItemUtils.getIconFromConfig(progressionConfig, "perks." + perkName + ".icon", getClass().getSimpleName() + " progression config", new ItemStack(Material.PAPER));
                 String permission = progressionConfig.getString("perks." + perkName + ".permission");
 
+                int perkModelData = progressionConfig.getInt("perks." + perkName + ".icon_data", -1);
+                if (perkModelData >= 0) {
+                    ItemMeta iconMeta = ItemUtils.getItemMeta(icon);
+                    if (iconMeta != null) {
+                        iconMeta.setCustomModelData(perkModelData);
+                        ItemUtils.setMetaNoClone(icon, iconMeta);
+                    }
+                }
+
                 int[] c = parseCoordinates(progressionConfig.getString("perks." + perkName + ".coords", "0,0"));
                 int perkX = c[0];
                 int perkY = c[1];
