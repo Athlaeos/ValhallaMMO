@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <revision>premium_1.12</revision>
+        <revision>premium_1.12.1</revision>
         <javaVersion>17</javaVersion>
         <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\26.1.1\plugins</testServerPath>
         <shadedPackage>me.athlaeos.valhallammo.shaded</shadedPackage>
