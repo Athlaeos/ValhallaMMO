@@ -88,7 +88,7 @@ public class AttributeAttackerSource implements CacheableRelationalStatSource {
 
     @Override
     public double fetch(Entity statPossessor, boolean use) {
-        return fetch(null, statPossessor, use);
+        return 0;// fetch(null, statPossessor, use);
     }
 
     @Override

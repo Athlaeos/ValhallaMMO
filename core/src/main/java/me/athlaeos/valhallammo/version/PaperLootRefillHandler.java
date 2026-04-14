@@ -15,6 +15,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -29,8 +30,18 @@ import java.util.List;
 
 public class PaperLootRefillHandler implements Listener {
     public static boolean isRefillPending(BlockState i){
-        if (ValhallaMMO.isUsingPaperMC()) return false;
-        if (i instanceof LootableInventory l) return l.hasPendingRefill();
+        if (!ValhallaMMO.isUsingPaperMC()) return false;
+        if (i instanceof LootableInventory l) {
+            return l.hasPendingRefill();
+        }
+        return false;
+    }
+
+    public static boolean shouldRefill(BlockState i, Player p){
+        if (!ValhallaMMO.isUsingPaperMC()) return false;
+        if (i instanceof LootableInventory l){
+            return l.hasPendingRefill() || l.hasBeenFilled();
+        }
         return false;
     }
 

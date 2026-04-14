@@ -200,6 +200,39 @@ public class AccumulativeStatManager {
         register("FOOD_BONUS_DAIRY", new ProfileStatSource(PowerProfile.class, "foodBonusDairy"));
         register("FOOD_BONUS_MEAT", new ProfileStatSource(PowerProfile.class, "foodBonusMeat"));
         register("FOOD_BONUS_FATS", new ProfileStatSource(PowerProfile.class, "foodBonusFats"));
+        register("FOOD_BONUS_RAW", new ProfileStatSource(PowerProfile.class, "foodBonusRaw"));
+
+        register("FOOD_NUTRITION_ADDITION_VEGETABLE", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionVegetable"));
+        register("FOOD_NUTRITION_ADDITION_SEASONING", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionSeasoning"));
+        register("FOOD_NUTRITION_ADDITION_ALCOHOLIC", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionAlcoholic"));
+        register("FOOD_NUTRITION_ADDITION_BEVERAGE", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionBeverage"));
+        register("FOOD_NUTRITION_ADDITION_SPOILED", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionSpoiled"));
+        register("FOOD_NUTRITION_ADDITION_SEAFOOD", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionSeafood"));
+        register("FOOD_NUTRITION_ADDITION_MAGICAL", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionMagical"));
+        register("FOOD_NUTRITION_ADDITION_SWEET", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionSweet"));
+        register("FOOD_NUTRITION_ADDITION_GRAIN", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionGrain"));
+        register("FOOD_NUTRITION_ADDITION_FRUIT", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionFruit"));
+        register("FOOD_NUTRITION_ADDITION_NUTS", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionNuts"));
+        register("FOOD_NUTRITION_ADDITION_DAIRY", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionDairy"));
+        register("FOOD_NUTRITION_ADDITION_MEAT", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionMeat"));
+        register("FOOD_NUTRITION_ADDITION_FATS", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionFats"));
+        register("FOOD_NUTRITION_ADDITION_RAW", new ProfileStatSource(PowerProfile.class, "foodNutritionAdditionRaw"));
+
+        register("FOOD_SATURATION_ADDITION_VEGETABLE", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionVegetable"));
+        register("FOOD_SATURATION_ADDITION_SEASONING", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionSeasoning"));
+        register("FOOD_SATURATION_ADDITION_ALCOHOLIC", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionAlcoholic"));
+        register("FOOD_SATURATION_ADDITION_BEVERAGE", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionBeverage"));
+        register("FOOD_SATURATION_ADDITION_SPOILED", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionSpoiled"));
+        register("FOOD_SATURATION_ADDITION_SEAFOOD", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionSeafood"));
+        register("FOOD_SATURATION_ADDITION_MAGICAL", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionMagical"));
+        register("FOOD_SATURATION_ADDITION_SWEET", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionSweet"));
+        register("FOOD_SATURATION_ADDITION_GRAIN", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionGrain"));
+        register("FOOD_SATURATION_ADDITION_FRUIT", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionFruit"));
+        register("FOOD_SATURATION_ADDITION_NUTS", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionNuts"));
+        register("FOOD_SATURATION_ADDITION_DAIRY", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionDairy"));
+        register("FOOD_SATURATION_ADDITION_MEAT", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionMeat"));
+        register("FOOD_SATURATION_ADDITION_FATS", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionFats"));
+        register("FOOD_SATURATION_ADDITION_RAW", new ProfileStatSource(PowerProfile.class, "foodSaturationAdditionRaw"));
 
         // smithing stats
         register("SMITHING_QUALITY_GENERAL", new AttributeSource("SMITHING_QUALITY").penalty("attribute"), new ProfileStatSource(SmithingProfile.class, "genericCraftingSkill"), new GlobalBuffSource("smithing_quality"), new PotionEffectSource("SMITHING_QUALITY"), new PotionEffectSingleUseSource("SMITHING_MASTERPIECE_FLAT"));

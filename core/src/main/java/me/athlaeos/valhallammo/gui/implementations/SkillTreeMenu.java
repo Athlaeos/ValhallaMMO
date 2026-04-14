@@ -77,10 +77,32 @@ public class SkillTreeMenu extends Menu {
         buildSkillTrees();
     }
 
+    public SkillTreeMenu(PlayerMenuUtility playerMenuUtility, Skill selectedSkill) {
+        super(playerMenuUtility);
+
+        this.selectedSkill = selectedSkill;
+        x = selectedSkill.getCenterX() + 4;
+        y = selectedSkill.getCenterY() + 2;
+        target = playerMenuUtility.getOwner();
+
+        buildSkillTrees();
+    }
+
     public SkillTreeMenu(PlayerMenuUtility playerMenuUtility, Player target) {
         super(playerMenuUtility);
 
         selectedSkill = SkillRegistry.getSkill(PowerSkill.class);
+        this.x = selectedSkill.getCenterX() + 4;
+        this.y = selectedSkill.getCenterY() + 2;
+        this.target = target;
+
+        buildSkillTrees();
+    }
+
+    public SkillTreeMenu(PlayerMenuUtility playerMenuUtility, Player target, Skill selectedSkill) {
+        super(playerMenuUtility);
+
+        this.selectedSkill = selectedSkill;
         this.x = selectedSkill.getCenterX() + 4;
         this.y = selectedSkill.getCenterY() + 2;
         this.target = target;

@@ -14,5 +14,6 @@ public enum FoodClass {
     NUTS,
     BEVERAGE,
     ALCOHOLIC,
+    RAW,
     SPOILED
 }

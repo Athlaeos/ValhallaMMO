@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Locale;
 
 public class OnConsumption implements EffectTrigger, Listener {
@@ -46,15 +47,17 @@ public class OnConsumption implements EffectTrigger, Listener {
         Player p = e.getPlayer();
         ItemMeta meta = ItemUtils.getItemMeta(item);
         if (meta == null) return;
-        FoodClass type = FoodPropertyManager.getFoodClass(item, meta);
-        if (type == null) return;
+        Collection<FoodClass> types = FoodPropertyManager.getFoodClasses(item, meta);
+        if (types == null) return;
         EntityProperties properties = EntityCache.getAndCacheProperties(p);
 
-        String id = "on_eat_" + type.toString().toLowerCase(Locale.US);
-        EffectTrigger trigger = EffectTriggerRegistry.getTrigger(id);
-        if (trigger == null) return;
-        if (!properties.getPermanentPotionEffects().getOrDefault(id, new ArrayList<>()).isEmpty()) {
-            trigger.trigger(p, id, properties.getPermanentEffectCooldowns().get(id), properties.getPermanentPotionEffects().getOrDefault(id, new ArrayList<>()));
+        for (FoodClass type : types){
+            String id = "on_eat_" + type.toString().toLowerCase(Locale.US);
+            EffectTrigger trigger = EffectTriggerRegistry.getTrigger(id);
+            if (trigger == null) return;
+            if (!properties.getPermanentPotionEffects().getOrDefault(id, new ArrayList<>()).isEmpty()) {
+                trigger.trigger(p, id, properties.getPermanentEffectCooldowns().get(id), properties.getPermanentPotionEffects().getOrDefault(id, new ArrayList<>()));
+            }
         }
     }
 }

@@ -15,65 +15,65 @@ public class FoodPropertyManager {
     private static final Map<Material, FoodProperties> defaultProperties = new HashMap<>();
 
     static {
-        setDefaultProperties(Material.ENCHANTED_GOLDEN_APPLE, FoodClass.MAGICAL, 4, 9.6F);
-        setDefaultProperties(Material.GOLDEN_APPLE, FoodClass.MAGICAL, 4, 9.6F);
-        setDefaultProperties(Material.GOLDEN_CARROT, FoodClass.MAGICAL, 6, 14.4f);
+        setDefaultProperties(Material.ENCHANTED_GOLDEN_APPLE, 4, 9.6F, FoodClass.MAGICAL, FoodClass.FRUIT, FoodClass.SWEET);
+        setDefaultProperties(Material.GOLDEN_APPLE, 4, 9.6F, FoodClass.MAGICAL, FoodClass.FRUIT, FoodClass.SWEET);
+        setDefaultProperties(Material.GOLDEN_CARROT, 6, 14.4f, FoodClass.MAGICAL, FoodClass.VEGETABLE);
 
-        setDefaultProperties(Material.COOKED_CHICKEN, FoodClass.MEAT, 6, 7.2F);
-        setDefaultProperties(Material.CHICKEN, FoodClass.MEAT, 2, 1.2F);
-        setDefaultProperties(Material.COOKED_MUTTON, FoodClass.MEAT, 6, 9.6F);
-        setDefaultProperties(Material.MUTTON, FoodClass.MEAT, 2, 1.2F);
-        setDefaultProperties(Material.COOKED_PORKCHOP, FoodClass.MEAT, 8, 12.8F);
-        setDefaultProperties(Material.PORKCHOP, FoodClass.MEAT, 3, 1.8F);
-        setDefaultProperties(Material.COOKED_RABBIT, FoodClass.MEAT, 5, 6F);
-        setDefaultProperties(Material.RABBIT, FoodClass.MEAT, 3, 1.8F);
-        setDefaultProperties(Material.COOKED_BEEF, FoodClass.MEAT, 8, 12.8F);
-        setDefaultProperties(Material.BEEF, FoodClass.MEAT, 3, 1.8F);
-        setDefaultProperties(Material.RABBIT_STEW, FoodClass.MEAT, 10, 12F);
+        setDefaultProperties(Material.COOKED_CHICKEN, 6, 7.2F, FoodClass.MEAT);
+        setDefaultProperties(Material.CHICKEN, 2, 1.2F, FoodClass.MEAT, FoodClass.RAW);
+        setDefaultProperties(Material.COOKED_MUTTON, 6, 9.6F, FoodClass.MEAT);
+        setDefaultProperties(Material.MUTTON, 2, 1.2F, FoodClass.MEAT, FoodClass.RAW);
+        setDefaultProperties(Material.COOKED_PORKCHOP, 8, 12.8F, FoodClass.MEAT);
+        setDefaultProperties(Material.PORKCHOP, 3, 1.8F, FoodClass.MEAT, FoodClass.RAW);
+        setDefaultProperties(Material.COOKED_RABBIT, 5, 6F, FoodClass.MEAT);
+        setDefaultProperties(Material.RABBIT, 3, 1.8F, FoodClass.MEAT, FoodClass.RAW);
+        setDefaultProperties(Material.COOKED_BEEF, 8, 12.8F, FoodClass.MEAT);
+        setDefaultProperties(Material.BEEF, 3, 1.8F, FoodClass.MEAT, FoodClass.RAW);
+        setDefaultProperties(Material.RABBIT_STEW, 10, 12F, FoodClass.MEAT);
 
-        setDefaultProperties(Material.SALMON, FoodClass.SEAFOOD, 2, 0.4F);
-        setDefaultProperties(Material.COOKED_SALMON, FoodClass.SEAFOOD, 6, 9.6F);
-        setDefaultProperties(Material.COD, FoodClass.SEAFOOD, 2, 0.4F);
-        setDefaultProperties(Material.COOKED_COD, FoodClass.SEAFOOD, 5, 6F);
-        setDefaultProperties(Material.TROPICAL_FISH, FoodClass.SEAFOOD, 1, 0.2F);
+        setDefaultProperties(Material.SALMON, 2, 0.4F, FoodClass.SEAFOOD, FoodClass.RAW);
+        setDefaultProperties(Material.COOKED_SALMON, 6, 9.6F, FoodClass.SEAFOOD);
+        setDefaultProperties(Material.COD, 2, 0.4F, FoodClass.SEAFOOD, FoodClass.RAW);
+        setDefaultProperties(Material.COOKED_COD, 5, 6F, FoodClass.SEAFOOD);
+        setDefaultProperties(Material.TROPICAL_FISH, 1, 0.2F, FoodClass.SEAFOOD);
 
-        setDefaultProperties(Material.BAKED_POTATO, FoodClass.VEGETABLE, 5, 6F);
-        setDefaultProperties(Material.BEETROOT, FoodClass.VEGETABLE, 1, 1.2F);
-        setDefaultProperties(Material.BEETROOT_SOUP, FoodClass.VEGETABLE, 6, 7.2F);
-        setDefaultProperties(Material.CARROT, FoodClass.VEGETABLE, 3, 3.6F);
-        setDefaultProperties(Material.DRIED_KELP, FoodClass.VEGETABLE, 1, 0.6F);
-        setDefaultProperties(Material.MUSHROOM_STEW, FoodClass.VEGETABLE, 6, 7.2F);
-        setDefaultProperties(Material.POTATO, FoodClass.VEGETABLE, 1, 0.6F);
-        setDefaultProperties(Material.SUSPICIOUS_STEW, FoodClass.VEGETABLE, 6, 7.2F);
+        setDefaultProperties(Material.BAKED_POTATO, 5, 6F, FoodClass.VEGETABLE);
+        setDefaultProperties(Material.BEETROOT, 1, 1.2F, FoodClass.VEGETABLE);
+        setDefaultProperties(Material.BEETROOT_SOUP, 6, 7.2F, FoodClass.VEGETABLE);
+        setDefaultProperties(Material.CARROT, 3, 3.6F, FoodClass.VEGETABLE);
+        setDefaultProperties(Material.DRIED_KELP, 1, 0.6F, FoodClass.VEGETABLE);
+        setDefaultProperties(Material.MUSHROOM_STEW, 6, 7.2F, FoodClass.VEGETABLE);
+        setDefaultProperties(Material.POTATO, 1, 0.6F, FoodClass.VEGETABLE, FoodClass.RAW);
+        setDefaultProperties(Material.SUSPICIOUS_STEW, 6, 7.2F, FoodClass.VEGETABLE);
 
-        setDefaultProperties(Material.BREAD, FoodClass.GRAIN, 5, 6f);
+        setDefaultProperties(Material.BREAD, 5, 6f, FoodClass.GRAIN);
 
-        setDefaultProperties(Material.CAKE, FoodClass.SWEET, 14, 2.8F);
-        setDefaultProperties(Material.COOKIE, FoodClass.SWEET, 2, 0.4F);
-        setDefaultProperties(Material.HONEY_BOTTLE, FoodClass.SWEET, 6, 1.2F);
-        setDefaultProperties(Material.PUMPKIN_PIE, FoodClass.SWEET, 8, 4.8F);
+        setDefaultProperties(Material.CAKE, 14, 2.8F, FoodClass.SWEET, FoodClass.GRAIN);
+        setDefaultProperties(Material.COOKIE, 2, 0.4F, FoodClass.SWEET, FoodClass.GRAIN);
+        setDefaultProperties(Material.HONEY_BOTTLE, 6, 1.2F, FoodClass.SWEET);
+        setDefaultProperties(Material.PUMPKIN_PIE, 8, 4.8F, FoodClass.SWEET, FoodClass.GRAIN);
 
-        setDefaultProperties(Material.POISONOUS_POTATO, FoodClass.SPOILED, 2, 1.2F);
-        setDefaultProperties(Material.PUFFERFISH, FoodClass.SPOILED, 1, 0.2F);
-        setDefaultProperties(Material.ROTTEN_FLESH, FoodClass.SPOILED, 4, 0.8F);
-        setDefaultProperties(Material.SPIDER_EYE, FoodClass.SPOILED, 2, 3.2F);
+        setDefaultProperties(Material.POISONOUS_POTATO, 2, 1.2F, FoodClass.VEGETABLE, FoodClass.SPOILED);
+        setDefaultProperties(Material.PUFFERFISH, 1, 0.2F, FoodClass.SEAFOOD, FoodClass.SPOILED);
+        setDefaultProperties(Material.ROTTEN_FLESH, 4, 0.8F, FoodClass.MEAT, FoodClass.SPOILED);
+        setDefaultProperties(Material.SPIDER_EYE, 2, 3.2F, FoodClass.MEAT, FoodClass.SPOILED);
 
-        setDefaultProperties(Material.APPLE, FoodClass.FRUIT, 4, 2.4F);
-        setDefaultProperties(Material.CHORUS_FRUIT, FoodClass.FRUIT, 4, 2.4F);
-        setDefaultProperties(Material.GLOW_BERRIES, FoodClass.FRUIT, 2, 0.4F);
-        setDefaultProperties(Material.MELON_SLICE, FoodClass.FRUIT, 2, 1.2F);
-        setDefaultProperties(Material.SWEET_BERRIES, FoodClass.FRUIT, 2, 0.4F);
+        setDefaultProperties(Material.APPLE, 4, 2.4F, FoodClass.FRUIT, FoodClass.SWEET);
+        setDefaultProperties(Material.CHORUS_FRUIT, 4, 2.4F, FoodClass.FRUIT);
+        setDefaultProperties(Material.GLOW_BERRIES, 2, 0.4F, FoodClass.FRUIT, FoodClass.SWEET);
+        setDefaultProperties(Material.MELON_SLICE, 2, 1.2F, FoodClass.FRUIT, FoodClass.SWEET);
+        setDefaultProperties(Material.SWEET_BERRIES, 2, 0.4F, FoodClass.FRUIT, FoodClass.SWEET);
 
-        setDefaultProperties(Material.MILK_BUCKET, FoodClass.DAIRY, 0, 0F);
+        setDefaultProperties(Material.MILK_BUCKET, 0, 0F, FoodClass.DAIRY, FoodClass.BEVERAGE);
 
-        setDefaultProperties(Material.POTION, FoodClass.BEVERAGE, 0, 0F);
+        setDefaultProperties(Material.POTION, 0, 0F, FoodClass.BEVERAGE, FoodClass.MAGICAL);
     }
 
-    private static void setDefaultProperties(Material m, FoodClass type, int foodValue, float saturationValue){
-        defaultProperties.put(m, new FoodProperties(type, foodValue, saturationValue));
+    private static void setDefaultProperties(Material m, int foodValue, float saturationValue, FoodClass... types){
+        defaultProperties.put(m, new FoodProperties(new HashSet<>(Set.of(types)), foodValue, saturationValue));
     }
 
-    private static final NamespacedKey FOOD_CLASS = ValhallaMMO.key("food_class");
+    private static final NamespacedKey FOOD_CLASSES = ValhallaMMO.key("food_class");
     private static final NamespacedKey FOOD_VALUE = ValhallaMMO.key("food_value");
     private static final NamespacedKey SATURATION_VALUE = ValhallaMMO.key("saturation_value");
     private static final NamespacedKey CANCEL_POTION_EFFECTS = ValhallaMMO.key("cancel_potion_effects");
@@ -81,7 +81,7 @@ public class FoodPropertyManager {
 
     public static boolean isCustomFood(ItemMeta meta){
         PersistentDataContainer c = meta.getPersistentDataContainer();
-        return c.has(FOOD_CLASS, PersistentDataType.STRING) || c.has(FOOD_VALUE, PersistentDataType.INTEGER) ||
+        return c.has(FOOD_CLASSES, PersistentDataType.STRING) || c.has(FOOD_VALUE, PersistentDataType.INTEGER) ||
                 c.has(SATURATION_VALUE, PersistentDataType.DOUBLE) || c.has(CANCEL_POTION_EFFECTS, PersistentDataType.SHORT) ||
                 c.has(CANCEL_DIMINISHING_RETURNS, PersistentDataType.SHORT);
     }
@@ -163,23 +163,28 @@ public class FoodPropertyManager {
         else meta.getPersistentDataContainer().set(FOOD_VALUE, PersistentDataType.INTEGER, foodValue);
     }
 
-    public static FoodClass getFoodClass(ItemStack i, ItemMeta meta){
+    public static Collection<FoodClass> getFoodClasses(ItemStack i, ItemMeta meta){
         if (meta == null) return null;
-        String value = ItemUtils.getPDCString(FOOD_CLASS, meta, null);
+        String value = ItemUtils.getPDCString(FOOD_CLASSES, meta, null);
         if (value != null){
-            try {
-                return FoodClass.valueOf(value);
-            } catch (IllegalArgumentException ignored) {}
+            String[] types = value.split(";");
+            Collection<FoodClass> classes = new HashSet<>();
+            for (String type : types){
+                try {
+                    classes.add(FoodClass.valueOf(type));
+                } catch (IllegalArgumentException ignored) {}
+            }
+            return classes.isEmpty() ? null : classes;
         }
         FoodProperties properties = defaultProperties.get(i.getType());
-        return properties == null ? null : properties.type;
+        return properties == null ? null : properties.types;
     }
 
-    public static void setFoodClass(ItemMeta meta, FoodClass foodClass){
+    public static void setFoodClasses(ItemMeta meta, Collection<FoodClass> foodClasses){
         if (meta == null) return;
-        if (foodClass == null) meta.getPersistentDataContainer().remove(FOOD_CLASS);
-        else meta.getPersistentDataContainer().set(FOOD_CLASS, PersistentDataType.STRING, foodClass.toString());
+        if (foodClasses == null || foodClasses.isEmpty()) meta.getPersistentDataContainer().remove(FOOD_CLASSES);
+        else meta.getPersistentDataContainer().set(FOOD_CLASSES, PersistentDataType.STRING, String.join(";", foodClasses.stream().map(FoodClass::toString).toList()));
     }
 
-    private record FoodProperties(FoodClass type, int food, float saturation) {}
+    private record FoodProperties(Collection<FoodClass> types, int food, float saturation) {}
 }

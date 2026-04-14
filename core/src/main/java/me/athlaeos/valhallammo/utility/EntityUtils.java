@@ -6,6 +6,7 @@ import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
+import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
@@ -407,6 +408,7 @@ public class EntityUtils {
             } else {
                 PermanentPotionEffects.setHasPermanentEffects(e);
             }
+            AccumulativeStatManager.resetAllCaches(e);
         }
         return properties;
     }

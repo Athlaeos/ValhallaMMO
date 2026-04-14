@@ -510,11 +510,11 @@ public final class NMS_v1_21_R5 implements NMS {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public String getDamageTypeFromEvent(EntityDamageEvent e) {
         if (e.getCause() == EntityDamageEvent.DamageCause.CUSTOM) {
-            NamespacedKey key = e.getDamageSource().getDamageType().getKeyOrNull();
-            if (key == null) return e.getDamageSource().getDamageType().getTranslationKey();
+            NamespacedKey key = e.getDamageSource().getDamageType().getKey();
             return key.toString();
         }
         return NMS.super.getDamageTypeFromEvent(e);
