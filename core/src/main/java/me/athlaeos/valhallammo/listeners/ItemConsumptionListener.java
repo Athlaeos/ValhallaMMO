@@ -11,7 +11,7 @@ import me.athlaeos.valhallammo.potioneffects.EffectClass;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
-import me.athlaeos.valhallammo.utility.Utils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,7 +24,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.UUID;
 
 public class ItemConsumptionListener implements Listener {
     private final Collection<UUID> cancelNextFoodEffects = new HashSet<>();
@@ -39,11 +41,21 @@ public class ItemConsumptionListener implements Listener {
             if (!wrapper.isVanilla()) PotionEffectRegistry.addEffect(p, null, new CustomPotionEffect(wrapper, (int) wrapper.getDuration(), wrapper.getAmplifier()), false, 1, EntityPotionEffectEvent.Cause.POTION_DRINK);
             else p.addPotionEffect(new PotionEffect(wrapper.getVanillaEffect(), (int) wrapper.getDuration(), (int) wrapper.getAmplifier()));
         }
+        if (e.getItem().getType() == Material.MILK_BUCKET) PotionEffectRegistry.addEffect(p, null, new CustomPotionEffect(PotionEffectRegistry.getEffect("MILK"), 1, 1), true, 1, EntityPotionEffectEvent.Cause.MILK);
 
         ItemMeta meta = ItemUtils.getItemMeta(item);
         if (meta == null) return;
-        FoodClass type = FoodPropertyManager.getFoodClass(item, meta);
-        double multiplier = 1 + ((type == null ? 0 : AccumulativeStatManager.getCachedStats("FOOD_BONUS_" + type, e.getPlayer(), 10000, true)));
+        Collection<FoodClass> types = FoodPropertyManager.getFoodClasses(item, meta);
+        double multiplier = 1;
+        int foodNutritionAddition = 0;
+        float foodSaturationAddition = 0;
+        if (types != null){
+            for (FoodClass type : types){
+                multiplier *= (1 + AccumulativeStatManager.getCachedStats("FOOD_BONUS_" + type, e.getPlayer(), 10000, true));
+                foodNutritionAddition += (int) Math.round(AccumulativeStatManager.getCachedStats("FOOD_NUTRITION_ADDITION_" + type, e.getPlayer(), 10000, true));
+                foodSaturationAddition += (float) (AccumulativeStatManager.getCachedStats("FOOD_SATURATION_ADDITION_" + type, e.getPlayer(), 10000, true));
+            }
+        }
 
         int hungerBefore = e.getPlayer().getFoodLevel();
         float saturationBefore = e.getPlayer().getSaturation();
@@ -51,8 +63,8 @@ public class ItemConsumptionListener implements Listener {
             if (FoodPropertyManager.shouldCancelDefaultPotionEffects(meta)) cancelNextFoodEffects.add(e.getPlayer().getUniqueId());
             cancelNextFoodEvent.add(e.getPlayer().getUniqueId());
 
-            int foodToReplenish = FoodPropertyManager.getFoodValue(item, meta);
-            float saturationToReplenish = FoodPropertyManager.getSaturationValue(item, meta);
+            int foodToReplenish = FoodPropertyManager.getFoodValue(item, meta) + foodNutritionAddition;
+            float saturationToReplenish = FoodPropertyManager.getSaturationValue(item, meta) + foodSaturationAddition;
 
             foodToReplenish = (int) Math.round(multiplier * foodToReplenish);
             saturationToReplenish *= (float) multiplier;
@@ -70,11 +82,12 @@ public class ItemConsumptionListener implements Listener {
                 }
             }, 1L);
         } else {
+            double finalMultiplier = multiplier;
             ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 int hungerDifference = e.getPlayer().getFoodLevel() - hungerBefore;
                 float saturationDifference = e.getPlayer().getSaturation() - saturationBefore;
-                int newFoodLevel = hungerBefore + (int) Math.round(hungerDifference * multiplier);
-                float newSaturationLevel = saturationBefore + (saturationDifference * (float) multiplier);
+                int newFoodLevel = hungerBefore + (int) Math.round(hungerDifference * finalMultiplier);
+                float newSaturationLevel = saturationBefore + (saturationDifference * (float) finalMultiplier);
                 FoodLevelChangeEvent event = new FoodLevelChangeEvent(e.getPlayer(), Math.max(0, Math.min(20, newFoodLevel)), item);
                 ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
                 if (!event.isCancelled()){
@@ -89,23 +102,6 @@ public class ItemConsumptionListener implements Listener {
     public void cancelHunger(FoodLevelChangeEvent e){
         if (cancelNextFoodEvent.contains(e.getEntity().getUniqueId())) e.setCancelled(true);
     }
-
-//    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-//    public void onHungerChange(FoodLevelChangeEvent e){
-//        if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
-//        if (e.getFoodLevel() < e.getEntity().getFoodLevel()){
-//            // entity lost hunger
-//            double chance = AccumulativeStatManager.getCachedStats("HUNGER_SAVE_CHANCE", e.getEntity(), 10000, true);
-//            if (chance >= 0){
-//                if (Utils.proc(e.getEntity(), chance, false)) e.setCancelled(true);
-//            } else {
-//                int foodDifference = e.getFoodLevel() - e.getEntity().getFoodLevel();
-//                // food lost is a negative integer
-//                foodDifference = Utils.randomAverage((double) foodDifference * -(1-chance));
-//                e.setFoodLevel(Math.max(0, Math.min(20, e.getEntity().getFoodLevel() - foodDifference)));
-//            }
-//        }
-//    }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onHungerEvent(EntityExhaustionEvent e){

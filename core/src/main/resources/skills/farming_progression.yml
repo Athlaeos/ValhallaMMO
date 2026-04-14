@@ -318,15 +318,18 @@ perks:
     required_lv: 30
     perk_rewards:
       power_badfoodimmune_toggle: 0
-      power_foodbonusspoiled_add: 2
-      power_foodbonusvegetable_add: -0.2
-      power_foodbonusseafood_add: -0.2
-      power_foodbonusmagical_add: -0.2
-      power_foodbonusgrain_add: -0.2
-      power_foodbonusfruit_add: -0.2
-      power_foodbonusnuts_add: -0.2
-      power_foodbonusdairy_add: -0.2
-      power_foodbonusmeat_add: -0.2
+      power_foodbonusspoiled_add: 4
+      power_foodbonusraw_add: 4
+      power_foodsaturationadditionspoiled_add: 2
+      power_foodsaturationadditionraw_add: 2
+      power_foodbonusvegetable_add: -0.5
+      power_foodbonusseafood_add: -0.5
+      power_foodbonusmagical_add: -0.5
+      power_foodbonusgrain_add: -0.5
+      power_foodbonusfruit_add: -0.5
+      power_foodbonusnuts_add: -0.5
+      power_foodbonusdairy_add: -0.5
+      power_foodbonusmeat_add: -0.5
       perks_locked_add:
         - farming_perk_2c
     messages:

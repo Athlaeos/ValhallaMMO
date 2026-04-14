@@ -211,7 +211,12 @@ public class MonsterScalingManager {
         if (!enabled || (monstersOnly && EntityClassification.matchesClassification(entity, EntityClassification.PASSIVE) && !(entity instanceof Boss)) || entity instanceof Player) return -1;
         int powerLevel = (int) Math.round(getAreaDifficultyLevel(entity.getLocation(), null));
         if (entityLevelScaling.containsKey(entity.getType())){
-            return Math.max(0, (int) Utils.eval(parseRand(entityLevelScaling.get(entity.getType()).replace("%level%", String.valueOf(powerLevel)))));
+            return Math.max(0, (int) Utils.eval(parseRand(entityLevelScaling.get(entity.getType())
+                    .replace("%level%", String.valueOf(powerLevel))
+                    .replace("%x%", String.valueOf(entity.getLocation().getBlockX()))
+                    .replace("%y%", String.valueOf(entity.getLocation().getBlockY()))
+                    .replace("%z%", String.valueOf(entity.getLocation().getBlockZ()))
+            )));
         } else if (defaultLevelScaling != null) return Math.max(0, (int) Utils.eval(parseRand(defaultLevelScaling.replace("%level%", String.valueOf(powerLevel)))));
         else return -1;
     }

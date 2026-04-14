@@ -544,12 +544,11 @@ public final class NMS_v1_21_R3 implements NMS {
         }
     }
 
-    @SuppressWarnings("UnstableApiUsage")
+    @SuppressWarnings({"UnstableApiUsage", "deprecation"})
     @Override
     public String getDamageTypeFromEvent(EntityDamageEvent e) {
         if (e.getCause() == EntityDamageEvent.DamageCause.CUSTOM) {
-            NamespacedKey key = e.getDamageSource().getDamageType().getKeyOrNull();
-            if (key == null) return e.getDamageSource().getDamageType().getTranslationKey();
+            NamespacedKey key = e.getDamageSource().getDamageType().getKey();
             return key.toString();
         }
         return NMS.super.getDamageTypeFromEvent(e);

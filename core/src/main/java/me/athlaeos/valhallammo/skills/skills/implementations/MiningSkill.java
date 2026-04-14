@@ -156,6 +156,7 @@ public class MiningSkill extends Skill implements Listener {
         e.setCancelled(true);
 
         startEXPBatch(player, PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION, false);
+        if (profile.isVeinMiningInstantPickup()) LootListener.setInstantPickup(e.getBlock(), player);
         if (veinMiningInstant) {
             BlockUtils.processBlocks(player, vein, MiningSkill::hasPickaxe, b -> {
                 if (profile.isVeinMiningInstantPickup()) LootListener.setInstantPickup(b, player);

@@ -131,6 +131,7 @@ public class PowerProfile extends Profile {
         floatStat("foodBonusAlcoholic", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("foodBonusBeverage", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("foodBonusSpoiled", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodBonusRaw", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("foodBonusSeafood", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("foodBonusMagical", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("foodBonusSweet", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
@@ -140,6 +141,36 @@ public class PowerProfile extends Profile {
         floatStat("foodBonusDairy", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("foodBonusMeat", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
         floatStat("foodBonusFats", new PropertyBuilder().format(StatFormat.PERCENTILE_BASE_1_P1).perkReward().create());
+        floatStat("foodNutritionAdditionVegetable", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionSeasoning", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionAlcoholic", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionBeverage", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionSpoiled", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionRaw", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionSeafood", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionMagical", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionSweet", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionGrain", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionFruit", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionNuts", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionDairy", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionMeat", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodNutritionAdditionFats", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionVegetable", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionSeasoning", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionAlcoholic", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionBeverage", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionSpoiled", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionRaw", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionSeafood", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionMagical", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionSweet", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionGrain", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionFruit", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionNuts", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionDairy", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionMeat", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
+        floatStat("foodSaturationAdditionFats", new PropertyBuilder().format(StatFormat.DIFFERENCE_FLOAT_P1).perkReward().create());
         booleanStat("badFoodImmune", new BooleanProperties(true, true));
         booleanStat("miningAffinityWater", new BooleanProperties(true, true));
         booleanStat("miningAffinityAir", new BooleanProperties(true, true));
@@ -194,6 +225,7 @@ public class PowerProfile extends Profile {
             case NUTS -> "foodBonusDairy";
             case MEAT -> "foodBonusMeat";
             case FATS -> "foodBonusFats";
+            case RAW -> "foodBonusRaw";
         });
     }
     public void setFoodBonus(FoodClass foodClass, float value){
@@ -212,6 +244,85 @@ public class PowerProfile extends Profile {
             case NUTS -> "foodBonusDairy";
             case MEAT -> "foodBonusMeat";
             case FATS -> "foodBonusFats";
+            case RAW -> "foodBonusRaw";
+        }, value);
+    }
+
+    public float getFoodNutritionAddition(FoodClass foodClass){
+        return getFloat(switch (foodClass){
+            case VEGETABLE -> "foodNutritionAdditionVegetable";
+            case SEASONING -> "foodNutritionAdditionSeasoning";
+            case ALCOHOLIC -> "foodNutritionAdditionAlcoholic";
+            case BEVERAGE -> "foodNutritionAdditionBeverage";
+            case SPOILED -> "foodNutritionAdditionSpoiled";
+            case SEAFOOD -> "foodNutritionAdditionSeafood";
+            case MAGICAL -> "foodNutritionAdditionMagical";
+            case SWEET -> "foodNutritionAdditionSweet";
+            case GRAIN -> "foodNutritionAdditionGrain";
+            case FRUIT -> "foodNutritionAdditionFruit";
+            case DAIRY -> "foodNutritionAdditionNuts";
+            case NUTS -> "foodNutritionAdditionDairy";
+            case MEAT -> "foodNutritionAdditionMeat";
+            case FATS -> "foodNutritionAdditionFats";
+            case RAW -> "foodNutritionAdditionRaw";
+        });
+    }
+    public void setFoodNutritionAddition(FoodClass foodClass, float value){
+        setFloat(switch (foodClass){
+            case VEGETABLE -> "foodNutritionAdditionVegetable";
+            case SEASONING -> "foodNutritionAdditionSeasoning";
+            case ALCOHOLIC -> "foodNutritionAdditionAlcoholic";
+            case BEVERAGE -> "foodNutritionAdditionBeverage";
+            case SPOILED -> "foodNutritionAdditionSpoiled";
+            case SEAFOOD -> "foodNutritionAdditionSeafood";
+            case MAGICAL -> "foodNutritionAdditionMagical";
+            case SWEET -> "foodNutritionAdditionSweet";
+            case GRAIN -> "foodNutritionAdditionGrain";
+            case FRUIT -> "foodNutritionAdditionFruit";
+            case DAIRY -> "foodNutritionAdditionNuts";
+            case NUTS -> "foodNutritionAdditionDairy";
+            case MEAT -> "foodNutritionAdditionMeat";
+            case FATS -> "foodNutritionAdditionFats";
+            case RAW -> "foodNutritionAdditionRaw";
+        }, value);
+    }
+
+    public float getFoodSaturationAddition(FoodClass foodClass){
+        return getFloat(switch (foodClass){
+            case VEGETABLE -> "foodSaturationAdditionVegetable";
+            case SEASONING -> "foodSaturationAdditionSeasoning";
+            case ALCOHOLIC -> "foodSaturationAdditionAlcoholic";
+            case BEVERAGE -> "foodSaturationAdditionBeverage";
+            case SPOILED -> "foodSaturationAdditionSpoiled";
+            case SEAFOOD -> "foodSaturationAdditionSeafood";
+            case MAGICAL -> "foodSaturationAdditionMagical";
+            case SWEET -> "foodSaturationAdditionSweet";
+            case GRAIN -> "foodSaturationAdditionGrain";
+            case FRUIT -> "foodSaturationAdditionFruit";
+            case DAIRY -> "foodSaturationAdditionNuts";
+            case NUTS -> "foodSaturationAdditionDairy";
+            case MEAT -> "foodSaturationAdditionMeat";
+            case FATS -> "foodSaturationAdditionFats";
+            case RAW -> "foodSaturationAdditionRaw";
+        });
+    }
+    public void setFoodSaturationAddition(FoodClass foodClass, float value){
+        setFloat(switch (foodClass){
+            case VEGETABLE -> "foodSaturationAdditionVegetable";
+            case SEASONING -> "foodSaturationAdditionSeasoning";
+            case ALCOHOLIC -> "foodSaturationAdditionAlcoholic";
+            case BEVERAGE -> "foodSaturationAdditionBeverage";
+            case SPOILED -> "foodSaturationAdditionSpoiled";
+            case SEAFOOD -> "foodSaturationAdditionSeafood";
+            case MAGICAL -> "foodSaturationAdditionMagical";
+            case SWEET -> "foodSaturationAdditionSweet";
+            case GRAIN -> "foodSaturationAdditionGrain";
+            case FRUIT -> "foodSaturationAdditionFruit";
+            case DAIRY -> "foodSaturationAdditionNuts";
+            case NUTS -> "foodSaturationAdditionDairy";
+            case MEAT -> "foodSaturationAdditionMeat";
+            case FATS -> "foodSaturationAdditionFats";
+            case RAW -> "foodSaturationAdditionRaw";
         }, value);
     }
 

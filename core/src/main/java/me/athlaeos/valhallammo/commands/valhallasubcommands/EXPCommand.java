@@ -1,6 +1,7 @@
 package me.athlaeos.valhallammo.commands.valhallasubcommands;
 
 import me.athlaeos.valhallammo.commands.Command;
+import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.skills.skills.Skill;
@@ -31,6 +32,8 @@ public class EXPCommand implements Command {
 			if (args.length >= 4){
 				targets.addAll(Utils.selectPlayers(sender, args[3]));
 			}
+			boolean affectedByStats = false;
+			if (args.length >= 5) affectedByStats = Boolean.parseBoolean(args[4]);
 			double amount;
 
 			try {
@@ -51,7 +54,7 @@ public class EXPCommand implements Command {
 				return true;
 			}
 			for (Player target : targets){
-				skill.addEXP(target, amount, false, PlayerSkillExperienceGainEvent.ExperienceGainReason.COMMAND);
+				skill.addEXP(target, amount, false, affectedByStats ? PlayerSkillExperienceGainEvent.ExperienceGainReason.SKILL_ACTION : PlayerSkillExperienceGainEvent.ExperienceGainReason.COMMAND);
 				Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_exp_success")
 						.replace("%player%", target.getName())
 						.replace("%amount%", String.format("%.2f", amount))
@@ -64,7 +67,7 @@ public class EXPCommand implements Command {
 
 	@Override
 	public String getFailureMessage(String[] args) {
-		return "&4/valhalla exp [skilltype] [amount] <player>";
+		return "&4/valhalla exp [skilltype] [amount] <player> <scaling with stats>";
 	}
 
 	@Override
@@ -79,7 +82,7 @@ public class EXPCommand implements Command {
 
 	@Override
 	public String getCommand() {
-		return "/valhalla exp [skilltype] [amount] <player>";
+		return "/valhalla exp [skilltype] [amount] <player> <scaling with stats>";
 	}
 
 	@Override
@@ -92,6 +95,7 @@ public class EXPCommand implements Command {
 		if (args.length == 2){
 			return SkillRegistry.getAllSkills().values().stream().map(Skill::getType).map(String::toLowerCase).collect(Collectors.toList());
 		}
+		if (args.length == 5) return List.of("true", "false");
 		return null;
 	}
 }
