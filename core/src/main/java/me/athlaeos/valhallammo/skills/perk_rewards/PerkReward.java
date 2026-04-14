@@ -83,6 +83,7 @@ public abstract class PerkReward implements Cloneable{
 
     @SuppressWarnings("unchecked")
     protected List<String> parseStringList(Object o){
+        if (o instanceof String) return List.of((String) o);
         if (o instanceof List<?>) return (List<String>) o;
         throw new IllegalArgumentException("Invalid argument type for perk reward " + getClass().getSimpleName() + ", expected a string list, but was " + o.getClass().getSimpleName());
     }
