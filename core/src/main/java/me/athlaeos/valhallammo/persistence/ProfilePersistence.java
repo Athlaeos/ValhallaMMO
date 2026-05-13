@@ -4,6 +4,8 @@ import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.MutableClassToInstanceMap;
+import com.ibm.icu.text.DecimalFormatSymbols;
+import com.ibm.icu.text.NumberingSystem;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.listeners.JoinLeaveListener;
@@ -29,6 +31,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
@@ -152,11 +155,11 @@ public abstract class ProfilePersistence {
     private static String whereClause(Pair<String, Double> mainStat, Map<String, Pair<String, Double>> extraStats){
         Collection<String> whereClauses = new HashSet<>();
         if (mainStat.getTwo() != null)
-            whereClauses.add(String.format("%s >= FORMAT(%.2f, 'D', 'en-US')", mainStat.getOne(), mainStat.getTwo()));
+            whereClauses.add(String.format("%s >= FORMAT(%s, 'D', 'en-US')", mainStat.getOne(), String.format("%.2f", mainStat.getTwo()).replace(",", ".")));
         for (String stat : extraStats.keySet()){
             Pair<String, Double> statWithMinimum = extraStats.get(stat);
             if (statWithMinimum == null || statWithMinimum.getTwo() == null) continue;
-            whereClauses.add(String.format("%s >= FORMAT(%.2f, 'D', 'en-US')", stat, statWithMinimum.getTwo()));
+            whereClauses.add(String.format("%s >= FORMAT(%s, 'D', 'en-US')", stat, String.format("%.2f", statWithMinimum.getTwo()).replace(",", ".")));
         }
         return whereClauses.isEmpty() ? "" : (" WHERE " + String.join(" AND ", whereClauses));
     }
