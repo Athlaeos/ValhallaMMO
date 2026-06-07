@@ -3,6 +3,7 @@ package me.athlaeos.valhallammo.crafting.recipetypes;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import me.athlaeos.valhallammo.ValhallaMMO;
+import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.crafting.ToolRequirement;
 import me.athlaeos.valhallammo.crafting.ToolRequirementType;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
@@ -127,6 +128,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
             recipe.addIngredient(choice);
         }
 
+        applyBookCategory(recipe);
         return recipe;
     }
 
@@ -145,7 +147,26 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
             recipe.setIngredient(ci, choice);
         }
 
+        applyBookCategory(recipe);
         return recipe;
+    }
+
+    /**
+     * Assigns the vanilla recipe-book category (Equipment / Building / Redstone / Misc) based on the recipe's result,
+     * so ValhallaMMO weapons, tools and armor show up under the correct tab instead of all landing in "Misc".
+     * <p>
+     * The actual work lives in {@link RecipeBookCategorizer}, which references the 1.19.3+ {@code CraftingBookCategory}
+     * API. The version check here guards that call, and because {@code RecipeBookCategorizer} is a separate class it is
+     * only loaded on servers that pass the check — so older servers (1.19 - 1.19.2) never touch the missing API.
+     */
+    private void applyBookCategory(ShapedRecipe recipe){
+        if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_19_3)) return;
+        RecipeBookCategorizer.apply(recipe);
+    }
+
+    private void applyBookCategory(ShapelessRecipe recipe){
+        if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_19_3)) return;
+        RecipeBookCategorizer.apply(recipe);
     }
 
     private ItemStack recipeBookIcon(ItemStack i){
