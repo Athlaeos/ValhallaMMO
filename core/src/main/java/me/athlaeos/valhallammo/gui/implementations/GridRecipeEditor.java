@@ -12,6 +12,7 @@ import me.athlaeos.valhallammo.crafting.ingredientconfiguration.RecipeOption;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.SlotEntry;
 import me.athlaeos.valhallammo.crafting.ingredientconfiguration.implementations.MaterialChoice;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicGridRecipe;
+import me.athlaeos.valhallammo.crafting.recipetypes.RecipeBookCategorizer;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Question;
 import me.athlaeos.valhallammo.dom.Questionnaire;
@@ -58,6 +59,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
     private Collection<String> validations;
     private String displayName;
     private String description;
+    private String bookCategory; // null = automatic
 
     private static final ItemStack toggleValhallaToolRequirementButton = new ItemBuilder(getButtonData("editor_recipe_grid_valhallatoolrequirement", Material.DIAMOND_PICKAXE))
             .name("&eValhalla Tools")
@@ -85,6 +87,15 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
             .lore("&7If enabled, the recipe will",
                     "&7not be visible in the recipe book.",
                     "&eClick to toggle on/off")
+            .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
+    private static final ItemStack setBookCategoryButton = new ItemBuilder(getButtonData("editor_recipe_grid_setbookcategory", Material.KNOWLEDGE_BOOK))
+            .name("&eRecipe Book Category")
+            .stringTag(BUTTON_ACTION_KEY, "setBookCategoryButton")
+            .lore("&7Which tab this recipe appears under",
+                    "&7in the vanilla recipe book.",
+                    "&7&oAutomatic&7 picks a tab based on the result",
+                    "&7(equipment/building/redstone/misc).",
+                    "&eLeft-click to cycle, right-click for Automatic")
             .flag(ItemFlag.HIDE_ATTRIBUTES).wipeAttributes().get();
     private static final ItemStack selectTinkerItemButton = new ItemBuilder(getButtonData("editor_recipe_grid_selecttinkeritem", Material.ANVIL))
             .name("&eSelect which tool to tinker")
@@ -234,6 +245,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
         this.displayName = recipe.getDisplayName();
         this.description = recipe.getDescription();
         this.hidden = recipe.isHiddenFromBook();
+        this.bookCategory = recipe.getBookCategory();
     }
 
     public GridRecipeEditor(PlayerMenuUtility playerMenuUtility, DynamicGridRecipe recipe, String newName) {
@@ -255,6 +267,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
         this.displayName = recipe.getDisplayName();
         this.description = recipe.getDescription();
         this.hidden = recipe.isHiddenFromBook();
+        this.bookCategory = recipe.getBookCategory();
 
         this.recipe.setItems(items);
         this.recipe.setResult(result);
@@ -270,6 +283,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
         this.recipe.setDescription(description);
         this.recipe.setDisplayName(displayName);
         this.recipe.setHiddenFromBook(hidden);
+        this.recipe.setBookCategory(bookCategory);
     }
 
     @Override
@@ -395,6 +409,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
                     recipe.setDescription(description);
                     recipe.setDisplayName(displayName);
                     recipe.setHiddenFromBook(hidden);
+                    recipe.setBookCategory(bookCategory);
 
                     CustomRecipeRegistry.register(recipe, true);
                     CustomRecipeRegistry.setChangesMade();
@@ -428,6 +443,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
                 case "toggleTinkerButton" -> tinker = !tinker;
                 case "toggleShapelessButton" -> shapeless = !shapeless;
                 case "toggleUnlockedForEveryoneButton" -> unlockedForEveryone = !unlockedForEveryone;
+                case "setBookCategoryButton" -> bookCategory = cycleBookCategory(bookCategory, e.getClick().isRightClick());
                 case "selectTinkerItemButton", "selectToolItemButton" -> e.setCancelled(false);
             }
         }
@@ -502,6 +518,31 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
                     items.put(index, new SlotEntry(new ItemBuilder(e.getCursor().clone()).amount(1).get(), new MaterialChoice()));
             }
         }
+    }
+
+    /**
+     * Cycles the recipe-book category. Forward order: Automatic (null) -&gt; EQUIPMENT -&gt; BUILDING -&gt; REDSTONE -&gt; MISC -&gt; Automatic.
+     * @param current the current value, null meaning automatic
+     * @param toAutomatic if true, jumps straight back to Automatic (right-click shortcut)
+     * @return the next category, or null for automatic
+     */
+    private static String cycleBookCategory(String current, boolean toAutomatic){
+        if (toAutomatic) return null;
+        List<String> categories = RecipeBookCategorizer.CATEGORIES;
+        if (current == null) return categories.get(0);
+        int i = categories.indexOf(current);
+        if (i < 0 || i >= categories.size() - 1) return null; // unknown or last entry -> back to automatic
+        return categories.get(i + 1);
+    }
+
+    private String bookCategoryLabel(){
+        if (bookCategory == null) return "&fAutomatic &7(" + prettyCategory(RecipeBookCategorizer.defaultCategoryFor(result)) + ")";
+        return "&a" + prettyCategory(bookCategory);
+    }
+
+    private static String prettyCategory(String category){
+        if (category == null || category.isEmpty()) return String.valueOf(category);
+        return category.charAt(0) + category.substring(1).toLowerCase(Locale.ROOT);
     }
 
     @SuppressWarnings("all")
@@ -604,6 +645,7 @@ public class GridRecipeEditor extends Menu implements SetModifiersMenu, SetRecip
         inventory.setItem(1, new ItemBuilder(setDescriptionButton).lore(ItemUtils.setListPlaceholder(ItemUtils.getLore(setDescriptionButton), "%description%", description)).get());
         inventory.setItem(3, new ItemBuilder(selectValidationButton).lore(ItemUtils.setListPlaceholder(ItemUtils.getLore(selectValidationButton), "%description%", validationLore)).get());
         inventory.setItem(5, new ItemBuilder(toggleUnlockedForEveryoneButton).name("&eUnlocked for Everyone " + (unlockedForEveryone ? "&aYes" : "&fNo")).get());
+        inventory.setItem(7, new ItemBuilder(setBookCategoryButton).name("&eRecipe Book Category: " + bookCategoryLabel()).get());
         inventory.setItem(8, new ItemBuilder(toggleHiddenButton).name("&eHidden from Recipe Book: " + (hidden ? "&aYes" : "&fNo")).get());
         inventory.setItem(9, selectTinkerItemButton);
         inventory.setItem(17, new ItemBuilder(toggleValhallaToolRequirementButton).name("&eValhalla Tools: " + (requireValhallaTools ? "&aYes" : "&fNo")).get());
