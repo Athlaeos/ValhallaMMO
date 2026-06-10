@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.crafting.recipetypes;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import me.athlaeos.valhallammo.ValhallaMMO;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.crafting.ToolRequirement;
 import me.athlaeos.valhallammo.crafting.ToolRequirementType;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
@@ -53,6 +52,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     private boolean unlockedForEveryone = false;
     private ToolRequirement toolRequirement = new ToolRequirement(ToolRequirementType.NOT_REQUIRED, -1);
     private Collection<String> validations = new HashSet<>();
+    private String bookCategory = null; // explicit recipe-book category; null means "automatic" (see RecipeBookCategorizer)
 
     public DynamicGridRecipe(String name){
         this.name = name;
@@ -114,6 +114,14 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     public void setValidations(Collection<String> validations) {this.validations = validations;}
     public boolean isHiddenFromBook() { return hiddenFromBook; }
 
+    /** @return the explicitly configured recipe-book category, or null if it should be auto-detected. */
+    public String getBookCategory() { return bookCategory; }
+    public void setBookCategory(String bookCategory) { this.bookCategory = bookCategory; }
+    /** @return the category to actually apply: the explicit one if set, otherwise the auto-detected default. */
+    public String getEffectiveBookCategory() {
+        return bookCategory != null ? bookCategory : RecipeBookCategorizer.defaultCategoryFor(result);
+    }
+
     public ShapelessRecipe getShapelessRecipe(){
         if (!shapeless || this.items.isEmpty()) return null;
         ShapelessRecipe recipe = new ShapelessRecipe(shapelessKey, recipeBookIcon(tinker ? getGridTinkerEquipment().getItem() : result));
@@ -128,7 +136,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
             recipe.addIngredient(choice);
         }
 
-        applyBookCategory(recipe);
+        if (ValhallaMMO.getNms() != null) ValhallaMMO.getNms().applyRecipeBookCategory(recipe, getEffectiveBookCategory());
         return recipe;
     }
 
@@ -147,26 +155,8 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
             recipe.setIngredient(ci, choice);
         }
 
-        applyBookCategory(recipe);
+        if (ValhallaMMO.getNms() != null) ValhallaMMO.getNms().applyRecipeBookCategory(recipe, getEffectiveBookCategory());
         return recipe;
-    }
-
-    /**
-     * Assigns the vanilla recipe-book category (Equipment / Building / Redstone / Misc) based on the recipe's result,
-     * so ValhallaMMO weapons, tools and armor show up under the correct tab instead of all landing in "Misc".
-     * <p>
-     * The actual work lives in {@link RecipeBookCategorizer}, which references the 1.19.3+ {@code CraftingBookCategory}
-     * API. The version check here guards that call, and because {@code RecipeBookCategorizer} is a separate class it is
-     * only loaded on servers that pass the check — so older servers (1.19 - 1.19.2) never touch the missing API.
-     */
-    private void applyBookCategory(ShapedRecipe recipe){
-        if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_19_3)) return;
-        RecipeBookCategorizer.apply(recipe);
-    }
-
-    private void applyBookCategory(ShapelessRecipe recipe){
-        if (!MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_19_3)) return;
-        RecipeBookCategorizer.apply(recipe);
     }
 
     private ItemStack recipeBookIcon(ItemStack i){
