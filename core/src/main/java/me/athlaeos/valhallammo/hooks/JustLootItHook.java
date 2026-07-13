@@ -64,13 +64,13 @@ public class JustLootItHook extends PluginHook {
                 Inventory inventory = event.bukkitInventory();
                 if (lootTable != null) {
                     if (block != null) {
-                        event.scheduler().sync(() -> LootTableRegistry.setLootTable(block, null));
+                        LootTableRegistry.setLootTable(block, null);
                     }
                     LootTable fLootTable = lootTable;
-                    List<ItemStack> loot = event.scheduler().sync(() -> LootTableRegistry.getLoot(fLootTable, context, LootTable.LootType.CONTAINER)).join();
+                    List<ItemStack> loot = LootTableRegistry.getLoot(fLootTable, context, LootTable.LootType.CONTAINER);
                     if (loot == null) loot = new ArrayList<>();
                     ValhallaLootPopulateEvent lootTableEvent = new ValhallaLootPopulateEvent(lootTable, context, loot);
-                    event.scheduler().sync(() -> Bukkit.getPluginManager().callEvent(lootTableEvent)).join();
+                    Bukkit.getPluginManager().callEvent(lootTableEvent);
                     if (!lootTableEvent.isCancelled()) {
                         boolean skip = false;
                         if (lootTableEvent.getPreservationType() == VanillaLootPreservationType.CLEAR || lootTableEvent.getPreservationType() == VanillaLootPreservationType.CLEAR_UNLESS_EMPTY && !lootTableEvent.getDrops().isEmpty()) {
@@ -92,21 +92,19 @@ public class JustLootItHook extends PluginHook {
                     }
                 }
                 ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
-                event.scheduler().sync(() -> {
-                    ValhallaLootReplacementEvent replacementEvent = new ValhallaLootReplacementEvent(replacementTable, context);
-                    if (replacementTable != null) Bukkit.getPluginManager().callEvent(replacementEvent);
-                    if (replacementTable == null || !replacementEvent.isCancelled()){
-                        for (int i = 0; i < inventory.getSize(); i++){
-                            ItemStack item = inventory.getItem(i);
-                            if (ItemUtils.isEmpty(item)) continue;
-                            ItemStack replacement = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.CONTAINER, item);
-                            if (!ItemUtils.isEmpty(replacement)) item = replacement;
-                            ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.CONTAINER, item);
-                            if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
-                            if (!ItemUtils.isEmpty(item)) inventory.setItem(i, item);
-                        }
+                ValhallaLootReplacementEvent replacementEvent = new ValhallaLootReplacementEvent(replacementTable, context);
+                if (replacementTable != null) Bukkit.getPluginManager().callEvent(replacementEvent);
+                if (replacementTable == null || !replacementEvent.isCancelled()){
+                    for (int i = 0; i < inventory.getSize(); i++){
+                        ItemStack item = inventory.getItem(i);
+                        if (ItemUtils.isEmpty(item)) continue;
+                        ItemStack replacement = LootTableRegistry.getReplacement(replacementTable, context, LootTable.LootType.CONTAINER, item);
+                        if (!ItemUtils.isEmpty(replacement)) item = replacement;
+                        ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.CONTAINER, item);
+                        if (!ItemUtils.isEmpty(globalReplacement)) item = globalReplacement;
+                        if (!ItemUtils.isEmpty(item)) inventory.setItem(i, item);
                     }
-                });
+                }
             }
         };
         Bukkit.getPluginManager().registerEvents(listener, ValhallaMMO.getInstance());
