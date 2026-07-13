@@ -52,6 +52,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     private boolean unlockedForEveryone = false;
     private ToolRequirement toolRequirement = new ToolRequirement(ToolRequirementType.NOT_REQUIRED, -1);
     private Collection<String> validations = new HashSet<>();
+    private String bookCategory = null; // explicit recipe-book category; null means "automatic" (see RecipeBookCategorizer)
 
     public DynamicGridRecipe(String name){
         this.name = name;
@@ -113,6 +114,14 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     public void setValidations(Collection<String> validations) {this.validations = validations;}
     public boolean isHiddenFromBook() { return hiddenFromBook; }
 
+    /** @return the explicitly configured recipe-book category, or null if it should be auto-detected. */
+    public String getBookCategory() { return bookCategory; }
+    public void setBookCategory(String bookCategory) { this.bookCategory = bookCategory; }
+    /** @return the category to actually apply: the explicit one if set, otherwise the auto-detected default. */
+    public String getEffectiveBookCategory() {
+        return bookCategory != null ? bookCategory : RecipeBookCategorizer.defaultCategoryFor(result);
+    }
+
     public ShapelessRecipe getShapelessRecipe(){
         if (!shapeless || this.items.isEmpty()) return null;
         ShapelessRecipe recipe = new ShapelessRecipe(shapelessKey, recipeBookIcon(tinker ? getGridTinkerEquipment().getItem() : result));
@@ -127,6 +136,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
             recipe.addIngredient(choice);
         }
 
+        if (ValhallaMMO.getNms() != null) ValhallaMMO.getNms().applyRecipeBookCategory(recipe, getEffectiveBookCategory());
         return recipe;
     }
 
@@ -145,6 +155,7 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
             recipe.setIngredient(ci, choice);
         }
 
+        if (ValhallaMMO.getNms() != null) ValhallaMMO.getNms().applyRecipeBookCategory(recipe, getEffectiveBookCategory());
         return recipe;
     }
 

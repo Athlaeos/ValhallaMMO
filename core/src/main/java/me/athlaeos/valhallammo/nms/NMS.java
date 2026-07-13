@@ -25,8 +25,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.recipe.CraftingBookCategory;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
@@ -122,5 +125,32 @@ public interface NMS extends Listener {
     }
     default String getDamageTypeFromEvent(EntityDamageEvent e){
         return e.getCause().toString();
+    }
+
+    /**
+     * Assigns the vanilla recipe-book category (Equipment / Building / Redstone / Misc) to a shaped recipe.
+     * <p>
+     * The {@link CraftingBookCategory} API only exists on Minecraft 1.19.3+, so this default implementation is
+     * overridden as a no-op on the 1.19 - 1.19.2 module ({@code NMS_v1_19_R1}). Defining the behaviour here, rather than
+     * behind a runtime version check, lets each version decide via override.
+     * @param recipe the recipe to categorise
+     * @param category the category name ("EQUIPMENT" / "BUILDING" / "REDSTONE" / "MISC"); unknown values fall back to MISC
+     */
+    default void applyRecipeBookCategory(ShapedRecipe recipe, String category){
+        recipe.setCategory(parseCraftingBookCategory(category));
+    }
+
+    /** @see #applyRecipeBookCategory(ShapedRecipe, String) */
+    default void applyRecipeBookCategory(ShapelessRecipe recipe, String category){
+        recipe.setCategory(parseCraftingBookCategory(category));
+    }
+
+    private static CraftingBookCategory parseCraftingBookCategory(String category){
+        if (category == null) return CraftingBookCategory.MISC;
+        try {
+            return CraftingBookCategory.valueOf(category);
+        } catch (IllegalArgumentException e){
+            return CraftingBookCategory.MISC;
+        }
     }
 }
