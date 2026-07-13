@@ -47,6 +47,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -470,5 +472,16 @@ public final class NMS_v1_19_R1 implements NMS {
         Activity activity = ((CraftLivingEntity) entity).getHandle().getBrain().getActiveNonCoreActivity().orElse(null);
         if (activity != null) return ActivityMappings.fromName(activity.getName());
         return null;
+    }
+
+    // The CraftingBookCategory API does not exist on 1.19 - 1.19.2, so recipe-book categories are a no-op here.
+    @Override
+    public void applyRecipeBookCategory(ShapedRecipe recipe, String category) {
+        // not compatible
+    }
+
+    @Override
+    public void applyRecipeBookCategory(ShapelessRecipe recipe, String category) {
+        // not compatible
     }
 }

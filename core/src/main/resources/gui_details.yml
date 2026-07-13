@@ -33,6 +33,7 @@ editor_recipe_grid_settoolrequirement: PAPER:1829131
 editor_recipe_grid_setdisplayname: NAME_TAG:-1
 editor_recipe_grid_setdescription: WRITABLE_BOOK:-1
 editor_recipe_grid_togglehidden: REDSTONE_LAMP:-1
+editor_recipe_grid_setbookcategory: KNOWLEDGE_BOOK:-1
 
 editor_recipe_cooking_valhallatoolrequirement: DIAMOND_PICKAXE:1829130
 editor_recipe_cooking_toggletinker: ANVIL:1829130
