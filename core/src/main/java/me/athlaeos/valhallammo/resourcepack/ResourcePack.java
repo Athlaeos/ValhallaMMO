@@ -28,19 +28,16 @@ public class ResourcePack {
     private static File pack;
     private static final Map<MinecraftVersion, ResourcePackDetails> resourcePacks = new HashMap<>();
     static {
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_8, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_7, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_6, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_5, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_4, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_3, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_2_5, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_2_4, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_2_3, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_2_2, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
+        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_2_1, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_2, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_1_8, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_1_7, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_1_6, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_1_5, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_1_4, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
-        mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_1_3, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_1_2, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_1_1, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
         mapResourcePackDetails(MinecraftVersion.MINECRAFT_26_1, PACK_1_21_4_NEWER_URL, PACK_1_21_4_NEWER_SHA);
@@ -104,14 +101,14 @@ public class ResourcePack {
         ResourcePackDetails details = resourcePacks.get(MinecraftVersion.getServerVersion());
         if (details == null) {
             ValhallaMMO.logWarning("Warning! An up-to-date resource pack for this version has not yet been made! Using default version. This may not work well or at all");
-            return PACK_1_21_2_OLDER_URL;
+            return PACK_1_21_4_NEWER_URL;
         }
         return details.link;
     }
 
     public static String getResourcePackSha1(){
         ResourcePackDetails details = resourcePacks.get(MinecraftVersion.getServerVersion());
-        if (details == null) return PACK_1_21_2_OLDER_SHA;
+        if (details == null) return PACK_1_21_4_NEWER_SHA;
         return details.sha1;
     }
 
