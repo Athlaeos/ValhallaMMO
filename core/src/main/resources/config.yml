@@ -304,6 +304,12 @@ chunk_exp_orbs_nerf_factor: 0.3 # EXP orbs dropped in debuffed chunks are multip
 # For reference, walking velocity is about 0.23, running speed is 0.3, sprint jumping is 0.37
 velocity_damage_constant: 0.33
 
+# Flat damage bonus applied to melee and unarmed attacks depending on what the attacker is holding in their
+# off hand. Values are fractions, so 0.1 is +10% and -0.1 is -10%. Both default to 0, meaning no effect.
+# Only the slot being empty or not is checked, the item itself does not matter.
+offhand_occupied_damage_bonus: 0
+offhand_empty_damage_bonus: 0
+
 # The inaccuracy constant determines the random spread of shot arrows. The higher this value, the more severe the spread.
 inaccuracy_constant: 0.015
 # The default "inaccuracy" of dispensers

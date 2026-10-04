@@ -96,7 +96,12 @@ public class SQLite extends MerchantDataPersistence implements Database {
                         data = MerchantData.deserialize(result.getString("data"));
                         allData.put(id, data);
                         callback.whenReady(data);
-                    } else callback.whenReady(null);
+                    } else {
+                        // Cache the absence too, otherwise isCached() would never return true for merchants
+                        // without stored data and callers depending on a synchronous callback would stall forever
+                        allData.put(id, null);
+                        callback.whenReady(null);
+                    }
                 } catch (SQLException ex){
                     ValhallaMMO.logSevere("SQLException when trying to fetch MerchantData with id " + id);
                     ex.printStackTrace();

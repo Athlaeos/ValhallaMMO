@@ -594,6 +594,7 @@
     "attribute_damage_boss": "%icon%%value% Boss Damage",
     "attribute_damage_illager": "%icon%%value% Illager Damage",
     "attribute_butchery_drops": "%icon%%value% Animal Drops",
+    "attribute_absorption_damage_bonus": "%icon%%value% Absorption Damage",
     "stat_attribute_negative_prefix": "&c",
     "stat_attribute_positive_prefix": "&7",
 

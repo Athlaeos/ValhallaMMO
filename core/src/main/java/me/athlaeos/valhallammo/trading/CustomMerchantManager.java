@@ -180,6 +180,24 @@ public class CustomMerchantManager {
         merchantDataPersistence.getData(id, whenReady);
     }
 
+    /**
+     * @return true if this merchant's data is already cached, meaning any getMerchantData call for it
+     * will run its callback synchronously on the calling thread. Event handlers that need to cancel
+     * their event based on merchant data must check this first, since a callback resolved
+     * asynchronously runs long after the event has finished being dispatched.
+     */
+    public static boolean isMerchantDataCached(UUID id){
+        return merchantDataPersistence != null && merchantDataPersistence.isCached(id);
+    }
+
+    /**
+     * Loads this merchant's data into memory if it isn't already, so later lookups resolve synchronously.
+     */
+    public static void prefetchMerchantData(UUID id){
+        if (merchantDataPersistence == null || merchantDataPersistence.isCached(id)) return;
+        merchantDataPersistence.getData(id, data -> {});
+    }
+
     public static MerchantLevel getLevel(MerchantData data){
         MerchantType merchantType = registeredMerchantTypes.get(data.getType());
         if (merchantType == null) return null;

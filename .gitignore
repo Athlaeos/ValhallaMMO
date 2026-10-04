@@ -107,3 +107,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 .paper-nms
+/**/.flattened-pom.xml

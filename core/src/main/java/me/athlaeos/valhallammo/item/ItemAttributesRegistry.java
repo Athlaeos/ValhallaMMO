@@ -210,6 +210,7 @@ public class ItemAttributesRegistry {
         register(new AttributeDisplayWrapper("DAMAGE_BOSS", StatFormat.PERCENTILE_BASE_1_P1, "\uEEB7", (i) -> i >= 0).addModifier(Material.DRAGON_EGG));
         register(new AttributeDisplayWrapper("DAMAGE_ILLAGER", StatFormat.PERCENTILE_BASE_1_P1, "\uEEB8", (i) -> i >= 0).addModifier(Material.TOTEM_OF_UNDYING));
         register(new AttributeDisplayWrapper("BUTCHERY_DROPS", StatFormat.PERCENTILE_BASE_1_P1, "\uEEB9", (i) -> i >= 0).addModifier(Material.BEEF));
+        register(new AttributeDisplayWrapper("ABSORPTION_DAMAGE_BONUS", StatFormat.PERCENTILE_BASE_1_P1, "\uEEBA", (i) -> i >= 0).addModifier(Material.GOLDEN_APPLE));
 
         addVanillaStat(Material.WOODEN_SWORD, getCopy("GENERIC_ATTACK_DAMAGE").setValue(4), getCopy("GENERIC_ATTACK_SPEED").setValue(1.6));
         addVanillaStat(Material.WOODEN_PICKAXE, getCopy("GENERIC_ATTACK_DAMAGE").setValue(2), getCopy("GENERIC_ATTACK_SPEED").setValue(1.2), getCopy("MINING_SPEED").setValue(2).setHidden(true));
