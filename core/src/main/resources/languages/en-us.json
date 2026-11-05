@@ -50,6 +50,7 @@
     "status_command_instant_effect_applied": "&a%effect% %amplifier% granted!",
     "status_command_exp_success": "&aGiven %player% %amount% %skill% EXP",
     "status_command_saveall_done": "&aEverything saved!",
+    "status_command_saveall_failed": "&cSaving failed. Please check the server console for details.",
     "status_command_levels_redeemed": "&aRedeemed %amount% %skill% levels!",
     "status_command_exp_redeemed": "&aRedeemed %amount% %skill% exp!",
     "status_profiles_loaded": "&aYour stats are loaded in",

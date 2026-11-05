@@ -153,7 +153,7 @@ public class CustomDurabilityManager {
             int maxCustomDurability = getDurability(item, true);
             int customDurability = getDurability(item, false);
             double fraction = Math.max(0, Math.min(1, (double) customDurability / (double) maxCustomDurability));
-            int newVanillaDurability = maxVanillaDurability - (int) Math.ceil(fraction * maxVanillaDurability);
+            int newVanillaDurability = maxVanillaDurability - (int) Math.floor(fraction * maxVanillaDurability);
             d.setDamage(newVanillaDurability);
 
             if (CustomFlag.hasFlag(item.getMeta(), CustomFlag.HIDE_DURABILITY) || !hasCustomDurability(item.getMeta())){

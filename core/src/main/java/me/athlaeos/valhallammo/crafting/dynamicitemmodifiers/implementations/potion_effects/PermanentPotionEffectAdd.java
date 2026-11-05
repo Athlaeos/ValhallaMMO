@@ -59,7 +59,7 @@ public class PermanentPotionEffectAdd extends DynamicItemModifier {
         Map<String, List<PotionEffectWrapper>> effects = PermanentPotionEffects.getPermanentPotionEffects(context.getItem().getMeta());
         List<PotionEffectWrapper> existingEffects = effects.getOrDefault(configurableTrigger == null ? this.condition : this.configuredCondition, new ArrayList<>());
         existingEffects.add(baseWrapper);
-        effects.put(configurableTrigger == null ? this.condition : this.configuredCondition, existingEffects);
+        effects.put(configurableTrigger == null ? this.condition : (configurableTrigger.id() + this.configuredCondition), existingEffects);
         PermanentPotionEffects.setPermanentPotionEffects(context.getItem().getMeta(), effects);
 
         if (cooldown > 0){

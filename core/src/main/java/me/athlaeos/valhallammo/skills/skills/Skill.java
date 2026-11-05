@@ -11,6 +11,7 @@ import me.athlaeos.valhallammo.parties.PartyEXPGainListener;
 import me.athlaeos.valhallammo.placeholder.PlaceholderRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
+import me.athlaeos.valhallammo.playerstats.profiles.implementations.ConfigurableProfile;
 import me.athlaeos.valhallammo.skills.perk_rewards.MultiplicativeReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
@@ -430,8 +431,8 @@ public abstract class Skill {
      * @param p the player to level up depending on if the conditions are met.
      */
     public void updateLevelUpConditions(Player p, boolean silent) {
-        Profile profile = ProfileRegistry.getPersistentProfile(p, getProfileType());
-        Profile merged = ProfileCache.getOrCache(p, getProfileType());
+        Profile profile = this instanceof ConfigurableSkill c ? ProfileRegistry.getPersistentConfigurableProfile(p, c.getType()) : ProfileRegistry.getPersistentProfile(p, getProfileType());
+        Profile merged = this instanceof ConfigurableSkill c ? ProfileCache.getOrCacheConfigurable(p, c.getType()) : ProfileCache.getOrCache(p, getProfileType());
         int maxAllowedLevel = merged == null ? Integer.MAX_VALUE : merged.getMaxAllowedLevel();
         if (profile == null) return;
         int currentLevel = profile.getLevel();
@@ -481,7 +482,9 @@ public abstract class Skill {
         if (profile.getLevel() <= 0 && profile.getEXP() < 0) profile.setEXP(0);
         if (profile.getLevel() <= 0 && profile.getTotalEXP() < 0) profile.setTotalEXP(0);
 
-        ProfileRegistry.setPersistentProfile(p, profile, getProfileType());
+        if (this instanceof ConfigurableSkill c)
+            ProfileRegistry.setPersistentConfigurableProfile(p, (ConfigurableProfile) profile, c.getType());
+        else ProfileRegistry.setPersistentProfile(p, profile, getProfileType());
         changePlayerLevel(p, currentLevel, Math.max(0, nextLevel), silent);
 
         if (!ProfileCache.getOrCache(p, PowerProfile.class).hideExperienceGain()) {
@@ -540,8 +543,8 @@ public abstract class Skill {
                 if (details != null) return; // this event should really not proceed if the player is currently meeting exp sharing conditions
             }
 
-            Profile profile = ProfileRegistry.getPersistentProfile(p, event.getLeveledSkill().getProfileType());
-            Profile merged = ProfileCache.getOrCache(p, event.getLeveledSkill().getProfileType());
+            Profile profile = event.getLeveledSkill() instanceof ConfigurableSkill c ? ProfileRegistry.getPersistentConfigurableProfile(p, c.getType()) : ProfileRegistry.getPersistentProfile(p, event.getLeveledSkill().getProfileType());
+            Profile merged = event.getLeveledSkill() instanceof ConfigurableSkill c ? ProfileCache.getOrCacheConfigurable(p, c.getType()) : ProfileCache.getOrCache(p, event.getLeveledSkill().getProfileType());
             int maxAllowedLevel = merged == null ? Integer.MAX_VALUE : merged.getMaxAllowedLevel();
             if (profile.getLevel() >= maxAllowedLevel) return; // player has already reached max allowed level, do not proceed
             profile.setEXP(profile.getEXP() + event.getAmount());
@@ -562,7 +565,9 @@ public abstract class Skill {
                 }
             }
 
-            ProfileRegistry.setPersistentProfile(p, profile, profile.getClass());
+            if (event.getLeveledSkill() instanceof ConfigurableSkill c)
+                if (profile instanceof ConfigurableProfile configurableProfile) ProfileRegistry.setPersistentConfigurableProfile(p, configurableProfile, c.getType());
+            else ProfileRegistry.setPersistentProfile(p, profile, profile.getClass());
             // level conditions don't need to be checked if the player's current exp isn't enough to level up, or low enough to level down
             double nextLevelEXP = expForLevel(profile.getLevel() + 1);
             if ((nextLevelEXP > 0 && profile.getEXP() >= nextLevelEXP) || profile.getEXP() < 0) {
@@ -605,7 +610,7 @@ public abstract class Skill {
 
     public void addLevels(Player player, int levels, boolean silent, PlayerSkillExperienceGainEvent.ExperienceGainReason reason) {
         if (levels == 0) return;
-        Profile p = ProfileRegistry.getPersistentProfile(player, getProfileType());
+        Profile p = this instanceof ConfigurableSkill c ? ProfileRegistry.getPersistentConfigurableProfile(player, c.getType()) : ProfileRegistry.getPersistentProfile(player, getProfileType());
         double expToGive = 0;
         if (levels < 0) {
             for (int level = p.getLevel() + levels; level < p.getLevel(); level++) {

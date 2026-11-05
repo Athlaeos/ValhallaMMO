@@ -5,13 +5,11 @@ import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_misc.SkillRequirementAdd;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.rewards.SkillExperience;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.ConfigurableProfile;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.BooleanProperties;
 import me.athlaeos.valhallammo.playerstats.profiles.properties.PropertyBuilder;
-import me.athlaeos.valhallammo.playerstats.profiles.properties.StatProperties;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
 import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.implementations.*;
@@ -20,7 +18,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class SkillRegistry {
     private static Map<Class<?>, Skill> allSkills = Collections.unmodifiableMap(new HashMap<>());
@@ -45,6 +46,11 @@ public class SkillRegistry {
          registerIfConfigEnabled("trading", new TradingSkill("TRADING"));
 
         loadConfigurableSkills();
+
+        for (Skill s : allSkillsByType.values()){
+            s.loadConfiguration();
+            s.perks.forEach(PerkRegistry::registerPerk);
+        }
     }
 
     @SuppressWarnings("all")
@@ -60,7 +66,6 @@ public class SkillRegistry {
                 if (!config.getBoolean("enabled")) continue;
                 ValhallaMMO.logFine("Registered custom skill " + skillFile.getName());
                 String type = skillFile.getName().replace(".yml", "").toUpperCase(Locale.US);
-                registerSkill(new ConfigurableSkill(type, config.getInt("order", 999)));
                 ConfigurableProfile profile = new ConfigurableProfile(null, type);
 
                 ConfigurationSection ints = config.getConfigurationSection("stats.ints");
@@ -99,6 +104,7 @@ public class SkillRegistry {
                 }
 
                 ProfileRegistry.registerConfigurableProfileType(profile);
+                registerSkill(new ConfigurableSkill(type, config.getInt("order", 999)));
             }
         }
     }
@@ -140,9 +146,6 @@ public class SkillRegistry {
         PerkRewardRegistry.register(new SkillEXPAdd("skill_exp_add_" + skill.getType().toLowerCase(java.util.Locale.US), skill));
         ModifierRegistry.register(new SkillExperience("reward_" + skill.getType().toLowerCase(java.util.Locale.US) + "_experience", skill.getType()));
         ModifierRegistry.register(new SkillRequirementAdd("requirement_add_" + skill.getType().toLowerCase(java.util.Locale.US), skill.getType()));
-
-        skill.loadConfiguration();
-        skill.perks.forEach(PerkRegistry::registerPerk);
     }
 
     public static boolean isRegistered(Class<? extends Skill> skill){
