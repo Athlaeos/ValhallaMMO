@@ -5,7 +5,6 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.ModifierRegistry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeAdd;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.implementations.item_stats.DefaultAttributeRemove;
-import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
 import me.athlaeos.valhallammo.item.item_attributes.implementations.AttributeDisplayWrapper;
 import me.athlaeos.valhallammo.item.item_attributes.implementations.AttributeHiddenWrapper;

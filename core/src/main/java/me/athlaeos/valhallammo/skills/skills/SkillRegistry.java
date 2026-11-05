@@ -44,6 +44,11 @@ public class SkillRegistry {
          registerIfConfigEnabled("weapons_heavy", new HeavyWeaponsSkill("HEAVY_WEAPONS"));
 
         loadConfigurableSkills();
+
+        for (Skill s : allSkillsByType.values()){
+            s.loadConfiguration();
+            s.perks.forEach(PerkRegistry::registerPerk);
+        }
     }
 
     @SuppressWarnings("all")
@@ -59,7 +64,6 @@ public class SkillRegistry {
                 if (!config.getBoolean("enabled")) continue;
                 ValhallaMMO.logFine("Registered custom skill " + skillFile.getName());
                 String type = skillFile.getName().replace(".yml", "").toUpperCase(Locale.US);
-                registerSkill(new ConfigurableSkill(type, config.getInt("order", 999)));
                 ConfigurableProfile profile = new ConfigurableProfile(null, type);
 
                 ConfigurationSection ints = config.getConfigurationSection("stats.ints");
@@ -98,6 +102,7 @@ public class SkillRegistry {
                 }
 
                 ProfileRegistry.registerConfigurableProfileType(profile);
+                registerSkill(new ConfigurableSkill(type, config.getInt("order", 999)));
             }
         }
     }
@@ -139,9 +144,6 @@ public class SkillRegistry {
         PerkRewardRegistry.register(new SkillEXPAdd("skill_exp_add_" + skill.getType().toLowerCase(java.util.Locale.US), skill));
         ModifierRegistry.register(new SkillExperience("reward_" + skill.getType().toLowerCase(java.util.Locale.US) + "_experience", skill.getType()));
         ModifierRegistry.register(new SkillRequirementAdd("requirement_add_" + skill.getType().toLowerCase(java.util.Locale.US), skill.getType()));
-
-        skill.loadConfiguration();
-        skill.perks.forEach(PerkRegistry::registerPerk);
     }
 
     public static boolean isRegistered(Class<? extends Skill> skill){
