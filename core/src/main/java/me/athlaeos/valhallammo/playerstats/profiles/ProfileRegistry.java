@@ -95,7 +95,6 @@ public class ProfileRegistry {
         PlaceholderRegistry.registerPlaceholder(new ProfileNextLevelEXPPlaceholder("%" + statName + "_next_level_exp%", profile.getSkillTypeName(), StatFormat.INT));
     }
 
-    private static long lastSaved = 0;
     public static boolean setupDatabase() {
         if (persistence != null) return true;
 
@@ -124,19 +123,19 @@ public class ProfileRegistry {
 
         if (persistence.getConnection() == null) return false; // if SQLite fails, stop the plugin
 
-        persistence.profileThreads.scheduleAtFixedRate(() -> {
-            if (lastSaved + delay_profile_saving > System.currentTimeMillis()) return;
+        persistence.profileThreads.scheduleWithFixedDelay(() -> {
+            if (ValhallaMMO.disabling()) return;
             try {
                 long start = System.currentTimeMillis();
                 if (savingProfilesMessage) ValhallaMMO.logFine("Starting saving all profiles");
                 saveAll(false);
                 long end = System.currentTimeMillis();
                 if (savingProfilesMessage) ValhallaMMO.logFine("Finished saving all profiles in " + ((end - start) / 1000d) + "s");
-                LeaderboardManager.refreshLeaderboards();
             } catch (Exception e) {
-                throw new RuntimeException("An error occurred while saving profiles", e);
+                // Scheduled executors silently cancel future executions after an uncaught exception.
+                ValhallaMMO.logSevere("autosave failed; retained profiles will be retried on the next interval");
+                e.printStackTrace();
             }
-            lastSaved = System.currentTimeMillis();
         }, delay_profile_saving, delay_profile_saving, TimeUnit.MILLISECONDS);
         return true;
     }
@@ -144,7 +143,7 @@ public class ProfileRegistry {
     public static void saveAll(boolean async){
         persistence.saveAllProfiles(async);
         ProfileCache.cleanCache();
-        LeaderboardManager.refreshLeaderboards();
+        if (!ValhallaMMO.disabling()) LeaderboardManager.refreshLeaderboards();
     }
 
     /**

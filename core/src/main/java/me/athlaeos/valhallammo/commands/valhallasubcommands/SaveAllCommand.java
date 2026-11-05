@@ -18,17 +18,25 @@ import java.util.List;
 public class SaveAllCommand implements Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        ProfileRegistry.saveAll(true);
         CustomRecipeRegistry.saveRecipes(true);
 
         ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
-            PartyManager.saveParties();
-            GlobalEffect.saveActiveGlobalEffects();
-            CustomItemRegistry.saveItems();
-            ArmorSetRegistry.saveArmorSets();
-            LootTableRegistry.saveAll();
+            try {
+                ProfileRegistry.saveAll(false); // wait for actual profile writes before reporting completion
+                PartyManager.saveParties();
+                GlobalEffect.saveActiveGlobalEffects();
+                CustomItemRegistry.saveItems();
+                ArmorSetRegistry.saveArmorSets();
+                LootTableRegistry.saveAll();
 
-            Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_saveall_done"));
+                ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
+                        Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_saveall_done")));
+            } catch (RuntimeException ex) {
+                ValhallaMMO.logSevere("manual save failed; profiles retained for retry");
+                ex.printStackTrace();
+                ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
+                        Utils.sendMessage(sender, TranslationManager.getTranslation("status_command_saveall_failed")));
+            }
         });
         return true;
     }

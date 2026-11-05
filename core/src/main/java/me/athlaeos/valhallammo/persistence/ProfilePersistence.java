@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.MutableClassToInstanceMap;
+import com.google.common.util.concurrent.Striped;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.Pair;
 import me.athlaeos.valhallammo.listeners.JoinLeaveListener;
@@ -33,12 +34,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.locks.Lock;
 import java.util.stream.Collectors;
 
 public abstract class ProfilePersistence {
-    private static final Map<UUID, Collection<Class<? extends Profile>>> PROFILES_TO_SAVE = new HashMap<>();
-    private static final Map<UUID, Collection<String>> CONFIGURABLE_PROFILES_TO_SAVE = new HashMap<>();
+    private static final Map<UUID, Collection<Class<? extends Profile>>> PROFILES_TO_SAVE = new ConcurrentHashMap<>();
+    private static final Map<UUID, Collection<String>> CONFIGURABLE_PROFILES_TO_SAVE = new ConcurrentHashMap<>();
 
     public final ScheduledExecutorService profileThreads;
     public final ScheduledExecutorService configurableProfileThreads;
@@ -46,8 +49,11 @@ public abstract class ProfilePersistence {
     protected final AsyncLoadingCache<UUID, Map<String, ConfigurableProfile>> persistentConfigurableProfiles;
     protected final Map<UUID, ClassToInstanceMap<Profile>> skillProfiles;
     protected final Map<UUID, Map<String, ConfigurableProfile>> skillConfigurableProfiles;
-    protected final Set<UUID> saving = new HashSet<>();
-    protected final Set<UUID> savingConfigurable = new HashSet<>();
+    protected final Set<UUID> saving = ConcurrentHashMap.newKeySet();
+    protected final Set<UUID> savingConfigurable = ConcurrentHashMap.newKeySet();
+
+    // A queued asynchronous save must not suppress a synchronous save during logout or shutdown.
+    private final Striped<Lock> saveLocks = Striped.lock(256);
 
     protected ProfilePersistence() {
         int timeout = ValhallaMMO.getPluginConfig().getInt("profile-thread-timeout", 180000);
@@ -65,8 +71,8 @@ public abstract class ProfilePersistence {
         persistentConfigurableProfiles = Caffeine.newBuilder()
                 .executor(configurableProfileThreads)
                 .buildAsync((uuid, executor) -> CompletableFuture.supplyAsync(() -> loadConfigurableProfile(uuid), executor));
-        skillProfiles = new HashMap<>();
-        skillConfigurableProfiles = new HashMap<>();
+        skillProfiles = new ConcurrentHashMap<>();
+        skillConfigurableProfiles = new ConcurrentHashMap<>();
     }
 
     public void requestProfile(UUID p) {
@@ -120,7 +126,7 @@ public abstract class ProfilePersistence {
             }
         } catch (SQLException ex){
             ValhallaMMO.logSevere("SQLException when trying to fetch " + player + "'s profile of type " + clazz.getSimpleName() + ". ");
-            ex.printStackTrace();
+            throw new IllegalStateException("refusing a blank profile after SQL read failure for " + player, ex);
         }
         return false;
     }
@@ -153,8 +159,8 @@ public abstract class ProfilePersistence {
             }
             stmt.execute();
         } catch (SQLException exception){
-            ValhallaMMO.getInstance().getServer().getLogger().severe("SQLException when trying to save profile for profile type " + profile.getClass().getName() + ". ");
-            exception.printStackTrace();
+            // Do not let a failed write look successful or evict the only in-memory profile.
+            throw new IllegalStateException("SQL write failed for " + player + " / " + profile.getTableName(), exception);
         }
     }
 
@@ -251,7 +257,7 @@ public abstract class ProfilePersistence {
     }
 
     public Map<String, ConfigurableProfile> loadConfigurableProfile(UUID uuid) {
-        Map<String, ConfigurableProfile> profiles = new HashMap<>();
+        Map<String, ConfigurableProfile> profiles = new ConcurrentHashMap<>();
         boolean runPersistentStartingPerks = false;
         for (String type : ProfileRegistry.getRegisteredConfigurableProfiles().keySet()) {
             ConfigurableProfile profile = ProfileRegistry.getBlankConfigurableProfile(uuid, type);
@@ -295,20 +301,25 @@ public abstract class ProfilePersistence {
     }
 
     public void saveAllProfiles(boolean async) {
-        for (UUID uuid : persistentProfiles.asMap().keySet()) {
+        Set<UUID> owners = new HashSet<>(persistentProfiles.asMap().keySet());
+        owners.addAll(persistentConfigurableProfiles.asMap().keySet());
+        int failures = 0;
+        for (UUID uuid : owners) {
             if (async) {
                 saveProfileAsync(uuid);
-            } else {
-                saveProfile(uuid, true);
-            }
-        }
-        for (UUID uuid : persistentConfigurableProfiles.asMap().keySet()) {
-            if (async) {
                 saveConfigurableProfileAsync(uuid);
             } else {
-                saveConfigurableProfile(uuid, true);
+                try {
+                    saveProfile(uuid, true);
+                    saveConfigurableProfile(uuid, true);
+                } catch (RuntimeException ex) {
+                    failures++;
+                    ValhallaMMO.logSevere("player save failed, profile retained for retry: " + uuid);
+                    ex.printStackTrace();
+                }
             }
         }
+        if (failures > 0) throw new IllegalStateException("failed to save " + failures + " player(s); see preceding errors");
     }
 
     public void saveProfileAsync(UUID p) {
@@ -336,41 +347,44 @@ public abstract class ProfilePersistence {
     }
 
     public void saveProfile(UUID p, boolean localLock) {
-        if (!isLoaded(p)) {
-            return;
-        } else if (localLock && !saving.add(p)) {
-            return;
-        }
-
-        ClassToInstanceMap<Profile> profiles = persistentProfiles.get(p).join();
-        for (Profile profile : profiles.values()) {
-            if (shouldPersist(profile)) insertOrUpdateProfile(p, profile);
-        }
-
-        if (localLock) {
-            saving.remove(p);
-        }
-        Player player = Bukkit.getPlayer(p);
-        if (player == null || !player.isOnline()) {
-            uncacheProfile(p);
+        Lock lock = saveLocks.get(p);
+        lock.lock();
+        try {
+            // getIfPresent avoids an old queued save reloading and writing a departed session.
+            CompletableFuture<ClassToInstanceMap<Profile>> future = persistentProfiles.getIfPresent(p);
+            if (future == null || !future.isDone()) return;
+            ClassToInstanceMap<Profile> profiles = future.join();
+            for (Profile profile : new ArrayList<>(profiles.values())) {
+                if (shouldPersist(profile)) insertOrUpdateProfile(p, profile);
+            }
+            Player player = Bukkit.getPlayer(p);
+            if (player == null || !player.isOnline()) {
+                // uncacheProfile invalidates both profile families.
+                // Save the configurable family before allowing that eviction.
+                CompletableFuture<Map<String, ConfigurableProfile>> configurable = persistentConfigurableProfiles.getIfPresent(p);
+                if (configurable != null && !configurable.isDone()) return;
+                saveConfigurableProfile(p, true);
+                uncacheProfile(p);
+            }
+        } finally {
+            lock.unlock();
         }
     }
 
     public void saveConfigurableProfile(UUID p, boolean localLock) {
-        if (!isConfigurableProfilesLoaded(p)) return;
-        else if (localLock && !savingConfigurable.add(p)) return;
-
-        Map<String, ConfigurableProfile> configurableProfiles = persistentConfigurableProfiles.get(p).join();
-        for (ConfigurableProfile profile : configurableProfiles.values()) {
-            if (shouldPersist(profile)) insertOrUpdateProfile(p, profile);
-        }
-
-        if (localLock) {
-            savingConfigurable.remove(p);
-        }
-        Player player = Bukkit.getPlayer(p);
-        if (player == null || !player.isOnline()) {
-            uncacheProfile(p);
+        Lock lock = saveLocks.get(p);
+        lock.lock();
+        try {
+            CompletableFuture<Map<String, ConfigurableProfile>> future = persistentConfigurableProfiles.getIfPresent(p);
+            if (future == null || !future.isDone()) return;
+            Map<String, ConfigurableProfile> profiles = future.join();
+            for (ConfigurableProfile profile : new ArrayList<>(profiles.values())) {
+                if (shouldPersist(profile)) insertOrUpdateProfile(p, profile);
+            }
+            Player player = Bukkit.getPlayer(p);
+            if ((player == null || !player.isOnline()) && persistentProfiles.getIfPresent(p) == null) uncacheProfile(p);
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -697,42 +711,36 @@ public abstract class ProfilePersistence {
      * @param typeToSave the profile type the plugin should persist
      */
     public static void scheduleProfilePersisting(UUID p, Class<? extends Profile> typeToSave){
-        Collection<Class<? extends Profile>> types = PROFILES_TO_SAVE.getOrDefault(p, new HashSet<>());
-        types.add(typeToSave);
-        PROFILES_TO_SAVE.put(p, types);
+        PROFILES_TO_SAVE.computeIfAbsent(p, ignored -> ConcurrentHashMap.newKeySet()).add(typeToSave);
     }
 
     public static void scheduleConfigurableProfilePersisting(UUID p, String type){
-        Collection<String> types = CONFIGURABLE_PROFILES_TO_SAVE.getOrDefault(p, new HashSet<>());
-        types.add(type);
-        CONFIGURABLE_PROFILES_TO_SAVE.put(p, types);
+        CONFIGURABLE_PROFILES_TO_SAVE.computeIfAbsent(p, ignored -> ConcurrentHashMap.newKeySet()).add(type);
     }
 
-    private static final Map<UUID, Collection<Class<? extends Profile>>> resetProfiles = new HashMap<>();
-    private static final Map<UUID, Collection<String>> resetConfigurableProfiles = new HashMap<>();
+    private static final Map<UUID, Collection<Class<? extends Profile>>> resetProfiles = new ConcurrentHashMap<>();
+    private static final Map<UUID, Collection<String>> resetConfigurableProfiles = new ConcurrentHashMap<>();
 
     @SuppressWarnings("all")
     public boolean shouldPersist(Profile profile){
+        if (profile.getOwner() == null) return false;
         Collection<Class<? extends Profile>> profilesToReset = resetProfiles.getOrDefault(profile.getOwner(), new HashSet<>());
         if (profilesToReset.contains(profile.getClass())) {
             profilesToReset.remove(profile.getClass());
             resetProfiles.put(profile.getOwner(), profilesToReset);
             return true;
         }
-        if (profile.getOwner() == null || (!(profile instanceof PowerProfile) && profile.getLevel() == 0 && profile.getNewGamePlus() == 0 && !profile.shouldForcePersist())) return false;
-        if (profile instanceof PowerProfile p && p.getUnlockedPerks().isEmpty() && p.getTotalEXP() <= 0) return false;
+        // The dirty queue also tracks level-zero experience, perks, and points.
         return PROFILES_TO_SAVE.getOrDefault(profile.getOwner(), Set.of()).contains(profile.getClass());
     }
 
     public boolean shouldPersist(ConfigurableProfile profile){
+        if (profile.getOwner() == null) return false;
         Collection<String> profilesToReset = resetConfigurableProfiles.getOrDefault(profile.getOwner(), new HashSet<>());
         if (profilesToReset.contains(profile.getSkillTypeName())) {
             profilesToReset.remove(profile.getSkillTypeName());
             resetConfigurableProfiles.put(profile.getOwner(), profilesToReset);
             return true;
-        }
-        if (profile.getOwner() == null || (profile.getLevel() == 0 && profile.getNewGamePlus() == 0 && !profile.shouldForcePersist())) {
-            return false;
         }
         return CONFIGURABLE_PROFILES_TO_SAVE.getOrDefault(profile.getOwner(), Set.of()).contains(profile.getSkillTypeName());
     }
