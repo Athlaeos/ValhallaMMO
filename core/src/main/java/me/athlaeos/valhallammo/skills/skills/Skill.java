@@ -565,9 +565,11 @@ public abstract class Skill {
                 }
             }
 
-            if (event.getLeveledSkill() instanceof ConfigurableSkill c)
+            if (event.getLeveledSkill() instanceof ConfigurableSkill c) {
                 if (profile instanceof ConfigurableProfile configurableProfile) ProfileRegistry.setPersistentConfigurableProfile(p, configurableProfile, c.getType());
-            else ProfileRegistry.setPersistentProfile(p, profile, profile.getClass());
+            } else {
+                ProfileRegistry.setPersistentProfile(p, profile, profile.getClass());
+            }
             // level conditions don't need to be checked if the player's current exp isn't enough to level up, or low enough to level down
             double nextLevelEXP = expForLevel(profile.getLevel() + 1);
             if ((nextLevelEXP > 0 && profile.getEXP() >= nextLevelEXP) || profile.getEXP() < 0) {
