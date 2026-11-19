@@ -39,6 +39,9 @@ public class WorldGuardHook extends PluginHook{
     public static final String VMMO_COMBAT_CHARGEDSHOT = "vmmo-combat-chargedshot";
     public static final String VMMO_COMBAT_ADRENALINE = "vmmo-combat-adrenaline";
     public static final String VMMO_COMBAT_RAGE = "vmmo-combat-rage";
+    public static final String VMMO_COMBAT_STUN = "vmmo-combat-stun";
+    public static final String VMMO_COMBAT_GRAPPLING = "vmmo-combat-grappling";
+    public static final String VMMO_COMBAT_DISARMING = "vmmo-combat-disarming";
     public static final String VMMO_ABILITIES_DRILLING = "vmmo-abilities-drilling";
     public static final String VMMO_ABILITIES_VEINMINER = "vmmo-abilities-veinminer";
     public static final String VMMO_ABILITIES_VEINFARMER = "vmmo-abilities-veinfarmer";
@@ -84,6 +87,9 @@ public class WorldGuardHook extends PluginHook{
         WorldGuardWrapper.registerFlag(VMMO_COMBAT_CHARGEDSHOT);
         WorldGuardWrapper.registerFlag(VMMO_COMBAT_ADRENALINE);
         WorldGuardWrapper.registerFlag(VMMO_COMBAT_RAGE);
+        WorldGuardWrapper.registerFlag(VMMO_COMBAT_STUN);
+        WorldGuardWrapper.registerFlag(VMMO_COMBAT_GRAPPLING);
+        WorldGuardWrapper.registerFlag(VMMO_COMBAT_DISARMING);
         WorldGuardWrapper.registerFlag(VMMO_ABILITIES_DRILLING);
         WorldGuardWrapper.registerFlag(VMMO_ABILITIES_VEINMINER);
         WorldGuardWrapper.registerFlag(VMMO_ABILITIES_VEINFARMER);

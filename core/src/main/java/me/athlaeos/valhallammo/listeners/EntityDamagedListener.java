@@ -77,6 +77,23 @@ public class EntityDamagedListener implements Listener {
 
     private final Map<UUID, Double> healthTracker = new HashMap<>();
     private final Map<UUID, Double> absorptionTracker = new HashMap<>();
+    private static final Map<UUID, Double> absorptionDamageBonuses = new HashMap<>();
+
+    /**
+     * Records bonus damage that should only be dealt to this victim's absorption hearts on the damage instance
+     * currently being processed. EntityAttackListener runs at HIGH and sets this, this listener runs at HIGHEST
+     * and consumes it, so the value never survives into an unrelated damage instance.
+     * @param bonus multiplier applied on top of the damage that lands on absorption. 0 or lower clears the entry.
+     */
+    public static void markAbsorptionDamageBonus(Entity victim, double bonus){
+        if (bonus > 0) absorptionDamageBonuses.put(victim.getUniqueId(), bonus);
+        else absorptionDamageBonuses.remove(victim.getUniqueId());
+    }
+
+    private static double consumeAbsorptionDamageBonus(UUID victim){
+        Double bonus = absorptionDamageBonuses.remove(victim);
+        return bonus == null ? 0 : bonus;
+    }
 
     private static final Map<UUID, Runnable> damageProcesses = new HashMap<>();
 
@@ -153,8 +170,14 @@ public class EntityDamagedListener implements Listener {
                 int iFrameBonus = (int) AccumulativeStatManager.getCachedRelationalStats("IMMUNITY_FRAME_BONUS", l, lastDamager, 10000, true);
                 int iFrames = isMarkedNoImmunityOnNextDamageInstance(l, damageCause) ? 0 : (int) Math.max(0, iFrameMultiplier * (Math.max(0, 10 + iFrameBonus)));
                 unmarkNextDamageInstanceNoImmunity(l, damageCause);
-                double predictedAbsorption = absorptionTracker.getOrDefault(l.getUniqueId(), l.getAbsorptionAmount()) - damage;
-                double predictedHealth = healthTracker.getOrDefault(l.getUniqueId(), l.getHealth()) - (predictedAbsorption >= 0 ? 0 : -predictedAbsorption);
+                double absorptionAfterDamage = absorptionTracker.getOrDefault(l.getUniqueId(), l.getAbsorptionAmount()) - damage;
+                double predictedHealth = healthTracker.getOrDefault(l.getUniqueId(), l.getHealth()) - (absorptionAfterDamage >= 0 ? 0 : -absorptionAfterDamage);
+                // Absorption damage bonus is applied after predictedHealth has been determined and is clamped at 0,
+                // so however large the bonus is it can only ever strip absorption hearts and never reach actual health.
+                double absorptionDamageBonus = consumeAbsorptionDamageBonus(l.getUniqueId());
+                double predictedAbsorption = (absorptionDamageBonus > 0 && absorptionAfterDamage > 0) ?
+                        Math.max(0, absorptionAfterDamage - (Math.max(0, damage) * absorptionDamageBonus)) :
+                        absorptionAfterDamage;
                 if (predictedAbsorption > 0) absorptionTracker.put(l.getUniqueId(), predictedAbsorption);
                 healthTracker.put(l.getUniqueId(), predictedHealth); // if two damage instances occur in rapid succession (such as with bonus damage types)
                 // then the predicted health of the entity is recorded and used for additional damage instances. Without this, preceding damage instances

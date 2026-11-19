@@ -9,6 +9,7 @@ import me.athlaeos.valhallammo.dom.Questionnaire;
 import me.athlaeos.valhallammo.entities.EntityClassification;
 import me.athlaeos.valhallammo.event.EntityCriticallyHitEvent;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
+import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.item.WeightClass;
 import me.athlaeos.valhallammo.listeners.EntityAttackListener;
@@ -179,6 +180,8 @@ public class MartialArtsSkill extends Skill implements Listener {
                 || Timer.sendIfNotPassed(e.getPlayer(),"cooldown_disarming", disarmingCooldownType) ||
                 grapplingBlacklist.contains(e.getRightClicked().getType())) return;
 
+        if (WorldGuardHook.inDisabledRegion(e.getRightClicked().getLocation(), e.getPlayer(), WorldGuardHook.VMMO_COMBAT_GRAPPLING)) return;
+
         MartialArtsProfile grapplerProfile = ProfileCache.getOrCache(e.getPlayer(), MartialArtsProfile.class);
         if (!grapplerProfile.isGrapplingUnlocked()) return;
         boolean canGrapple = true;
@@ -203,6 +206,7 @@ public class MartialArtsSkill extends Skill implements Listener {
 
         Timer.setCooldown(e.getPlayer().getUniqueId(), grapplerProfile.getGrapplingEffectInterval() * 50, "grappling_attempt_cooldown");
         if (details.grapple(grapplerProfile.getStacksUntilDisarming())){
+            if (WorldGuardHook.inDisabledRegion(l.getLocation(), e.getPlayer(), WorldGuardHook.VMMO_COMBAT_DISARMING)) return;
             if ((playerDisarming && l instanceof Player p &&
                     (!ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) ||
                             !ItemUtils.isEmpty(p.getInventory().getItemInOffHand()))) ||
@@ -391,7 +395,7 @@ public class MartialArtsSkill extends Skill implements Listener {
             if (weapon != null && WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.WEIGHTLESS) return;
             MartialArtsProfile profile = ProfileCache.getOrCache(p, MartialArtsProfile.class);
             if (profile.doesBleedOnCrit()) Bleeder.inflictBleed(l, p, CombatType.MELEE_UNARMED);
-            if (profile.doesStunOnCrit()) Stun.attemptStun(l, p);
+            if (profile.doesStunOnCrit() && !WorldGuardHook.inDisabledRegion(p.getLocation(), p, WorldGuardHook.VMMO_COMBAT_STUN)) Stun.attemptStun(l, p);
         }
     }
 

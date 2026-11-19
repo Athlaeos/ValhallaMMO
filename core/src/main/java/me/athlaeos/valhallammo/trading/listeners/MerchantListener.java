@@ -40,6 +40,7 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.raid.RaidFinishEvent;
+import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantInventory;
 import org.bukkit.inventory.MerchantRecipe;
@@ -483,6 +484,15 @@ public class MerchantListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onMerchantProfessionChange(VillagerCareerChangeEvent e){
         if (e.isCancelled() || ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName())) return;
+        if (!CustomMerchantManager.isMerchantDataCached(e.getEntity().getUniqueId())){
+            // The merchant data isn't loaded yet, so the callback below would resolve on a database thread
+            // long after this event finished dispatching. e.setCancelled(true) would then do nothing and the
+            // villager would lose a profession (and its trades) it was supposed to keep. Cancel the change now,
+            // pull the data into memory, and let the villager retry the career change a moment later.
+            e.setCancelled(true);
+            CustomMerchantManager.prefetchMerchantData(e.getEntity().getUniqueId());
+            return;
+        }
         Villager.Profession newProfession = e.getProfession();
         if (CustomMerchantManager.overrideDayTimeMechanics())
             e.getEntity().getPersistentDataContainer().set(KEY_PROFESSION_DELAY_REAL_TIME, PersistentDataType.LONG, System.currentTimeMillis());
@@ -508,6 +518,17 @@ public class MerchantListener implements Listener {
             data.setType(type == null ? null : type.getType());
             data.setTrades(new ArrayList<>());
         });
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onMerchantsLoad(EntitiesLoadEvent e){
+        if (ValhallaMMO.isWorldBlacklisted(e.getWorld().getName())) return;
+        // Warming the cache as merchants come into the world keeps every later getMerchantData call synchronous.
+        // Each merchant costs at most one query per server session because loaded data is never evicted, and it
+        // replaces the first-touch query every other call site would have triggered individually anyway.
+        for (Entity entity : e.getEntities()){
+            if (entity instanceof AbstractVillager) CustomMerchantManager.prefetchMerchantData(entity.getUniqueId());
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
